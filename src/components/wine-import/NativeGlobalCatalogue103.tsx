@@ -18,7 +18,7 @@ export const GlobalWineReference103 = ({ candidate, profile }: { candidate: Wine
   const names = { potente: 'cuerpo', acidez: 'frescura', dulce: 'dulzor', tanico: 'tanino', afrutado: 'fruta' };
   const matches = insights?.positives.slice(0, 2).map(item => names[item.key]).join(' y ');
   const friction = insights?.negatives[0];
-  return <section className="min-w-0 space-y-3 border-y border-stone-200 py-3 [overflow-wrap:anywhere]" aria-label="Catálogo global Winerim" data-testid="global-wine-reference">
+  return <section className="min-w-0 space-y-3 border-y border-stone-200 py-3 [overflow-wrap:anywhere]" aria-label="Ficha de Winerim" data-testid="global-wine-reference">
     <div className="flex min-w-0 items-start gap-3">
       {wine.photo && <img src={wine.photo} alt={`Botella de ${wine.name}, imagen del catálogo`} className="h-28 w-16 shrink-0 object-contain" loading="lazy" referrerPolicy="no-referrer" />}
       <div className="min-w-0 flex-1"><p className="font-semibold text-slate-950">{wine.name}</p>
@@ -73,7 +73,7 @@ export const GlobalWineLookup103 = ({ candidate, contextKey, disabled, onVerifie
   };
   return <div className="min-w-0 space-y-2">
     <Button type="button" disabled={disabled || Boolean(controller.current)} onClick={() => void lookup()} className="h-auto min-h-11 w-full gap-2 whitespace-normal bg-red-950 px-3 py-3 text-left text-white">
-      {controller.current ? <Loader2 aria-hidden="true" className="h-5 w-5 shrink-0 animate-spin" /> : <BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" />} Buscar ficha en todo Winerim
+      {controller.current ? <Loader2 aria-hidden="true" className="h-5 w-5 shrink-0 animate-spin" /> : <BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" />} Buscar ficha en Winerim
     </Button>
     {controller.current && <Button type="button" variant="outline" onClick={() => controller.current?.abort()} className="min-h-11 gap-2"><X aria-hidden="true" className="h-4 w-4" /> Cancelar</Button>}
     {state && <p role="status" className="text-sm leading-6 text-stone-700">{state}</p>}
