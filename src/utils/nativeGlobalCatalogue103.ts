@@ -21,8 +21,12 @@ const text = z.string().trim().min(1).max(240).refine(value => !Array.from(value
 // Observed catalogue subnames may be ASCII spaces. Missing optional metadata is
 // null, never evidence; identity fields keep the strict nonempty text schema.
 const optionalText = z.preprocess(value => typeof value === 'string' && value.length <= 240 && /^ *$/.test(value) ? null : value, text.nullish());
-const rowSchema = z.object({ id: z.number().int().positive().safe(), name: text, winery: text,
-  slugname: z.string().regex(/^[a-z0-9][a-z0-9_-]{0,239}$/i),
+// A few public names use tabs as word separators. This is response formatting,
+// not OCR correction; query input and all other controls remain strict.
+const responseName = z.preprocess(value => typeof value === 'string' && value.length <= 240
+  ? value.replace(/\t+/g, ' ') : value, text);
+const rowSchema = z.object({ id: z.number().int().positive().safe(), name: responseName, winery: text,
+  slugname: z.string().regex(/^(?:[a-z0-9][a-z0-9_-]{0,239}|_(?:19|20)\d{2})$/i),
   vintage: z.union([z.string().regex(/^(19|20)\d{2}$/), z.number().int().min(1900).max(2099)]).nullable(),
   subname: optionalText, type: optionalText, region: optionalText, country: optionalText,
   photo: z.string().nullish(), grapes: z.array(z.unknown()).max(100).optional(), tastingAttributes: z.unknown().optional(),
