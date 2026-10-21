@@ -310,6 +310,23 @@ export function freeze112<T>(value: T): T {
   }
   return value;
 }
+export function evaluateExpected112(scenes: Scene112[], expected: { image_id: string; expected_name: string; expected_producer: string }[],
+  match: Runtime112['isSafeCanonicalLabelMatch']) {
+  assert(Array.isArray(expected) && expected.length <= 200, 'INVALID_EXPECTED_ROWS');
+  const byId = new Map(expected.map(row => {
+    assert(typeof row?.image_id === 'string' && typeof row.expected_name === 'string' && typeof row.expected_producer === 'string', 'INVALID_EXPECTED_ROW');
+    return [row.image_id, row] as const;
+  }));
+  assert.equal(byId.size, expected.length, 'DUPLICATE_EXPECTED_ID');
+  return scenes.map(scene => {
+    const truth = byId.get(scene.imageId); assert(truth, 'MISSING_EXPECTED_SCENE');
+    const expectedIdentity = { name: truth.expected_name, producer: truth.expected_producer };
+    // Review metadata is useful for failed retrieval too, but cannot score it.
+    if (!scene.eligible) return { ...scene, expected: expectedIdentity };
+    const hits = scene.proposals.map(proposal => match(expectedIdentity, { name: proposal.name, producer: proposal.row.winery }));
+    return { ...scene, expected: expectedIdentity, top1Hit: Boolean(hits[0]), top3Hit: hits.some(Boolean) };
+  });
+}
 export function summarize112(scenes: { eligible: boolean; status: string; proposals: unknown[]; top1Hit?: boolean; top3Hit?: boolean }[], total: number, integrity: boolean, state: State112) {
   const evaluated = integrity ? scenes.filter(scene => scene.eligible) : [];
   const complete = integrity && scenes.length === total && scenes.every(scene => scene.eligible) && !state.failures.length;
@@ -361,13 +378,7 @@ export async function main112(args = process.argv.slice(2)) {
     try {
       const bytes = fs.readFileSync(path.join(repo, 'qa-artifacts/lovable-connection101-20261021/EXACT200-CATALOGUE-COVERAGE.json'));
       const expected = JSON.parse(bytes.toString('utf8')).rows; expectedSHA256 = sha112(bytes); expectedLoadedAfterRanking = true;
-      evaluated = predictions.map(scene => {
-        if (!scene.eligible) return scene;
-        const truth = expected.find((row: { image_id: string }) => row.image_id === scene.imageId); assert(truth);
-        const hits = scene.proposals.map(proposal => runtime!.isSafeCanonicalLabelMatch({ name: truth.expected_name, producer: truth.expected_producer },
-          { name: proposal.name, producer: proposal.row.winery }));
-        return { ...scene, expected: { name: truth.expected_name, producer: truth.expected_producer }, top1Hit: Boolean(hits[0]), top3Hit: hits.some(Boolean) };
-      });
+      evaluated = evaluateExpected112(predictions, expected, runtime.isSafeCanonicalLabelMatch);
       guard(); verifySources112(repo, sources);
     } catch (error) { integrity = false; errors.push(String(error)); state.failures.push({ reason: String(error) }); }
   }

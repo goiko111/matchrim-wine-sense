@@ -5,7 +5,7 @@ import vm from 'node:vm';
 import ts from 'typescript';
 import { fileURLToPath } from 'node:url';
 import { assertLeases112, boundedFetch112, captureSources112, freeze112, isSearchCacheURL112, latestRanges112, loadCache112,
-  loadReadings112, loadRuntime112, newState112, parseReading112, predict112, publicHeaders112, sha112, summarize112, verifySources112 } from './benchmark-matchrim-native112.ts';
+  loadReadings112, loadRuntime112, newState112, parseReading112, predict112, publicHeaders112, sha112, summarize112, verifySources112, evaluateExpected112 } from './benchmark-matchrim-native112.ts';
 
 // All producer, image, catalogue and persistence fixtures live in memory.
 globalThis.fetch = () => { throw Error('REAL_NETWORK_FORBIDDEN'); };
@@ -295,5 +295,30 @@ await test('Frozen predictions cannot be changed by evaluation; GT file access f
   const source = fs.readFileSync(path.join(repo, 'scripts/benchmark-matchrim-native112.ts'), 'utf8');
   assert(source.indexOf('freeze112(predictions);') < source.indexOf('EXACT200-CATALOGUE-COVERAGE.json'));
   assert.equal(source.match(/EXACT200-CATALOGUE-COVERAGE\.json/g)?.length, 1);
+});
+await test('Every attempted scene gets review metadata, but incomplete retrieval never gets scored', () => {
+  const scenes = freeze112([
+    { imageId: 'img-001', eligible: true, status: 'complete', queries: ['Synthetic read'], proposals: [{ name: 'Cuvee Oriole', row: { winery: 'Casa Atlas' } }] },
+    { imageId: 'img-002', eligible: false, status: 'incomplete', queries: ['Other read'], proposals: [{ name: 'GT_SENTINEL', row: { winery: 'GT_PRODUCER' } }] },
+  ]);
+  const expected = [{ image_id: 'img-001', expected_name: 'Cuvee Oriole', expected_producer: 'Casa Atlas' },
+    { image_id: 'img-002', expected_name: 'GT_SENTINEL', expected_producer: 'GT_PRODUCER' }];
+  let calls = 0;
+  const evaluate = rows => evaluateExpected112(scenes, rows, (left, right) => { calls++; return runtime.isSafeCanonicalLabelMatch(left, right); });
+  const results = evaluate(expected);
+  assert.equal(calls, 1); assert.equal(results[0].top1Hit, true);
+  assert.equal(results[1].expected.name, 'GT_SENTINEL');
+  assert(!Object.hasOwn(results[1], 'top1Hit') && !Object.hasOwn(results[1], 'top3Hit'));
+  for (let index = 0; index < 2; index++) {
+    assert.equal(results[index].proposals, scenes[index].proposals);
+    assert.equal(results[index].queries, scenes[index].queries);
+    assert(!Object.hasOwn(scenes[index], 'expected'));
+  }
+  const summary = summarize112(results, 2, true, newState112());
+  assert.equal(summary.evaluated, 1); assert.equal(summary.incompleteScenes, 1);
+  assert.equal(summary.top1Expected, 1); assert.equal(summary.exitCode, 1); assert.equal(summary.complete, false);
+  assert.throws(() => evaluate(expected.slice(0, 1)), /MISSING_EXPECTED_SCENE/);
+  assert.throws(() => evaluate([expected[0], expected[0]]), /DUPLICATE_EXPECTED_ID/);
+  assert.throws(() => evaluate([{ ...expected[0], expected_name: null }]), /INVALID_EXPECTED_ROW/);
 });
 console.log(JSON.stringify({ groups, passed: true, realNetworkCalls: 0, modelStarts: 0, diskWrites: 0, full200Runs: 0 }));
