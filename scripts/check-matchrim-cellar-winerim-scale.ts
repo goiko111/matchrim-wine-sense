@@ -18,6 +18,7 @@ import { catalogWineFromVerifiedSheet, type WinerimOriginalSheet } from '../src/
 import type { MenuScanWine } from '../src/utils/wineMenuScan';
 import { optionalScanNumber, normalizeScanSensoryValue } from '../supabase/functions/_shared/matchrim-scan-values';
 import { isLiteralWineStyle95 } from '../src/utils/menuLiteralStyle95';
+import { safeWineImageUrl98 } from '../src/utils/wineImage98';
 
 globalThis.fetch = () => { throw new Error('Offline cellar scale contracts: remote fetch forbidden'); };
 const object = (value: unknown): Record<string, unknown> => {
@@ -200,6 +201,7 @@ await check('Actual native resolver persists grounded scale unchanged and never 
     normalizeSensoryAttributesTo5: () => { throw new Error('Native resolver must preserve the grounded object'); },
     makeCellarCatalogEvidence, loadMatchrimScanProfile: async () => snapshot,
     withCellarInitialAffinity, cellarAffinityView, confirmsWineMutation, readCellarSensoryEvidence, readCellarInitialAffinity,
+    safeWineImageUrl98,
     supabase: { from: () => ({ update: (value: Record<string, unknown>) => { writes++; payload = value; return chain; } }) },
     toast: { info: (message: string) => info.push(message), success: () => undefined, error: (message: string) => errors.push(message) },
     setCellarProfile: () => undefined, setWines: (update: (rows: unknown[]) => unknown[]) => update([saved]),
