@@ -106,8 +106,8 @@ function fixture() {
       assert(io.existsSync(base + '/account114-auth-reservation.json'));
       assert(io.syncs.includes(base + '/account114-auth-reservation.json') && io.syncs.includes(base));
       assert(args.includes('-only-testing:Probe97/' + AUTH_METHOD));
-      assert.equal(args[args.indexOf('-test-iterations') + 1], '1');
-      assert.equal(args[args.indexOf('-test-repetition-relaunch-enabled') + 1], 'NO');
+      assert(!args.includes('-test-iterations'), 'Xcode rejects the one-iteration CLI flag');
+      assert(!args.includes('-test-repetition-relaunch-enabled'));
       if (state.throwOnAuthStart) throw new Error('Mock spawn interruption');
     }
     assert(!JSON.stringify(args).includes('synthetic-only-not-a-secret'));

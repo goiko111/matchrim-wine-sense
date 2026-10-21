@@ -181,7 +181,7 @@ export async function runStyle119({ argv = process.argv.slice(2), repo = process
     xcrun(['simctl', 'addmedia', device, photo.path]);
     receipt.firstPhotoAssumption = 'Newest imported neutral img-001.jpg, observed first Photos grid item; no library deletion or query injection.';
     const args = ['test-without-building', ...common, '-resultBundlePath', output + '/result.xcresult',
-      '-only-testing:' + plan.testTargets[0].target.name + '/' + METHOD, '-test-iterations', '1', '-test-repetition-relaunch-enabled', 'NO'];
+      '-only-testing:' + plan.testTargets[0].target.name + '/' + METHOD];
     const executed = await run('runtime', args);
     Object.assign(receipt, evaluate(executed.log, executed.result, executed.stopped));
     if (io.existsSync(output + '/result.xcresult')) xcrun(['xcresulttool', 'export', 'attachments', '--path', output + '/result.xcresult', '--output-path', output + '/attachments']);

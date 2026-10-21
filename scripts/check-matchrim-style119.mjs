@@ -80,7 +80,8 @@ function mock({ compileFail = false, setupFail = false, runtimeFail = false, lea
       assert(events.some(event => event[0] === 'sync' && event[1] === base));
       assert.equal(args.filter(arg => arg.startsWith('-only-testing:')).length, 1);
       assert(args.includes('-only-testing:Probe97/' + METHOD));
-      assert.equal(args[args.indexOf('-test-iterations') + 1], '1');
+      assert(!args.includes('-test-iterations'), 'Xcode rejects the one-iteration CLI flag');
+      assert(!args.includes('-test-repetition-relaunch-enabled'));
     }
     const child = new EventEmitter(); child.pid = 999; child.kill = () => {};
     io.writeFileSync(options.stdio[1], runtime ? log() : 'compile only\n');

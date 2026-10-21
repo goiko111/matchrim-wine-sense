@@ -83,8 +83,8 @@ function fixture() {
     if (!compile) {
       assert.equal(state.size, MAXIMUM_TYPE);
       assert(args.includes('-only-testing:Probe97UITests/' + METHOD));
-      assert.equal(args[args.indexOf('-test-iterations') + 1], '1');
-      assert.equal(args[args.indexOf('-test-repetition-relaunch-enabled') + 1], 'NO');
+      assert(!args.includes('-test-iterations'), 'Xcode rejects a one-iteration CLI repetition flag');
+      assert(!args.includes('-test-repetition-relaunch-enabled'));
     }
     io.writeFileSync(options.stdio[1], compile ? 'compile only' : state.log);
     const child = new EventEmitter(); child.pid = 123; child.kill = () => {};

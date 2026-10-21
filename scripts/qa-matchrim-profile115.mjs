@@ -50,7 +50,7 @@ export async function runProfile115({ argv = process.argv.slice(2), repo = proce
   const env = Object.fromEntries(Object.entries(environment).filter(([key]) => !/KEY|AUTH|PASSWORD|SECRET|TOKEN|MATCHRIM114|CREDENTIAL/i.test(key)));
   env.DEVELOPER_DIR = developer;
   const receipt = { passed: false, stage: 'preflight', device: DEVICE, bundle,
-    accountScope: 'Existing QA account info@winerim.com, already authenticated by account114; read-only Profile only.',
+    accountScope: 'Existing QA account info@winerim.com, already authenticated; authentication provenance is recorded separately. Read-only Profile only.',
     authSubmissions: 0, modelStartsRequested: 0, maximumType: MAXIMUM_TYPE, startedUTC: new Date().toISOString() };
   let output, prep, app, originalSize, created = false;
   const pins = new Map();
@@ -146,8 +146,7 @@ export async function runProfile115({ argv = process.argv.slice(2), repo = proce
     xcrun(['simctl', 'install', DEVICE, app]);
     receipt.stage = 'runtime';
     const executed = await run('runtime', ['test-without-building', ...common, '-resultBundlePath', output + '/result.xcresult',
-      '-only-testing:' + plan.testTargets[0].target.name + '/' + METHOD,
-      '-test-iterations', '1', '-test-repetition-relaunch-enabled', 'NO']);
+      '-only-testing:' + plan.testTargets[0].target.name + '/' + METHOD]);
     Object.assign(receipt, evaluateProfileResult(executed.log, executed.result, executed.stopped));
     if (io.existsSync(output + '/result.xcresult')) {
       xcrun(['xcresulttool', 'export', 'attachments', '--path', output + '/result.xcresult', '--output-path', output + '/attachments']);

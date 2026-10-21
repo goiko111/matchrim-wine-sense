@@ -11,6 +11,7 @@ import { Wine, User, History, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker
 import { supabase } from '@/integrations/supabase/client';
 import AppNav from '@/components/AppNav';
 import NativeAccountActions from '@/components/NativeAccountActions';
+import NativeProfileLayout133 from '@/components/NativeProfileLayout133';
 import MatchrimPassport from '@/components/MatchrimPassport';
 import WineCard from '@/components/WineCard';
 import {
@@ -762,7 +763,8 @@ const Profile = () => {
     return (
       <div className="min-h-screen bg-gray-50">
         <AppNav />
-        <main className="matchrim-native-page-top matchrim-native-page-x container mx-auto max-w-6xl pb-8">
+        {isNative && <NativeProfileLayout133 />}
+        <main className={`matchrim-native-page-top matchrim-native-page-x container mx-auto max-w-6xl pb-8${isNative ? ' matchrim-profile133' : ''}`}>
           <div className="mb-8">
             <div className="h-9 w-44 animate-pulse rounded-md bg-stone-200" />
             <div className="mt-3 h-5 w-full max-w-md animate-pulse rounded-md bg-stone-100" />
@@ -800,7 +802,8 @@ const Profile = () => {
 
   if (isNative && nativeHistoryError) return <>
     <AppNav />
-    <main className="matchrim-native-page-top matchrim-native-page-x container mx-auto max-w-6xl pb-[calc(6rem+env(safe-area-inset-bottom))]">
+    <NativeProfileLayout133 />
+    <main className="matchrim-native-page-top matchrim-native-page-x matchrim-profile133 container mx-auto max-w-6xl pb-[calc(6rem+env(safe-area-inset-bottom))]">
       <NativeAccountActions />
       <h1 className="mb-4 text-2xl font-bold text-stone-950">Mi Perfil</h1>
       <div role="alert" className="space-y-3 border-y border-stone-200 py-4">
@@ -816,17 +819,18 @@ const Profile = () => {
   return (
     <>
       <AppNav />
-      <main className="matchrim-native-page-top matchrim-native-page-x container mx-auto max-w-6xl pb-8"
+      {isNative && <NativeProfileLayout133 />}
+      <main className={`matchrim-native-page-top matchrim-native-page-x container mx-auto max-w-6xl pb-8${isNative ? ' matchrim-profile133' : ''}`}
         style={isNative ? { paddingBottom: 'calc(6rem + env(safe-area-inset-bottom))' } : undefined}>
       <NativeAccountActions />
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-red-900 mb-2 flex items-center gap-2">
+        <h1 className={`text-3xl font-bold text-red-900 mb-2 flex items-center gap-2${isNative ? ' matchrim-profile-title133' : ''}`}>
           <User className="w-8 h-8" />
           Mi Perfil
         </h1>
-        <p className="text-gray-600">
+        {!isNative && <p className="text-gray-600">
           Gestiona tu información y visualiza tu perfil sensorial Winerim
-        </p>
+        </p>}
       </div>
 
       <Tabs defaultValue="profile" className="w-full">
@@ -844,10 +848,16 @@ const Profile = () => {
         <TabsContent value="profile">
           {baseProfile ? (
             <div className="space-y-8">
-              {passportProfile && <MatchrimPassport profile={passportProfile} />}
+              {!isNative && passportProfile && <MatchrimPassport profile={passportProfile} />}
 
               {learnedProfile && learnedProfile.samples > 0 && (
-                <Card className="border-amber-200 bg-amber-50/70">
+                isNative ? <details className="border-y border-stone-200 py-3" data-testid="native-profile-learning133">
+                  <summary className="min-h-11 cursor-pointer py-2 text-sm font-semibold text-stone-800">
+                    Aprendizaje: {learnedProfile.samples} vino{learnedProfile.samples !== 1 ? 's' : ''} valorado{learnedProfile.samples !== 1 ? 's' : ''}
+                  </summary>
+                  <p className="mt-2 text-sm text-stone-700">{confidenceCopy}</p>
+                  <p className="mt-2 text-sm text-stone-700">Tu test inicial se conserva; estas valoraciones ajustan el perfil activo.</p>
+                </details> : <Card className="border-amber-200 bg-amber-50/70">
                   <CardContent className="p-5">
                     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                       <div>
@@ -939,6 +949,10 @@ const Profile = () => {
               </div>
 
               {/* Wine Styles Section */}
+              {isNative && passportProfile && <details className="border-y border-stone-200 py-3" data-testid="native-profile-passport133">
+                <summary className="min-h-11 cursor-pointer py-2 text-sm font-semibold text-stone-800">Mi código Matchrim</summary>
+                <MatchrimPassport profile={passportProfile} />
+              </details>}
               {styleDetails.length > 0 && (
                 <div>
                   <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">

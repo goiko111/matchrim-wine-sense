@@ -14,12 +14,12 @@ final class MatchrimProfile115Tests: XCTestCase {
         try require(profile.waitForExistence(timeout: 20), app, "Existing authenticated bottom Perfil link required")
         try authenticated(app)
         try require(profile.isHittable, app, "Bottom Perfil link must be reachable")
-        try insideVisibleBounds(profile, app)
+        try insideVisibleBounds(profile, app, navigationControl: true)
         profile.tap()
         let email = app.staticTexts["info@winerim.com"].firstMatch
         try require(email.waitForExistence(timeout: 20), app, "Literal existing QA email required; never authenticate here")
         try authenticated(app)
-        let settings = app.buttons["Ajustes de cuenta"].firstMatch
+        let settings = app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "Ajustes de cuenta")).firstMatch
         try require(settings.waitForExistence(timeout: 5), app, "Account settings control missing")
         audit(app, "01-profile-maximum-type")
         try require(email.isHittable && settings.isHittable && settings.isEnabled, app, "Email and settings must be visible and reachable")
@@ -53,7 +53,7 @@ final class MatchrimProfile115Tests: XCTestCase {
                     app, "Anonymous entry/auth form detected; stop without login")
     }
 
-    @MainActor private func insideVisibleBounds(_ element: XCUIElement, _ app: XCUIApplication) throws {
+    @MainActor private func insideVisibleBounds(_ element: XCUIElement, _ app: XCUIApplication, navigationControl: Bool = false) throws {
         let frame = element.frame
         let window = app.windows.firstMatch.frame
         try require(!frame.isEmpty && window.contains(frame), app, "Visible element extends outside app window")
@@ -62,7 +62,7 @@ final class MatchrimProfile115Tests: XCTestCase {
             try require(frame.minY >= status.frame.maxY, app, "Element enters measurable top safe area")
         }
         let footer = app.links["Perfil"].firstMatch
-        if footer.exists && footer.isHittable && element != footer {
+        if footer.exists && footer.isHittable && !navigationControl {
             try require(frame.maxY <= footer.frame.minY, app, "Profile content enters bottom navigation band")
         }
         attach("\(element.label): \(frame); window: \(window); status: \(status.exists ? status.frame : .zero); footer: \(footer.exists ? footer.frame : .zero)", "geometry")

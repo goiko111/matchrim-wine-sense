@@ -265,7 +265,7 @@ export async function runAccount114({ argv = process.argv.slice(2), repo = proce
     xcrun(['simctl', 'install', device, app]);
     const args = ['test-without-building', ...common, '-resultBundlePath', output + '/result.xcresult',
       '-only-testing:' + plan.testTargets[0].target.name + '/' + AUTH_METHOD,
-      '-test-iterations', '1', '-test-repetition-relaunch-enabled', 'NO'];
+    ];
     receipt.command = args;
     const executed = await run('runtime', args, true);
     receipt.result = executed.result; receipt.stopped = executed.stopped;

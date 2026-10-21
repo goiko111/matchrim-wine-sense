@@ -127,6 +127,20 @@ try {
       report.dense128AnalysisCalls = [...(report.dense128AnalysisCalls || []), index];
       return json(reading128(index));
     }
+    if (scenario === 'dense128' && url.hostname === 'app.winerim.com'
+      && url.pathname === '/api/v1/whoami/slugname') {
+      assert.equal(request.method(), 'GET');
+      assert.equal(url.searchParams.get('s'), 'the-library');
+      report.dense128EmptyCatalogueReads = (report.dense128EmptyCatalogueReads || 0) + 1;
+      return json({ restaurant: '00000000-0000-0000-0000-000000000002' });
+    }
+    if (scenario === 'dense128' && url.hostname === 'app.winerim.com'
+      && /^\/api\/v1\/restaurant\/00000000-0000-0000-0000-00000000000[12]\/wines$/.test(url.pathname)) {
+      assert.equal(request.method(), 'GET');
+      assert(url.searchParams.has('text'), 'Dense fixture has no independent catalogue fiche');
+      report.dense128EmptyCatalogueReads = (report.dense128EmptyCatalogueReads || 0) + 1;
+      return json({ count: 0, page: 1, results: [] });
+    }
     if (url.pathname.endsWith('/detect-wine-regions-v72')) return json({ regions: [{ box: { x: 3, y: 5, width: 94, height: 90 }, confidence: .99,
       object_type: 'bottle', quality: { glare: 'low', occlusion: 'low', legibility: 'good' } }],
       coverage: { status: 'reported_complete', detected_objects: 1, estimated_visible_objects: 1, confidence: .99 } });
@@ -347,8 +361,13 @@ try {
       assert(!(await dialog.innerText()).includes('99/100'), 'An unverified model number is not an affinity');
       await capture('dense128-first-review');
       await dialog.getByRole('button', { name: 'Cerrar', exact: true }).click();
+      await dialog.waitFor({ state: 'hidden' });
+      write('dense128-after-close-aria.txt', await page.locator('body').ariaSnapshot());
       for (let pass = 0; pass < 3; pass++) {
         const next = page.getByTestId('scan-continue-batch').getByRole('button');
+        report.dense128Continuation = [...(report.dense128Continuation || []), {
+          pass, present: await next.count(), visible: await next.isVisible(), analyses: report.dense128AnalysisCalls.length,
+        }];
         if (!await next.isVisible()) break;
         await next.click();
         await page.waitForFunction(() => {
@@ -398,8 +417,23 @@ try {
       for (const [width, height, text] of [[393,852,100], [320,568,100], [393,852,200]]) {
         await page.setViewportSize({ width, height });
         await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
-        await page.getByRole('heading', { name: 'Comparar 2–5 vinos', exact: true }).scrollIntoViewIfNeeded();
+        const title = page.getByRole('heading', { name: 'Comparar 2–5 vinos', exact: true });
+        await title.evaluate(node => node.scrollIntoView({ block: 'start', behavior: 'instant' }));
+        const titleBounds = await title.boundingBox();
+        assert(titleBounds && titleBounds.y >= -1 && titleBounds.y + titleBounds.height <= height - 82,
+          'The comparison heading must actually be inside the captured viewport');
         await capture('dense128-comparison-' + width + '-' + text);
+        const mode = page.getByRole('group', { name: 'Modo de comparación', exact: true });
+        await mode.evaluate(node => node.scrollIntoView({ block: 'start', behavior: 'instant' }));
+        const service = mode.getByRole('button', { name: 'Servicio', exact: true });
+        const serviceBounds = await service.boundingBox();
+        assert(serviceBounds && serviceBounds.y >= -1 && serviceBounds.y + serviceBounds.height <= height - 82);
+        assert.equal(await service.evaluate(node => {
+          const r = node.getBoundingClientRect();
+          const hit = document.elementFromPoint(r.x + r.width/2, r.y + r.height/2);
+          return hit === node || node.contains(hit);
+        }), true, 'The service-mode control must not be covered by a fixed layer');
+        await capture('dense128-decision-' + width + '-' + text);
       }
       assert(!/99\/100/.test(await page.locator('body').innerText()));
       report.dense128Comparison = { references: names128.length, maximumSelection: 5, serviceMode: true, fakeAffinityHidden: true };
