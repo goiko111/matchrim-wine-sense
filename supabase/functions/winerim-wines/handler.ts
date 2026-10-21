@@ -1,7 +1,13 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const isInt = (v: unknown) => v !== null && v !== undefined && /^-?\d+$/.test(String(v).trim());
+// Profile axes are quiz scores on a 0-5 scale and may carry decimals (e.g. 4.7).
+const isAxis = (v: unknown) => {
+  if (typeof v !== 'number' && typeof v !== 'string') return false;
+  const s = String(v).trim();
+  if (!/^\d+(\.\d+)?$/.test(s)) return false;
+  return Number(s) <= 5;
+};
 
 const REQUIRED = ['userPower', 'userAcidity', 'userFruity', 'userSweetness', 'userTannin'] as const;
 // Quiz profile keys (what the app sends in `profile`) -> backend query params.
@@ -60,7 +66,7 @@ export const createHandler = (apiUrl: string, fetchImpl: typeof fetch = fetch) =
           : {}) as Record<string, unknown>;
         for (const k of REQUIRED) {
           const value = input[k] ?? profile[PROFILE_KEYS[k]];
-          if (!isInt(value)) return json(400, { error: `Invalid or missing param: ${k}` });
+          if (!isAxis(value)) return json(400, { error: `Invalid or missing param: ${k}` });
           upstream.searchParams.set(k, String(value).trim());
         }
         const matchrimCode = String(input.matchrimCode ?? '').trim();
