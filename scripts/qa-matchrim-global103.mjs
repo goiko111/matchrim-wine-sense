@@ -428,12 +428,16 @@ try {
         const service = mode.getByRole('button', { name: 'Servicio', exact: true });
         const serviceBounds = await service.boundingBox();
         assert(serviceBounds && serviceBounds.y >= -1 && serviceBounds.y + serviceBounds.height <= height - 82);
-        assert.equal(await service.evaluate(node => {
+        const serviceHit = await service.evaluate(node => {
           const r = node.getBoundingClientRect();
           const hit = document.elementFromPoint(r.x + r.width/2, r.y + r.height/2);
-          return hit === node || node.contains(hit);
-        }), true, 'The service-mode control must not be covered by a fixed layer');
+          return { reachable: hit === node || node.contains(hit), hit: hit?.outerHTML.slice(0, 700),
+            rect: { x: r.x, y: r.y, width: r.width, height: r.height },
+            viewport: { width: innerWidth, height: innerHeight }, scrollY };
+        });
+        report.dense128ServiceHitTests = [...(report.dense128ServiceHitTests || []), { width, text, ...serviceHit }];
         await capture('dense128-decision-' + width + '-' + text);
+        assert.equal(serviceHit.reachable, true, 'The service-mode control must not be covered by a fixed layer');
       }
       assert(!/99\/100/.test(await page.locator('body').innerText()));
       report.dense128Comparison = { references: names128.length, maximumSelection: 5, serviceMode: true, fakeAffinityHidden: true };

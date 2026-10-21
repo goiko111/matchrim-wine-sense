@@ -55,6 +55,7 @@ const AttributeValue = ({ value }: { value: number | null | undefined }) => {
 
 export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps) => {
   const isNative = Capacitor.isNativePlatform();
+  const nativeScrollStyle = isNative ? { scrollMarginTop: 'calc(var(--matchrim-safe-top) + 112px)' } : undefined;
   const formatAffinity = (score: number) => `${Math.round(score)}${isNative ? '/100' : '%'}`;
   const comparisonId = useId();
   const [selectedIds, setSelectedIds] = useState<string[]>(() => wines.slice(0, 3).map((wine) => wine.id));
@@ -120,7 +121,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
     <section className={isNative ? 'min-w-0 break-words py-4' : 'matchrim-surface min-w-0 break-words rounded-lg p-4'} aria-labelledby="wine-comparison-title">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h3 id="wine-comparison-title" className="text-lg font-semibold text-slate-950">Comparar 2–5 vinos</h3>
+          <h3 id="wine-comparison-title" style={nativeScrollStyle} className="text-lg font-semibold text-slate-950">Comparar 2–5 vinos</h3>
           <p className="mt-1 text-sm matchrim-muted">Elige referencias y decide con afinidad, certeza, precio y formato por separado.</p>
         </div>
         <span className="text-xs font-medium text-slate-500">{selectedIds.length}/5 seleccionados</span>
@@ -136,7 +137,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
               key={wine.id}
               className={`matchrim-pressable flex min-h-14 min-w-0 max-w-full items-center gap-3 overflow-hidden rounded-md border px-3 py-2 ${selected ? 'border-red-800 bg-red-50' : 'border-stone-200 bg-white'} ${disabled ? 'opacity-50' : ''}`}
             >
-              <Checkbox checked={selected} disabled={disabled} onCheckedChange={() => toggleWine(wine.id)} aria-label={`Comparar ${wine.name}`} aria-describedby={wine.identityConfirmed === false ? identityDescriptionId : undefined} />
+              <Checkbox style={nativeScrollStyle} checked={selected} disabled={disabled} onCheckedChange={() => toggleWine(wine.id)} aria-label={`Comparar ${wine.name}`} aria-describedby={wine.identityConfirmed === false ? identityDescriptionId : undefined} />
               <span className="min-w-0 flex-1">
                 <span className="block whitespace-normal break-words text-sm font-semibold text-slate-950">{wine.name}</span>
                 <span className="block whitespace-normal break-words text-xs text-slate-500">{wine.producer || wine.region || 'Identidad parcial'}</span>
@@ -155,9 +156,10 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
           <div className="mt-5 grid gap-4 lg:grid-cols-[auto_minmax(12rem,1fr)_minmax(10rem,0.7fr)]">
             <div>
               <Label className="mb-2 block">Decisión</Label>
-              <div className="inline-flex max-w-full flex-wrap rounded-md border border-stone-200 bg-stone-100 p-1" role="group" aria-label="Modo de comparación">
+              <div style={nativeScrollStyle} className="inline-flex max-w-full flex-wrap rounded-md border border-stone-200 bg-stone-100 p-1" role="group" aria-label="Modo de comparación">
                 <button
                   type="button"
+                  style={nativeScrollStyle}
                   className={`matchrim-pressable flex min-h-11 items-center gap-2 rounded px-3 text-sm font-medium ${mode === 'personal' ? 'bg-white text-slate-950 shadow-sm' : 'text-slate-600'}`}
                   onClick={() => setMode('personal')}
                   aria-pressed={mode === 'personal'}
@@ -166,6 +168,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
                 </button>
                 <button
                   type="button"
+                  style={nativeScrollStyle}
                   className={`matchrim-pressable flex min-h-11 items-center gap-2 rounded px-3 text-sm font-medium ${mode === 'service' ? 'bg-white text-slate-950 shadow-sm' : 'text-slate-600'}`}
                   onClick={() => setMode('service')}
                   aria-pressed={mode === 'service'}
@@ -178,7 +181,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
             <div>
               <Label htmlFor="comparison-priority">Prioridad</Label>
               <Select value={priority} onValueChange={(value) => setPriority(value as WineDecisionPriority)}>
-                <SelectTrigger id="comparison-priority" className="mt-2 min-h-11"><SelectValue /></SelectTrigger>
+                <SelectTrigger id="comparison-priority" style={nativeScrollStyle} className="mt-2 min-h-11"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="affinity" disabled={!hasAffinities}>Mayor afinidad</SelectItem>
                   <SelectItem value="certainty">Identidad más segura</SelectItem>
@@ -192,7 +195,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
                 <Label htmlFor="comparison-budget">Presupuesto máximo{priceCurrency ? ` (${priceCurrency})` : priceFormat ? ' (moneda pendiente)' : ' (formato pendiente)'}</Label>
                 <div className="relative mt-2">
                   <Coins className="pointer-events-none absolute left-3 top-3.5 h-4 w-4 text-slate-400" />
-                  <Input id="comparison-budget" inputMode="decimal" value={budget} disabled={!priceCurrency} onChange={(event) => setBudget(event.target.value)} className="min-h-11 pl-9" placeholder="Sin límite" />
+                  <Input id="comparison-budget" style={nativeScrollStyle} inputMode="decimal" value={budget} disabled={!priceCurrency} onChange={(event) => setBudget(event.target.value)} className="min-h-11 pl-9" placeholder="Sin límite" />
                 </div>
               </div>
             )}
@@ -201,7 +204,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
               <div>
                 <Label htmlFor="comparison-service">Formato</Label>
                 <Select value={serviceFormat} onValueChange={(value) => setServiceFormat(value as WineServiceFormat)}>
-                  <SelectTrigger id="comparison-service" className="mt-2 min-h-11"><SelectValue /></SelectTrigger>
+                  <SelectTrigger id="comparison-service" style={nativeScrollStyle} className="mt-2 min-h-11"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="any">Cualquier formato</SelectItem>
                     <SelectItem value="glass">Por copa</SelectItem>
