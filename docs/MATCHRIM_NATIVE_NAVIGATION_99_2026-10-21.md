@@ -73,3 +73,20 @@ Se mantiene el limite humano20 etiquetas piloto /50 peticiones de pago /15EUR. R
 No hay autorizacion incondicional para subir un candidato no validado. Antes de TestFlight siguen siendo necesarios: contrato maestro real y fichas verificadas por anada; reconocimiento real dentro del limite vigente y con contador seguro; recorrido autenticado/persistencia y QA final del candidato. Los tests con dependencias sinteticas no sustituyen estos gates. No se ha tocado el iPhone en esta continuacion ni usado una ventana fisica anterior ya vencida.
 
 `src/index.css` y `supabase/functions/search-wines/index.ts` quedan protegidos. No hay Publish, despliegue web/backend, upload de Apple o invitacion de testers en este bloque. La95 instalada en TestFlight no contiene Native98/99.
+
+## Beta Privada Autorizada Y Subida Posterior
+
+Despues del checkpoint anterior, el propietario solicito expresamente: "puedes subir testflight y vemos donde estamos?". Se autoriza y ejecuta una beta privada para evaluar el estado actual, no el cierre de los gates de catalogo/reconocimiento anteriores. Ninguno de esos pendientes se declara resuelto por la subida.
+
+El 2026-10-21, Xcode26.0.1 genero un archivo Release nuevo de **1.0(99)**, bundle de produccion `wine.matchrim.app`, equipo `8X3XTD6XYX`, desde los mismos387 inputs y163 recursos comprobados. El archivo de simulador `wine.matchrim.qa99review` NO se subio. El IPA exportado pasa codesign estricto, perfil App Store con `get-task-allow=false` e identificador exacto. Los163 recursos del IPA siguen siendo identicos a los probados. Configuracion real de produccion, fixtures=false, sin live reload.
+
+- Fuente: `838c89f11545ddd4fb336d3bf6a57117867851b4`; producto `ed7dda42eb6270a2fac87bdb2c9b964d784788b2`.
+- IPA SHA256: `55d5bac531801a5daaa52bdb3f6fce3c94f41e7dc29ce26a53729de0aa472f63`.
+- Subida unica: inicio06:12:09UTC /08:12:09Madrid, fin06:13:33UTC /08:13:33Madrid. Exit0: `Uploaded package is processing`, `Upload succeeded`, `Uploaded App`, `EXPORT SUCCEEDED`.
+- Apple acepto el paquete y lo esta procesando. Esto NO confirma aun su disponibilidad instalable, asignacion a grupos ni invitacion a testers. No se repite la subida ni se altera el numero para simular disponibilidad.
+- Evidencia privada: `qa-artifacts/native99-20261021/distribution99/{archive,export,upload}-result.json`, logs y `release99.mjs`; notas `WHAT_TO_TEST.es.txt` en la misma raiz de evidencias.
+- Warning de Apple no bloqueante: target iOS14; Apple indica minimo iOS15 a partir de abril2027. No se cambia el target de un candidato ya probado en esta subida.
+
+La fuente del producto no se modifica para subir. Sin Publish, deploy web/backend, cambios en main, invitaciones nuevas ni llamadas adicionales de IA de pago. Se conservan los gates pendientes: maestro completo de Mantalak/Winerim,200 etiquetas reales, fichas sensoriales de anada exacta y recorrido fisico/autenticado de99. Las notas preparadas los explicitan; no se afirma que ya esten publicadas como metadatos en Apple.
+
+Coordinacion: archivo/export/upload bajo heavy-local `17f0bc35-1169-4af4-846c-cb26a11a1cc6`, liberada al terminar06:13UTC. Writer `da3adf68-cfae-4693-8472-d05e6ef6e72c`. Capacidad comprobada antes de cada etapa; sin limpieza adicional, uso de iPhone o interferencia con tareas ajenas. Una consulta pasiva posterior de las pestanas de Brave, con mac-desktop `4b727a80-59f7-4e65-843c-844fd181c7f6` y mas de5 minutos de inactividad HID, encuentra la unica pestana de Apple en `/login`; no se inicia sesion, navega, cambia cuenta ni abre otra pestana. Por ello la disponibilidad instalable queda sin verificar. Lease de escritorio liberada tras esa consulta.
