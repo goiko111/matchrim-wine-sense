@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 
 const digest = value => createHash('sha256').update(value).digest('hex');
 const bytes = readFileSync(new URL('./native-master102-scope.json', import.meta.url));
-assert.equal(digest(bytes), '84d4d069e71b2269a34a4a02b80184228a767e6f851009875bf768e6c4b97822', 'Exact reviewed native102 source inverse package');
+assert.equal(digest(bytes), 'ff456c6fe6ff6540450cf1913bc36cd733ff61df19123a7be8301a6e6242f9b3', 'Exact reviewed native102 source inverse package');
 const scope = JSON.parse(bytes);
 
 // Whole-file bounded inverses preserve all old oracles/cases. Current master

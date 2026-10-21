@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { BookOpen, Check, Pencil } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import './nativeLabelSheet102.css';
 
 interface LabelAnalysisViewProps {
   isNativePlatform: boolean;

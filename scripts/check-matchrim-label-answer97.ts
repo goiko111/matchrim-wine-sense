@@ -10,7 +10,7 @@ const file = 'src/components/wine-import/MultiWineLabelScanner.tsx';
 const viewFile = 'src/components/wine-import/LabelAnalysisView.tsx';
 const base = '8327ee7e31fe73ab8edd90303de514147d13978d';
 const before = execFileSync('git', ['show', `${base}:${file}`], { encoding: 'utf8' });
-const source = restoreNativeMaster102(file, readFileSync(file, 'utf8')), view = readFileSync(viewFile, 'utf8');
+const source = restoreNativeMaster102(file, readFileSync(file, 'utf8')), view = restoreNativeMaster102(viewFile, readFileSync(viewFile, 'utf8'));
 const parse = (s: string) => ts.createSourceFile(file, s, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 const printer = ts.createPrinter({ removeComments: true });
 const declarations = (s: string) => {

@@ -1,0 +1,9 @@
+/* Keep the close controls fixed while enlarged label content scrolls separately. */
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-scan-region-layout {
+  display: flex;
+  overflow: hidden;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-scan-region-body {
+  overflow-y: auto;
+}

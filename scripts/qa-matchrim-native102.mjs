@@ -77,11 +77,21 @@ try {
   page.on('console', message => { if (message.type() === 'error') report.consoleErrors.push(message.text()); });
   const capture = async name => {
     guard();
-    const geometry = await page.evaluate(() => ({ viewport: innerWidth, document: document.documentElement.scrollWidth,
+    const geometry = await page.evaluate(() => ({ viewport: innerWidth, viewportHeight: innerHeight, document: document.documentElement.scrollWidth,
       dialog: (() => { const r = document.querySelector('[role=dialog]')?.getBoundingClientRect(); return r ? { top: r.top, bottom: r.bottom, left: r.left, right: r.right } : null; })() }));
     assert(geometry.document <= geometry.viewport + 1, name + ' page overflow');
-    if (geometry.dialog) assert(geometry.dialog.left >= -1 && geometry.dialog.right <= geometry.viewport + 1, name + ' dialog overflow');
-    write(name + '.png', await page.screenshot({ fullPage: true }));
+    if (geometry.dialog) {
+      assert(geometry.dialog.left >= -1 && geometry.dialog.right <= geometry.viewport + 1, name + ' dialog overflow');
+      assert(geometry.dialog.top >= -1 && geometry.dialog.bottom <= geometry.viewportHeight + 1, name + ' dialog vertical overflow');
+      const close = page.getByRole('dialog').getByRole('button', { name: 'Cerrar', exact: true });
+      const bounds = await close.boundingBox();
+      assert(bounds && bounds.width >= 43.5 && bounds.height >= 43.5 && bounds.y >= 0
+        && bounds.y + bounds.height <= geometry.viewportHeight + 1, name + ' footer remains reachable');
+      geometry.closeButton = bounds;
+    }
+    // A full-page Chromium capture resizes the layout viewport and tiles fixed drawers.
+    // Keep overlay evidence at the actual device viewport, not a stitched tall page.
+    write(name + '.png', await page.screenshot({ fullPage: !geometry.dialog }));
     write(name + '-aria.txt', await page.locator('body').ariaSnapshot());
     report.snapshots.push({ name, geometry });
   };
