@@ -4,7 +4,7 @@ import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 import { assertLeases112, boundedFetch112, captureSources112, freeze112, isSearchCacheURL112, latestRanges112, loadCache112,
-  loadReadings112, loadRuntime112, newState112, parseReading112, predict112, sha112, summarize112, verifySources112 } from './benchmark-matchrim-native112.ts';
+  loadReadings112, loadRuntime112, newState112, parseReading112, predict112, publicHeaders112, sha112, summarize112, verifySources112 } from './benchmark-matchrim-native112.ts';
 
 // All producer, image, catalogue and persistence fixtures live in memory.
 globalThis.fetch = () => { throw Error('REAL_NETWORK_FORBIDDEN'); };
@@ -181,6 +181,29 @@ await test('HTTP failure, fetch error and malformed JSON cannot produce a comple
     assert.equal(scenes[0].eligible, false); assert.equal(summarize112(scenes, 1, true, r.state).exitCode, 1);
     assert.equal(r.state.starts, 1);
   }
+});
+await test('One HTTP500 remains failed but independent scenes continue without retrying its URL', async () => {
+  let calls = 0;
+  const r = rig({ live: true, maximum: 2, wire: async url => wireResponse(url, page(), ++calls === 1 ? 500 : 200) });
+  const scenes = await r.predict([reading([line('Failed Reference')]), reading([line('Independent Reference')])]);
+  assert.equal(r.state.held, false); assert.equal(r.state.starts, 2); assert.equal(r.state.failures.length, 1);
+  assert.equal(scenes[0].eligible, false); assert.equal(scenes[1].eligible, true);
+  const summary = summarize112(scenes, 2, true, r.state); assert.equal(summary.evaluated, 1); assert.equal(summary.exitCode, 1);
+  await r.client.searchProposals('Failed Reference');
+  assert.equal(calls, 2); assert.equal(r.state.failures.length, 2); assert.equal(r.state.held, false);
+});
+await test('Authentication and rate-limit responses remain global stops', async () => {
+  for (const status of [401, 403, 429]) {
+    const r = rig({ live: true, maximum: 2, wire: async url => wireResponse(url, page(), status) });
+    const scenes = await r.predict([reading(), reading([line('Independent Reference')])]);
+    assert.equal(r.state.held, true); assert.equal(r.state.starts, 1);
+    assert.equal(scenes[1].reason, 'RUN_HELD_BEFORE_SCENE');
+  }
+});
+await test('New receipt headers retain response classification, never session or authentication headers', () => {
+  const headers = publicHeaders112(new Headers({ 'content-type': 'text/plain', date: 'synthetic-date',
+    'set-cookie': 'SYNTHETIC-NOT-ACTUAL', authorization: 'SYNTHETIC-NOT-ACTUAL', 'x-api-key': 'SYNTHETIC-NOT-ACTUAL' }));
+  assert.deepEqual(headers, { 'content-type': 'text/plain', date: 'synthetic-date' });
 });
 await test('Live text/plain stays unavailable on in-memory and reloaded cache replay', async () => {
   const r = rig({ live: true, maximum: 1, wire: async url => wireResponse(url, page(), 200, 'text/plain') });

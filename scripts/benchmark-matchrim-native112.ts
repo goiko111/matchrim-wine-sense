@@ -183,6 +183,8 @@ export function loadCache112(repo: string, folders: string[], read: Read112 = fs
 export const newState112 = () => ({ starts: 0, cacheReads: 0, missingCache: 0, held: false,
   requests: [] as Record<string, unknown>[], cacheReceipts: [] as Record<string, unknown>[], failures: [] as { reason: string; url?: string }[] });
 type State112 = ReturnType<typeof newState112>;
+export const publicHeaders112 = (headers: Headers) => Object.fromEntries([...headers].filter(([name]) =>
+  ['content-type', 'cache-control', 'content-length', 'content-encoding', 'date', 'etag', 'last-modified', 'expires', 'vary'].includes(name.toLowerCase())));
 export function boundedFetch112(options: { cache: Map<string, Cache112>; live: boolean; maximum: number; state: State112;
   wire: typeof fetch; guard: () => void; saveBody: (name: string, bytes: Buffer) => void; persist: () => void }) {
   const { cache, live, maximum, state, wire, guard, saveBody, persist } = options;
@@ -198,6 +200,10 @@ export function boundedFetch112(options: { cache: Map<string, Cache112>; live: b
     const cached = cache.get(url.href);
     if (cached) {
       state.cacheReads++; state.cacheReceipts.push({ url: url.href, sourceReceipt: cached.sourceReceipt, sha256: cached.sha256, metadata: cached.metadata });
+      if (cached.status < 200 || cached.status >= 300 || !/^application\/json(?:\s*;|$)/i.test(cached.headers['content-type'] || '')) {
+        state.failures.push({ reason: 'CACHED_PUBLIC_HTTP_OR_CONTENT_TYPE_FAILURE', url: url.href });
+        if ([401, 403, 429].includes(cached.status)) state.held = true;
+      }
       return replay(cached);
     }
     if (!live) { state.missingCache++; state.failures.push({ reason: 'CACHE_MISS_NO_NETWORK', url: url.href }); throw Error('CACHE_MISS_NO_NETWORK'); }
@@ -222,7 +228,8 @@ export function boundedFetch112(options: { cache: Map<string, Cache112>; live: b
       const pending = wire(url, { ...init, signal: controller.signal });
       void pending.then(response => { if (controller.signal.aborted) void response.body?.cancel().catch(() => undefined); }, () => undefined);
       const response = await bound(pending);
-      Object.assign(receipt, { status: response.status, headers: Object.fromEntries(response.headers), responseURL: response.url, redirected: response.redirected });
+      const headers = publicHeaders112(response.headers);
+      Object.assign(receipt, { status: response.status, headers, headerScope: 'safe-transport-headers-no-session-or-auth', responseURL: response.url, redirected: response.redirected });
       assert(!response.redirected && response.url === url.href, 'PUBLIC_RESPONSE_URL');
       const reader = response.body?.getReader(); assert(reader, 'PUBLIC_RESPONSE_BODY');
       const chunks: Uint8Array[] = []; let size = 0;
@@ -232,11 +239,15 @@ export function boundedFetch112(options: { cache: Map<string, Cache112>; live: b
       assert(!controller.signal.aborted, 'PUBLIC_GET_ABORTED'); guard();
       const bytes = Buffer.concat(chunks); saveBody(body, bytes);
       Object.assign(receipt, { sha256: sha112(bytes), bytes: size, state: 'completed' });
-      const entry: Cache112 = { bytes, status: response.status, headers: Object.fromEntries(response.headers), responseURL: response.url,
+      const entry: Cache112 = { bytes, status: response.status, headers, responseURL: response.url,
         redirected: response.redirected, metadata: 'preserved', sourceReceipt: body, sha256: sha112(bytes) };
       cache.set(url.href, entry);
       if (!response.ok || !/^application\/json(?:\s*;|$)/i.test(response.headers.get('content-type') || '')) {
-        state.held = true; state.failures.push({ reason: 'PUBLIC_HTTP_OR_CONTENT_TYPE_FAILURE', url: url.href });
+        // One malformed reference must not prevent exercising independent scenes.
+        // Authentication/rate limits, transport failure and budget/resource holds
+        // remain global stops; every failed query stays excluded from metrics.
+        if ([401, 403, 429].includes(response.status)) state.held = true;
+        state.failures.push({ reason: 'PUBLIC_HTTP_OR_CONTENT_TYPE_FAILURE', url: url.href });
       }
       return replay(entry);
     } catch (error) { receipt.error = String(error); receipt.state = 'failed'; state.held = true;
@@ -310,7 +321,7 @@ export function summarize112(scenes: { eligible: boolean; status: string; propos
 
 export async function main112(args = process.argv.slice(2)) {
   const repo = process.cwd(), base = path.join(repo, 'qa-artifacts/night105-20261021');
-  assert(args[0] && ['live', 'cache'].includes(args[1]), 'Usage: benchmark-matchrim-native112.ts OUTPUT live|cache MAX_GETS [CACHE]');
+  assert(args[0] && ['live', 'cache'].includes(args[1]), 'Usage: benchmark-matchrim-native112.ts OUTPUT live|cache MAX_GETS [...CACHES]');
   const output = path.resolve(args[0]), live = args[1] === 'live', maximum = Number(args[2] || 0);
   assert(Number.isSafeInteger(maximum) && maximum >= 0 && maximum <= 600 && (live || maximum === 0));
   assert(output.startsWith(base + '/') && !fs.existsSync(output));
@@ -330,7 +341,7 @@ export async function main112(args = process.argv.slice(2)) {
   try {
     runtime = await loadRuntime112(); verifySources112(repo, sources); guard();
     readings = await loadReadings112(repo, base, runtime, sources);
-    const folders = [...Object.keys(legacy112).map(folder => path.join(repo, folder)), ...(args[3] ? [path.resolve(args[3])] : [])];
+    const folders = [...Object.keys(legacy112).map(folder => path.join(repo, folder)), ...args.slice(3).map(folder => path.resolve(folder))];
     const cache = loadCache112(repo, folders);
     const fetcher = boundedFetch112({ cache, live, maximum, state, wire: globalThis.fetch, guard, persist,
       saveBody: (name, bytes) => fs.writeFileSync(path.join(output, name), bytes, { flag: 'wx', mode: 0o600 }) });
@@ -366,7 +377,7 @@ export async function main112(args = process.argv.slice(2)) {
   persist();
   write('REPORT.json', { summary, mode: live ? 'live' : 'cache', observedUTC: new Date().toISOString(), expectedLoadedAfterRanking, expectedSHA256,
     sourceScriptSHA256: sources[script112], sourceFingerprints: sources, errors, failures: state.failures,
-    cacheMetadataParity: summary.legacyAssumedJSONReads ? 'legacy-assumedJSON-not-metadata-parity' : 'preserved',
+    cacheMetadataParity: summary.legacyAssumedJSONReads ? 'legacy-assumedJSON-not-metadata-parity' : 'preserved-classification-headers',
     scope: 'Digest-bound simulator Vision replay through production local recovery functions. Recognition proxies include only completed scenes, including valid abstentions. Not gallery E2E, physical iPhone, automatic identity precision or expert ground truth. Legacy snapshot replay assumes JSON headers explicitly.', rows: evaluated });
   console.log(JSON.stringify(summary)); return summary.exitCode;
 }

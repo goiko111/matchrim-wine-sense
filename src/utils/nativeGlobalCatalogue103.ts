@@ -18,10 +18,13 @@ const text = z.string().trim().min(1).max(240).refine(value => !Array.from(value
   const code = char.charCodeAt(0);
   return code < 32 || (code >= 127 && code <= 159) || (code >= 0x202a && code <= 0x202e) || (code >= 0x2066 && code <= 0x2069);
 }));
+// Observed catalogue subnames may be ASCII spaces. Missing optional metadata is
+// null, never evidence; identity fields keep the strict nonempty text schema.
+const optionalText = z.preprocess(value => typeof value === 'string' && value.length <= 240 && /^ *$/.test(value) ? null : value, text.nullish());
 const rowSchema = z.object({ id: z.number().int().positive().safe(), name: text, winery: text,
   slugname: z.string().regex(/^[a-z0-9][a-z0-9_-]{0,239}$/i),
   vintage: z.union([z.string().regex(/^(19|20)\d{2}$/), z.number().int().min(1900).max(2099)]).nullable(),
-  subname: text.nullish(), type: text.nullish(), region: text.nullish(), country: text.nullish(),
+  subname: optionalText, type: optionalText, region: optionalText, country: optionalText,
   photo: z.string().nullish(), grapes: z.array(z.unknown()).max(100).optional(), tastingAttributes: z.unknown().optional(),
 });
 type Row = z.infer<typeof rowSchema>;
