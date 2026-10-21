@@ -9,13 +9,22 @@ import { getDiverseWineRecommendations, UserProfile, WineRecommendation } from '
 import { generateWineStyles } from '@/utils/profileUtils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, CheckCircle, Loader2, Wine } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Loader2, RefreshCw, Wine } from 'lucide-react';
 import AppNav from '@/components/AppNav';
 import { readMatchrimLocalProfile } from '@/utils/matchrimLocalProfile';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuizResults } from '@/hooks/useQuizResults';
 import { buildAuthRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
+
+const NativeMatchrimLoading = () => (
+  <div className="matchrim-native-page-top min-h-screen bg-white px-4 text-slate-700" style={{ paddingBottom: 'calc(7rem + env(safe-area-inset-bottom, 0px))' }}>
+    <section role="status" aria-live="polite" aria-busy="true" className="mx-auto flex max-w-2xl items-center gap-2 border-y border-slate-200 py-4">
+      <Loader2 className="h-5 w-5 shrink-0 animate-spin" aria-hidden="true" />
+      <p>Cargando tu test guardado...</p>
+    </section>
+  </div>
+);
 
 const MatchrimSession = () => {
   const navigate = useNavigate();
@@ -31,6 +40,11 @@ const MatchrimSession = () => {
   const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
   const isNative = Capacitor.isNativePlatform();
   const hasStartedQuiz = useRef(false);
+  const [nativeHistoryStatus, setNativeHistoryStatus] = useState<'loading' | 'ready' | 'error'>(user ? 'loading' : 'ready');
+  const [nativeHistoryRetry, setNativeHistoryRetry] = useState(0);
+  const nativeHistoryPending = useRef(false);
+  const nativeHistoryReader = useRef(getQuizHistory);
+  nativeHistoryReader.current = getQuizHistory;
   const nativeSubmissionPending = useRef(false);
   const [nativeSaveStatus, setNativeSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'unconfirmed'>('idle');
   const saveLifetime = useRef({ active: true, generation: 0 });
@@ -42,22 +56,43 @@ const MatchrimSession = () => {
 
   // Load saved quiz results on mount
   useEffect(() => {
+    if (isNative && hasStartedQuiz.current) return;
     let active = true;
+    const controller = isNative && user ? new AbortController() : null;
+    let deadline: number | undefined;
     const loadSavedResults = async () => {
       if (user) {
         // For authenticated users, load from database
-        const history = await getQuizHistory();
-        if (!active || hasStartedQuiz.current) return;
-        if (history && history.length > 0) {
-          const lastResult = history[0];
-          setQuizResult({
-            potente: lastResult.potente,
-            acidez: lastResult.acidez,
-            dulce: lastResult.dulce,
-            tanico: lastResult.tanico,
-            afrutado: lastResult.afrutado
-          });
-          setCurrentStep('results');
+        if (controller) {
+          nativeHistoryPending.current = true;
+          setNativeHistoryStatus('loading');
+        }
+        try {
+          const history = controller ? await Promise.race([
+            nativeHistoryReader.current({ signal: controller.signal, throwOnError: true }),
+            new Promise<never>((_resolve, reject) => {
+              deadline = window.setTimeout(() => { controller.abort(); reject(new Error('QUIZ_HISTORY_TIMEOUT')); }, 12000);
+            }),
+          ]) : await getQuizHistory();
+          if (!active || hasStartedQuiz.current) return;
+          if (history && history.length > 0) {
+            const lastResult = history[0];
+            setQuizResult({
+              potente: lastResult.potente,
+              acidez: lastResult.acidez,
+              dulce: lastResult.dulce,
+              tanico: lastResult.tanico,
+              afrutado: lastResult.afrutado
+            });
+            setCurrentStep('results');
+          }
+          if (controller) setNativeHistoryStatus('ready');
+        } catch (error) {
+          if (!controller) throw error;
+          if (active && !hasStartedQuiz.current) setNativeHistoryStatus('error');
+        } finally {
+          if (deadline !== undefined) window.clearTimeout(deadline);
+          if (active && controller) nativeHistoryPending.current = false;
         }
       } else {
         const savedResult = readMatchrimLocalProfile();
@@ -74,10 +109,22 @@ const MatchrimSession = () => {
     };
 
     loadSavedResults();
-    return () => { active = false; };
-  }, [user, getQuizHistory]);
+    return () => {
+      active = false;
+      controller?.abort();
+      if (deadline !== undefined) window.clearTimeout(deadline);
+    };
+  }, [isNative ? user?.id : user, isNative ? null : getQuizHistory, isNative, nativeHistoryRetry]);
+
+  const handleRetryHistory = () => {
+    if (!isNative || !user || hasStartedQuiz.current || nativeHistoryPending.current || nativeHistoryStatus !== 'error') return;
+    nativeHistoryPending.current = true;
+    setNativeHistoryStatus('loading');
+    setNativeHistoryRetry(value => value + 1);
+  };
 
   const handleStart = () => {
+    if (isNative && user && nativeHistoryStatus !== 'ready') return;
     hasStartedQuiz.current = true;
     setCurrentStep('quiz');
   };
@@ -134,6 +181,7 @@ const MatchrimSession = () => {
   };
 
   const handleRestartQuiz = () => {
+    if (isNative && user && nativeHistoryStatus !== 'ready') return;
     if (isNative && (isSaving || nativeSaveStatus === 'saving')) return;
     saveLifetime.current.generation += 1;
     setNativeSaveStatus('idle');
@@ -247,6 +295,22 @@ const MatchrimSession = () => {
     fetchRecommendations();
     return () => { active = false; };
   }, [quizResult]);
+
+  if (isNative && user && nativeHistoryStatus === 'loading') return <><AppNav /><NativeMatchrimLoading /></>;
+
+  if (isNative && user && nativeHistoryStatus === 'error') return (
+    <div className="matchrim-native-page-top min-h-screen bg-white text-slate-700" style={{ paddingBottom: 'calc(7rem + env(safe-area-inset-bottom, 0px))' }}>
+      <AppNav />
+      <section role="alert" className="mx-auto max-w-2xl border-y border-slate-200 px-4 py-5">
+        <h1 className="text-lg font-semibold">No hemos podido cargar tu test guardado</h1>
+        <p className="mt-2 text-sm">No necesitas repetirlo. Puedes volver a intentar cargarlo.</p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Button onClick={handleRetryHistory} className="min-h-11 gap-2"><RefreshCw className="h-4 w-4" aria-hidden="true" />Reintentar carga</Button>
+          <Button variant="outline" onClick={() => navigate('/profile')} className="min-h-11 gap-2"><ArrowLeft className="h-4 w-4" aria-hidden="true" />Volver a mi perfil</Button>
+        </div>
+      </section>
+    </div>
+  );
 
   return (
     <div className="matchrim-quiz-page min-h-screen bg-gradient-to-br from-red-900 via-red-800 to-red-950">
@@ -433,7 +497,8 @@ const MatchrimSession = () => {
 };
 
 const Matchrim = () => {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  if (Capacitor.isNativePlatform() && authLoading) return <NativeMatchrimLoading />;
   return <MatchrimSession key={user?.id ?? 'anonymous'} />;
 };
 
