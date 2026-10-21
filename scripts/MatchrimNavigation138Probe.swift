@@ -21,7 +21,7 @@ final class MatchrimNavigation138Tests: XCTestCase {
         try require(app.frame.height > app.frame.width, app, "Portrait required; do not change device settings")
 
         try navigate(.profile, app)
-        let identity = app.staticTexts["info@winerim.com"]
+        let identity = app.staticTexts.matching(NSPredicate(format: "label == %@", "info@winerim.com"))
         try require(identity.firstMatch.waitForExistence(timeout: 15) && identity.count == 1
                     && identity.firstMatch.isHittable, app, "Literal existing QA identity must be visible on Profile; no auth attempt")
         try authenticated(app)
@@ -30,7 +30,7 @@ final class MatchrimNavigation138Tests: XCTestCase {
         let sensory = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Tu perfil sensorial"))
         try require(wait(15) { app.staticTexts["Mi Perfil"].exists && sensory.count == 1 && sensory.firstMatch.exists
             && !app.staticTexts["Cargando tu perfil Matchrim"].exists }, app, "Loaded sensory Profile required; no quiz or retry")
-        let settings = app.otherElements["Ajustes de cuenta"]
+        let settings = app.otherElements.matching(NSPredicate(format: "label == %@", "Ajustes de cuenta"))
         try require(settings.count == 1 && settings.firstMatch.isHittable, app, "Known account summary missing; do not open settings")
         try target(settings.firstMatch, app)
         try captureAndAudit(app, "01-profile", "NAV138_PROFILE_AUDITED")
@@ -46,7 +46,7 @@ final class MatchrimNavigation138Tests: XCTestCase {
         try captureAndAudit(app, "02-home", "NAV138_HOME_AUDITED")
 
         try navigate(.airim, app)
-        let question = app.textViews["Pregunta para aiRIM"]
+        let question = app.textViews.matching(NSPredicate(format: "label == %@", "Pregunta para aiRIM"))
         let welcome = "Cu\u{00e9}ntame qu\u{00e9} vino, plato, carta u ocasi\u{00f3}n tienes delante. Te dar\u{00e9} una decisi\u{00f3}n concreta y se\u{00f1}alar\u{00e9} lo que no pueda saber."
         try require(question.firstMatch.waitForExistence(timeout: 15) && question.count == 1
                     && question.firstMatch.isHittable && app.staticTexts[welcome].exists

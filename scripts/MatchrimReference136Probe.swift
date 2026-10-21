@@ -67,25 +67,38 @@ final class MatchrimReference136Tests: XCTestCase {
             try require(false, app, "No proposal-scoped confirmation"); return
         }
         try require(proposal.staticTexts.matching(target).count == 1, app, "Proposal scope changed")
+        try require(proposal.staticTexts.matching(NSPredicate(format: "label == %@", "Domaine Aguilas")).count == 1
+                    && proposal.staticTexts.matching(NSPredicate(format: "label == %@", "2020")).count > 0
+                    && proposal.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Elegirla cambiar\u{00e1} tu a\u{00f1}ada a")).firstMatch.exists,
+                    app, "Observed2020 proposal and explicit vintage-change warning required")
         audit(app, "09-before-explicit-reference")
+        attach("2020 is chosen explicitly from the public proposal after its visible vintage-change warning, not read or certified from the photograph.", "selected-vintage-scope")
         try tap(proposal.buttons[choice].firstMatch, app)
         emit("REF136_EXPLICIT_REFERENCE_SELECTED")
         let source = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Fuente: ficha p\u{00fa}blica Winerim.")).firstMatch
         try require(source.waitForExistence(timeout: 25)
                     && app.links["Ver ficha original Winerim"].exists
                     && app.staticTexts.matching(target).count > 0
-                    && app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Ficha sin a\u{00f1}ada")).firstMatch.exists,
-                    app, "Independent expected public NV fiche required")
-        let estimate = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Por su estilo:")).firstMatch
-        try require(estimate.waitForExistence(timeout: 10), app, "Numeric style estimate unavailable")
-        guard let score = score(estimate.label, prefix: "Por su estilo: \u{2248}") else {
-            try require(false, app, "Invalid numeric style estimate"); return
+                    && app.staticTexts["2020"].firstMatch.exists
+                    && app.staticTexts["Domaine Aguilas"].firstMatch.exists,
+                    app, "Independent expected public2020 fiche required")
+        let estimates = app.otherElements.matching(NSPredicate(format: "label MATCHES %@", "^Afinidad orientativa: [0-9]{1,3} de 100$"))
+        try require(estimates.firstMatch.waitForExistence(timeout: 10) && estimates.count == 1,
+                    app, "Unique numeric affinity unavailable")
+        let estimate = estimates.firstMatch
+        let value = estimate.label.replacingOccurrences(of: "Afinidad orientativa: ", with: "")
+            .replacingOccurrences(of: " de 100", with: "")
+        guard let affinity = Int(value), (0...100).contains(affinity) else {
+            try require(false, app, "Invalid numeric affinity"); return
         }
+        try require(app.staticTexts["Lo que podr\u{00ed}a gustarte menos"].exists
+                    && app.buttons["Ver el detalle de afinidad"].exists,
+                    app, "Consumer explanation and detailed-affinity action required")
         try genuine(app)
         try reveal(estimate, app)
-        audit(app, "10-independent-fiche-numeric-style")
-        attach("Current unsaved public-reference style estimate: \(score)/100. Not bottle affinity, consumer accuracy, or new persistence.", "style-scope")
-        emit("REF136_INDEPENDENT_FICHE_NUMERIC_STYLE")
+        audit(app, "10-independent-fiche-numeric-affinity")
+        attach("Current unsaved affinity: \(affinity)/100 for the explicitly chosen2020 public reference. Not photo-certified vintage, consumer accuracy, or new persistence.", "affinity-scope")
+        emit("REF136_INDEPENDENT_FICHE_NUMERIC_AFFINITY")
         // No batch confirmation. Closing the drawer and navigating away is read-only.
         try tap(app.buttons["Cerrar"].firstMatch, app)
         try existingCellar(app)
@@ -113,10 +126,13 @@ final class MatchrimReference136Tests: XCTestCase {
         emit("REF136_PHOTOS_ADDED_ORDER_VERIFIED")
         // Re-select the verified menu item to dismiss its own menu; no outside tap.
         try tap(added, app)
-        let groups = app.otherElements.matching(identifier: "PXGGridLayout-Group").allElementsBoundByIndex.filter {
-            $0.images.matching(identifier: "PXGGridLayout-Info").count > 0
-        }
-        try require(groups.count == 1 && !added.exists, app, "Unique observed image grid required")
+        var groups: [XCUIElement] = []
+        try require(wait(12) {
+            groups = app.otherElements.matching(identifier: "PXGGridLayout-Group").allElementsBoundByIndex.filter {
+                $0.images.matching(identifier: "PXGGridLayout-Info").count > 0
+            }
+            return groups.count == 1 && !added.exists
+        }, app, "Unique observed image grid required after menu dismissal settles")
         let images = groups[0].images.matching(identifier: "PXGGridLayout-Info").allElementsBoundByIndex
         guard let first = images.first else { try require(false, app, "No first date-added image"); return }
         let frame = first.frame

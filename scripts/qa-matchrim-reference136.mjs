@@ -11,7 +11,7 @@ export const METHOD = 'MatchrimReference136Tests/testExistingQAReadOnlyReference
 export const MARKERS = ['REF136_EXISTING_QA_IDENTITY', 'REF136_LOCAL_MODE_SELECTED',
   'REF136_PHOTOS_ADDED_ORDER_VERIFIED', 'REF136_ATTESTED_PHOTO_SELECTED',
   'REF136_UNCONFIRMED_EXPECTED_PROPOSAL', 'REF136_EXPLICIT_REFERENCE_SELECTED',
-  'REF136_INDEPENDENT_FICHE_NUMERIC_STYLE', 'REF136_READONLY_REFERENCE_COMPLETE'];
+  'REF136_INDEPENDENT_FICHE_NUMERIC_AFFINITY', 'REF136_READONLY_REFERENCE_COMPLETE'];
 export const LEASE_FILE = '/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json';
 export const MEDIA = `/Users/GOIKO/Library/Developer/CoreSimulator/Devices/${DEVICE}/data/Media`;
 export const PHOTO_SQL = 'PRAGMA query_only=ON; SELECT ZFILENAME AS filename, ZDIRECTORY AS directory, ZADDEDDATE AS added FROM ZASSET WHERE ZTRASHEDSTATE = 0 ORDER BY ZADDEDDATE DESC LIMIT 2;';
@@ -123,7 +123,7 @@ export async function runReference136({ argv = process.argv.slice(2), repo = pro
   const receipt = { passed: false, stage: 'preflight', startedUTC: new Date().toISOString(), device: DEVICE, bundle,
     account: 'info@winerim.com', newSavePersistenceClaimed: false, authSubmissionsRequested: 0,
     dataMutationsRequested: 0, cloudAnalysisControlsRequested: 0,
-    scope: 'Existing session; source-bound local Apple Vision UI path, public proposals, explicit reference, independent NV fiche and numeric style. Optional existing Bodega scores only. Not packet/model-call counts or consumer accuracy. No new save or persistence assertion.',
+    scope: 'Existing session; source-bound local Apple Vision UI path, public proposals, explicitly chosen2020 reference after vintage-change warning, independent fiche and numeric affinity. Not photo-certified vintage. Optional existing Bodega scores only. Not packet/model-call counts or consumer accuracy. No new save or persistence assertion.',
     privacy: 'Logs, screenshots, AX, xcresult and output remain private. No private credentials/session files read.' };
   let output, prep, app, installed, created = false, attested;
   const pins = new Map();

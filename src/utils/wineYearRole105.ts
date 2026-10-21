@@ -6,7 +6,7 @@ const fold = (text: string) => text.normalize('NFD').replace(/[\u0300-\u036f]/g,
 const hasAward = (text: string) => /\b(?:medalla|medaille|medal|concours|competition|awards?|premio|trophy)\b/.test(text)
   || (/\b(?:lyon|decanter|iwsc|iwc|bruxelles|mundus vini)\b/.test(text) && /\b(?:gold|silver|bronze|oro|or|argent)\b/.test(text));
 const explicitVintage = (text: string, year: number) => new RegExp(`(?:vintage|cosecha|anada|millesime|vendimia|harvest)\\s*[:.-]?\\s*${year}\\b|\\b${year}\\s*(?:vintage|cosecha|anada|millesime|vendimia|harvest)\\b`).test(text);
-const explicitFoundation = (text: string, year: number) => new RegExp(`\\b(?:since|desde|depuis|seit|founded|established|fundad[ao]|fundacion|fondat[ao]|fondee?|est\\.)\\s*(?:(?:en|in|nel|em)\\s*)?${year}\\b`).test(text);
+const explicitFoundation = (text: string, year: number) => new RegExp(`\\b(?:since|desde|depuis|seit|founded|established|fundad[ao]s?|fundacion|fondat[ao]|fondee?|est\\.)\\s*(?:(?:en|in|nel|em)\\s*)?${year}\\b`).test(text);
 const explicitBottling = (text: string, year: number) => new RegExp(`\\b(?:bottled|bottling|embotellad[ao]|envasad[ao]|mis(?:e)? en bouteille|imbottigliat[ao]|engarrafad[ao]|abgefullt)\\s*[:.-]?\\s*(?:(?:en|in|nel|em|im)\\s*)?${year}\\b`).test(text);
 const inlineAward = (text: string, year: number): 'award' | 'ambiguous' | null => {
   let uncertain = false;

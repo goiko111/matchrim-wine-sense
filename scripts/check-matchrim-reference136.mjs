@@ -295,7 +295,9 @@ await test('Swift source has exactly one read-only method; no text injection or 
     'app.collectionViews', 'cells.firstMatch', 'addmedia', 'password']) assert(!source.includes(forbidden), forbidden);
   for (const required of ['Sort and Filter', 'Ordenar por fecha de adici\\u{00f3}n', 'added.isSelected',
     'PXGGridLayout-Info', 'Photo Library', '06-attested-first-image-before', '07-first-image-after',
-    'names.count == 1', 'No hemos confirmado el vino.', 'score(estimate.label', 'No equality, new save or persistence assertion.']) assert(source.includes(required), required);
+    'names.count == 1', 'No hemos confirmado el vino.', 'estimates.count == 1', 'Int(value)', '(0...100).contains(affinity)',
+    'Observed2020 proposal and explicit vintage-change warning required', 'Not photo-certified vintage',
+    'No equality, new save or persistence assertion.']) assert(source.includes(required), required);
   assert(source.indexOf('try photo(app)') > source.indexOf('REF136_LOCAL_MODE_SELECTED'));
   assert(source.indexOf('names.count == 1') < source.indexOf('try tap(proposal.buttons[choice]'));
   assert(source.includes('first.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()'));

@@ -100,7 +100,8 @@ await test('Foundation clauses and multiple award dates cannot leave an unrelate
   assert.equal(nonVintageYear105(2020, ['Gold Medal 2025 Cosecha 2020']), null);
 });
 await test('Clearly labelled Italian/French/English foundation years cannot become vintages', () => {
-  for (const text of ['Fondata nel 1919', 'Fondato nel 1919', 'Fondée en 1919', 'Founded in 1919', 'Established in 1919', 'Seit 1919'])
+  for (const text of ['Fondata nel 1919', 'Fondato nel 1919', 'Fondée en 1919', 'Founded in 1919', 'Established in 1919', 'Seit 1919',
+    'Bodegas fundadas en 1973', 'Fundados en 1973'])
     assert.equal(role(text), 'foundation', text);
 });
 await test('Future OCR years fail before any catalogue request even when labelled as vintage', async () => {

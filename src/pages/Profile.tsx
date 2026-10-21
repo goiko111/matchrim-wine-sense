@@ -852,8 +852,9 @@ const Profile = () => {
 
               {learnedProfile && learnedProfile.samples > 0 && (
                 isNative ? <details className="border-y border-stone-200 py-3" data-testid="native-profile-learning133">
-                  <summary className="min-h-11 cursor-pointer py-2 text-sm font-semibold text-stone-800">
-                    Aprendizaje: {learnedProfile.samples} vino{learnedProfile.samples !== 1 ? 's' : ''} valorado{learnedProfile.samples !== 1 ? 's' : ''}
+                  <summary aria-label={`Aprendizaje: ${learnedProfile.samples} vino${learnedProfile.samples !== 1 ? 's' : ''} valorado${learnedProfile.samples !== 1 ? 's' : ''}`}
+                    className="min-h-11 cursor-pointer py-2 text-sm font-semibold text-stone-800">
+                    <span aria-hidden="true">Aprendizaje: {learnedProfile.samples} vino{learnedProfile.samples !== 1 ? 's' : ''} valorado{learnedProfile.samples !== 1 ? 's' : ''}</span>
                   </summary>
                   <p className="mt-2 text-sm text-stone-700">{confidenceCopy}</p>
                   <p className="mt-2 text-sm text-stone-700">Confianza del aprendizaje: {learnedProfile.confidence}%.</p>
@@ -951,7 +952,7 @@ const Profile = () => {
 
               {/* Wine Styles Section */}
               {isNative && passportProfile && <details className="border-y border-stone-200 py-3" data-testid="native-profile-passport133">
-                <summary className="min-h-11 cursor-pointer py-2 text-sm font-semibold text-stone-800">Mi código Matchrim</summary>
+                <summary aria-label="Mi código Matchrim" className="min-h-11 cursor-pointer py-2 text-sm font-semibold text-stone-800"><span aria-hidden="true">Mi código Matchrim</span></summary>
                 <MatchrimPassport profile={passportProfile} />
               </details>}
               {styleDetails.length > 0 && (
