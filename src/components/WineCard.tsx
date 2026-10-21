@@ -2,7 +2,7 @@ import React from 'react';
 import { Wine, TrendingUp, ExternalLink } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { WinerimWineWithMatch } from '@/services/winerimApi';
+import { WinerimWineWithMatch, buildWinerimWineUrl } from '@/services/winerimApi';
 import { formatWineType, formatCountryName } from '@/utils/wineFormatters';
 
 interface WineCardProps {
@@ -20,23 +20,8 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
     return currency.symbol || currency.name || '';
   };
 
-  const generateSlug = (wineName: string, vintage?: number | string) => {
-    const nameSlug = wineName
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join('-')
-      .replace(/[^a-zA-Z0-9-]/g, '')
-      .replace(/-+/g, '-')
-      .trim();
-
-    return vintage ? `${nameSlug}_${vintage}` : nameSlug;
-  };
-
   const openInWinerim = () => {
-    const slug = wine.slugname || generateSlug(wine.name, wine.vintage);
-    const storeBaseUrl = import.meta.env.VITE_WINERIM_STORE_URL || import.meta.env.VITE_WINERIM_APP_URL || 'https://winerim.wine';
-    const winerimUrl = `${storeBaseUrl.replace(/\/$/, '')}/matchrim/store/${wine.id}/${slug}`;
-    window.open(winerimUrl, '_blank', 'noopener,noreferrer');
+    window.open(buildWinerimWineUrl(wine), '_blank', 'noopener,noreferrer');
   };
 
   const getMatchInfo = (percentage: number) => {
@@ -90,7 +75,12 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
       {/* Wine Header */}
       <div className="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4">
         <div className="flex items-start gap-4">
-          <div className="flex-shrink-0">
+          <button
+            type="button"
+            onClick={openInWinerim}
+            aria-label={`Ver la ficha de ${wine.name} en Winerim`}
+            className="flex-shrink-0 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          >
             <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-lg overflow-hidden">
               {wine.photo ? (
                 <img
@@ -103,10 +93,16 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
                 <Wine className="h-6 w-6 text-red-700" />
               )}
             </div>
-          </div>
+          </button>
           <div className="flex-1">
             <h4 className="text-white font-bold text-xl leading-tight">
-              {wine.name}
+              <button
+                type="button"
+                onClick={openInWinerim}
+                className="text-left hover:underline focus:outline-none focus-visible:underline"
+              >
+                {wine.name}
+              </button>
             </h4>
             {wine.section && (
               <p className="text-red-100 text-sm mt-1">{wine.section}</p>

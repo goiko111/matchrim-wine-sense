@@ -1,5 +1,6 @@
 import { QuizResult } from '@/data/quizData';
 import { supabase } from '@/integrations/supabase/client';
+import { buildWinerimWineFichaUrl, DEFAULT_WINERIM_WEB_URL } from '@/utils/winerimWineUrl';
 import { clasificarVino, suggestWineStylesForProfile, type PublicWineStyle } from '@/lib/winerimClassifier';
 
 const WINERIM_RESTAURANT_UUID = import.meta.env.VITE_WINERIM_RESTAURANT_UUID;
@@ -510,32 +511,15 @@ export const fetchWinesByAttributes = async (
 const WINERIM_STORE_URL =
   import.meta.env.VITE_WINERIM_STORE_URL ||
   import.meta.env.VITE_WINERIM_APP_URL ||
-  'https://winerim.wine';
-
-export const generateWinerimSlug = (name: string, vintage?: number | string | null): string => {
-  const base = (name || '')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .split(/\s+/)
-    .map((word) => (word ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() : ''))
-    .join('-')
-    .replace(/[^a-zA-Z0-9-]/g, '')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-    .trim();
-
-  return vintage ? `${base}_${vintage}` : base;
-};
+  DEFAULT_WINERIM_WEB_URL;
 
 /**
  * Build a public URL to the wine's Winerim Library ficha
- * (e.g. https://web.winerim.com/the-library/wines/<id>/<slug>).
+ * (https://web.winerim.com/matchrim/store/<id>/<slug>).
  */
-export const buildWinerimWineUrl = (wine: Pick<WinerimWine, 'id' | 'name' | 'slugname' | 'vintage'>): string => {
-  const slug = wine.slugname || generateWinerimSlug(wine.name, wine.vintage);
-  const base = WINERIM_STORE_URL.replace(/\/$/, '');
-  return `${base}/the-library/wines/${wine.id}/${slug}`;
-};
+export const buildWinerimWineUrl = (wine: Pick<WinerimWine, 'id' | 'name' | 'slugname' | 'vintage'>): string =>
+  buildWinerimWineFichaUrl(wine, WINERIM_STORE_URL);
+
 
 // ---------------------------------------------------------------------------
 // Label → Winerim Library lookup
