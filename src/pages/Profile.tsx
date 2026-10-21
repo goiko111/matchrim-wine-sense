@@ -1342,4 +1342,9 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+const ProfileOwnerBoundary127 = () => {
+  const { user, loading } = useAuth();
+  return <Profile key={Capacitor.isNativePlatform() ? JSON.stringify([loading, user?.id ?? null]) : undefined} />;
+};
+
+export default ProfileOwnerBoundary127;
