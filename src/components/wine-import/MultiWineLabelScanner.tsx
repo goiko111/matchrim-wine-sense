@@ -24,7 +24,8 @@ import { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97'
 import { applyNativeMaster102, lookupNativeMaster102, nativeMasterAudit102 } from '@/utils/nativeMasterCatalog102';
 import { hasMissingVisibleQualifier102 } from '@/utils/nativeWineQualifier102';
 import { applyGlobalCatalogue103, independentGlobalProducer103, isGlobalWine103, lookupGlobalCatalogue103 } from '@/utils/nativeGlobalCatalogue103';
-import { GlobalWineLookup103, GlobalWinePicker103, GlobalWineReference103 } from '@/components/wine-import/NativeGlobalCatalogue103';
+import { GlobalWinePicker103, GlobalWineReference103 } from '@/components/wine-import/NativeGlobalCatalogue103';
+import { GlobalWineRecovery104 } from '@/components/wine-import/GlobalWineRecovery104';
 import { AiRimContextGuide } from '@/components/AiRimContextGuide';
 import { WineComparisonWorkspace } from '@/components/wine-import/WineComparisonWorkspace';
 import { LabelAnalysisView } from '@/components/wine-import/LabelAnalysisView';
@@ -312,7 +313,6 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   }), [duplicateGroups, regions]);
   const loading = phase === 'quality' || phase === 'profile' || phase === 'detecting' || phase === 'analyzing';
   const regionActionsLocked = batchLocked || loading;
-  const [manualLookupLoading, setManualLookupLoading] = useState(false);
   const manualLookupContext = { owner: user?.id ?? null, regionId: selectedRegionId, candidate: selectedCandidate,
     profile: scanProfile?.profile ?? null, locked: regionActionsLocked || saving || Boolean(batchRef.current) };
   const manualLookupKey = JSON.stringify(manualLookupContext);
@@ -1018,7 +1018,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         return catalog ? applyScanWineEvidence(candidate, scanProfileRef.current?.profile ?? null, catalog) : candidate;
       }) }));
     }} />}
-    {isNative && !regionActionsLocked && !manualLookupLoading && <GlobalWinePicker103
+    {isNative && !regionActionsLocked && <GlobalWinePicker103
       key={manualLookupKey} candidate={selectedCandidate} contextKey={manualLookupKey}
       disabled={manualLookupContext.locked} profile={scanProfile?.profile ?? null}
       onConfirmed={confirmed => {
@@ -1448,15 +1448,18 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     details.scrollIntoView({ block: 'start', behavior: 'instant' });
                   }}
                   lookup={!nativeConsumer?.catalogIdentityLinked ? <div className="min-w-0" data-testid="native-manual-affinity-lookup">
-                    <GlobalWineLookup103 contextKey={manualLookupKey} disabled={manualLookupContext.locked}
-                      onLoadingChange={setManualLookupLoading} candidate={selectedCandidate}
-                      onVerified={wine => {
+                    <GlobalWineRecovery104 key={manualLookupKey} contextKey={manualLookupKey} disabled={manualLookupContext.locked}
+                      profile={manualLookupContext.profile} candidate={selectedCandidate}
+                      onConfirmed={confirmed => {
                         if (currentManualLookupKey.current !== manualLookupKey) return;
-                        setRegions(current => currentManualLookupKey.current !== manualLookupKey ? current : current.map(region =>
-                          region.id === selectedRegion.id && region.status !== 'discarded' && region.selectedCandidateId === selectedCandidate.id
-                            ? { ...region, candidates: region.candidates.map(candidate => candidate.id === selectedCandidate.id
-                              && JSON.stringify({ ...manualLookupContext, candidate }) === manualLookupKey
-                              ? applyGlobalCatalogue103(candidate, manualLookupContext.profile, wine, candidate.source === 'manual') : candidate) } : region));
+                        updateRegion(selectedRegion.id, region => {
+                          const candidate = region.candidates.find(value => value.id === selectedCandidate.id);
+                          if (region.status === 'discarded' || region.selectedCandidateId !== selectedCandidate.id || !candidate
+                            || JSON.stringify({ ...manualLookupContext, candidate }) !== manualLookupKey
+                            || !isGlobalWine103(confirmed, confirmed.globalRecord)) return region;
+                          return { ...region, status: 'recognized', error: null, fallback: null,
+                            candidates: region.candidates.map(value => value.id === selectedCandidate.id ? confirmed : value) };
+                        });
                       }} />
                   </div> : null}
                   onCorrect={() => {

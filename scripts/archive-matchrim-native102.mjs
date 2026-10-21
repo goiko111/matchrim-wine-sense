@@ -24,19 +24,20 @@ const verify = () => {
 guard(); verify();
 const disk = fs.statfsSync(path.dirname(output));
 assert(disk.bavail * disk.bsize >= 5 * 1024 ** 3, 'LOW_DISK_HOLD');
-assert(prep.passed && prep.typecheck === 'PASS' && prep.build === 100);
+assert(prep.passed && prep.typecheck === 'PASS' && Number.isSafeInteger(prep.build) && prep.build > 100,
+  'Uploaded100 is frozen; archive a new candidate');
 assert.equal(prep.publicConfiguration.fixtures, false);
 assert.equal(prep.publicConfiguration.project, 'cbjynrbvrhcmpaojmqdp');
 const cap = JSON.parse(fs.readFileSync(path.join(prep.production, 'ios/App/App/capacitor.config.json')));
 assert.equal(cap.appId, 'wine.matchrim.app'); assert(!cap.server?.url);
 assert(!fs.existsSync(output)); fs.mkdirSync(output, { mode: 0o700 });
-const archive = path.join(output, 'Matchrim100.xcarchive');
+const archive = path.join(output, `Matchrim${prep.build}.xcarchive`);
 const args = ['archive', '-quiet', '-workspace', path.join(prep.production, 'ios/App/App.xcworkspace'),
   '-scheme', 'App', '-configuration', 'Release', '-destination', 'generic/platform=iOS',
   '-derivedDataPath', path.join(output, 'derived'), '-archivePath', archive,
   '-resultBundlePath', path.join(output, 'archive.xcresult'), '-disableAutomaticPackageResolution', '-skipPackageUpdates', '-jobs', '1',
-  'CURRENT_PROJECT_VERSION=100', 'DEVELOPMENT_TEAM=8X3XTD6XYX', 'CODE_SIGN_STYLE=Automatic'];
-const receipt = { startedUTC: new Date().toISOString(), sourceCommit: prep.commit, build: 100,
+  `CURRENT_PROJECT_VERSION=${prep.build}`, 'DEVELOPMENT_TEAM=8X3XTD6XYX', 'CODE_SIGN_STYLE=Automatic'];
+const receipt = { startedUTC: new Date().toISOString(), sourceCommit: prep.commit, build: prep.build,
   version: '1.0', bundleId: cap.appId, command: [path.join(developer, 'usr/bin/xcodebuild'), ...args],
   uploaded: false, exported: false, webPublished: false, backendDeployed: false, modelStarts: 0,
   masterConnectionActive: prep.masterConnectionActive, recognitionE2EApproved: false };
@@ -61,7 +62,7 @@ try {
   const app = path.join(archive, 'Products/Applications/App.app');
   execFileSync('/usr/bin/codesign', ['--verify', '--deep', '--strict', app], { stdio: 'pipe' });
   const get = key => execFileSync('/usr/bin/plutil', ['-extract', key, 'raw', '-o', '-', path.join(app, 'Info.plist')], { encoding: 'utf8' }).trim();
-  assert.equal(get('CFBundleVersion'), '100'); assert.equal(get('CFBundleIdentifier'), cap.appId);
+  assert.equal(get('CFBundleVersion'), String(prep.build)); assert.equal(get('CFBundleIdentifier'), cap.appId);
   for (const [file, hash] of Object.entries(prep.webResources)) assert.equal(sha(fs.readFileSync(path.join(app, 'public', file))), hash, file);
   Object.assign(receipt, { passed: true, archive, signatureVerified: true, verifiedResources: Object.keys(prep.webResources).length });
 } catch (error) { receipt.passed = false; receipt.error = error.stack || String(error); }
@@ -70,5 +71,5 @@ finally {
   receipt.finishedUTC = new Date().toISOString();
   fs.writeFileSync(path.join(output, 'ARCHIVE-RESULT.json'), JSON.stringify(receipt, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
 }
-console.log(JSON.stringify({ passed: receipt.passed, build: 100, archive: receipt.archive, uploaded: false, output, error: receipt.error }));
+console.log(JSON.stringify({ passed: receipt.passed, build: prep.build, archive: receipt.archive, uploaded: false, output, error: receipt.error }));
 process.exitCode = receipt.passed ? 0 : 1;

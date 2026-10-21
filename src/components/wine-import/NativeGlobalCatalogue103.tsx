@@ -109,10 +109,10 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
       } else {
         const name = selected.subname && !selected.name.toLowerCase().includes(selected.subname.toLowerCase()) ? `${selected.name} ${selected.subname}` : selected.name;
         const manual: WineCandidate = { ...candidate, name, producer: selected.winery,
-          vintage: selected.vintage == null ? candidate.vintage : Number(selected.vintage), region: null, country: null,
+          vintage: selected.vintage == null ? candidate.vintage : Number(selected.vintage), region: null, country: null, grapes: [], alcohol: null,
           inferredFields: [], uncertaintyReasons: [], evidence: ['Referencia elegida por el usuario'], source: 'manual',
           globalRecord: null, masterRecord: null, originalSheet: null, canonicalId: null, sensoryAttributes: null, affinity: null };
-        const result = await client.lookup(manual, abort.signal, selected.id); if (!active()) return;
+        const result = await client.confirmSelection(manual, selected, abort.signal); if (!active()) return;
         if ('wine' in result) current.current.onConfirmed(applyGlobalCatalogue103(manual, profile, result.wine, true));
         else setNotice('La ficha no se ha podido verificar. No se ha cambiado tu vino.');
       }

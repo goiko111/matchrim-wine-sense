@@ -24,6 +24,7 @@ const rowSchema = z.object({ id: z.number().int().positive().safe(), name: text,
   photo: z.string().nullish(), grapes: z.array(z.unknown()).max(100).optional(), tastingAttributes: z.unknown().optional(),
 });
 type Row = z.infer<typeof rowSchema>;
+export type PublicGlobalRow103 = Row;
 export type GlobalWine103 = Readonly<{
   namespace: 'winerim-public-store'; id: number; name: string; producer: string; vintage: string | null;
   region: string | null; country: string | null; slug: string; url: string; photo: string | null;
@@ -32,6 +33,7 @@ export type GlobalWine103 = Readonly<{
 export type GlobalLookup103 = { status: 'exact' | 'reference'; wine: GlobalWine103 }
   | { status: 'identity-required' | 'not-found' | 'ambiguous' | 'incomplete' | 'unavailable' };
 const trusted = new WeakSet<object>();
+const observedSelections = new WeakSet<object>();
 const key = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 // A brand embedded in the cuvee name is not a second, independent winery read.
 // Explicit manual selection remains possible; this only gates automatic linking.
@@ -117,36 +119,44 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
     try { return await work(read); }
     finally { clearTimeout(timer); signal?.removeEventListener('abort', abort); controller.abort(); }
   };
-  const search = async (query: string, signal?: AbortSignal) => {
+  const search = async (query: string, signal?: AbortSignal, allowPartialProposals = false) => {
     if (!text.safeParse(query).success || query.trim().length < 2 || query.length > 120) return { status: 'identity-required' as const, rows: [] as Row[] };
     try {
       return await operation(signal, async read => {
         const page = z.object({ count: z.number().int().nonnegative().safe(), page: z.literal(1), results: z.array(rowSchema).max(20) })
           .safeParse(await read(`${root}?${new URLSearchParams({ page: '1', text: query.trim(), store: '1' })}`));
-        if (!page.success || page.data.count !== page.data.results.length) return { status: 'incomplete' as const, rows: [] as Row[] };
+        if (!page.success || page.data.count < page.data.results.length) return { status: 'incomplete' as const, rows: [] as Row[] };
+        if (page.data.count !== page.data.results.length && !allowPartialProposals) return { status: 'incomplete' as const, rows: [] as Row[] };
         const rows = page.data.results;
         if (new Set(rows.map(row => row.id)).size !== rows.length) return { status: 'ambiguous' as const, rows: [] as Row[] };
-        return { status: 'complete' as const, rows: rows.filter(row => !isNonWineIdentity(row.name, row.type)) };
+        for (const row of rows) { Object.freeze(row); observedSelections.add(row); }
+        return { status: page.data.count === rows.length ? 'complete' as const : 'partial' as const,
+          rows: rows.filter(row => !isNonWineIdentity(row.name, row.type)) };
       });
     } catch { if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError'); return { status: 'unavailable' as const, rows: [] as Row[] }; }
   };
   const lookup = async (input: WinerimOriginalIdentity & { evidence?: readonly string[] }, signal?: AbortSignal, selectedPublicId?: number): Promise<GlobalLookup103> => {
     if (!canLookupWinerimOriginal(input) || hasConflictingNativeVintage100(input) || hasMissingVisibleQualifier102(input)) return { status: 'identity-required' };
+    if (selectedPublicId !== undefined && (!Number.isSafeInteger(selectedPublicId) || selectedPublicId <= 0)) return { status: 'identity-required' };
     const query = input.name.trim().replace(new RegExp(`\\s+\\(?${input.vintage || 'NONE'}\\)?$`), '').trim();
-    let page = await search(query, signal);
+    let page = await search(query, signal, selectedPublicId !== undefined);
     if (page.status === 'incomplete' && input.producer) page = await search(input.producer.trim(), signal);
     // The observed API searches the wine name, not a concatenated winery/name.
     // A literal producer prefix may be omitted from the query, never the match.
     const producer = key(input.producer || ''), name = key(query);
     const shorter = producer && name.startsWith(producer + ' ') ? name.slice(producer.length + 1) : null;
     if (page.status === 'complete' && !page.rows.length && shorter && shorter.length >= 2) page = await search(shorter, signal);
-    if (page.status !== 'complete') return { status: page.status };
+    // A human-selected public ID needs independent detail verification, not a
+    // claim that an incomplete search page contains every possible reference.
+    if (page.status !== 'complete' && !(page.status === 'partial' && selectedPublicId !== undefined)) return { status: page.status === 'partial' ? 'incomplete' : page.status };
     const matches = page.rows.filter(row => sameReference(input, identity(row)) && (selectedPublicId === undefined || row.id === selectedPublicId));
     const exact = matches.filter(row => String(row.vintage ?? '') === String(input.vintage ?? ''));
     const possible = exact.length ? exact : matches.filter(row => row.vintage == null);
     if (!possible.length) return { status: 'not-found' };
     if (possible.length !== 1) return { status: 'ambiguous' };
-    const selected = possible[0];
+    return verifySelection(input, possible[0], signal);
+  };
+  const verifySelection = async (input: WinerimOriginalIdentity, selected: Row, signal?: AbortSignal): Promise<GlobalLookup103> => {
     try {
       return await operation(signal, async read => {
         const parsed = rowSchema.safeParse(await read(`${root}/${selected.id}/${selected.slugname}`));
@@ -164,7 +174,14 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
       });
     } catch { if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError'); return { status: 'unavailable' }; }
   };
-  return { search, lookup };
+  const confirmSelection = async (input: WinerimOriginalIdentity & { evidence?: readonly string[] }, selected: Row, signal?: AbortSignal): Promise<GlobalLookup103> => {
+    if (!observedSelections.has(selected) || !rowSchema.safeParse(selected).success || !canLookupWinerimOriginal(input)
+      || hasConflictingNativeVintage100(input) || hasMissingVisibleQualifier102(input)
+      || !sameReference(input, identity(selected))
+      || (selected.vintage != null && String(input.vintage ?? '') !== String(selected.vintage))) return { status: 'identity-required' };
+    return verifySelection(input, selected, signal);
+  };
+  return { search, lookup, confirmSelection };
 };
 export const lookupGlobalCatalogue103 = (input: WinerimOriginalIdentity & { evidence?: readonly string[] }, signal?: AbortSignal) =>
   createGlobalCatalogue103().lookup(input, signal);

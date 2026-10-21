@@ -65,6 +65,7 @@ try {
       object_type: 'bottle', quality: { glare: 'low', occlusion: 'low', legibility: 'good' } }],
       coverage: { status: 'reported_complete', detected_objects: 1, estimated_visible_objects: 1, confidence: .99 } });
     if (url.pathname.endsWith('/analyze-wine-region-v72')) return json({ candidates: [{ ...fixture.localCandidate,
+      ...(scenario === 'assisted-missing-producer' ? { producer: null } : {}),
       confidence: .95, source: 'label', evidence: fixture.ocrLines, inferred_fields: [], uncertainty_reasons: [] }] });
     if (url.hostname === 'app.winerim.com' && url.pathname.startsWith('/images/wines/')) return route.fulfill({ body: fs.readFileSync('qa-artifacts/global103-20261021/vidure-public-photo.png'), contentType: 'image/png' });
     if (url.hostname === 'app.winerim.com' && url.pathname.includes('/00000000-0000-0000-0000-000000000001/wines')) {
@@ -104,7 +105,7 @@ try {
     write(name + '-aria.txt', await page.locator('body').ariaSnapshot());
     report.snapshots.push({ name, geometry });
   };
-  for (const state of ['observed-NV-reference', 'synthetic-exact2020']) {
+  for (const state of ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer']) {
     scenario = state;
     await page.setViewportSize({ width: 393, height: 852 });
     await page.goto(origin + '/escanear/etiqueta', { waitUntil: 'networkidle' });
@@ -119,6 +120,27 @@ try {
     await page.getByRole('dialog').waitFor();
     await page.waitForFunction(() => { const el = document.querySelector('[role=dialog]'); return el && Math.abs(new DOMMatrixReadOnly(getComputedStyle(el).transform).m42) < 1; });
     const dialog = page.getByRole('dialog');
+    if (state === 'assisted-missing-producer') {
+      const recovery = dialog.getByTestId('global-recovery104');
+      await recovery.waitFor();
+      assert.equal(await dialog.getByTestId('global-wine-reference').count(), 0);
+      await recovery.getByRole('button', { name: 'Encontrar mi vino en Winerim', exact: true }).click();
+      await recovery.getByRole('button', { name: 'Confirmar esta referencia', exact: true }).waitFor();
+      assert((await recovery.innerText()).includes('Comprueba la bodega'));
+      assert.equal(await dialog.getByTestId('global-style-estimate').count(), 0);
+      for (const [width, height, text] of [[393,852,100], [320,568,100], [393,852,200]]) {
+        await page.setViewportSize({ width, height });
+        await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
+        await recovery.getByRole('button', { name: 'Confirmar esta referencia', exact: true }).scrollIntoViewIfNeeded();
+        await capture('assisted-proposal-' + width + '-' + text);
+      }
+      await recovery.getByRole('button', { name: 'Confirmar esta referencia', exact: true }).click();
+      await dialog.getByTestId('global-style-estimate').waitFor();
+      assert((await dialog.innerText()).includes('Vidure · 2020'));
+      await dialog.locator('.matchrim-scan-region-body').evaluate(el => { el.scrollTop = 0; });
+      await capture('assisted-confirmed');
+      continue;
+    }
     await dialog.getByTestId('global-wine-reference').waitFor();
     const primary = await dialog.getByTestId('native-wine-primary').innerText();
     if (state === 'observed-NV-reference') {
