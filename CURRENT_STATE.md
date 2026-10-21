@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-21, Physical97 Resumed / Catalogue Scope Verified
+
+- Fresh human phone window used and released early. Current signed97-r12 (product24982d6,158 resources) installed without clearing data. App-free startup PASS; actual Inicio/Bodega/Escanear navigation, two QA wines and read-only Vivino home observed. This supersedes the historical blanket automation blocker, not the incomplete full physical QA gate.
+- Actual catalogue-search rotation FAIL reproduced: keyboard covers the input in landscape while preserving Muga. Local bounded iOS-only selector correction now passes21/21 keyboard groups and targeted lint. It is NOT yet in a new package or physically retested; do not upload the old97-r12 as corrected.
+- Current Lovable editor commit278cf882 was read without agent credits or mutations. Existing Winerim integration is confirmed; recommendations/restaurant scopes and local generated search do not prove complete master sensory access. Historical217391/1711/20530 counts remain distinct, not newly revalidated capacities.
+- The requested500-call/150EUR expansion is NOT approved: human asked why it costs money. Prior20-label/50-paid-start/15EUR cap remains;0 new model/image calls, Lovable turns, deploys, TestFlight uploads or web Publish in this block. [Physical evidence, correction and exact next gate](docs/MATCHRIM_97_PHYSICAL_CATALOGUE_2026-10-21.md).
+
 ## Current Gate: 2026-10-20, Foodv11 Deployed / Candidate96 Internal QA
 
 - New client source `7935959`: stale keyboard scroll race fixed,14 deterministic controls PASS. Native candidate1.0(96) builds/installs in the isolated simulator;3 MAX cycles/six rotations and separate test15 PASS. Real-UI first-run privacy acknowledgement test17 PASS, then unchanged native safe11 **11/11 PASS**. Original95 failures remain; no causal/frequency claim for every OS keyboard disappearance.

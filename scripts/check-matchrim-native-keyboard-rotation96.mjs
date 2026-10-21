@@ -4,7 +4,7 @@ import vm from 'node:vm';
 import ts from 'typescript';
 
 const source = fs.readFileSync(new URL('../src/lib/nativeKeyboardViewport.ts', import.meta.url), 'utf8');
-const fixture = ({ native = true, platform = 'ios', auth = false } = {}) => {
+const fixture = ({ native = true, platform = 'ios', auth = false, catalogSearch = false } = {}) => {
   const classes = new Set(), frames = new Map(), events = new Map(), plugin = new Map(), scrolls = [], calls = [];
   const attributes = new Map();
   let nextFrame = 0;
@@ -12,7 +12,10 @@ const fixture = ({ native = true, platform = 'ios', auth = false } = {}) => {
     classList: { contains: key => classes.has(key), add: key => classes.add(key), remove: key => classes.delete(key) },
     setAttribute: (key, value) => attributes.set(key, value),
   };
-  const field = { matches: () => true, closest: () => auth ? {} : null,
+  const field = { matches: () => true, closest: selector => (
+    (auth && selector.includes('.matchrim-native-auth'))
+    || (catalogSearch && selector.includes('[data-testid="native-wine-search97"]'))
+  ) ? {} : null,
     bounds: { top: 100, bottom: 144, height: 44 },
     getBoundingClientRect: () => field.bounds };
   const document = { documentElement: root, activeElement: field };
@@ -153,6 +156,40 @@ check('Android auth never uses the iOS focus-pan correction', () => {
   f.field.bounds = { top: -40, bottom: 83, height: 123 };
   f.emit('keyboardWillShow'); f.events.get('orientationchange')(); f.flush();
   assert.equal(f.frames.size, 0); assert.equal(f.scrolls.length, 0);
+});
+check('physical97 regression: catalogue search hidden by landscape keyboard is revealed without changing its value', () => {
+  const f = fixture({ catalogSearch: true });
+  f.field.value = 'Muga';
+  f.window.visualViewport.height = 170;
+  f.field.bounds = { top: 180, bottom: 224, height: 44 };
+  f.emit('keyboardWillShow'); f.flush();
+  assert.equal(f.scrolls.length, 1);
+  assert.equal(f.scrolls[0].top, 62);
+  assert.equal(f.scrolls[0].relative, true);
+  assert.equal(f.field.value, 'Muga');
+  assert.equal(f.document.activeElement, f.field);
+});
+check('catalogue correction follows settled viewport events and cancels after blur', () => {
+  const f = fixture({ catalogSearch: true });
+  f.emit('keyboardWillShow'); f.flush();
+  assert.equal(f.scrolls.length, 0);
+  f.window.visualViewport.height = 170;
+  f.field.bounds = { top: 180, bottom: 224, height: 44 };
+  f.window.visualViewport.events.get('resize')();
+  f.document.activeElement = null; f.flush();
+  assert.equal(f.scrolls.length, 0);
+  f.document.activeElement = f.field;
+  f.window.visualViewport.events.get('resize')(); f.flush();
+  assert.equal(f.scrolls.length, 1);
+});
+check('catalogue correction is absent on web, Android and unrelated native fields', () => {
+  for (const options of [{ native: false, catalogSearch: true }, { platform: 'android', catalogSearch: true }, {}]) {
+    const f = fixture(options);
+    f.window.visualViewport.height = 170;
+    f.field.bounds = { top: 180, bottom: 224, height: 44 };
+    if (f.plugin.size) { f.emit('keyboardWillShow'); f.events.get('orientationchange')(); f.flush(); }
+    assert.equal(f.scrolls.length, 0);
+  }
 });
 
 console.log(JSON.stringify({ passed: results.filter(r => r.passed).length, total: results.length, results, scope: 'Actual helper in deterministic mocked event loop, not UIKit or reproduction of OS keyboard loss', SDK: 0, network: 0 }));

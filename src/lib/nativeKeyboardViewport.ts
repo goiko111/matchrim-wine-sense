@@ -14,7 +14,7 @@ export const installNativeKeyboardViewport = () => {
     const field = document.activeElement;
     return Capacitor.getPlatform() === 'ios' && root.classList.contains('matchrim-keyboard-visible')
       && field?.matches('input:not([type="button"]):not([type="submit"]), textarea')
-      && field.closest('.matchrim-native-auth') ? field : null;
+      && field.closest('.matchrim-native-auth, [data-testid="native-wine-search97"]') ? field : null;
   };
   const revealAuthField = () => {
     if (!authField()) return;
