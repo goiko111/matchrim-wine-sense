@@ -910,7 +910,13 @@ const Profile = () => {
                               <span className="text-xs font-medium text-amber-700">ajustado por tus vinos</span>
                             )}
                           </div>
-                          <div className="relative h-3 overflow-hidden rounded-full bg-stone-100">
+                          <div className="relative h-3 overflow-hidden rounded-full bg-stone-100"
+                            role={isNative ? 'meter' : undefined}
+                            aria-label={isNative ? `${item.attribute}: perfil actual` : undefined}
+                            aria-valuemin={isNative ? 0 : undefined}
+                            aria-valuemax={isNative ? 5 : undefined}
+                            aria-valuenow={isNative ? activeValue : undefined}
+                            aria-valuetext={isNative ? `${activeValue.toLocaleString('es-ES', { maximumFractionDigits: 1 })} de 5${hasLearnedProfile ? `; test inicial: ${baseValue.toLocaleString('es-ES', { maximumFractionDigits: 1 })} de 5` : ''}` : undefined}>
                             {hasLearnedProfile && (
                               <span
                                 className="absolute inset-y-0 left-0 rounded-full bg-stone-300"
@@ -921,7 +927,8 @@ const Profile = () => {
                             <span
                               className="absolute inset-y-0 left-0 rounded-full bg-red-900"
                               style={{ width: activeWidth }}
-                              aria-label={`${item.attribute}: perfil activo ${activeValue} de 5`}
+                              aria-hidden={isNative ? true : undefined}
+                              aria-label={isNative ? undefined : `${item.attribute}: perfil activo ${activeValue} de 5`}
                             />
                           </div>
                         </div>
