@@ -10,11 +10,12 @@ import { applyScanWineEvidence } from '../src/utils/scanWineEvidence';
 import { createScanRequestBudget, type ScanRequestBudget } from '../src/utils/scanAnalysisPolicy';
 import type { WineCandidate } from '../src/utils/multiWineScan';
 import { hasMissingVisibleQualifier102 } from '../src/utils/nativeWineQualifier102';
+import { restoreGlobal103 } from './native-global103-scope.mjs';
 
 const scanner = 'src/components/wine-import/MultiWineLabelScanner.tsx';
 const service = 'src/services/winerimApi.ts';
 const baseline = '8327ee7e31fe73ab8edd90303de514147d13978d';
-const source = readFileSync(scanner, 'utf8');
+const source = restoreGlobal103(scanner, readFileSync(scanner, 'utf8'));
 const oldSource = execFileSync('git', ['show', `${baseline}:${scanner}`], { encoding: 'utf8' });
 function initializer(file: string, text: string, name: string) {
   const ast = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true, file.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS);

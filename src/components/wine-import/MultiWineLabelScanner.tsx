@@ -19,12 +19,12 @@ import { toast } from 'sonner';
 import { AffinityExplanation } from '@/components/AffinityExplanation';
 import { WinerimOriginalSheet } from '@/components/WinerimOriginalSheet';
 import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
-import { WinerimCandidatePicker95 } from '@/components/WinerimCandidatePicker95';
-import { confirmedLabelCatalogIdentity95 } from '@/utils/confirmedCatalogIdentity95';
 import { catalogWineFromVerifiedSheet } from '@/utils/winerimOriginalSheet';
 import { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97';
 import { applyNativeMaster102, lookupNativeMaster102, nativeMasterAudit102 } from '@/utils/nativeMasterCatalog102';
 import { hasMissingVisibleQualifier102 } from '@/utils/nativeWineQualifier102';
+import { applyGlobalCatalogue103, isGlobalWine103, lookupGlobalCatalogue103 } from '@/utils/nativeGlobalCatalogue103';
+import { GlobalWineLookup103, GlobalWinePicker103, GlobalWineReference103 } from '@/components/wine-import/NativeGlobalCatalogue103';
 import { AiRimContextGuide } from '@/components/AiRimContextGuide';
 import { WineComparisonWorkspace } from '@/components/wine-import/WineComparisonWorkspace';
 import { LabelAnalysisView } from '@/components/wine-import/LabelAnalysisView';
@@ -343,6 +343,12 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
       if (master.status === 'verified') return applyNativeMaster102(candidate, scanProfileRef.current?.profile ?? null, master.record);
       if (master.status === 'ambiguous') return applyScanWineEvidence(candidate, scanProfileRef.current?.profile ?? null, null);
+    }
+    if (isNative && !isMatchrimFixtureQaEnabled && canAdmitNativeCatalogLookup97(candidate)) {
+      const global = await lookupGlobalCatalogue103(candidate, signal);
+      if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+      if ('wine' in global) return applyGlobalCatalogue103(candidate, scanProfileRef.current?.profile ?? null, global.wine);
+      if (global.status === 'ambiguous' || global.status === 'incomplete') return applyScanWineEvidence(candidate, scanProfileRef.current?.profile ?? null, null);
     }
     let enriched = candidate;
     const canResolveCanonically = candidate.confidence >= 0.72
@@ -872,13 +878,17 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
           const evidence = isNative && candidate.sensorySource === 'catalog' && candidate.canonicalId && candidate.sensoryAttributes
             ? makeCellarCatalogEvidence(identity, candidate.canonicalId, candidate.sensoryAttributes) : null;
           const masterAudit = isNative ? nativeMasterAudit102(candidate) : null;
+          const global = isNative && isGlobalWine103(candidate, candidate.globalRecord) ? candidate.globalRecord : null;
           const details = evidence ? withCellarInitialAffinity({ ...identity,
             sensory_attributes: candidate.sensoryAttributes,
             place_details: { bodega_sensory_evidence: evidence,
+              ...(global ? { winerim_public_catalogue: { namespace: global.namespace, id: global.id, vintage: global.vintage,
+                url: global.url, sensory_provenance: global.provenance } } : {}),
               ...(masterAudit ? { winerim_master_evidence: masterAudit } : {}) } }, scanProfileRef.current, 'saved') : null;
           return {
           nombre: candidate.name,
           productor: candidate.producer,
+          ...(global?.photo ? { imagen_url: global.photo } : {}),
           anada: candidate.vintage,
           region: candidate.region,
           pais: candidate.country,
@@ -986,11 +996,12 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     identityReviewedByUser={selectedCandidate.source === 'manual'}
     attributes={selectedCandidate.sensoryAttributes}
     sensorySource={selectedCandidate.sensorySource ?? 'inference'}
-    catalogIdentityLinked={Boolean(selectedCandidate.originalSheet?.detailVerified)}
+    catalogIdentityLinked={isNative ? Boolean(nativeConsumer?.catalogIdentityLinked) : Boolean(selectedCandidate.originalSheet?.detailVerified)}
   />;
   const referenceReview = selectedCandidate && selectedRegion && <>
     <WinerimOriginalSheet sheet={selectedCandidate.originalSheet} />
-    {!selectedCandidate.originalSheet?.detailVerified && (!isNative || selectedCandidate.source !== 'manual') && <WinerimSheetLookup identity={{
+    {!selectedCandidate.originalSheet?.detailVerified && (!isNative || !selectedCandidate.globalRecord)
+      && (!isNative || selectedCandidate.source !== 'manual') && <WinerimSheetLookup identity={{
       name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage,
       inferredFields: selectedCandidate.inferredFields,
       region: selectedCandidate.inferredFields.includes('region') ? null : selectedCandidate.region,
@@ -1002,17 +1013,17 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         return catalog ? applyScanWineEvidence(candidate, scanProfileRef.current?.profile ?? null, catalog) : candidate;
       }) }));
     }} />}
-    {isNative && !regionActionsLocked && !manualLookupLoading && !selectedCandidate.originalSheet?.detailVerified && <WinerimCandidatePicker95
-      initialQuery={selectedCandidate.name}
-      contextKey={JSON.stringify([selectedRegion.id, selectedCandidate.id, selectedCandidate.name, selectedCandidate.producer, selectedCandidate.vintage])}
-      onConfirmed={sheet => {
+    {isNative && !regionActionsLocked && !manualLookupLoading && <GlobalWinePicker103
+      key={manualLookupKey} candidate={selectedCandidate} contextKey={manualLookupKey}
+      disabled={manualLookupContext.locked} profile={scanProfile?.profile ?? null}
+      onConfirmed={confirmed => {
+        if (currentManualLookupKey.current !== manualLookupKey) return;
         const expected = selectedCandidate;
         updateRegion(selectedRegion.id, current => {
           if (current.selectedCandidateId !== expected.id) return current;
           const candidate = current.candidates.find(value => value.id === expected.id);
           if (!candidate || candidate.name !== expected.name || candidate.producer !== expected.producer || candidate.vintage !== expected.vintage) return current;
-          const confirmed = confirmedLabelCatalogIdentity95(candidate, sheet, scanProfileRef.current?.profile ?? null);
-          return confirmed ? { ...current, status: 'recognized', error: null, fallback: null,
+          return isGlobalWine103(confirmed, confirmed.globalRecord) ? { ...current, status: 'recognized', error: null, fallback: null,
             candidates: current.candidates.map(value => value.id === expected.id ? confirmed : value) } : current;
         });
       }}
@@ -1334,7 +1345,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     </span>
                     <span className={isNative ? 'min-w-0 w-full text-left [overflow-wrap:anywhere]' : 'shrink-0 text-right'}>
                       <span data-testid="scan-affinity-value" className="block font-bold text-red-900">{isNative ? consumer?.affinityValue : group.candidate.affinity == null ? '-' : `${identityConfirmed ? '' : '≈'}${Math.round(group.candidate.affinity)}%`}</span>
-                      <span className="block text-[11px] text-slate-500">{isNative ? 'Afinidad' : group.candidate.affinity == null ? 'Sin datos' : identityConfirmed ? 'Afinidad' : 'Estimación'}</span>
+                      <span className="block text-[11px] text-slate-500">{isNative ? consumer?.affinityLabel : group.candidate.affinity == null ? 'Sin datos' : identityConfirmed ? 'Afinidad' : 'Estimación'}</span>
                     </span>
                   </button>
                   );
@@ -1418,6 +1429,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   catalogIdentityLinked={Boolean(nativeConsumer?.catalogIdentityLinked)}
                   canExplainAffinity={Boolean(nativeConsumer?.canExplainAffinity)} hasProfile={Boolean(scanProfile?.profile)}
                   affinity={affinityExplanation} disabled={regionActionsLocked}
+                  catalogueReference={isGlobalWine103(selectedCandidate, selectedCandidate.globalRecord)
+                    ? <GlobalWineReference103 candidate={selectedCandidate} profile={scanProfile?.profile ?? null} /> : null}
                   onReturnToBatch={phase === 'ready' ? () => {
                     setNativeResultView('wines');
                     setSelectedRegionId(null);
@@ -1429,20 +1442,16 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     details.querySelector('summary')?.focus({ preventScroll: true });
                     details.scrollIntoView({ block: 'start', behavior: 'instant' });
                   }}
-                  lookup={selectedCandidate.source === 'manual' && !nativeConsumer?.catalogIdentityLinked ? <div className="min-w-0" data-testid="native-manual-affinity-lookup">
-                    <WinerimSheetLookup contextKey={manualLookupKey} disabled={manualLookupContext.locked}
-                      buttonLabel="Buscar ficha para mi afinidad" onLoadingChange={setManualLookupLoading}
-                      identity={{ name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage,
-                        inferredFields: selectedCandidate.inferredFields, region: selectedCandidate.region, country: selectedCandidate.country }}
-                      onVerified={sheet => {
+                  lookup={!nativeConsumer?.catalogIdentityLinked ? <div className="min-w-0" data-testid="native-manual-affinity-lookup">
+                    <GlobalWineLookup103 contextKey={manualLookupKey} disabled={manualLookupContext.locked}
+                      onLoadingChange={setManualLookupLoading} candidate={selectedCandidate}
+                      onVerified={wine => {
                         if (currentManualLookupKey.current !== manualLookupKey) return;
-                        const catalog = catalogWineFromVerifiedSheet(selectedCandidate, sheet);
-                        if (!catalog) return;
                         setRegions(current => currentManualLookupKey.current !== manualLookupKey ? current : current.map(region =>
                           region.id === selectedRegion.id && region.status !== 'discarded' && region.selectedCandidateId === selectedCandidate.id
                             ? { ...region, candidates: region.candidates.map(candidate => candidate.id === selectedCandidate.id
                               && JSON.stringify({ ...manualLookupContext, candidate }) === manualLookupKey
-                              ? applyScanWineEvidence(candidate, manualLookupContext.profile, catalog) : candidate) } : region));
+                              ? applyGlobalCatalogue103(candidate, manualLookupContext.profile, wine, candidate.source === 'manual') : candidate) } : region));
                       }} />
                   </div> : null}
                   onCorrect={() => {
@@ -1452,6 +1461,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     input?.scrollIntoView({ block: 'nearest', behavior: 'instant' });
                     input?.focus({ preventScroll: true });
                   }} />}
+                {isNative && selectedCandidate && nativeConsumer?.canExplainAffinity && isGlobalWine103(selectedCandidate, selectedCandidate.globalRecord)
+                  && <GlobalWineReference103 candidate={selectedCandidate} profile={scanProfile?.profile ?? null} />}
                 {isNative && selectedCandidate && nativeMasterAudit102(selectedCandidate) && <p className="text-sm leading-6 text-stone-700" role="note">
                   {selectedCandidate.affinityReason}
                 </p>}

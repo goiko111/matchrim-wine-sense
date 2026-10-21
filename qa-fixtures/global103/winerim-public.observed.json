@@ -1,0 +1,59 @@
+{
+  "source": "Observed public Matchrim store search/detail receipts 2026-10-21. Prices and unrelated recommendations omitted. No Mantalak mapping or sensory provenance supplied.",
+  "vidure": {
+    "receiptSHA256": "40205300e37215fc0112b36c2a599ccd20415e96159b2dcc4b8559ba59527354",
+    "wine": {
+      "id": 364050,
+      "name": "Vidure",
+      "subname": null,
+      "slugname": "Vidure",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Navarra",
+      "winery": "Pago de Cirsus",
+      "vintage": null,
+      "grapes": [
+        {
+          "name": "Cabernet Sauvignon"
+        }
+      ],
+      "photo": "https://app.winerim.com/images/wines/68370b8de5d4b340278417.png",
+      "tastingAttributes": {
+        "power": 5,
+        "sweetness": 1,
+        "acidity": 3,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 4
+      }
+    }
+  },
+  "zorrera": {
+    "receiptSHA256": "a301a7599a744af862a6817c17f1700042258fe594bad8be4a71e733473f366d",
+    "wine": {
+      "id": 336808,
+      "name": "La Zorrera",
+      "subname": null,
+      "slugname": "La-Zorrera",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Navarra",
+      "winery": "Chivite",
+      "vintage": null,
+      "grapes": [
+        {
+          "name": "Garnacha"
+        }
+      ],
+      "photo": "https://app.winerim.com/images/wines/63bd7b864cd47785352844.png",
+      "tastingAttributes": {
+        "power": 4,
+        "sweetness": 1,
+        "acidity": 3,
+        "tannin": 3,
+        "fruity": 4,
+        "aging": null
+      }
+    }
+  }
+}

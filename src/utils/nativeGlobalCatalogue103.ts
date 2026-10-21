@@ -1,0 +1,169 @@
+import { z } from 'zod';
+import type { WineCandidate } from './multiWineScan';
+import type { MatchrimProfileLike } from './matchrimPassport';
+import { canAdmitNativeCatalogLookup97 } from './nativeCatalogAdmission97';
+import { hasMissingVisibleQualifier102 } from './nativeWineQualifier102';
+import { hasConflictingNativeVintage100 } from './nativeVintageEvidence100';
+import { hasExactWinerimProducer, hasWinerimGeographyConflict, canLookupWinerimOriginal,
+  validateWinerimOriginalSensory, type WinerimOriginalIdentity } from './winerimOriginalSheet';
+import { isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
+import { isNonWineIdentity } from './wineCategory';
+import { safeWineImageUrl98 } from './wineImage98';
+import { calculateLocalMatchrimAffinity } from './wineAffinityExplanation';
+
+// Observed public Matchrim store, not the administrative Mantalak namespace.
+const root = 'https://app.winerim.com/api/v1/restaurant/00000000-0000-0000-0000-000000000001/wines';
+const text = z.string().trim().min(1).max(240).refine(value => !Array.from(value).some(char => {
+  const code = char.charCodeAt(0);
+  return code < 32 || (code >= 127 && code <= 159) || (code >= 0x202a && code <= 0x202e) || (code >= 0x2066 && code <= 0x2069);
+}));
+const rowSchema = z.object({ id: z.number().int().positive().safe(), name: text, winery: text,
+  slugname: z.string().regex(/^[a-z0-9][a-z0-9_-]{0,239}$/i),
+  vintage: z.union([z.string().regex(/^(19|20)\d{2}$/), z.number().int().min(1900).max(2099)]).nullable(),
+  subname: text.nullish(), type: text.nullish(), region: text.nullish(), country: text.nullish(),
+  photo: z.string().nullish(), grapes: z.array(z.unknown()).max(100).optional(), tastingAttributes: z.unknown().optional(),
+});
+type Row = z.infer<typeof rowSchema>;
+export type GlobalWine103 = Readonly<{
+  namespace: 'winerim-public-store'; id: number; name: string; producer: string; vintage: string | null;
+  region: string | null; country: string | null; slug: string; url: string; photo: string | null;
+  sensory: ReturnType<typeof validateWinerimOriginalSensory>; provenance: 'unspecified';
+}>;
+export type GlobalLookup103 = { status: 'exact' | 'reference'; wine: GlobalWine103 }
+  | { status: 'identity-required' | 'not-found' | 'ambiguous' | 'incomplete' | 'unavailable' };
+const trusted = new WeakSet<object>();
+const key = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+const identity = (row: Row) => {
+  const sub = row.subname && !(` ${key(row.name)} `).includes(` ${key(row.subname)} `) ? row.subname : '';
+  return { name: [row.name, sub].filter(Boolean).join(' '), producer: row.winery,
+    vintage: row.vintage == null ? null : String(row.vintage), region: row.region ?? null, country: row.country ?? null };
+};
+const withoutYear = (value: WinerimOriginalIdentity) => ({ ...value,
+  name: value.vintage ? value.name.replace(new RegExp(`\\s+\\(?${value.vintage}\\)?$`), '').trim() : value.name,
+  vintage: null });
+const sameReference = (input: WinerimOriginalIdentity, wine: WinerimOriginalIdentity) =>
+  !hasConflictingNativeVintage100(wine) && hasExactWinerimProducer(input.producer, wine.producer)
+  && isSafeCanonicalLabelMatch(withoutYear(input), withoutYear(wine))
+  && !hasWinerimGeographyConflict({ region: input.inferredFields?.includes('region') ? null : input.region,
+    country: input.inferredFields?.some(field => /^(country|pais|país)$/i.test(field)) ? null : input.country }, wine);
+export const isGlobalWine103 = (input: WinerimOriginalIdentity & { evidence?: readonly string[] }, wine: unknown): wine is GlobalWine103 =>
+  Boolean(wine && typeof wine === 'object' && trusted.has(wine) && canLookupWinerimOriginal(input)
+    && !hasConflictingNativeVintage100(input) && !hasMissingVisibleQualifier102(input)
+    && sameReference(input, wine as GlobalWine103)
+    && ((wine as GlobalWine103).vintage === null || String(input.vintage ?? '') === (wine as GlobalWine103).vintage));
+
+export const globalSensory103 = (wine: GlobalWine103) => wine.sensory ? { scale: 'winerim-0-5' as const,
+  potencia: wine.sensory.power, acidez: wine.sensory.acidity, dulzura: wine.sensory.sweetness,
+  taninos: wine.sensory.tannin, afrutado: wine.sensory.fruity } : null;
+export const exactGlobalVintage103 = (input: WinerimOriginalIdentity, wine: GlobalWine103) =>
+  input.vintage != null && wine.vintage != null && String(input.vintage) === wine.vintage;
+
+// Each operation has a total deadline, bounded streaming and cancellation even
+// when a native fetch adapter ignores AbortSignal. No cookies, keys or model API.
+export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
+  const operation = async <T,>(signal: AbortSignal | undefined, work: (read: (url: string) => Promise<unknown>) => Promise<T>): Promise<T> => {
+    const controller = new AbortController();
+    const abort = () => controller.abort();
+    if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
+    signal?.addEventListener('abort', abort, { once: true });
+    const timer = setTimeout(abort, 12000);
+    const bound = <V,>(pending: Promise<V>) => new Promise<V>((resolve, reject) => {
+      const stop = () => reject(new DOMException('Cancelled', 'AbortError'));
+      if (controller.signal.aborted) { void pending.catch(() => undefined); stop(); return; }
+      controller.signal.addEventListener('abort', stop, { once: true });
+      void pending.then(value => { controller.signal.removeEventListener('abort', stop); resolve(value); },
+        error => { controller.signal.removeEventListener('abort', stop); reject(error); });
+    });
+    const read = async (url: string): Promise<unknown> => {
+      if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+      const pending = fetcher(url, { method: 'GET', credentials: 'omit', redirect: 'error', referrerPolicy: 'no-referrer',
+        headers: { Accept: 'application/json' }, signal: controller.signal });
+      void pending.then(response => { if (controller.signal.aborted) void response.body?.cancel().catch(() => undefined); }, () => undefined);
+      const response = await bound(pending);
+      if (!response.ok || response.redirected || (response.url && response.url !== url) || !response.body
+        || !/^application\/json(?:\s*;|$)/i.test(response.headers.get('content-type') ?? '')) {
+        void response.body?.cancel().catch(() => undefined); throw new Error('CATALOGUE_UNAVAILABLE');
+      }
+      const reader = response.body.getReader();
+      const cancel = () => { void reader.cancel().catch(() => undefined); };
+      controller.signal.addEventListener('abort', cancel, { once: true });
+      const decoder = new TextDecoder('utf-8', { fatal: true });
+      let bytes = 0, body = '';
+      try {
+        while (true) {
+          const item = await bound(reader.read());
+          if (controller.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+          if (item.done) break;
+          bytes += item.value.byteLength;
+          if (bytes > 262144) throw new Error('CATALOGUE_BODY_BOUND');
+          body += decoder.decode(item.value, { stream: true });
+        }
+        return JSON.parse(body + decoder.decode());
+      } catch (error) { cancel(); throw error; }
+      finally { controller.signal.removeEventListener('abort', cancel); try { reader.releaseLock(); } catch { /* Native pending read. */ } }
+    };
+    try { return await work(read); }
+    finally { clearTimeout(timer); signal?.removeEventListener('abort', abort); controller.abort(); }
+  };
+  const search = async (query: string, signal?: AbortSignal) => {
+    if (!text.safeParse(query).success || query.trim().length < 2 || query.length > 120) return { status: 'identity-required' as const, rows: [] as Row[] };
+    try {
+      return await operation(signal, async read => {
+        const page = z.object({ count: z.number().int().nonnegative().safe(), page: z.literal(1), results: z.array(rowSchema).max(20) })
+          .safeParse(await read(`${root}?${new URLSearchParams({ page: '1', text: query.trim(), store: '1' })}`));
+        if (!page.success || page.data.count !== page.data.results.length) return { status: 'incomplete' as const, rows: [] as Row[] };
+        const rows = page.data.results;
+        if (new Set(rows.map(row => row.id)).size !== rows.length) return { status: 'ambiguous' as const, rows: [] as Row[] };
+        return { status: 'complete' as const, rows: rows.filter(row => !isNonWineIdentity(row.name, row.type)) };
+      });
+    } catch { if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError'); return { status: 'unavailable' as const, rows: [] as Row[] }; }
+  };
+  const lookup = async (input: WinerimOriginalIdentity & { evidence?: readonly string[] }, signal?: AbortSignal, selectedPublicId?: number): Promise<GlobalLookup103> => {
+    if (!canLookupWinerimOriginal(input) || hasConflictingNativeVintage100(input) || hasMissingVisibleQualifier102(input)) return { status: 'identity-required' };
+    const query = input.name.trim().replace(new RegExp(`\\s+\\(?${input.vintage || 'NONE'}\\)?$`), '').trim();
+    let page = await search(query, signal);
+    if (page.status === 'incomplete' && input.producer) page = await search(input.producer.trim(), signal);
+    // The observed API searches the wine name, not a concatenated winery/name.
+    // A literal producer prefix may be omitted from the query, never the match.
+    const producer = key(input.producer || ''), name = key(query);
+    const shorter = producer && name.startsWith(producer + ' ') ? name.slice(producer.length + 1) : null;
+    if (page.status === 'complete' && !page.rows.length && shorter && shorter.length >= 2) page = await search(shorter, signal);
+    if (page.status !== 'complete') return { status: page.status };
+    const matches = page.rows.filter(row => sameReference(input, identity(row)) && (selectedPublicId === undefined || row.id === selectedPublicId));
+    const exact = matches.filter(row => String(row.vintage ?? '') === String(input.vintage ?? ''));
+    const possible = exact.length ? exact : matches.filter(row => row.vintage == null);
+    if (!possible.length) return { status: 'not-found' };
+    if (possible.length !== 1) return { status: 'ambiguous' };
+    const selected = possible[0];
+    try {
+      return await operation(signal, async read => {
+        const parsed = rowSchema.safeParse(await read(`${root}/${selected.id}/${selected.slugname}`));
+        if (!parsed.success) return { status: 'unavailable' };
+        const detail = parsed.data, id = identity(detail), previous = identity(selected);
+        if (detail.id !== selected.id || detail.slugname !== selected.slugname || isNonWineIdentity(detail.name, detail.type)
+          || !sameReference(input, id) || !sameReference(previous, id) || id.vintage !== previous.vintage) return { status: 'ambiguous' };
+        const sensory = validateWinerimOriginalSensory(detail.tastingAttributes);
+        if (sensory) Object.freeze(sensory);
+        const wine: GlobalWine103 = Object.freeze({ namespace: 'winerim-public-store', id: detail.id, ...id,
+          slug: detail.slugname, url: `https://web.winerim.com/matchrim/store/${detail.id}/${detail.slugname}`,
+          photo: safeWineImageUrl98(detail.photo) || null, sensory, provenance: 'unspecified' });
+        trusted.add(wine);
+        return { status: exactGlobalVintage103(input, wine) ? 'exact' : 'reference', wine };
+      });
+    } catch { if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError'); return { status: 'unavailable' }; }
+  };
+  return { search, lookup };
+};
+export const lookupGlobalCatalogue103 = (input: WinerimOriginalIdentity & { evidence?: readonly string[] }, signal?: AbortSignal) =>
+  createGlobalCatalogue103().lookup(input, signal);
+
+export const applyGlobalCatalogue103 = (candidate: WineCandidate, profile: MatchrimProfileLike | null, wine: GlobalWine103, manual = false): WineCandidate => {
+  if ((!manual && !canAdmitNativeCatalogLookup97(candidate)) || !isGlobalWine103(candidate, wine)) return candidate;
+  const exact = exactGlobalVintage103(candidate, wine);
+  const sensoryAttributes = exact ? globalSensory103(wine) : null;
+  return { ...candidate, globalRecord: wine, masterRecord: null, originalSheet: null,
+    canonicalId: exact ? `winerim-public-store:${wine.id}` : null, sensoryAttributes, sensorySource: 'catalog',
+    affinity: calculateLocalMatchrimAffinity(profile, sensoryAttributes), affinityConfidence: null,
+    affinityReason: exact ? 'Afinidad orientativa con la ficha pública de Winerim. La API no indica si los atributos proceden de una cata o han sido generados.'
+      : `Winerim tiene esta referencia sin añada. ${candidate.vintage ? `No verifica la ficha sensorial de ${candidate.vintage}.` : 'La cosecha de tu botella no está confirmada.'} Puedes consultar su estilo general por separado.` };
+};

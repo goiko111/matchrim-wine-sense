@@ -13,6 +13,7 @@ interface LabelAnalysisViewProps {
   canExplainAffinity: boolean;
   hasProfile: boolean;
   affinity: ReactNode;
+  catalogueReference?: ReactNode;
   lookup: ReactNode;
   disabled: boolean;
   onFindSheet: () => void;
@@ -23,7 +24,7 @@ interface LabelAnalysisViewProps {
 
 // Presentation only: the scanner retains identity, lookup and affinity authority.
 export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, identity, identityLabel,
-  catalogIdentityLinked, canExplainAffinity, hasProfile, affinity, lookup, disabled,
+  catalogIdentityLinked, canExplainAffinity, hasProfile, affinity, catalogueReference, lookup, disabled,
   onFindSheet, onCorrect, onReturnToBatch, children = null }: LabelAnalysisViewProps) => {
   if (!isNativePlatform) return <>{children}</>;
 
@@ -36,7 +37,7 @@ export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, ident
       <p className="text-xs leading-5 text-stone-500">{identityLabel}</p>
     </div> : <p className="text-xs leading-5 text-stone-500">{identityLabel}</p>}
 
-    {canExplainAffinity ? affinity : <div className="min-w-0 space-y-2 border-y border-stone-200 py-3" data-testid="native-label-next-step">
+    {canExplainAffinity ? affinity : catalogueReference || <div className="min-w-0 space-y-2 border-y border-stone-200 py-3" data-testid="native-label-next-step">
       <h4 className="font-semibold text-slate-950">Afinidad pendiente</h4>
       <p className="text-sm leading-6 text-stone-700">{catalogIdentityLinked
         ? hasProfile ? 'La ficha está enlazada, pero aún faltan datos para calcular tu afinidad.'

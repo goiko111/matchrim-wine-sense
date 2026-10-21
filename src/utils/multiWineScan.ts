@@ -56,6 +56,7 @@ export interface WineCandidate {
   inferredFields: string[];
   canonicalId?: string | null;
   masterRecord?: import('./nativeMasterCatalog102').NativeMasterRecord102 | null;
+  globalRecord?: import('./nativeGlobalCatalogue103').GlobalWine103 | null;
   originalSheet?: WinerimOriginalSheet | null;
   sensorySource?: 'catalog' | 'inference';
   sensoryAttributes?: {
@@ -804,6 +805,7 @@ export const correctWineCandidateIdentity = (
   sensoryAttributes: null,
   canonicalId: null,
   originalSheet: null,
+  ...(candidate.globalRecord ? { globalRecord: null } : {}),
   sensorySource: 'inference',
   affinity: null,
   affinityConfidence: null,

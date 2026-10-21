@@ -3,9 +3,25 @@ import { getSelectedCandidate, type ScanRegion, type WineCandidate } from './mul
 import { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } from './wineAffinityExplanation';
 import { isVerifiedWinerimSheetForIdentity, validateWinerimOriginalSensory } from './winerimOriginalSheet';
 import { isVerifiedNativeMaster102 } from './nativeMasterCatalog102';
+import { exactGlobalVintage103, globalSensory103, isGlobalWine103 } from './nativeGlobalCatalogue103';
 
 // Presentation only: OCR confidence and user review never certify a catalog sheet.
 export const nativeWineConsumerResult = (candidate: WineCandidate | null, profile: MatchrimProfileLike | null) => {
+  const global = candidate && isGlobalWine103(candidate, candidate.globalRecord) ? candidate.globalRecord : null;
+  if (global && candidate) {
+    const exact = exactGlobalVintage103(candidate, global);
+    const expected = normalizeWineAttributesForInsight(globalSensory103(global));
+    const actual = normalizeWineAttributesForInsight(candidate.sensoryAttributes);
+    const same = expected && actual && candidate.sensoryAttributes?.scale === 'winerim-0-5'
+      && Object.entries(expected).every(([key, value]) => actual[key as keyof typeof actual] === value);
+    const score = same && exact ? calculateLocalMatchrimAffinity(profile, globalSensory103(global)) : null;
+    const explain = score !== null && candidate.affinity === score && candidate.sensorySource === 'catalog'
+      && candidate.canonicalId === `winerim-public-store:${global.id}`;
+    return { catalogIdentityLinked: exact, identityLabel: exact ? 'Ficha del catálogo global Winerim'
+      : 'Referencia Winerim encontrada · añada sin verificar',
+    affinityLabel: explain ? 'Afinidad orientativa' : exact ? 'Afinidad pendiente' : 'Añada sin verificar',
+    affinityValue: explain ? `≈${Math.round(score!)}/100` : exact ? 'Pendiente' : 'Ver estilo', canExplainAffinity: explain };
+  }
   const master = candidate && isVerifiedNativeMaster102(candidate, candidate.masterRecord) ? candidate.masterRecord : null;
   if (master && candidate.canonicalId === `mantalak:${master.id}` && candidate.sensorySource === 'catalog') {
     const attrs = master.sensory?.attributes;
