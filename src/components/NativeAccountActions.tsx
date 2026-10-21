@@ -41,10 +41,14 @@ export default function NativeAccountActions() {
   };
   if (!Capacitor.isNativePlatform() || !user) return null;
   return (
-    <div className="mb-3 flex justify-end">
+    <div className="mb-3 flex min-w-0 items-start justify-between gap-3">
+      <div className="min-w-0 [overflow-wrap:anywhere]" aria-label="Cuenta actual">
+        <p className="text-xs font-medium leading-5 text-stone-500">Tu cuenta</p>
+        <p className="text-sm font-semibold leading-6 text-stone-950">{user.email || 'Sesion iniciada'}</p>
+      </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon" className="h-11 w-11" aria-label="Ajustes de cuenta" title="Ajustes de cuenta" disabled={closing}><Settings className="h-5 w-5" /></Button>
+          <Button variant="outline" size="icon" className="h-11 w-11 shrink-0" aria-label="Ajustes de cuenta" title="Ajustes de cuenta" disabled={closing}><Settings aria-hidden="true" className="h-5 w-5" /></Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="max-w-[calc(100vw-2rem)]">
           <DropdownMenuItem className="min-h-11 gap-2" disabled={closing} onSelect={() => navigate('/privacy')}><ShieldCheck className="h-4 w-4" />Privacidad</DropdownMenuItem>
