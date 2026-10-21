@@ -151,7 +151,8 @@ export async function runAccount114({ argv = process.argv.slice(2), repo = proce
   exec = execFileSync, start = spawn, environment = process.env,
   killGroup = (pid, signal) => process.kill(-pid, signal) } = {}) {
   const base = path.resolve(repo, 'qa-artifacts/night105-20261021');
-  const env = { ...environment, DEVELOPER_DIR: developer };
+  const env = { ...Object.fromEntries(Object.entries(environment).filter(([key]) =>
+    !/KEY|AUTH|PASSWORD|SECRET|TOKEN|CREDENTIAL|MATCHRIM114/i.test(key))), DEVELOPER_DIR: developer };
   const receipt = { startedUTC: new Date().toISOString(), passed: false, stage: 'pre-submit-hold', device, bundle,
     account: ACCOUNT, authSubmissionLimit: 1, authReserved: false, authBudgetConsumed: false, authSubmitted: false, authAttemptMayHaveStarted: false,
     scope: 'Existing authorized QA account; one conservative UI attempt, then read-only profile/collection/details. No signup, reset, logout, wine/rating/quiz/stock writes or model starts.',

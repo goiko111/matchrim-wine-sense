@@ -47,7 +47,7 @@ export async function runProfile115({ argv = process.argv.slice(2), repo = proce
   killGroup = (pid, signal) => process.kill(-pid, signal) } = {}) {
   const base = path.resolve(repo, 'qa-artifacts/night105-20261021');
   // Do not forward the parent's authentication inputs into the test process.
-  const env = Object.fromEntries(Object.entries(environment).filter(([key]) => !/PASSWORD|SECRET|TOKEN|MATCHRIM114|CREDENTIAL/i.test(key)));
+  const env = Object.fromEntries(Object.entries(environment).filter(([key]) => !/KEY|AUTH|PASSWORD|SECRET|TOKEN|MATCHRIM114|CREDENTIAL/i.test(key)));
   env.DEVELOPER_DIR = developer;
   const receipt = { passed: false, stage: 'preflight', device: DEVICE, bundle,
     accountScope: 'Existing QA account info@winerim.com, already authenticated by account114; read-only Profile only.',
