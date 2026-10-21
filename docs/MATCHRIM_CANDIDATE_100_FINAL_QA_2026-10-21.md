@@ -1,5 +1,7 @@
 # Candidato 1.0 (100): Build Y QA Final
 
+Actualizacion posterior: `MATCHRIM_TESTFLIGHT_100_AND_GLOBAL_CATALOGUE_2026-10-21.md` cierra el recorrido UIKit normal/maximo, registra la autorizacion de beta limitada y la subida aceptada por Apple. Tambien documenta una via global publica nueva y verificada. Los gates pendientes de este checkpoint se conservan abajo como evidencia historica.
+
 ## Estado Verificado
 
 Producto: `a2f2f58d18e5cf61e1f60cf96d9f73dfe0de3c41`, continuacion de `0ed945a`. Herramientas reproducibles: `b322166` y `507a1c1`. **100 es el numero del candidato iOS; 102 sigue siendo el identificador del bloque de codigo, no una subida.**
