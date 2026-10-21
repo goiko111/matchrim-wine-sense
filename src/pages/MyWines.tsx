@@ -113,6 +113,13 @@ interface ExtractedWineData {
 
 interface WineSuggestion {
   id?: string;
+  // Set when the suggestion comes from the Winerim catalogue (one entry per wine).
+  winerim_wine_id?: number;
+  winerim_mantalak_wine_id?: number;
+  winerim_vintages?: number[];
+  winerim_slugname?: string | null;
+  image_url?: string | null;
+  sensory_attributes?: Json | null;
   name: string;
   producer: string | null;
   vintage?: number | null;
@@ -124,6 +131,44 @@ interface WineSuggestion {
   tipo?: string | null;
   estilo?: string | null;
 }
+
+interface CatalogSearchResult {
+  id: number;
+  mantalakWineId: number;
+  name: string;
+  winery: string | null;
+  type: string | null;
+  country: string | null;
+  region: string | null;
+  grapes: string[];
+  vintages: number[];
+  tastingAttributes: { power: number; acidity: number; sweetness: number; tannin: number; fruity: number } | null;
+  photo: string | null;
+  slugname: string | null;
+}
+
+const toWineSuggestion = (wine: CatalogSearchResult): WineSuggestion => ({
+  name: wine.name,
+  producer: wine.winery,
+  region: wine.region,
+  country: wine.country,
+  grape_varieties: wine.grapes.length ? wine.grapes : null,
+  tipo: wine.type,
+  winerim_wine_id: wine.id,
+  winerim_mantalak_wine_id: wine.mantalakWineId,
+  winerim_vintages: wine.vintages,
+  winerim_slugname: wine.slugname,
+  image_url: wine.photo,
+  sensory_attributes: wine.tastingAttributes
+    ? {
+        potencia: wine.tastingAttributes.power,
+        acidez: wine.tastingAttributes.acidity,
+        dulzura: wine.tastingAttributes.sweetness,
+        taninos: wine.tastingAttributes.tannin,
+        afrutado: wine.tastingAttributes.fruity,
+      }
+    : null,
+});
 
 type ManualWineLookupStatus = 'idle' | 'loading' | 'done' | 'error';
 type WineStatus = 'collection' | 'wishlist' | 'tasted';
@@ -214,6 +259,9 @@ const MyWines = () => {
   const [manualWineLookupStatus, setManualWineLookupStatus] = useState<ManualWineLookupStatus>('idle');
   const [manualWineNameConfirmed, setManualWineNameConfirmed] = useState(false);
   const [manualWineSelectedFromResults, setManualWineSelectedFromResults] = useState(false);
+  // The Winerim catalogue wine the user picked. It identifies the WINE; the vintage stays
+  // whatever the user typed, even if the catalogue does not list it (never block or warn).
+  const [manualWineCatalogue, setManualWineCatalogue] = useState<WineSuggestion | null>(null);
   const [sectionCounts, setSectionCounts] = useState<SectionCounts>(emptySectionCounts);
 
   // Form state
@@ -314,14 +362,16 @@ const MyWines = () => {
 
     const timeout = window.setTimeout(async () => {
       try {
-        const { data, error } = await supabase.functions.invoke('search-wines', {
-          body: { query, limit: 6 },
+        const { data, error } = await supabase.functions.invoke('catalog-search', {
+          body: { query, vintage: formData.vintage.trim() || undefined, limit: 6 },
         });
 
         if (cancelled) return;
         if (error) throw error;
 
-        setManualWineSuggestions((data?.wines || []).filter((wine: WineSuggestion) => wine?.name));
+        setManualWineSuggestions(
+          ((data?.results || []) as CatalogSearchResult[]).filter((wine) => wine?.name).map(toWineSuggestion),
+        );
         setManualWineLookupStatus('done');
       } catch (error) {
         if (cancelled) return;
@@ -473,6 +523,7 @@ const MyWines = () => {
     setFormData((current) => ({ ...current, name: value }));
     setManualWineNameConfirmed(false);
     setManualWineSelectedFromResults(false);
+    setManualWineCatalogue(null);
   };
 
   const handleManualSuggestionSelect = (wine: WineSuggestion) => {
@@ -480,13 +531,14 @@ const MyWines = () => {
       ...current,
       name: wine.name || current.name,
       producer: wine.producer || "",
-      vintage: wine.vintage?.toString() || "",
+      vintage: current.vintage,
       region: wine.region || "",
       country: wine.country || "",
       grape_varieties: wine.grape_varieties?.join(", ") || "",
       alcohol_content: wine.alcohol_content != null ? String(wine.alcohol_content) : current.alcohol_content,
       tasting_notes: wine.tasting_notes || current.tasting_notes,
     }));
+    setManualWineCatalogue(wine.winerim_wine_id ? wine : null);
     setManualWineNameConfirmed(true);
     setManualWineSelectedFromResults(true);
     setManualWineSuggestions([]);
@@ -527,9 +579,9 @@ const MyWines = () => {
       const saveStatus: WineStatus = statusFilter === 'favorites' || statusFilter === 'rejected'
         ? 'wishlist'
         : statusFilter;
-      const sensoryAttributes = normalizeSensoryAttributesTo5(extractedData?.sensory_attributes || null);
+      const sensoryAttributes = normalizeSensoryAttributesTo5(extractedData?.sensory_attributes || manualWineCatalogue?.sensory_attributes || null);
       const manualSource = manualWineSelectedFromResults
-        ? 'manual_search_result'
+        ? 'winerim_catalog'
         : manualWineNameConfirmed
           ? 'manual_user_verified'
           : 'manual';
@@ -546,7 +598,7 @@ const MyWines = () => {
         alcohol_content: formData.alcohol_content ? parseFloat(formData.alcohol_content) : null,
         tasting_notes: formData.tasting_notes || null,
         personal_note: formData.personal_note || null,
-        image_url: extractedImageUrl || null,
+        image_url: extractedImageUrl || manualWineCatalogue?.image_url || null,
         matchrim_affinity: normalizeAffinity(extractedData?.matchrim_affinity) ?? null,
         sensory_attributes: sensoryAttributes as Json,
         status: saveStatus,
@@ -565,6 +617,13 @@ const MyWines = () => {
           : ({
               source: manualSource,
               name_verified_by_user: manualWineNameConfirmed,
+              ...(manualWineCatalogue
+                ? {
+                    winerim_wine_id: manualWineCatalogue.winerim_wine_id,
+                    winerim_mantalak_wine_id: manualWineCatalogue.winerim_mantalak_wine_id,
+                    winerim_slugname: manualWineCatalogue.winerim_slugname ?? null,
+                  }
+                : {}),
             } as Json),
       };
 
@@ -874,6 +933,7 @@ const MyWines = () => {
     setManualWineLookupStatus('idle');
     setManualWineNameConfirmed(false);
     setManualWineSelectedFromResults(false);
+    setManualWineCatalogue(null);
   };
 
   useEffect(() => {

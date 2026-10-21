@@ -25,3 +25,6 @@ verify_jwt = true
 
 [functions.matchrim-master-catalog]
 verify_jwt = true
+
+[functions.catalog-search]
+verify_jwt = true
