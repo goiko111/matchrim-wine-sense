@@ -116,6 +116,7 @@ const LiquidIntelligence = () => {
   };
 
   const renderLanding = () => {
+    if (isNative) return <AiRimConversation key="native-landing99" onBack={() => navigate('/')} onSelectFunction={handleSelectFunction} />;
     const actions = [
       { id: 'wine-for-dish' as const, title: 'Vino para un plato', detail: 'Con gusto y presupuesto', icon: Utensils },
       { id: 'dish-for-wine' as const, title: 'Plato para un vino', detail: 'Servicio y preparación', icon: GlassWater },
@@ -216,6 +217,7 @@ const LiquidIntelligence = () => {
       case 'landing':
         return renderLanding();
       case 'conversation':
+        if (isNative) return <AiRimConversation key={`native-request99:${conversationQuestion}`} onBack={handleBackToMenu} initialQuestion={conversationQuestion} />;
         return <AiRimConversation onBack={handleBackToMenu} initialQuestion={conversationQuestion} />;
       case 'function':
         if (!selectedFunction) return null;

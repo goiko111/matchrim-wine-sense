@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { restoreNativeHome98Guard } from './native-home98-scope.mjs';
+import { restoreNativeScan99Guard } from './native-scan99-scope.mjs';
 
 export const nativeVisual98Baseline = '589dda9863280d70683b9fb21feb599fd06ce2c8';
 const digest = source => createHash('sha256').update(source).digest('hex');
@@ -88,6 +90,8 @@ export function restoreNativeVisual98(file, source) {
 
 // The frozen96 bridge also fingerprints its caller; no original assertion is exempted.
 export function restoreNativeVisual98Guard(file, source) {
+  source = restoreNativeScan99Guard(file, source);
+  source = restoreNativeHome98Guard(file, source);
   if (file !== 'scripts/check-matchrim-recognition96.ts') return source;
   const beforeHash = '78fe5b3decb501abe7f98372ad2bb1d360063e55f141d4495c3a33ad1b2fffcc';
   const frozen96Hash = '00a68793e2d8c5ddb4ab62d3253c0cf63f9c70d7feb0f0d76b0d4ed532385972';

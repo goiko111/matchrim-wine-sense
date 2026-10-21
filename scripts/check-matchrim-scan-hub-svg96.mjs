@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { restoreManualLookupGuard96 } from './check-matchrim-manual-lookup-bridge96.mjs';
 import { restoreNativeScanHeading96, restoreNativeHeadingTree96 } from './check-matchrim-scan-heading96.mjs';
+import { restoreNativeScan99 } from './native-scan99-scope.mjs';
 
 const baselineRevision = 'e3fd4c73913469a3f084be7f1296b17fe7c3ac70';
 const deny = () => { throw new Error('No transport or scanner execution in SVG source/render fixture'); };
@@ -16,6 +17,7 @@ const ownHash = () => hash(restoreManualLookupGuard96('scripts/check-matchrim-sc
 export const nativeHubSvg96Result = { groups: 7, rejectedMutations: 5, sourceGuardNegatives: 3, edits: 9, nativeSVGs: 12, webCases: 2 };
 
 export function restoreNativeHubSvg96(file, source) {
+  source = restoreNativeScan99(file, source);
   source = restoreNativeScanHeading96(file, source);
   const undo = (from, to, count) => {
     assert.equal(source.split(from).length - 1, count, 'Exact native SVG inverse: ' + from);
@@ -80,7 +82,7 @@ const sha = (p) => createHash('sha256').update(fs.readFileSync(p)).digest('hex')
 const hash = (s) => createHash('sha256').update(s).digest('hex');
 const refs = (p) => ({ path: p, sha256: sha(p) });
 const baseline = Object.fromEntries([scanFile, hubFile].map((f) => [f, execFileSync('git', ['show', `${baselineRevision}:${f}`], { cwd: root, encoding: 'utf8' })]));
-const candidate = Object.fromEntries([scanFile, hubFile].map((f) => [f, read(path.join(root, f))]));
+const candidate = Object.fromEntries([scanFile, hubFile].map((f) => [f, restoreNativeScan99(f, read(path.join(root, f)))]));
 assert.equal(hash(baseline[scanFile]), '60f5f4a4d73de85ceb6ba1ef065fb2a2c855f206672ef6ef6ad5caeb676565b0');
 assert.equal(hash(baseline[hubFile]), 'c6c134dc89edf005a7b425bff03211f5176a02d6d8c2a44c0f26d400b975cea7');
 const nativeSupport = ['src/components/MobileBottomNav.tsx', 'src/components/AiRimMark.tsx'];
@@ -276,7 +278,7 @@ assert.equal(mutations.length, 5);
 return { ...nativeHubSvg96Result, checks: controls, mutationNegatives: mutations, webDOMCases: webCases,
   nativeAccessibleNames: buttons(nativeAfter).map(name), sourceRefs: mainRefs,
   audit: 'ORIGINAL_NO_ELEMENT_FAIL_HOLD_RETAINED', runtimeUsed: false,
-  scope: 'Actual Scan/Hub/Nav and React/Lucide in isolated VM; controlled owner/router/history and inert selected scanners. DOM/name/class/source proof, not physical44, UIKit, VoiceOver or audit cause. Syntax transpilation only.' };
+  scope: 'Legacy Scan96 after the exact Scan99 inverse, unchanged Hub/Nav and React/Lucide in isolated VM; controlled owner/router/history and inert selected scanners. Current NativeScanHub99 is tested separately by check-matchrim-native-scan99. DOM/name/class/source proof, not current Scan99 UI, physical44, UIKit, VoiceOver or audit cause. Syntax transpilation only.' };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) console.log(JSON.stringify(runNativeHubSvg96Checks()));

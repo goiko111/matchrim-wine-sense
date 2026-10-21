@@ -106,9 +106,10 @@ function mount(componentName: 'AiRimConversation' | 'MatchrimFunction', native: 
     },
   };
   const globals: Record<string, unknown> = {
-    ...h, ...consumer, ...restaurant, AbortController, DOMException, console,
+    ...h, ...consumer, ...restaurant, AbortController, DOMException, console, exports: {},
     Date: class extends Date { static now() { return 950095; } },
-    React: { createElement: (tag: string, p: Record<string, unknown> | null, ...children: unknown[]) => ({ type: tag, props: p || {}, children }) },
+    React: { createElement: (tag: string | ((props: unknown) => unknown), p: Record<string, unknown> | null, ...children: unknown[]) =>
+      typeof tag === 'function' ? tag({ ...(p || {}), children }) : ({ type: tag, props: p || {}, children }) },
     Capacitor: { isNativePlatform: () => native }, useAuth: () => ({ user }), useNavigate: () => () => {},
     useToast: () => ({ toast: () => {} }), toast: { error: () => {} }, supabase,
     calculateLearnedMatchrimProfile: wrapper.exports.calculateLearnedMatchrimProfile,
@@ -118,8 +119,15 @@ function mount(componentName: 'AiRimConversation' | 'MatchrimFunction', native: 
     streamAiRimResponse: async (request: unknown, onData: (s: string) => void) => { streams.push(request); onData('Controlled legacy stream95'); },
   };
   for (const name of ['ArrowLeft', 'BrainCircuit', 'LoaderCircle', 'ScanLine', 'Send', 'Sparkles', 'UserRound', 'Loader', 'Wine', 'ChefHat', 'Scale', 'X',
-    'Button', 'Input', 'Textarea', 'AiRimMark', 'WineRecommendationCard', 'DishRecommendationCard', 'PairingAnalysisCard']) globals[name] = name;
+    'Button', 'Input', 'Textarea', 'AiRimMark', 'WineRecommendationCard', 'DishRecommendationCard', 'PairingAnalysisCard', 'ChevronRight', 'FileText']) globals[name] = name;
   const context = vm.createContext(globals);
+  if (!baseline && componentName === 'AiRimConversation') {
+    const nativeSource = readFileSync(new URL('src/components/NativeAiRimChat99.tsx', root), 'utf8');
+    const nativeAst = ts.createSourceFile('NativeAiRimChat99.tsx', nativeSource, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+    const nativeCode = nativeAst.statements.filter(n => !ts.isImportDeclaration(n)).map(n => n.getText(nativeAst)).join('\n')
+      .replace('export const NativeAiRimChat99', 'const NativeAiRimChat99') + '\nglobalThis.NativeAiRimChat99 = NativeAiRimChat99;';
+    vm.runInContext(ts.transpileModule(nativeCode, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.React } }).outputText, context);
+  }
   vm.runInContext(ts.transpileModule(code, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.React } }).outputText, context);
   const render = (runEffects = true) => {
     cursor = 0; tree = context.Component95(props);

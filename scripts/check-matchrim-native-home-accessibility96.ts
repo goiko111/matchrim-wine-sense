@@ -6,11 +6,12 @@ import { Script } from 'node:vm';
 import postcss from 'postcss';
 import ts from 'typescript';
 import { restoreNativeScanHub96 } from './check-matchrim-scan-hub96';
+import { restoreNativeHome98 } from './native-home98-scope.mjs';
 
 const baseline = 'ebee038059778f1f10bdb5dd647bccb8324fb580';
 const file = 'src/components/NativeAppHome.tsx';
 const before = execFileSync('git', ['show', `${baseline}:${file}`], { encoding: 'utf8' });
-const current = readFileSync(file, 'utf8');
+const current = restoreNativeHome98(file, readFileSync(file, 'utf8'));
 const parse = (source: string) => ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 const component = (source: string) => {
   const tree = parse(source);
@@ -297,4 +298,4 @@ check('Whole web projection detects changed text and navigation callback rather 
 });
 console.log(JSON.stringify({ passed, failed: 0, baseline,
   nativeInitialScannerLandscapePaddingAmendments: 1,
-  scope: 'Actual Home JSX/CSS contracts, exact12-rule nativeAX initial-upload amendment plus one exact initial-only landscape padding rule and native=false parity. No WK AX hitpoint, VoiceOver, browser or simulator acceptance claim.' }));
+  scope: 'Legacy Home96 JSX/CSS contracts after the literal NativeHome98 inverse, exact12-rule nativeAX initial-upload amendment plus one exact initial-only landscape padding rule and native=false parity. This is not current NativeHome98 UI evidence; its actual composition is tested separately by consumer95-native-recommendation. No WK AX hitpoint, VoiceOver, browser or simulator acceptance claim.' }));

@@ -5,6 +5,7 @@ import ts from 'typescript';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { restoreFoodDiagnosticsGuard96 } from './matchrim-food-diagnostics96-scope';
+import { restoreNativeAiRim99FeedbackScope96 } from './native-airim99-scope';
 
 const file = 'src/components/wine-import/FoodPairingScanner.tsx';
 const baseline = '55ee695ed51b5079e6eb0ab645c04b0b3420420a';
@@ -38,6 +39,7 @@ for (const [key, expected] of Object.entries({ passed: 6, failed: 0, nativeClass
 
 `;
 export const restoreNativeFoodSummaryScope96 = (value: string) => {
+  value = restoreNativeAiRim99FeedbackScope96(value);
   for (const [current, previous] of [
     ["import { execFileSync } from 'node:child_process';\nimport { restoreNativeFoodSummary96 } from './check-matchrim-food-summary96';\n", ''],
     [quietChild, ''],

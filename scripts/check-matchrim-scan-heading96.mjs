@@ -6,6 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { restoreMenuResultsGuard96, restoreMenuResultsPackage96 } from './matchrim-menu-results-first96-scope.mjs';
+import { restoreNativeScan99 } from './native-scan99-scope.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const baseline = 'df2d5b168515b59931c3360597a07d9a1f38e4f0';
@@ -106,7 +107,7 @@ export function runNativeScanHeading96Checks() {
   vm.runInContext(`${functions.get('mount')}\n${functions.get('html')}\nthis.fixture96 = { mount, html };`, context, { timeout: 3000 });
   const { mount, html } = context.fixture96;
   const before = Object.fromEntries([hubFile, scanFile].map(file => [file, previous(file)]));
-  const actual = Object.fromEntries([hubFile, scanFile].map(file => [file, read(file)]));
+  const actual = Object.fromEntries([hubFile, scanFile].map(file => [file, restoreNativeScan99(file, read(file))]));
   const groups = [];
   const check = (name, action) => { action(); groups.push(name); };
   const buttons = tree => walk(tree).filter(node => node.tag === 'button');
@@ -196,7 +197,7 @@ export function runNativeScanHeading96Checks() {
   return { passed: groups.length, failed: 0, groups, rejectedMutations: mutations.length, sourceGuardNegatives,
     wholeFileInverse: true, webDOMByteExact: true, currentHandlersPreserved: true, externalCalls: 0, SDK: 0,
     audit: 'SOURCE_CANDIDATE_ONLY_ORIGINAL_AND_MINHEIGHT_ONLY_FAIL_RETAINED',
-    limits: 'Actual React/Hub/Scan/Lucide render with existing controlled hooks/router, not WK AX/name/level exposure, physical44, UIKit, VoiceOver or cause proof.' };
+    limits: 'Legacy Scan96 after the exact Scan99 inverse with unchanged React/Hub/Lucide and existing controlled hooks/router. Current NativeScanHub99 is tested separately by check-matchrim-native-scan99; this is not current Scan99 UI, WK AX/name/level exposure, physical44, UIKit, VoiceOver or cause proof.' };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) console.log(JSON.stringify(runNativeScanHeading96Checks()));

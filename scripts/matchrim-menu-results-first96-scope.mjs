@@ -7,6 +7,7 @@ import { restoreNativeMenuResultsFirst96 } from './check-matchrim-menu-results-f
 import { restoreNativeScanPrivacyCss96 } from './check-matchrim-scan-privacy96.mjs';
 import { restoreMenuEntryGuard96, restoreMenuEntryPackage96 } from './check-matchrim-native-menu-entry-bridge96.mjs';
 import { restoreNativeLabel97, restoreNativeLabelGuard97 } from './native-label97-scope.mjs';
+import { restoreNativeHome98 } from './native-home98-scope.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const original = file => execFileSync('git', ['show', `8af21043075ee42f00b04c30979a1abddf8c3e27:${file}`], { cwd: root, encoding: 'utf8' });
@@ -29,6 +30,7 @@ export function restoreLookupReasons96(value) {
   return value;
 }
 export function restoreMenuResultsSource96(file, value) {
+  value = restoreNativeHome98(file, value);
   value = restoreNativeLabel97(file, value);
   if (file === 'src/index.css' && value.includes('.scan-page-main:has(.matchrim-native-scan-privacy)')) return restoreNativeScanPrivacyCss96(value);
   if (file === 'src/components/wine-import/WineMenuScanner.tsx' && value.includes('  const nativeResultPreview =')) return restoreNativeMenuResultsFirst96(value);

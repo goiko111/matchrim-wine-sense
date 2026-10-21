@@ -11,6 +11,7 @@ import { calculateLearnedMatchrimProfile, NATIVE_MATCHRIM_LEARNING_MODEL, type T
 import { generateMatchrimCode, type MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { AIRIM_EVIDENCE_GUARDRAILS } from '@/utils/aiRimGrounding';
 import AiRimMark from '@/components/AiRimMark';
+import { NativeAiRimChat99, type AiRimQuickAction99 } from '@/components/NativeAiRimChat99';
 import { cellarTrainingRows } from '@/utils/bodegaAffinity';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import { aiRimRequestContext95, assertAiRimConsumerAnswer95, buildAiRimConsumer95, loadAiRimConsumer95, pendingAiRimConsumer95, type AiRimConsumerContext95 } from '@/utils/aiRimConsumer95';
@@ -24,9 +25,10 @@ type ConversationMessage = {
 interface AiRimConversationProps {
   onBack: () => void;
   initialQuestion?: string;
+  onSelectFunction?: (action: AiRimQuickAction99) => void;
 }
 
-const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationProps) => {
+const AiRimConversation = ({ onBack, initialQuestion = '', onSelectFunction }: AiRimConversationProps) => {
   const isNative = Capacitor.isNativePlatform();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -214,6 +216,15 @@ const AiRimConversation = ({ onBack, initialQuestion = '' }: AiRimConversationPr
   };
 
   if (isNative && contextOwner.current !== user?.id) return <p role="status">Actualizando el contexto de esta cuenta...</p>;
+
+  if (isNative) return <NativeAiRimChat99 input={input} messages={messages} loading={isLoading} canSend={nativeCanSend}
+    memoryLabel={memoryLabel} notice={(sentNativeContext ?? nativeContext).notice} contextSent={Boolean(sentNativeContext)}
+    onInput={setInput} onSend={() => void sendMessage()} onCancel={cancelNativeMessage}
+    onBack={() => { cancelNativeMessage(); onBack(); }}
+    onProfile={() => navigate(user ? '/profile' : '/matchrim')}
+    onScan={() => { cancelNativeMessage(); navigate('/escanear'); }}
+    onRestaurant={() => { cancelNativeMessage(); navigate('/restaurante'); }}
+    onSelectFunction={onSelectFunction ? action => { cancelNativeMessage(); onSelectFunction(action); } : undefined} />;
 
   return (
     <main className="matchrim-native-safe-x mx-auto w-full max-w-2xl pb-[calc(8rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))] sm:pt-6">

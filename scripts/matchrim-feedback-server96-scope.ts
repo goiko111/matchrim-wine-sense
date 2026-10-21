@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { restoreNativeFoodSummary96 } from './check-matchrim-food-summary96';
+import { restoreNativeAiRim99 } from './native-airim99-scope';
 
 const foodSummaryOutput96 = execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-food-summary96.ts'], {
   encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 60000,
@@ -69,6 +70,7 @@ export const feedbackServerScope96 = Object.keys(pairs);
 export const projectFeedbackServer96 = (file: string, source: string): string => {
   assert.ok(file in pairs, 'Only the eight reviewed opt-in files may be projected');
   if (file === 'src/components/wine-import/FoodPairingScanner.tsx') source = restoreNativeFoodSummary96(source);
+  if (file === 'src/components/AiRimConversation.tsx') source = restoreNativeAiRim99(file, source);
   for (const [current, previous] of pairs[file]) {
     assert.equal(source.split(current).length, 2, 'Exactly one reviewed native opt-in slot: ' + file + ': ' + current);
     source = source.replace(current, previous);

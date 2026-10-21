@@ -1,5 +1,6 @@
 import AppNav from "@/components/AppNav";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import { NativeScanHub99 } from "@/components/NativeScanHub99";
 import { Capacitor } from "@capacitor/core";
 import { ScanPrivacyGate } from "@/components/ScanPrivacyGate";
 import { ScanHub, scanOptions, type ScanMode } from "@/components/wine-import/ScanHub";
@@ -144,6 +145,26 @@ const Scan = () => {
 
   if (modeParam && !activeMode) {
     return <Navigate to="/escanear" replace />;
+  }
+
+  if (isNative && !activeMode) {
+    return (
+      <div className="matchrim-app-shell min-h-screen bg-[#fafafa] pb-[calc(var(--matchrim-bottom-nav-height,88px)+16px)] text-stone-950">
+        <main className="mx-auto w-full max-w-xl pb-[24px] pl-[calc(16px+var(--matchrim-safe-left))] pr-[calc(16px+var(--matchrim-safe-right))] pt-[calc(16px+var(--matchrim-safe-top))]">
+          <NativeScanHub99
+            ownerId={user?.id ?? null}
+            options={scanOptions}
+            onSelectMode={(mode) => {
+              trackAppEvent("scan_option_selected", { userId: user?.id, metadata: { option: mode } });
+              navigate(`/escanear/${scanModePaths[mode]}`);
+            }}
+            onOpenRestaurant={() => navigate("/restaurante")}
+            onOpenRecent={(route) => navigate(route)}
+          />
+        </main>
+        <MobileBottomNav />
+      </div>
+    );
   }
 
   return (
