@@ -10,7 +10,7 @@ const folder = path.resolve(process.argv[3]);
 const sha = value => createHash('sha256').update(value).digest('hex');
 const fixture = { localCandidate: { name: 'Vidure', producer: 'Pago de Cirsus', vintage: 2020 }, ocrLines: ['VIDURE', 'Pago de Cirsus', '2020'] };
 const scenarios = process.argv[4] ? [process.argv[4]] : ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer'];
-assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline', 'saved-NV-reference', 'local-ocr106', 'local-first109', 'profile-history116'].includes(state)));
+assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline', 'saved-NV-reference', 'local-ocr106', 'local-first109', 'profile-history116', 'quiz-history118'].includes(state)));
 const globalObserved = JSON.parse(fs.readFileSync('qa-artifacts/native102-20261021/global-store103-r1/04-body.json'));
 const awardObserved = JSON.parse(fs.readFileSync('qa-artifacts/global103-20261021/ocr200-r1/response-358.json')).results.find(row => row.id === 375658);
 const localOCR = scenarios.some(state => ['local-ocr106', 'local-first109'].includes(state)) ? JSON.parse(fs.readFileSync('qa-artifacts/night105-20261021/native-ocr106-r3/OCR.json')).results.find(row => row.file === 'img-061.jpg').response.data : null;
@@ -68,7 +68,8 @@ try {
     if (url.pathname === '/auth/v1/user') return json(user);
     if (url.pathname.startsWith('/rest/v1/')) {
       const table = url.pathname.split('/').at(-1);
-      if (table === 'quiz_results' && scenario === 'profile-history116') {
+      if (table === 'quiz_results' && ['profile-history116', 'quiz-history118'].includes(scenario)) {
+        assert.equal(request.method(), 'GET', 'History visual checks must not write quiz data');
         if (!profileHistoryHealthy) return route.fulfill({ status: 503, contentType: 'application/json',
           body: JSON.stringify({ message: 'Controlled offline regression', code: 'QA116' }), headers: { 'Access-Control-Allow-Origin': origin } });
         return json([{ id: 'qa-quiz116', ...activeProfile, created_at: '2026-10-21T00:00:00Z', wine_recommendations: [] }]);
@@ -91,7 +92,7 @@ try {
       }
       return json(table === 'profiles' ? { id: owner, preferred_language: 'ES' } : []);
     }
-    if (scenario === 'profile-history116' && url.pathname.endsWith('/matchrim-recommendations')) return json([]);
+    if (['profile-history116', 'quiz-history118'].includes(scenario) && url.pathname.endsWith('/matchrim-recommendations')) return json([]);
     if (url.pathname.endsWith('/detect-wine-regions-v72')) return json({ regions: [{ box: { x: 3, y: 5, width: 94, height: 90 }, confidence: .99,
       object_type: 'bottle', quality: { glare: 'low', occlusion: 'low', legibility: 'good' } }],
       coverage: { status: 'reported_complete', detected_objects: 1, estimated_visible_objects: 1, confidence: .99 } });
@@ -141,7 +142,7 @@ try {
   page.on('pageerror', error => report.pageErrors.push(String(error)));
   page.on('console', message => {
     if (message.type() !== 'error') return;
-    if (scenario === 'profile-history116' && message.location().url.includes('/rest/v1/quiz_results')
+    if (['profile-history116', 'quiz-history118'].includes(scenario) && message.location().url.includes('/rest/v1/quiz_results')
       && /503/.test(message.text())) {
       report.expectedOfflineConsoleErrors = [...(report.expectedOfflineConsoleErrors || []), message.text()];
     } else report.consoleErrors.push(message.text());
@@ -172,6 +173,43 @@ try {
     savedWines = [];
     activeProfile = profile;
     await page.setViewportSize({ width: 393, height: 852 });
+    if (state === 'quiz-history118') {
+      report.quizScope118 = 'Actual native-branch React saved-quiz503/retry and explicit-retake route with fully intercepted synthetic auth/history. No new quiz completed or saved; not real native/device QA.';
+      await page.goto(origin + '/matchrim', { waitUntil: 'networkidle' });
+      await page.getByRole('heading', { name: 'No hemos podido cargar tu test guardado', exact: true }).waitFor();
+      assert.equal(await page.getByRole('button', { name: 'Comenzar el test', exact: true }).count(), 0);
+      for (const [width, height, text] of [[393,852,100], [320,568,100], [393,852,200]]) {
+        await page.setViewportSize({ width, height });
+        await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
+        const retry = page.getByRole('button', { name: 'Reintentar carga', exact: true });
+        await retry.evaluate(element => element.scrollIntoView({ block: 'center' }));
+        const box = await retry.boundingBox(); assert(box && box.height >= 43.5 && box.x >= 0 && box.x + box.width <= width + 1);
+        assert(await retry.evaluate(element => { const r = element.getBoundingClientRect();
+          const hit = document.elementFromPoint(r.x + r.width / 2, r.y + r.height * .9); return hit === element || element.contains(hit); }));
+        await capture('quiz118-error-' + width + '-' + text);
+      }
+      profileHistoryHealthy = true;
+      await page.getByRole('button', { name: 'Reintentar carga', exact: true }).click();
+      await page.getByRole('heading', { name: 'Tu perfil', exact: true }).waitFor();
+      assert.equal(await page.getByRole('button', { name: 'Comenzar el test', exact: true }).count(), 0);
+      await page.evaluate(() => { document.documentElement.style.fontSize = '100%'; document.documentElement.classList.remove('matchrim-accessibility-text'); });
+      await page.setViewportSize({ width: 393, height: 852 });
+      await capture('quiz118-recovered-saved-profile');
+      await page.goto(origin + '/profile', { waitUntil: 'networkidle' });
+      await page.getByRole('button', { name: 'Realizar Nuevo Test', exact: true }).click();
+      await page.waitForURL(origin + '/matchrim?retake=1');
+      await page.getByRole('heading', { name: 'Test de paladar', exact: true }).waitFor();
+      for (const [width, height, text] of [[320,568,100], [393,852,200]]) {
+        await page.setViewportSize({ width, height });
+        await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
+        await page.getByRole('button', { name: 'Comenzar el test', exact: true }).evaluate(element => element.scrollIntoView({ block: 'center' }));
+        await capture('quiz118-explicit-retake-' + width + '-' + text);
+      }
+      assert(!report.requests.some(row => row.method !== 'GET'), 'Quiz recovery/retake must not silently save any answers');
+      report.quizHistory118 = { errorDistinctFromEmpty: true, retryRestoredSavedProfile: true,
+        explicitRetakeReachedIntro: true, quizWrites: 0, productionWrites: 0 };
+      continue;
+    }
     if (state === 'profile-history116') {
       report.profileScope116 = 'Actual native-branch React Profile with fully intercepted synthetic auth and503/history recovery. Not a real account, native runtime, model or production write.';
       const email = profileEmail116;
