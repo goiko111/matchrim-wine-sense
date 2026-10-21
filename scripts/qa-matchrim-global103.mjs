@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { chromium } from '/Users/GOIKO/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
 import { image128, names128, detection128, reading128 } from './matchrim-dense128-fixture.mjs';
+import { makeProfiles131, session131 } from './matchrim-profiles131-fixture.mjs';
 
 const repo = process.cwd();
 const preparation = JSON.parse(fs.readFileSync(path.resolve(process.argv[2], 'preparation.json')));
@@ -11,7 +12,7 @@ const folder = path.resolve(process.argv[3]);
 const sha = value => createHash('sha256').update(value).digest('hex');
 const fixture = { localCandidate: { name: 'Vidure', producer: 'Pago de Cirsus', vintage: 2020 }, ocrLines: ['VIDURE', 'Pago de Cirsus', '2020'] };
 const scenarios = process.argv[4] ? [process.argv[4]] : ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer'];
-assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline', 'saved-NV-reference', 'local-ocr106', 'local-first109', 'profile-history116', 'quiz-history118', 'dense128'].includes(state)));
+assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline', 'saved-NV-reference', 'local-ocr106', 'local-first109', 'profile-history116', 'quiz-history118', 'dense128', 'profiles50-131'].includes(state)));
 const globalObserved = JSON.parse(fs.readFileSync('qa-artifacts/native102-20261021/global-store103-r1/04-body.json'));
 const awardObserved = JSON.parse(fs.readFileSync('qa-artifacts/global103-20261021/ocr200-r1/response-358.json')).results.find(row => row.id === 375658);
 const localOCR = scenarios.some(state => ['local-ocr106', 'local-first109'].includes(state)) ? JSON.parse(fs.readFileSync('qa-artifacts/night105-20261021/native-ocr106-r3/OCR.json')).results.find(row => row.file === 'img-061.jpg').response.data : null;
@@ -37,7 +38,8 @@ const owner = '00000000-0000-4000-8000-000000010201';
 const profile = { potente: 4, acidez: 3, dulce: 1, tanico: 3, afrutado: 4 };
 let activeProfile = profile;
 const profileEmail116 = 'synthetic-account115-' + 'long'.repeat(24) + '@example.invalid';
-const user = { id: owner, aud: 'authenticated', role: 'authenticated', email: scenarios.includes('profile-history116') ? profileEmail116 : 'native102@example.invalid',
+const profiles131 = makeProfiles131(owner);
+const user = scenarios.includes('profiles50-131') ? profiles131[0].user : { id: owner, aud: 'authenticated', role: 'authenticated', email: scenarios.includes('profile-history116') ? profileEmail116 : 'native102@example.invalid',
   app_metadata: { provider: 'email', providers: ['email'] }, user_metadata: {}, created_at: '2026-10-21T00:00:00Z' };
 const jwt = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url') + '.'
   + Buffer.from(JSON.stringify({ sub: owner, exp: 4102444800, role: 'authenticated' })).toString('base64url') + '.synthetic-not-a-real-signature';
@@ -49,6 +51,7 @@ const report = { startedUTC: new Date().toISOString(), sourceCommit: preparation
   scenarios, captureMode: 'Responsive desktop Chromium viewport with native Capacitor CSS branch and touch; not mobile-browser engine. Avoids known Chromium mobile fixed-layer screenshot duplication after viewport/text resizing.' };
 report.harnessSHA256 = sha(fs.readFileSync('scripts/qa-matchrim-global103.mjs'));
 report.dense128FixtureSHA256 = sha(fs.readFileSync('scripts/matchrim-dense128-fixture.mjs'));
+report.profiles131FixtureSHA256 = sha(fs.readFileSync('scripts/matchrim-profiles131-fixture.mjs'));
 const write = (name, value) => fs.writeFileSync(path.join(folder, name), typeof value === 'string' || Buffer.isBuffer(value) ? value : JSON.stringify(value, null, 2), { mode: 0o600 });
 let browser, context;
 try {
@@ -68,6 +71,25 @@ try {
       return route.fulfill({ body: bytes, contentType: ({ '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.png': 'image/png' })[path.extname(name)] || 'application/octet-stream' });
     }
     report.requests.push({ method: request.method(), host: url.hostname, path: url.pathname });
+    if (scenario === 'profiles50-131') {
+      if (url.pathname === '/auth/v1/user' || url.pathname.startsWith('/rest/v1/')) {
+        assert.equal(request.method(), 'GET', 'Synthetic owner transitions must not issue account/data writes');
+        const token = request.headers().authorization?.replace(/^Bearer /i, '');
+        const subject = token && JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString()).sub;
+        const person = profiles131.find(row => row.user.id === subject); assert(person, 'Only synthetic owner tokens are accepted');
+        if (url.pathname === '/auth/v1/user') return json(person.user);
+        const table = url.pathname.split('/').at(-1);
+        if (['quiz_results', 'user_wines'].includes(table)) {
+          assert.equal(url.searchParams.get('user_id'), 'eq.' + subject, 'Every personal read must match its current token owner');
+          report.profiles131Reads = [...(report.profiles131Reads || []), { table, owner: subject }];
+          return json(table === 'user_wines' ? [] : [{ id: 'qa131-' + subject, user_id: subject,
+            ...person.profile, created_at: '2026-10-21T00:00:00Z', wine_recommendations: [] }]);
+        }
+        if (table === 'profiles') return json({ id: subject, preferred_language: 'ES' });
+        return json([]);
+      }
+      if (url.pathname.endsWith('/matchrim-recommendations')) return json([]);
+    }
     if (url.pathname === '/auth/v1/user') return json(user);
     if (url.pathname.startsWith('/rest/v1/')) {
       const table = url.pathname.split('/').at(-1);
@@ -185,6 +207,49 @@ try {
     savedWines = [];
     activeProfile = profile;
     await page.setViewportSize({ width: 393, height: 852 });
+    if (state === 'profiles50-131') {
+      report.profiles131Scope = '50 synthetic auth-state sessions through the actual client BroadcastChannel listener in one mounted Profile route. Fully intercepted read-only transports, empty training/collection fixtures. No signup, real account, real taste/learning study, physical iPhone or provider call.';
+      await page.goto(origin + '/profile', { waitUntil: 'networkidle' });
+      report.profiles131 = [];
+      const axes = [['Potente','potente'], ['Acidez','acidez'], ['Dulce','dulce'], ['Tánico','tanico'], ['Afrutado','afrutado']];
+      for (const [index, person] of profiles131.entries()) {
+        if (index > 0) {
+          await page.evaluate(session => {
+            const key = 'sb-cbjynrbvrhcmpaojmqdp-auth-token';
+            localStorage.setItem(key, JSON.stringify(session));
+            const channel = new BroadcastChannel(key);
+            channel.postMessage({ event: 'SIGNED_IN', session });
+            setTimeout(() => channel.close(), 100);
+          }, session131(person.user));
+        }
+        await page.getByText(person.user.email, { exact: true }).waitFor();
+        await page.getByRole('meter', { name: 'Potente: perfil actual', exact: true }).waitFor();
+        const observed = {};
+        for (const [label, key] of axes) {
+          const meter = page.getByRole('meter', { name: label + ': perfil actual', exact: true });
+          const value = Number(await meter.getAttribute('aria-valuenow'));
+          assert.equal(value, person.profile[key], 'Current account profile must not reuse the prior account vector');
+          assert.equal(await meter.getAttribute('aria-valuemin'), '0');
+          assert.equal(await meter.getAttribute('aria-valuemax'), '5'); observed[key] = value;
+        }
+        const emails = await page.locator('body').innerText();
+        assert.deepEqual(emails.match(/qa-profile131-\d{2}@example\.invalid/g), [person.user.email]);
+        report.profiles131.push({ number: index+1, owner: person.user.id, exactProfile: observed });
+        write('profiles131-progress.json', report.profiles131);
+        if ([0,24,49].includes(index)) {
+          await page.getByRole('heading', { name: /Tu perfil sensorial/ }).scrollIntoViewIfNeeded();
+          await capture('profiles131-' + String(index+1).padStart(2,'0'));
+        }
+      }
+      assert.equal(new Set(report.profiles131.map(row => JSON.stringify(row.exactProfile))).size, 50);
+      for (const [width, height, text] of [[320,568,100], [393,852,200]]) {
+        await page.setViewportSize({ width, height });
+        await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
+        await page.getByRole('heading', { name: /Tu perfil sensorial/ }).scrollIntoViewIfNeeded();
+        await capture('profiles131-final-' + width + '-' + text);
+      }
+      continue;
+    }
     if (state === 'quiz-history118') {
       report.quizScope118 = 'Actual native-branch React saved-quiz503/retry and explicit-retake route with fully intercepted synthetic auth/history. No new quiz completed or saved; not real native/device QA.';
       await page.goto(origin + '/matchrim', { waitUntil: 'networkidle' });
