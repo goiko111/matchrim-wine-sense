@@ -27,6 +27,7 @@ const loadedRunnerSHA122 = sha122(fs.readFileSync(fileURLToPath(import.meta.url)
 const replacements = Object.freeze({
   'cpu-default': ['request.usesCPUOnly = true', 'request.usesCPUOnly = false'],
   'auto-language': ['request.automaticallyDetectsLanguage = false', 'request.automaticallyDetectsLanguage = true'],
+  'literal-text': ['request.usesLanguageCorrection = true', 'request.usesLanguageCorrection = false'],
   'expanded-latin': ['["es-ES", "en-US", "fr-FR"].filter { supported.contains($0) }',
     '["es-ES", "en-US", "fr-FR", "it-IT", "de-DE", "pt-PT"].filter { supported.contains($0) }'],
 });

@@ -77,6 +77,7 @@ await test('Exactly one configuration replacement; supported-language filter and
   for (const [variant, from, to] of [
     ['cpu-default', 'request.usesCPUOnly = true', 'request.usesCPUOnly = false'],
     ['auto-language', 'request.automaticallyDetectsLanguage = false', 'request.automaticallyDetectsLanguage = true'],
+    ['literal-text', 'request.usesLanguageCorrection = true', 'request.usesLanguageCorrection = false'],
     ['expanded-latin', '["es-ES", "en-US", "fr-FR"]', '["es-ES", "en-US", "fr-FR", "it-IT", "de-DE", "pt-PT"]'],
   ]) {
     const changed = transform122(source, variant);

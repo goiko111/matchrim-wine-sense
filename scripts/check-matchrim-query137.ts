@@ -32,6 +32,13 @@ test('Exact old-vine and pure organic metadata leave room for later literal iden
     assert.deepEqual(queries(pending, ['Cuvee Oriole', metadata, 'Casa Atlas']), ['Cuvee Oriole', 'Casa Atlas']);
   assert.deepEqual(queries(pending, ['Cuvee Oriole Old Vines', 'Casa Atlas']), ['Cuvee Oriole Old Vines', 'Casa Atlas']);
 });
+test('Stripping a supported harvest year cannot allocate a metadata-only query', () => {
+  for (const term of ['Cosecha', 'Vendimia', 'Recolte', 'Vintage', 'Ernte', 'Vendemmia']) {
+    assert.deepEqual(queries(pending, ['Cuvee Oriole', `${term} 2020`, 'Casa Atlas'], false, 2020), ['Cuvee Oriole', 'Casa Atlas']);
+    assert.deepEqual(queries(term, [], true), [term]);
+  }
+  assert.deepEqual(queries(pending, ['Cuvee Vintage Oriole 2020', 'Casa Atlas'], false, 2020), ['Cuvee Vintage Oriole', 'Casa Atlas']);
+});
 test('Explicit manual searches retain their previous text and two-query cap never increases', () => {
   assert.deepEqual(queries('Old Vines', [], true), ['Old Vines']);
   assert.deepEqual(queries('ECO-ORGANIC-BIO', [], true), ['ECO-ORGANIC-BIO']);

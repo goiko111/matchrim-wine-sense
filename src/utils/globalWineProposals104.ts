@@ -21,6 +21,7 @@ const queryMetadata = new Set(('celler cellar cava pet nat ancestral premium tra
   + 'origen origine controlee controllata controlada protegida protegee indicacion geografica '
   + 'malvar verdejo viura macabeo glera chenin verdicchio zibibbo cinsault '
   + 'dry trocken halbtrocken feinherb').split(' '));
+const automaticQueryMetadata = new Set('bio cosecha vendimia recolte vintage ernte vendemmia'.split(' '));
 const fullName = (row: PublicGlobalRow103) => row.subname && !(` ${tokens(row.name).join(' ')} `).includes(` ${tokens(row.subname).join(' ')} `)
   ? `${row.name} ${row.subname}` : row.name;
 export type WineProposal104 = { row: PublicGlobalRow103; name: string; score: number; missingProducer: boolean; vintageConflict: boolean; readingCorrections: string[] };
@@ -96,7 +97,7 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
   if (manuallyEntered) return meaningful(queryName) ? [queryName] : [];
   const automaticMeaningful = (value: string) => meaningful(value)
     && !['vieilles vignes', 'old vines'].includes(tokens(value).join(' '))
-    && !tokens(value).every(word => generic.has(word) || queryMetadata.has(word) || word === 'bio');
+    && !tokens(value).every(word => generic.has(word) || queryMetadata.has(word) || automaticQueryMetadata.has(word));
   const dates = wineYearRoles105(evidence.map(text => ({ text })));
   const possible = dates.roles.filter(role => role.role === 'vintage' || role.role === 'unclassified');
   const supportedHint = typeof vintageHint === 'number' && Number.isSafeInteger(vintageHint)
