@@ -10,9 +10,12 @@ const folder = path.resolve(process.argv[3]);
 const sha = value => createHash('sha256').update(value).digest('hex');
 const fixture = { localCandidate: { name: 'Vidure', producer: 'Pago de Cirsus', vintage: 2020 }, ocrLines: ['VIDURE', 'Pago de Cirsus', '2020'] };
 const scenarios = process.argv[4] ? [process.argv[4]] : ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer'];
-assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline', 'saved-NV-reference'].includes(state)));
+assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline', 'saved-NV-reference', 'local-ocr106'].includes(state)));
 const globalObserved = JSON.parse(fs.readFileSync('qa-artifacts/native102-20261021/global-store103-r1/04-body.json'));
 const awardObserved = JSON.parse(fs.readFileSync('qa-artifacts/global103-20261021/ocr200-r1/response-358.json')).results.find(row => row.id === 375658);
+const localOCR = scenarios.includes('local-ocr106') ? JSON.parse(fs.readFileSync('qa-artifacts/night105-20261021/native-ocr106-r3/OCR.json')).results.find(row => row.file === 'img-061.jpg').response.data : null;
+const localRequest = localOCR && JSON.parse(fs.readFileSync('qa-artifacts/global103-20261021/ocr200-r1/REQUESTS.json')).find(row => new URL(row.url).searchParams.get('text') === 'BIOGRAFO');
+const localRows = localRequest ? JSON.parse(fs.readFileSync(path.join('qa-artifacts/global103-20261021/ocr200-r1', localRequest.body))).results : [];
 let scenario = 'observed-NV-reference';
 let savedWines = [];
 const image = '/Users/GOIKO/Downloads/IMG_8324.PNG';
@@ -86,11 +89,18 @@ try {
       name: 'Muscadet La Cuvée Lucien', producer: null, vintage: 2026, confidence: .95, source: 'label',
       evidence: ['MUSCADET', 'LA CUVÉE LUCIEN', 'MAILLARD', 'LYON GOLD 2026'], inferred_fields: [], uncertainty_reasons: [],
     }] });
+    if (url.pathname.endsWith('/analyze-wine-region-v72') && scenario === 'local-ocr106') return json({ candidates: [{
+      name: 'Biografo', producer: null, vintage: null, confidence: .9, source: 'label', evidence: ['BIOGRAFO'], inferred_fields: [], uncertainty_reasons: [],
+    }] });
     if (url.pathname.endsWith('/analyze-wine-region-v72')) return json({ candidates: [{ ...fixture.localCandidate,
       ...(scenario === 'assisted-missing-producer' ? { producer: null } : {}),
       confidence: .95, source: 'label', evidence: scenario === 'assisted-missing-producer' ? ['VIDURE', '2020'] : fixture.ocrLines, inferred_fields: [], uncertainty_reasons: [] }] });
     if (url.hostname === 'app.winerim.com' && url.pathname.startsWith('/images/wines/')) return route.fulfill({ body: fs.readFileSync('qa-artifacts/global103-20261021/vidure-public-photo.png'), contentType: 'image/png' });
     if (url.hostname === 'app.winerim.com' && url.pathname.includes('/00000000-0000-0000-0000-000000000001/wines')) {
+      if (scenario === 'local-ocr106') {
+        assert(url.searchParams.has('text'), 'Local OCR visual scenario does not fabricate independent detail');
+        return json({ count: localRows.length, page: 1, results: localRows.map(row => ({ ...row, photo: null })) });
+      }
       if (scenario === 'award-year-inline') {
         assert(url.searchParams.has('text'), 'Award scenario must not fabricate independent detail verification');
         return json({ count: 1, page: 1, results: [{ ...awardObserved, photo: null }] });
@@ -101,12 +111,22 @@ try {
     report.unexpectedRemote = [...(report.unexpectedRemote || []), { host: url.hostname, path: url.pathname }];
     return route.abort('blockedbyclient');
   });
-  await context.addInitScript(({ user, jwt, profile, owner }) => {
+  await context.addInitScript(({ user, jwt, profile, owner, localOCR }) => {
     window.CapacitorCustomPlatform = { name: 'ios' };
+    if (localOCR) {
+      window.__localOCRCalls106 = 0;
+      window.Capacitor = { PluginHeaders: [{ name: 'MatchrimOCR', methods: [{ name: 'recognize', rtype: 'promise' }, { name: 'cancel', rtype: 'promise' }] }],
+        nativePromise: async (plugin, method, options) => {
+          if (plugin !== 'MatchrimOCR') throw Error('Unexpected native plugin');
+          if (method === 'cancel') return { requestId: options.requestId, cancelled: true };
+          if (!/^data:image\/(jpeg|png);base64,/.test(options.image)) throw Error('Local crop missing');
+          window.__localOCRCalls106++; return { ...localOCR, requestId: options.requestId };
+        } };
+    }
     localStorage.setItem('sb-cbjynrbvrhcmpaojmqdp-auth-token', JSON.stringify({ access_token: jwt, refresh_token: 'synthetic-only', expires_at: 4102444800, expires_in: 3600, token_type: 'bearer', user }));
     localStorage.setItem('matchrim.local_profile_owner.v1', owner);
     localStorage.setItem('matchrim_quiz_result', JSON.stringify(profile));
-  }, { user, jwt, profile, owner });
+  }, { user, jwt, profile, owner, localOCR });
   const page = await context.newPage(); page.setDefaultTimeout(10000);
   page.on('pageerror', error => report.pageErrors.push(String(error)));
   page.on('console', message => { if (message.type() === 'error') report.consoleErrors.push(message.text()); });
@@ -141,7 +161,7 @@ try {
       await privacy.check();
       await page.getByRole('button', { name: 'Entiendo y continuar', exact: true }).click();
     }
-    const activeImage = state === 'award-year-inline' ? path.resolve('qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-184.jpg') : image;
+    const activeImage = state === 'award-year-inline' || state === 'local-ocr106' ? path.resolve('qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared', state === 'local-ocr106' ? 'img-061.jpg' : 'img-184.jpg') : image;
     report.imageInputs.push({ scenario: state, path: activeImage, sha256: sha(fs.readFileSync(activeImage)) });
     await page.locator('input[type=file]').nth(1).setInputFiles(activeImage);
     await page.getByRole('button', { name: 'Revisar vinos', exact: true }).waitFor({ timeout: 20000 });
@@ -149,6 +169,22 @@ try {
     await page.getByRole('dialog').waitFor();
     await page.waitForFunction(() => { const el = document.querySelector('[role=dialog]'); return el && Math.abs(new DOMMatrixReadOnly(getComputedStyle(el).transform).m42) < 1; });
     const dialog = page.getByRole('dialog');
+    if (state === 'local-ocr106') {
+      const recovery = dialog.getByTestId('global-recovery104');
+      const read = recovery.getByRole('button', { name: 'Releer recorte en este iPhone', exact: true }); await read.waitFor();
+      await read.click();
+      await recovery.getByRole('button', { name: 'Confirmar esta referencia', exact: true }).waitFor();
+      assert.match(await recovery.innerText(), /Biógrafo del Vino/i);
+      assert.equal(await page.evaluate(() => window.__localOCRCalls106), 1);
+      assert.equal(await dialog.getByTestId('global-wine-reference').count(), 0, 'No automatic identity from local OCR');
+      report.localOCRScope = 'Replays actual simulator106 whole-image OCR for img061 through emulated Capacitor nativePromise into the crop recovery UI. Not live WebView-to-Vision E2E or independent crop OCR; no independent detail fabricated.';
+      for (const [width, height, text] of [[393,852,100], [320,568,100], [393,852,200]]) {
+        await page.setViewportSize({ width, height });
+        await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
+        await recovery.scrollIntoViewIfNeeded(); await capture('local-ocr-proposals-' + width + '-' + text);
+      }
+      continue;
+    }
     if (state === 'saved-NV-reference') {
       await dialog.getByTestId('global-style-estimate').waitFor();
       await dialog.getByRole('button', { name: 'Cerrar', exact: true }).click();
