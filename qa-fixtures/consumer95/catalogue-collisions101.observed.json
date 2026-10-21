@@ -1,0 +1,28 @@
+{
+  "observedDate": "2026-10-21",
+  "source": "Lovable Cloud public.wines, SELECT-only identity projection",
+  "scope": "Observed local name collisions, not a verified Mantalak mapping or model recognition result",
+  "cases": [
+    {
+      "input": { "name": "Syrah", "producer": "Christophe Abbet" },
+      "candidates": [{ "id": "6b718bee-d10d-4e71-a36a-aa7d7f962216", "name": "Syrah", "producer": "Castillo de Buen Amor", "vintage": 2020 }]
+    },
+    {
+      "input": { "name": "Morgon Côte du Py", "producer": "Chauvet Frères" },
+      "candidates": [{ "id": "d6df9923-6fe0-4570-ba84-8bed33db8f2b", "name": "Morgon Côte du Py", "producer": "Damien Coquelet", "vintage": 2019 }]
+    },
+    {
+      "input": { "name": "Sauvignon Blanc", "producer": "Gross" },
+      "candidates": [
+        { "id": "73e351aa-58e8-49f4-9e23-614d2eb053d9", "name": "Sauvignon Blanc", "producer": "Hacienda La Lomita", "vintage": 2022 },
+        { "id": "27fe1b60-c921-40e0-8464-46e2e48582bd", "name": "Sauvignon Blanc", "producer": "Drifting", "vintage": 2021 },
+        { "id": "65fb004f-4799-4a3e-83f3-47f739e272af", "name": "Sauvignon Blanc", "producer": "Casa Magoni", "vintage": 2023 },
+        { "id": "cba45e95-f14f-4901-bc12-54f2115fb204", "name": "Sauvignon Blanc", "producer": "Paul Mas", "vintage": 2023 }
+      ]
+    },
+    {
+      "input": { "name": "Chassagne-Montrachet 1er Cru Les Caillerets", "producer": "Domaine Ramonet" },
+      "candidates": [{ "id": "8425eaca-29cf-4b67-940a-db4cd882f226", "name": "Chassagne Montrachet 1er Cru Les Caillerets", "producer": "Vincent & Sophie Morey", "vintage": 2022 }]
+    }
+  ]
+}
