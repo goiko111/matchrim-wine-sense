@@ -2,6 +2,8 @@ import importlib.util
 import json
 from pathlib import Path
 import sqlite3
+import subprocess
+import sys
 import tempfile
 
 spec = importlib.util.spec_from_file_location('storage132', Path(__file__).with_name('matchrim-session132-storage.py'))
@@ -28,8 +30,12 @@ with tempfile.TemporaryDirectory(prefix='matchrim132-mock-') as folder:
             try:
                 storage.seed(database, backup, session)
                 raise RuntimeError('Existing or unrelated storage must not be overwritten')
-            except AssertionError:
+            except ValueError:
                 assert not backup.exists()
+            optimized = subprocess.run([sys.executable, '-I', '-O', str(Path(__file__).with_name('matchrim-session132-storage.py')),
+                str(database), str(backup)], input=session, text=True, capture_output=True, timeout=5)
+            assert optimized.returncode == 1 and 'SESSION132_STORAGE_HOLD' in optimized.stderr
+            assert not backup.exists()
         else:
             storage.seed(database, backup, session)
             assert backup.is_file() and backup.stat().st_mode & 0o777 == 0o600

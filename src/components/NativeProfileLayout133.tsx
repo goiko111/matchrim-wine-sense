@@ -25,6 +25,12 @@ html.matchrim-native-platform .matchrim-profile133 .matchrim-profile-title133 sv
   height: 24px;
   flex-shrink: 0;
 }
+html.matchrim-native-platform .matchrim-profile133 .matchrim-profile-title133 {
+  font-size: 1.5rem;
+}
+html.matchrim-native-platform .matchrim-profile133 :is(h2,h3,h4) {
+  font-size: 1.125rem;
+}
 html.matchrim-native-platform .matchrim-profile133 [role="tab"] {
   min-height: 44px;
   height: auto;
@@ -33,13 +39,9 @@ html.matchrim-native-platform .matchrim-profile133 [role="tab"] {
 }
 html.matchrim-native-platform.matchrim-accessibility-text .matchrim-profile133 .matchrim-profile-title133 {
   display: block;
-  font-size: 1.125rem;
 }
 html.matchrim-native-platform.matchrim-accessibility-text .matchrim-profile133 .matchrim-profile-title133 svg {
   display: none;
-}
-html.matchrim-native-platform.matchrim-accessibility-text .matchrim-profile133 :is(h2,h3,h4) {
-  font-size: 1rem;
 }
 html.matchrim-native-platform.matchrim-accessibility-text .matchrim-profile133 .grid {
   grid-template-columns: minmax(0, 1fr);
@@ -56,6 +58,19 @@ html.matchrim-native-platform.matchrim-accessibility-text .matchrim-profile133 :
 }
 html.matchrim-native-platform.matchrim-accessibility-text .matchrim-profile133 :is(.p-3,.p-4,.p-5,.p-6) {
   padding: 16px;
+}
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-profile133 :is(.mb-4,.mb-5,.mb-6,.mb-8) {
+  margin-bottom: 20px;
+}
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-profile133 :is(.mt-2,.mt-3,.mt-4) {
+  margin-top: 12px;
+}
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-profile133 .space-y-8 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 24px;
+}
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-profile133 :is(.py-2,.py-3) {
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 html.matchrim-native-platform.matchrim-accessibility-text .matchrim-profile133 [class~="min-w-[220px]"] {
   min-width: 0;

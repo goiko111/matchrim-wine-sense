@@ -24,4 +24,7 @@ assert(source.indexOf('fs.fsyncSync(directory)') < source.indexOf("await fetch(o
 assert(source.includes("'wx', 0o600") && source.includes("signal: AbortSignal.timeout(20000)"));
 assert(source.includes('validateSession132(session, user)') && source.includes('databases.length === 1'));
 assert(source.includes("input: JSON.stringify(session)") && !source.includes('access_token, session.refresh_token]'));
-console.log(JSON.stringify({ checks: 15, syntheticOnly: true, networkCalls: 0, storageWrites: 0 }));
+assert(source.includes("['-I', 'scripts/matchrim-session132-storage.py'"));
+assert(source.includes('INSTALLED_ARTIFACT_MISMATCH') && source.includes('receipt.installedArtifactVerified = true'));
+assert(!/\bassert\b/.test(fs.readFileSync('scripts/matchrim-session132-storage.py', 'utf8')));
+console.log(JSON.stringify({ checks: 18, syntheticOnly: true, networkCalls: 0, storageWrites: 0 }));

@@ -34,5 +34,9 @@ assert(settings.nodes.some(decl => decl.prop === 'width' && decl.value === '44px
 assert(settings.nodes.some(decl => decl.prop === 'height' && decl.value === '44px'));
 assert(css.nodes.some(rule => rule.selector?.endsWith(' .grid')
   && rule.nodes.some(decl => decl.prop === 'grid-template-columns' && decl.value === 'minmax(0, 1fr)')));
+css.walkRules(rule => {
+  if (rule.selector.includes('.matchrim-accessibility-text'))
+    assert(!rule.nodes.some(decl => decl.prop === 'font-size'), 'Larger text must not reduce a heading font at the accessibility threshold');
+});
 console.log(JSON.stringify({ rules, webMarkupEmpty: true, sourceContractOnly: true,
   scope: 'Native-only CSS isolation/fixed icon target and stacked layout. Actual Dynamic Type, touch/VoiceOver and visual results require native QA.' }));

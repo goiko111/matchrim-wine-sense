@@ -856,6 +856,7 @@ const Profile = () => {
                     Aprendizaje: {learnedProfile.samples} vino{learnedProfile.samples !== 1 ? 's' : ''} valorado{learnedProfile.samples !== 1 ? 's' : ''}
                   </summary>
                   <p className="mt-2 text-sm text-stone-700">{confidenceCopy}</p>
+                  <p className="mt-2 text-sm text-stone-700">Confianza del aprendizaje: {learnedProfile.confidence}%.</p>
                   <p className="mt-2 text-sm text-stone-700">Tu test inicial se conserva; estas valoraciones ajustan el perfil activo.</p>
                 </details> : <Card className="border-amber-200 bg-amber-50/70">
                   <CardContent className="p-5">

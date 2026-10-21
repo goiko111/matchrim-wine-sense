@@ -28,7 +28,7 @@ export async function runSession132(args = process.argv.slice(2)) {
   const prep = JSON.parse(fs.readFileSync(path.resolve(args[0], 'preparation.json'))), app = path.resolve(args[1]);
   const output = path.resolve(args[2]);
   assert(path.dirname(output) === base && /^session132-[\w-]+$/.test(path.basename(output)) && !fs.existsSync(output));
-  const env = { ...Object.fromEntries(Object.entries(process.env).filter(([key]) => !/TOKEN|KEY|SECRET|PASSWORD|CREDENTIAL/i.test(key))),
+  const env = { ...Object.fromEntries(Object.entries(process.env).filter(([key]) => !/TOKEN|KEY|SECRET|PASSWORD|CREDENTIAL|^PYTHON/i.test(key))),
     DEVELOPER_DIR: '/Applications/Xcode-26.0.1.app/Contents/Developer' };
   const guard = () => {
     checkLeases(JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json')).leases, env);
@@ -75,6 +75,13 @@ export async function runSession132(args = process.argv.slice(2)) {
     const container = xcrun(['simctl', 'get_app_container', device, bundle, 'data']).trim();
     const prefix = `/Users/GOIKO/Library/Developer/CoreSimulator/Devices/${device}/data/Containers/Data/Application/`;
     assert(container.startsWith(prefix) && /^[A-F0-9-]{36}$/.test(container.slice(prefix.length)), 'OWN_CONTAINER_HOLD');
+    const installed = xcrun(['simctl', 'get_app_container', device, bundle, 'app']).trim();
+    assert(installed.startsWith(`/Users/GOIKO/Library/Developer/CoreSimulator/Devices/${device}/data/Containers/Bundle/Application/`)
+      && installed.endsWith('/App.app'), 'INSTALLED_APP_CONTAINER_HOLD');
+    for (const file of ['App', 'Info.plist', 'capacitor.config.json', ...Object.keys(prep.webResources).map(name => 'public/' + name)]) {
+      assert(sha(fs.readFileSync(path.join(app, file))) === sha(fs.readFileSync(path.join(installed, file))), 'INSTALLED_ARTIFACT_MISMATCH');
+    }
+    receipt.installedArtifactVerified = true;
     const website = path.join(container, 'Library/WebKit', bundle, 'WebsiteData/Default');
     const databases = [];
     const walk = folder => {
@@ -87,7 +94,7 @@ export async function runSession132(args = process.argv.slice(2)) {
     try { xcrun(['simctl', 'terminate', device, bundle]); }
     catch (error) { assert(String(error.stderr).includes('found nothing to terminate'), 'APP_TERMINATION_HOLD'); }
     guard();
-    const result = execFileSync('/usr/bin/python3', ['scripts/matchrim-session132-storage.py', databases[0], path.join(output, 'PRIVATE-GUEST-BACKUP.sqlite3')],
+    const result = execFileSync('/usr/bin/python3', ['-I', 'scripts/matchrim-session132-storage.py', databases[0], path.join(output, 'PRIVATE-GUEST-BACKUP.sqlite3')],
       { env, input: JSON.stringify(session), encoding: 'utf8', timeout: 10000, stdio: ['pipe', 'pipe', 'pipe'] });
     assert(result.trim() === 'SESSION132_OWN_QA_GUEST_STORE_SEEDED', 'SESSION_STORAGE_HOLD');
     receipt.storageSeeded = true; receipt.passed = true;
