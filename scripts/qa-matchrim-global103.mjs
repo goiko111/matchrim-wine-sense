@@ -10,8 +10,9 @@ const folder = path.resolve(process.argv[3]);
 const sha = value => createHash('sha256').update(value).digest('hex');
 const fixture = { localCandidate: { name: 'Vidure', producer: 'Pago de Cirsus', vintage: 2020 }, ocrLines: ['VIDURE', 'Pago de Cirsus', '2020'] };
 const scenarios = process.argv[4] ? [process.argv[4]] : ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer'];
-assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer'].includes(state)));
+assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline'].includes(state)));
 const globalObserved = JSON.parse(fs.readFileSync('qa-artifacts/native102-20261021/global-store103-r1/04-body.json'));
+const awardObserved = JSON.parse(fs.readFileSync('qa-artifacts/global103-20261021/ocr200-r1/response-358.json')).results.find(row => row.id === 375658);
 let scenario = 'observed-NV-reference';
 const image = '/Users/GOIKO/Downloads/IMG_8324.PNG';
 const guard = () => {
@@ -35,6 +36,7 @@ const jwt = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('
 const report = { startedUTC: new Date().toISOString(), sourceCommit: preparation.commit,
   scope: 'Production-mode React native branch in isolated Chromium portrait emulation; synthetic account, detector and candidate transport. User screenshot uploaded to fully intercepted test transport. Real saved public Vidure response replay plus synthetic exact2020 variant, NOT live recognition, paid image analysis or UIKit/device approval.',
   imageHash: sha(fs.readFileSync(image)), preparation: preparation.root, requests: [], snapshots: [], pageErrors: [], consoleErrors: [],
+  imageInputs: [], awardScenarioScope: 'If selected: img184 preserved prepared photo with synthetic inline LYON GOLD2026 evidence, not a real model response or runtime spatial OCR. Saved public search row projected without catalogue photo (asset unobserved); no fabricated detail/affinity.',
   paidModelStarts: 0, forwardedRequests: 0, realAccountsCreated: 0, productionWrites: 0, masterConnectionActive: false,
   scenarios, captureMode: 'Responsive desktop Chromium viewport with native Capacitor CSS branch and touch; not mobile-browser engine. Avoids known Chromium mobile fixed-layer screenshot duplication after viewport/text resizing.' };
 const write = (name, value) => fs.writeFileSync(path.join(folder, name), typeof value === 'string' || Buffer.isBuffer(value) ? value : JSON.stringify(value, null, 2), { mode: 0o600 });
@@ -66,11 +68,19 @@ try {
     if (url.pathname.endsWith('/detect-wine-regions-v72')) return json({ regions: [{ box: { x: 3, y: 5, width: 94, height: 90 }, confidence: .99,
       object_type: 'bottle', quality: { glare: 'low', occlusion: 'low', legibility: 'good' } }],
       coverage: { status: 'reported_complete', detected_objects: 1, estimated_visible_objects: 1, confidence: .99 } });
+    if (url.pathname.endsWith('/analyze-wine-region-v72') && scenario === 'award-year-inline') return json({ candidates: [{
+      name: 'Muscadet La Cuvée Lucien', producer: null, vintage: 2026, confidence: .95, source: 'label',
+      evidence: ['MUSCADET', 'LA CUVÉE LUCIEN', 'MAILLARD', 'LYON GOLD 2026'], inferred_fields: [], uncertainty_reasons: [],
+    }] });
     if (url.pathname.endsWith('/analyze-wine-region-v72')) return json({ candidates: [{ ...fixture.localCandidate,
       ...(scenario === 'assisted-missing-producer' ? { producer: null } : {}),
       confidence: .95, source: 'label', evidence: scenario === 'assisted-missing-producer' ? ['VIDURE', '2020'] : fixture.ocrLines, inferred_fields: [], uncertainty_reasons: [] }] });
     if (url.hostname === 'app.winerim.com' && url.pathname.startsWith('/images/wines/')) return route.fulfill({ body: fs.readFileSync('qa-artifacts/global103-20261021/vidure-public-photo.png'), contentType: 'image/png' });
     if (url.hostname === 'app.winerim.com' && url.pathname.includes('/00000000-0000-0000-0000-000000000001/wines')) {
+      if (scenario === 'award-year-inline') {
+        assert(url.searchParams.has('text'), 'Award scenario must not fabricate independent detail verification');
+        return json({ count: 1, page: 1, results: [{ ...awardObserved, photo: null }] });
+      }
       const row = { ...globalObserved, ...(scenario === 'synthetic-exact2020' ? { vintage: '2020' } : {}) };
       return json(url.searchParams.has('text') ? { count: 1, page: 1, results: [row] } : row);
     }
@@ -116,12 +126,30 @@ try {
       await privacy.check();
       await page.getByRole('button', { name: 'Entiendo y continuar', exact: true }).click();
     }
-    await page.locator('input[type=file]').nth(1).setInputFiles(image);
+    const activeImage = state === 'award-year-inline' ? path.resolve('qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-184.jpg') : image;
+    report.imageInputs.push({ scenario: state, path: activeImage, sha256: sha(fs.readFileSync(activeImage)) });
+    await page.locator('input[type=file]').nth(1).setInputFiles(activeImage);
     await page.getByRole('button', { name: 'Revisar vinos', exact: true }).waitFor({ timeout: 20000 });
     await page.getByRole('button', { name: 'Revisar vinos', exact: true }).click();
     await page.getByRole('dialog').waitFor();
     await page.waitForFunction(() => { const el = document.querySelector('[role=dialog]'); return el && Math.abs(new DOMMatrixReadOnly(getComputedStyle(el).transform).m42) < 1; });
     const dialog = page.getByRole('dialog');
+    if (state === 'award-year-inline') {
+      assert(!(await dialog.getByRole('heading', { level: 2 }).first().innerText()).includes('2026'), 'Award year is not a vintage in the identity header');
+      assert.equal(await dialog.getByTestId('global-wine-reference').count(), 0);
+      const recovery = dialog.getByTestId('global-recovery104');
+      await recovery.getByRole('button', { name: 'Encontrar mi vino en Winerim', exact: true }).click();
+      await recovery.getByRole('button', { name: 'Confirmar esta referencia', exact: true }).waitFor();
+      assert((await recovery.innerText()).includes('cambiará tu añada a 2025'));
+      assert.equal(await dialog.getByTestId('global-style-estimate').count(), 0);
+      for (const [width, height, text] of [[393,852,100], [320,568,100], [393,852,200]]) {
+        await page.setViewportSize({ width, height });
+        await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
+        await recovery.getByRole('button', { name: 'Confirmar esta referencia', exact: true }).scrollIntoViewIfNeeded();
+        await capture('award-year-proposal-' + width + '-' + text);
+      }
+      continue;
+    }
     if (state === 'assisted-missing-producer') {
       const recovery = dialog.getByTestId('global-recovery104');
       await recovery.waitFor();

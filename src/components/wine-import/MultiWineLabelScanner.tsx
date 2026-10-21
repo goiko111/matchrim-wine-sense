@@ -21,6 +21,7 @@ import { WinerimOriginalSheet } from '@/components/WinerimOriginalSheet';
 import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
 import { catalogWineFromVerifiedSheet } from '@/utils/winerimOriginalSheet';
 import { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97';
+import { normalizeNativeYear105 } from '@/utils/wineYearRole105';
 import { applyNativeMaster102, lookupNativeMaster102, nativeMasterAudit102 } from '@/utils/nativeMasterCatalog102';
 import { hasMissingVisibleQualifier102 } from '@/utils/nativeWineQualifier102';
 import { applyGlobalCatalogue103, independentGlobalProducer103, isGlobalWine103, lookupGlobalCatalogue103 } from '@/utils/nativeGlobalCatalogue103';
@@ -47,6 +48,7 @@ import { findWinerimWineForLabel } from '@/services/winerimApi';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { makeCellarCatalogEvidence, withCellarInitialAffinity } from '@/utils/bodegaAffinity';
+import { makeCellarPublicReference107 } from '@/utils/cellarPublicReference107';
 import {
   EdgeFunctionError,
   invokeWithEdgeFunctionRetry,
@@ -435,6 +437,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         },
       );
       let candidates = normalizeWineCandidates(payload, region.id);
+      if (isNative) candidates = candidates.map(normalizeNativeYear105);
       if (candidates[0]) {
         const first = await enrichCandidate(candidates[0], signal, budget);
         candidates = [first, ...candidates.slice(1)];
@@ -884,11 +887,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
             ? makeCellarCatalogEvidence(identity, candidate.canonicalId, candidate.sensoryAttributes) : null;
           const masterAudit = isNative ? nativeMasterAudit102(candidate) : null;
           const global = isNative && isGlobalWine103(candidate, candidate.globalRecord) ? candidate.globalRecord : null;
-          const details = evidence ? withCellarInitialAffinity({ ...identity,
+          const publicReference = global ? makeCellarPublicReference107(identity, global) : null;
+          const details = evidence || publicReference ? withCellarInitialAffinity({ ...identity,
             sensory_attributes: candidate.sensoryAttributes,
-            place_details: { bodega_sensory_evidence: evidence,
-              ...(global ? { winerim_public_catalogue: { namespace: global.namespace, id: global.id, vintage: global.vintage,
-                url: global.url, sensory_provenance: global.provenance } } : {}),
+            place_details: { ...(evidence ? { bodega_sensory_evidence: evidence } : {}),
+              ...(publicReference ? { winerim_public_catalogue: publicReference } : {}),
               ...(masterAudit ? { winerim_master_evidence: masterAudit } : {}) } }, scanProfileRef.current, 'saved') : null;
           return {
           nombre: candidate.name,
@@ -1449,6 +1452,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   }}
                   lookup={!nativeConsumer?.catalogIdentityLinked ? <div className="min-w-0" data-testid="native-manual-affinity-lookup">
                     <GlobalWineRecovery104 key={manualLookupKey} contextKey={manualLookupKey} disabled={manualLookupContext.locked}
+                      image={selectedRegion.cropDataUrl}
                       profile={manualLookupContext.profile} candidate={selectedCandidate}
                       onConfirmed={confirmed => {
                         if (currentManualLookupKey.current !== manualLookupKey) return;

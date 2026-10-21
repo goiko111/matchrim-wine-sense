@@ -4,6 +4,7 @@ import Capacitor
 class MatchrimBridgeViewController: CAPBridgeViewController {
     override func capacitorDidLoad() {
         super.capacitorDidLoad()
+        bridge?.registerPluginInstance(MatchrimOCRPlugin106())
         applyPreferredContentSize()
         NotificationCenter.default.addObserver(
             self,

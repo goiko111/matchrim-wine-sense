@@ -71,12 +71,16 @@ export const rankGlobalProposals104 = (evidence: readonly string[], rows: readon
 export const globalRecoveryQueries104 = (name: string, evidence: readonly string[], manuallyEntered = false) => {
   const visible = new Set(evidence.flatMap(tokens));
   const queryName = name.trim().replace(/\s+\(?(?:19|20)\d{2}\)?$/, '').trim();
+  const metadataOnly = (value: string) => /^(?:contains? (?:sulph?ites|sulfites)|contiene sulfitos|contient des sulfites|product of\b|produit de\b|producto de\b|imported by\b|importado por\b)/i.test(value)
+    || /^\d+(?:[.,]\d+)?\s*(?:ml|cl|litros?|vol|bottles|botellas|eur|euros)\b/i.test(value);
   const meaningful = (value: string) => value.length >= 4 && value.length <= 120 && !/https?:|www\.|@|\d{4}|%/i.test(value)
+    && !metadataOnly(value)
     && tokens(value).some(word => word.length >= 3 && !generic.has(word));
   if (manuallyEntered) return meaningful(queryName) ? [queryName] : [];
   const groundedName = meaningful(queryName) && tokens(queryName).every(word => generic.has(word) || visible.has(word));
   const queries = new Map<string, string>();
-  for (const query of [...(groundedName ? [queryName] : []), ...evidence.map(line => line.trim()).filter(meaningful)]) {
+  const literalQueries = evidence.map(line => line.trim().replace(/^(?:embotellado por|bottled by|mis en bouteille (?:par|au))\s+/i, '')).filter(meaningful);
+  for (const query of [...(groundedName ? [queryName] : []), ...literalQueries]) {
     const normalized = tokens(query).join(' '); if (!queries.has(normalized)) queries.set(normalized, query);
   }
   return [...queries.values()].slice(0, 2);

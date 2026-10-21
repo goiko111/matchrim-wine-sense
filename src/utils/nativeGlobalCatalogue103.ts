@@ -4,6 +4,7 @@ import type { MatchrimProfileLike } from './matchrimPassport';
 import { canAdmitNativeCatalogLookup97 } from './nativeCatalogAdmission97';
 import { hasMissingVisibleQualifier102 } from './nativeWineQualifier102';
 import { hasConflictingNativeVintage100 } from './nativeVintageEvidence100';
+import { nonVintageYear105 } from './wineYearRole105';
 import { hasExactWinerimProducer, hasWinerimGeographyConflict, canLookupWinerimOriginal,
   validateWinerimOriginalSensory, type WinerimOriginalIdentity } from './winerimOriginalSheet';
 import { isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
@@ -63,6 +64,7 @@ const sameReference = (input: WinerimOriginalIdentity, wine: WinerimOriginalIden
 export const isGlobalWine103 = (input: WinerimOriginalIdentity & { evidence?: readonly string[] }, wine: unknown): wine is GlobalWine103 =>
   Boolean(wine && typeof wine === 'object' && trusted.has(wine) && canLookupWinerimOriginal(input)
     && !hasConflictingNativeVintage100(input) && !hasMissingVisibleQualifier102(input)
+    && !nonVintageYear105(input.vintage, input.evidence || [])
     && sameReference(input, wine as GlobalWine103)
     && ((wine as GlobalWine103).vintage === null || String(input.vintage ?? '') === (wine as GlobalWine103).vintage));
 
@@ -136,7 +138,8 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
     } catch { if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError'); return { status: 'unavailable' as const, rows: [] as Row[] }; }
   };
   const lookup = async (input: WinerimOriginalIdentity & { evidence?: readonly string[] }, signal?: AbortSignal, selectedPublicId?: number): Promise<GlobalLookup103> => {
-    if (!canLookupWinerimOriginal(input) || hasConflictingNativeVintage100(input) || hasMissingVisibleQualifier102(input)) return { status: 'identity-required' };
+    if (!canLookupWinerimOriginal(input) || hasConflictingNativeVintage100(input) || hasMissingVisibleQualifier102(input)
+      || nonVintageYear105(input.vintage, input.evidence || [])) return { status: 'identity-required' };
     if (selectedPublicId !== undefined && (!Number.isSafeInteger(selectedPublicId) || selectedPublicId <= 0)) return { status: 'identity-required' };
     const query = input.name.trim().replace(new RegExp(`\\s+\\(?${input.vintage || 'NONE'}\\)?$`), '').trim();
     let page = await search(query, signal, selectedPublicId !== undefined);
@@ -177,6 +180,7 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
   const confirmSelection = async (input: WinerimOriginalIdentity & { evidence?: readonly string[] }, selected: Row, signal?: AbortSignal): Promise<GlobalLookup103> => {
     if (!observedSelections.has(selected) || !rowSchema.safeParse(selected).success || !canLookupWinerimOriginal(input)
       || hasConflictingNativeVintage100(input) || hasMissingVisibleQualifier102(input)
+      || nonVintageYear105(input.vintage, input.evidence || [])
       || !sameReference(input, identity(selected))
       || (selected.vintage != null && String(input.vintage ?? '') !== String(selected.vintage))) return { status: 'identity-required' };
     return verifySelection(input, selected, signal);

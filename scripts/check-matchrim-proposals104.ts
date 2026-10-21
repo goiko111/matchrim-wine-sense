@@ -98,4 +98,11 @@ await test('One long grape OCR substitution needs exact producer, companion grap
   assert.deepEqual(rankGlobalProposals104(['GHOST BLOCK', 'CABERNET GODELLO'], [wine]), []);
   assert.deepEqual(rankGlobalProposals104(['GHOST BLACK', 'CABERNET SALVIGNON'], [wine]), []);
 });
+await test('Queries skip legal/volume metadata and preserve literal producer text without identity aliases', () => {
+  const evidence = ['CONTAINS SULFITES', 'PRODUCT OF SPAIN', '750 ML', 'Embotellado por Bodegas Atlas', 'Cuvee Sierra'];
+  assert.deepEqual(globalRecoveryQueries104('PRODUCT OF SPAIN', evidence), ['Bodegas Atlas', 'Cuvee Sierra']);
+  assert.deepEqual(evidence, ['CONTAINS SULFITES', 'PRODUCT OF SPAIN', '750 ML', 'Embotellado por Bodegas Atlas', 'Cuvee Sierra']);
+  assert.deepEqual(globalRecoveryQueries104('6 Cepas', ['6 CEPAS', '75 CL', '25 EUROS']), ['6 Cepas']);
+  assert.deepEqual(globalRecoveryQueries104('Sierra', ['Mis en bouteille au Chateau Atlas', 'Sierra']), ['Sierra', 'Chateau Atlas']);
+});
 console.log(JSON.stringify({ groups: count, paidStarts: 0, liveCalls: 0, verifiedIdentitiesFromRanking: 0 }));

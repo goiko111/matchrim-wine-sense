@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 import { createGlobalCatalogue103, type PublicGlobalRow103 } from '../src/utils/nativeGlobalCatalogue103';
 import { rankGlobalProposals104 } from '../src/utils/globalWineProposals104';
 import { isSafeCanonicalLabelMatch } from '../src/utils/winerimLabelIdentity';
+import { wineYearRoles105, type YearLine105 } from '../src/utils/wineYearRole105';
 const source = 'qa-artifacts/global103-20261021/ocr200-r1';
 const output = path.resolve(process.argv[2]);
 assert(output.startsWith(path.resolve('qa-artifacts') + '/') && !fs.existsSync(output)); fs.mkdirSync(output, { recursive: true, mode: 0o700 });
@@ -27,9 +28,16 @@ for (const scene of progress.rows) {
   assert.equal(ocr.hashMatches, true); assert.deepEqual(ocr.customWords, []);
   const evidence = ocr.lines.map((line: { text: string }) => line.text);
   const years = [...new Set<string>(evidence.flatMap((line: string) => line.trim().match(/^(?:19|20)\d{2}$/)?.[0] || []))];
+  const inspectedYears = wineYearRoles105(ocr.lines.map((line: { text: string; box?: { bottomLeft?: YearLine105['box'] } }) => ({ text: line.text, box: line.box?.bottomLeft })));
+  assert.equal(inspectedYears.supported, true, 'Unsupported year evidence must not silently enable ranking');
+  const yearRoles = inspectedYears.roles;
+  const excluded = new Set(yearRoles.filter(role => ['award', 'foundation', 'ambiguous'].includes(role.role)).map(role => String(role.year)));
+  const possibleYears = years.filter(year => !excluded.has(year));
   const rows: PublicGlobalRow103[] = [];
   for (const query of scene.queries) rows.push(...(await client.search(query.query, undefined, true)).rows);
-  predictions.push({ imageId: scene.imageId, proposals: rankGlobalProposals104(evidence, rows, years.length === 1 ? Number(years[0]) : null) });
+  predictions.push({ imageId: scene.imageId, rawStandaloneYears: years, yearRoles,
+    candidateVintageHint: possibleYears.length === 1 ? Number(possibleYears[0]) : null,
+    proposals: rankGlobalProposals104(evidence, rows, possibleYears.length === 1 ? Number(possibleYears[0]) : null) });
 }
 Object.freeze(predictions);
 // Expected metadata is loaded after ranking; it never supplies queries or candidates.
@@ -45,6 +53,7 @@ const summary = { scenes: rows.length, scenesWithProposals: rows.filter(row => r
   suggestionsWithoutExpectedReference: rows.filter(row => row.proposals.length && !row.top3Hit).length,
   cacheReads: reads, newNetworkCalls: 0, modelStarts: 0, canonicalIdentitiesCreated: 0 };
 fs.writeFileSync(path.join(output, 'REPORT.json'), JSON.stringify({ scope: 'Assisted top3 ranking of each scene own frozen OCR-query pages. NOT automatic identification, live detector accuracy, all-catalogue recall or verified vintage affinity. Two initial OCR queries are unchanged from acquisition103, not a fresh validation of query generation104.',
-  sourceFingerprints: Object.fromEntries(['src/utils/globalWineProposals104.ts', 'src/utils/nativeGlobalCatalogue103.ts', 'scripts/replay-matchrim-proposals104.ts'].map(file => [file, createHash('sha256').update(fs.readFileSync(file)).digest('hex')])),
+  yearRoleScope: 'OCR geometry is used only in this replay. Current runtime evidence has text fragments, so native year-role protection uses explicit inline context only; spatial replay gains are not claimed as live app recognition.',
+  sourceFingerprints: Object.fromEntries(['src/utils/globalWineProposals104.ts', 'src/utils/nativeGlobalCatalogue103.ts', 'src/utils/wineYearRole105.ts', 'scripts/replay-matchrim-proposals104.ts'].map(file => [file, createHash('sha256').update(fs.readFileSync(file)).digest('hex')])),
   expectedUsedBeforeRanking: false, summary, rows }, null, 2), { mode: 0o600 });
 console.log(JSON.stringify(summary));

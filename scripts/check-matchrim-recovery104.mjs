@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import { createRequire } from 'node:module';
 import { globalRecoveryQueries104, rankGlobalProposals104 } from '../src/utils/globalWineProposals104.ts';
+import { wineYearRoles105 } from '../src/utils/wineYearRole105.ts';
 const require = createRequire(import.meta.url), ts = require('typescript');
 const React = require('react');
 const source = fs.readFileSync('src/components/wine-import/GlobalWineRecovery104.tsx', 'utf8');
@@ -12,9 +13,10 @@ const walk = node => Array.isArray(node) ? node.flatMap(walk) : React.isValidEle
 const text = node => Array.isArray(node) ? node.map(text).join('') : React.isValidElement(node) ? text(node.props.children) : typeof node === 'string' ? node : '';
 const tick = async () => { for (let i = 0; i < 8; i++) await Promise.resolve(); };
 const deferred = () => { let resolve; const promise = new Promise(r => { resolve = r; }); return { promise, resolve }; };
-function host(client, input = candidate) {
+function host(client, input = candidate, local = null) {
   const state = [], effects = [], refs = [], confirmations = [], props = { candidate: input, contextKey: 'owner1-region1-profile1',
-    disabled: false, profile: { potente: 3 }, onConfirmed: value => confirmations.push(value) };
+    disabled: false, image: local ? 'data:image/jpeg;base64,/9j/AA==' : undefined,
+    profile: { potente: 3 }, onConfirmed: value => confirmations.push(value) };
   let cursor = 0;
   const exports = {};
   vm.runInNewContext(ts.transpileModule(source, { compilerOptions: { jsx: ts.JsxEmit.ReactJSX,
@@ -30,7 +32,9 @@ function host(client, input = candidate) {
         } },
       };
       if (name.endsWith('/button')) return { Button: 'button' };
-      if (name === 'lucide-react') return Object.fromEntries(['BookOpen', 'Check', 'Loader2', 'X'].map(k => [k, k]));
+      if (name === 'lucide-react') return Object.fromEntries(['BookOpen', 'Check', 'Loader2', 'Smartphone', 'X'].map(k => [k, k]));
+      if (name.endsWith('/nativeOCR106')) return { localOCRAvailable106: () => Boolean(local), readLocalWineText106: local };
+      if (name.endsWith('/wineYearRole105')) return { wineYearRoles105 };
       if (name.endsWith('/nativeGlobalCatalogue103')) return { createGlobalCatalogue103: () => client,
         independentGlobalProducer103: () => false,
         applyGlobalCatalogue103: (value, profile, wine, manual) => ({ ...value, globalRecord: wine, appliedProfile: profile, manual }) };
@@ -127,6 +131,36 @@ await test('Actual scanner confirmation enables saving and clears obsolete error
     exports.handler(confirmed);
     if (scenario === 'valid') { assert.equal(actual.status, 'recognized'); assert.equal(actual.error, null); assert.equal(actual.fallback, null); assert.equal(actual.candidates[0], confirmed); }
     else assert.equal(actual, original, scenario);
+  }
+});
+await test('Local re-reading uses only fresh region text, requires selection and never invokes the model lookup', async () => {
+  const calls = [], confirmations = [];
+  const h = host({ search: async query => { calls.push(query); return { rows: [row], status: 'complete' }; },
+    lookup: () => { throw Error('No automatic model-derived identity'); },
+    confirmSelection: async input => { confirmations.push(input); return { wine: row }; } },
+  { ...candidate, name: 'Wrong initial wine', vintage: 2026 }, async () => ({ lines: [
+    { text: 'VIDURE', box: { x: .1, y: .1, width: .5, height: .1 } },
+    { text: 'LYON GOLD 2026', box: { x: .1, y: .6, width: .5, height: .1 } },
+  ] }));
+  h.button('Releer recorte en este iPhone').onClick(); await tick();
+  assert(calls.includes('VIDURE')); assert(!calls.some(query => query.includes('Wrong initial')));
+  assert.equal(h.confirmations.length, 0);
+  h.button('Confirmar esta referencia').onClick(); await tick();
+  assert.equal(confirmations.length, 1); assert.equal(confirmations[0].vintage, null);
+  assert.equal(h.confirmations.length, 1); h.unmount();
+});
+await test('Name-only manual correction can recover a photographed vintage; explicit manual vintage remains authoritative', async () => {
+  for (const manualVintage of [null, 2019]) {
+    let selected;
+    const h = host({ search: async () => ({ rows: [row], status: 'complete' }),
+      confirmSelection: async input => { selected = input; return { wine: row }; } },
+    { ...candidate, source: 'manual', vintage: manualVintage }, async () => ({ lines: [
+      { text: 'VIDURE', box: { x: .1, y: .1, width: .5, height: .1 } },
+      { text: 'Cosecha 2020', box: { x: .1, y: .6, width: .5, height: .1 } },
+    ] }));
+    h.button('Releer recorte en este iPhone').onClick(); await tick();
+    h.button('Confirmar esta referencia').onClick(); await tick();
+    assert.equal(selected.vintage, manualVintage ?? 2020); h.unmount();
   }
 });
 console.log(JSON.stringify({ groups, source: 'Actual TSX handlers with isolated hooks/transport; not browser layout or native QA', liveCalls: 0, modelStarts: 0 }));

@@ -5,6 +5,7 @@ const config: CapacitorConfig = {
   appId: 'wine.matchrim.app',
   appName: 'Matchrim',
   webDir: 'dist',
+  loggingBehavior: 'none',
   plugins: {
     Keyboard: { resize: KeyboardResize.Native }
   }
