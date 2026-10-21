@@ -1236,7 +1236,7 @@ const Profile = () => {
 
               <div className="flex flex-col items-center gap-4">
                 <Button
-                  onClick={() => navigate('/')}
+                  onClick={() => navigate(isNative ? '/matchrim?retake=1' : '/')}
                   className="bg-red-700 hover:bg-red-800 text-white flex items-center gap-2"
                 >
                   Realizar Nuevo Test

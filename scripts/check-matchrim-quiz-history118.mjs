@@ -26,7 +26,7 @@ let groups = 0;
 const check = async (name, task) => { await task(); groups++; console.log('PASS ' + name); };
 
 // Execute AST-extracted production components, hooks, dependencies and handlers.
-const run = ({ native = true, user = { id: 'owner-a' }, loading = false, reader = async () => [], cache = null } = {}) => {
+const run = ({ native = true, user = { id: 'owner-a' }, loading = false, reader = async () => [], cache = null, parameters = '' } = {}) => {
   const slots = [], effects = [], timers = new Map(), calls = [], storage = [];
   let cursor = 0, dirty = true, output, timerId = 0, currentReader = reader;
   const auth = { user, loading };
@@ -49,7 +49,7 @@ const run = ({ native = true, user = { id: 'owner-a' }, loading = false, reader 
       }
     },
     useQuizResults: () => ({ getQuizHistory: currentReader, saveQuizResult() { throw Error('unexpected quiz write'); }, isSaving: false }),
-    useNavigate: () => navigate, useSearchParams: () => [new URLSearchParams()],
+    useNavigate: () => navigate, useSearchParams: () => [new URLSearchParams(parameters)],
     getSafeRedirectPath: (_value, fallback) => fallback,
     readMatchrimLocalProfile: () => { storage.push('profile-read'); return cache; },
     localStorage: { getItem: key => { storage.push(key); return null; },
@@ -114,6 +114,27 @@ await check('Genuine empty native history alone exposes intro; guest cached prof
   const guest = run({ user: null, cache: row }); await guest.settle();
   assert.equal(guest.calls.length, 0); assert.deepEqual(guest.find('QuizResults').props.result, row);
   assert(guest.storage.includes('profile-read'));
+});
+await check('Explicit native retake reaches intro without erasing or saving the existing profile; web ignores the opt-in', async () => {
+  const original = Object.freeze({ ...row });
+  const native = run({ parameters: 'retake=1', reader: async () => [original] }); await native.settle();
+  assert(native.find('QuizIntro')); assert(!native.find('QuizResults')); assert.equal(native.calls.length, 1);
+  assert.deepEqual(original, row); assert.equal(native.storage.length, 0);
+  const web = run({ native: false, parameters: 'retake=1', reader: async () => [original] }); await web.settle();
+  assert(web.find('QuizResults')); assert(!web.find('QuizIntro'));
+  const profile = fs.readFileSync('src/pages/Profile.tsx', 'utf8');
+  const profileTree = ts.createSourceFile('Profile.tsx', profile, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  let action;
+  const findAction = node => {
+    if (ts.isJsxElement(node) && node.children.some(child => ts.isJsxText(child) && child.getText(profileTree).trim() === 'Realizar Nuevo Test'))
+      action = node.openingElement.attributes.properties.find(attribute => attribute.name?.getText(profileTree) === 'onClick')?.initializer.expression.getText(profileTree);
+    ts.forEachChild(node, findAction);
+  };
+  findAction(profileTree); assert(action);
+  for (const [isNative, expected] of [[true, '/matchrim?retake=1'], [false, '/']]) {
+    const calls = []; const box = { exports: {}, isNative, navigate: target => calls.push(target) };
+    vm.runInNewContext(compile('exports.action = ' + action), box); box.exports.action(); assert.deepEqual(calls, [expected]);
+  }
 });
 
 await check('Failure shows native unframed retry band and repeated retry clicks issue only one new read', async () => {

@@ -39,6 +39,7 @@ const MatchrimSession = () => {
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
   const isNative = Capacitor.isNativePlatform();
+  const nativeRetake = isNative && searchParams.get('retake') === '1';
   const hasStartedQuiz = useRef(false);
   const [nativeHistoryStatus, setNativeHistoryStatus] = useState<'loading' | 'ready' | 'error'>(user ? 'loading' : 'ready');
   const [nativeHistoryRetry, setNativeHistoryRetry] = useState(0);
@@ -75,7 +76,7 @@ const MatchrimSession = () => {
             }),
           ]) : await getQuizHistory();
           if (!active || hasStartedQuiz.current) return;
-          if (history && history.length > 0) {
+          if (history && history.length > 0 && !nativeRetake) {
             const lastResult = history[0];
             setQuizResult({
               potente: lastResult.potente,
@@ -114,7 +115,7 @@ const MatchrimSession = () => {
       controller?.abort();
       if (deadline !== undefined) window.clearTimeout(deadline);
     };
-  }, [isNative ? user?.id : user, isNative ? null : getQuizHistory, isNative, nativeHistoryRetry]);
+  }, [isNative ? user?.id : user, isNative ? null : getQuizHistory, isNative, nativeHistoryRetry, nativeRetake]);
 
   const handleRetryHistory = () => {
     if (!isNative || !user || hasStartedQuiz.current || nativeHistoryPending.current || nativeHistoryStatus !== 'error') return;
