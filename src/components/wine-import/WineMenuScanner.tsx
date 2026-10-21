@@ -1,3 +1,4 @@
+import { saveUserWine } from "@/services/userWines";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -658,9 +659,7 @@ export const WineMenuScanner = ({
     try {
       const sensoryAttributes = normalizeAttributesTo5(wine.atributos);
 
-      const { error } = await supabase
-        .from("user_wines")
-        .insert({
+      await saveUserWine({
           user_id: user.id,
           name: wine.nombre,
           producer: wine.productor || null,
@@ -685,8 +684,6 @@ export const WineMenuScanner = ({
             similar_wine_name: similarWineName || null,
           } as Json,
         });
-
-      if (error) throw error;
 
       setSavedWineKeys((currentKeys) => new Set(currentKeys).add(saveKey));
       trackAppEvent("wine_saved", {

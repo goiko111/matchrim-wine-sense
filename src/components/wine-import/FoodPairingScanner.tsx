@@ -1,3 +1,4 @@
+import { saveUserWine } from "@/services/userWines";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -276,9 +277,7 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
     setSavingKey(saveKey);
 
     try {
-      const { error } = await supabase
-        .from("user_wines")
-        .insert({
+      await saveUserWine({
           user_id: user.id,
           name: recommendation.nombre,
           producer: null,
@@ -302,8 +301,6 @@ export const FoodPairingScanner = ({ initialMode = "menu", restaurantName, lockM
             dish_match: dish.match,
           } as Json,
         });
-
-      if (error) throw error;
 
       setSavedKeys((current) => new Set(current).add(saveKey));
       trackAppEvent("wine_saved", {

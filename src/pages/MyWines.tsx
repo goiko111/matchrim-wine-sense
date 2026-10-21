@@ -1,4 +1,6 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { saveUserWine } from "@/services/userWines";
+import { groupDuplicateWines } from "@/utils/userWineIdentity";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AppNav from "@/components/AppNav";
 import { useAuth } from "@/contexts/AuthContext";
@@ -135,6 +137,13 @@ interface WineSectionCountRow {
   status: WineStatus | null;
   rating: 'love' | 'ok' | 'not_for_me' | null;
   is_favorite: boolean | null;
+  name: string;
+  producer: string | null;
+  vintage: number | null;
+  place_details: unknown;
+  created_at: string;
+  quantity: number | null;
+  matchrim_affinity: number | null;
 }
 
 const validWineSections: WineSection[] = ['collection', 'wishlist', 'tasted', 'favorites', 'rejected'];
@@ -205,6 +214,7 @@ const MyWines = () => {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showPurchaseDialog, setShowPurchaseDialog] = useState(false);
   const [saving, setSaving] = useState(false);
+  const savingInFlight = useRef(false);
   const [extractedData, setExtractedData] = useState<ExtractedWineData | null>(null);
   const [extractedImageUrl, setExtractedImageUrl] = useState<string | null>(null);
   const [selectedWine, setSelectedWine] = useState<UserWine | null>(null);
@@ -361,12 +371,12 @@ const MyWines = () => {
     try {
       const { data, error } = await supabase
         .from("user_wines")
-        .select("id, status, rating, is_favorite")
+        .select("id, status, rating, is_favorite, name, producer, vintage, place_details, created_at, quantity, matchrim_affinity")
         .eq("user_id", user.id);
 
       if (error) throw error;
 
-      const rows = ((data as WineSectionCountRow[]) || []);
+      const rows = groupDuplicateWines(((data as WineSectionCountRow[]) || []) as any[]) as WineSectionCountRow[];
       setSectionCounts({
         collection: rows.filter((wine) => wine.status === 'collection').length,
         wishlist: rows.filter((wine) => wine.status === 'wishlist').length,
@@ -401,7 +411,7 @@ const MyWines = () => {
       const { data, error } = await query.order("created_at", { ascending: false });
 
       if (error) throw error;
-      setWines(((data as UserWine[]) || []).map(normalizeUserWine));
+      setWines(groupDuplicateWines(((data as UserWine[]) || []).map(normalizeUserWine)));
       void loadSectionCounts();
     } catch (error) {
       console.error("Error loading wines:", error);
@@ -522,6 +532,10 @@ const MyWines = () => {
       return;
     }
 
+    // The purchase dialog stays open until the insert finishes and its button has
+    // no busy state, so repeated taps used to create one row per tap.
+    if (savingInFlight.current) return;
+    savingInFlight.current = true;
     setSaving(true);
     try {
       const saveStatus: WineStatus = statusFilter === 'favorites' || statusFilter === 'rejected'
@@ -568,16 +582,10 @@ const MyWines = () => {
             } as Json),
       };
 
-      const { data: insertedWine, error } = await supabase
-        .from("user_wines")
-        .insert([wineData])
-        .select()
-        .single();
-
-      if (error) throw error;
+      const { row: insertedWine, merged } = await saveUserWine(wineData);
 
       // Calculate affinity in background
-      if (insertedWine && (saveStatus === 'collection' || saveStatus === 'tasted') && !extractedData?.matchrim_affinity) {
+      if (!merged && insertedWine && (saveStatus === 'collection' || saveStatus === 'tasted') && !extractedData?.matchrim_affinity) {
         supabase.functions
           .invoke("calculate-wine-affinity", {
             body: { wine_id: insertedWine.id }
@@ -602,7 +610,7 @@ const MyWines = () => {
           });
       }
 
-      toast.success("Vino añadido exitosamente");
+      toast.success(merged ? "Ese vino ya estaba en tu lista: hemos actualizado su stock" : "Vino añadido exitosamente");
       trackAppEvent("wine_saved", {
         userId: user.id,
         metadata: {
@@ -622,6 +630,7 @@ const MyWines = () => {
       console.error("Error saving wine:", error);
       toast.error("Error al guardar el vino");
     } finally {
+      savingInFlight.current = false;
       setSaving(false);
     }
   };
@@ -773,9 +782,11 @@ const MyWines = () => {
       }
 
       // If rating from collection, optionally decrement quantity
-      if (wine?.status === 'collection' && wine.quantity && wine.quantity > 0) {
-        updateData.quantity = wine.quantity - 1;
-        if (wine.quantity === 1) {
+      // A grouped card shows the summed stock; the row we update only owns own_quantity.
+      const ownQuantity = (wine as any)?.own_quantity ?? wine?.quantity;
+      if (wine?.status === 'collection' && ownQuantity && ownQuantity > 0) {
+        updateData.quantity = ownQuantity - 1;
+        if (ownQuantity === 1) {
           updateData.status = 'tasted';
           updateData.consumption_date = new Date().toISOString();
         }
@@ -837,11 +848,14 @@ const MyWines = () => {
     }
   };
 
-  const handleDeleteWine = async (id: string) => {
-    if (!confirm("¿Estás seguro de eliminar este vino?")) return;
+  const handleDeleteWine = async (id: string, duplicateIds: string[] = [id]) => {
+    const copies = duplicateIds.length;
+    if (!confirm(copies > 1
+      ? `¿Estás seguro de eliminar este vino? Se eliminarán sus ${copies} registros repetidos.`
+      : "¿Estás seguro de eliminar este vino?")) return;
 
     try {
-      const { error } = await supabase.from("user_wines").delete().eq("id", id).eq("user_id", user!.id);
+      const { error } = await supabase.from("user_wines").delete().in("id", duplicateIds).eq("user_id", user!.id);
 
       if (error) throw error;
 
@@ -1537,7 +1551,7 @@ const MyWines = () => {
                                 variant="ghost"
                                 size="icon"
                                 className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
-                                onClick={() => handleDeleteWine(wine.id)}
+                                onClick={() => handleDeleteWine(wine.id, (wine as any).duplicate_ids)}
                               >
                                 <Trash2 className="h-4 w-4 text-destructive" />
                               </Button>

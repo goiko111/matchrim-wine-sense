@@ -1,3 +1,4 @@
+import { saveUserWine } from "@/services/userWines";
 import AppNav from "@/components/AppNav";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { ScanHub, scanOptions, type ScanMode } from "@/components/wine-import/ScanHub";
@@ -58,9 +59,7 @@ const Scan = () => {
     }
 
     try {
-      const { error } = await supabase
-        .from("user_wines")
-        .insert({
+      await saveUserWine({
           user_id: user.id,
           name: wine.nombre,
           producer: wine.productor || null,
@@ -81,8 +80,6 @@ const Scan = () => {
             affinity_reason: wine.affinity_reason || null,
           } as Json,
         });
-
-      if (error) throw error;
 
       trackAppEvent("wine_saved", {
         userId: user.id,

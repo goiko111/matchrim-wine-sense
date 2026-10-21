@@ -22,6 +22,7 @@ import {
 } from '@/utils/matchrimPassport';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearning';
 import { buildAuthRedirectPath } from '@/utils/navigation';
+import { saveUserWine } from '@/services/userWines';
 import { fetchWinesByAttributes, type WinerimWineWithMatch } from '@/services/winerimApi';
 import { AlertCircle, BookmarkPlus, CheckCircle, ExternalLink, Loader2, MapPin, ScanLine, Sparkles, Wine } from 'lucide-react';
 import { toast } from 'sonner';
@@ -365,9 +366,7 @@ const UseMatchrim = () => {
       } as Json;
 
       const firstPrice = wine.prices?.[0]?.price;
-      const { error } = await supabase
-        .from('user_wines')
-        .insert({
+      await saveUserWine({
           user_id: user.id,
           name: wine.name,
           producer: wine.winery || null,
@@ -386,7 +385,6 @@ const UseMatchrim = () => {
           place_details: placeDetails,
         });
 
-      if (error) throw error;
       setSavedWinerimWineKeys((currentKeys) => new Set(currentKeys).add(wineKey));
       toast.success(`${wine.name} guardado en Quiero Probar`);
     } catch (error) {
