@@ -78,3 +78,15 @@ The109 real gallery/video harness is now committed but unrun. The native OCR run
 `visual-saved110-r3` passes four captures on103-r2 with the redundant partial-Library fiche action absent,82 initial retained and30 current after synthetic profile change. Source fingerprints match preparation; no production write, model request or published web change.
 
 The fixed ranking replay is now36 top1/39 top3 expected references,49 lists and10 lists without expected, versus baseline34/38/47/9. These remain filename-metadata proxy metrics, not identity precision or200-image release approval. Shared resources were released again around20:40UTC for another authorized task. Next block: actual Vision remaining180, current-query catalogue benchmark, retained empty/unmatched cases, and signed candidate only after the scoped QA remains green.
+
+## Evidence and Account Continuation
+
+The native112 benchmark audit found and corrected five fail-open evidence defects: interrupted scenes entering completed metrics, OCR JSON not bound to its producer, bypassed production abstention validation, cached response header substitution, and source hashes captured only after execution. Commit b27d06b adds19 mocked checks. The original native first20 result remains immutable and unbound; rerun it with producer output digests before including it in112. This is not retroactive approval of old receipts.
+
+Commit9238866 adds a one-submission, compile-before-reserve, read-only native UI check for the existing authorized QA account, with49 mocked checks. It does not create users, modify wines/ratings or claim a successful login before execution. The installed app must match a fresh native executable/config/plist receipt and frozen local production assets before credentials are read. Private logs, test plans and account artifacts must never be shared.
+
+Commit3301dfc adds a local HTML/CSV per-label review generator; nine in-memory groups pass. Its output will explicitly distinguish observed OCR, filename-derived expected metadata, unconfirmed candidates and incomplete scenes. It does not independently certify the original evidence or infer affinity.
+
+Commit92bebbe fixes a concrete native Profile usability gap: the active account email is visible beside the settings icon, wraps instead of truncating, and the settings hit area does not shrink. Eight actual-component mocked groups pass, including anonymous/web null output, long email, escaping and no account mutation. No published web change; this product delta requires fresh candidate103-r3 assets and visual/native verification. Source8becf49/r2 results continue to certify only their original scope.
+
+At21:05UTC another authorized task holds heavy-local. Matchrim retains only its writer lease and performs light code/tests; there is no build, simulator control or OCR while that foreign reservation is active. The paid-call cap and TestFlight hold remain unchanged.
