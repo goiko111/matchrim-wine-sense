@@ -55,7 +55,7 @@ const AttributeValue = ({ value }: { value: number | null | undefined }) => {
 
 export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps) => {
   const isNative = Capacitor.isNativePlatform();
-  const nativeScrollStyle = isNative ? { scrollMarginTop: 'calc(var(--matchrim-safe-top) + 112px)' } : undefined;
+  const nativeScrollStyle = isNative ? { scrollMarginTop: 'calc(var(--matchrim-safe-top) + 144px)' } : undefined;
   const formatAffinity = (score: number) => `${Math.round(score)}${isNative ? '/100' : '%'}`;
   const comparisonId = useId();
   const [selectedIds, setSelectedIds] = useState<string[]>(() => wines.slice(0, 3).map((wine) => wine.id));

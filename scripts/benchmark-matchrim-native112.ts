@@ -282,7 +282,7 @@ export async function predict112(readings: Map<string, Reading112>, runtime: Run
             ? years.roles.filter(role => role.role === 'vintage' || role.role === 'unclassified') : [];
           const vintage = possible.length === 1 ? possible[0].year : null;
           scene.candidateVintage = vintage; scene.reconstructed = fragments.alternatives;
-          scene.queries = runtime.globalRecoveryQueries104(candidate.name, evidence);
+          scene.queries = runtime.globalRecoveryQueries104(candidate.name, evidence, false, vintage);
           const rows: PublicGlobalRow103[] = [];
           for (const query of scene.queries) {
             if (state.held) break;

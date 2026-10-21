@@ -4,6 +4,7 @@ import { hasConflictingNativeVintage100 } from './nativeVintageEvidence100';
 import { isNonWineIdentity } from './wineCategory';
 import { hasObservedAppellationConflict120 } from './nativeAppellation120';
 import { hasObservedWineColorConflict124 } from './nativeWineColor124';
+import { wineYearRoles105 } from './wineYearRole105';
 
 const fold = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 const tokens = (value: string): string[] => fold(value).match(/[a-z0-9]+/g) || [];
@@ -84,7 +85,7 @@ export const rankGlobalProposals104 = (evidence: readonly string[], rows: readon
     || a.row.id - b.row.id).slice(0, 3);
 };
 
-export const globalRecoveryQueries104 = (name: string, evidence: readonly string[], manuallyEntered = false) => {
+export const globalRecoveryQueries104 = (name: string, evidence: readonly string[], manuallyEntered = false, vintageHint: number | null = null) => {
   const visible = new Set(evidence.flatMap(tokens));
   const queryName = name.trim().replace(/\s+\(?(?:19|20)\d{2}\)?$/, '').trim();
   const metadataOnly = (value: string) => /^(?:contains? (?:sulph?ites|sulfites)|contiene sulfitos|contient des sulfites|product of\b|produit de\b|producto de\b|imported by\b|importado por\b)/i.test(value)
@@ -93,6 +94,16 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
     && !metadataOnly(value)
     && tokens(value).some(word => word.length >= 3 && !generic.has(word) && !queryMetadata.has(word));
   if (manuallyEntered) return meaningful(queryName) ? [queryName] : [];
+  const automaticMeaningful = (value: string) => meaningful(value)
+    && !['vieilles vignes', 'old vines'].includes(tokens(value).join(' '))
+    && !tokens(value).every(word => generic.has(word) || queryMetadata.has(word) || word === 'bio');
+  const dates = wineYearRoles105(evidence.map(text => ({ text })));
+  const possible = dates.roles.filter(role => role.role === 'vintage' || role.role === 'unclassified');
+  const supportedHint = typeof vintageHint === 'number' && Number.isSafeInteger(vintageHint)
+    && vintageHint >= 1900 && vintageHint <= new Date().getUTCFullYear()
+    && dates.supported && possible.length === 1 && possible[0].year === vintageHint;
+  const literalWithoutYear = (value: string) => supportedHint
+    ? value.replace(new RegExp(`\\s+\\(?${vintageHint}\\)?$`), '').trim() : value;
   const unquote = (value: string) => {
     const match = value.match(/^(['"])([^\r\n]{3,100})\1$/);
     if (!match || match[2].includes(match[1])) return value;
@@ -101,10 +112,10 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
     return inner;
   };
   const automaticName = unquote(queryName);
-  const groundedName = meaningful(automaticName) && tokens(automaticName).every(word => generic.has(word) || visible.has(word));
+  const groundedName = automaticMeaningful(automaticName) && tokens(automaticName).every(word => generic.has(word) || visible.has(word));
   const queries = new Map<string, string>();
   const literalQueries = evidence.map(line => line.trim().replace(/^(?:embotellado por|bottled by|mis en bouteille (?:par|au))\s+/i, '')
-    .replace(/^(?:[-,;:]\s*)+|(?:[,;:]\s*)+$/g, '').trim()).map(unquote).filter(meaningful);
+    .replace(/^(?:[-,;:]\s*)+|(?:[,;:]\s*)+$/g, '').trim()).map(unquote).map(literalWithoutYear).filter(automaticMeaningful);
   for (const query of [...(groundedName ? [automaticName] : []), ...literalQueries]) {
     const normalized = tokens(query).join(' '); if (!queries.has(normalized)) queries.set(normalized, query);
   }

@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import postcss from 'postcss';
 import { restoreNativeScanPrivacyCss96 } from './check-matchrim-scan-privacy96.mjs';
+import { restoreComparisonScroll135 } from './native-comparison-scroll135-scope.mjs';
 
 const path = 'src/index.css';
 const before = execFileSync('git', ['show', `06d56c76af9135559926e99b321ed8b00225c229:${path}`], { encoding: 'utf8' });
@@ -60,7 +61,7 @@ assert.throws(() => check(current.replace('/* End native accessibility scan hub.
   '/* Unreviewed existing style edit. */')));
 
 const component = 'src/components/wine-import/WineComparisonWorkspace.tsx';
-assert.equal(readFileSync(component, 'utf8'), execFileSync('git', ['show',
+assert.equal(restoreComparisonScroll135(component, readFileSync(component, 'utf8')), execFileSync('git', ['show',
   `06d56c76af9135559926e99b321ed8b00225c229:${component}`], { encoding: 'utf8' }),
 'Selection, callbacks, labels, pricing and web markup are unchanged');
 

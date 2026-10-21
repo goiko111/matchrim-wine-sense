@@ -428,6 +428,13 @@ try {
         const service = mode.getByRole('button', { name: 'Servicio', exact: true });
         const serviceBounds = await service.boundingBox();
         assert(serviceBounds && serviceBounds.y >= -1 && serviceBounds.y + serviceBounds.height <= height - 82);
+        const caption = await page.getByText('Decisión', { exact: true }).boundingBox();
+        const tabs = page.getByRole('tablist', { name: 'Vista de resultados', exact: true });
+        if (await tabs.evaluate(node => getComputedStyle(node).position === 'sticky')) {
+          const tabBounds = await tabs.boundingBox();
+          assert(caption && tabBounds && caption.y >= tabBounds.y + tabBounds.height - 1,
+            'The decision caption must also remain below sticky result tabs');
+        }
         const serviceHit = await service.evaluate(node => {
           const r = node.getBoundingClientRect();
           const hit = document.elementFromPoint(r.x + r.width/2, r.y + r.height/2);
