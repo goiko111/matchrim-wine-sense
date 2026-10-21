@@ -148,3 +148,8 @@ run: `heavy-local` is held by another authorised task (BUSY receipt21 October
 validate the preceding compiled presentation, not a binary containing this final
 guard. Final release remains NO_GO until that rebuild/regression window and the
 recognition/data gates above close. No new TestFlight has been uploaded.
+# Access Recheck, 21 October 20:42 UTC
+
+Read-only GitHub connector searches were repeated through the user's currently installed repository access, not by assuming the supplied Matchrim frontend contains Symfony. The `winerim` installation search exposes six related repositories, including `bridge-to-winerim`, `winerim-flow` and `crm-winerim-owninfra`; installed-name searches for `mantalak` and `backend` returned no repositories. A separate repository search for `winerim-backend in:name` returned none, and focused `MantalakWine` / `WineCrudController` code searches in the three integration repositories returned no hits. No clone, account change, production write or credential read was needed.
+
+These negative searches do not prove that the backend does not exist: it can have a different name, owner, app installation permission or search-index availability. They do not authorize reuse of an administrator session in a distributed iPhone client. No additional safe full-master contract was established. The app's implemented public catalogue path, bounded pagination and independently verified selections remain useful but are not rebranded as complete Mantalak coverage.

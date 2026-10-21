@@ -64,6 +64,8 @@ try {
   const raw = execute('recognize', '/usr/bin/xcrun', ['simctl', 'spawn', device, binary, ...inputs],
     { timeout: Math.max(120000, inputs.length * 25000 + 30000), maxBuffer: 16 * 1024 ** 2 });
   const data = JSON.parse(raw.trim()); fs.writeFileSync(output + '/OCR.json', JSON.stringify(data, null, 2) + '\n', { mode: 0o600 });
+  receipt.outputsSHA256 = Object.fromEntries(['OCR.json', 'recognize.stdout'].map(file =>
+    [file, sha(fs.readFileSync(path.join(output, file)))]));
   const images = data.results.filter(row => row.file); assert.equal(images.length, inputs.length);
   for (const image of images) {
     assert.equal(image.settlements, 1); assert.equal(image.response.ok, true);
@@ -84,6 +86,7 @@ try {
   assert.equal(data.results.find(row => row.case === 'cancel').result.response.code, 'CANCELLED');
   assert.equal(data.results.find(row => row.case === 'late-settlement').count, 1);
   for (const file of files) assert.equal(sha(fs.readFileSync(file)), receipt.sourceSHA256[file]);
+  assert.equal(sha(fs.readFileSync(import.meta.filename)), receipt.runnerSHA256, 'RUNNER_CHANGED_DURING_EXECUTION');
   receipt.passed = true;
   receipt.metrics = images.map(image => ({ file: image.file, lines: image.response.data.lines.length, totalMs: image.response.data.totalMs }));
 } catch (error) { receipt.passed = false; receipt.error = String(error.stack || error); }

@@ -77,6 +77,11 @@ try {
     receipt.stages.at(-1).attachmentExport = xcrun(['xcresulttool', 'export', 'attachments', '--path', root + '/' + name + '/result.xcresult', '--output-path', root + '/' + name + '/attachments']);
   }
   verify(app); receipt.passed = true;
+  receipt.nativeArtifact = {
+    executableSHA256: sha(fs.readFileSync(app + '/App')),
+    capacitorConfigSHA256: sha(fs.readFileSync(app + '/capacitor.config.json')),
+    infoPlistSHA256: sha(fs.readFileSync(app + '/Info.plist')),
+  };
 } catch (error) { receipt.passed = false; receipt.error = error.stack || String(error); }
 finally {
   if (originalSize) try { guard(); xcrun(['simctl', 'ui', device, 'content_size', originalSize]); receipt.contentSizeRestored = true; }
