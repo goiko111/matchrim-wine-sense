@@ -385,16 +385,27 @@ export const inferWineTypeFromStyle = (
   return 'Tinto';
 };
 
+// User profiles (quiz or learned from rated wines) carry decimals; the classifier
+// stays strict for wines, so profile axes are rounded to the 0-5 integer scale here.
+const profileAxisToScale = (value: number | undefined) => {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return 0;
+  return Math.max(0, Math.min(5, Math.round(numeric)));
+};
+
 export const suggestWineStylesForProfile = (
   profile: { potente: number; acidez: number; dulce?: number; dulzura?: number; tanico?: number; taninos?: number; afrutado: number },
   limit = 3,
 ): PublicWineStyle[] => {
-  const dulzura = profile.dulzura ?? profile.dulce ?? 0;
-  const taninos = profile.taninos ?? profile.tanico ?? 0;
-  const origin = clasificarPorAtributos(profile.potente, profile.acidez, dulzura, taninos, profile.afrutado);
+  const potente = profileAxisToScale(profile.potente);
+  const acidez = profileAxisToScale(profile.acidez);
+  const afrutado = profileAxisToScale(profile.afrutado);
+  const dulzura = profileAxisToScale(profile.dulzura ?? profile.dulce);
+  const taninos = profileAxisToScale(profile.taninos ?? profile.tanico);
+  const origin = clasificarPorAtributos(potente, acidez, dulzura, taninos, afrutado);
   const ranked = PUBLIC_WINE_STYLES
     .filter((style) => style !== origin)
-    .map((style) => ({ style, encaje: calcularEncaje(profile.potente, profile.acidez, dulzura, taninos, profile.afrutado, style) }))
+    .map((style) => ({ style, encaje: calcularEncaje(potente, acidez, dulzura, taninos, afrutado, style) }))
     .sort((a, b) => b.encaje - a.encaje || specificity(a.style) - specificity(b.style) || a.style.localeCompare(b.style, 'es'))
     .map(({ style }) => style);
 

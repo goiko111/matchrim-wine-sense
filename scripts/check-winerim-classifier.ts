@@ -9,6 +9,7 @@ import {
   calcularEncaje,
   clasificarPorAtributos,
   clasificarVino,
+  suggestWineStylesForProfile,
   type PublicWineStyle,
 } from '../src/lib/winerimClassifier';
 
@@ -113,5 +114,16 @@ assert.throws(() => clasificarVino(0, 0, 0, 0, 0, 'TipoInvalido'));
 assert.throws(() => clasificarVino(2.5, 0, 0, 0, 0, 'Tinto'));
 assert.equal(clasificarVino(4.0, 4.0, 0.0, 0.0, 3.0, 'Espumoso').estiloFinal, 'Brut Elegante');
 assert.equal(clasificarVino('4', '4', '0', '0', '3', 'Espumoso').estiloFinal, 'Brut Elegante');
+
+// User profiles: integers behave as before, decimals are rounded instead of throwing.
+const intProfile = { potente: 5, acidez: 4, dulce: 3, tanico: 5, afrutado: 3 };
+const intStyles = suggestWineStylesForProfile(intProfile);
+assert.equal(intStyles[0], clasificarPorAtributos(5, 4, 3, 5, 3));
+assert.deepEqual(intStyles, suggestWineStylesForProfile({ potente: 5, acidez: 4, dulzura: 3, taninos: 5, afrutado: 3 }));
+const decStyles = suggestWineStylesForProfile({ potente: 4.7, acidez: 3.7, dulce: 3.1, tanico: 4.7, afrutado: 3 });
+assert.equal(decStyles[0], clasificarPorAtributos(5, 4, 3, 5, 3));
+assert.deepEqual(decStyles, intStyles);
+assert.equal(decStyles.length, 3);
+assert.equal(suggestWineStylesForProfile({ potente: 7, acidez: -2, dulce: 0, tanico: 0, afrutado: 0 })[0], clasificarPorAtributos(5, 0, 0, 0, 0));
 
 console.log('Winerim V4.1 classifier checks passed');
