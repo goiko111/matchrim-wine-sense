@@ -174,6 +174,13 @@ await test('Bounded partial catalogue result is reported incomplete even if rank
   const scenes = await r.predict(); assert.equal(scenes[0].pages[0].status, 'partial');
   assert.equal(scenes[0].eligible, false); assert.equal(summarize112(scenes, 1, true, r.state).exitCode, 1);
 });
+await test('Metadata-only local reading abstains without pretending to have queried the catalogue', async () => {
+  const r = rig({ live: true, maximum: 1, wire: () => { throw Error('NO_NETWORK_EXPECTED'); } });
+  const [scene] = await r.predict([reading([line('PET-NAT')])]);
+  assert.equal(scene.status, 'abstained'); assert.equal(scene.eligible, true);
+  assert.equal(scene.reason, 'NO_IDENTITY_BEARING_QUERY'); assert.equal(scene.queries.length, 0);
+  assert.equal(r.state.starts, 0); assert.equal(summarize112([scene], 1, true, r.state).abstentions, 1);
+});
 await test('HTTP failure, fetch error and malformed JSON cannot produce a complete benchmark', async () => {
   for (const wire of [async url => wireResponse(url, {}, 503), async () => { throw Error('MOCK_TRANSPORT_ERROR'); },
     async url => ({ ...wireResponse(url), body: new Response('{').body })]) {

@@ -14,6 +14,10 @@ const generic = new Set(('de del la el le les du des the and y et di do da dos d
   + 'bodega bodegas winery chateau domaine finca quinta weingut tenuta estate').split(' '));
 const grapes = new Set('pinot cabernet sauvignon merlot chardonnay malbec alvarinho tempranillo garnacha riesling syrah shiraz lagrein albarino godello mencia viognier gewurztraminer grenache monastrell mourvedre'.split(' '));
 const connectors = new Set('de del la el le les du des the and y et di do da dos das los las'.split(' '));
+const queryMetadata = new Set(('celler cellar cava pet nat ancestral premium tradicional ecologico ecologica '
+  + 'eco organic biologico biologica biodinamico biodinamica denominacion denominazione appellation '
+  + 'origen origine controlee controllata controlada protegida protegee indicacion geografica '
+  + 'malvar verdejo viura macabeo glera chenin verdicchio zibibbo cinsault').split(' '));
 const fullName = (row: PublicGlobalRow103) => row.subname && !(` ${tokens(row.name).join(' ')} `).includes(` ${tokens(row.subname).join(' ')} `)
   ? `${row.name} ${row.subname}` : row.name;
 export type WineProposal104 = { row: PublicGlobalRow103; name: string; score: number; missingProducer: boolean; vintageConflict: boolean; readingCorrections: string[] };
@@ -84,11 +88,12 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
     || /^\d+(?:[.,]\d+)?\s*(?:ml|cl|litros?|vol|bottles|botellas|eur|euros)\b/i.test(value);
   const meaningful = (value: string) => value.length >= 4 && value.length <= 120 && !/https?:|www\.|@|\d{4}|%/i.test(value)
     && !metadataOnly(value)
-    && tokens(value).some(word => word.length >= 3 && !generic.has(word));
+    && tokens(value).some(word => word.length >= 3 && !generic.has(word) && !queryMetadata.has(word));
   if (manuallyEntered) return meaningful(queryName) ? [queryName] : [];
   const groundedName = meaningful(queryName) && tokens(queryName).every(word => generic.has(word) || visible.has(word));
   const queries = new Map<string, string>();
-  const literalQueries = evidence.map(line => line.trim().replace(/^(?:embotellado por|bottled by|mis en bouteille (?:par|au))\s+/i, '')).filter(meaningful);
+  const literalQueries = evidence.map(line => line.trim().replace(/^(?:embotellado por|bottled by|mis en bouteille (?:par|au))\s+/i, '')
+    .replace(/^(?:[-,;:]\s*)+|(?:[,;:]\s*)+$/g, '').trim()).filter(meaningful);
   for (const query of [...(groundedName ? [queryName] : []), ...literalQueries]) {
     const normalized = tokens(query).join(' '); if (!queries.has(normalized)) queries.set(normalized, query);
   }

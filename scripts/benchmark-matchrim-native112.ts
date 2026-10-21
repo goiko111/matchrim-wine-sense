@@ -292,6 +292,9 @@ export async function predict112(readings: Map<string, Reading112>, runtime: Run
           scene.proposals = runtime.rankGlobalProposals104(evidence, rows, vintage);
           scene.eligible = scene.pages.length === scene.queries.length && scene.pages.every(page => page.status === 'complete');
           scene.status = scene.eligible ? 'complete' : 'incomplete';
+          if (scene.eligible && !scene.queries.length) {
+            scene.status = 'abstained'; scene.reason = 'NO_IDENTITY_BEARING_QUERY';
+          }
           if (!scene.eligible) scene.reason = state.held ? 'RUN_HELD_DURING_SCENE' : 'INCOMPLETE_QUERY_RESULTS';
         }
       }
