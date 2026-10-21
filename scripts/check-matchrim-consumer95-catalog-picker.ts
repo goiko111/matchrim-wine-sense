@@ -5,6 +5,7 @@ import { dirname, resolve } from 'node:path';
 import vm from 'node:vm';
 import ts from 'typescript';
 import * as candidate from '../src/utils/winerimCandidateSearch95';
+import { hasConflictingNativeVintage100 } from '../src/utils/nativeVintageEvidence100';
 import { canLookupWinerimOriginal, isVerifiedWinerimSheetForIdentity,
   type WinerimOriginalLookupResult, type WinerimOriginalSheet } from '../src/utils/winerimOriginalSheet';
 
@@ -118,6 +119,7 @@ function mount95(net = library(), native = true) {
     useAuth: () => ({ user: owner ? { id: owner } : null }), Capacitor: { isNativePlatform: () => native },
     Button: 'Button', Input: 'Input', Check: 'Check', Loader2: 'Loader2', Search: 'Search', X: 'X',
     isWinerimCandidateQuery95: candidate.isWinerimCandidateQuery95,
+    hasConflictingNativeVintage100,
     searchWinerimCandidates95: (query: string, signal: AbortSignal) => { searches.push({ query, signal }); return search(query, signal); },
     confirmWinerimCandidate95: (value: candidate.WinerimCandidate95, signal: AbortSignal) => { selections.push({ proposal: value, signal }); return confirm(value, signal); },
   };
@@ -156,6 +158,28 @@ function mount95(net = library(), native = true) {
 }
 
 async function main() {
+  await check('Native100 rejects contradictory source years with a clear notice and no confirmation call', async () => {
+    const h = mount95(library([{ ...row, name: 'Luna Reserva 2023', vintage: '2022' }]));
+    try {
+      h.click('Buscar por nombre'); await h.flush(); h.submit(); await h.flush();
+      assert.match(h.text(), /El año del nombre y la añada de la ficha no coinciden/);
+      assert.equal(h.button('Esta es mi botella'), undefined);
+      assert.equal(h.selections.length, 0); assert.equal(h.callbacks.length, 0); assert.equal(h.net.calls.length, 2);
+    } finally { h.unmount(); }
+  });
+  await check('Native100 rechecks changed proposal before detail dispatch; legacy/web utility is not rewritten', async () => {
+    const changed = { ...proposal, name: 'Luna Reserva 2022', vintage: '2022' };
+    const h = mount95();
+    h.setSearch(async () => ({ status: 'proposals', query: 'Luna', proposals: [changed], total: 1 }));
+    try {
+      h.click('Buscar por nombre'); await h.flush(); h.submit(); await h.flush();
+      changed.name = 'Luna Reserva 2023'; h.choose(); await h.flush();
+      assert.match(h.text(), /todavía no podemos confirmar/);
+      assert.equal(h.selections.length, 0); assert.equal(h.callbacks.length, 0);
+      const web = mount95(library(), false);
+      try { assert.equal(web.renderOuter(), null); } finally { web.unmount(); }
+    } finally { h.unmount(); }
+  });
   await check('Public La Gitana proposal projects only seven identity fields, no sensory/score/photos', async () => {
     const { outcome, net } = await searchWith([{ ...row, score: 99, profile: { personal: true }, photo: 'https://invalid.invalid/photo' }]);
     assert.equal(outcome.status, 'proposals');

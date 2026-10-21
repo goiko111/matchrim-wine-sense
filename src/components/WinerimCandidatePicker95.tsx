@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { confirmWinerimCandidate95, isWinerimCandidateQuery95, searchWinerimCandidates95,
   type WinerimCandidate95, type WinerimCandidateSearchResult95 } from '@/utils/winerimCandidateSearch95';
 import type { WinerimOriginalSheet } from '@/utils/winerimOriginalSheet';
+import { hasConflictingNativeVintage100 } from '@/utils/nativeVintageEvidence100';
 
 interface PickerProps95 {
   initialQuery?: string;
@@ -29,6 +30,7 @@ const detailMessages = {
   unavailable: 'No se pudo consultar la ficha original. La identidad y la afinidad siguen pendientes.',
 };
 type Request95 = { controller: AbortController; scope: string; query: string; selection: string | null };
+const nativeVintageConflictMessage100 = 'El año del nombre y la añada de la ficha no coinciden. Comprueba la etiqueta; todavía no podemos confirmar esta referencia.';
 
 const CandidatePicker95 = ({ initialQuery = '', contextKey, onConfirmed, ownerId, isCurrent }: PickerProps95 & {
   ownerId: string | null; isCurrent: () => boolean;
@@ -82,6 +84,12 @@ const CandidatePicker95 = ({ initialQuery = '', contextKey, onConfirmed, ownerId
     try {
       const next = await searchWinerimCandidates95(query, run.controller.signal);
       if (!active(run)) return;
+      if (next.status === 'proposals' && next.proposals.some(proposal => hasConflictingNativeVintage100(proposal))) {
+        results.current = null;
+        setOutcome(null);
+        setNotice(nativeVintageConflictMessage100);
+        return;
+      }
       results.current = next.status === 'proposals' ? next : null;
       setOutcome(next);
     } catch {
@@ -96,6 +104,10 @@ const CandidatePicker95 = ({ initialQuery = '', contextKey, onConfirmed, ownerId
       || current.current.scope !== scope || current.current.query !== query || results.current !== outcome
       || outcome?.status !== 'proposals' || !outcome.proposals.slice(0, 3).includes(proposal)
       || request.current?.selection === proposal.id || confirmed === proposal.id) return;
+    if (hasConflictingNativeVintage100(proposal)) {
+      setNotice(nativeVintageConflictMessage100);
+      return;
+    }
     const run = start(proposal.id);
     setBusy('detail');
     let sheet: WinerimOriginalSheet | null = null;

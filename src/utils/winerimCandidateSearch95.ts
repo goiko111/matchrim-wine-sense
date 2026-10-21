@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { isNonWineIdentity } from './wineCategory';
 import { hasLabelProducerRoleConflict } from './winerimLabelIdentity';
-import { hasConflictingNativeVintage100 } from './nativeVintageEvidence100';
 import { canLookupWinerimOriginal, isVerifiedWinerimSheetForIdentity, lookupWinerimOriginalSheet,
   type WinerimOriginalIdentity, type WinerimOriginalLookupResult } from './winerimOriginalSheet';
 
@@ -21,7 +20,6 @@ const candidateSchema = z.object({
   id: idSchema, name: publicText(120), winery: publicText(160), vintage: vintageSchema,
   slug: slugSchema, type: publicText(80).nullable(), region: publicText(160).nullable(),
 }).strict().refine(value => !placeholder.test(value.name) && !placeholder.test(value.winery) && !isNonWineIdentity(value.name, value.type)
-  && !hasConflictingNativeVintage100({ name: value.name, vintage: value.vintage })
   && canLookupWinerimOriginal({ name: value.name, producer: value.winery, vintage: value.vintage, region: value.region }));
 const rowSchema = z.object({
   id: idSchema, name: publicText(120), subname: publicText(120).nullable().optional(),

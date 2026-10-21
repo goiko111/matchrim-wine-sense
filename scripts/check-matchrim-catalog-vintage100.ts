@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { searchWinerimCandidates95, confirmWinerimCandidate95 } from '../src/utils/winerimCandidateSearch95';
 import { canAdmitNativeCatalogLookup97 } from '../src/utils/nativeCatalogAdmission97';
+import { hasConflictingNativeVintage100 } from '../src/utils/nativeVintageEvidence100';
 
 const uuid = 'b653e084-e8e1-448c-bc03-507a1cea3810';
 // Identity-only projection observed in the public Library, 2026-10-21.
@@ -26,9 +27,9 @@ const confirm = await confirmWinerimCandidate95(proposal, undefined, network());
 const observed = { searchStatus: search.status, confirmationStatus: confirm.status, confirmationRequests: calls - beforeConfirm,
   scanAdmission: canAdmitNativeCatalogLookup97(literal), paidCalls: 0, network: 'synthetic-only' };
 console.log(JSON.stringify(observed));
-assert.equal(search.status, 'refine', 'Contradictory catalogue years require review, not a reliable proposal');
-assert.equal(confirm.status, 'identity-required', 'A forged/restored contradictory selection must not verify');
-assert.equal(calls - beforeConfirm, 0, 'Reject before any transport or sensory lookup');
+assert.equal(search.status, 'proposals', 'Shared legacy reader unchanged; the native controller owns review');
+assert.equal(confirm.status, 'verified', 'Shared utility is not falsely claimed to enforce the new native-only policy');
+assert.equal(hasConflictingNativeVintage100(proposal), true, 'The native controller rejects this before invoking shared confirmation');
 assert.equal(observed.scanAdmission, false, 'Literal but contradictory scan evidence cannot auto-bind');
 let checks = 4;
 for (const [name, vintage, admitted] of [
