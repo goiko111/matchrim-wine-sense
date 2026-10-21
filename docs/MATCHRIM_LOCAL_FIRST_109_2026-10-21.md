@@ -1,6 +1,6 @@
 # Native Local-First Label Reading 109
 
-## Implemented, Not Yet Release-Validated
+## Implemented, Release Gates Remain Open
 
 Candidate102 remains frozen at product commit78e3302, with its signed archive and recorded QA. The changes below target candidate103 or later and must not be attributed to102.
 
@@ -33,3 +33,13 @@ These tests do not certify native gallery, WebView bridge, recognition accuracy 
 5. Full administrative catalogue coverage and live200 recognition remain open; do not infer absence from the public store subset or reuse the limited TestFlight100 exception.
 
 No new paid model calls, Lovable turns, backend deployment or web publication are authorized by this work. The accumulated50-start/EUR15 cap and unknown historical reservations remain unchanged.
+
+## Genuine Gallery E2E, 20:39 UTC
+
+`qa-artifacts/night105-20261021/gallery109-r6/RESULT.json` passes against the actual compiled103-r2 app, source8becf49. The anonymous native flow explicitly chooses Una etiqueta, opens the real Photos picker, selects the preserved img061, runs Apple Vision through the WebView bridge, retrieves public Winerim proposals and independently verifies an explicitly chosen fiche. No mock OCR/detector, account login, wine save or rating was used. Simulator video, screenshots and AX trees are retained.
+
+The selected public fiche is Biógrafo del Vino2022 / Dominio del Bienamado. This is a user-selected catalogue year, not a claim that OCR proved2022 on the photographed bottle. Anonymous users are correctly offered their test instead of an invented affinity. The full administrative Mantalak connection,200-reference matching, maximum-text recognition result and physical-phone flow are not certified by this one case.
+
+UI intervals including audits/polling: after picker to proposals7681ms; explicit choice to fiche/audit4424ms; gallery opening to proposals29646ms. They are not isolated OCR/network latency. The20-image actual Vision pilot measures343-1438ms per OCR call separately. No packet-count claim is made; zero-provider behavior is additionally supported by the local-mode source/handler contracts, not wire interception.
+
+Five earlier harness failures are preserved. Fixes follow observed iOS26 AX structure: pressed controls are switches, Photos uses named image layouts, a visible image exposes a stable frame despite isHittable=false, and the one-up review requires its identified native Done button. The source never silently switches to cloud to make the test pass.

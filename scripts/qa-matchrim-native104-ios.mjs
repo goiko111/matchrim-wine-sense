@@ -7,6 +7,8 @@ import { execFileSync, spawn } from 'node:child_process';
 const repo = process.cwd(), prep = JSON.parse(fs.readFileSync(path.resolve(process.argv[2], 'preparation.json')));
 const root = path.resolve(process.argv[3]), developer = '/Applications/Xcode-26.0.1.app/Contents/Developer';
 const device = 'B18822EF-BFBD-4A6A-89B2-33539BDE4127', bundleId = 'wine.matchrim.qa99review';
+const buildOnly = process.argv[4] === 'build-only';
+assert(process.argv[4] === undefined || buildOnly, 'Unknown native QA mode');
 const env = { ...process.env, DEVELOPER_DIR: developer };
 const sha = value => createHash('sha256').update(value).digest('hex');
 const guard = () => {
@@ -27,7 +29,9 @@ const verify = (app = null) => {
 };
 const xcrun = args => execFileSync('/usr/bin/xcrun', args, { env, encoding: 'utf8', timeout: 120000 });
 const receipt = { startedUTC: new Date().toISOString(), build: prep.build, sourceCommit: prep.commit, sourceDirty: prep.sourceDirty,
-  scope: 'Production native assets compiled and unchanged portrait UIKit/navigation/keyboard/a11y harness. No account login, image analysis, phone, host focus or paid models. This is not recognition or human taste accuracy approval.',
+  scope: buildOnly ? 'Compile/install production native assets only. No navigation/accessibility/image recognition claim; previously green unchanged harness is not repeated.'
+    : 'Production native assets compiled and unchanged portrait UIKit/navigation/keyboard/a11y harness. No account login, image analysis, phone, host focus or paid models. This is not recognition or human taste accuracy approval.',
+  buildOnly,
   device, bundleId, stages: [], modelStarts: 0, webPublished: false, uploaded: false };
 async function run(name, args, limit = 240000) {
   guard(); verify(); const output = path.join(root, name); fs.mkdirSync(output);
@@ -64,7 +68,7 @@ try {
   const harness = path.resolve('qa-artifacts/native99-20261021/native-audit-project'), project = root + '/project'; fs.mkdirSync(project);
   for (const name of ['Probe97.xcodeproj', 'Probe97.xctestplan', 'AutomationModeProbe.swift']) fs.cpSync(path.join(harness, name), path.join(project, name), { recursive: true });
   receipt.originalTestSHA256 = sha(fs.readFileSync(project + '/AutomationModeProbe.swift'));
-  for (const size of ['large', 'accessibility-extra-extra-extra-large']) {
+  for (const size of buildOnly ? [] : ['large', 'accessibility-extra-extra-extra-large']) {
     guard(); verify(app); xcrun(['simctl', 'ui', device, 'content_size', size]);
     const name = size === 'large' ? 'normal' : 'max';
     await run(name, ['test', '-project', project + '/Probe97.xcodeproj', '-scheme', 'Probe97', '-destination-timeout', '10',

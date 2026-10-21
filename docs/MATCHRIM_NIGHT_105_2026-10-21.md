@@ -68,3 +68,13 @@ The109 real gallery/video harness is now committed but unrun. The native OCR run
 - Current-parser cached200 baseline:47 proposal lists,34 expected top1,38 expected top3, nine lists without expected. Initial paginated replay:49 lists,35 top1,38 top3,11 lists without expected. This includes a real new Camino del Puerto hit, displacement of Inspiration by generic same-producer rows, and a Surani/Sorani metadata mismatch needing independent adjudication. Transport success is not recognition success.
 - Correction prepared: rank both bounded60-row queries (120 total) and prefer fully observed distinctive cuvee words over generic producer/region rows at equal evidence score. Fourteen proposal groups pass. Native Bodega also removes the duplicate partial-Library fiche action when a validated public fiche is already available. These revisions require fresh103-r2 assets and QA; r1 results do not certify them.
 - Shared heavy/simulator resources were released at20:27:57UTC; another authorized task is using heavy-local. Only light coding continues until it releases. No outstanding own native processes or agents.
+
+## Candidate103 Second QA Window
+
+`candidate103-r2` source8becf49 passes typecheck/bundle. `uikit103-r2` compiles/installs these exact assets; it deliberately uses build-only mode because the unchanged normal/max navigation harness already passed on103-r1. It is not a second navigation/a11y claim.
+
+`gallery109-r6` now passes the genuine WebView/Photos/Apple Vision/public catalogue/explicit-choice E2E, with complete simulator video and AX/screenshot attachments. No model or mock bridge. Earlier r1-r5 failures are retained as harness failures, including the overlooked Photos one-up Done control. See the109 document for precise scope and timings. One additional anonymous public GET checked that Winerim allows the capacitor origin; it returned200 with the exact Origin allowance. Own CLI public GETs now62; app/photo GET counts are not instrumented and must not be invented.
+
+`visual-saved110-r3` passes four captures on103-r2 with the redundant partial-Library fiche action absent,82 initial retained and30 current after synthetic profile change. Source fingerprints match preparation; no production write, model request or published web change.
+
+The fixed ranking replay is now36 top1/39 top3 expected references,49 lists and10 lists without expected, versus baseline34/38/47/9. These remain filename-metadata proxy metrics, not identity precision or200-image release approval. Shared resources were released again around20:40UTC for another authorized task. Next block: actual Vision remaining180, current-query catalogue benchmark, retained empty/unmatched cases, and signed candidate only after the scoped QA remains green.

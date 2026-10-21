@@ -245,15 +245,18 @@ final class MatchrimLocalGallery109Tests: XCTestCase {
 
         // Some iOS pickers return immediately; others expose Add/Choose.
         let completionLabels = ["Add", "Choose", "A\u{00f1}adir", "Agregar", "Elegir", "Seleccionar"]
+        let reviewDoneID = "PUOneUpBarButtonItemIdentifierAssetExplorerReviewScreenDone"
         var usedCompletionLabels = Set<String>()
         for step in 0..<2 {
             var completion: XCUIElement?
             let transitioned = waitUntil(12) {
-                completion = completionLabels.compactMap { label -> XCUIElement? in
+                let reviewDone = app.buttons[reviewDoneID].firstMatch
+                completion = reviewDone.exists && reviewDone.isHittable && reviewDone.isEnabled ? reviewDone
+                    : completionLabels.compactMap { label -> XCUIElement? in
                     let button = app.buttons[label].firstMatch
                     return button.exists && button.isHittable && button.isEnabled ? button : nil
                 }.first
-                return completion != nil || self.photoGrids(app).isEmpty
+                return completion != nil || (self.photoGrids(app).isEmpty && !app.navigationBars["PUOneUpView"].exists)
             }
             try require(transitioned, app, "Picker stayed open without a known Add/Choose control")
             guard let button = completion else { return }
@@ -263,7 +266,7 @@ final class MatchrimLocalGallery109Tests: XCTestCase {
             button.tap()
             audit(app, "17-picker-completion-\(step)-after")
         }
-        try require(waitUntil(10) { self.photoGrids(app).isEmpty }, app,
+        try require(waitUntil(10) { self.photoGrids(app).isEmpty && !app.navigationBars["PUOneUpView"].exists }, app,
                     "Photo picker did not finish after bounded Add/Choose handling")
     }
 
