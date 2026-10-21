@@ -3,6 +3,7 @@ import { hasMissingVisibleQualifier102 } from './nativeWineQualifier102';
 import { hasConflictingNativeVintage100 } from './nativeVintageEvidence100';
 import { isNonWineIdentity } from './wineCategory';
 import { hasObservedAppellationConflict120 } from './nativeAppellation120';
+import { hasObservedGrapeConflict124 } from './nativeGrapeConflict124';
 
 const fold = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 const tokens = (value: string): string[] => fold(value).match(/[a-z0-9]+/g) || [];
@@ -17,7 +18,8 @@ const connectors = new Set('de del la el le les du des the and y et di do da dos
 const queryMetadata = new Set(('celler cellar cava pet nat ancestral premium tradicional ecologico ecologica '
   + 'eco organic biologico biologica biodinamico biodinamica denominacion denominazione appellation '
   + 'origen origine controlee controllata controlada protegida protegee indicacion geografica '
-  + 'malvar verdejo viura macabeo glera chenin verdicchio zibibbo cinsault').split(' '));
+  + 'malvar verdejo viura macabeo glera chenin verdicchio zibibbo cinsault '
+  + 'dry trocken halbtrocken feinherb').split(' '));
 const fullName = (row: PublicGlobalRow103) => row.subname && !(` ${tokens(row.name).join(' ')} `).includes(` ${tokens(row.subname).join(' ')} `)
   ? `${row.name} ${row.subname}` : row.name;
 export type WineProposal104 = { row: PublicGlobalRow103; name: string; score: number; missingProducer: boolean; vintageConflict: boolean; readingCorrections: string[] };
@@ -32,7 +34,8 @@ export const rankGlobalProposals104 = (evidence: readonly string[], rows: readon
   for (const row of rows.slice(0, 120)) {
     const name = fullName(row);
     if (isNonWineIdentity(name, row.type) || hasConflictingNativeVintage100({ name, vintage: row.vintage })
-      || hasMissingVisibleQualifier102({ name, evidence }) || hasObservedAppellationConflict120(evidence, { name, region: row.region })) continue;
+      || hasMissingVisibleQualifier102({ name, evidence }) || hasObservedAppellationConflict120(evidence, { name, region: row.region })
+      || hasObservedGrapeConflict124(evidence, row.grapes)) continue;
     const words = [...new Set(tokens(name).filter(word => word.length > 1 && word !== String(row.vintage) && !connectors.has(word)))];
     const qualifiers = evidence.map(fold).flatMap(line => line.match(/\b\d{1,2}\s+(?:meses|months)\b|\b(?:gran reserva|reserva especial|vieilles vignes|old vines|seleccion del sumiller)\b/g) || []);
     if (qualifiers.some(qualifier => !fold(name).includes(qualifier))) continue;
@@ -90,17 +93,32 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
     && !metadataOnly(value)
     && tokens(value).some(word => word.length >= 3 && !generic.has(word) && !queryMetadata.has(word));
   if (manuallyEntered) return meaningful(queryName) ? [queryName] : [];
-  const groundedName = meaningful(queryName) && tokens(queryName).every(word => generic.has(word) || visible.has(word));
+  const quotedKeys = new Set<string>();
+  const unquote = (value: string) => {
+    const match = value.match(/^(['"])([^\r\n]{3,100})\1$/);
+    if (!match || match[2].includes(match[1])) return value;
+    const inner = match[2].trim(), words = tokens(inner);
+    if (words.length < 1 || words.length > 4) return value;
+    quotedKeys.add(words.join(' '));
+    return inner;
+  };
+  const automaticName = unquote(queryName);
+  const groundedName = meaningful(automaticName) && tokens(automaticName).every(word => generic.has(word) || visible.has(word));
   const queries = new Map<string, string>();
   const literalQueries = evidence.map(line => line.trim().replace(/^(?:embotellado por|bottled by|mis en bouteille (?:par|au))\s+/i, '')
-    .replace(/^(?:[-,;:]\s*)+|(?:[,;:]\s*)+$/g, '').trim()).filter(meaningful);
-  for (const query of [...(groundedName ? [queryName] : []), ...literalQueries]) {
+    .replace(/^(?:[-,;:]\s*)+|(?:[,;:]\s*)+$/g, '').trim()).map(unquote).filter(meaningful);
+  for (const query of [...(groundedName ? [automaticName] : []), ...literalQueries]) {
     const normalized = tokens(query).join(' '); if (!queries.has(normalized)) queries.set(normalized, query);
   }
   const literal = [...queries.entries()];
   // Prefer a fully observed word over a second partial reading of that word.
   // This changes query allocation only, never the evidence used to identify it.
-  return literal.filter(([key]) => !literal.some(([other]) => other !== key && key.length >= 4
+  const bounded = literal.filter(([key]) => !literal.some(([other]) => other !== key && key.length >= 4
     && other.length <= key.length * 2 && !key.includes(' ') && !other.includes(' ') && other.includes(key)))
-    .map(([, query]) => query).slice(0, 2);
+    .map(([, query]) => query);
+  const [first, ...rest] = bounded;
+  // Preserve the primary observed name. A short explicitly quoted name may use
+  // the second slot before generic unquoted label lines; evidence stays verbatim.
+  return first ? [first, ...rest.filter(query => quotedKeys.has(tokens(query).join(' '))),
+    ...rest.filter(query => !quotedKeys.has(tokens(query).join(' ')))].slice(0, 2) : [];
 };

@@ -166,7 +166,7 @@ await test('Name-only manual correction can recover a photographed vintage; expl
   }
 });
 await test('Geometry-supported fragments are explicit suggestions, never a silent automatic identity', async () => {
-  const queries = [], wine = { ...row, name: 'Galizeus Godello', winery: 'Vicente Gandia' };
+  const queries = [], wine = { ...row, name: 'Galizeus Godello', winery: 'Vicente Gandia', grapes: ['Godello'] };
   const h = host({ search: async query => { queries.push(query); return { rows: [wine], status: 'complete' }; },
     lookup: () => { throw Error('Reconstruction cannot trigger automatic lookup'); } },
   { ...candidate, name: 'Wrong initial wine', vintage: null }, async () => ({ lines: [
