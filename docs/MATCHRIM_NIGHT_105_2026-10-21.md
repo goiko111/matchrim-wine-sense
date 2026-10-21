@@ -116,3 +116,41 @@ An observed blank optional `subname` on public row110358 invalidated a whole lat
 6bb0fc7 rejects a broader fiche when an explicit same-line French appellation contains a location absent from its name/region; it does not join OCR columns or invent producer aliases. It addresses the actual Mâcon-Mancey versus generic Mâcon proposal. Candidate rows now expose catalogue type/region: the observed rosé photo161 was being offered a white reference, and176 a red instead of its supplied white metadata. Type display helps review but does not itself solve those recognition failures. Six synthetic appellation groups,14 proposal groups and14 actual recovery-handler groups pass.
 
 e13cb19 removes style/grape/legal-only query allocation and normalizes a bounded amount of OCR punctuation, leaving original evidence and identity ranking untouched. Six query groups pass; metadata-only/no-query readings are now explicitly valid abstentions. A fresh200 cached/live-bounded rerun is required before claiming any measured gain or absence of recall loss. No new TestFlight approval follows from these unit checks.
+
+## Integrated Native Continuation, 22:17 UTC
+
+Candidate103-r6/source6841bf4 passed typecheck/assets and bound native build/install `uikit103-r4`. `visual-profile116-r2`, `visual-quiz118-r1` and `visual-local109-r7` passed15 controlled captures altogether (synthetic transport/accounts, no production writes). Manual review inspected the narrow Profile and local-proposal views plus maximum-text retry/retake and narrow quiz error: retry is reachable above the footer and the new test starts without replacing the saved profile. This is not real-account/UIKit Profile approval.
+
+`gallery109-r7` passed the genuine anonymous Photos -> Apple Vision -> public catalogue -> explicit selection -> independent fiche flow using the current r6 native artifact. Its24 screenshots/AX attachments and video are retained. The observed fiche contains the catalogue bottle photo and explicit2022 choice, not an OCR-certified vintage. UI timing after picker to proposals6753ms and choice to fiche/audit3412ms includes waits/audits, not isolated OCR/network latency. No save/rating/signup/model request. Gallery runner now verifies the native executable/config/plist receipt and filters inherited secrets from the test process.
+
+`archive103-r1` is signed and signature/resource verified from candidate103-r6; not exported/uploaded. It predates the response-parser remediation below and is frozen, not the latest release candidate.
+
+Real-account114 stopped before compile/auth reservation: the existing0600 private access file is an iCloud `compressed,dataless` placeholder (stat271bytes, actual read0bytes). FileManager download request, coordinated read and brctl download did not materialize it. No credentials were printed, no authentication submitted, no reservation consumed. Profile115 and Style119 real readback/save remain unrun; no account/password reset or new account was attempted.
+
+### Measured Recognition Changes
+
+| Revision | Eligible / incomplete | Top1 / top3 metadata hits | Lists without expected | New free GETs |
+| --- | --- | --- | --- | --- |
+| native112-corpus200-r2, before120/121 |132 /68 |27 /29 |7 |135 |
+| r3,120/121 |134 /66 |27 /29 |6 |4 |
+| r4, response-format cache-only |139 /61 |28 /30 |6 |0, one missing cached page |
+| r5, response-format completed bounded retrieval |140 /60 |28 /31 |6 |2 |
+
+All200 decisions were attempted;196 actual Vision readings contain text. Filename-derived metadata is not expert ground truth. On the131 scenes eligible in both r2 and r5, top3 hits remain29 and lists without expected fall7->6; one older empty-result scene became incomplete when a newly useful producer query was correctly classified broad. Do not present changed denominators as directly comparable accuracy percentages. Recognition200 remains NO-GO.
+
+The66 incomplete scenes at r3 split into32 partial-only,11 schema-only,4 both and19 withHTTP500. All partial searches exceed60 rows. 909ee0f fixes response names using horizontal tabs as token separators and the observed safe year-only slug format `_YYYY`. Queries, winery controls, unsafe/empty slugs, empty identities, vintage/grape conflicts, HTTP failures and broad pagination bounds stay strict. Seven new format groups, four blank-metadata groups, eight pagination groups,17 catalogue groups/50 synthetic profiles and five legacy-scope files/14 mutant rejections pass. New public GETs in r3/r5 were allHTTP200. Own completed CLI free GETs total294; app/photo GET counts remain uninstrumented. Paid provider starts0, Lovable0, image uploads0.
+
+### Isolated Vision122 Experiments
+
+No production plugin was changed. Three variants used the same neutral first20 inputs and unchanged real CAPPluginCall probe, with source/binary/input hashes and negative/busy/cancel settlement checks. The initial experiment failed before compilation on a wrong Cordova framework name; retained. The corrected harness uses actual Cordova modules from the CapacitorCordova package and has nine in-memory mocked groups.
+
+| Variant | Nonempty /20 | Changed text vs baseline | Median OCR ms |
+| --- | --- | --- | --- |
+| Production baseline |19 |-- |455.218 |
+| automatic language |19 |3, including lost year on008 |474.639 |
+| expanded supported Latin languages |19 |0 |446.562 |
+| default CPU/GPU policy |19 |0 |486.669 |
+
+Expanded languages also changed no text on181-200. These small nonrandom simulator experiments do not establish accuracy/performance gains, and none is promoted. They are deliberately ineligible for the production-bound112 corpus. No GT dictionary or image transformation/upload was used.
+
+Next: improve literal query selection and explicit type/grape conflict handling using observed evidence; regenerate the latest candidate after those changes; recheck real-account gates only if the existing private file becomes locally available. No web/main publication, backend deployment or paid-budget expansion.
