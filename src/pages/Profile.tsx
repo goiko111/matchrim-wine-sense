@@ -800,7 +800,7 @@ const Profile = () => {
 
   if (isNative && nativeHistoryError) return <>
     <AppNav />
-    <main className="matchrim-native-page-top matchrim-native-page-x container mx-auto max-w-6xl pb-8">
+    <main className="matchrim-native-page-top matchrim-native-page-x container mx-auto max-w-6xl pb-[calc(6rem+env(safe-area-inset-bottom))]">
       <NativeAccountActions />
       <h1 className="mb-4 text-2xl font-bold text-stone-950">Mi Perfil</h1>
       <div role="alert" className="space-y-3 border-y border-stone-200 py-4">
@@ -816,7 +816,8 @@ const Profile = () => {
   return (
     <>
       <AppNav />
-      <main className="matchrim-native-page-top matchrim-native-page-x container mx-auto max-w-6xl pb-8">
+      <main className="matchrim-native-page-top matchrim-native-page-x container mx-auto max-w-6xl pb-8"
+        style={isNative ? { paddingBottom: 'calc(6rem + env(safe-area-inset-bottom))' } : undefined}>
       <NativeAccountActions />
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-red-900 mb-2 flex items-center gap-2">

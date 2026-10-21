@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
-import { assertLeases112, boundedFetch112, captureSources112, freeze112, latestRanges112, loadCache112,
+import { assertLeases112, boundedFetch112, captureSources112, freeze112, isSearchCacheURL112, latestRanges112, loadCache112,
   loadReadings112, loadRuntime112, newState112, parseReading112, predict112, sha112, summarize112, verifySources112 } from './benchmark-matchrim-native112.ts';
 
 // All producer, image, catalogue and persistence fixtures live in memory.
@@ -24,6 +24,16 @@ const readMap = map => file => { assert(map.has(file), `MISSING_MEMORY_FILE: ${f
 const json = value => Buffer.from(JSON.stringify(value, null, 2) + '\n');
 let groups = 0;
 const test = async (name, run) => { await run(); groups++; console.log('PASS', name); };
+
+await test('Search cache excludes pinned historical detail routes without admitting arbitrary endpoints', () => {
+  assert.equal(isSearchCacheURL112(root + '?page=1&text=Synthetic&store=1', true), true);
+  assert.equal(isSearchCacheURL112(root + '/376474/Synthetic-Cuvee-FR', false), false);
+  for (const [url, preserved] of [[root + '/376474/Synthetic-Cuvee-FR', true],
+    [root + '/376474/Synthetic-Cuvee-FR?text=test', false], [root + '/admin', false],
+    [root.replace('app.winerim.com', 'example.invalid') + '/376474/Synthetic', false],
+    [root.replace('https://', 'https://user@'), false], [root + '#fragment', false]])
+    assert.throws(() => isSearchCacheURL112(url, preserved), /UNEXPECTED_CACHE/);
+});
 
 function fixture(revision = 2, start = 1) {
   const map = new Map(), folder = `vision112-${String(start).padStart(3, '0')}-${String(start + 19).padStart(3, '0')}-r${revision}`;

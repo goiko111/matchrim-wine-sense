@@ -182,7 +182,13 @@ try {
         await page.setViewportSize({ width, height });
         await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
         const retry = page.getByRole('button', { name: 'Reintentar perfil', exact: true });
-        await retry.scrollIntoViewIfNeeded(); const bounds = await retry.boundingBox(); assert(bounds && bounds.height >= 43.5);
+        await retry.evaluate(element => element.scrollIntoView({ block: 'center' }));
+        const bounds = await retry.boundingBox(); assert(bounds && bounds.height >= 43.5);
+        assert(await retry.evaluate(element => {
+          const rect = element.getBoundingClientRect();
+          return [.5, .9].every(fraction => { const hit = document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height * fraction);
+            return hit === element || element.contains(hit); });
+        }), 'Retry must be physically reachable above the fixed navigation, not merely intersect the viewport');
         await capture('profile116-error-' + width + '-' + text);
       }
       profileHistoryHealthy = true;

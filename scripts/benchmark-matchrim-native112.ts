@@ -137,6 +137,17 @@ export async function loadReadings112(repo: string, base: string, runtime: Runti
 
 type Cache112 = { bytes: Buffer; status: number; headers: Record<string, string>; responseURL: string; redirected: boolean;
   metadata: 'preserved' | 'legacy-assumedJSON'; sourceReceipt: string; sha256: string };
+export function isSearchCacheURL112(value: string, preserved: boolean) {
+  const url = new URL(value), endpoint = url.origin + url.pathname;
+  assert(!url.username && !url.password && !url.hash, 'UNEXPECTED_CACHE_URL');
+  if (endpoint === root112) return true;
+  // The pinned historical manifest also contains independent detail receipts.
+  // They cannot answer a search and must never enter this search-only cache.
+  const root = new URL(root112), suffix = url.pathname.slice(root.pathname.length);
+  assert(!preserved && url.origin === root.origin && url.pathname.startsWith(root.pathname + '/')
+    && !url.search && /^\/[1-9]\d{0,9}\/[A-Za-z0-9_-]{1,200}$/.test(suffix), 'UNEXPECTED_CACHE_ENDPOINT');
+  return false;
+}
 export function loadCache112(repo: string, folders: string[], read: Read112 = fs.readFileSync) {
   const cache = new Map<string, Cache112>();
   for (const folder of folders) {
@@ -152,7 +163,8 @@ export function loadCache112(repo: string, folders: string[], read: Read112 = fs
       }
       assert(/^response-\d{3}\.json$/.test(receipt.body));
       const bytes = read(path.join(folder, receipt.body)); assert.equal(sha112(bytes), receipt.sha256); assert.equal(bytes.length, receipt.bytes);
-      assert(bytes.length <= 262144); assert.equal(new URL(receipt.url).origin + new URL(receipt.url).pathname, root112);
+      assert(bytes.length <= 262144);
+      if (!isSearchCacheURL112(receipt.url, preserved)) continue;
       if (preserved) {
         assert(receipt.state === 'completed' && receipt.headers && typeof receipt.headers === 'object' && !Array.isArray(receipt.headers));
         assert(Object.values(receipt.headers).every(value => typeof value === 'string'));

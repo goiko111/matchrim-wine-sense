@@ -63,6 +63,10 @@ final class MatchrimAccount114Tests: XCTestCase {
         try require(profile.exists, app,
                     "QA sign-in did not reach profile; no retry or reset allowed")
         failureStage = "POST_LOGIN_ASSERTION"
+        let sensoryTab = app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "Perfil Sensorial")).firstMatch
+        try require(sensoryTab.waitForExistence(timeout: 15)
+                    && !app.staticTexts["No hemos podido cargar tu test"].firstMatch.exists, app,
+                    "Profile title alone is not a loaded sensory profile")
         audit(app, "01-real-qa-profile")
         let showsEmail = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", email)).firstMatch.exists
         attach("Current account email visible: \(showsEmail). Missing identity presentation is a UX finding, not a second login authorization.", "02-account-visibility")
