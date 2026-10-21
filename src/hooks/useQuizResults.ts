@@ -203,11 +203,11 @@ export const useQuizResults = () => {
     }
   };
 
-  const getQuizHistory = useCallback(async () => {
+  const getQuizHistory = useCallback(async (options?: { signal?: AbortSignal; throwOnError?: boolean }) => {
     if (!user) return [];
 
     try {
-      const { data, error } = await supabase
+      const query = supabase
         .from('quiz_results')
         .select(`
           *,
@@ -215,10 +215,12 @@ export const useQuizResults = () => {
         `)
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
+      const { data, error } = await (options?.signal ? query.abortSignal(options.signal) : query);
 
       if (error) throw error;
       return data || [];
     } catch (error) {
+      if (options?.throwOnError) throw error;
       console.error('Error fetching quiz history:', error);
       return [];
     }

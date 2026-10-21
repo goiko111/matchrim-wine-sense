@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuizResults } from '@/hooks/useQuizResults';
-import { Wine, User, History, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, MapPin, Loader2, ArrowRight, type LucideIcon } from 'lucide-react';
+import { Wine, User, History, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker, Mountain, Shield, Sword, Heart, Feather, Sun, Utensils, Leaf, MapPin, Loader2, RefreshCw, ArrowRight, type LucideIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import AppNav from '@/components/AppNav';
 import NativeAccountActions from '@/components/NativeAccountActions';
@@ -267,6 +267,8 @@ const Profile = () => {
   const [profileWinerimError, setProfileWinerimError] = useState<string | null>(null);
   const [profileWinerimRetryKey, setProfileWinerimRetryKey] = useState(0);
   const [expandedRegionMap, setExpandedRegionMap] = useState<string | null>(null);
+  const [nativeHistoryError, setNativeHistoryError] = useState(false);
+  const [nativeHistoryRetry, setNativeHistoryRetry] = useState(0);
   const baseProfile = isNative ? normalizeProfileForDisplay(currentProfile, true) : currentProfile;
 
   useEffect(() => {
@@ -278,16 +280,27 @@ const Profile = () => {
     }
 
     let cancelled = false;
+    const controller = isNative ? new AbortController() : null;
+    let deadline: ReturnType<typeof window.setTimeout> | undefined;
 
     const loadQuizHistory = async () => {
       setIsLoadingProfile(true);
+      if (isNative) { setNativeHistoryError(false); setQuizHistory([]); setCurrentProfile(null); }
       try {
-        const history = await getQuizHistory();
+        const history = controller ? await Promise.race([
+          getQuizHistory({ signal: controller.signal, throwOnError: true }),
+          new Promise<never>((_resolve, reject) => {
+            deadline = window.setTimeout(() => { controller.abort(); reject(new Error('PROFILE_HISTORY_TIMEOUT')); }, 12000);
+          }),
+        ]) : await getQuizHistory();
         if (cancelled) return;
 
         setQuizHistory(history as ProfileHistoryItem[]);
         setCurrentProfile(history.length > 0 ? history[0] as ProfileHistoryItem : null);
+      } catch {
+        if (isNative && !cancelled) setNativeHistoryError(true);
       } finally {
+        if (deadline !== undefined) window.clearTimeout(deadline);
         if (!cancelled) setIsLoadingProfile(false);
       }
     };
@@ -296,8 +309,10 @@ const Profile = () => {
 
     return () => {
       cancelled = true;
+      controller?.abort();
+      if (deadline !== undefined) window.clearTimeout(deadline);
     };
-  }, [authLoading, user, navigate, getQuizHistory]);
+  }, [authLoading, user, navigate, getQuizHistory, isNative, nativeHistoryRetry]);
 
   useEffect(() => {
     if (!user) {
@@ -782,6 +797,21 @@ const Profile = () => {
       </div>
     );
   }
+
+  if (isNative && nativeHistoryError) return <>
+    <AppNav />
+    <main className="matchrim-native-page-top matchrim-native-page-x container mx-auto max-w-6xl pb-8">
+      <NativeAccountActions />
+      <h1 className="mb-4 text-2xl font-bold text-stone-950">Mi Perfil</h1>
+      <div role="alert" className="space-y-3 border-y border-stone-200 py-4">
+        <h2 className="font-semibold">No hemos podido cargar tu test</h2>
+        <p className="text-sm leading-6 text-stone-700">No necesitas repetirlo. Comprueba la conexión y vuelve a intentarlo.</p>
+        <Button type="button" className="h-auto min-h-11 w-full gap-2 whitespace-normal py-3" onClick={() => setNativeHistoryRetry(value => value + 1)}>
+          <RefreshCw aria-hidden="true" className="h-4 w-4 shrink-0" />Reintentar perfil
+        </Button>
+      </div>
+    </main>
+  </>;
 
   return (
     <>
