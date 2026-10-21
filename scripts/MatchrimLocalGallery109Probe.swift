@@ -59,7 +59,8 @@ final class MatchrimLocalGallery109Tests: XCTestCase {
                     app, "Expected Etiqueta de vino screen")
         audit(app, "08-label-screen")
 
-        let localMode = app.buttons["Una etiqueta"].firstMatch
+        // WebKit exposes aria-pressed buttons as switches on this iOS runtime.
+        let localMode = app.switches["Una etiqueta"].firstMatch
         try require(localMode.waitForExistence(timeout: 10), app,
                     "Installed app lacks explicit local-single mode; do not fall back to cloud")
         try reveal(localMode, in: app, stage: "09-local-mode")
@@ -200,11 +201,11 @@ final class MatchrimLocalGallery109Tests: XCTestCase {
             !self.photoGrids(app).isEmpty || libraryLabels.contains { app.buttons[$0].firstMatch.isHittable }
         }
         try require(ready, app, "Unknown picker/action sheet; no guessed process or coordinate fallback")
-        if photoGrids(app).isEmpty {
-            let observed = libraryLabels.compactMap { label -> XCUIElement? in
-                let button = app.buttons[label].firstMatch
-                return button.exists && button.isHittable ? button : nil
-            }
+        let observed = libraryLabels.compactMap { label -> XCUIElement? in
+            let button = app.buttons[label].firstMatch
+            return button.exists && button.isHittable ? button : nil
+        }
+        if !observed.isEmpty {
             try require(observed.count == 1, app, "Expected exactly one known Photo Library action")
             audit(app, "14-observed-photo-library-action")
             observed[0].tap()
@@ -221,13 +222,25 @@ final class MatchrimLocalGallery109Tests: XCTestCase {
             }
         try require(knownPicker && grids.count == 1, app,
                     "Photo grid is not uniquely identifiable in the observed app XCUI tree")
-        let first = grids[0].cells.firstMatch
-        try require(first.waitForExistence(timeout: 8) && first.isHittable, app,
-                    "Photo grid first cell must be hittable; do not pick another cell")
+        let first = grids[0].elementType == .collectionView ? grids[0].cells.firstMatch
+            : grids[0].images.matching(identifier: "PXGGridLayout-Info").firstMatch
+        try require(first.waitForExistence(timeout: 8), app,
+                    "Photo grid first item must exist; do not pick another item")
         audit(app, "16-photo-grid-first-cell-before-selection")
         attach("Runner must attest first photo is prepared img-061.jpg; XCUI cell label: "
                + first.label + "\n" + first.debugDescription, "16-selected-media-assumption")
-        first.tap()
+        if first.isHittable { first.tap() }
+        else {
+            // Observed Photos26 AX image reports non-hittable despite a visible
+            // stable frame. Use only that named image's measured on-screen centre.
+            let frame = first.frame
+            try require(first.elementType == .image && first.identifier == "PXGGridLayout-Info"
+                        && frame.width >= 44 && frame.height >= 44
+                        && frame.minX >= -1 && frame.minY >= 154
+                        && frame.maxX <= app.frame.maxX + 1 && frame.maxY < app.frame.maxY - 76,
+                        app, "Non-hittable photo lacks a safe observed on-screen frame")
+            first.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        }
         audit(app, "17-photo-grid-after-first-cell")
 
         // Some iOS pickers return immediately; others expose Add/Choose.
@@ -255,7 +268,15 @@ final class MatchrimLocalGallery109Tests: XCTestCase {
     }
 
     @MainActor private func photoGrids(_ app: XCUIApplication) -> [XCUIElement] {
-        app.collectionViews.allElementsBoundByIndex.filter { $0.exists && $0.cells.count > 0 }
+        let collections = app.collectionViews.allElementsBoundByIndex.filter {
+            $0.exists && $0.cells.count > 0 && !$0.buttons["Take Photo"].exists
+                && !$0.buttons["Choose File"].exists
+        }
+        // Observed iOS26 Photos picker uses accessible images, not collection cells.
+        let layouts = app.otherElements.matching(identifier: "PXGGridLayout-Group").allElementsBoundByIndex.filter {
+            $0.exists && $0.images.matching(identifier: "PXGGridLayout-Info").count > 0
+        }
+        return collections + layouts
     }
 
     @MainActor private func hasLinkedIdentity(_ app: XCUIApplication) -> Bool {

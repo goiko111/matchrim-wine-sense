@@ -7,6 +7,7 @@ import { readNativeWineDraft98 } from '@/utils/nativeWineDraft98';
 import { safeWineImageUrl98 } from '@/utils/wineImage98';
 import { cellarAffinityView, makeCellarCatalogEvidence, readCellarInitialAffinity, readCellarSensoryEvidence, withCellarInitialAffinity } from '@/utils/bodegaAffinity';
 import { cellarDisplayAffinity110, isHighCellarAffinity110 } from '@/utils/cellarReferenceStyle110';
+import { readCellarPublicReference107 } from '@/utils/cellarPublicReference107';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { findOriginalWinerimWineForLabel, findWinerimWineForLabel } from '@/services/winerimApi';
@@ -2055,7 +2056,7 @@ const MyWinesForOwner = () => {
 	                            </p>
 	                          )}
 
-	                          <WinerimSheetLookup identity={{ name: wine.name, producer: wine.producer, vintage: wine.vintage, region: wine.region, country: wine.country }} />
+	                          {(!isNative || !readCellarPublicReference107(wine)) && <WinerimSheetLookup identity={{ name: wine.name, producer: wine.producer, vintage: wine.vintage, region: wine.region, country: wine.country }} />}
 	                          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))] gap-2 pt-2">
 	                            <Button
 	                              type="button"

@@ -111,4 +111,19 @@ await test('Queries prefer a complete observed word over redundant partial logo 
   assert.deepEqual(globalRecoveryQueries104('', ['FINCA', 'FLICHMAN', 'CHACAYES']), ['FLICHMAN', 'CHACAYES']);
   assert.deepEqual(globalRecoveryQueries104('', ['DA', 'LUCA']), ['LUCA'], 'Separate words are not silently joined');
 });
+await test('A distinctive read cuvee outranks generic rows of the same producer at an equal evidence score', () => {
+  const broad = [1, 2, 3].map(id => ({ ...vidure, id, name: ['Synthetic Estate Dry', 'Northern Valley Dry', 'Synthetic Estate Northern Valley Dry'][id - 1],
+    winery: 'Synthetic Estate', region: 'Northern Valley' }));
+  const specific = { ...vidure, id: 99, name: 'Aurora Pinot Noir Rose Dry', winery: 'Synthetic Estate', region: 'Northern Valley' };
+  const result = rankGlobalProposals104(['Synthetic Estate', 'DRY', 'AURORA', 'PINOT NOIR ROSE', 'NORTHERN VALLEY'], [...broad, specific]);
+  assert.equal(result[0].row.id, 99); assert.equal(result.length, 3);
+  assert.equal(result[0].score, 90); assert.equal(Object.hasOwn(result[0], 'affinity'), false);
+});
+await test('Both bounded60-row queries are ranked, including a specific match beyond the first sixty', () => {
+  const unrelated = Array.from({ length: 60 }, (_, i) => ({ ...vidure, id: i + 1, name: `Unrelated ${i}`, winery: 'Other Estate' }));
+  const relevant = { ...vidure, id: 111 };
+  assert.equal(rankGlobalProposals104(['VIDURE', 'Pago de Cirsus', '2020'], [...unrelated, relevant], 2020)[0]?.row.id, 111);
+  assert.deepEqual(rankGlobalProposals104(['VIDURE', 'Pago de Cirsus', '2020'],
+    [...unrelated, ...unrelated, relevant], 2020), [], 'The aggregate bound is120, not an unbounded catalogue scan');
+});
 console.log(JSON.stringify({ groups: count, paidStarts: 0, liveCalls: 0, verifiedIdentitiesFromRanking: 0 }));

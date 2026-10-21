@@ -23,7 +23,8 @@ export const rankGlobalProposals104 = (evidence: readonly string[], rows: readon
   if (!evidence.length || evidence.length > 100 || evidence.some(line => typeof line !== 'string' || line.length > 1000)) return [];
   const visible = new Set(evidence.flatMap(tokens));
   const groups = new Map<string, WineProposal104>();
-  for (const row of rows.slice(0, 60)) {
+  // Recovery has at most two queries of up to60 references each.
+  for (const row of rows.slice(0, 120)) {
     const name = fullName(row);
     if (isNonWineIdentity(name, row.type) || hasConflictingNativeVintage100({ name, vintage: row.vintage })
       || hasMissingVisibleQualifier102({ name, evidence })) continue;
@@ -65,7 +66,14 @@ export const rankGlobalProposals104 = (evidence: readonly string[], rows: readon
     const previous = groups.get(group);
     if (!previous || score > previous.score || (score === previous.score && row.vintage == null && previous.row.vintage != null)) groups.set(group, candidate);
   }
-  return [...groups.values()].sort((a, b) => b.score - a.score || a.row.id - b.row.id).slice(0, 3);
+  const specificity = (proposal: WineProposal104) => {
+    const brandAndPlace = new Set([...tokens(proposal.row.winery), ...tokens(proposal.row.region || '')]);
+    return new Set(tokens(proposal.name).filter(word => visible.has(word)
+      && !generic.has(word) && !brandAndPlace.has(word) && !/^\d+$/.test(word))).size;
+  };
+  // A fully read cuvee should beat generic producer/region rows at equal evidence score.
+  return [...groups.values()].sort((a, b) => b.score - a.score || specificity(b) - specificity(a)
+    || a.row.id - b.row.id).slice(0, 3);
 };
 
 export const globalRecoveryQueries104 = (name: string, evidence: readonly string[], manuallyEntered = false) => {

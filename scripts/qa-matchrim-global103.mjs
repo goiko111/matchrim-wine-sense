@@ -66,7 +66,7 @@ try {
     if (url.pathname === '/auth/v1/user') return json(user);
     if (url.pathname.startsWith('/rest/v1/')) {
       const table = url.pathname.split('/').at(-1);
-      if (table === 'quiz_results') return json(url.searchParams.get('select')?.includes('id') ? [{ id: 'qa-quiz', ...activeProfile }] : activeProfile);
+      if (table === 'quiz_results') return json(url.searchParams.get('select')?.split(',').includes('id') ? [{ id: 'qa-quiz', ...activeProfile }] : activeProfile);
       if (table === 'user_wines') {
         if (request.method() === 'POST') {
           assert.equal(scenario, 'saved-NV-reference', 'Unexpected simulated write');
@@ -209,6 +209,8 @@ try {
       await page.goto(origin + '/my-wines/wishlist', { waitUntil: 'networkidle' });
       await page.getByTestId('native-cellar-item98').getByText('Vidure', { exact: true }).click();
       const link = page.getByTestId('cellar-public-reference107'); await link.waitFor();
+      assert.equal(await page.getByRole('dialog').getByRole('button', { name: 'Ficha original Winerim', exact: true }).count(), 0,
+        'A linked public fiche must not also offer the legacy partial-Library lookup');
       assert.equal(await link.getAttribute('href'), `https://web.winerim.com/matchrim/store/${globalObserved.id}/${globalObserved.slugname}`);
       assert((await page.getByRole('dialog').innerText()).includes('Referencia sin añada'));
       const style = page.getByTestId('cellar-reference-style110'); await style.waitFor();
