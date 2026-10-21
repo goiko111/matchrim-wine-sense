@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { createGlobalCatalogue103, applyGlobalCatalogue103, isGlobalWine103, globalSensory103 } from '../src/utils/nativeGlobalCatalogue103';
+import { createGlobalCatalogue103, applyGlobalCatalogue103, independentGlobalProducer103, isGlobalWine103, globalSensory103 } from '../src/utils/nativeGlobalCatalogue103';
 import { nativeWineConsumerResult } from '../src/utils/multiWineConsumer95';
 import { correctWineCandidateIdentity, type WineCandidate } from '../src/utils/multiWineScan';
 import { calculateLocalMatchrimAffinity } from '../src/utils/wineAffinityExplanation';
 import ts from 'typescript';
 import vm from 'node:vm';
+import { applyScanWineEvidence } from '../src/utils/scanWineEvidence';
 const sourceFixture = JSON.parse(fs.readFileSync('qa-fixtures/global103/winerim-public.observed.json', 'utf8'));
 const observed = sourceFixture.vidure.wine;
 const search = { count: 1, page: 1, results: [observed] };
@@ -91,6 +92,14 @@ await check('A literal winery prefix is removed only from the search, not from i
   const result = await h.client.lookup({ ...candidate, name: 'Pago de Cirsus Vidure' });
   assert.equal(result.status, 'reference'); assert.equal(new URL(h.calls[1]).searchParams.get('text'), 'vidure');
 });
+await check('A brand split across name fragments cannot fabricate independent producer evidence', () => {
+  assert.equal(independentGlobalProducer103({ name: 'Foral de Melgaço Old Vines Alvarinho', producer: 'Foral de Melgaço',
+    evidence: ['FORAL', 'D MELGAÇO', 'OLD VINES', 'ALVARINHO', '• de de.'] }), false);
+  assert.equal(independentGlobalProducer103({ name: 'Bodegas Aurora Reserva', producer: 'Bodegas Aurora', evidence: ['BODEGAS AURORA', 'RESERVA'] }), true);
+  assert.equal(independentGlobalProducer103({ name: 'Finca Aurora Malbec', producer: 'Finca Aurora', evidence: ['FINCA', 'AURORA', 'MALBEC'] }), true);
+  assert.equal(independentGlobalProducer103({ name: 'Domaine de la Croix Touraine', producer: 'Domaine de la Croix', evidence: ['DOMAINE DE LA CROIX BOUQEI', 'TOURAINE'] }), true);
+  assert.equal(independentGlobalProducer103(candidate), true);
+});
 await check('Explicit user selection distinguishes duplicate public IDs but never bypasses detail readback', async () => {
   const h = fixture([{ ...search, count: 2, results: [observed, { ...observed, id: 45 }] }, observed]);
   const result = await h.client.lookup(candidate, undefined, observed.id);
@@ -150,12 +159,22 @@ await check('Actual current scanner dispatch is native-only, cancellable and con
     let globalCalls = 0, legacyCalls = 0, reserves = 0;
     const sandbox = { subject: undefined, DOMException, isNative: native, isMatchrimFixtureQaEnabled: false, nativeMasterUrl: '',
       scanProfileRef: { current: { profile } }, hasMissingVisibleQualifier102: () => false, canAdmitNativeCatalogLookup97: () => true,
+      independentGlobalProducer103,
       lookupGlobalCatalogue103: async () => { globalCalls++; return result; }, applyGlobalCatalogue103,
-      findWinerimWineForLabel: async () => { legacyCalls++; return null; }, applyScanWineEvidence: (value: WineCandidate) => value };
+      findWinerimWineForLabel: async () => { legacyCalls++; return null; }, applyScanWineEvidence };
     vm.runInNewContext(ts.transpileModule(`subject = (${expression});`, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText, sandbox);
     await (sandbox.subject as unknown as (value: WineCandidate, signal: AbortSignal, budget: unknown) => Promise<unknown>)(candidate,
       new AbortController().signal, { remaining: 1, reserve: () => { reserves++; } });
     assert.equal(globalCalls, native ? 1 : 0); assert.equal(legacyCalls, native ? 0 : 1); assert.equal(reserves, native ? 0 : 1);
+    if (native) {
+      globalCalls = legacyCalls = reserves = 0;
+      const unbacked = { ...candidate, name: 'Foral de Melgaço Old Vines Alvarinho', producer: 'Foral de Melgaço',
+        affinity: 99, evidence: ['FORAL', 'D MELGAÇO', 'OLD VINES', 'ALVARINHO', '• de de.'] };
+      const held = await (sandbox.subject as unknown as (value: WineCandidate, signal: AbortSignal, budget: unknown) => Promise<WineCandidate>)(unbacked,
+        new AbortController().signal, { remaining: 1, reserve: () => { reserves++; } });
+      assert.equal(globalCalls + legacyCalls + reserves, 0); assert.equal(held.affinity, null);
+      assert(held.uncertaintyReasons.some(reason => reason.includes('marca del vino')));
+    }
   }
 });
 console.log(JSON.stringify({ groups: checks, syntheticProfiles: 50, paidStarts: 0 }));

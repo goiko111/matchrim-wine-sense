@@ -24,7 +24,7 @@ const rows = progress.rows.map((row: { imageId: string; queries: { query: string
   const found = new Map();
   for (const query of row.queries) for (const wine of catalogue.get(query.query)?.results || []) {
     const sub = wine.subname && !wine.name.toLowerCase().includes(wine.subname.toLowerCase()) ? ` ${wine.subname}` : '';
-    const item = { name: wine.name + sub, producer: wine.winery };
+    const item = { name: wine.name + sub, producer: wine.winery, vintage: wine.vintage };
     if (isSafeCanonicalLabelMatch({ name: truth.expected_name, producer: truth.expected_producer }, item)) found.set(wine.id, {
       namespace: 'winerim-public-store', id: wine.id, ...item, vintage: wine.vintage,
     });

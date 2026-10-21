@@ -33,6 +33,18 @@ export type GlobalLookup103 = { status: 'exact' | 'reference'; wine: GlobalWine1
   | { status: 'identity-required' | 'not-found' | 'ambiguous' | 'incomplete' | 'unavailable' };
 const trusted = new WeakSet<object>();
 const key = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+// A brand embedded in the cuvee name is not a second, independent winery read.
+// Explicit manual selection remains possible; this only gates automatic linking.
+export const independentGlobalProducer103 = (input: WinerimOriginalIdentity & { evidence?: readonly string[] }) => {
+  const literalProducer = key(input.producer || '');
+  const producer = literalProducer.replace(/^(bodegas?|winery) /, '');
+  if (!producer || !(` ${key(input.name)} `).includes(` ${producer} `)) return true;
+  const fragments = (input.evidence || []).map(key);
+  if (fragments.some(fragment => fragment.replace(/^(bodegas?|winery) /, '') === producer)) return true;
+  const explicitRole = /^(bodegas?|winery|finca|domaine|chateau|quinta|weingut|tenuta)\b/.test(literalProducer);
+  return explicitRole && fragments.some((fragment, index) =>
+    (` ${fragment} ${fragments[index + 1] || ''} `).includes(` ${literalProducer} `));
+};
 const identity = (row: Row) => {
   const sub = row.subname && !(` ${key(row.name)} `).includes(` ${key(row.subname)} `) ? row.subname : '';
   return { name: [row.name, sub].filter(Boolean).join(' '), producer: row.winery,
@@ -158,7 +170,7 @@ export const lookupGlobalCatalogue103 = (input: WinerimOriginalIdentity & { evid
   createGlobalCatalogue103().lookup(input, signal);
 
 export const applyGlobalCatalogue103 = (candidate: WineCandidate, profile: MatchrimProfileLike | null, wine: GlobalWine103, manual = false): WineCandidate => {
-  if ((!manual && !canAdmitNativeCatalogLookup97(candidate)) || !isGlobalWine103(candidate, wine)) return candidate;
+  if ((!manual && (!canAdmitNativeCatalogLookup97(candidate) || !independentGlobalProducer103(candidate))) || !isGlobalWine103(candidate, wine)) return candidate;
   const exact = exactGlobalVintage103(candidate, wine);
   const sensoryAttributes = exact ? globalSensory103(wine) : null;
   return { ...candidate, globalRecord: wine, masterRecord: null, originalSheet: null,

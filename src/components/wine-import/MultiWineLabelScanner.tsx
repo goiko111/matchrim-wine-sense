@@ -23,7 +23,7 @@ import { catalogWineFromVerifiedSheet } from '@/utils/winerimOriginalSheet';
 import { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97';
 import { applyNativeMaster102, lookupNativeMaster102, nativeMasterAudit102 } from '@/utils/nativeMasterCatalog102';
 import { hasMissingVisibleQualifier102 } from '@/utils/nativeWineQualifier102';
-import { applyGlobalCatalogue103, isGlobalWine103, lookupGlobalCatalogue103 } from '@/utils/nativeGlobalCatalogue103';
+import { applyGlobalCatalogue103, independentGlobalProducer103, isGlobalWine103, lookupGlobalCatalogue103 } from '@/utils/nativeGlobalCatalogue103';
 import { GlobalWineLookup103, GlobalWinePicker103, GlobalWineReference103 } from '@/components/wine-import/NativeGlobalCatalogue103';
 import { AiRimContextGuide } from '@/components/AiRimContextGuide';
 import { WineComparisonWorkspace } from '@/components/wine-import/WineComparisonWorkspace';
@@ -333,6 +333,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const enrichCandidate = async (candidate: WineCandidate, signal: AbortSignal, budget: ScanRequestBudget) => {
+    if (isNative && !isMatchrimFixtureQaEnabled && !independentGlobalProducer103(candidate)) {
+      return applyScanWineEvidence({ ...candidate, uncertaintyReasons: [...new Set([...candidate.uncertaintyReasons,
+        'La marca del vino no basta para confirmar la bodega. Revisa o elige su ficha en Winerim.'])] },
+      scanProfileRef.current?.profile ?? null, null);
+    }
     if (isNative && !isMatchrimFixtureQaEnabled && hasMissingVisibleQualifier102(candidate)) {
       return applyScanWineEvidence({ ...candidate, uncertaintyReasons: [...new Set([...candidate.uncertaintyReasons,
         'El nombre propuesto omite un calificador legible de la etiqueta. Revisa la referencia antes de elegir.'])] },

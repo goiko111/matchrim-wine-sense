@@ -184,6 +184,7 @@ try {
       const h = transport([ambiguous ? search([identity, identity]) : search(), detail()]); let legacy = 0;
       const context = { isNative: native, isMatchrimFixtureQaEnabled: fixture, nativeMasterUrl: configured ? endpoint : undefined,
         hasMissingVisibleQualifier102,
+        independentGlobalProducer103: () => true,
         // Isolate the existing opt-in contract oracle; global103 has its own transport suite.
         lookupGlobalCatalogue103: async () => ({ status: 'not-found' }),
         canAdmitNativeCatalogLookup97, lookupNativeMaster102: (input: WineCandidate, url: string, signal: AbortSignal) => lookupNativeMaster102(input, url, signal, h.fetcher),

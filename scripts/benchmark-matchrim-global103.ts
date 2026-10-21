@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
-import { createGlobalCatalogue103, applyGlobalCatalogue103 } from '../src/utils/nativeGlobalCatalogue103';
+import { createGlobalCatalogue103, applyGlobalCatalogue103, independentGlobalProducer103 } from '../src/utils/nativeGlobalCatalogue103';
 import { canAdmitNativeCatalogLookup97 } from '../src/utils/nativeCatalogAdmission97';
 import { hasMissingVisibleQualifier102 } from '../src/utils/nativeWineQualifier102';
 import { isSafeCanonicalLabelMatch } from '../src/utils/winerimLabelIdentity';
@@ -78,7 +78,8 @@ for (const image of manifest.prepared) {
       const candidate: WineCandidate = { id: image.imageId, name: row.name + sub, producer: row.winery,
         vintage: years.length === 1 ? Number(years[0]) : null, region: null, country: null,
         confidence: 1, evidence, inferredFields: [], grapes: [], alcohol: null, source: 'label', uncertaintyReasons: [] };
-      if (years.length <= 1 && canAdmitNativeCatalogLookup97(candidate) && !hasMissingVisibleQualifier102(candidate)) candidates.set(row.id, candidate);
+      if (years.length <= 1 && canAdmitNativeCatalogLookup97(candidate) && independentGlobalProducer103(candidate)
+        && !hasMissingVisibleQualifier102(candidate)) candidates.set(row.id, candidate);
     }
     if (candidates.size) break;
   }
