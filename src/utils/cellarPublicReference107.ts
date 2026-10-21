@@ -30,7 +30,7 @@ export const makeCellarPublicReference107 = (wine: CellarAffinityWine, global: G
 
 export const readCellarPublicReference107 = (wine: CellarAffinityWine) => {
   const parsed = schema.safeParse(record(wine.place_details)?.winerim_public_catalogue);
-  if (!parsed.success || signature(parsed.data.bottle_identity) !== signature(wine)
+  if (!parsed.success || signature(parsed.data.bottle_identity as CellarAffinityWine) !== signature(wine)
     || (parsed.data.catalogue_vintage !== null && parsed.data.catalogue_vintage !== String(wine.vintage ?? ''))) return null;
   const data = parsed.data;
   return { ...data, url: `https://web.winerim.com/matchrim/store/${data.id}/${data.slug}` };
@@ -38,11 +38,11 @@ export const readCellarPublicReference107 = (wine: CellarAffinityWine) => {
 
 export const confirmsCellarPublicReference107 = (data: unknown, expected: CellarAffinityWine) => {
   const expectedDetails = record(expected.place_details);
-  if (!Object.hasOwn(expectedDetails || {}, 'winerim_public_catalogue')) return true;
+  if (!Object.prototype.hasOwnProperty.call(expectedDetails || {}, 'winerim_public_catalogue')) return true;
   const row = record(data), parsed = identity.safeParse({ name: row?.name, producer: row?.producer ?? null,
     vintage: row?.vintage ?? null, region: row?.region ?? null, country: row?.country ?? null });
   if (!parsed.success) return false;
-  const actual = readCellarPublicReference107({ ...parsed.data, place_details: row?.place_details });
+  const actual = readCellarPublicReference107({ ...parsed.data as CellarAffinityWine, place_details: row?.place_details });
   const wanted = readCellarPublicReference107(expected);
   return Boolean(actual && wanted && JSON.stringify(actual) === JSON.stringify(wanted));
 };

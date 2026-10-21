@@ -8,7 +8,11 @@ const response = z.object({ source: z.literal('apple-vision-device'), requestId:
   width: z.number().int().positive().max(2400), height: z.number().int().positive().max(2400),
   totalMs: z.number().finite().nonnegative(), revision: z.number().int().positive(), customWords: z.array(z.string()).length(0),
   lines: z.array(z.object({ text: z.string().trim().min(1).max(1000), confidence: z.number().finite().min(0).max(1), box })).max(100) });
-export type LocalOCRResult106 = z.infer<typeof response>;
+export interface LocalOCRResult106 {
+  source: 'apple-vision-device'; requestId: string; width: number; height: number;
+  totalMs: number; revision: number; customWords: string[];
+  lines: { text: string; confidence: number; box: { x: number; y: number; width: number; height: number } }[];
+}
 export interface LocalOCRTransport106 {
   recognize(input: { requestId: string; image: string }): Promise<unknown>;
   cancel(input: { requestId: string }): Promise<unknown>;
@@ -52,7 +56,7 @@ export const createLocalOCR106 = (transport: LocalOCRTransport106, makeId = requ
       const parsed = response.safeParse(raw);
       if (!parsed.success || parsed.data.requestId !== id) { finish(new Error('OCR_INVALID_RESPONSE')); return; }
       for (const line of parsed.data.lines) { Object.freeze(line.box); Object.freeze(line); }
-      Object.freeze(parsed.data.lines); finish(null, Object.freeze(parsed.data));
+      Object.freeze(parsed.data.lines); finish(null, Object.freeze(parsed.data) as LocalOCRResult106);
     }, () => finish(new Error('OCR_UNAVAILABLE')));
   });
 };
