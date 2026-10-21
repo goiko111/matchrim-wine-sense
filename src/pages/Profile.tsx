@@ -281,7 +281,7 @@ const Profile = () => {
 
     let cancelled = false;
     const controller = isNative ? new AbortController() : null;
-    let deadline: ReturnType<typeof window.setTimeout> | undefined;
+    let deadline: number | undefined;
 
     const loadQuizHistory = async () => {
       setIsLoadingProfile(true);
