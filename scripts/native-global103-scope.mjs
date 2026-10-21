@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 
 const hash = value => createHash('sha256').update(value).digest('hex');
 const bytes = readFileSync(new URL('./native-global103-scope.json', import.meta.url));
-assert.equal(hash(bytes), 'e0fdba61e7d9d199bce92dda4fd262f133df5d7ff2c98be3fdfc45e633d0380c');
+assert.equal(hash(bytes), '51075ff5f7a3e3e1a2d9046d862d85ea141a391db4d71dc4c4202d612be6a43e');
 const scope = JSON.parse(bytes);
 // Preserve legacy source/VM oracles byte-for-byte. New behavior is exercised by
 // global103 transport tests and the actual native-branch visual flow separately.

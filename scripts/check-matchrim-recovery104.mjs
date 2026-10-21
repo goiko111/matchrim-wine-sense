@@ -4,6 +4,7 @@ import vm from 'node:vm';
 import { createRequire } from 'node:module';
 import { globalRecoveryQueries104, rankGlobalProposals104 } from '../src/utils/globalWineProposals104.ts';
 import { wineYearRoles105 } from '../src/utils/wineYearRole105.ts';
+import { suggestLocalOCRFragments108 } from '../src/utils/localOCRFragments108.ts';
 const require = createRequire(import.meta.url), ts = require('typescript');
 const React = require('react');
 const source = fs.readFileSync('src/components/wine-import/GlobalWineRecovery104.tsx', 'utf8');
@@ -35,6 +36,7 @@ function host(client, input = candidate, local = null) {
       if (name === 'lucide-react') return Object.fromEntries(['BookOpen', 'Check', 'Loader2', 'Smartphone', 'X'].map(k => [k, k]));
       if (name.endsWith('/nativeOCR106')) return { localOCRAvailable106: () => Boolean(local), readLocalWineText106: local };
       if (name.endsWith('/wineYearRole105')) return { wineYearRoles105 };
+      if (name.endsWith('/localOCRFragments108')) return { suggestLocalOCRFragments108 };
       if (name.endsWith('/nativeGlobalCatalogue103')) return { createGlobalCatalogue103: () => client,
         independentGlobalProducer103: () => false,
         applyGlobalCatalogue103: (value, profile, wine, manual) => ({ ...value, globalRecord: wine, appliedProfile: profile, manual }) };
@@ -162,5 +164,19 @@ await test('Name-only manual correction can recover a photographed vintage; expl
     h.button('Confirmar esta referencia').onClick(); await tick();
     assert.equal(selected.vintage, manualVintage ?? 2020); h.unmount();
   }
+});
+await test('Geometry-supported fragments are explicit suggestions, never a silent automatic identity', async () => {
+  const queries = [], wine = { ...row, name: 'Galizeus Godello', winery: 'Vicente Gandia' };
+  const h = host({ search: async query => { queries.push(query); return { rows: [wine], status: 'complete' }; },
+    lookup: () => { throw Error('Reconstruction cannot trigger automatic lookup'); } },
+  { ...candidate, name: 'Wrong initial wine', vintage: null }, async () => ({ lines: [
+    { text: 'GALIZEUS', confidence: 1, box: { x: .1, y: .1, width: .6, height: .03 } },
+    { text: 'G', confidence: 1, box: { x: .22, y: .3, width: .053, height: .017 } },
+    { text: 'ODELLO', confidence: 1, box: { x: .288, y: .3, width: .477, height: .017 } },
+  ] }));
+  h.button('Releer recorte en este iPhone').onClick(); await tick();
+  assert(text(h.render()).includes('Se han unido fragmentos de texto cercanos'));
+  assert(text(h.render()).includes('Confirmar esta referencia')); assert.equal(h.confirmations.length, 0);
+  assert(queries.includes('GALIZEUS')); h.unmount();
 });
 console.log(JSON.stringify({ groups, source: 'Actual TSX handlers with isolated hooks/transport; not browser layout or native QA', liveCalls: 0, modelStarts: 0 }));

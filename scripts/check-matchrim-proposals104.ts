@@ -105,4 +105,10 @@ await test('Queries skip legal/volume metadata and preserve literal producer tex
   assert.deepEqual(globalRecoveryQueries104('6 Cepas', ['6 CEPAS', '75 CL', '25 EUROS']), ['6 Cepas']);
   assert.deepEqual(globalRecoveryQueries104('Sierra', ['Mis en bouteille au Chateau Atlas', 'Sierra']), ['Sierra', 'Chateau Atlas']);
 });
+await test('Queries prefer a complete observed word over redundant partial logo fragments, without inventing joins', () => {
+  assert.deepEqual(globalRecoveryQueries104('', ['LONGA', 'FINCA', 'VALONGA', 'Entre Lias']), ['VALONGA', 'Entre Lias']);
+  assert.deepEqual(globalRecoveryQueries104('', ['GALI', 'ZEUS', 'GALIZEUS', 'G', 'ODELLO']), ['GALIZEUS', 'ODELLO']);
+  assert.deepEqual(globalRecoveryQueries104('', ['FINCA', 'FLICHMAN', 'CHACAYES']), ['FLICHMAN', 'CHACAYES']);
+  assert.deepEqual(globalRecoveryQueries104('', ['DA', 'LUCA']), ['LUCA'], 'Separate words are not silently joined');
+});
 console.log(JSON.stringify({ groups: count, paidStarts: 0, liveCalls: 0, verifiedIdentitiesFromRanking: 0 }));

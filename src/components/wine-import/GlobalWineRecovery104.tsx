@@ -9,6 +9,7 @@ import { globalRecoveryQueries104, rankGlobalProposals104, type WineProposal104 
 import { safeWineImageUrl98 } from '@/utils/wineImage98';
 import { localOCRAvailable106, readLocalWineText106 } from '@/utils/nativeOCR106';
 import { wineYearRoles105 } from '@/utils/wineYearRole105';
+import { suggestLocalOCRFragments108 } from '@/utils/localOCRFragments108';
 
 export const GlobalWineRecovery104 = ({ candidate, contextKey, profile, disabled, image, onConfirmed }: {
   candidate: WineCandidate; contextKey: string; profile: MatchrimProfileLike | null; disabled: boolean;
@@ -18,6 +19,7 @@ export const GlobalWineRecovery104 = ({ candidate, contextKey, profile, disabled
   const [busy, setBusy] = useState(false), [notice, setNotice] = useState('');
   const [proposals, setProposals] = useState<WineProposal104[]>([]);
   const [proposalVintage, setProposalVintage] = useState(candidate.vintage);
+  const [reconstructed, setReconstructed] = useState(false);
   const pending = useRef<AbortController | null>(null);
   const current = useRef({ contextKey, disabled, onConfirmed });
   current.current = { contextKey, disabled, onConfirmed };
@@ -26,7 +28,7 @@ export const GlobalWineRecovery104 = ({ candidate, contextKey, profile, disabled
   const run = async (selection?: WineProposal104, onDevice = false) => {
     if (disabled || pending.current || (selection && !proposals.includes(selection))) return;
     const controller = new AbortController(); pending.current = controller; setBusy(true); setNotice('');
-    if (!selection) setProposals([]);
+    if (!selection) { setProposals([]); setReconstructed(false); }
     const active = () => pending.current === controller && !controller.signal.aborted
       && current.current.contextKey === contextKey && !current.current.disabled;
     try {
@@ -47,7 +49,9 @@ export const GlobalWineRecovery104 = ({ candidate, contextKey, profile, disabled
         if (!image || !localOCRAvailable106()) { setNotice('La lectura local no esta disponible en esta version.'); return; }
         setNotice('Leyendo el recorte en este iPhone. La foto no se envia.');
         const text = await readLocalWineText106(image, controller.signal); if (!active()) return;
-        evidence = text.lines.map(line => line.text);
+        const fragments = suggestLocalOCRFragments108(text.lines);
+        evidence = [...text.lines.map(line => line.text), ...fragments.alternatives.map(line => line.text)].slice(0, 100);
+        setReconstructed(fragments.alternatives.length > 0);
         const years = wineYearRoles105(text.lines);
         if (!years.supported) { setNotice('No se ha podido revisar la fecha. Tu vino no ha cambiado.'); return; }
         const possible = years.roles.filter(role => role.role === 'vintage' || role.role === 'unclassified');
@@ -85,6 +89,7 @@ export const GlobalWineRecovery104 = ({ candidate, contextKey, profile, disabled
     </Button>}
     {busy && <Button type="button" variant="outline" className="min-h-11 gap-2" onClick={() => { pending.current?.abort(); pending.current = null; setBusy(false); setNotice('Búsqueda cancelada. No se ha cambiado tu vino.'); }}><X aria-hidden="true" className="h-4 w-4" /> Cancelar</Button>}
     {notice && <p role="status" className="text-sm leading-6 text-stone-700">{notice}</p>}
+    {reconstructed && <p className="text-sm leading-6 text-stone-700" data-testid="local-ocr-reconstruction108">Se han unido fragmentos de texto cercanos para buscar. Comprueba la etiqueta antes de elegir; no es una identidad confirmada.</p>}
     <ul className="min-w-0 divide-y divide-stone-200">{proposals.map(proposal => {
       const photo = safeWineImageUrl98(proposal.row.photo);
       return <li key={proposal.row.id} className="min-w-0 space-y-2 py-3 [overflow-wrap:anywhere]">

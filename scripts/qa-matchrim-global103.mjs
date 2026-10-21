@@ -10,10 +10,11 @@ const folder = path.resolve(process.argv[3]);
 const sha = value => createHash('sha256').update(value).digest('hex');
 const fixture = { localCandidate: { name: 'Vidure', producer: 'Pago de Cirsus', vintage: 2020 }, ocrLines: ['VIDURE', 'Pago de Cirsus', '2020'] };
 const scenarios = process.argv[4] ? [process.argv[4]] : ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer'];
-assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline'].includes(state)));
+assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline', 'saved-NV-reference'].includes(state)));
 const globalObserved = JSON.parse(fs.readFileSync('qa-artifacts/native102-20261021/global-store103-r1/04-body.json'));
 const awardObserved = JSON.parse(fs.readFileSync('qa-artifacts/global103-20261021/ocr200-r1/response-358.json')).results.find(row => row.id === 375658);
 let scenario = 'observed-NV-reference';
+let savedWines = [];
 const image = '/Users/GOIKO/Downloads/IMG_8324.PNG';
 const guard = () => {
   const lease = JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json')).leases['heavy-local'];
@@ -62,7 +63,20 @@ try {
     if (url.pathname.startsWith('/rest/v1/')) {
       const table = url.pathname.split('/').at(-1);
       if (table === 'quiz_results') return json(url.searchParams.get('select')?.includes('id') ? [{ id: 'qa-quiz', ...profile }] : profile);
-      if (table === 'user_wines') return json([], { 'Content-Range': '0-0/0' });
+      if (table === 'user_wines') {
+        if (request.method() === 'POST') {
+          assert.equal(scenario, 'saved-NV-reference', 'Unexpected simulated write');
+          const payload = request.postDataJSON(); assert(!Array.isArray(payload));
+          assert.equal(payload.place_details.winerim_public_catalogue.catalogue_vintage, null);
+          assert.equal(payload.place_details.winerim_public_catalogue.bottle_identity.vintage, 2020);
+          assert.equal(payload.sensory_attributes, null); assert.equal(payload.matchrim_affinity, null);
+          savedWines = [{ ...payload, id: '00000000-0000-4000-8000-000000010701', created_at: '2026-10-21T19:00:00Z', updated_at: '2026-10-21T19:00:00Z', rating: null }];
+          report.simulatedSave = { referenceId: payload.place_details.winerim_public_catalogue.id,
+            vintage: payload.vintage, sensory: null, affinity: null, productionWrite: false };
+          return json(savedWines[0]);
+        }
+        return json(savedWines, { 'Content-Range': savedWines.length ? '0-0/1' : '0-0/0' });
+      }
       return json(table === 'profiles' ? { id: owner, preferred_language: 'ES' } : []);
     }
     if (url.pathname.endsWith('/detect-wine-regions-v72')) return json({ regions: [{ box: { x: 3, y: 5, width: 94, height: 90 }, confidence: .99,
@@ -104,7 +118,7 @@ try {
     if (geometry.dialog) {
       assert(geometry.dialog.left >= -1 && geometry.dialog.right <= geometry.viewport + 1, name + ' dialog overflow');
       assert(geometry.dialog.top >= -1 && geometry.dialog.bottom <= geometry.viewportHeight + 1, name + ' dialog vertical overflow');
-      const close = page.getByRole('dialog').getByRole('button', { name: 'Cerrar', exact: true });
+      const close = page.getByRole('dialog').getByRole('button', { name: /^(Cerrar|Cerrar vino)$/ });
       const bounds = await close.boundingBox();
       assert(bounds && bounds.width >= 43.5 && bounds.height >= 43.5 && bounds.y >= 0
         && bounds.y + bounds.height <= geometry.viewportHeight + 1, name + ' footer remains reachable');
@@ -119,6 +133,7 @@ try {
   };
   for (const state of scenarios) {
     scenario = state;
+    savedWines = [];
     await page.setViewportSize({ width: 393, height: 852 });
     await page.goto(origin + '/escanear/etiqueta', { waitUntil: 'networkidle' });
     const privacy = page.getByRole('checkbox', { name: 'He leído el aviso de privacidad del escáner' });
@@ -134,6 +149,24 @@ try {
     await page.getByRole('dialog').waitFor();
     await page.waitForFunction(() => { const el = document.querySelector('[role=dialog]'); return el && Math.abs(new DOMMatrixReadOnly(getComputedStyle(el).transform).m42) < 1; });
     const dialog = page.getByRole('dialog');
+    if (state === 'saved-NV-reference') {
+      await dialog.getByTestId('global-style-estimate').waitFor();
+      await dialog.getByRole('button', { name: 'Cerrar', exact: true }).click();
+      await page.getByRole('button', { name: 'Confirmar 1 referencia', exact: true }).click();
+      await page.getByRole('button', { name: 'Lote confirmado', exact: true }).waitFor();
+      assert.equal(savedWines.length, 1);
+      await page.goto(origin + '/my-wines/wishlist', { waitUntil: 'networkidle' });
+      await page.getByTestId('native-cellar-item98').getByText('Vidure', { exact: true }).click();
+      const link = page.getByTestId('cellar-public-reference107'); await link.waitFor();
+      assert.equal(await link.getAttribute('href'), `https://web.winerim.com/matchrim/store/${globalObserved.id}/${globalObserved.slugname}`);
+      assert((await page.getByRole('dialog').innerText()).includes('Referencia sin añada'));
+      for (const [width, height, text] of [[393,852,100], [320,568,100], [393,852,200]]) {
+        await page.setViewportSize({ width, height });
+        await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
+        await link.scrollIntoViewIfNeeded(); await capture('saved-NV-fiche-' + width + '-' + text);
+      }
+      continue;
+    }
     if (state === 'award-year-inline') {
       assert(!(await dialog.getByRole('heading', { level: 2 }).first().innerText()).includes('2026'), 'Award year is not a vintage in the identity header');
       assert.equal(await dialog.getByTestId('global-wine-reference').count(), 0);

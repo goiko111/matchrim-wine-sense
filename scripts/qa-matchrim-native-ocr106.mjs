@@ -8,6 +8,7 @@ const repo = process.cwd(), output = path.resolve(process.argv[2]);
 const developer = '/Applications/Xcode-26.0.1.app/Contents/Developer';
 const device = 'B18822EF-BFBD-4A6A-89B2-33539BDE4127';
 const framework = path.resolve(process.argv[3] || 'qa-artifacts/recovery104-20261021/uikit101-r2/build/derived/Build/Products/Debug-iphonesimulator/App.app/Frameworks');
+const modules = ['Capacitor', 'CapacitorCordova'].map(name => path.resolve(framework, '../..', name));
 const env = { ...process.env, DEVELOPER_DIR: developer };
 const sha = value => createHash('sha256').update(value).digest('hex');
 const guard = () => {
@@ -33,8 +34,9 @@ const execute = (label, binary, args, options = {}) => {
 try {
   const sdk = execFileSync('/usr/bin/xcrun', ['--sdk', 'iphonesimulator', '--show-sdk-path'], { env, encoding: 'utf8' }).trim();
   const binary = path.join(output, 'ocr106-probe');
-  execute('compile', developer + '/usr/bin/swiftc', ['-parse-as-library', '-sdk', sdk, '-target', 'arm64-apple-ios16.0-simulator',
-    '-F', framework, '-framework', 'Capacitor', '-Xlinker', '-rpath', '-Xlinker', framework,
+  const swift = execFileSync('/usr/bin/xcrun', ['--find', 'swiftc'], { env, encoding: 'utf8' }).trim();
+  execute('compile', swift, ['-parse-as-library', '-sdk', sdk, '-target', 'arm64-apple-ios16.0-simulator',
+    ...modules.flatMap(dir => ['-F', dir]), '-framework', 'Capacitor', '-Xlinker', '-rpath', '-Xlinker', framework,
     ...files.map(file => path.join(repo, file)), '-o', binary]);
   const devices = JSON.parse(execFileSync('/usr/bin/xcrun', ['simctl', 'list', 'devices', '--json'], { env, encoding: 'utf8' })).devices;
   const selected = Object.values(devices).flat().find(row => row.udid === device); assert(selected?.isAvailable);
@@ -42,7 +44,7 @@ try {
     execute('boot', '/usr/bin/xcrun', ['simctl', 'boot', device]);
     execute('bootstatus', '/usr/bin/xcrun', ['simctl', 'bootstatus', device, '-b']);
   }
-  const inputs = ['img184.jpg', 'img061.jpg', 'img174.jpg'].map(file =>
+  const inputs = ['img-184.jpg', 'img-061.jpg', 'img-174.jpg'].map(file =>
     path.resolve('qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared', file));
   receipt.inputs = Object.fromEntries(inputs.map(file => [path.basename(file), sha(fs.readFileSync(file))]));
   const raw = execute('recognize', '/usr/bin/xcrun', ['simctl', 'spawn', device, binary, ...inputs]);

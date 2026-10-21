@@ -83,5 +83,10 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
   for (const query of [...(groundedName ? [queryName] : []), ...literalQueries]) {
     const normalized = tokens(query).join(' '); if (!queries.has(normalized)) queries.set(normalized, query);
   }
-  return [...queries.values()].slice(0, 2);
+  const literal = [...queries.entries()];
+  // Prefer a fully observed word over a second partial reading of that word.
+  // This changes query allocation only, never the evidence used to identify it.
+  return literal.filter(([key]) => !literal.some(([other]) => other !== key && key.length >= 4
+    && other.length <= key.length * 2 && !key.includes(' ') && !other.includes(' ') && other.includes(key)))
+    .map(([, query]) => query).slice(0, 2);
 };

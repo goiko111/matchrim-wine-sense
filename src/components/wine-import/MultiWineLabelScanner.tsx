@@ -887,7 +887,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
             ? makeCellarCatalogEvidence(identity, candidate.canonicalId, candidate.sensoryAttributes) : null;
           const masterAudit = isNative ? nativeMasterAudit102(candidate) : null;
           const global = isNative && isGlobalWine103(candidate, candidate.globalRecord) ? candidate.globalRecord : null;
-          const publicReference = global ? makeCellarPublicReference107(identity, global) : null;
+          const publicReference = global ? makeCellarPublicReference107(candidate, global) : null;
           const details = evidence || publicReference ? withCellarInitialAffinity({ ...identity,
             sensory_attributes: candidate.sensoryAttributes,
             place_details: { ...(evidence ? { bodega_sensory_evidence: evidence } : {}),
