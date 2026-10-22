@@ -43,17 +43,17 @@ Pruebas163: nueve grupos con parser real y transporte controlado; todas las23 fi
 | Paginacion160 |10 grupos, incluyendo cuatro paginas, drift, duplicados, cancelacion y limite160 |
 | Recovery104 |17 grupos de handlers reales aislados |
 | Catalogo103 |17 grupos y50 perfiles sinteticos; no confirman el maestro desplegado |
-| Cellar144/158 |139 checks de host/source y10 de geometria simulada; UIKit nuevo aun pendiente |
-| Rescan161 |142 checks de host/source; recorrido real aun pendiente |
+| Cellar144/158 |139 checks de host/source y10 de geometria simulada; max158-r2 UIKit PASS en104/r1 |
+| Rescan161 |142 checks de host/source; recorrido realr1 FAIL antes de enlazar ficha |
 | Inversas historicas159 | Fuentes pre159 exactas,9 mutaciones rechazadas; pruebas nuevas ejecutadas sin proyeccion |
 
-Son pruebas sinteticas/de contrato, no50 usuarios ni evidencia empirica de gusto. El primer typecheck detecto la inferencia opcional de Zod con strictNullChecks=false; se corrigio el tipo tras validacion. Falta el typecheck final.
+Son pruebas sinteticas/de contrato, no50 usuarios ni evidencia empirica de gusto. El primer typecheck detecto la inferencia opcional de Zod con strictNullChecks=false; se corrigio el tipo tras validacion. Typecheck final104/r1 y104/r2 PASS.
 
 ## Lecturas Reales Sin IA
 
 Tres GET publicos devuelven Flor de Muga Blanco y Manzanilla La Gitana, incluidas279035/2022 y278688/sin anada. Hay multiples IDs duplicados para nombres/cosechas: no se supone una equivalencia general entre namespaces ni cobertura completa Mantalak.
 
-Una descarga publica de la botella Flor de Muga se conserva sin editar, SHA256 `8d213ff13a2a9c79ce6131180afe7a599bcda88b94cecf1cf853d2c6658cc1f9`. La foto no acredita2022: el nuevo recorrido161 exigira elegir expresamente esa cosecha. No forma parte del benchmark200 y no se guardara otro vino ni otra valoracion.
+Una descarga publica de la botella Flor de Muga se conserva sin editar, SHA256 `8d213ff13a2a9c79ce6131180afe7a599bcda88b94cecf1cf853d2c6658cc1f9`. La foto no acredita2022: el recorrido161 exigia elegir expresamente esa cosecha, pero fallo antes de ese paso. No forma parte del benchmark200 y no se guardo otro vino ni otra valoracion.
 
 CLI acumulado331 GET de catalogo, mas una imagen publica. Cargo conservador al techo gratuito:253/400;147 restantes. GET ordinarios de la app no instrumentados. Nuevos inicios de modelos0, imagenes enviadas a proveedor0, Lovable0, despliegues0, publicacion web0. Se mantiene el limite50 peticiones de pago/15EUR.
 
