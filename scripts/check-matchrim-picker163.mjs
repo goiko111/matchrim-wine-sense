@@ -6,6 +6,7 @@ import { nativeCataloguePage163 } from '../src/utils/nativeCataloguePage163.ts';
 import { createGlobalCatalogue103 } from '../src/utils/nativeGlobalCatalogue103.ts';
 import { nativeSavedCatalogue168 } from '../src/utils/nativeSavedCatalogue168.ts';
 import { nativeVerdictsSnapshot159 } from '../src/utils/nativeRescanVerdict159.ts';
+import { isPendingLocalIdentity109 } from '../src/utils/nativeSingleLabel109.ts';
 
 const require = createRequire(import.meta.url), React = require('react'), ts = require('typescript');
 const source = fs.readFileSync('src/components/wine-import/NativeGlobalCatalogue103.tsx', 'utf8');
@@ -14,10 +15,10 @@ const rows = Array.from({ length: 23 }, (_, i) => ({ ...fixture, id: i + 1, vint
 const walk = node => Array.isArray(node) ? node.flatMap(walk) : React.isValidElement(node) ? [node, ...walk(node.props.children)] : [];
 const text = node => Array.isArray(node) ? node.map(text).join('') : React.isValidElement(node) ? text(node.props.children) : ['string', 'number'].includes(typeof node) ? String(node) : '';
 const tick = async () => { for (let i = 0; i < 60; i++) await Promise.resolve(); };
-function host(client, deferEffects = false) {
+function host(client, deferEffects = false, initialName = 'Vidure') {
   const state = [], refs = [], effects = [], confirmations = [], pendingEffects = new Map();
   let cursor = 0, mounted = true, lateWrites = 0;
-  const props = { candidate: { name: 'Vidure', producer: null, vintage: null }, contextKey: 'owner-a', disabled: false,
+  const props = { candidate: { name: initialName, producer: null, vintage: null }, contextKey: 'owner-a', disabled: false,
     profile: null, onConfirmed: value => confirmations.push(value) };
   const exports = {};
   vm.runInNewContext(ts.transpileModule(source, { compilerOptions: { jsx: ts.JsxEmit.ReactJSX,
@@ -38,6 +39,7 @@ function host(client, deferEffects = false) {
       if (name.endsWith('/input')) return { Input: 'input' };
       if (name.endsWith('/nativeCataloguePage163')) return { nativeCataloguePage163 };
       if (name.endsWith('/nativeSavedCatalogue168')) return { nativeSavedCatalogue168 };
+      if (name.endsWith('/nativeSingleLabel109')) return { isPendingLocalIdentity109 };
       if (name.endsWith('/nativeGlobalCatalogue103')) return { createGlobalCatalogue103: () => client,
         applyGlobalCatalogue103: (value, profile, wine) => ({ ...value, globalRecord: wine }) };
       if (name.endsWith('/nativeCatalogAdmission97') || name.endsWith('/wineAffinityExplanation')) return {};
@@ -172,5 +174,13 @@ await test('A refreshed saved snapshot releases busy state without reusing a sta
   assert.equal(h.button('Buscar').disabled, false);
   resolve({ status: 'complete', rows }); await tick();
   assert(!text(h.render()).includes('23 referencias')); h.unmount();
+});
+await test('Unidentified sentinel is not a search query and proper names are not autocorrected', () => {
+  for (const name of ['Etiqueta por identificar', '  ETIQUETA  POR IDENTIFICAR ', '']) {
+    const h = host({ searchProposals: () => { throw Error('No implicit request'); } }, false, name);
+    const input = h.elements('input')[0].props;
+    assert.equal(input.value, ''); assert.equal(h.button('Buscar').disabled, true);
+    assert.equal(input.autoCorrect, 'off'); assert.equal(input.autoCapitalize, 'none'); assert.equal(input.spellCheck, false); h.unmount();
+  }
 });
 console.log(JSON.stringify({ groups, realNetworkCalls: 0, modelStarts: 0, scope: 'Actual TSX handlers and actual bounded catalogue parser with controlled transport, not native visual QA' }));

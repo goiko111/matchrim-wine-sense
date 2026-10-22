@@ -36,15 +36,8 @@ final class MatchrimManual164Tests: MatchrimRescan161Tests {
         let fields = web.textFields.matching(NSPredicate(format: "label == %@", "Nombre del vino o bodega"))
         try require(fields.firstMatch.waitForExistence(timeout: 8) && fields.count == 1, app, "Named manual catalogue field required")
         let field = fields.firstMatch
+        try require((field.value as? String ?? "").isEmpty, app, "Unidentified sentinel must not prefill a manual search")
         try tap(field, app)
-        if let value = field.value as? String, !value.isEmpty {
-            field.press(forDuration: 1.2)
-            let selectAll = [app.menuItems["Select All"].firstMatch, app.menuItems["Seleccionar todo"].firstMatch,
-                app.buttons["Select All"].firstMatch, app.buttons["Seleccionar todo"].firstMatch]
-                .filter { $0.exists && $0.isHittable }
-            try require(selectAll.count == 1, app, "Observed Select All required; no guessed clear gesture")
-            selectAll[0].tap()
-        }
         field.typeText("Flor de Muga Blanco")
         try require(field.value as? String == "Flor de Muga Blanco", app, "Exact manual query required")
         audit(app, "manual164-explicit-query")
