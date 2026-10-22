@@ -24,6 +24,8 @@ vm.runInNewContext(ts.transpileModule(source, { compilerOptions: { target: ts.Sc
     if (name === './AffinityExplanation') return { AffinityExplanation: () => null };
     if (name === '@/utils/scanProfile') return { canRetryScanProfile: () => false };
     if (name === '@/utils/bodegaAffinity') return { cellarAffinityView: () => ({ current, initial: null, attributes: null, reason: 'Synthetic view only' }) };
+    if (name === '@/utils/cellarReferenceStyle110') return { cellarReferenceStyleView110: () => null };
+    if (name === './CellarReferenceStyle110') return { CellarReferenceStyle110: () => { throw new Error('Unexpected reference-style branch in exact-score regression'); } };
     throw new Error('Unexpected test import: ' + name);
   },
 }, { filename: file.pathname, timeout: 2000 });

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { restoreCellarEvolutionGuard150 } from './native-cellar-evolution150-scope.mjs';
 import { createHash } from 'node:crypto';
 
 export const nativeScan99Baseline = 'd7d81e18e5219b1aedcca641f71ae4d46980faf8';
@@ -89,6 +90,7 @@ const guards = new Map([
 ]);
 
 export function restoreNativeScan99Guard(file, source) {
+  source = restoreCellarEvolutionGuard150(file, source);
   const row = guards.get(file);
   if (!row) return source;
   if ([row.beforeHash, ...(row.historicalHashes ?? [])].includes(digest(source))) return source;

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { restoreCellarEvolution150 } from './native-cellar-evolution150-scope.mjs';
 import { createHash } from 'node:crypto';
 import { restoreNativeHome98Guard } from './native-home98-scope.mjs';
 import { restoreNativeScan99Guard } from './native-scan99-scope.mjs';
@@ -75,6 +76,7 @@ import { safeWineImageUrl98 } from '@/utils/wineImage98';`,
 ]);
 
 export function restoreNativeVisual98(file, source) {
+  source = restoreCellarEvolution150(file, source);
   const row = files.get(file);
   if (!row) return source;
   if (digest(source) === row.beforeHash) return source;

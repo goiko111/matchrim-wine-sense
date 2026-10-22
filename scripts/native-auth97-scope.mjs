@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { restoreAccountLabel151 } from './native-account-label151-scope.mjs';
 import { createHash } from 'node:crypto';
 
 const hash = source => createHash('sha256').update(source).digest('hex');
@@ -8,6 +9,7 @@ const once = (source, current, previous) => {
 };
 
 export function restoreNativeAuth97(file, source) {
+  source = restoreAccountLabel151(file, source);
   if (file !== 'src/pages/Auth.tsx') return source;
   const baseline = 'fd0d99adc829afdf619de56a0084813821d80d7be1e7f480eec0c136042c47de';
   if (hash(source) === baseline) return source;
