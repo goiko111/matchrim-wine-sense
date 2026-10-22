@@ -102,7 +102,8 @@ final class MatchrimCellar144Tests: XCTestCase {
         try tap(app.links.matching(NSPredicate(format: "label == %@", "Perfil")))
         let identity = app.otherElements.matching(NSPredicate(format: "label == %@", "Correo de tu cuenta: info@winerim.com"))
         try require(identity.firstMatch.waitForExistence(timeout: 15) && identity.count == 1
-                    && identity.firstMatch.isHittable && app.textFields.count == 0,
+                    && !identity.firstMatch.frame.isEmpty
+                    && app.windows.firstMatch.frame.contains(identity.firstMatch.frame) && app.textFields.count == 0,
                     "Visible literal QA email on Profile required; never authenticate")
         try genuine(); capture("01-profile")
         emit("CELLAR144_EXISTING_QA_IDENTITY")

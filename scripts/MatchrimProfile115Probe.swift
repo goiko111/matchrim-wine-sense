@@ -16,13 +16,15 @@ final class MatchrimProfile115Tests: XCTestCase {
         try require(profile.isHittable, app, "Bottom Perfil link must be reachable")
         try insideVisibleBounds(profile, app, navigationControl: true)
         profile.tap()
-        let email = app.otherElements.matching(NSPredicate(format: "label == %@", "Correo de tu cuenta: info@winerim.com")).firstMatch
-        try require(email.waitForExistence(timeout: 20), app, "Literal existing QA email required; never authenticate here")
+        let emails = app.otherElements.matching(NSPredicate(format: "label == %@", "Correo de tu cuenta: info@winerim.com"))
+        let email = emails.firstMatch
+        try require(email.waitForExistence(timeout: 20) && emails.count == 1 && !email.frame.isEmpty,
+                    app, "Literal existing QA email required; never authenticate here")
         try authenticated(app)
         let settings = app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "Ajustes de cuenta")).firstMatch
         try require(settings.waitForExistence(timeout: 5), app, "Account settings control missing")
         audit(app, "01-profile-maximum-type")
-        try require(email.isHittable && settings.isHittable && settings.isEnabled, app, "Email and settings must be visible and reachable")
+        try require(settings.isHittable && settings.isEnabled, app, "Settings must be visible and reachable; email is noninteractive text")
         try require(settings.frame.width >= 44 && settings.frame.height >= 44, app, "Settings target must be at least 44 points on both axes")
         try require(!email.frame.intersects(settings.frame), app, "Email collides with settings")
         try insideVisibleBounds(email, app)

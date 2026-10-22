@@ -22,7 +22,10 @@ final class MatchrimReference136Tests: XCTestCase {
         defer { audit(app, "99-final"); app.terminate() }
         try require(app.frame.height > app.frame.width, app, "Expected portrait device; do not change simulator settings")
         try tap(app.links["Perfil"].firstMatch, app)
-        try require(app.otherElements["Correo de tu cuenta: info@winerim.com"].waitForExistence(timeout: 12)
+        let identity = app.otherElements.matching(NSPredicate(format: "label == %@", "Correo de tu cuenta: info@winerim.com"))
+        try require(identity.firstMatch.waitForExistence(timeout: 12) && identity.count == 1
+                    && !identity.firstMatch.frame.isEmpty
+                    && app.windows.firstMatch.frame.contains(identity.firstMatch.frame)
                     && app.secureTextFields.count == 0 && !app.buttons["Entrar en Matchrim"].exists,
                     app, "Existing literal QA session required; no authentication")
         try genuine(app)

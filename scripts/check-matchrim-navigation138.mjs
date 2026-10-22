@@ -399,6 +399,21 @@ await test('Profile load uses Profile115-r5 contains-heading AX with exactly one
   assert(!source.includes('staticTexts["Tu perfil sensorial"]'));
   assert(source.includes('Home recommendation GETs through passthroughWinerim and aiRIM before-send profile GETs'));
 });
+await test('Contextual account text requires unique exact visible identity, never tappability of a noninteractive AX container', () => {
+  for (const name of ['MatchrimNavigation138Probe.swift', 'MatchrimCellar144Probe.swift', 'MatchrimReference136Probe.swift']) {
+    const source = fs.readFileSync(new URL('./' + name, import.meta.url), 'utf8');
+    assert(source.includes('label == %@", "Correo de tu cuenta: info@winerim.com"'));
+    assert(source.includes('identity.count == 1'));
+    assert(source.includes('!identity.firstMatch.frame.isEmpty'));
+    assert(source.includes('app.windows.firstMatch.frame.contains(identity.firstMatch.frame)'));
+    assert(!source.includes('identity.firstMatch.isHittable'));
+  }
+  const source = fs.readFileSync(new URL('./MatchrimProfile115Probe.swift', import.meta.url), 'utf8');
+  assert(source.includes('emails.count == 1 && !email.frame.isEmpty'));
+  assert(source.includes('try insideVisibleBounds(email, app)'));
+  assert(source.includes('settings.isHittable && settings.isEnabled'));
+  assert(!source.includes('email.isHittable'));
+});
 await test('runner has no install/import/auth storage/settings/network/global cleanup commands', () => {
   const source = fs.readFileSync(new URL('./qa-matchrim-navigation138.mjs', import.meta.url), 'utf8');
   for (const forbidden of ["'install'", "'addmedia'", "'boot'", "'erase'", "'uninstall'", "'ui'", 'fetch(',

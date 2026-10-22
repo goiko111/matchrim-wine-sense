@@ -24,7 +24,9 @@ final class MatchrimNavigation138Tests: XCTestCase {
         try navigate(.profile, app)
         let identity = app.otherElements.matching(NSPredicate(format: "label == %@", "Correo de tu cuenta: info@winerim.com"))
         try require(identity.firstMatch.waitForExistence(timeout: 15) && identity.count == 1
-                    && identity.firstMatch.isHittable, app, "Literal existing QA identity must be visible on Profile; no auth attempt")
+                    && !identity.firstMatch.frame.isEmpty
+                    && app.windows.firstMatch.frame.contains(identity.firstMatch.frame),
+                    app, "Literal existing QA identity must be visible on Profile; no auth attempt")
         try authenticated(app)
         emit("NAV138_EXISTING_QA_IDENTITY")
         // Profile115-r5 AX and its probe use this heading text; the h3 can include an emoji prefix.
