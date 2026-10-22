@@ -10,6 +10,7 @@ import { OWNER, nativeReceiptPath } from './qa-matchrim-account114.mjs';
 const syntheticRecord = (wine, runId, initial = null, current = 43, byStyle = true) => ({
   schemaVersion: 1, runId, account: 'info@winerim.com', name: wine.name, rating: wine.rating,
   ratingLabel: wine.ratingLabel, libraryIdContextOnly: wine.libraryIdContextOnly,
+  personalVerdictTitle: byStyle ? null : wine.personalVerdictTitle,
   vintageContext: wine.vintageContext, vintageEvidence: wine.vintageContext === '2022' ? '2022' : 'NV not independently exposed by this UI',
   categoryLabel: 'Probados2', current, currentLabel: '\u2248' + current + '/100' + (byStyle ? ' para ti' : ''),
   scoreKind: byStyle ? 'reference-style' : 'exact-affinity', initialPresent: initial !== null, initial,
@@ -435,6 +436,8 @@ for (const [name, mutate] of [
   ['wrong name', row => { row.name += ' Reserva'; }],
   ['wrong rating', row => { row.rating = 'ok'; }],
   ['wrong rating label', row => { row.ratingLabel = 'Te gusta'; }],
+  ['missing personal verdict', row => { delete row.personalVerdictTitle; }],
+  ['forecast overrides personal verdict', row => { row.personalVerdictTitle = 'Puede encajar contigo'; }],
   ['wrong Library context', row => { row.libraryIdContextOnly = 1; }],
   ['wrong vintage context', row => { row.vintageContext = '2021'; }],
   ['wrong observed vintage', row => { row.vintageEvidence = '2021'; }],

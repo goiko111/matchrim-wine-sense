@@ -22,6 +22,7 @@ vm.runInNewContext(ts.transpileModule(source, { compilerOptions: { target: ts.Sc
     if (name === '@/components/ui/button') return { Button: ({ children, ...rest }) => React.createElement('button', rest, children) };
     if (name === '@/components/ui/progress') return { Progress: p => React.createElement('div', p) };
     if (name === './AffinityExplanation') return { AffinityExplanation: () => null };
+    if (name === './NativeAffinitySummary') return { NativeAffinitySummary: () => null };
     if (name === '@/utils/scanProfile') return { canRetryScanProfile: () => false };
     if (name === '@/utils/bodegaAffinity') return { cellarAffinityView: () => ({ current, initial: null, attributes: null, reason: 'Synthetic view only' }) };
     if (name === '@/utils/cellarReferenceStyle110') return { cellarReferenceStyleView110: () => null };

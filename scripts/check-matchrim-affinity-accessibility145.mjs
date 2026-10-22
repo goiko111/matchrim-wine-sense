@@ -107,6 +107,7 @@ const loadCellar = source => {
     if (name === '@/components/ui/button') return { Button: ({ children, ...props }) => React.createElement('button', props, children) };
     if (name === '@/components/ui/progress') return { Progress: props => React.createElement('div', props) };
     if (name === './AffinityExplanation') return { AffinityExplanation: () => null };
+    if (name === './NativeAffinitySummary') return { NativeAffinitySummary: () => null };
     if (name === '@/utils/scanProfile') return { canRetryScanProfile: () => false };
     if (name === '@/utils/bodegaAffinity') return { cellarAffinityView: () => activeView };
     if (name === '@/utils/cellarReferenceStyle110') return { cellarReferenceStyleView110: () => null };

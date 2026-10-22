@@ -22,9 +22,9 @@ export const REQUIRED_SOURCES = ['src/App.tsx', 'src/pages/Profile.tsx', 'src/pa
   'src/utils/consumerAffinity95.ts', 'src/utils/wineAffinityExplanation.ts',
   'src/utils/scanProfile.ts', 'src/utils/winerimOriginalSheet.ts', 'src/contexts/AuthContext.tsx'];
 export const WINES = [
-  { name: 'Flor de Muga Blanco', rating: 'love', ratingLabel: 'Ya sabes que te gusta',
+  { name: 'Flor de Muga Blanco', rating: 'love', ratingLabel: 'Ya sabes que te gusta', personalVerdictTitle: 'Tu valoración: te encanta',
     libraryIdContextOnly: 279035, vintageContext: '2022', evidenceName: '06-flor-readback', attachment: 'flor-record' },
-  { name: 'Manzanilla La Gitana', rating: 'not_for_me', ratingLabel: 'Ya sabes que no te gusta',
+  { name: 'Manzanilla La Gitana', rating: 'not_for_me', ratingLabel: 'Ya sabes que no te gusta', personalVerdictTitle: 'Tu valoración: no es para ti',
     libraryIdContextOnly: 278688, vintageContext: 'NV', evidenceName: '07-gitana-readback', attachment: 'gitana-record' },
 ];
 const bundle = 'wine.matchrim.qa99review';
@@ -98,7 +98,7 @@ const UUID = /^[a-f\d]{8}(?:-[a-f\d]{4}){3}-[a-f\d]{12}$/i;
 const RECORD_KEYS = ['schemaVersion', 'runId', 'account', 'name', 'rating', 'ratingLabel',
   'libraryIdContextOnly', 'vintageContext', 'vintageEvidence', 'categoryLabel', 'current',
   'currentLabel', 'scoreKind', 'initialPresent', 'initial', 'initialLabel', 'initialUnavailableReason',
-  'firstVerifiedLabels', 'explanation', 'provenance', 'evidenceName', 'newSavePersistenceValidated'].sort();
+  'firstVerifiedLabels', 'explanation', 'provenance', 'personalVerdictTitle', 'evidenceName', 'newSavePersistenceValidated'].sort();
 
 export function parseReadback(value, expected, runId) {
   check(value && typeof value === 'object' && !Array.isArray(value)
@@ -113,6 +113,7 @@ export function parseReadback(value, expected, runId) {
   check(/^Probados[0-9]+$/.test(value.categoryLabel) && score(value.current), 'READBACK_CURRENT_HOLD');
   const byStyle = value.scoreKind === 'reference-style';
   check(byStyle || value.scoreKind === 'exact-affinity', 'READBACK_KIND_HOLD');
+  check(value.personalVerdictTitle === (byStyle ? null : expected.personalVerdictTitle), 'READBACK_PERSONAL_VERDICT_HOLD');
   check(value.currentLabel === '\u2248' + value.current + '/100' + (byStyle ? ' para ti' : ''), 'READBACK_CURRENT_LABEL_HOLD');
   check(typeof value.initialPresent === 'boolean', 'READBACK_INITIAL_FLAG_HOLD');
   if (value.initialPresent) {

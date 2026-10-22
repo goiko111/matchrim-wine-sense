@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CircleHelp, Loader2, RefreshCw, ThumbsDown, ThumbsUp, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { AffinityExplanation } from './AffinityExplanation';
+import { NativeAffinitySummary } from './NativeAffinitySummary';
 import { cellarAffinityView, type CellarAffinityWine } from '@/utils/bodegaAffinity';
 import { canRetryScanProfile, type ScanProfileSnapshot } from '@/utils/scanProfile';
 import { cellarReferenceStyleView110 } from '@/utils/cellarReferenceStyle110';
@@ -38,7 +38,7 @@ export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRet
       {view.current !== null && <Progress value={view.current} role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={view.current} aria-label={`Afinidad actual orientativa de ${wine.name}`} className="h-2" />}
       {view.initial ? (
         <p className="text-xs text-slate-600">
-          {`${view.initial.phase === 'saved' ? 'Al guardar' : 'Primera afinidad registrada'}: ${view.initial.score}/100 \u00b7 ${new Date(view.initial.recorded_at).toLocaleDateString('es-ES')}${view.delta !== null && view.delta !== 0 ? ` \u00b7 ${view.delta > 0 ? '+' : ''}${view.delta} puntos desde entonces` : ''}`}
+          {`${view.initial.phase === 'saved' ? 'Al guardar' : 'Primera afinidad registrada'}: ${view.initial.score}/100 \u00b7 ${new Date(view.initial.recorded_at).toLocaleDateString('es-ES')}${view.delta !== null && view.delta !== 0 ? ` \u00b7 ${view.delta > 0 ? '+' : ''}${view.delta} ${Math.abs(view.delta) === 1 ? 'punto' : 'puntos'} desde entonces` : ''}`}
         </p>
       ) : <p className="text-xs text-slate-500">{referenceStyle ? 'No hay una afinidad inicial verificada de esta añada.' : 'No hay una afinidad inicial guardada para este vino.'}</p>}
       <p className="text-xs leading-5 text-slate-600">{snapshot?.status === 'ready' && snapshot.profile
@@ -61,9 +61,9 @@ export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRet
         <CircleHelp className="mr-2 h-4 w-4" />{expanded ? 'Ocultar explicaci\u00f3n' : 'Por qu\u00e9 esta afinidad'}
       </Button>}
       {expanded && view.current !== null && <div className="[&>.matchrim-surface]:border-0 [&>.matchrim-surface]:bg-transparent [&>.matchrim-surface]:p-0 [&>.matchrim-surface]:shadow-none">
-        <AffinityExplanation wineKey={`cellar:${wine.id}`} score={view.current}
+        <NativeAffinitySummary personalRating={wine.rating} score={view.current}
           attributes={view.attributes} sensorySource="catalog" profile={snapshot?.profile ?? null}
-          catalogIdentityLinked={Boolean(view.attributes)} compact />
+          catalogIdentityLinked={Boolean(view.attributes)} />
       </div>}
     </>
   );

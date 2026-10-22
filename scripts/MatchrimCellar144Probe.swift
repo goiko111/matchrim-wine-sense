@@ -145,6 +145,7 @@ final class MatchrimCellar144Tests: XCTestCase {
             try require(wait(12) { styleScores.count == 1 || exactScores.count == 1 }, "Current numeric affinity unavailable; never calculate/retry")
             try require(styleScores.count + exactScores.count == 1, "Competing current affinity labels; stop")
             let byStyle = styleScores.count == 1
+            var personalVerdictTitle: String? = nil
             let currentLabel = (byStyle ? styleScores : exactScores).firstMatch.label
             guard let current = number(currentLabel, "^\u{2248}([0-9]{1,3})/100(?: para ti)?$") else {
                 try require(false, "Current affinity must be numeric 0...100"); return
@@ -161,6 +162,14 @@ final class MatchrimCellar144Tests: XCTestCase {
                 try disclosure(detail, "Origen y l\u{00ed}mites")
             } else {
                 try disclosure(detail, "Por qu\u{00e9} esta afinidad")
+                let title = index == 0 ? "Tu valoraci\u{00f3}n: te encanta" : "Tu valoraci\u{00f3}n: no es para ti"
+                let verdict = exact(detail, title)
+                try require(verdict.count == 1 && verdict.firstMatch.exists,
+                    "Expanded explanation must keep the saved personal verdict primary")
+                personalVerdictTitle = verdict.firstMatch.label
+                for forecast in ["Encaja mucho contigo", "Puede encajar contigo", "Es una opci\u{00f3}n para explorar", "Se aleja de tus gustos actuales"] {
+                    try require(exact(detail, forecast).count == 0, "Forecast headline cannot contradict a known saved verdict")
+                }
                 let summary = detail.otherElements.matching(NSPredicate(format: "label MATCHES %@", "^Afinidad orientativa: [0-9]{1,3} de 100$"))
                 try require(summary.firstMatch.waitForExistence(timeout: 8) && summary.count == 1
                     && number(summary.firstMatch.label, "^Afinidad orientativa: ([0-9]{1,3}) de 100$") == current,
@@ -209,6 +218,7 @@ final class MatchrimCellar144Tests: XCTestCase {
                 "initialLabel": initialLabel.map { $0 as Any } ?? NSNull(),
                 "initialUnavailableReason": initial == nil ? "Initial-at-save not exposed in this readback; historical data gap" as Any : NSNull(),
                 "firstVerifiedLabels": firstVerified, "explanation": explanations, "provenance": provenance.firstMatch.label,
+                "personalVerdictTitle": personalVerdictTitle.map { $0 as Any } ?? NSNull(),
                 "evidenceName": evidenceName, "newSavePersistenceValidated": false]
             let data = try JSONSerialization.data(withJSONObject: record, options: [.sortedKeys])
             let item = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")

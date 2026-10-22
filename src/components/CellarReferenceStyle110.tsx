@@ -26,7 +26,7 @@ export const CellarReferenceStyle110 = ({ view, snapshot, onRetryProfile }: {
         <Button type="button" variant="outline" className="h-auto min-h-11 w-full gap-2 whitespace-normal py-3" onClick={onRetryProfile}><RefreshCw aria-hidden="true" className="h-4 w-4 shrink-0" />Reintentar perfil</Button>
       </div>
         : <Button asChild className="h-auto min-h-11 w-full whitespace-normal py-3"><Link to="/matchrim">Completar mi test de gustos</Link></Button>}
-    {view.initial && <p className="text-xs leading-5 text-stone-600">{`Al guardar: ≈${view.initial.score}/100 por estilo.${view.delta !== null && view.delta !== 0 ? ` Tu perfil actual cambia esta orientación ${view.delta > 0 ? '+' : ''}${view.delta} puntos.` : ''}`}</p>}
+    {view.initial && <p className="text-xs leading-5 text-stone-600">{`Al guardar: ≈${view.initial.score}/100 por estilo.${view.delta !== null && view.delta !== 0 ? ` Tu perfil actual cambia esta orientación ${view.delta > 0 ? '+' : ''}${view.delta} ${Math.abs(view.delta) === 1 ? 'punto' : 'puntos'}.` : ''}`}</p>}
     <p className="text-xs leading-5 text-stone-600">Ficha Winerim sin añada. Orienta sobre el estilo, no verifica los datos de tu cosecha.</p>
     <details className="text-xs leading-5 text-stone-600">
       <summary aria-label="Origen y límites" className="flex min-h-11 cursor-pointer items-center gap-2 font-medium"><CircleHelp aria-hidden="true" className="h-4 w-4 shrink-0" /><span aria-hidden="true">Origen y límites</span></summary>
