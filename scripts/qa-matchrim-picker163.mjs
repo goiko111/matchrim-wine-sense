@@ -12,7 +12,8 @@ import { guard122 } from './experiment-matchrim-vision122.mjs';
 const require = createRequire(import.meta.url);
 const { chromium } = require(path.join(os.homedir(), '.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright'));
 const out = path.resolve(process.argv[2]);
-const knownMode = process.argv[3] === 'known168';
+const damagedMode = process.argv[3] === 'damaged171';
+const knownMode = process.argv[3] === 'known168' || damagedMode;
 assert(process.argv[3] === undefined || knownMode);
 assert(out.startsWith(process.cwd() + '/qa-artifacts/continuation161-20261022/picker163-'));
 assert(!fs.existsSync(out));
@@ -21,6 +22,8 @@ const check = () => guard122(JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Ap
 check(); fs.mkdirSync(out, { mode: 0o700 });
 const fixture = JSON.parse(fs.readFileSync('qa-fixtures/global103/winerim-public.observed.json')).vidure.wine;
 const rows = Array.from({ length: 23 }, (_, i) => ({ ...fixture, id: i + 1, vintage: i < 20 ? null : '2022' }));
+const listRows = rows.map(row => damagedMode && row.id === 22 ? { ...row, slugname: '' } : row);
+const total = damagedMode ? 22 : 23, filteredTotal = damagedMode ? 2 : 3;
 const sourceFiles = ['src/components/wine-import/NativeGlobalCatalogue103.tsx', 'src/utils/nativeCataloguePage163.ts',
   'src/utils/nativeGlobalCatalogue103.ts', 'src/utils/nativeSavedCatalogue168.ts', 'src/utils/nativeRescanVerdict159.ts', 'src/index.css'];
 const hashes = () => Object.fromEntries(sourceFiles.map(file => [file, createHash('sha256').update(fs.readFileSync(file)).digest('hex')]));
@@ -34,7 +37,7 @@ const snapshot=${knownMode ? `nativeVerdictsSnapshot159('isolated-qa',[${JSON.st
 function App(){const[selected,setSelected]=React.useState(null);return React.createElement('main',{style:{padding:16,maxWidth:440,margin:'auto'}},React.createElement(GlobalWinePicker103,{candidate:{name:'Vidure',producer:null,vintage:null},contextKey:'isolated-qa',disabled:false,profile:null,onConfirmed:setSelected,ownerId:'isolated-qa',savedVerdicts:snapshot}),selected&&React.createElement('p',{role:'status'},'Referencia elegida: '+selected.name+', '+selected.vintage+', ID '+selected.globalRecord.id))}createRoot(document.getElementById('root')).render(React.createElement(BrowserRouter,null,React.createElement(App)));`;
 let server, browser, page;
 const result = { passed: false, startedUTC: new Date().toISOString(), sourceHashes: bound, modelStarts: 0, realCatalogueRequests: 0,
-  knownMode,
+  knownMode, damagedMode,
   scope: 'Real native-only picker in isolated Chromium mobile rendering; 23 synthetic observed-contract rows, mocked GET transport. Not iOS/WebKit, real recognition, physical device, or deployed catalogue approval.' };
 try {
   server = await createServer({ configFile: false, envDir: false, root: process.cwd(), plugins: [react(), {
@@ -54,7 +57,7 @@ try {
     if (u.origin === 'https://app.winerim.com' && route.request().method() === 'GET' && u.pathname.includes('/wines')) {
       requests.push(u.pathname + u.search);
       const selectedId = Number(u.pathname.split('/').at(-2));
-      const payload = u.search ? { count: 23, page: Number(u.searchParams.get('page')), results: u.searchParams.get('page') === '1' ? rows.slice(0, 20) : rows.slice(20) } : rows.find(row => row.id === selectedId);
+      const payload = u.search ? { count: 23, page: Number(u.searchParams.get('page')), results: u.searchParams.get('page') === '1' ? listRows.slice(0, 20) : listRows.slice(20) } : rows.find(row => row.id === selectedId);
       assert(payload);
       return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(payload) });
     }
@@ -64,18 +67,19 @@ try {
   await page.goto(origin + '/picker163');
   await page.getByRole('button', { name: 'Buscar otra referencia en Winerim', exact: true }).click();
   await page.getByRole('button', { name: 'Buscar', exact: true }).click();
-  await page.getByText('23 referencias · Página 1 de 8', { exact: true }).waitFor();
+  await page.getByText(total + ' referencias · Página 1 de 8', { exact: true }).waitFor();
+  if (damagedMode) await page.getByText('No se ha podido completar la búsqueda. Concreta el nombre o busca por bodega.', { exact: true }).waitFor();
   assert.equal(requests.length, 2);
   await page.getByRole('button', { name: 'Referencias siguientes', exact: true }).click();
-  await page.getByText('23 referencias · Página 2 de 8', { exact: true }).waitFor();
+  await page.getByText(total + ' referencias · Página 2 de 8', { exact: true }).waitFor();
   await page.getByRole('combobox', { name: 'Filtrar por añada' }).selectOption('2022');
-  await page.getByText('3 referencias · Página 1 de 1', { exact: true }).waitFor();
+  await page.getByText(filteredTotal + ' referencias · Página 1 de 1', { exact: true }).waitFor();
   assert.equal(await page.getByText('Ya en tu Bodega', { exact: true }).count(), knownMode ? 1 : 0);
   const screenshot = async name => {
     check(); assert.deepEqual(hashes(), bound);
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Horizontal overflow');
     const buttons = await page.getByRole('button', { name: 'Esta es mi referencia', exact: true }).all();
-    assert.equal(buttons.length, 3);
+    assert.equal(buttons.length, filteredTotal);
     for (const button of buttons) { const b = await button.boundingBox(); assert(b.width >= 44 && b.height >= 44); }
     await page.screenshot({ path: out + '/' + name + '.png', fullPage: true }); screenshots.push(name);
   };
