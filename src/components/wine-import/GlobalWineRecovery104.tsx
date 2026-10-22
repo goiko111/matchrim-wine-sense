@@ -52,6 +52,7 @@ export const GlobalWineRecovery104 = ({ candidate, contextKey, profile, disabled
         return;
       }
       let evidence = candidate.evidence, vintage = candidate.vintage;
+      let queryLines: Parameters<typeof globalRecoveryQueries104>[4];
       const useLocalReading = onDevice || Boolean(latestReading.current.value && candidate.source !== 'manual');
       if (useLocalReading) {
         if (onDevice && (!image || !localOCRAvailable106())) { setNotice('La lectura local no esta disponible en esta version.'); return; }
@@ -59,6 +60,7 @@ export const GlobalWineRecovery104 = ({ candidate, contextKey, profile, disabled
         const text = onDevice ? await readLocalWineText106(image!, controller.signal) : latestReading.current.value!; if (!active()) return;
         if (onDevice) latestReading.current.value = text;
         const fragments = suggestLocalOCRFragments108(text.lines);
+        queryLines = text.lines;
         evidence = [...text.lines.map(line => line.text), ...fragments.alternatives.map(line => line.text)].slice(0, 100);
         setReconstructed(fragments.alternatives.length > 0);
         const years = wineYearRoles105(text.lines);
@@ -77,7 +79,7 @@ export const GlobalWineRecovery104 = ({ candidate, contextKey, profile, disabled
       }
       const rows: PublicGlobalRow103[] = [];
       let unavailable = false, incomplete = false;
-      for (const query of globalRecoveryQueries104(candidate.name, evidence, !useLocalReading && candidate.source === 'manual', vintage)) {
+      for (const query of globalRecoveryQueries104(candidate.name, evidence, !useLocalReading && candidate.source === 'manual', vintage, queryLines)) {
         const page = await client.searchProposals(query, controller.signal); if (!active()) return;
         unavailable ||= page.status === 'unavailable';
         incomplete ||= page.status !== 'complete';

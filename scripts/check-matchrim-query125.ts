@@ -4,7 +4,8 @@ import { globalRecoveryQueries104 as queries } from '../src/utils/globalWineProp
 const pending = 'Etiqueta por identificar';
 assert.deepEqual(queries(pending, ['Synthetic Estate', 'TROCKEN', 'Aurora', 'RHEINGAU']), ['Synthetic Estate', 'Aurora']);
 assert.deepEqual(queries(pending, ['DRY', 'HALBTROCKEN', 'FEINHERB']), []);
-assert.deepEqual(queries(pending, ['Synthetic Estate', 'Northern Valley', "'La Aurora'", '2020']), ['Synthetic Estate', 'Northern Valley']);
+assert.deepEqual(queries(pending, ['Synthetic Estate', 'Northern Valley', "'La Aurora'", '2020']), ['La Aurora', 'Synthetic Estate'],
+  'A short balanced literal cuvee now takes priority over untyped region text');
 assert.deepEqual(queries(pending, ['"La Aurora"', 'Synthetic Estate']), ['La Aurora', 'Synthetic Estate']);
 assert.deepEqual(queries(pending, ['Synthetic Estate', 'Cuvee Second', '"a very long landscape description in quotation marks"']),
   ['Synthetic Estate', 'Cuvee Second'], 'Long quoted marketing copy must not consume the second slot');

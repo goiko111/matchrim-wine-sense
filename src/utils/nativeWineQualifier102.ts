@@ -15,7 +15,8 @@ export const hasMissingVisibleQualifier102 = (input: { name: string; evidence?: 
       const visibleName = new Set(words(name));
       if (required.some(word => !visibleName.has(word))) return true;
     }
-    const match = literal.match(/^(premier cru|1er cru|grand cru)(?:\s+["'“«](.+?)["'”»])?$/);
+    const match = literal.match(/^(premier cru|1er cru|grand cru)(?:\s+["'“«](.+?)["'”»])?$/)
+      || literal.match(/^(premier cru|1er cru|grand cru)\s+["'“«]([^"'“”«»]+)$/);
     if (!match) return false;
     const classification = match[1] === 'grand cru' ? /\bgrand cru\b/ : /\b(?:premier|1er) cru\b/;
     if (!classification.test(name)) return true;

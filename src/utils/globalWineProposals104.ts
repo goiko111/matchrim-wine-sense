@@ -4,8 +4,9 @@ import { hasConflictingNativeVintage100 } from './nativeVintageEvidence100';
 import { isNonWineIdentity } from './wineCategory';
 import { hasObservedAppellationConflict120 } from './nativeAppellation120';
 import { hasObservedWineColorConflict124 } from './nativeWineColor124';
-import { wineYearRoles105 } from './wineYearRole105';
+import { wineYearRoles105, type YearLine105 } from './wineYearRole105';
 import { isLiteralWineStyleName95 } from './menuLiteralStyle95';
+import { nativeQueryRoles174 } from './nativeQueryRoles174';
 
 const fold = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\u00df/g, 'ss');
 const tokens = (value: string): string[] => fold(value).match(/[a-z0-9]+/g) || [];
@@ -25,7 +26,7 @@ const queryMetadata = new Set(('celler cellar cava pet nat ancestral premium tra
 const automaticQueryMetadata = new Set(('bio cosecha vendimia recolte vintage ernte vendemmia harvest anada millesime '
   + 'bottled bottling embotellado embotellada envasado mis mise bouteille imbottigliato imbottigliata engarrafado '
   + 'in en nel em par by date fecha year anno annata annee '
-  + 'vineyard vineyards vignoble vignobles viticultor viticultores').split(' '));
+  + 'vineyard vineyards vignoble vignobles viticultor viticultores primitivo').split(' '));
 const fullName = (row: PublicGlobalRow103) => row.subname && !(` ${tokens(row.name).join(' ')} `).includes(` ${tokens(row.subname).join(' ')} `)
   ? `${row.name} ${row.subname}` : row.name;
 export type WineProposal104 = { row: PublicGlobalRow103; name: string; score: number; missingProducer: boolean; vintageConflict: boolean; readingCorrections: string[] };
@@ -95,7 +96,7 @@ export const rankGlobalProposals104 = (evidence: readonly string[], rows: readon
     || a.row.id - b.row.id).slice(0, 3);
 };
 
-export const globalRecoveryQueries104 = (name: string, evidence: readonly string[], manuallyEntered = false, vintageHint: number | null = null) => {
+export const globalRecoveryQueries104 = (name: string, evidence: readonly string[], manuallyEntered = false, vintageHint: number | null = null, lines?: readonly YearLine105[]) => {
   const visible = new Set(evidence.flatMap(tokens));
   const queryName = name.trim().replace(/\s+\(?(?:19|20)\d{2}\)?$/, '').trim();
   const metadataOnly = (value: string) => /^(?:contains? (?:sulph?ites|sulfites)|contiene sulfitos|contient des sulfites|product of\b|produit de\b|producto de\b|imported by\b|importado por\b)/i.test(value)
@@ -104,7 +105,10 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
     && !metadataOnly(value)
     && tokens(value).some(word => word.length >= 3 && !generic.has(word) && !queryMetadata.has(word));
   if (manuallyEntered) return meaningful(queryName) ? [queryName] : [];
+  const roles = nativeQueryRoles174(evidence, lines);
   const automaticMeaningful = (value: string) => meaningful(value)
+    && !roles.metadata.has(tokens(value).join(' '))
+    && !/^(?:drink responsibly|consumir con moderaci[o\u00f3]n|consommer avec mod[e\u00e9]ration)$/i.test(value)
     && !isLiteralWineStyleName95(value)
     && !['vieilles vignes', 'old vines'].includes(tokens(value).join(' '))
     && !tokens(value).every(word => generic.has(word) || queryMetadata.has(word) || automaticQueryMetadata.has(word));
@@ -127,13 +131,14 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
   const queries = new Map<string, string>();
   const literalQueries = evidence.map(line => line.trim().replace(/^(?:embotellado por|bottled by|mis en bouteille (?:par|au))\s+/i, '')
     .replace(/^(?:[-,;:]\s*)+|(?:[,;:]\s*)+$/g, '').trim()).map(unquote).map(literalWithoutYear).filter(automaticMeaningful);
-  for (const query of [...(groundedName ? [automaticName] : []), ...literalQueries]) {
+  for (const query of [...(groundedName ? [automaticName] : []), ...roles.preferred.filter(automaticMeaningful), ...literalQueries]) {
     const normalized = tokens(query).join(' '); if (!queries.has(normalized)) queries.set(normalized, query);
   }
   const literal = [...queries.entries()];
   // Prefer a fully observed word over a second partial reading of that word.
   // This changes query allocation only, never the evidence used to identify it.
-  const bounded = literal.filter(([key]) => !literal.some(([other]) => other !== key && key.length >= 4
+  const observed = [...literal.map(([key]) => key), ...[...visible].filter(word => generic.has(word))];
+  const bounded = literal.filter(([key]) => !observed.some(other => other !== key && key.length >= 4
     && other.length <= key.length * 2 && !key.includes(' ') && !other.includes(' ') && other.includes(key)))
     .map(([, query]) => query);
   return bounded.slice(0, 2);
