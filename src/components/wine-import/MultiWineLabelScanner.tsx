@@ -1092,6 +1092,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     }} />}
     {isNative && !regionActionsLocked && <GlobalWinePicker103
       key={manualLookupKey} candidate={selectedCandidate} contextKey={manualLookupKey}
+      ownerId={user?.id ?? null} savedVerdicts={nativeVerdicts}
       disabled={manualLookupContext.locked} profile={scanProfile?.profile ?? null}
       onConfirmed={confirmed => {
         if (currentManualLookupKey.current !== manualLookupKey) return;

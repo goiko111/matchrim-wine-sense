@@ -9,6 +9,8 @@ import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { applyGlobalCatalogue103, createGlobalCatalogue103, exactGlobalVintage103, isGlobalWine103, lookupGlobalCatalogue103, globalSensory103, type GlobalWine103 } from '@/utils/nativeGlobalCatalogue103';
 import { buildAffinityInsights, calculateLocalMatchrimAffinity } from '@/utils/wineAffinityExplanation';
 import { nativeCataloguePage163 } from '@/utils/nativeCataloguePage163';
+import { nativeSavedCatalogue168 } from '@/utils/nativeSavedCatalogue168';
+import type { NativeVerdicts159 } from '@/utils/nativeRescanVerdict159';
 
 export const GlobalWineReference103 = ({ candidate, profile }: { candidate: WineCandidate; profile: MatchrimProfileLike | null }) => {
   const wine = candidate.globalRecord;
@@ -98,29 +100,36 @@ export const GlobalWineLookup103 = ({ candidate, contextKey, disabled, onVerifie
 };
 
 type PublicProposal103 = Awaited<ReturnType<ReturnType<typeof createGlobalCatalogue103>['search']>>['rows'][number];
-export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, onConfirmed }: {
+export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, onConfirmed, ownerId = null, savedVerdicts = null }: {
   candidate: WineCandidate; contextKey: string; disabled: boolean; profile: MatchrimProfileLike | null;
+  ownerId?: string | null; savedVerdicts?: NativeVerdicts159 | null;
   onConfirmed: (value: WineCandidate) => void;
 }) => {
   const [query, setQuery] = useState(candidate.name), [open, setOpen] = useState(false);
   const [rows, setRows] = useState<PublicProposal103[]>([]), [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
   const [vintage, setVintage] = useState('all'), [page, setPage] = useState(0);
-  const visible = nativeCataloguePage163(rows, vintage, page);
+  const saved = nativeSavedCatalogue168(ownerId, savedVerdicts, rows);
+  const visible = nativeCataloguePage163(rows, vintage, page, saved);
   const controller = useRef<AbortController | null>(null);
-  const current = useRef({ contextKey, query, disabled, onConfirmed, vintage, page });
-  current.current = { contextKey, query, disabled, onConfirmed, vintage, page };
-  useEffect(() => () => { controller.current?.abort(); controller.current = null; }, [contextKey]);
+  const current = useRef({ contextKey, query, disabled, onConfirmed, vintage, page, ownerId, savedVerdicts });
+  current.current = { contextKey, query, disabled, onConfirmed, vintage, page, ownerId, savedVerdicts };
+  useEffect(() => {
+    setBusy(false);
+    return () => { controller.current?.abort(); controller.current = null; };
+  }, [contextKey, ownerId, savedVerdicts]);
   useEffect(() => { if (disabled) controller.current?.abort(); }, [disabled]);
   const run = async (selected?: PublicProposal103) => {
     if (disabled || current.current.disabled || controller.current
       || current.current.contextKey !== contextKey || current.current.query !== query
+      || current.current.ownerId !== ownerId || current.current.savedVerdicts !== savedVerdicts
       || current.current.vintage !== vintage || current.current.page !== page
       || (selected && !visible.rows.includes(selected))) return;
     const abort = new AbortController(); controller.current = abort; setBusy(true); setNotice('');
     const scope = { contextKey, query };
     const active = () => controller.current === abort && !abort.signal.aborted && !current.current.disabled
       && current.current.contextKey === scope.contextKey && current.current.query === scope.query
+      && current.current.ownerId === ownerId && current.current.savedVerdicts === savedVerdicts
       && current.current.vintage === vintage && current.current.page === page;
     try {
       const client = createGlobalCatalogue103();
@@ -161,8 +170,9 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
         {visible.years.map(year => <option key={year} value={year}>{year === 'undated' ? 'Ficha sin añada' : year}</option>)}
       </select>
     </label>}
-    {rows.length > 0 && <p role="status" className="text-sm">{visible.total} referencias · Página {visible.current + 1} de {visible.pages}</p>}
+    {rows.length > 0 && <p role="status" className="text-sm">{visible.total} {visible.total === 1 ? 'referencia' : 'referencias'} · Página {visible.current + 1} de {visible.pages}</p>}
     <ul className="divide-y divide-stone-200">{visible.rows.map(row => <li key={row.id} className="min-w-0 space-y-2 py-3">
+      {saved.has(row.id) && <p className="text-sm font-semibold text-red-950">Ya en tu Bodega</p>}
       <p className="font-semibold">{row.name}{row.subname && !row.name.includes(row.subname) ? ` ${row.subname}` : ''}</p>
       <p className="text-sm">{row.winery} · {row.vintage || 'Ficha sin añada'}</p>
       {row.vintage == null && <p className="text-sm">Elegir esta referencia no confirma la cosecha de tu botella.</p>}

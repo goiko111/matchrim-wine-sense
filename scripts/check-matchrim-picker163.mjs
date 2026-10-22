@@ -4,6 +4,8 @@ import vm from 'node:vm';
 import { createRequire } from 'node:module';
 import { nativeCataloguePage163 } from '../src/utils/nativeCataloguePage163.ts';
 import { createGlobalCatalogue103 } from '../src/utils/nativeGlobalCatalogue103.ts';
+import { nativeSavedCatalogue168 } from '../src/utils/nativeSavedCatalogue168.ts';
+import { nativeVerdictsSnapshot159 } from '../src/utils/nativeRescanVerdict159.ts';
 
 const require = createRequire(import.meta.url), React = require('react'), ts = require('typescript');
 const source = fs.readFileSync('src/components/wine-import/NativeGlobalCatalogue103.tsx', 'utf8');
@@ -35,6 +37,7 @@ function host(client, deferEffects = false) {
       if (name.endsWith('/button')) return { Button: 'button' };
       if (name.endsWith('/input')) return { Input: 'input' };
       if (name.endsWith('/nativeCataloguePage163')) return { nativeCataloguePage163 };
+      if (name.endsWith('/nativeSavedCatalogue168')) return { nativeSavedCatalogue168 };
       if (name.endsWith('/nativeGlobalCatalogue103')) return { createGlobalCatalogue103: () => client,
         applyGlobalCatalogue103: (value, profile, wine) => ({ ...value, globalRecord: wine }) };
       if (name.endsWith('/nativeCatalogAdmission97') || name.endsWith('/wineAffinityExplanation')) return {};
@@ -129,7 +132,7 @@ await test('Cancel followed immediately by a fresh request cannot inherit the ol
   resolveOld({ status: 'complete', rows }); await tick();
   assert(!text(h.render()).includes('23 referencias')); assert.equal(h.button('Buscar').disabled, true);
   resolveNew({ status: 'complete', rows: [rows[22]] }); await tick();
-  assert(text(h.render()).includes('1 referencias')); assert.equal(h.button('Buscar').disabled, false); h.unmount();
+  assert(text(h.render()).includes('1 referencia')); assert(!text(h.render()).includes('1 referencias')); assert.equal(h.button('Buscar').disabled, false); h.unmount();
 });
 await test('Unmount while detail is pending cannot confirm or write state', async () => {
   let resolve; const pending = new Promise(r => { resolve = r; });
@@ -137,5 +140,37 @@ await test('Unmount while detail is pending cannot confirm or write state', asyn
   h.submit(); await tick(); h.elements('button').find(n => text(n).trim() === 'Esta es mi referencia').props.onClick();
   h.unmount(); resolve({ wine: rows[0] }); await tick();
   assert.equal(h.confirmations.length, 0); assert.equal(h.lateWrites(), 0);
+});
+await test('Saved exact public ID is first without dropping duplicate rows or bypassing detail', async () => {
+  const picked = [], target = rows[22];
+  const bottle = { name: target.name, producer: target.winery, vintage: 2022, region: target.region ?? null, country: target.country ?? null };
+  const snapshot = nativeVerdictsSnapshot159('owner-a', [{ ...bottle, id: 'saved', user_id: 'owner-a', rating: 'love', sensory_attributes: null,
+    place_details: { winerim_public_catalogue: { version: 1, namespace: 'winerim-public-store', id: target.id,
+      slug: target.slugname, catalogue_vintage: '2022', bottle_identity: bottle } } }], 1);
+  const h = host({ searchProposals: async () => ({ status: 'complete', rows }),
+    confirmSelection: async (_, selected) => { picked.push(selected); return { wine: selected }; } });
+  h.props.ownerId = 'owner-a'; h.props.savedVerdicts = snapshot; h.render(); h.submit(); await tick();
+  assert.equal(walk(h.render()).filter(n => n.type === 'p' && text(n) === 'Ya en tu Bodega').length, 1);
+  assert(text(h.render()).includes('23 referencias')); assert.equal(picked.length, 0);
+  h.elements('button').find(n => text(n).trim() === 'Esta es mi referencia').props.onClick(); await tick();
+  assert.equal(picked[0], target); assert.equal(h.confirmations[0].globalRecord.id, 23); h.unmount();
+});
+await test('Owner/saved-snapshot render changes veto late verification even before effect cleanup', async () => {
+  for (const changed of ['ownerId', 'savedVerdicts']) {
+    let resolve; const pending = new Promise(r => { resolve = r; });
+    const h = host({ searchProposals: async () => ({ status: 'complete', rows }), confirmSelection: () => pending }, true);
+    h.submit(); await tick(); h.elements('button').find(n => text(n).trim() === 'Esta es mi referencia').props.onClick();
+    if (changed === 'ownerId') h.props.ownerId = 'other'; else h.props.savedVerdicts = nativeVerdictsSnapshot159('other', [], 0);
+    h.render(); resolve({ wine: rows[0] }); await tick(); assert.equal(h.confirmations.length, 0); h.flush(); h.unmount();
+  }
+});
+await test('A refreshed saved snapshot releases busy state without reusing a stale search', async () => {
+  let resolve; const old = new Promise(r => { resolve = r; });
+  const h = host({ searchProposals: () => old }, true); h.submit();
+  assert.equal(h.button('Buscar').disabled, true);
+  h.props.savedVerdicts = nativeVerdictsSnapshot159('owner-a', [], 0); h.render(); h.flush();
+  assert.equal(h.button('Buscar').disabled, false);
+  resolve({ status: 'complete', rows }); await tick();
+  assert(!text(h.render()).includes('23 referencias')); h.unmount();
 });
 console.log(JSON.stringify({ groups, realNetworkCalls: 0, modelStarts: 0, scope: 'Actual TSX handlers and actual bounded catalogue parser with controlled transport, not native visual QA' }));

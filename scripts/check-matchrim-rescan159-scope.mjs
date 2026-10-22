@@ -15,6 +15,7 @@ for (const [from, to] of [
   ['personalRating={selectedPersonalVerdict}', 'personalRating="love"'],
   ["isNative ? await loadNativeScanContext159", "true ? await loadNativeScanContext159"],
   ['if (isNative) setNativeVerdicts', 'if (true) setNativeVerdicts'],
+  ['ownerId={user?.id ?? null} savedVerdicts={nativeVerdicts}', 'ownerId="other-owner" savedVerdicts={nativeVerdicts}'],
 ]) {
   const changed = current.replace(from, to); assert.notEqual(changed, current);
   assert.throws(() => restoreRescan159(file, changed)); negatives++;

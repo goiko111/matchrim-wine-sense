@@ -15,6 +15,11 @@ const baselines = new Map();
 export function restoreRescan159(path, source) {
   const row = inputs[path];
   if (!row || !source.includes(row[2])) return source;
+  // The only168 scanner amendment passes the current owner-bound snapshot to the native picker.
+  const savedProps = '      ownerId={user?.id ?? null} savedVerdicts={nativeVerdicts}\n';
+  if (path === scanner && source.includes(savedProps)) {
+    assert.equal(source.split(savedProps).length, 2); source = source.replace(savedProps, '');
+  }
   assert.equal(hash(source), row[1],
     'Only the reviewed native rescan159 amendments may enter historical source oracles');
   if (!baselines.has(path)) baselines.set(path, execFileSync('git', ['show', '233442a:' + path], {

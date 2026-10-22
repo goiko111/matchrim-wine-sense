@@ -6,7 +6,7 @@ import { hasObservedAppellationConflict120 } from './nativeAppellation120';
 import { hasObservedWineColorConflict124 } from './nativeWineColor124';
 import { wineYearRoles105 } from './wineYearRole105';
 
-const fold = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const fold = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\u00df/g, 'ss');
 const tokens = (value: string): string[] => fold(value).match(/[a-z0-9]+/g) || [];
 const generic = new Set(('de del la el le les du des the and y et di do da dos das los las aoc doc docg vino wine vin '
   + 'reserva reserve gran grand premier cru blanc blanco blanca rouge red white tinto rosado rose brut extra sec seco '

@@ -107,6 +107,9 @@ let nativeCases = 0, webCases = 0;
 for (const rating of ['love', 'ok', 'not_for_me'] as const) {
   const tree = render(current, true, { nativeVerdicts: verdicts.nativeVerdictsSnapshot159('owner-a', [{ ...saved, rating }], 1) });
   const analysis = walk(tree).find(node => node.type === 'LabelAnalysisView'); assert(analysis);
+  const picker = walk(tree).find(node => node.type === 'GlobalWinePicker103'); assert(picker);
+  assert.equal(picker.props.ownerId, 'owner-a');
+  assert.equal((picker.props.savedVerdicts as verdicts.NativeVerdicts159).ownerId, 'owner-a');
   const affinity = analysis.props.affinity as Element;
   assert.equal(affinity.type, NativeAffinitySummary); assert.equal(affinity.props.personalRating, rating);
   const html = renderToStaticMarkup(affinity as never);
