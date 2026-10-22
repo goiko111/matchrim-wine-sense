@@ -134,6 +134,7 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
       || current.current.vintage !== vintage || current.current.page !== page
       || (selected && !visible.rows.includes(selected)) || (more && (!next || selected))) return;
     const abort = new AbortController(); controller.current = abort; setBusy(true); setNotice('');
+    if (more) setNext(null);
     const scope = { contextKey, query };
     const active = () => controller.current === abort && !abort.signal.aborted && !current.current.disabled
       && current.current.contextKey === scope.contextKey && current.current.query === scope.query
@@ -176,7 +177,7 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
       }} /></label>
       <Button type="submit" aria-label="Buscar" title="Buscar" disabled={disabled || busy || query.trim().length < 2} variant="outline" className="h-11 w-11 shrink-0 p-0"><Search aria-hidden="true" className="h-5 w-5" /></Button>
     </form>
-    {busy && <Button type="button" variant="outline" className="min-h-11 gap-2" onClick={() => { controller.current?.abort(); controller.current = null; setBusy(false); setNotice('Búsqueda cancelada.'); }}><X aria-hidden="true" className="h-4 w-4" /> Cancelar</Button>}
+    {busy && <Button type="button" variant="outline" className="min-h-11 gap-2" onClick={() => { controller.current?.abort(); controller.current = null; setBusy(false); setNotice('Búsqueda cancelada. Puedes volver a buscar sin cambiar tu vino.'); }}><X aria-hidden="true" className="h-4 w-4" /> Cancelar</Button>}
     {notice && <p role="status" className="text-sm leading-6">{notice}</p>}
     {publicCount !== null && publicCount > rows.length && <p className="text-sm text-stone-700">{rows.length} de {publicCount} referencias cargadas. El filtro de añada solo incluye las cargadas.</p>}
     {publicCount !== null && publicCount > rows.length && refinements.length > 0 && <label className="block text-sm">Texto leído en tu etiqueta

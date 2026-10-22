@@ -78,6 +78,14 @@ Visual follow-up: r2 partial-state screenshot exposed a clipped selector prompt 
 `Elegir texto` and added closed-select text measurement. Candidate105-r5 compiled
 from `39804ec`, but is superseded for this visual correction; not installed/uploaded.
 
+Follow-up cancellation regression: a new failing handler test exposed a consumed
+continuation remaining visible after cancellation. Loading a page now clears its
+single-use continuation immediately; cancelling keeps earlier choices and offers
+an explicit fresh search, without a stale load button or late appended rows.
+Handler suite now18 groups. Native manual164-r7 on candidate105-r6 (`659e921`)
+passed the actual gallery/manual-query/2022/saved-love/five-axis path before this
+isolated cancellation fix; its receipt remains historical, not the final artifact.
+
 Protected `src/index.css` and `supabase/functions/search-wines/index.ts` remain
 byte-identical to `db6a181`. No full-catalogue sensory/vintage completeness claim.
 TestFlight remains blocked until remaining recognition and native QA gates close.

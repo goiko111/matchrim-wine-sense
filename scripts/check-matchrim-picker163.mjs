@@ -138,6 +138,18 @@ await test('A delayed server page cannot leak after query or owner changes', asy
     assert(!text(h.render()).includes('40 de 96')); assert.equal(h.confirmations.length, 0); h.unmount();
   }
 });
+await test('Cancelling a server-page load clears its consumed continuation and preserves earlier choices', async () => {
+  let calls = 0, resolve;
+  const pending = new Promise(r => { resolve = r; });
+  const client = createGlobalCatalogue103(async () => ++calls === 1
+    ? Response.json({ count: 96, page: 1, results: rows.slice(0, 20) }) : pending);
+  const h = host(client); h.submit(); await tick(); h.button('Cargar más referencias de Winerim').onClick();
+  h.button('Cancelar').onClick(); h.render();
+  assert.equal(h.elements('button').filter(n => text(n).trim() === 'Cargar más referencias de Winerim').length, 0);
+  assert(text(h.render()).includes('20 referencias')); assert(text(h.render()).includes('Búsqueda cancelada'));
+  resolve(Response.json({ count: 96, page: 2, results: Array.from({ length: 20 }, (_, i) => ({ ...fixture, id: i + 21 })) }));
+  await tick(); assert(!text(h.render()).includes('40 de 96')); assert.equal(h.confirmations.length, 0); h.unmount();
+});
 await test('Query change clears pages and ignores delayed results, preserving owner and cancellation guards', async () => {
   let resolve; const pending = new Promise(r => { resolve = r; });
   const h = host({ searchProposals: () => pending }); h.submit();
