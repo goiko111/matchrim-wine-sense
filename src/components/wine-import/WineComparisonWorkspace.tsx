@@ -181,7 +181,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
             <div>
               <Label htmlFor="comparison-priority">Prioridad</Label>
               <Select value={priority} onValueChange={(value) => setPriority(value as WineDecisionPriority)}>
-                <SelectTrigger id="comparison-priority" style={nativeScrollStyle} className="mt-2 min-h-11"><SelectValue /></SelectTrigger>
+                <SelectTrigger id="comparison-priority" style={nativeScrollStyle} className={isNative ? 'mt-2 h-auto min-h-11 whitespace-normal [&>span]:line-clamp-none [&>span]:whitespace-normal' : 'mt-2 min-h-11'}><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="affinity" disabled={!hasAffinities}>Mayor afinidad</SelectItem>
                   <SelectItem value="certainty">Identidad más segura</SelectItem>
@@ -204,7 +204,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
               <div>
                 <Label htmlFor="comparison-service">Formato</Label>
                 <Select value={serviceFormat} onValueChange={(value) => setServiceFormat(value as WineServiceFormat)}>
-                  <SelectTrigger id="comparison-service" style={nativeScrollStyle} className="mt-2 min-h-11"><SelectValue /></SelectTrigger>
+                  <SelectTrigger id="comparison-service" style={nativeScrollStyle} className={isNative ? 'mt-2 h-auto min-h-11 whitespace-normal [&>span]:line-clamp-none [&>span]:whitespace-normal' : 'mt-2 min-h-11'}><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="any">Cualquier formato</SelectItem>
                     <SelectItem value="glass">Por copa</SelectItem>

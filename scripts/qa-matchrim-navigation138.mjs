@@ -113,7 +113,7 @@ export async function runNavigation138({ argv = process.argv.slice(2), repo = pr
   const receipt = { passed: false, stage: 'preflight', startedUTC: new Date().toISOString(), device: DEVICE, bundle,
     account: 'info@winerim.com', authSubmissionsRequested: 0, dataMutationsRequested: 0,
     analysisOrMatchingActionsRequested: 0, voiceOverSpeechClaimed: false,
-    scope: 'Existing session; Profile/Home/aiRIM/Scan hub/Bodega first viewports. Four unfiltered Apple audits. Visible AX buttons/switches and bottom navigation >=44x44pt; other links recorded, padded hit areas not inferred. Ordinary Home recommendation GETs through passthroughWinerim and aiRIM before-send profile GETs are permitted; no network-zero claim. No offscreen sweep, Dynamic Type change, physical-device, packet/model-call, or VoiceOver speech claim.',
+    scope: 'Existing session; Profile/Home/aiRIM/Scan hub/Bodega first viewports. Four unfiltered Apple audits, with retained failures and aggregate rejection. AX buttons/switches and bottom navigation >=44x44pt. Full-window containment required for fixed navigation/settings; partial scroll cards recorded without certifying visible hit area or offscreen content. Other links recorded, padded hit areas not inferred. Ordinary Home recommendation GETs through passthroughWinerim and aiRIM before-send profile GETs are permitted; no network-zero claim. No offscreen sweep, Dynamic Type change, physical-device, packet/model-call, or VoiceOver speech claim.',
     privacy: 'Private screenshot, AX, logs, xcresult and receipt only. No credentials or authentication storage read.' };
   let output, prep, app, installed, created = false;
   const pins = new Map(), boundInputs = new Set();

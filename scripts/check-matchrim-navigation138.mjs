@@ -374,6 +374,14 @@ await test('Swift is exactly one navigation-only test with unfiltered audits and
   for (const required of ['info@winerim.com', 'app.launch()', 'XCUIScreen.main.screenshot()', 'app.debugDescription',
     '[.contrast, .sufficientElementDescription, .textClipped, .trait]', 'return false', 'issues == 0',
     'frame.width >= 44 && frame.height >= 44', 'link-limitation', 'No offscreen coverage', 'VoiceOver speech/focus-order claim']) assert(source.includes(required), required);
+  assert(source.includes('continueAfterFailure = true'));
+  assert(source.includes('continueAfterFailure = priorFailureMode'));
+  assert(source.includes('try require(!auditHadIssues, app,'));
+  assert(source.includes('NAV138_VIEW_AUDIT_FAILED'));
+  assert(source.includes('mustFullyVisible: true'));
+  assert(source.includes('window.intersects(frame)'));
+  assert(source.includes('!mustFullyVisible || fullyVisible'));
+  assert(source.includes('Partially exposed scroll content:'));
   for (const marker of MARKERS) assert.equal(source.split('"' + marker + '"').length - 1, 1, marker);
   assert(source.indexOf('NAV138_EXISTING_QA_IDENTITY') < source.indexOf('try captureAndAudit(app, "01-profile"'));
 });

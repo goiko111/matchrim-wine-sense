@@ -445,6 +445,51 @@ try {
         report.dense128ServiceHitTests = [...(report.dense128ServiceHitTests || []), { width, text, ...serviceHit }];
         await capture('dense128-decision-' + width + '-' + text);
         assert.equal(serviceHit.reachable, true, 'The service-mode control must not be covered by a fixed layer');
+        if (text === 200) {
+          for (const [id, expected] of [['comparison-priority', 'Identidad m\u00e1s segura'], ['comparison-service', 'Cualquier formato']]) {
+            const trigger = page.locator('#' + id);
+            if (id === 'comparison-service' && !await trigger.count()) continue;
+            await trigger.evaluate(node => node.scrollIntoView({ block: 'start', behavior: 'instant' }));
+            const wrap = await trigger.evaluate(node => {
+              const span = node.querySelector(':scope > span');
+              if (!span) return { missingSelectedSpan: true };
+              const rect = element => {
+                const r = element.getBoundingClientRect();
+                return { left: r.left, top: r.top, right: r.right, bottom: r.bottom, width: r.width, height: r.height };
+              };
+              const bounds = rect(node), selected = rect(span), style = getComputedStyle(span);
+              const range = document.createRange();
+              range.selectNodeContents(span);
+              const lines = [...range.getClientRects()].filter(r => r.width > 0 && r.height > 0)
+                .map(r => ({ left: r.left, top: r.top, right: r.right, bottom: r.bottom }));
+              const hit = document.elementFromPoint((bounds.left + bounds.right)/2, (bounds.top + bounds.bottom)/2);
+              const tabs = document.querySelector('[role="tablist"][aria-label="Vista de resultados"]');
+              const caption = document.querySelector('label[for="' + node.id + '"]');
+              return { label: span.textContent.trim(), lineClamp: style.webkitLineClamp, textOverflow: style.textOverflow,
+                whiteSpace: style.whiteSpace, bounds, selected, lines,
+                clientWidth: span.clientWidth, scrollWidth: span.scrollWidth,
+                clientHeight: span.clientHeight, scrollHeight: span.scrollHeight,
+                reachable: hit === node || node.contains(hit), viewportHeight: innerHeight,
+                caption: caption && rect(caption), stickyTabs: tabs && getComputedStyle(tabs).position === 'sticky' ? rect(tabs) : null };
+            });
+            report.dense128Wrap142 = [...(report.dense128Wrap142 || []), { width, text, id, ...wrap }];
+            assert.equal(wrap.label, expected, 'The complete selected label must remain in the actual DOM');
+            assert.equal(wrap.lineClamp, 'none', 'The selected span must not retain the shared one-line clamp');
+            assert.notEqual(wrap.textOverflow, 'ellipsis');
+            assert.equal(wrap.whiteSpace, 'normal');
+            assert(wrap.bounds.height >= 43.5 && wrap.bounds.top >= -1 && wrap.bounds.bottom <= height - 82,
+              'The auto-height trigger must remain a visible touch target');
+            assert(wrap.clientWidth > 0 && wrap.clientHeight > 0 && wrap.scrollWidth <= wrap.clientWidth + 1
+              && wrap.scrollHeight <= wrap.clientHeight + 1, 'Selected text dimensions must not be clipped');
+            assert(wrap.lines.length > 0 && wrap.lines.every(line => [wrap.selected, wrap.bounds].every(bounds =>
+              line.left >= bounds.left - 1 && line.right <= bounds.right + 1
+              && line.top >= bounds.top - 1 && line.bottom <= bounds.bottom + 1)),
+            'Every actual text Range line must fit inside the selected span and trigger');
+            assert.equal(wrap.reachable, true, 'Wrapped select must not be covered by a fixed layer');
+            assert(wrap.caption && (!wrap.stickyTabs || wrap.caption.top >= wrap.stickyTabs.bottom - 1),
+              'Wrapped select caption must remain below sticky result tabs');
+          }
+        }
       }
       assert(!/99\/100/.test(await page.locator('body').innerText()));
       report.dense128Comparison = { references: names128.length, maximumSelection: 5, serviceMode: true, fakeAffinityHidden: true };

@@ -45,6 +45,7 @@ for (const data of [[], wines.slice(0,1), wines.slice(0,2), wines,
 native = true;
 const html = render(current, wines);
 assert(html.includes('scroll-margin-top:calc(var(--matchrim-safe-top) + 144px)'));
+assert.match(html, /id="comparison-priority"[^>]*class="mt-2 h-auto min-h-11 whitespace-normal \[&amp;&gt;span\]:line-clamp-none \[&amp;&gt;span\]:whitespace-normal"/);
 assert(!render(previous, wines).includes('scroll-margin-top'));
 console.log(JSON.stringify({ webHTMLParityCases: 5, nativeScrollStylePresent: true,
   scope: 'Actual component/server markup with synthetic wines and lightweight UI wrappers; no browser pixels, UIKit or taste claim.' }));

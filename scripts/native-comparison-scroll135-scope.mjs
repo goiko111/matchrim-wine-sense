@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { restoreComparisonWrap142 } from './native-comparison-wrap142-scope.mjs';
 
 const hash = source => createHash('sha256').update(source).digest('hex');
 const component = 'src/components/wine-import/WineComparisonWorkspace.tsx';
@@ -14,6 +15,7 @@ const once = (source, from, to) => {
 // Only project the reviewed native presentation delta into historical oracles.
 // Current touch geometry and real native rendering are checked without projection.
 export function restoreComparisonScroll135(file, source) {
+  source = restoreComparisonWrap142(file, source);
   if (file === component && source.includes('nativeScrollStyle')) {
     assert.equal(hash(source), '77c72efbf20574c7ea715934c3fba0893132fe563860676621257deb5dca1460', 'Only reviewed native comparison scroll props');
     source = once(source, declaration, '');

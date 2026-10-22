@@ -4,6 +4,7 @@ import XCTest
 // First-viewport sweep only. The sole interaction path is the five bottom links.
 final class MatchrimNavigation138Tests: XCTestCase {
     private enum Stop: Error { case held }
+    private var auditHadIssues = false
     private enum Destination: String, CaseIterable {
         case profile = "Perfil", home = "Inicio", airim = "aiRIM", scan = "Escanear", cellar = "Bodega"
     }
@@ -32,7 +33,7 @@ final class MatchrimNavigation138Tests: XCTestCase {
             && !app.staticTexts["Cargando tu perfil Matchrim"].exists }, app, "Loaded sensory Profile required; no quiz or retry")
         let settings = app.otherElements.matching(NSPredicate(format: "label == %@", "Ajustes de cuenta"))
         try require(settings.count == 1 && settings.firstMatch.isHittable, app, "Known account summary missing; do not open settings")
-        try target(settings.firstMatch, app)
+        try target(settings.firstMatch, app, mustFullyVisible: true)
         try captureAndAudit(app, "01-profile", "NAV138_PROFILE_AUDITED")
 
         try navigate(.home, app)
@@ -84,7 +85,8 @@ final class MatchrimNavigation138Tests: XCTestCase {
                     || app.staticTexts["Aqu\u{00ed} van los vinos que no quieres repetir"].exists)
         }, app, "Loaded existing Bodega required; do not select a section, card, stock or rating")
         try captureAndAudit(app, "05-bodega", "NAV138_BODEGA_AUDITED")
-        attach("Existing QA session only; five first viewports at unchanged device text size/orientation. No auth, settings, privacy, quiz, wine, stock, rating or save interaction. No chat submission, image selection, analysis or matching action. Home recommendation GETs through passthroughWinerim and aiRIM before-send profile GETs are ordinary background reads; no network-zero or packet-level zero-call assertion. Visible AX buttons/switches and bottom links measured in XCTest points, without CSS/padded-ancestor inference. Other links recorded only; AX may expose text bounds rather than the hit region. No offscreen coverage, physical-device certification, or VoiceOver speech/focus-order claim.", "scope")
+        try require(!auditHadIssues, app, "Unfiltered accessibility issues remain; all reachable view evidence retained")
+        attach("Existing QA session only; five first viewports at unchanged device text size/orientation. No auth, settings, privacy, quiz, wine, stock, rating or save interaction. No chat submission, image selection, analysis or matching action. Home recommendation GETs through passthroughWinerim and aiRIM before-send profile GETs are ordinary background reads; no network-zero or packet-level zero-call assertion. AX buttons/switches and bottom links measured in XCTest points, without CSS/padded-ancestor inference. Fixed navigation/settings require full-window containment. Partially exposed scroll cards are recorded without certifying their visible hit region or full content. Other links recorded only; AX may expose text bounds rather than the hit region. No offscreen coverage, physical-device certification, or VoiceOver speech/focus-order claim.", "scope")
         emit("NAV138_READONLY_SWEEP_COMPLETE")
         #else
         emit("NAV138_FAILURE"); XCTFail("Owned simulator only")
@@ -117,15 +119,21 @@ final class MatchrimNavigation138Tests: XCTestCase {
     @MainActor private func navigate(_ destination: Destination, _ app: XCUIApplication) throws {
         try authenticated(app)
         let link = try navigation(destination, app)
-        try target(link, app)
+        try target(link, app, mustFullyVisible: true)
         link.tap()
     }
 
-    @MainActor private func target(_ element: XCUIElement, _ app: XCUIApplication) throws {
+    @MainActor private func target(_ element: XCUIElement, _ app: XCUIApplication, mustFullyVisible: Bool = false) throws {
         let frame = element.frame
+        let window = app.windows.firstMatch.frame
+        let fullyVisible = window.contains(frame)
         try require(!frame.isEmpty && frame.width.isFinite && frame.height.isFinite
-                    && frame.width >= 44 && frame.height >= 44 && app.windows.firstMatch.frame.contains(frame),
-                    app, "Visible interactive AX target must be fully in-window and at least 44x44 points: \(element.label)")
+                    && frame.width >= 44 && frame.height >= 44 && window.intersects(frame)
+                    && (!mustFullyVisible || fullyVisible),
+                    app, "AX target must be at least44x44pt and intersect the window; fixed navigation/settings must be fully in-window: \(element.label)")
+        if !fullyVisible {
+            attach("Partially exposed scroll content: \(element.label), AX frame \(frame). Full target size measured; visible portion, touch point and offscreen content are not certified.", "partial-scroll-target")
+        }
     }
 
     @MainActor private func captureAndAudit(_ app: XCUIApplication, _ name: String, _ marker: String) throws {
@@ -141,8 +149,15 @@ final class MatchrimNavigation138Tests: XCTestCase {
                 + otherLinks.map { "link-limitation \($0.label): \($0.frame); AX text bounds do not prove padded hit area" })
                 .joined(separator: "\n"), name + "-geometry")
         try require(!visible.isEmpty, app, "No visible interactive targets")
-        for control in visible { try target(control, app) }
+        for control in visible {
+            let fixedNavigation = control.elementType == .link && Destination.allCases.map(\.rawValue).contains(control.label)
+            try target(control, app, mustFullyVisible: fixedNavigation)
+        }
         var issues = 0
+        var unavailable = false
+        let priorFailureMode = continueAfterFailure
+        continueAfterFailure = true
+        defer { continueAfterFailure = priorFailureMode }
         do {
             try app.performAccessibilityAudit(for: [.contrast, .sufficientElementDescription, .textClipped, .trait]) { issue in
                 issues += 1
@@ -151,11 +166,18 @@ final class MatchrimNavigation138Tests: XCTestCase {
                 return false
             }
         } catch {
-            emit("NAV138_FAILURE"); capture(app, name + "-audit-failed"); throw error
+            unavailable = true
+            attach(String(describing: error), name + "-audit-error")
+            emit("NAV138_AUDIT_ERROR")
         }
-        try require(issues == 0, app, "Unfiltered Apple accessibility audit reported issues")
-        attach("contrast/sufficientElementDescription/textClipped/trait: completed with zero reported issues; no issue suppressed", name + "-audit")
-        emit(marker)
+        if issues == 0 && !unavailable {
+            attach("contrast/sufficientElementDescription/textClipped/trait: completed with zero reported issues; no issue suppressed", name + "-audit")
+            emit(marker)
+        } else {
+            auditHadIssues = true
+            attach("Unfiltered audit issues: \(issues); unavailable: \(unavailable). Not approved; continue navigation only to retain remaining evidence.", name + "-audit")
+            emit("NAV138_VIEW_AUDIT_FAILED")
+        }
     }
 
     @MainActor private func wait(_ timeout: TimeInterval, _ body: @escaping () -> Bool) -> Bool {
