@@ -12,7 +12,7 @@ const folder = path.resolve(process.argv[3]);
 const sha = value => createHash('sha256').update(value).digest('hex');
 const fixture = { localCandidate: { name: 'Vidure', producer: 'Pago de Cirsus', vintage: 2020 }, ocrLines: ['VIDURE', 'Pago de Cirsus', '2020'] };
 const scenarios = process.argv[4] ? [process.argv[4]] : ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer'];
-assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'award-year-inline', 'saved-NV-reference', 'local-ocr106', 'local-first109', 'profile-history116', 'quiz-history118', 'dense128', 'profiles50-131'].includes(state)));
+assert(scenarios.every(state => ['observed-NV-reference', 'synthetic-exact2020', 'assisted-missing-producer', 'incomplete-search146', 'award-year-inline', 'saved-NV-reference', 'local-ocr106', 'local-first109', 'profile-history116', 'quiz-history118', 'dense128', 'profiles50-131'].includes(state)));
 const globalObserved = JSON.parse(fs.readFileSync('qa-artifacts/native102-20261021/global-store103-r1/04-body.json'));
 const awardObserved = JSON.parse(fs.readFileSync('qa-artifacts/global103-20261021/ocr200-r1/response-358.json')).results.find(row => row.id === 375658);
 const localOCR = scenarios.some(state => ['local-ocr106', 'local-first109'].includes(state)) ? JSON.parse(fs.readFileSync('qa-artifacts/night105-20261021/native-ocr106-r3/OCR.json')).results.find(row => row.file === 'img-061.jpg').response.data : null;
@@ -152,10 +152,15 @@ try {
       name: 'Biografo', producer: null, vintage: null, confidence: .9, source: 'label', evidence: ['BIOGRAFO'], inferred_fields: [], uncertainty_reasons: [],
     }] });
     if (url.pathname.endsWith('/analyze-wine-region-v72')) return json({ candidates: [{ ...fixture.localCandidate,
-      ...(scenario === 'assisted-missing-producer' ? { producer: null } : {}),
-      confidence: .95, source: 'label', evidence: scenario === 'assisted-missing-producer' ? ['VIDURE', '2020'] : fixture.ocrLines, inferred_fields: [], uncertainty_reasons: [] }] });
+      ...(['assisted-missing-producer', 'incomplete-search146'].includes(scenario) ? { producer: null } : {}),
+      confidence: .95, source: 'label', evidence: ['assisted-missing-producer', 'incomplete-search146'].includes(scenario) ? ['VIDURE', '2020'] : fixture.ocrLines, inferred_fields: [], uncertainty_reasons: [] }] });
     if (url.hostname === 'app.winerim.com' && url.pathname.startsWith('/images/wines/')) return route.fulfill({ body: fs.readFileSync('qa-artifacts/global103-20261021/vidure-public-photo.png'), contentType: 'image/png' });
     if (url.hostname === 'app.winerim.com' && url.pathname.includes('/00000000-0000-0000-0000-000000000001/wines')) {
+      if (scenario === 'incomplete-search146') {
+        assert(url.searchParams.has('text'), 'Incomplete fixture cannot verify a detail or identity');
+        report.incomplete146Queries = (report.incomplete146Queries || 0) + 1;
+        return json({ count: 2, page: 1, results: [globalObserved] });
+      }
       if (scenario === 'local-ocr106' || scenario === 'local-first109') {
         assert(url.searchParams.has('text'), 'Local OCR visual scenario does not fabricate independent detail');
         return json({ count: localRows.length, page: 1, results: localRows.map(row => ({ ...row, photo: null })) });
@@ -568,6 +573,26 @@ try {
         await recovery.getByRole('button', { name: 'Confirmar esta referencia', exact: true }).scrollIntoViewIfNeeded();
         await capture('award-year-proposal-' + width + '-' + text);
       }
+      continue;
+    }
+    if (state === 'incomplete-search146') {
+      const recovery = dialog.getByTestId('global-recovery104');
+      await recovery.getByRole('button', { name: 'Encontrar mi vino en Winerim', exact: true }).click();
+      const notice = recovery.getByRole('status');
+      await notice.filter({ hasText: 'No hemos podido completar la búsqueda' }).waitFor();
+      assert((await notice.innerText()).includes('No significa que tu vino no esté en Winerim'));
+      assert.equal(await recovery.getByRole('button', { name: 'Confirmar esta referencia', exact: true }).count(), 0);
+      assert.equal(await dialog.getByTestId('global-wine-reference').count(), 0);
+      assert.equal(await dialog.getByTestId('global-style-estimate').count(), 0);
+      for (const [width, height, text] of [[393,852,100], [320,568,100], [393,852,200]]) {
+        await page.setViewportSize({ width, height });
+        await page.evaluate(text => { document.documentElement.style.fontSize = text + '%'; document.documentElement.classList.toggle('matchrim-accessibility-text', text > 100); }, text);
+        await notice.scrollIntoViewIfNeeded();
+        assert(await notice.evaluate(element => element.scrollWidth <= element.clientWidth + 1));
+        await capture('incomplete-search146-' + width + '-' + text);
+      }
+      assert.equal(report.incomplete146Queries, 1, 'Resizing cannot reissue a catalogue request');
+      report.incomplete146Scope = 'One deliberately incomplete public page, fully intercepted. No real catalogue availability, recognition, detail, affinity, save, paid call or account claim.';
       continue;
     }
     if (state === 'assisted-missing-producer') {
