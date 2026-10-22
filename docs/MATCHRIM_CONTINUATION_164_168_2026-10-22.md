@@ -1,6 +1,6 @@
 # Matchrim: cierre de catalogo y reescaneo164-168
 
-Estado: en curso, sin aprobacion tecnica de release. No se publica web, no se despliegan funciones y no se amplian llamadas de pago. La beta100 limitada no autoriza105.
+Estado: cierre de esta tanda con QA164/r5 PASS; release NO-GO por52 busquedas incompletas y catalogo maestro no demostrado. No se publica web, no se despliegan funciones y no se amplian llamadas de pago. La beta100 limitada no autoriza105.
 
 ## Las52 incompletas
 
@@ -46,7 +46,43 @@ Recorrido real164/r1: FAIL conservado al intentar seleccionar todo el texto prec
 
 164/r3 envia una sola consulta mediante el Return nativo observado en el AX de iOS. Respuesta real visible:23 referencias,8 paginas, fichas sin anada en primera pagina. FAIL conservado porque el harness buscaba popup/button y WebKit expone el selector Filtrar por anada como Other. Captura/AX conservan la respuesta real; no acreditan aun ficha elegida ni afinidad.164/r4 corrige solo el tipo de elemento y cierra el teclado mediante su checkmark nativo observado antes de revelar el filtro. Seleccion2022 real:4 referencias,2 paginas; fallo de harness al exigir el aviso completo en un solo StaticText, mientras iOS lo fragmenta en frase/anada/punto. Se conserva FAIL original y se verifica el aviso completo dentro de la fila exacta observada en el siguiente probe. No se quita ninguna exigencia de ficha/anada/valoracion/afinidad.
 
-Remediacion UX del envio: lupa44x44 accesible junto al campo, alineada con el input en vez de debajo; enterKeyHint search; blur del input antes de comenzar la consulta. Nueva prueba real del handler exige el orden blur -> search, nombre accesible y tooltip.14 grupos verdes y lint enfocado verde. Este cambio invalida105/r2 como candidato final: falta preparar105/r3 y repetir visual/nativo sobre esos bytes. El nuevo probe vuelve a usar Buscar con teclado abierto y exige que se cierre al enviar. Heavy/ios anteriores liberados realmente06:15:59UTC tras terminar el lote, sin detener tareas ajenas.
+Remediacion UX del envio: lupa44x44 accesible junto al campo, alineada con el input en vez de debajo; enterKeyHint search; blur del input antes de comenzar la consulta. Nueva prueba real del handler exige el orden blur -> search, nombre accesible y tooltip.14 grupos verdes y lint enfocado verde. Commit23d9f5b, subido a la rama de trabajo, sin cambiar main. Heavy/ios anteriores liberados realmente tras terminar el lote; siguiente bloque adquirido otra vez despues de quedar libre el recurso. No se detienen tareas ajenas.
+
+105/r3, fuente23d9f5b limpia: typecheck y bundle PASS, compilacion/install iOS PASS, fixtures=false y masterConfigured=false. `picker163-known168-r2` repite375/440/raiz32 sobre el componente modificado: PASS sin desbordamiento, sin errores de pagina y manteniendo las23 filas. Se inspeccionaron375 y texto grande.
+
+### Resultado real164/r5
+
+PASS, inicio06:19:11UTC/fin06:20:54UTC. El mismo artefacto105/r3 se usa en UIKit, sin auth ni save/rating/model controls. Se comprueban foto residente/hash, cuenta existente, texto literal manual, lupa con teclado abierto, cierre del teclado, filtro2022, detalle independiente, valoracion previa y cinco dimensiones.
+
+| Comprobacion | Esperado | Observado |
+| --- | --- | --- |
+| Identidad y anada elegidas | Flor de Muga Blanco / Muga /2022 | Coinciden en el dialogo actual |
+| Valoracion primaria | Te encanta, guardada anteriormente | Tu valoracion: te encanta |
+| Comparacion secundaria | Cifra0..100 separada de la valoracion |69/100 orientativo |
+| Potencia | Perfil y vino acotados0..5 |1.4 /3.0 |
+| Acidez | Perfil y vino acotados0..5 |4.0 /3.0 |
+| Dulzor | Perfil y vino acotados0..5 |2.0 /0.0 |
+| Tanino | Perfil y vino acotados0..5 |1.1 /0.0 |
+| Fruta | Perfil y vino acotados0..5 |3.3 /4.0 |
+| Ficha independiente | Fuente y enlace Winerim | Ambos presentes |
+| Accesibilidad de viewport final | Auditoria Apple sin incidencias suprimidas |0 en contraste/descripcion/recorte/trait |
+
+Esto acredita recuperacion MANUAL despues de galeria/lectura local, no identidad automatica, equivalencia entre IDs duplicados, anada visible en la foto, nuevo guardado ni exactitud de gustos de personas reales. `selectedPublicId=null` permanece explicito: AX no expone el ID. La valoracion guardada no se sustituye por69. No se verificaron todos los scrolls con VoiceOver ni todo el producto con texto maximo en esta tanda.
+
+Evidencias locales bajo `qa-artifacts/continuation161-20261022/manual164-r5/`: `RESULT.json`, runtime.log, xcresult, manifest, capturas/AX y video exportados. Captura final `attachments/5655C431-7620-45DF-B59A-6EB85F1CF0EB.png`; teclado/lupa `attachments/DC4F19AA-0BC0-4D8B-A6BE-B94AF80EF63C.png`. Los FAILr1-r4 se conservan separados. Heavy/ios del ultimo lote liberados realmente06:21UTC. No archive/export/upload.
+
+## Gate de TestFlight
+
+| Gate | Estado |
+| --- | --- |
+| Compilacion105/r3 reproducible y limpia | PASS23d9f5b |
+| UX picker pequena/grande | PASS visual aislado con transporte controlado |
+| Recuperacion manual real + valoracion/afinidad | PASS164/r5, alcance anterior |
+| Reconocimiento automatico200 y busquedas completas | NO-GO148/52, sin mejora respecto ar10 |
+| Catalogo maestro y anadas sensoriales con cobertura global | BLOQUEADO, contrato/acceso no demostrado |
+| TestFlight | NO SUBIDO por los gates anteriores |
+
+Los archivos protegidos src/index.css y supabase/functions/search-wines/index.ts siguen byte-exactos respecto a db6a181. No se modifica/publica web ni se despliega backend; coste de IA adicional0.
 
 ## Catalogo maestro
 
