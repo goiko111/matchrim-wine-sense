@@ -12,9 +12,9 @@ const rows = Array.from({ length: 23 }, (_, i) => ({ ...fixture, id: i + 1, vint
 const walk = node => Array.isArray(node) ? node.flatMap(walk) : React.isValidElement(node) ? [node, ...walk(node.props.children)] : [];
 const text = node => Array.isArray(node) ? node.map(text).join('') : React.isValidElement(node) ? text(node.props.children) : ['string', 'number'].includes(typeof node) ? String(node) : '';
 const tick = async () => { for (let i = 0; i < 60; i++) await Promise.resolve(); };
-function host(client) {
-  const state = [], refs = [], effects = [], confirmations = [];
-  let cursor = 0;
+function host(client, deferEffects = false) {
+  const state = [], refs = [], effects = [], confirmations = [], pendingEffects = new Map();
+  let cursor = 0, mounted = true, lateWrites = 0;
   const props = { candidate: { name: 'Vidure', producer: null, vintage: null }, contextKey: 'owner-a', disabled: false,
     profile: null, onConfirmed: value => confirmations.push(value) };
   const exports = {};
@@ -23,10 +23,11 @@ function host(client) {
     require(name) {
       if (name === 'react/jsx-runtime') return require(name);
       if (name === 'react') return {
-        useState(initial) { const i = cursor++; if (!(i in state)) state[i] = initial; return [state[i], value => { state[i] = value; }]; },
+        useState(initial) { const i = cursor++; if (!(i in state)) state[i] = initial; return [state[i], value => { if (!mounted) lateWrites++; state[i] = value; }]; },
         useRef(initial) { const i = cursor++; return refs[i] ||= { current: initial }; },
         useEffect(work, deps) { const i = cursor++, old = effects[i]; if (!old || deps.some((v, j) => v !== old.deps[j])) {
-          old?.cleanup?.(); effects[i] = { deps, cleanup: work() };
+          if (deferEffects) pendingEffects.set(i, { deps, work });
+          else { old?.cleanup?.(); effects[i] = { deps, cleanup: work() }; }
         } },
       };
       if (name === 'lucide-react') return Object.fromEntries(['BookOpen', 'Check', 'ChevronLeft', 'ChevronRight', 'Loader2', 'Search', 'X'].map(k => [k, k]));
@@ -47,9 +48,13 @@ function host(client) {
     assert.equal(found.length, 1, label); return found[0].props;
   };
   const submit = () => elements('form')[0].props.onSubmit({ preventDefault() {} });
-  button('Buscar otra referencia en Winerim').onClick(); render();
+  const flush = () => { for (const [i, next] of pendingEffects) {
+    effects[i]?.cleanup?.(); effects[i] = { deps: next.deps, cleanup: next.work() };
+  } pendingEffects.clear(); };
+  button('Buscar otra referencia en Winerim').onClick(); render(); flush();
   return { render, elements, button, submit, props, confirmations,
-    unmount: () => effects.forEach(e => e?.cleanup?.()) };
+    flush, lateWrites: () => lateWrites,
+    unmount: () => { mounted = false; pendingEffects.clear(); effects.forEach(e => e?.cleanup?.()); } };
 }
 let groups = 0;
 const test = async (name, work) => { await work(); groups++; console.log('PASS', name); };
@@ -105,5 +110,32 @@ await test('No confirmation after owner changes during independent detail verifi
   h.submit(); await tick(); h.elements('button').find(n => text(n).trim() === 'Esta es mi referencia').props.onClick();
   h.props.contextKey = 'owner-b'; h.render(); resolve({ wine: rows[0] }); await tick();
   assert.equal(h.confirmations.length, 0); h.unmount();
+});
+await test('Render-time owner and disabled guards precede deferred passive cleanup', async () => {
+  for (const changed of ['owner', 'disabled']) {
+    let resolve; const pending = new Promise(r => { resolve = r; });
+    const h = host({ searchProposals: async () => ({ status: 'complete', rows }), confirmSelection: () => pending }, true);
+    h.submit(); await tick(); h.elements('button').find(n => text(n).trim() === 'Esta es mi referencia').props.onClick();
+    if (changed === 'owner') h.props.contextKey = 'owner-b'; else h.props.disabled = true;
+    h.render(); resolve({ wine: rows[0] }); await tick();
+    assert.equal(h.confirmations.length, 0, changed); h.flush(); h.unmount();
+  }
+});
+await test('Cancel followed immediately by a fresh request cannot inherit the old response', async () => {
+  let resolveOld, resolveNew, calls = 0;
+  const old = new Promise(r => { resolveOld = r; }), newer = new Promise(r => { resolveNew = r; });
+  const h = host({ searchProposals: () => ++calls === 1 ? old : newer });
+  h.submit(); h.button('Cancelar').onClick(); h.submit();
+  resolveOld({ status: 'complete', rows }); await tick();
+  assert(!text(h.render()).includes('23 referencias')); assert.equal(h.button('Buscar').disabled, true);
+  resolveNew({ status: 'complete', rows: [rows[22]] }); await tick();
+  assert(text(h.render()).includes('1 referencias')); assert.equal(h.button('Buscar').disabled, false); h.unmount();
+});
+await test('Unmount while detail is pending cannot confirm or write state', async () => {
+  let resolve; const pending = new Promise(r => { resolve = r; });
+  const h = host({ searchProposals: async () => ({ status: 'complete', rows }), confirmSelection: () => pending });
+  h.submit(); await tick(); h.elements('button').find(n => text(n).trim() === 'Esta es mi referencia').props.onClick();
+  h.unmount(); resolve({ wine: rows[0] }); await tick();
+  assert.equal(h.confirmations.length, 0); assert.equal(h.lateWrites(), 0);
 });
 console.log(JSON.stringify({ groups, realNetworkCalls: 0, modelStarts: 0, scope: 'Actual TSX handlers and actual bounded catalogue parser with controlled transport, not native visual QA' }));

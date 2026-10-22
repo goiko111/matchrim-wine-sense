@@ -1,6 +1,6 @@
 # Matchrim: Continuacion 159-161
 
-Actualizacion03:46 UTC. El candidato104/r1 compila y pasa texto maximo. El reescaneo161 real falla antes de enlazar una ficha; no se considera aprobado. Nueva correccion163 del selector manual pendiente de recompilar y validar visualmente. No es un aprobado de TestFlight.
+Actualizacion03:50 UTC. Candidato104/r2 compilado e instalado con163, fuente limpia `57a5497`. Typecheck, bundle, lint enfocado y selector visual aislado verdes. Texto maximo UIKit pasa en104/r1 con las mismas fuentes de Bodega. El reescaneo161 real falla antes de enlazar una ficha; no se considera aprobado. No es un aprobado de TestFlight.
 
 ## Resultados Reales Posteriores
 
@@ -14,7 +14,11 @@ Actualizacion03:46 UTC. El candidato104/r1 compila y pasa texto maximo. El reesc
 
 Se encontro que el selector manual usaba la consulta estricta de primera pagina y solo mostraba tres filas sin navegacion. Una busqueda con23 referencias podia ocultar la cosecha existente. Ahora usa la via de propuestas acotada80, muestra tres por pagina y permite filtrar la anada. No deduplica IDs ni supone que las fichas duplicadas sean equivalentes. Elegir exige detalle independiente y aviso de cambio de cosecha. Consultas parciales siguen explicitamente incompletas. Cambios de pagina/filtro/contexto invalidan manejadores antiguos; no se cambia el calculo.
 
-Pruebas163: seis grupos con parser real y transporte controlado; todas las23 filas alcanzables una sola vez, filtro2022, paginas, metadatos intactos, verificacion por ID, cambio de consulta/cuenta y cancelacion. Lookup126 previo: siete grupos verdes. Lint enfocado verde. Las pruebas visuales aisladas usan mocks y se documentan aparte, sin confundirlas con reconocimiento ni UIKit.
+Pruebas163: nueve grupos con parser real y transporte controlado; todas las23 filas alcanzables una sola vez, filtro2022, paginas, metadatos intactos, verificacion por ID, cambio de consulta/cuenta, cancelacion seguida de nueva peticion, deshabilitacion antes de limpieza pasiva y desmontaje sin escrituras tardias. Lookup126 previo: siete grupos verdes. Lint enfocado verde. Revision independiente sin hallazgos; se ampliaron precisamente los tres huecos de pruebas que senalo.
+
+`picker163-r3` PASS en Chromium movil375x812,440x956 y raiz32px: tres capturas inspeccionadas, sin overflow horizontal, botones>=44, navegacion/filtro correctos, verificacion independiente simulada porID y cero errores JS. Transporte deliberadamente simulado con23 filas de contrato; no certifica UIKit, red real ni reconocimiento. Los fallosr1/r2 eran el preambulo React del host aislado, corregido sin cambiar el componente. Evidencias originales conservadas.
+
+`candidate104-r2/preparation.json` confirma typecheck/bundle/fuente limpia; `uikit104-r2/RESULT.json` confirma compilacion, instalacion y restauracion del ajuste, terminados03:47:19 UTC. No se han repetido suites nativas verdes cuyos modulos no cambiaron. Sigue pendiente un recorrido UIKit especifico del selector163 con una ficha real y la comprobacion end-to-end de la valoracion al reescanear.
 
 ## Corregido En Codigo
 
@@ -55,9 +59,9 @@ CLI acumulado331 GET de catalogo, mas una imagen publica. Cargo conservador al t
 
 ## Pendiente De Evidencia
 
-1. Recompilar104/r2 con163 y validar su selector visual;104/r1 y texto maximo ya pasan en el alcance indicado.
+1. Selector163 en UIKit con ficha real y valoracion guardada;104/r2 ya compila y su render movil aislado pasa. No confundir los fixtures con esa comprobacion real.
 2. Cerrar52 busquedas incompletas y las identidades reales: no basta el texto OCR. Faltan contrato/namespace/cobertura del maestro y datos sensoriales fiables por cosecha; no inventar equivalencias Library/Mantalak.
 3. Reescaneo real con referencia y cosecha verificables, valoracion guardada y cinco factores. El caso161 fallido no puede marcarse verde cambiando las expectativas ni introduciendo el nombre esperado en el OCR.
 4. Firma/archivo y TestFlight solo tras cerrar los gates reales. No reutilizar la excepcion100 ni gastar mas para eludirlos.
 
-Preparado tambien un experimento aislado lower-half-roi en122: solo configura una copia del plugin, no modifica Vision en la app ni alimenta112. Su finalidad es investigar lecturas vacias como016. No hay mejora medida ni promocion a produccion. Coordenadas normalizadas desde abajo segun [Apple](https://developer.apple.com/documentation/vision/vnimagebasedrequest/regionofinterest).
+El experimento aislado lower-half-roi en122 ya se ejecuto sobre20 escenas: solo configura una copia del plugin, no modifica Vision en la app ni alimenta112.016 continua vacia; no resuelve el fallo y pierde texto en controles, por lo que no se promueve. Coordenadas normalizadas desde abajo segun [Apple](https://developer.apple.com/documentation/vision/vnimagebasedrequest/regionofinterest).
