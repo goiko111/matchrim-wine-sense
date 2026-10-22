@@ -7,6 +7,7 @@ import { hasObservedWineColorConflict124 } from './nativeWineColor124';
 import { wineYearRoles105, type YearLine105 } from './wineYearRole105';
 import { isLiteralWineStyleName95 } from './menuLiteralStyle95';
 import { nativeQueryRoles174 } from './nativeQueryRoles174';
+import { nativeStackedQueries175 } from './nativeStackedQueries175';
 
 const fold = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\u00df/g, 'ss');
 const tokens = (value: string): string[] => fold(value).match(/[a-z0-9]+/g) || [];
@@ -128,6 +129,7 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
   };
   const automaticName = unquote(queryName);
   const groundedName = automaticMeaningful(automaticName) && tokens(automaticName).every(word => generic.has(word) || visible.has(word));
+  const stacks = nativeStackedQueries175(lines, evidence, value => automaticMeaningful(value) || connectors.has(value.toLowerCase()));
   const queries = new Map<string, string>();
   const literalQueries = evidence.map(line => line.trim().replace(/^(?:embotellado por|bottled by|mis en bouteille (?:par|au))\s+/i, '')
     .replace(/^(?:[-,;:]\s*)+|(?:[,;:]\s*)+$/g, '').trim()).map(unquote).map(literalWithoutYear).filter(automaticMeaningful);
@@ -141,5 +143,12 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
   const bounded = literal.filter(([key]) => !observed.some(other => other !== key && key.length >= 4
     && other.length <= key.length * 2 && !key.includes(' ') && !other.includes(' ') && other.includes(key)))
     .map(([, query]) => query);
+  // Only replace the two slots when both existing queries belong to this same
+  // stack. A separate producer/error query must not disappear behind a cuvee.
+  if (!groundedName && roles.preferred.length === 0 && stacks.length === 1 && bounded.length >= 2) {
+    const stack = stacks[0], constituents = stack.sourceIndices.map(i => tokens(lines![i].text).join(' '));
+    if (bounded.slice(0, 2).every(query => constituents.includes(tokens(query).join(' ')))
+      && automaticMeaningful(stack.text) && automaticMeaningful(stack.fallback)) return [stack.text, stack.fallback];
+  }
   return bounded.slice(0, 2);
 };
