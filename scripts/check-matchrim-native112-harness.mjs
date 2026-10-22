@@ -148,7 +148,8 @@ await test('Production query, year and fragment geometry logic agree, including 
     reading([line('Synthetic Cuvee'), line('Bottled in 2020', .1, .7)]),
     reading([line('Synthetic Cuvee'), line('2026', .37, .55, .1), line('LYON', .53, .55, .1), line('GOLD', .49, .53, .1), line('2020', .36, .1, .1)]),
     reading([line('Synthetic Cuvee', .1, .4), line('S', .1, .7, .01, .02), line('ynthetic', .111, .7, .08, .02)]),
-    reading([line('2020', .4, .2, .1, .012), line('LYON', .51, .2, .1, .012), line('GOLD', .51, .215, .1, .012), line('Cuvee Horizon', .1, .7), line('Casa Atlas', .1, .8)])];
+    reading([line('2020', .4, .2, .1, .012), line('LYON', .51, .2, .1, .012), line('GOLD', .51, .215, .1, .012), line('Cuvee Horizon', .1, .7), line('Casa Atlas', .1, .8)]),
+    reading([line('CASA', .3, .4, .3, .04), line('HORIZONTE', .3, .444, .3, .04)])];
   for (const raw of samples) {
     const text = await parseReading112(raw, id, runtime), candidate = runtime.localSingleCandidate109(text, 'synthetic');
     const result = vm.runInNewContext('(()=>{let evidence,vintage,queryLines;' + gate + ';return {evidence,vintage,queryLines};})()', {
@@ -167,7 +168,7 @@ await test('Production query, year and fragment geometry logic agree, including 
       const mutant = ts.createPrinter().printNode(ts.EmitHint.Expression, missingHint, tree);
       assert.notDeepEqual(scene.queries, Array.from(vm.runInNewContext(mutant, context)), 'Parity must catch a missing fourth argument');
     }
-    if (text.lines[0].text === '2020' && text.lines[1].text === 'LYON') {
+    if ((text.lines[0].text === '2020' && text.lines[1].text === 'LYON') || text.lines[0].text === 'CASA') {
       const missingGeometry = ts.factory.updateCallExpression(calls[0], calls[0].expression, calls[0].typeArguments, calls[0].arguments.slice(0, 4));
       const mutant = ts.createPrinter().printNode(ts.EmitHint.Expression, missingGeometry, tree);
       assert.notDeepEqual(scene.queries, Array.from(vm.runInNewContext(mutant, context)), 'Parity must catch missing query geometry');

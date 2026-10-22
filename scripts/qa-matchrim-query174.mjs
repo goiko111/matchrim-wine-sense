@@ -8,18 +8,20 @@ import react from '@vitejs/plugin-react-swc';
 import { loadCache112, loadRuntime112, captureSources112, verifySources112, assertLeases112 } from './benchmark-matchrim-native112.ts';
 
 const repo = process.cwd(), out = path.resolve(process.argv[2]);
-assert(path.dirname(out) === path.join(repo, 'qa-artifacts/continuation174-20261022') && /^visual-r[1-9]\d*$/.test(path.basename(out)) && !fs.existsSync(out));
+const stackedMode = process.argv[3] === 'stacked175';
+assert(process.argv[3] === undefined || stackedMode);
+assert(path.dirname(out) === path.join(repo, 'qa-artifacts/continuation174-20261022') && /^visual(?:-stacked)?-r[1-9]\d*$/.test(path.basename(out)) && !fs.existsSync(out));
 const check = () => {
   assertLeases112(JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json')).leases, process.env);
   const disk = fs.statfsSync(repo); assert(disk.bavail * disk.bsize >= 5 * 1024 ** 3, 'LOW_DISK_HOLD');
 };
 check(); fs.mkdirSync(out, { mode: 0o700 });
-const reportPath = 'qa-artifacts/night105-20261021/native112-corpus200-r16/REPORT.json';
+const reportPath = 'qa-artifacts/night105-20261021/native112-corpus200-' + (stackedMode ? 'r17' : 'r16') + '/REPORT.json';
 const report = JSON.parse(fs.readFileSync(reportPath));
 const receipts = JSON.parse(fs.readFileSync(path.dirname(reportPath) + '/CACHE_READS.json'));
 const folders = [...new Set(receipts.map(row => path.dirname(row.sourceReceipt.split('#')[0]))), path.resolve(path.dirname(reportPath))];
 const cache = loadCache112(repo, folders), runtime = await loadRuntime112(), sources = captureSources112(repo);
-const ids = ['img-021', 'img-116', 'img-184', 'img-106'];
+const ids = stackedMode ? ['img-002', 'img-089', 'img-195'] : ['img-021', 'img-116', 'img-184', 'img-106'];
 const scenes = ids.map(id => {
   const row = report.rows.find(item => item.imageId === id); assert(row);
   const image = path.resolve('qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/' + id + '.jpg');
@@ -69,9 +71,14 @@ function App(){const[selected,setSelected]=React.useState(null);return React.cre
   for (const scene of scenes) {
     check(); verifySources112(repo, sources); const before = requests.length;
     await page.goto(origin + '/query174?id=' + scene.id); await page.waitForLoadState('networkidle');
-    const notice = scene.id === 'img-106' ? 'No podemos conectar con Winerim. Puedes reintentar sin cambiar tu vino.'
-      : scene.row.proposals.length ? 'No hemos confirmado el vino. Compara la etiqueta y elige solo si coincide.'
-        : 'No hay una propuesta suficientemente parecida. Corrige el nombre o prueba una foto más cercana.';
+    const incomplete = scene.row.pages.some(row => row.status !== 'complete');
+    const unavailable = scene.row.pages.some(row => row.status === 'unavailable');
+    const notice = scene.row.proposals.length ? incomplete
+      ? 'La búsqueda está incompleta. Estas son algunas propuestas; compara la etiqueta y elige solo si coincide.'
+      : 'No hemos confirmado el vino. Compara la etiqueta y elige solo si coincide.'
+      : unavailable ? 'No podemos conectar con Winerim. Puedes reintentar sin cambiar tu vino.'
+        : incomplete ? 'No hemos podido completar la búsqueda. No significa que tu vino no esté en Winerim. Corrige el nombre completo o prueba una foto más cercana.'
+          : 'No hay una propuesta suficientemente parecida. Corrige el nombre o prueba una foto más cercana.';
     await page.getByRole('status').filter({ hasText: notice }).waitFor();
     const actualQueries = [...new Set(requests.slice(before).map(item => new URL(item.url).searchParams.get('text')))];
     assert.deepEqual(actualQueries, scene.row.queries);

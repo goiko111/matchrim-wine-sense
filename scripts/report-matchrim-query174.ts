@@ -4,7 +4,9 @@ import assert from 'node:assert/strict';
 import { loadCache112, sha112 } from './benchmark-matchrim-native112';
 
 const base = 'qa-artifacts/night105-20261021';
-const beforeFile = `${base}/native112-corpus200-r14/REPORT.json`, afterFile = `${base}/native112-corpus200-r16/REPORT.json`;
+const stackedMode = process.argv[2] === 'stacked175';
+assert(process.argv[2] === undefined || stackedMode);
+const beforeFile = `${base}/native112-corpus200-r14/REPORT.json`, afterFile = `${base}/native112-corpus200-${stackedMode ? 'r17' : 'r16'}/REPORT.json`;
 const beforeBytes = fs.readFileSync(beforeFile), afterBytes = fs.readFileSync(afterFile);
 const before = JSON.parse(beforeBytes.toString()), after = JSON.parse(afterBytes.toString());
 assert(before.summary.sourceIntegrityVerified && after.summary.sourceIntegrityVerified);
@@ -36,9 +38,9 @@ const errors = [...cache.entries()].filter(([, value]) => value.status >= 500).m
 }));
 const counts = Object.fromEntries(['partial', 'http-unavailable', 'schema', 'schema-and-partial'].map(key => [key,
   remaining.filter((row: typeof remaining[0]) => row.category === key).length]));
-assert.deepEqual(counts, { partial: 19, 'http-unavailable': 19, schema: 1, 'schema-and-partial': 1 });
+assert.deepEqual(counts, { partial: stackedMode ? 17 : 19, 'http-unavailable': 19, schema: 1, 'schema-and-partial': 1 });
 assert.equal(transitions.filter((row: typeof transitions[0]) => row.previouslyComplete && !row.complete).length, 0);
-const output = 'qa-artifacts/continuation174-20261022/ANALYSIS.json';
+const output = `qa-artifacts/continuation174-20261022/${stackedMode ? 'ANALYSIS175' : 'ANALYSIS'}.json`;
 assert(!fs.existsSync(output));
 fs.writeFileSync(output, JSON.stringify({
   generatedUTC: new Date().toISOString(), beforeFile, afterFile, beforeSHA256: sha112(beforeBytes), afterSHA256: sha112(afterBytes),
@@ -46,9 +48,11 @@ fs.writeFileSync(output, JSON.stringify({
   newlyCompletedRetrieval: transitions.filter((row: typeof transitions[0]) => !row.previouslyComplete && row.complete),
   newIncompletePreviouslyComplete: [], remaining, serverReproductions: errors,
   malformedRecords: [{ id: 362891, problem: 'empty slug', scene: 'img-193' }, { id: 363580, problem: 'empty slug', scene: 'img-200' }],
-  realNewGET: 17, instrumentedCLI: 377, earlierPublicImage: 1, conservativeFreeReserved: 380, freeCeiling: 400,
-  freeReservedRemaining: 20, paidCap: 'unchanged 50 requests / EUR15', modelStarts: 0, imageUploads: 0,
+  realNewGET: stackedMode ? 27 : 17, instrumentedCLI: stackedMode ? 387 : 377, earlierPublicImage: 1,
+  conservativeFreeReserved: stackedMode ? 400 : 380, freeCeiling: 400,
+  freeReservedRemaining: stackedMode ? 0 : 20, paidCap: 'unchanged 50 requests / EUR15', modelStarts: 0, imageUploads: 0,
   webPublished: false, backendDeployed: false, testFlightUploaded: false,
-  scope: 'Retrieval completion and expected-name proxies from retained simulator Vision. Not 160 identified wines, expert precision, automatic confirmation, fresh gallery E2E or human taste accuracy. Original49 failures remain in immutable r14.',
+  scope: 'Retrieval completion and expected-name proxies from retained simulator Vision. Evaluable scenes are not identified wines, expert precision, automatic confirmation, fresh gallery E2E or human taste accuracy. Original49 failures remain in immutable r14.',
 }, null, 2) + '\n', { mode: 0o600, flag: 'wx' });
-console.log(JSON.stringify({ output, counts, newlyCompletedRetrieval: 9, catalogueErrorReceipts: errors.length, newGET: 0, models: 0 }));
+console.log(JSON.stringify({ output, counts, newlyCompletedRetrieval: transitions.filter((row: typeof transitions[0]) => !row.previouslyComplete && row.complete).length,
+  catalogueErrorReceipts: errors.length, newGET: 0, models: 0 }));
