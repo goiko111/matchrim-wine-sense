@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 import { globalRecoveryQueries104, rankGlobalProposals104 } from '../src/utils/globalWineProposals104.ts';
 import { wineYearRoles105 } from '../src/utils/wineYearRole105.ts';
 import { suggestLocalOCRFragments108 } from '../src/utils/localOCRFragments108.ts';
+import { createGlobalCatalogue103 } from '../src/utils/nativeGlobalCatalogue103.ts';
 const require = createRequire(import.meta.url), ts = require('typescript');
 const React = require('react');
 const source = fs.readFileSync('src/components/wine-import/GlobalWineRecovery104.tsx', 'utf8');
@@ -127,6 +128,24 @@ await test('Incomplete suggestions remain explicitly partial and require the unc
   assert(label.includes('La búsqueda está incompleta. Estas son algunas propuestas'));
   assert(label.includes('Comprueba la bodega')); assert(label.includes('Confirmar esta referencia'));
   assert.equal(h.confirmations.length, 0); h.unmount();
+});
+await test('Malformed catalogue neighbor preserves explicit incomplete UI and independently verified selection', async () => {
+  const calls = [], bad = { ...row, id: row.id + 1, slugname: '' };
+  const client = createGlobalCatalogue103(async url => {
+    calls.push(String(url));
+    return Response.json(new URL(url).search ? { count: 2, page: 1, results: [row, bad] } : row);
+  });
+  const h = host({ search: client.searchProposals, confirmSelection: client.confirmSelection });
+  h.button('Encontrar mi vino en Winerim').onClick();
+  for (let i = 0; i < 40; i++) await tick();
+  assert.equal(calls.length, 1);
+  assert(text(h.render()).includes('La búsqueda está incompleta'));
+  assert(text(h.render()).includes('Confirmar esta referencia'));
+  assert.equal(h.confirmations.length, 0);
+  h.button('Confirmar esta referencia').onClick();
+  for (let i = 0; i < 40; i++) await tick();
+  assert.equal(calls.length, 2); assert.equal(h.confirmations.length, 1);
+  assert.equal(h.confirmations[0].globalRecord.id, row.id); h.unmount();
 });
 await test('One unavailable query plus one usable result still warns about incomplete coverage without retrying', async () => {
   const calls = [];

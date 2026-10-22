@@ -210,6 +210,26 @@ await test('Metadata-only local reading abstains without pretending to have quer
   assert.equal(scene.reason, 'NO_IDENTITY_BEARING_QUERY'); assert.equal(scene.queries.length, 0);
   assert.equal(r.state.starts, 0); assert.equal(summarize112([scene], 1, true, r.state).abstentions, 1);
 });
+await test('Complete generic style and viticulture role readings abstain without recognition or GETs', async () => {
+  for (const text of ['Trebbiano', 'Carmenere', 'VINEYARDS']) {
+    const r = rig({ live: true, maximum: 1, wire: () => { throw Error('NO_NETWORK_EXPECTED'); } });
+    const [scene] = await r.predict([reading([line(text)])]);
+    assert.equal(scene.status, 'abstained'); assert.equal(scene.eligible, true);
+    assert.equal(scene.reason, 'NO_IDENTITY_BEARING_QUERY');
+    assert.deepEqual(scene.queries, []); assert.deepEqual(scene.proposals, []); assert.equal(r.state.starts, 0);
+    assert.equal(summarize112([scene], 1, true, r.state).abstentions, 1);
+  }
+});
+await test('Schema-recovered valid proposals remain incomplete and excluded from accuracy metrics', async () => {
+  const good = { ...row(0), name: 'Synthetic Cuvee' };
+  const r = rig({ live: true, maximum: 1, wire: async url => wireResponse(url,
+    { count: 2, page: 1, results: [good, { ...row(1), slugname: '' }] }) });
+  const [scene] = await r.predict();
+  assert.equal(scene.pages[0].status, 'incomplete'); assert.equal(scene.pages[0].rows, 1);
+  assert.equal(scene.proposals.length, 1); assert.equal(scene.eligible, false);
+  const summary = summarize112([scene], 1, true, r.state);
+  assert.equal(summary.evaluated, 0); assert.equal(summary.withProposals, 0); assert.equal(summary.exitCode, 1);
+});
 await test('HTTP failure, fetch error and malformed JSON cannot produce a complete benchmark', async () => {
   for (const wire of [async url => wireResponse(url, {}, 503), async () => { throw Error('MOCK_TRANSPORT_ERROR'); },
     async url => ({ ...wireResponse(url), body: new Response('{').body })]) {

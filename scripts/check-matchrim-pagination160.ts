@@ -55,20 +55,28 @@ await test('Normal search and automatic lookup remain strict first-page operatio
   assert.deepEqual(lookup.calls.map(url => url.searchParams.get('text')), [input.name, input.producer]);
   assert(lookup.calls.every(url => url.searchParams.get('page') === '1'));
 });
-await test('Count/page drift, short pages and invalid slugs reject the entire retrieval', async () => {
+await test('Malformed pages remain incomplete, retaining only validated explicit proposals', async () => {
   const mutations: ((value: Page) => Page)[] = [
     value => ({ ...value, count: 79 }),
     value => ({ ...value, page: value.page + 1 }),
     value => ({ ...value, results: value.results.slice(1) }),
     value => ({ ...value, results: value.results.map((wine, i) => i === 0 ? { ...wine, slugname: '' } : wine) }),
   ];
-  for (const failingPage of [2, 4]) for (const mutate of mutations) {
+  for (const failingPage of [2, 4]) for (const [mutation, mutate] of mutations.entries()) {
     const h = rig(80, value => value.page === failingPage ? mutate(value) : value);
     const result = await h.client.searchProposals(input.name);
-    assert.equal(result.status, 'incomplete'); assert.deepEqual(result.rows, []); assert.equal(h.calls.length, failingPage);
+    const expected = Array.from({ length: (failingPage - 1) * 20 }, (_, i) => i + 1);
+    if (mutation === 3) expected.push(...page(80, failingPage).results.slice(1).map(value => value.id));
+    assert.equal(result.status, 'incomplete');
+    assert.deepEqual(result.rows.map(value => value.id), expected);
+    assert(result.rows.every(value => Object.isFrozen(value) && value.slugname.length > 0));
+    assert.equal(h.calls.length, failingPage);
   }
   const h = rig(61, value => value.page === 1 ? { ...value, results: value.results.slice(1) } : value);
-  assert.equal((await h.client.searchProposals(input.name)).status, 'incomplete'); assert.equal(h.calls.length, 1);
+  const result = await h.client.searchProposals(input.name);
+  assert.equal(result.status, 'incomplete');
+  assert.deepEqual(result.rows.map(value => value.id), page(61, 1).results.slice(1).map(value => value.id));
+  assert.equal(h.calls.length, 1);
 });
 await test('A duplicate ID crossing into the fourth page remains ambiguous with no selectable rows', async () => {
   const h = rig(80, value => value.page === 4

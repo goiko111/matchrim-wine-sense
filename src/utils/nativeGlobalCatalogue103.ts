@@ -132,23 +132,53 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
     if (!text.safeParse(query).success || query.trim().length < 2 || query.length > 120) return { status: 'identity-required' as const, rows: [] as Row[] };
     try {
       return await operation(signal, async read => {
+        if (paginateProposals && allowPartialProposals) {
+          // Trust the bounded page envelope before inspecting individual rows.
+          // Schema damage is recoverable only for explicit, incomplete proposals.
+          const envelope = z.object({ count: z.number().int().nonnegative().safe(), page: z.number().int().positive(),
+            results: z.array(z.unknown()).max(20) });
+          const rows: Row[] = [], seenIds = new Set<number>();
+          let duplicate = false;
+          const finish = (status: 'complete' | 'partial' | 'incomplete') => {
+            if (duplicate) return { status: 'ambiguous' as const, rows: [] as Row[] };
+            for (const row of rows) { Object.freeze(row); observedSelections.add(row); }
+            return { status, rows: rows.filter(row => !isNonWineIdentity(row.name, row.type)) };
+          };
+          const append = (values: unknown[]) => {
+            let malformed = false;
+            for (const value of values) {
+              // An invalid row cannot hide a collision with a valid public ID.
+              const id = value && typeof value === 'object' && 'id' in value ? value.id : undefined;
+              if (typeof id === 'number' && Number.isSafeInteger(id) && id > 0) {
+                if (seenIds.has(id)) duplicate = true;
+                seenIds.add(id);
+              }
+              const parsed = rowSchema.safeParse(value);
+              if (parsed.success) rows.push(parsed.data);
+              else malformed = true;
+            }
+            return malformed;
+          };
+          const first = envelope.safeParse(await read(`${root}?${new URLSearchParams({ page: '1', text: query.trim(), store: '1' })}`));
+          if (!first.success || first.data.page !== 1 || first.data.count < first.data.results.length) return finish('incomplete');
+          const malformed = append(first.data.results);
+          if (malformed || (first.data.count <= 80 && first.data.count > rows.length && first.data.results.length !== 20)) return finish('incomplete');
+          if (first.data.count > rows.length && first.data.count <= 80) {
+            for (let number = 2; number <= Math.ceil(first.data.count / 20); number++) {
+              const next = envelope.safeParse(await read(`${root}?${new URLSearchParams({ page: String(number), text: query.trim(), store: '1' })}`));
+              const expected = Math.min(20, first.data.count - (number - 1) * 20);
+              if (!next.success || next.data.count !== first.data.count || next.data.page !== number
+                || next.data.results.length !== expected) return finish('incomplete');
+              if (append(next.data.results)) return finish('incomplete');
+            }
+          }
+          return finish(first.data.count === rows.length ? 'complete' : 'partial');
+        }
         const page = z.object({ count: z.number().int().nonnegative().safe(), page: z.literal(1), results: z.array(rowSchema).max(20) })
           .safeParse(await read(`${root}?${new URLSearchParams({ page: '1', text: query.trim(), store: '1' })}`));
         if (!page.success || page.data.count < page.data.results.length) return { status: 'incomplete' as const, rows: [] as Row[] };
         if (page.data.count !== page.data.results.length && !allowPartialProposals) return { status: 'incomplete' as const, rows: [] as Row[] };
         const rows = [...page.data.results];
-        // Only the explicit proposal flow may expand small, bounded searches.
-        // Automatic identity lookup retains its strict first-page contract.
-        if (paginateProposals && page.data.count > rows.length && page.data.count <= 80) {
-          if (rows.length !== 20) return { status: 'incomplete' as const, rows: [] as Row[] };
-          for (let number = 2; number <= Math.ceil(page.data.count / 20); number++) {
-            const next = z.object({ count: z.literal(page.data.count), page: z.literal(number), results: z.array(rowSchema).max(20) })
-              .safeParse(await read(`${root}?${new URLSearchParams({ page: String(number), text: query.trim(), store: '1' })}`));
-            const expected = Math.min(20, page.data.count - (number - 1) * 20);
-            if (!next.success || next.data.results.length !== expected) return { status: 'incomplete' as const, rows: [] as Row[] };
-            rows.push(...next.data.results);
-          }
-        }
         if (new Set(rows.map(row => row.id)).size !== rows.length) return { status: 'ambiguous' as const, rows: [] as Row[] };
         for (const row of rows) { Object.freeze(row); observedSelections.add(row); }
         return { status: page.data.count === rows.length ? 'complete' as const : 'partial' as const,

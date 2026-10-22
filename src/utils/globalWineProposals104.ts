@@ -5,6 +5,7 @@ import { isNonWineIdentity } from './wineCategory';
 import { hasObservedAppellationConflict120 } from './nativeAppellation120';
 import { hasObservedWineColorConflict124 } from './nativeWineColor124';
 import { wineYearRoles105 } from './wineYearRole105';
+import { isLiteralWineStyleName95 } from './menuLiteralStyle95';
 
 const fold = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\u00df/g, 'ss');
 const tokens = (value: string): string[] => fold(value).match(/[a-z0-9]+/g) || [];
@@ -23,7 +24,8 @@ const queryMetadata = new Set(('celler cellar cava pet nat ancestral premium tra
   + 'dry trocken halbtrocken feinherb').split(' '));
 const automaticQueryMetadata = new Set(('bio cosecha vendimia recolte vintage ernte vendemmia harvest anada millesime '
   + 'bottled bottling embotellado embotellada envasado mis mise bouteille imbottigliato imbottigliata engarrafado '
-  + 'in en nel em par by date fecha year anno annata annee').split(' '));
+  + 'in en nel em par by date fecha year anno annata annee '
+  + 'vineyard vineyards vignoble vignobles viticultor viticultores').split(' '));
 const fullName = (row: PublicGlobalRow103) => row.subname && !(` ${tokens(row.name).join(' ')} `).includes(` ${tokens(row.subname).join(' ')} `)
   ? `${row.name} ${row.subname}` : row.name;
 export type WineProposal104 = { row: PublicGlobalRow103; name: string; score: number; missingProducer: boolean; vintageConflict: boolean; readingCorrections: string[] };
@@ -103,6 +105,7 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
     && tokens(value).some(word => word.length >= 3 && !generic.has(word) && !queryMetadata.has(word));
   if (manuallyEntered) return meaningful(queryName) ? [queryName] : [];
   const automaticMeaningful = (value: string) => meaningful(value)
+    && !isLiteralWineStyleName95(value)
     && !['vieilles vignes', 'old vines'].includes(tokens(value).join(' '))
     && !tokens(value).every(word => generic.has(word) || queryMetadata.has(word) || automaticQueryMetadata.has(word));
   const dates = wineYearRoles105(evidence.map(text => ({ text })));

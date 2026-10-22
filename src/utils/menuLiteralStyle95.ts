@@ -48,6 +48,10 @@ const completeStyle = (name: string) => {
   return false;
 };
 
+// Vocabulary reuse only: this does not classify or confirm any bottle identity.
+export const isLiteralWineStyleName95 = (name: string): boolean => typeof name === 'string'
+  && name.trim().length > 0 && name.length <= 120 && completeStyle(normalize(name));
+
 /** Retain a literal generic style as pending, never as a confirmed/named bottle.
  * Does not validate prices, supply identity, attributes, affinity or save authority.
  * Requires bounded row/section source; unknown prose/brands fail closed.
