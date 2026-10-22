@@ -1,6 +1,20 @@
 # Matchrim: Continuacion 159-161
 
-Estado03:24 UTC. Implementacion revisada; compilacion, regresion200 y nuevos recorridos UIKit pendientes. No es un aprobado de TestFlight.
+Actualizacion03:46 UTC. El candidato104/r1 compila y pasa texto maximo. El reescaneo161 real falla antes de enlazar una ficha; no se considera aprobado. Nueva correccion163 del selector manual pendiente de recompilar y validar visualmente. No es un aprobado de TestFlight.
+
+## Resultados Reales Posteriores
+
+- `candidate104-r1`: typecheck y bundle PASS, fuente limpia `1a863e2`; `uikit104-r1`: compilacion e instalacion PASS. Sin archivo firmado nuevo ni subida.
+- `cellar144-max158-r2`: PASS en UIKit a accesibilidad extra-extra-extra grande; dos vinos existentes, afinidad actual/inicial y cinco factores. Ajuste original large restaurado con recibo del host. Dos auditorias Apple sin filtrar y19 adjuntos requeridos. No certifica voz hablada ni todos los pixeles desplazados.
+- `rescan161-r1`: FAIL real conservado, 104.8s, lectura local y busqueda sin propuesta/ficha enlazada. Ningun login, guardado, valoracion o modelo solicitado. La miniatura Flor de Muga219x692 no muestra cosecha; el diagnostico local162 con el plugin sin modificar lee Muga-, Plor, Muga y RIOJA con senal0.5. No es evidencia suficiente para asignar Flor2022 ni heredar su valoracion. El diagnostico no reproduce el preprocesado de galeria.
+- `native112-corpus200-r10`:148 evaluables,52 incompletas (antes141/59),39 listas con propuestas (antes38),31 top1/33 top3 contra nombres de archivo (antes30/32). Seis listas sin el esperado, seis abstenciones. Conserva200 salidas Vision reales previas, no200 nuevos recorridos de galeria. No es precision/recall experta ni200 identidades verificadas. Gate NO-GO, salida1.
+- `vision122-lower-half-r1`:20 imagenes en copia aislada del plugin;016 sigue vacia y varios controles pierden texto. No promovido ni incorporado al benchmark; plugin productivo intacto.
+
+## Correccion163
+
+Se encontro que el selector manual usaba la consulta estricta de primera pagina y solo mostraba tres filas sin navegacion. Una busqueda con23 referencias podia ocultar la cosecha existente. Ahora usa la via de propuestas acotada80, muestra tres por pagina y permite filtrar la anada. No deduplica IDs ni supone que las fichas duplicadas sean equivalentes. Elegir exige detalle independiente y aviso de cambio de cosecha. Consultas parciales siguen explicitamente incompletas. Cambios de pagina/filtro/contexto invalidan manejadores antiguos; no se cambia el calculo.
+
+Pruebas163: seis grupos con parser real y transporte controlado; todas las23 filas alcanzables una sola vez, filtro2022, paginas, metadatos intactos, verificacion por ID, cambio de consulta/cuenta y cancelacion. Lookup126 previo: siete grupos verdes. Lint enfocado verde. Las pruebas visuales aisladas usan mocks y se documentan aparte, sin confundirlas con reconocimiento ni UIKit.
 
 ## Corregido En Codigo
 
@@ -37,14 +51,13 @@ Tres GET publicos devuelven Flor de Muga Blanco y Manzanilla La Gitana, incluida
 
 Una descarga publica de la botella Flor de Muga se conserva sin editar, SHA256 `8d213ff13a2a9c79ce6131180afe7a599bcda88b94cecf1cf853d2c6658cc1f9`. La foto no acredita2022: el nuevo recorrido161 exigira elegir expresamente esa cosecha. No forma parte del benchmark200 y no se guardara otro vino ni otra valoracion.
 
-CLI acumulado304 GET de catalogo, mas una imagen publica. Cargo conservador al techo gratuito:226/400;174 restantes. GET ordinarios de la app no instrumentados. Nuevos inicios de modelos0, imagenes enviadas a proveedor0, Lovable0, despliegues0, publicacion web0. Se mantiene el limite50 peticiones de pago/15EUR.
+CLI acumulado331 GET de catalogo, mas una imagen publica. Cargo conservador al techo gratuito:253/400;147 restantes. GET ordinarios de la app no instrumentados. Nuevos inicios de modelos0, imagenes enviadas a proveedor0, Lovable0, despliegues0, publicacion web0. Se mantiene el limite50 peticiones de pago/15EUR.
 
 ## Pendiente De Evidencia
 
-1. Typecheck/lint/build y candidato nativo104 congelado.
-2. Rerun200 con nuevas paginas acotadas y caches previas; no repetir OCR ni cambiar expectativas. Referencia anterior r9:141 elegibles/59 incompletas/30 top1/32 top3 contra nombres de archivo, no precision experta.
-3. Bodega a texto maximo con el probe corregido y restauracion exacta del ajuste.
-4. Galeria local de Flor de Muga, propuesta2022 explicita, ficha independiente, valoracion guardada y cinco factores. Sin login/guardado/valoracion nuevos ni modelos.
-5. Firma/archivo actualizado solo tras QA. TestFlight sigue bloqueado hasta cerrar los gates reales, sin reutilizar la excepcion100.
+1. Recompilar104/r2 con163 y validar su selector visual;104/r1 y texto maximo ya pasan en el alcance indicado.
+2. Cerrar52 busquedas incompletas y las identidades reales: no basta el texto OCR. Faltan contrato/namespace/cobertura del maestro y datos sensoriales fiables por cosecha; no inventar equivalencias Library/Mantalak.
+3. Reescaneo real con referencia y cosecha verificables, valoracion guardada y cinco factores. El caso161 fallido no puede marcarse verde cambiando las expectativas ni introduciendo el nombre esperado en el OCR.
+4. Firma/archivo y TestFlight solo tras cerrar los gates reales. No reutilizar la excepcion100 ni gastar mas para eludirlos.
 
 Preparado tambien un experimento aislado lower-half-roi en122: solo configura una copia del plugin, no modifica Vision en la app ni alimenta112. Su finalidad es investigar lecturas vacias como016. No hay mejora medida ni promocion a produccion. Coordenadas normalizadas desde abajo segun [Apple](https://developer.apple.com/documentation/vision/vnimagebasedrequest/regionofinterest).

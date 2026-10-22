@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { BookOpen, Check, Loader2, Search, X } from 'lucide-react';
+import { BookOpen, Check, ChevronLeft, ChevronRight, Loader2, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97';
@@ -8,6 +8,7 @@ import type { WineCandidate } from '@/utils/multiWineScan';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { applyGlobalCatalogue103, createGlobalCatalogue103, exactGlobalVintage103, isGlobalWine103, lookupGlobalCatalogue103, globalSensory103, type GlobalWine103 } from '@/utils/nativeGlobalCatalogue103';
 import { buildAffinityInsights, calculateLocalMatchrimAffinity } from '@/utils/wineAffinityExplanation';
+import { nativeCataloguePage163 } from '@/utils/nativeCataloguePage163';
 
 export const GlobalWineReference103 = ({ candidate, profile }: { candidate: WineCandidate; profile: MatchrimProfileLike | null }) => {
   const wine = candidate.globalRecord;
@@ -104,24 +105,31 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
   const [query, setQuery] = useState(candidate.name), [open, setOpen] = useState(false);
   const [rows, setRows] = useState<PublicProposal103[]>([]), [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
+  const [vintage, setVintage] = useState('all'), [page, setPage] = useState(0);
+  const visible = nativeCataloguePage163(rows, vintage, page);
   const controller = useRef<AbortController | null>(null);
-  const current = useRef({ contextKey, query, disabled, onConfirmed });
-  current.current = { contextKey, query, disabled, onConfirmed };
+  const current = useRef({ contextKey, query, disabled, onConfirmed, vintage, page });
+  current.current = { contextKey, query, disabled, onConfirmed, vintage, page };
   useEffect(() => () => { controller.current?.abort(); controller.current = null; }, [contextKey]);
   useEffect(() => { if (disabled) controller.current?.abort(); }, [disabled]);
   const run = async (selected?: PublicProposal103) => {
-    if (disabled || controller.current || (selected && !rows.slice(0, 3).includes(selected))) return;
+    if (disabled || current.current.disabled || controller.current
+      || current.current.contextKey !== contextKey || current.current.query !== query
+      || current.current.vintage !== vintage || current.current.page !== page
+      || (selected && !visible.rows.includes(selected))) return;
     const abort = new AbortController(); controller.current = abort; setBusy(true); setNotice('');
     const scope = { contextKey, query };
     const active = () => controller.current === abort && !abort.signal.aborted && !current.current.disabled
-      && current.current.contextKey === scope.contextKey && current.current.query === scope.query;
+      && current.current.contextKey === scope.contextKey && current.current.query === scope.query
+      && current.current.vintage === vintage && current.current.page === page;
     try {
       const client = createGlobalCatalogue103();
       if (!selected) {
-        const result = await client.search(query, abort.signal); if (!active()) return;
-        setRows(result.rows);
+        const result = await client.searchProposals(query, abort.signal); if (!active()) return;
+        setRows(result.rows); setVintage('all'); setPage(0);
         setNotice(result.status === 'complete' ? result.rows.length ? 'Elige solo la referencia que coincida con tu etiqueta.' : 'No hay propuestas para esta búsqueda.'
-          : result.status === 'incomplete' ? 'Hay demasiados resultados. Concreta el nombre o busca por bodega.' : 'No se ha podido consultar Winerim.');
+          : result.status === 'partial' ? 'Búsqueda incompleta. Solo se muestran algunas referencias; concreta el nombre si no aparece la tuya.'
+            : result.status === 'incomplete' ? 'No se ha podido completar la búsqueda. Concreta el nombre o busca por bodega.' : 'No se ha podido consultar Winerim.');
       } else {
         const name = selected.subname && !selected.name.toLowerCase().includes(selected.subname.toLowerCase()) ? `${selected.name} ${selected.subname}` : selected.name;
         const manual: WineCandidate = { ...candidate, name, producer: selected.winery,
@@ -139,19 +147,36 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
   return <section aria-label="Buscar en el catálogo global" className="min-w-0 space-y-3 [overflow-wrap:anywhere]">
     <form className="space-y-2" onSubmit={event => { event.preventDefault(); void run(); }}>
       <label className="block text-sm">Nombre del vino o bodega<Input value={query} maxLength={120} autoComplete="off" className="mt-1 min-h-11 text-base" onChange={event => {
-        controller.current?.abort(); controller.current = null; setBusy(false); setRows([]); setNotice(''); setQuery(event.target.value);
+        controller.current?.abort(); controller.current = null; setBusy(false); setRows([]); setNotice(''); setVintage('all'); setPage(0); setQuery(event.target.value);
       }} /></label>
       <Button type="submit" disabled={disabled || busy || query.trim().length < 2} variant="outline" className="min-h-11 gap-2"><Search aria-hidden="true" className="h-4 w-4" /> Buscar</Button>
     </form>
     {busy && <Button type="button" variant="outline" className="min-h-11 gap-2" onClick={() => { controller.current?.abort(); controller.current = null; setBusy(false); setNotice('Búsqueda cancelada.'); }}><X aria-hidden="true" className="h-4 w-4" /> Cancelar</Button>}
     {notice && <p role="status" className="text-sm leading-6">{notice}</p>}
-    {rows.length > 3 && <p className="text-sm">3 de {rows.length} propuestas. Concreta la búsqueda si no aparece la tuya.</p>}
-    <ul className="divide-y divide-stone-200">{rows.slice(0, 3).map(row => <li key={row.id} className="min-w-0 space-y-2 py-3">
+    {rows.length > 0 && <label className="block text-sm">Añada de la ficha
+      <select aria-label="Filtrar por añada" value={vintage} disabled={disabled || busy}
+        className="mt-1 min-h-11 w-full rounded-md border border-stone-300 bg-white px-3 text-base"
+        onChange={event => { setVintage(event.target.value); setPage(0); }}>
+        <option value="all">Todas las añadas</option>
+        {visible.years.map(year => <option key={year} value={year}>{year === 'undated' ? 'Ficha sin añada' : year}</option>)}
+      </select>
+    </label>}
+    {rows.length > 0 && <p role="status" className="text-sm">{visible.total} referencias · Página {visible.current + 1} de {visible.pages}</p>}
+    <ul className="divide-y divide-stone-200">{visible.rows.map(row => <li key={row.id} className="min-w-0 space-y-2 py-3">
       <p className="font-semibold">{row.name}{row.subname && !row.name.includes(row.subname) ? ` ${row.subname}` : ''}</p>
       <p className="text-sm">{row.winery} · {row.vintage || 'Ficha sin añada'}</p>
       {row.vintage == null && <p className="text-sm">Elegir esta referencia no confirma la cosecha de tu botella.</p>}
       {row.vintage != null && candidate.vintage !== Number(row.vintage) && <p className="text-sm">Al elegirla, tu añada se cambiará a {row.vintage}.</p>}
       <Button type="button" variant="outline" disabled={disabled || busy} onClick={() => void run(row)} className="h-auto min-h-11 w-full gap-2 whitespace-normal py-3"><Check aria-hidden="true" className="h-4 w-4 shrink-0" /> Esta es mi referencia</Button>
     </li>)}</ul>
+    {visible.pages > 1 && <nav aria-label="Páginas de referencias" className="flex items-center justify-between gap-3">
+      <Button type="button" variant="outline" aria-label="Referencias anteriores" title="Referencias anteriores"
+        className="h-11 w-11 shrink-0 p-0" disabled={disabled || busy || visible.current === 0}
+        onClick={() => setPage(visible.current - 1)}><ChevronLeft aria-hidden="true" className="h-5 w-5" /></Button>
+      <span className="text-sm">{visible.current + 1} / {visible.pages}</span>
+      <Button type="button" variant="outline" aria-label="Referencias siguientes" title="Referencias siguientes"
+        className="h-11 w-11 shrink-0 p-0" disabled={disabled || busy || visible.current + 1 >= visible.pages}
+        onClick={() => setPage(visible.current + 1)}><ChevronRight aria-hidden="true" className="h-5 w-5" /></Button>
+    </nav>}
   </section>;
 };

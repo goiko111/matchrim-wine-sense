@@ -38,6 +38,7 @@ function host(lookup) {
       if (name.endsWith('/nativeCatalogAdmission97')) return { canAdmitNativeCatalogLookup97: () => true };
       if (name.endsWith('/nativeGlobalCatalogue103')) return { lookupGlobalCatalogue103: lookup };
       if (name.endsWith('/wineAffinityExplanation')) return {};
+      if (name.endsWith('/nativeCataloguePage163')) return {};
       throw Error('UNEXPECTED_IMPORT:' + name);
     },
   });
