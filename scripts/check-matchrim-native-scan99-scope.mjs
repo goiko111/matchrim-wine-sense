@@ -6,11 +6,12 @@ import vm from 'node:vm';
 import ts from 'typescript';
 import { nativeScan99Baseline, restoreNativeScan99, restoreNativeScan99Guard } from './native-scan99-scope.mjs';
 import { restoreNativeHome98Guard } from './native-home98-scope.mjs';
+import { restoreLabelEvidence152, restoreLocalPrivacy152 } from './native-local-privacy152-scope.mjs';
 
 const root = new URL('../', import.meta.url);
 const scan = 'src/pages/Scan.tsx', svg = 'scripts/check-matchrim-scan-hub-svg96.mjs';
 const heading = 'scripts/check-matchrim-scan-heading96.mjs', visual = 'scripts/native-visual98-scope.mjs';
-const read = file => readFileSync(new URL(file, root), 'utf8');
+const read = file => restoreLabelEvidence152(file, restoreLocalPrivacy152(file, readFileSync(new URL(file, root), 'utf8')));
 const cache = new Map();
 const prior = (file, revision = nativeScan99Baseline) => {
   const key = `${revision}:${file}`;
