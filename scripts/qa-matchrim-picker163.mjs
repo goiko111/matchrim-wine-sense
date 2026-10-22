@@ -29,8 +29,8 @@ const result = { passed: false, startedUTC: new Date().toISOString(), sourceHash
   scope: 'Real native-only picker in isolated Chromium mobile rendering; 23 synthetic observed-contract rows, mocked GET transport. Not iOS/WebKit, real recognition, physical device, or deployed catalogue approval.' };
 try {
   server = await createServer({ configFile: false, envDir: false, root: process.cwd(), plugins: [react(), {
-    name: 'isolated-picker163', configureServer(s) { s.middlewares.use((req, res, next) => {
-      if (req.url === '/picker163') { res.setHeader('Content-Type', 'text/html'); res.end('<!doctype html><html lang="es"><meta name="viewport" content="width=device-width,initial-scale=1"><div id="root"></div><script type="module" src="/picker163.jsx"></script></html>'); }
+    name: 'isolated-picker163', configureServer(s) { s.middlewares.use(async (req, res, next) => {
+      if (req.url === '/picker163') { res.setHeader('Content-Type', 'text/html'); res.end(await s.transformIndexHtml('/picker163', '<!doctype html><html lang="es"><meta name="viewport" content="width=device-width,initial-scale=1"><div id="root"></div><script type="module" src="/picker163.jsx"></script></html>')); }
       else next();
     }); }, resolveId(id) { if (id === '/picker163.jsx') return '\0picker163.jsx'; },
     load(id) { if (id === '\0picker163.jsx') return module; },
