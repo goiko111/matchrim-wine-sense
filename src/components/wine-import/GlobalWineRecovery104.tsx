@@ -76,16 +76,21 @@ export const GlobalWineRecovery104 = ({ candidate, contextKey, profile, disabled
         if ('wine' in result) { current.current.onConfirmed(applyGlobalCatalogue103(candidate, profile, result.wine, candidate.source === 'manual')); return; }
       }
       const rows: PublicGlobalRow103[] = [];
-      let unavailable = false;
+      let unavailable = false, incomplete = false;
       for (const query of globalRecoveryQueries104(candidate.name, evidence, !useLocalReading && candidate.source === 'manual', vintage)) {
         const page = await client.searchProposals(query, controller.signal); if (!active()) return;
         unavailable ||= page.status === 'unavailable';
+        incomplete ||= page.status !== 'complete';
         rows.push(...page.rows);
       }
       const next = rankGlobalProposals104(!useLocalReading && candidate.source === 'manual' ? [candidate.name, candidate.producer || ''] : evidence, rows, vintage);
       setProposals(next);
-      setNotice(next.length ? 'No hemos confirmado el vino. Compara la etiqueta y elige solo si coincide.' : unavailable ? 'No podemos conectar con Winerim. Puedes reintentar sin cambiar tu vino.'
-        : 'No hay una propuesta suficientemente parecida. Corrige el nombre o prueba una foto más cercana.');
+      setNotice(next.length ? incomplete
+        ? 'La búsqueda está incompleta. Estas son algunas propuestas; compara la etiqueta y elige solo si coincide.'
+        : 'No hemos confirmado el vino. Compara la etiqueta y elige solo si coincide.'
+        : unavailable ? 'No podemos conectar con Winerim. Puedes reintentar sin cambiar tu vino.'
+          : incomplete ? 'No hemos podido completar la búsqueda. No significa que tu vino no esté en Winerim. Corrige el nombre completo o prueba una foto más cercana.'
+            : 'No hay una propuesta suficientemente parecida. Corrige el nombre o prueba una foto más cercana.');
     } catch { if (active()) setNotice('No se ha podido consultar Winerim. Puedes reintentar sin cambiar tu vino.'); }
     finally { if (pending.current === controller) { pending.current = null; setBusy(false); } }
   };

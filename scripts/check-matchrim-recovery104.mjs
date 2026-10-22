@@ -108,6 +108,35 @@ await test('Unavailable and rejected detail leave wine unchanged; no model retry
   changed.button('Encontrar mi vino en Winerim').onClick(); await tick(); changed.button('Confirmar esta referencia').onClick(); await tick();
   assert(text(changed.render()).includes('Tu vino no ha cambiado')); assert.equal(changed.confirmations.length, 0); changed.unmount();
 });
+await test('Partial or malformed retrieval cannot masquerade as a completed no-match', async () => {
+  for (const status of ['partial', 'incomplete']) {
+    let requests = 0;
+    const h = host({ search: async () => { requests++; return { rows: [], status }; } });
+    h.button('Encontrar mi vino en Winerim').onClick(); await tick();
+    const label = text(h.render());
+    assert(label.includes('No hemos podido completar la búsqueda'));
+    assert(label.includes('No significa que tu vino no esté en Winerim'));
+    assert(!label.includes('No hay una propuesta suficientemente parecida'));
+    assert.equal(requests, 1); assert.equal(h.confirmations.length, 0); h.unmount();
+  }
+});
+await test('Incomplete suggestions remain explicitly partial and require the unchanged explicit confirmation', async () => {
+  const h = host({ search: async () => ({ rows: [row], status: 'partial' }) });
+  h.button('Encontrar mi vino en Winerim').onClick(); await tick();
+  const label = text(h.render());
+  assert(label.includes('La búsqueda está incompleta. Estas son algunas propuestas'));
+  assert(label.includes('Comprueba la bodega')); assert(label.includes('Confirmar esta referencia'));
+  assert.equal(h.confirmations.length, 0); h.unmount();
+});
+await test('One unavailable query plus one usable result still warns about incomplete coverage without retrying', async () => {
+  const calls = [];
+  const h = host({ search: async query => {
+    calls.push(query); return calls.length === 1 ? { rows: [], status: 'unavailable' } : { rows: [row], status: 'complete' };
+  } }, { ...candidate, evidence: ['VIDURE', 'Pago de Cirsus'] });
+  h.button('Encontrar mi vino en Winerim').onClick(); await tick();
+  assert.equal(calls.length, 2); assert(text(h.render()).includes('La búsqueda está incompleta'));
+  assert(text(h.render()).includes('Confirmar esta referencia')); assert.equal(h.confirmations.length, 0); h.unmount();
+});
 await test('Actual scanner confirmation enables saving and clears obsolete errors, but rejects stale regions', () => {
   const scanner = fs.readFileSync('src/components/wine-import/MultiWineLabelScanner.tsx', 'utf8');
   const ast = ts.createSourceFile('scanner.tsx', scanner, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
