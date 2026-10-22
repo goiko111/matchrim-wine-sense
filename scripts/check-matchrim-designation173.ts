@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import { createHash } from 'node:crypto';
 import { hasMissingVisibleQualifier102 } from '../src/utils/nativeWineQualifier102';
 import { rankGlobalProposals104 } from '../src/utils/globalWineProposals104';
+import { createGlobalCatalogue103 } from '../src/utils/nativeGlobalCatalogue103';
 
 let groups = 0;
 const test = (name: string, body: () => void) => { body(); groups++; console.log('PASS', name); };
@@ -51,5 +52,13 @@ test('The actual retained060 OCR cannot propose its broad Valpolicella neighbor'
   assert.equal(neighbor.name, 'Bertani Valpolicella');
   assert.deepEqual(rankGlobalProposals104(evidence, [neighbor], scene.candidateVintage), []);
 });
+{
+  let calls = 0;
+  const client = createGlobalCatalogue103(async () => { calls++; return Response.json({ count: 0, page: 1, results: [] }); });
+  const input = { name: 'Atlas Valpolicella', producer: 'Atlas Estate', vintage: 2020, evidence: ['AMARONE', 'Atlas Estate', '2020'] };
+  assert.equal((await client.lookup(input)).status, 'identity-required'); assert.equal(calls, 0);
+  assert.equal((await client.lookup({ ...input, name: 'Atlas Amarone' })).status, 'not-found'); assert.equal(calls, 1);
+  groups++; console.log('PASS Automatic public lookup rejects an omitted designation before any GET, without blocking the qualified control');
+}
 console.log(JSON.stringify({ groups, passed: true, realGET: 0, modelStarts: 0,
   scope: 'Observed designation guard and retained false-positive regression; not identity recovery or sensory calibration' }));

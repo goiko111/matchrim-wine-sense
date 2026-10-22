@@ -86,6 +86,25 @@ Handler suite now18 groups. Native manual164-r7 on candidate105-r6 (`659e921`)
 passed the actual gallery/manual-query/2022/saved-love/five-axis path before this
 isolated cancellation fix; its receipt remains historical, not the final artifact.
 
+## Final172 evidence
+
+- `picker163-broad172-r4`: final picker source (`c863a52`), five controlled list
+  pages + independent detail,96 rows, partial/complete/filter states,
+  375/440px/root32px PASS. Both375 partial-state captures manually inspected;
+  the prompt no longer clips. No console pageerrors or horizontal overflow.
+- Actual native `browse172-r4`: gallery/local Vision, resident QA account, real
+  manual Campillo query, actual load button20 ->40/112; no selection/save/rating.
+  Current-viewport Apple accessibility audit zero issues, none suppressed.
+  Next40 PNG/AX manually inspected. Failed r1-r3 remain as documented in173.
+- Four broad retrieval sequences above validate393 accessible rows vs80, not
+  four identities. Of the28 automatic partial scenes,15 have all currently broad
+  query counts within the400 manual cap;13 still require refinement. This is
+  a bound/inventory observation, not15 completed live manual scene tests.
+- Final build105-r8 and current native saved-affinity check are in173 below.
+  Recognition replay remains151/200 evaluable,49 incomplete: NO-GO, not ready.
+- Final conservative free ledger345/400,55 remaining, including failed harness
+  reservations and final manual-affinity native reservation. Paid cap unchanged.
+
 Protected `src/index.css` and `supabase/functions/search-wines/index.ts` remain
 byte-identical to `db6a181`. No full-catalogue sensory/vintage completeness claim.
 TestFlight remains blocked until remaining recognition and native QA gates close.
