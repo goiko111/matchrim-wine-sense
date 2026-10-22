@@ -183,4 +183,14 @@ await test('Unidentified sentinel is not a search query and proper names are not
     assert.equal(input.autoCorrect, 'off'); assert.equal(input.autoCapitalize, 'none'); assert.equal(input.spellCheck, false); h.unmount();
   }
 });
+await test('Search stays alongside input and dismisses keyboard before starting retrieval', async () => {
+  const order = [], h = host({ searchProposals: async () => { order.push('search'); return { status: 'complete', rows: [] }; } });
+  const input = h.elements('input')[0];
+  assert.equal(input.props.enterKeyHint, 'search');
+  input.ref.current = { blur: () => order.push('blur') };
+  assert(h.elements('form')[0].props.className.includes('items-end'));
+  assert.equal(h.button('Buscar')['aria-label'], 'Buscar');
+  assert.equal(h.button('Buscar').title, 'Buscar');
+  h.submit(); await tick(); assert.deepEqual(order, ['blur', 'search']); h.unmount();
+});
 console.log(JSON.stringify({ groups, realNetworkCalls: 0, modelStarts: 0, scope: 'Actual TSX handlers and actual bounded catalogue parser with controlled transport, not native visual QA' }));

@@ -42,11 +42,12 @@ final class MatchrimManual164Tests: MatchrimRescan161Tests {
         try require(field.value as? String == "Flor de Muga Blanco", app, "Exact manual query required")
         audit(app, "manual164-explicit-query")
         try tapUnique(web.buttons.matching(NSPredicate(format: "label == %@", "Buscar")), app)
-        let filters = web.popUpButtons.matching(NSPredicate(format: "label == %@", "Filtrar por a\u{00f1}ada"))
-        let fallback = web.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Filtrar por a\u{00f1}ada"))
-        try require(wait(25) { filters.count == 1 || fallback.count == 1 }, app, "Actual native vintage selector required")
+        let filters = web.otherElements.matching(NSPredicate(format: "label == %@", "Filtrar por a\u{00f1}ada"))
+        try require(wait(25) { filters.count == 1 }, app, "Actual native vintage selector required")
+        try require(wait(8) { app.keyboards.count == 0 }, app, "Native keyboard must close before selecting vintage")
         audit(app, "manual164-all-public-results")
-        try tap(filters.count == 1 ? filters.firstMatch : fallback.firstMatch, app)
+        try reveal(filters.firstMatch, app)
+        try tap(filters.firstMatch, app)
         let wheels = app.pickerWheels.allElementsBoundByIndex
         if wheels.count == 1 { wheels[0].adjust(toPickerWheelValue: "2022") }
         else {
@@ -57,7 +58,11 @@ final class MatchrimManual164Tests: MatchrimRescan161Tests {
         let done = app.buttons.matching(NSPredicate(format: "label IN %@", ["Done", "OK", "Aceptar", "Listo"]))
             .allElementsBoundByIndex.filter { $0.isHittable }
         if done.count == 1 { try tap(done[0], app) }
-        try require(wait(8) { web.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "tu a\u{00f1}ada se cambiar\u{00e1} a 2022")).count > 0 }, app, "Explicit vintage-change warning required")
+        let expectedRows = web.otherElements.matching(NSPredicate(format: "label == %@", "Flor de Muga Blanco Muga \u{00b7} 2022 Al elegirla, tu a\u{00f1}ada se cambiar\u{00e1} a 2022."))
+        try require(wait(8) { expectedRows.count > 0 && expectedRows.count <= 3 }, app, "Explicit scoped vintage-change warning required")
+        try require(expectedRows.firstMatch.staticTexts["Flor de Muga Blanco"].exists
+            && expectedRows.firstMatch.staticTexts["Muga"].exists
+            && expectedRows.firstMatch.staticTexts["2022"].exists, app, "Literal selected-row identity required")
         audit(app, "manual164-explicit-vintage"); emit("MANUAL164_EXPLICIT_VINTAGE")
         let confirm = web.buttons.matching(NSPredicate(format: "label == %@", "Esta es mi referencia"))
         try require(confirm.count >= 1 && confirm.count <= 3, app, "Bounded visible catalogue choices required")

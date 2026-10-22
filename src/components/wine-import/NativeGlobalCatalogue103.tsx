@@ -110,6 +110,7 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
   const [rows, setRows] = useState<PublicProposal103[]>([]), [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
   const [vintage, setVintage] = useState('all'), [page, setPage] = useState(0);
+  const queryInput = useRef<HTMLInputElement | null>(null);
   const saved = nativeSavedCatalogue168(ownerId, savedVerdicts, rows);
   const visible = nativeCataloguePage163(rows, vintage, page, saved);
   const controller = useRef<AbortController | null>(null);
@@ -155,11 +156,11 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
   };
   if (!open) return <Button type="button" variant="outline" disabled={disabled} onClick={() => setOpen(true)} className="h-auto min-h-11 w-full gap-2 whitespace-normal py-3"><Search aria-hidden="true" className="h-4 w-4 shrink-0" /> Buscar otra referencia en Winerim</Button>;
   return <section aria-label="Buscar en el catálogo global" className="min-w-0 space-y-3 [overflow-wrap:anywhere]">
-    <form className="space-y-2" onSubmit={event => { event.preventDefault(); void run(); }}>
-      <label className="block text-sm">Nombre del vino o bodega<Input value={query} maxLength={120} autoComplete="off" autoCorrect="off" autoCapitalize="none" spellCheck={false} className="mt-1 min-h-11 text-base" onChange={event => {
+    <form className="flex min-w-0 items-end gap-2" onSubmit={event => { event.preventDefault(); queryInput.current?.blur(); void run(); }}>
+      <label className="block min-w-0 flex-1 text-sm">Nombre del vino o bodega<Input ref={queryInput} value={query} maxLength={120} enterKeyHint="search" autoComplete="off" autoCorrect="off" autoCapitalize="none" spellCheck={false} className="mt-1 min-h-11 text-base" onChange={event => {
         controller.current?.abort(); controller.current = null; setBusy(false); setRows([]); setNotice(''); setVintage('all'); setPage(0); setQuery(event.target.value);
       }} /></label>
-      <Button type="submit" disabled={disabled || busy || query.trim().length < 2} variant="outline" className="min-h-11 gap-2"><Search aria-hidden="true" className="h-4 w-4" /> Buscar</Button>
+      <Button type="submit" aria-label="Buscar" title="Buscar" disabled={disabled || busy || query.trim().length < 2} variant="outline" className="h-11 w-11 shrink-0 p-0"><Search aria-hidden="true" className="h-5 w-5" /></Button>
     </form>
     {busy && <Button type="button" variant="outline" className="min-h-11 gap-2" onClick={() => { controller.current?.abort(); controller.current = null; setBusy(false); setNotice('Búsqueda cancelada.'); }}><X aria-hidden="true" className="h-4 w-4" /> Cancelar</Button>}
     {notice && <p role="status" className="text-sm leading-6">{notice}</p>}
