@@ -6,12 +6,13 @@ import { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97'
 import { Input } from '@/components/ui/input';
 import type { WineCandidate } from '@/utils/multiWineScan';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
-import { applyGlobalCatalogue103, createGlobalCatalogue103, exactGlobalVintage103, isGlobalWine103, lookupGlobalCatalogue103, globalSensory103, type GlobalWine103 } from '@/utils/nativeGlobalCatalogue103';
+import { applyGlobalCatalogue103, createGlobalCatalogue103, exactGlobalVintage103, isGlobalWine103, lookupGlobalCatalogue103, globalSensory103, type GlobalWine103, type CatalogueCursor172 } from '@/utils/nativeGlobalCatalogue103';
 import { buildAffinityInsights, calculateLocalMatchrimAffinity } from '@/utils/wineAffinityExplanation';
 import { nativeCataloguePage163 } from '@/utils/nativeCataloguePage163';
 import { nativeSavedCatalogue168 } from '@/utils/nativeSavedCatalogue168';
 import type { NativeVerdicts159 } from '@/utils/nativeRescanVerdict159';
 import { isPendingLocalIdentity109 } from '@/utils/nativeSingleLabel109';
+import { globalRecoveryQueries104 } from '@/utils/globalWineProposals104';
 
 export const GlobalWineReference103 = ({ candidate, profile }: { candidate: WineCandidate; profile: MatchrimProfileLike | null }) => {
   const wine = candidate.globalRecord;
@@ -110,23 +111,28 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
   const [rows, setRows] = useState<PublicProposal103[]>([]), [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
   const [vintage, setVintage] = useState('all'), [page, setPage] = useState(0);
+  const [next, setNext] = useState<CatalogueCursor172 | null>(null), [publicCount, setPublicCount] = useState<number | null>(null);
+  const client = useRef<ReturnType<typeof createGlobalCatalogue103> | null>(null);
   const queryInput = useRef<HTMLInputElement | null>(null);
   const saved = nativeSavedCatalogue168(ownerId, savedVerdicts, rows);
   const visible = nativeCataloguePage163(rows, vintage, page, saved);
+  const refinements = [...new Set((candidate.evidence || []).slice(0, 100)
+    .flatMap(line => globalRecoveryQueries104('', [line])))].filter(value => value !== query).slice(0, 6);
   const controller = useRef<AbortController | null>(null);
   const current = useRef({ contextKey, query, disabled, onConfirmed, vintage, page, ownerId, savedVerdicts });
   current.current = { contextKey, query, disabled, onConfirmed, vintage, page, ownerId, savedVerdicts };
   useEffect(() => {
-    setBusy(false);
+    setBusy(false); setNext(null); setPublicCount(null); client.current = null;
+    setRows([]); setNotice(''); setVintage('all'); setPage(0);
     return () => { controller.current?.abort(); controller.current = null; };
   }, [contextKey, ownerId, savedVerdicts]);
   useEffect(() => { if (disabled) controller.current?.abort(); }, [disabled]);
-  const run = async (selected?: PublicProposal103) => {
+  const run = async (selected?: PublicProposal103, more = false) => {
     if (disabled || current.current.disabled || controller.current
       || current.current.contextKey !== contextKey || current.current.query !== query
       || current.current.ownerId !== ownerId || current.current.savedVerdicts !== savedVerdicts
       || current.current.vintage !== vintage || current.current.page !== page
-      || (selected && !visible.rows.includes(selected))) return;
+      || (selected && !visible.rows.includes(selected)) || (more && (!next || selected))) return;
     const abort = new AbortController(); controller.current = abort; setBusy(true); setNotice('');
     const scope = { contextKey, query };
     const active = () => controller.current === abort && !abort.signal.aborted && !current.current.disabled
@@ -134,12 +140,20 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
       && current.current.ownerId === ownerId && current.current.savedVerdicts === savedVerdicts
       && current.current.vintage === vintage && current.current.page === page;
     try {
-      const client = createGlobalCatalogue103();
+      const catalogue = client.current ??= createGlobalCatalogue103();
       if (!selected) {
-        const result = await client.searchProposals(query, abort.signal); if (!active()) return;
-        setRows(result.rows); setVintage('all'); setPage(0);
+        const result = more ? await catalogue.browseProposals(query, next, abort.signal)
+          : await catalogue.searchProposals(query, abort.signal); if (!active()) return;
+        setNext('next' in result ? result.next : null);
+        if ('count' in result && result.count !== null) setPublicCount(result.count);
+        else if (!more) setPublicCount(null);
+        if (more) {
+          setRows(previous => [...previous, ...result.rows]);
+          setPage(Math.floor(visible.total / 3));
+        } else { setRows(result.rows); setVintage('all'); setPage(0); }
         setNotice(result.status === 'complete' ? result.rows.length ? 'Elige solo la referencia que coincida con tu etiqueta.' : 'No hay propuestas para esta búsqueda.'
-          : result.status === 'partial' ? 'Búsqueda incompleta. Solo se muestran algunas referencias; concreta el nombre si no aparece la tuya.'
+          : 'limited' in result && result.limited ? 'Has llegado al límite de esta búsqueda. Concreta el nombre para encontrar tu referencia.'
+            : result.status === 'partial' ? 'Búsqueda incompleta. Hay más referencias en Winerim. Puedes cargar otra página o concretar el nombre.'
             : result.status === 'incomplete' ? 'No se ha podido completar la búsqueda. Concreta el nombre o busca por bodega.' : 'No se ha podido consultar Winerim.');
       } else {
         const name = selected.subname && !selected.name.toLowerCase().includes(selected.subname.toLowerCase()) ? `${selected.name} ${selected.subname}` : selected.name;
@@ -147,7 +161,7 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
           vintage: selected.vintage == null ? candidate.vintage : Number(selected.vintage), region: null, country: null, grapes: [], alcohol: null,
           inferredFields: [], uncertaintyReasons: [], evidence: ['Referencia elegida por el usuario'], source: 'manual',
           globalRecord: null, masterRecord: null, originalSheet: null, canonicalId: null, sensoryAttributes: null, affinity: null };
-        const result = await client.confirmSelection(manual, selected, abort.signal); if (!active()) return;
+        const result = await catalogue.confirmSelection(manual, selected, abort.signal); if (!active()) return;
         if ('wine' in result) current.current.onConfirmed(applyGlobalCatalogue103(manual, profile, result.wine, true));
         else setNotice('La ficha no se ha podido verificar. No se ha cambiado tu vino.');
       }
@@ -158,12 +172,23 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
   return <section aria-label="Buscar en el catálogo global" className="min-w-0 space-y-3 [overflow-wrap:anywhere]">
     <form className="flex min-w-0 items-end gap-2" onSubmit={event => { event.preventDefault(); queryInput.current?.blur(); void run(); }}>
       <label className="block min-w-0 flex-1 text-sm">Nombre del vino o bodega<Input ref={queryInput} value={query} maxLength={120} enterKeyHint="search" autoComplete="off" autoCorrect="off" autoCapitalize="none" spellCheck={false} className="mt-1 min-h-11 text-base" onChange={event => {
-        controller.current?.abort(); controller.current = null; setBusy(false); setRows([]); setNotice(''); setVintage('all'); setPage(0); setQuery(event.target.value);
+        controller.current?.abort(); controller.current = null; setBusy(false); setRows([]); setNotice(''); setNext(null); setPublicCount(null); setVintage('all'); setPage(0); setQuery(event.target.value);
       }} /></label>
       <Button type="submit" aria-label="Buscar" title="Buscar" disabled={disabled || busy || query.trim().length < 2} variant="outline" className="h-11 w-11 shrink-0 p-0"><Search aria-hidden="true" className="h-5 w-5" /></Button>
     </form>
     {busy && <Button type="button" variant="outline" className="min-h-11 gap-2" onClick={() => { controller.current?.abort(); controller.current = null; setBusy(false); setNotice('Búsqueda cancelada.'); }}><X aria-hidden="true" className="h-4 w-4" /> Cancelar</Button>}
     {notice && <p role="status" className="text-sm leading-6">{notice}</p>}
+    {publicCount !== null && publicCount > rows.length && <p className="text-sm text-stone-700">{rows.length} de {publicCount} referencias cargadas. El filtro de añada solo incluye las cargadas.</p>}
+    {publicCount !== null && publicCount > rows.length && refinements.length > 0 && <label className="block text-sm">Texto leído en tu etiqueta
+      <select aria-label="Acotar con texto de la etiqueta" value="" disabled={disabled || busy}
+        className="mt-1 min-h-11 w-full max-w-full rounded-md border border-stone-300 bg-white px-3 text-base"
+        onChange={event => { if (!refinements.includes(event.target.value)) return;
+          setQuery(event.target.value); setNext(null); setPublicCount(null); setRows([]); setNotice(''); setVintage('all'); setPage(0);
+          queryInput.current?.focus(); }}>
+        <option value="">Elegir un nombre leído</option>
+        {refinements.map(value => <option key={value} value={value}>{value}</option>)}
+      </select>
+    </label>}
     {rows.length > 0 && <label className="block text-sm">Añada de la ficha
       <select aria-label="Filtrar por añada" value={vintage} disabled={disabled || busy}
         className="mt-1 min-h-11 w-full rounded-md border border-stone-300 bg-white px-3 text-base"
@@ -190,5 +215,7 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
         className="h-11 w-11 shrink-0 p-0" disabled={disabled || busy || visible.current + 1 >= visible.pages}
         onClick={() => setPage(visible.current + 1)}><ChevronRight aria-hidden="true" className="h-5 w-5" /></Button>
     </nav>}
+    {next && <Button type="button" variant="outline" disabled={disabled || busy} onClick={() => void run(undefined, true)}
+      className="h-auto min-h-11 w-full gap-2 whitespace-normal px-3 py-3"><ChevronRight aria-hidden="true" className="h-5 w-5 shrink-0" /> Cargar más referencias de Winerim</Button>}
   </section>;
 };

@@ -7,6 +7,7 @@ import { createGlobalCatalogue103 } from '../src/utils/nativeGlobalCatalogue103.
 import { nativeSavedCatalogue168 } from '../src/utils/nativeSavedCatalogue168.ts';
 import { nativeVerdictsSnapshot159 } from '../src/utils/nativeRescanVerdict159.ts';
 import { isPendingLocalIdentity109 } from '../src/utils/nativeSingleLabel109.ts';
+import { globalRecoveryQueries104 } from '../src/utils/globalWineProposals104.ts';
 
 const require = createRequire(import.meta.url), React = require('react'), ts = require('typescript');
 const source = fs.readFileSync('src/components/wine-import/NativeGlobalCatalogue103.tsx', 'utf8');
@@ -26,7 +27,7 @@ function host(client, deferEffects = false, initialName = 'Vidure') {
     require(name) {
       if (name === 'react/jsx-runtime') return require(name);
       if (name === 'react') return {
-        useState(initial) { const i = cursor++; if (!(i in state)) state[i] = initial; return [state[i], value => { if (!mounted) lateWrites++; state[i] = value; }]; },
+        useState(initial) { const i = cursor++; if (!(i in state)) state[i] = initial; return [state[i], value => { if (!mounted) lateWrites++; state[i] = typeof value === 'function' ? value(state[i]) : value; }]; },
         useRef(initial) { const i = cursor++; return refs[i] ||= { current: initial }; },
         useEffect(work, deps) { const i = cursor++, old = effects[i]; if (!old || deps.some((v, j) => v !== old.deps[j])) {
           if (deferEffects) pendingEffects.set(i, { deps, work });
@@ -40,6 +41,7 @@ function host(client, deferEffects = false, initialName = 'Vidure') {
       if (name.endsWith('/nativeCataloguePage163')) return { nativeCataloguePage163 };
       if (name.endsWith('/nativeSavedCatalogue168')) return { nativeSavedCatalogue168 };
       if (name.endsWith('/nativeSingleLabel109')) return { isPendingLocalIdentity109 };
+      if (name.endsWith('/globalWineProposals104')) return { globalRecoveryQueries104 };
       if (name.endsWith('/nativeGlobalCatalogue103')) return { createGlobalCatalogue103: () => client,
         applyGlobalCatalogue103: (value, profile, wine) => ({ ...value, globalRecord: wine }) };
       if (name.endsWith('/nativeCatalogAdmission97') || name.endsWith('/wineAffinityExplanation')) return {};
@@ -101,6 +103,40 @@ await test('Actual picker reaches page2 and a vintage from page2 of the real cli
 await test('Partial results are visible as incomplete, never a complete catalogue', async () => {
   const h = host({ searchProposals: async () => ({ status: 'partial', rows }) }); h.submit(); await tick();
   assert(text(h.render()).includes('Búsqueda incompleta')); assert.equal(h.confirmations.length, 0); h.unmount();
+});
+await test('Explicit server-page action keeps the same client and loads exactly one page, without auto-confirm', async () => {
+  const all = Array.from({ length: 96 }, (_, i) => ({ ...fixture, id: i + 1, vintage: i < 20 ? null : '2022' }));
+  const calls = [], client = createGlobalCatalogue103(async input => {
+    const url = new URL(String(input)); calls.push(url.href); const number = Number(url.searchParams.get('page'));
+    return Response.json({ count: 96, page: number, results: all.slice((number - 1) * 20, number * 20) });
+  });
+  const h = host(client); h.submit(); await tick(); assert.equal(calls.length, 1);
+  assert(text(h.render()).includes('20 de 96 referencias cargadas'));
+  const load = h.button('Cargar más referencias de Winerim'); assert.equal(load.disabled, false); load.onClick(); await tick();
+  assert.equal(calls.length, 2); assert(text(h.render()).includes('40 de 96 referencias cargadas'));
+  assert.equal(h.confirmations.length, 0); assert.equal(h.elements('select').find(n => n.props['aria-label'] === 'Filtrar por añada').props.children[1][0].props.value, '2022');
+  h.unmount();
+});
+await test('Refinement uses literal OCR only, resets pagination, and does not send an implicit query', async () => {
+  let calls = 0;
+  const client = createGlobalCatalogue103(async () => { calls++; return Response.json({ count: 96, page: 1, results: rows.slice(0, 20) }); });
+  const h = host(client); h.props.candidate.evidence = ['Cuvee Horizon', 'TREBBIANO', 'https://invalid.test', 'Independent Estate'];
+  h.submit(); await tick();
+  const select = h.elements('select').find(n => n.props['aria-label'] === 'Acotar con texto de la etiqueta');
+  assert(select); assert(!text(select).includes('TREBBIANO')); assert(!text(select).includes('invalid.test'));
+  select.props.onChange({ target: { value: 'Invented Wine' } }); assert.equal(h.elements('input')[0].props.value, 'Vidure');
+  select.props.onChange({ target: { value: 'Cuvee Horizon' } }); assert.equal(h.elements('input')[0].props.value, 'Cuvee Horizon');
+  assert(!text(h.render()).includes('20 de 96')); assert.equal(calls, 1); assert.equal(h.confirmations.length, 0); h.unmount();
+});
+await test('A delayed server page cannot leak after query or owner changes', async () => {
+  for (const changed of ['query', 'owner']) {
+    let resolve, calls = 0; const pending = new Promise(r => { resolve = r; });
+    const client = createGlobalCatalogue103(async () => ++calls === 1 ? Response.json({ count: 96, page: 1, results: rows.slice(0, 20) }) : pending);
+    const h = host(client); h.submit(); await tick(); h.button('Cargar más referencias de Winerim').onClick();
+    if (changed === 'query') h.elements('input')[0].props.onChange({ target: { value: 'Other' } }); else h.props.contextKey = 'owner-b';
+    h.render(); resolve(Response.json({ count: 96, page: 2, results: Array.from({ length: 20 }, (_, i) => ({ ...fixture, id: i + 21 })) })); await tick();
+    assert(!text(h.render()).includes('40 de 96')); assert.equal(h.confirmations.length, 0); h.unmount();
+  }
 });
 await test('Query change clears pages and ignores delayed results, preserving owner and cancellation guards', async () => {
   let resolve; const pending = new Promise(r => { resolve = r; });

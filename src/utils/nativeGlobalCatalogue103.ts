@@ -33,6 +33,9 @@ const rowSchema = z.object({ id: z.number().int().positive().safe(), name: respo
 });
 type Row = z.infer<typeof rowSchema>;
 export type PublicGlobalRow103 = Row;
+export type CatalogueCursor172 = Readonly<{ count: number; nextPage: number; loaded: number }>;
+export type CataloguePage172 = { status: 'complete' | 'partial' | 'incomplete' | 'ambiguous' | 'unavailable' | 'identity-required';
+  rows: Row[]; next: CatalogueCursor172 | null; count: number | null; limited: boolean };
 export type GlobalWine103 = Readonly<{
   namespace: 'winerim-public-store'; id: number; name: string; producer: string; vintage: string | null;
   region: string | null; country: string | null; slug: string; url: string; photo: string | null;
@@ -84,6 +87,7 @@ export const exactGlobalVintage103 = (input: WinerimOriginalIdentity, wine: Glob
 // Each operation has a total deadline, bounded streaming and cancellation even
 // when a native fetch adapter ignores AbortSignal. No cookies, keys or model API.
 export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
+  const cursors = new WeakMap<CatalogueCursor172, { query: string; ids: ReadonlySet<number> }>();
   const operation = async <T,>(signal: AbortSignal | undefined, work: (read: (url: string) => Promise<unknown>) => Promise<T>): Promise<T> => {
     const controller = new AbortController();
     const abort = () => controller.abort();
@@ -138,11 +142,14 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
           const envelope = z.object({ count: z.number().int().nonnegative().safe(), page: z.number().int().positive(),
             results: z.array(z.unknown()).max(20) });
           const rows: Row[] = [], seenIds = new Set<number>();
-          let duplicate = false;
+          let duplicate = false, publicCount: number | null = null;
           const finish = (status: 'complete' | 'partial' | 'incomplete') => {
             if (duplicate) return { status: 'ambiguous' as const, rows: [] as Row[] };
             for (const row of rows) { Object.freeze(row); observedSelections.add(row); }
-            return { status, rows: rows.filter(row => !isNonWineIdentity(row.name, row.type)) };
+            const next = status === 'partial' && publicCount !== null && rows.length === 20
+              ? Object.freeze({ count: publicCount, nextPage: 2, loaded: 20 }) : null;
+            if (next) cursors.set(next, { query: query.trim(), ids: new Set(seenIds) });
+            return { status, rows: rows.filter(row => !isNonWineIdentity(row.name, row.type)), next, count: publicCount };
           };
           const append = (values: unknown[]) => {
             let malformed = false;
@@ -161,6 +168,7 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
           };
           const first = envelope.safeParse(await read(`${root}?${new URLSearchParams({ page: '1', text: query.trim(), store: '1' })}`));
           if (!first.success || first.data.page !== 1 || first.data.count < first.data.results.length) return finish('incomplete');
+          publicCount = first.data.count;
           const malformed = append(first.data.results);
           if (malformed || (first.data.count <= 80 && first.data.count > rows.length && first.data.results.length !== 20)) return finish('incomplete');
           if (first.data.count > rows.length && first.data.count <= 80) {
@@ -234,8 +242,47 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
       || (selected.vintage != null && String(input.vintage ?? '') !== String(selected.vintage))) return { status: 'identity-required' };
     return verifySelection(input, selected, signal);
   };
+  // Explicit browsing only: one GET per user action, no automatic scan/ranking
+  // expansion. Continuations are client-owned, single-use and query-bound.
+  const browseProposals = async (query: string, cursor: CatalogueCursor172 | null = null, signal?: AbortSignal): Promise<CataloguePage172> => {
+    const empty = (status: CataloguePage172['status']): CataloguePage172 => ({ status, rows: [], next: null, count: null, limited: false });
+    if (!text.safeParse(query).success || query.trim().length < 2 || query.length > 120) return empty('identity-required');
+    const previous = cursor ? cursors.get(cursor) : null;
+    if (cursor && (!previous || previous.query !== query.trim())) return empty('identity-required');
+    if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
+    if (cursor) cursors.delete(cursor);
+    const number = cursor?.nextPage ?? 1;
+    try {
+      return await operation(signal, async read => {
+        const parsed = z.object({ count: z.number().int().nonnegative().safe(), page: z.number().int().positive(),
+          results: z.array(z.unknown()).max(20) }).safeParse(await read(`${root}?${new URLSearchParams({ page: String(number), text: query.trim(), store: '1' })}`));
+        if (!parsed.success || parsed.data.page !== number || (cursor && parsed.data.count !== cursor.count)
+          || parsed.data.results.length !== Math.min(20, Math.max(0, parsed.data.count - (number - 1) * 20))) return empty('incomplete');
+        const rows: Row[] = [], ids = new Set(previous?.ids);
+        let malformed = false;
+        for (const value of parsed.data.results) {
+          const id = value && typeof value === 'object' && 'id' in value ? value.id : undefined;
+          if (typeof id === 'number' && Number.isSafeInteger(id) && id > 0) {
+            if (ids.has(id)) return empty('ambiguous');
+            ids.add(id);
+          }
+          const row = rowSchema.safeParse(value);
+          if (row.success) rows.push(row.data); else malformed = true;
+        }
+        for (const row of rows) { Object.freeze(row); observedSelections.add(row); }
+        const loaded = (number - 1) * 20 + parsed.data.results.length;
+        const more = loaded < parsed.data.count;
+        // Manual browsing is bounded at 20 pages/400 observations per session.
+        const limited = more && number >= 20;
+        const next = more && !limited && !malformed ? Object.freeze({ count: parsed.data.count, nextPage: number + 1, loaded }) : null;
+        if (next) cursors.set(next, { query: query.trim(), ids });
+        return { status: malformed ? 'incomplete' : more ? 'partial' : 'complete',
+          rows: rows.filter(row => !isNonWineIdentity(row.name, row.type)), next, count: parsed.data.count, limited };
+      });
+    } catch { if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError'); return empty('unavailable'); }
+  };
   const searchProposals = (query: string, signal?: AbortSignal) => search(query, signal, true, true);
-  return { search, searchProposals, lookup, confirmSelection };
+  return { search, searchProposals, browseProposals, lookup, confirmSelection };
 };
 export const lookupGlobalCatalogue103 = (input: WinerimOriginalIdentity & { evidence?: readonly string[] }, signal?: AbortSignal) =>
   createGlobalCatalogue103().lookup(input, signal);
