@@ -73,6 +73,11 @@ EUR15 ceiling is unchanged, with zero new paid calls or Lovable spending here.
 - Additional partial-state captures and fresh native build/QA: pending at this
   product checkpoint; final evidence will be appended rather than overwriting it.
 
+Visual follow-up: r2 partial-state screenshot exposed a clipped selector prompt at
+375px/root32px despite no horizontal document overflow. Shortened the prompt to
+`Elegir texto` and added closed-select text measurement. Candidate105-r5 compiled
+from `39804ec`, but is superseded for this visual correction; not installed/uploaded.
+
 Protected `src/index.css` and `supabase/functions/search-wines/index.ts` remain
 byte-identical to `db6a181`. No full-catalogue sensory/vintage completeness claim.
 TestFlight remains blocked until remaining recognition and native QA gates close.

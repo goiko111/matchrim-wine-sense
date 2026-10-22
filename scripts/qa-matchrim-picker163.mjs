@@ -77,6 +77,11 @@ try {
     for (const large of [false, true]) {
       const style = large ? await page.addStyleTag({ content: 'html { font-size: 32px !important; }' }) : null;
       assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'Partial-results horizontal overflow');
+      assert(await page.getByRole('combobox', { name: 'Acotar con texto de la etiqueta', exact: true }).evaluate(element => {
+        const canvas = document.createElement('canvas'), context = canvas.getContext('2d');
+        context.font = getComputedStyle(element).font;
+        return context.measureText(element.selectedOptions[0].text).width <= element.clientWidth - 48;
+      }), 'Closed refinement selector clips its selected text');
       const button = await page.getByRole('button', { name: 'Cargar más referencias de Winerim', exact: true }).boundingBox();
       assert(button.width >= 44 && button.height >= 44 && button.x >= 0 && button.x + button.width <= 376);
       const name = large ? '375-partial-large-text' : '375-partial';

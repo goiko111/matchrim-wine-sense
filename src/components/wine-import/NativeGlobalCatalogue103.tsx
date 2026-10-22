@@ -185,7 +185,7 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
         onChange={event => { if (!refinements.includes(event.target.value)) return;
           setQuery(event.target.value); setNext(null); setPublicCount(null); setRows([]); setNotice(''); setVintage('all'); setPage(0);
           queryInput.current?.focus(); }}>
-        <option value="">Elegir un nombre leído</option>
+        <option value="">Elegir texto</option>
         {refinements.map(value => <option key={value} value={value}>{value}</option>)}
       </select>
     </label>}
