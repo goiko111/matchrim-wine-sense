@@ -53,9 +53,10 @@ Estados de consulta agregados:298 completos,47 parciales,25 no disponibles y dos
 3. Bodega respeta la valoracion personal, pero falta llevar ese veredicto exacto al reescaneo del mismo vino, con aislamiento por propietario/anada/productor.
 4. Flor de Muga tiene primera afinidad registrada68, no una inicial-al-guardar acreditada. No se rellena retroactivamente.
 5. Archivo firmado actualizado y comprobacion153 final: pendientes. No se ha subido103 ni se reutiliza la excepcion de beta limitada100.
+6. Una nueva consulta publica de Arrels, texto visible en016, devuelve HTTP500. El cliente real, probado con esa respuesta guardada y sin red nueva, lo clasifica como no disponible, no como vino inexistente. Sin reintento ni imagen enviada.
 
 ## Gasto Y Proteccion
 
-Cero nuevas llamadas de IA desde Matchrim, imagenes enviadas al proveedor, turnos de Lovable, despliegues o publicaciones web esta noche. El limite autorizado no se amplia.300 GET publicos gratuitos de CLI acumulados; GET ordinarios de la app no instrumentados. No se modifica main; index.css y search-wines siguen exactos a db6a181.
+Cero nuevas llamadas de IA desde Matchrim, imagenes enviadas al proveedor, turnos de Lovable, despliegues o publicaciones web esta noche. El limite autorizado no se amplia.301 GET publicos gratuitos de CLI acumulados; GET ordinarios de la app no instrumentados. No se modifica main; index.css y search-wines siguen exactos a db6a181.
 
 Evidencias y fallos conservados: `qa-artifacts/night105-20261021`. Detalle historico: `docs/MATCHRIM_NIGHT_105_2026-10-21.md`.
