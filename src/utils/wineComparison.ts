@@ -10,6 +10,7 @@ export interface ComparableWine {
   producer?: string | null;
   region?: string | null;
   affinity?: number | null;
+  personalRating?: 'love' | 'ok' | 'not_for_me' | null;
   confidence?: number | null;
   identityConfirmed?: boolean;
   identityReviewedByUser?: boolean;
@@ -104,6 +105,10 @@ const buildAssessment = (wine: ComparableWine, context: WineComparisonContext, p
   const reasons: string[] = [];
   const cautions: string[] = [];
 
+  if (wine.personalRating === 'love') reasons.push('Tu valoración: te encanta');
+  if (wine.personalRating === 'ok') reasons.push('Tu valoración: correcto');
+  if (wine.personalRating === 'not_for_me') cautions.push('Tu valoración: no es para ti');
+
   if (affinity !== null) reasons.push(`${Math.round(affinity)}% de afinidad registrada`);
   if (wine.identityReviewedByUser) reasons.push('Identidad revisada por ti');
   else if (confidence !== null && confidence >= 0.72) {
@@ -196,12 +201,13 @@ export const buildWineComparisonDecision = (
   const valueCurrency = priceFormat ? singlePriceCurrency(assessed.map(({ wine }) => wine)) : null;
   const ordered = assessed
     .sort((left, right) => (
-      statusOrder[left.constraintStatus] - statusOrder[right.constraintStatus]
+      (context.mode === 'personal' ? Number(left.wine.personalRating === 'not_for_me') - Number(right.wine.personalRating === 'not_for_me') : 0)
+      || statusOrder[left.constraintStatus] - statusOrder[right.constraintStatus]
       || identityReadiness(left) - identityReadiness(right)
       || compareByPriority(left, right, context.priority, valueCurrency)
       || left.wine.name.localeCompare(right.wine.name, 'es')
     ));
-  const primary = ordered[0] ?? null;
+  const primary = ordered.find(item => context.mode !== 'personal' || item.wine.personalRating !== 'not_for_me') ?? null;
   const primaryConfidence = normalizedConfidence(primary?.wine.confidence);
   const priorityDataReady = !primary
     ? false

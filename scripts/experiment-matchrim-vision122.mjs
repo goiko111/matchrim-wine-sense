@@ -28,6 +28,8 @@ const replacements = Object.freeze({
   'cpu-default': ['request.usesCPUOnly = true', 'request.usesCPUOnly = false'],
   'auto-language': ['request.automaticallyDetectsLanguage = false', 'request.automaticallyDetectsLanguage = true'],
   'literal-text': ['request.usesLanguageCorrection = true', 'request.usesLanguageCorrection = false'],
+  'lower-half-roi': ['request.minimumTextHeight = 0',
+    'request.minimumTextHeight = 0\n        request.regionOfInterest = CGRect(x: 0, y: 0, width: 1, height: 0.5)'],
   'expanded-latin': ['["es-ES", "en-US", "fr-FR"].filter { supported.contains($0) }',
     '["es-ES", "en-US", "fr-FR", "it-IT", "de-DE", "pt-PT"].filter { supported.contains($0) }'],
 });

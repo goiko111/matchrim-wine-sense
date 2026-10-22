@@ -34,8 +34,8 @@ export const rankGlobalProposals104 = (evidence: readonly string[], rows: readon
   if (!evidence.length || evidence.length > 100 || evidence.some(line => typeof line !== 'string' || line.length > 1000)) return [];
   const visible = new Set(evidence.flatMap(tokens));
   const groups = new Map<string, WineProposal104>();
-  // Recovery has at most two queries of up to60 references each.
-  for (const row of rows.slice(0, 120)) {
+  // Recovery has at most two queries of up to 80 references each.
+  for (const row of rows.slice(0, 160)) {
     const name = fullName(row);
     if (isNonWineIdentity(name, row.type) || hasConflictingNativeVintage100({ name, vintage: row.vintage })
       || hasMissingVisibleQualifier102({ name, evidence }) || hasObservedAppellationConflict120(evidence, { name, region: row.region })

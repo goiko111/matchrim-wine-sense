@@ -139,7 +139,7 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
         const rows = [...page.data.results];
         // Only the explicit proposal flow may expand small, bounded searches.
         // Automatic identity lookup retains its strict first-page contract.
-        if (paginateProposals && page.data.count > rows.length && page.data.count <= 60) {
+        if (paginateProposals && page.data.count > rows.length && page.data.count <= 80) {
           if (rows.length !== 20) return { status: 'incomplete' as const, rows: [] as Row[] };
           for (let number = 2; number <= Math.ceil(page.data.count / 20); number++) {
             const next = z.object({ count: z.literal(page.data.count), page: z.literal(number), results: z.array(rowSchema).max(20) })

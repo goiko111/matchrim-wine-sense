@@ -2,6 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { Coins, BriefcaseBusiness, Scale, ShieldCheck, UserRound } from 'lucide-react';
 import { formatScanPrice, singlePriceCurrency } from '@/utils/scanMoney';
+import { personalVerdictTitle159 } from '@/utils/nativeRescanVerdict159';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -141,6 +142,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
               <span className="min-w-0 flex-1">
                 <span className="block whitespace-normal break-words text-sm font-semibold text-slate-950">{wine.name}</span>
                 <span className="block whitespace-normal break-words text-xs text-slate-500">{wine.producer || wine.region || 'Identidad parcial'}</span>
+                {isNative && wine.personalRating && <span className="block whitespace-normal break-words text-xs font-semibold text-stone-900">{personalVerdictTitle159(wine.personalRating)}</span>}
                 {wine.identityConfirmed === false && <span id={identityDescriptionId} className="block text-xs font-medium text-amber-800">Referencia por confirmar</span>}
               </span>
               {wine.affinity != null && <span className="shrink-0 text-sm font-bold text-red-900">{formatAffinity(wine.affinity)}</span>}
@@ -215,6 +217,9 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
             )}
           </div>
 
+          {isNative && mode === 'personal' && selectedWines.length > 0 && selectedWines.every(wine => wine.personalRating === 'not_for_me') && (
+            <p className="mt-5 border-l-4 border-stone-400 px-4 py-3 text-sm text-stone-700" role="status">Ya has indicado que estos vinos no te gustan. No te recomiendo ninguno para ti.</p>
+          )}
           {decision.primary && (!isNative || hasAffinities) && (
             <div className={`mt-5 rounded-lg border-l-4 px-4 py-3 ${decision.actionability === 'ready' ? 'border-red-900 bg-stone-50' : 'border-amber-500 bg-amber-50'}`}>
               <div className="flex flex-wrap items-start justify-between gap-3">
@@ -247,6 +252,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
               </thead>
               <tbody className="divide-y divide-stone-100">
                 <tr><th className="px-2 py-2 text-left font-medium">Afinidad</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{wine.affinity == null ? '-' : formatAffinity(wine.affinity)}</td>)}</tr>
+                {isNative && wines.some(wine => wine.personalRating) && <tr><th className="px-2 py-2 text-left font-medium">Tu valoración</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{wine.personalRating ? personalVerdictTitle159(wine.personalRating) : 'Sin valorar'}</td>)}</tr>}
                 <tr><th className="px-2 py-2 text-left font-medium">Confianza de identidad</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{wine.identityReviewedByUser ? 'Revisada por ti' : wine.confidence == null ? '-' : `${Math.round((wine.confidence > 1 ? wine.confidence / 100 : wine.confidence) * 100)}%`}</td>)}</tr>
                 {hasPrices && <tr><th className="px-2 py-2 text-left font-medium">Precio</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{formatPrice(wine)}</td>)}</tr>}
                 {hasServiceFormats && <tr><th className="px-2 py-2 text-left font-medium">Servicio</th>{decision.ordered.map(({ wine }) => <td key={wine.id} className="px-2 py-2">{formatService(wine.service)}</td>)}</tr>}
@@ -265,6 +271,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
                   {wine.affinity != null && <span className="shrink-0 font-bold text-red-900">{formatAffinity(wine.affinity)}</span>}
                 </div>
                 <p className="mt-1 text-xs text-slate-500">{[hasPrices ? formatPrice(wine) : null, hasServiceFormats ? formatService(wine.service) : null].filter(Boolean).join(' · ')}</p>
+                {isNative && wine.personalRating && <p className="mt-1 text-sm font-semibold text-stone-900">{personalVerdictTitle159(wine.personalRating)}</p>}
                 <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-600">
                   {attributeLabels.flatMap(([key, label]) => wine.attributes?.[key] == null ? [] : [<span key={key}>{label} <AttributeValue value={wine.attributes[key]} /></span>])}
                 </div>

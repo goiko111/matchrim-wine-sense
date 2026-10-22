@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { restoreRescan159 } from './native-rescan159-scope.mjs';
 
 const hash = source => createHash('sha256').update(source).digest('hex');
 const component = 'src/components/wine-import/WineComparisonWorkspace.tsx';
@@ -9,6 +10,7 @@ const wrapped = "className={isNative ? 'mt-2 h-auto min-h-11 whitespace-normal [
 
 // Remove only the two reviewed native trigger class amendments, before scroll135.
 export function restoreComparisonWrap142(file, source) {
+  source = restoreRescan159(file, source);
   if (file === component && source.includes('nativeScrollStyle')) {
     if (hash(source) === previous) return source;
     assert.equal(hash(source), current, 'Only reviewed native comparison wrap142 classes');

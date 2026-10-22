@@ -39,17 +39,36 @@ final class MatchrimCellar144Tests: XCTestCase {
             item.isSelected || ["1", "true"].contains(String(describing: item.value ?? "").lowercased())
         }
         func reveal(_ item: XCUIElement) throws {
-            // Scroll only toward an already identified element; never use coordinates.
-            try require(item.exists, "Unknown element; no discovery swipe or fallback")
-            let surface = app.webViews.firstMatch
-            for direction in 0..<2 {
-                for _ in 0..<4 {
-                    if item.isHittable { return }
-                    try require(surface.exists, "Known WebView required for bounded reveal")
-                    if direction == 0 { surface.swipeUp() } else { surface.swipeDown() }
-                }
+            // Retained max158 AX placed the score above the viewport. Never sweep both ways blindly.
+            func usable(_ frame: CGRect) -> Bool {
+                return !frame.isEmpty && !frame.isNull
+                    && frame.minX.isFinite && frame.maxX.isFinite
+                    && frame.minY.isFinite && frame.maxY.isFinite
             }
-            try require(item.isHittable, "Named element not reachable")
+            let surface = app.webViews.firstMatch
+            for _ in 0..<8 {
+                try require(item.exists, "Unknown element; no discovery swipe or fallback")
+                if item.isHittable { return }
+                try require(surface.exists, "Known WebView required for bounded reveal")
+                let target = item.frame
+                let surfaceFrame = surface.frame
+                let windowFrame = app.windows.firstMatch.frame
+                try require(usable(target) && usable(surfaceFrame) && usable(windowFrame),
+                            "Finite nonempty target and viewport frames required")
+                let viewport = surfaceFrame.intersection(windowFrame)
+                try require(usable(viewport) && target.maxX > viewport.minX && target.minX < viewport.maxX,
+                            "Named target must overlap the visible WebView horizontally")
+                let above = target.minY < viewport.minY
+                let below = target.maxY > viewport.maxY
+                try require(above != below, "No unambiguous vertical reveal direction; no blind swipe")
+                if above { surface.swipeDown() } else { surface.swipeUp() }
+                try require(item.exists, "Named target disappeared during reveal")
+                if item.isHittable { return }
+                let moved = item.frame
+                try require(usable(moved) && (above ? moved.minY > target.minY : moved.minY < target.minY),
+                            "Named target did not move in the observed direction")
+            }
+            try require(item.exists && item.isHittable, "Named element not reachable")
         }
         func tap(_ query: XCUIElementQuery) throws {
             try require(query.firstMatch.waitForExistence(timeout: 10) && query.count == 1,

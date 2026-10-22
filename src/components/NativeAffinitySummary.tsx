@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ChevronDown, CircleHelp } from 'lucide-react';
 import { buildConsumerAffinity, type ConsumerAffinityInput, type ConsumerAffinityResult } from '@/utils/consumerAffinity95';
 
-export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: ConsumerAffinityResult; personalRating?: string | null }) => {
+export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: ConsumerAffinityResult; personalRating?: string | null; personalHistoryUnavailable?: boolean }) => {
   const result = input.result ?? buildConsumerAffinity(input);
   const personalTitle = input.personalRating === 'not_for_me' ? 'Tu valoración: no es para ti'
     : input.personalRating === 'love' ? 'Tu valoración: te encanta'
@@ -19,7 +19,7 @@ export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: 
       <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
         <div className="min-w-0 flex-1 basis-44">
           <p className="text-xs font-medium text-stone-500">{personalTitle ? 'Comparación de estilo' : 'Tu afinidad'}</p>
-          <h4 className="mt-1 text-lg font-semibold leading-6 text-slate-950">{personalTitle ?? result.title}</h4>
+          <h4 className="mt-1 text-lg font-semibold leading-6 text-slate-950">{personalTitle ?? (input.personalHistoryUnavailable ? 'Comparación de estilo provisional' : result.title)}</h4>
         </div>
         <p className="shrink-0 text-2xl font-bold tabular-nums text-red-900" aria-label={`Afinidad orientativa: ${result.score} de 100`}>
           <span aria-hidden="true">≈{result.score}<span className="text-sm font-medium text-stone-500">/100</span></span>
@@ -27,6 +27,7 @@ export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: 
       </div>
       <div className="space-y-2 text-sm leading-6 text-stone-700">
         {personalTitle && <p>El porcentaje compara estilos; no cambia tu valoración de este vino.</p>}
+        {input.personalHistoryUnavailable && !personalTitle && <p role="status">No se pudieron consultar tus valoraciones guardadas. Tu experiencia previa puede cambiar esta recomendación.</p>}
         {result.matches.length > 0 ? result.matches.map(reason => <p key={reason}>{reason}</p>)
           : <p>No destaca una coincidencia clara con tus preferencias actuales.</p>}
         {result.caution && <div className="border-l-2 border-amber-500 pl-3"><p className="font-semibold text-stone-900">Lo que podría gustarte menos</p><p>{result.caution}</p></div>}

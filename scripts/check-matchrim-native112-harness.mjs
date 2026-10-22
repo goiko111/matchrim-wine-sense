@@ -189,9 +189,19 @@ await test('Successful pagination counts starts; complete first scene remains sc
   const summary = summarize112(scenes, 2, true, r.state); assert.equal(summary.evaluated, 1); assert.equal(summary.exitCode, 1);
 });
 await test('Bounded partial catalogue result is reported incomplete even if ranking could return proposals', async () => {
-  const r = rig({ live: true, maximum: 1, wire: async url => wireResponse(url, page(61)) });
+  const r = rig({ live: true, maximum: 1, wire: async url => wireResponse(url, page(81)) });
   const scenes = await r.predict(); assert.equal(scenes[0].pages[0].status, 'partial');
+  assert.equal(r.state.starts, 1); assert.equal(scenes[0].pages[0].rows, 20);
   assert.equal(scenes[0].eligible, false); assert.equal(summarize112(scenes, 1, true, r.state).exitCode, 1);
+});
+await test('Proposal counts 61 and 80 complete in four pages without changing scene eligibility rules', async () => {
+  for (const count of [61, 80]) {
+    const r = rig({ live: true, maximum: 4, wire: async url => wireResponse(url, page(count, Number(new URL(url).searchParams.get('page')))) });
+    const [scene] = await r.predict();
+    assert.equal(r.state.starts, 4); assert.equal(scene.pages[0].rows, count);
+    assert.equal(scene.pages[0].status, 'complete'); assert.equal(scene.eligible, true);
+    assert.equal(summarize112([scene], 1, true, r.state).exitCode, 0);
+  }
 });
 await test('Metadata-only local reading abstains without pretending to have queried the catalogue', async () => {
   const r = rig({ live: true, maximum: 1, wire: () => { throw Error('NO_NETWORK_EXPECTED'); } });

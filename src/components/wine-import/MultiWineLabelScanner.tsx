@@ -49,6 +49,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { trackAppEvent } from '@/lib/analytics';
 import { findWinerimWineForLabel } from '@/services/winerimApi';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
+import { loadNativeScanContext159 } from '@/services/nativeScanContext159';
+import { personalVerdictTitle159, resolveNativeRescanVerdict159, type NativeVerdicts159 } from '@/utils/nativeRescanVerdict159';
+import { NativeAffinitySummary } from '@/components/NativeAffinitySummary';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { makeCellarCatalogEvidence, withCellarInitialAffinity } from '@/utils/bodegaAffinity';
 import { makeCellarPublicReference107 } from '@/utils/cellarPublicReference107';
@@ -176,6 +179,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const [preview, setPreview] = useState<string | null>(null);
   const [quality, setQuality] = useState<ImageQualityReport | null>(null);
   const [scanProfile, setScanProfile] = useState<ScanProfileSnapshot | null>(null);
+  const [nativeVerdicts, setNativeVerdicts] = useState<NativeVerdicts159 | null>(null);
   const [regions, setRegions] = useState<ScanRegion[]>([]);
   const [coverage, setCoverage] = useState<ScanCoverage | null>(null);
   const [selectedRegionId, setSelectedRegionId] = useState<string | null>(null);
@@ -280,6 +284,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     setPreview(null);
     setSelectedRegionId(null);
     setScanProfile(null);
+    setNativeVerdicts(null);
     setLocalReading(null);
     setLocalBatch(false);
     scanProfileRef.current = null;
@@ -291,6 +296,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const selectedRegion = regions.find((region) => region.id === selectedRegionId) ?? null;
   const selectedCandidate = selectedRegion ? getSelectedCandidate(selectedRegion) : null;
   const nativeConsumer = isNative ? nativeWineConsumerResult(selectedCandidate, scanProfile?.profile ?? null) : null;
+  const selectedPersonalVerdict = isNative ? resolveNativeRescanVerdict159(user?.id ?? null, nativeVerdicts, selectedCandidate) : null;
   const nativeReviewTarget = isNative ? nextNativeWineReview(regions) : null;
   const summary = useMemo(() => summarizeScanRegions(regions), [regions]);
   const regionProgress = useMemo(() => formatScanRegionProgress(summarizeScanRegionProgress(regions)), [regions]);
@@ -521,8 +527,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       }
 
       setPhase('profile');
-      const profileSnapshot = await loadMatchrimScanProfile(user?.id ?? null, controller.signal);
+      const nativeContext = isNative ? await loadNativeScanContext159(user?.id ?? null, controller.signal) : null;
+      const profileSnapshot = nativeContext?.profile ?? await loadMatchrimScanProfile(user?.id ?? null, controller.signal);
       if (controller.signal.aborted) return;
+      if (isNative) setNativeVerdicts(nativeContext?.verdicts ?? null);
       scanProfileRef.current = profileSnapshot;
       setScanProfile(profileSnapshot);
       const profileFinishedAt = globalThis.performance.now();
@@ -1052,7 +1060,12 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       ? { label: 'Reanalizar región', onClick: () => void reanalyzeSelected() }
       : null}
   />;
-  const affinityExplanation = selectedCandidate && <AffinityExplanation
+  const affinityExplanation = selectedCandidate && (isNative ? <NativeAffinitySummary
+    profile={scanProfile?.profile ?? null} score={selectedCandidate.affinity}
+    attributes={selectedCandidate.sensoryAttributes} sensorySource={selectedCandidate.sensorySource ?? 'inference'}
+    catalogIdentityLinked={Boolean(nativeConsumer?.catalogIdentityLinked)} personalRating={selectedPersonalVerdict}
+    personalHistoryUnavailable={Boolean(user && nativeVerdicts?.status === 'unavailable')}
+  /> : <AffinityExplanation
     profile={scanProfile?.profile ?? null}
     wineKey={selectedCandidate.id}
     score={selectedCandidate.affinity}
@@ -1061,7 +1074,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     attributes={selectedCandidate.sensoryAttributes}
     sensorySource={selectedCandidate.sensorySource ?? 'inference'}
     catalogIdentityLinked={isNative ? Boolean(nativeConsumer?.catalogIdentityLinked) : Boolean(selectedCandidate.originalSheet?.detailVerified)}
-  />;
+  />);
   const referenceReview = selectedCandidate && selectedRegion && <>
     <WinerimOriginalSheet sheet={selectedCandidate.originalSheet} />
     {!localBatch && !selectedCandidate.originalSheet?.detailVerified && (!isNative || !selectedCandidate.globalRecord)
@@ -1355,6 +1368,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   name: group.candidate.name,
                   producer: group.candidate.producer,
                   region: group.candidate.region,
+                  personalRating: isNative ? resolveNativeRescanVerdict159(user?.id ?? null, nativeVerdicts, group.candidate) : undefined,
                   affinity: isNative && !consumer?.canExplainAffinity ? null : group.candidate.affinity,
                   confidence: group.candidate.confidence,
                   identityReviewedByUser: group.candidate.source === 'manual',
@@ -1376,6 +1390,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
               <div hidden={isNative && nativeResultView !== 'wines'} className="space-y-4">
               {scanProfile && <p className="text-sm text-stone-600" data-testid="scan-profile-source">{scanProfile.note}</p>}
+              {isNative && user && nativeVerdicts?.status === 'unavailable' && <p className="text-sm text-stone-600" role="status">No se pudieron consultar tus valoraciones guardadas para este análisis.</p>}
               <div className="matchrim-surface divide-y divide-stone-100 overflow-hidden rounded-lg">
                 {rankedGroups.map((group, index) => {
                   const savedIndex = batchRef.current?.groups.findIndex((item) => item.key === group.key) ?? -1;
@@ -1384,6 +1399,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     regions.some((region) => region.id === id && region.status === 'recognized')
                   ));
                   const consumer = isNative ? nativeWineConsumerResult(group.candidate, scanProfile?.profile ?? null) : null;
+                  const personalVerdict = isNative ? resolveNativeRescanVerdict159(user?.id ?? null, nativeVerdicts, group.candidate) : null;
                   return (
                   <button
                     key={group.key}
@@ -1417,6 +1433,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     <span className={isNative ? 'min-w-0 w-full text-left [overflow-wrap:anywhere]' : 'shrink-0 text-right'}>
                       <span data-testid="scan-affinity-value" className="block font-bold text-red-900">{isNative ? consumer?.affinityValue : group.candidate.affinity == null ? '-' : `${identityConfirmed ? '' : '≈'}${Math.round(group.candidate.affinity)}%`}</span>
                       <span className="block text-[11px] text-slate-500">{isNative ? consumer?.affinityLabel : group.candidate.affinity == null ? 'Sin datos' : identityConfirmed ? 'Afinidad' : 'Estimación'}</span>
+                      {personalVerdict && <span className="mt-1 block font-semibold text-stone-900" data-testid="native-rescan-personal-verdict">{personalVerdictTitle159(personalVerdict)}</span>}
                     </span>
                   </button>
                   );
@@ -1495,6 +1512,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     Análisis del lote en curso. Las identidades aún pueden cambiar.
                   </p>
                 )}
+                {isNative && selectedPersonalVerdict && !nativeConsumer?.canExplainAffinity && <section className="min-w-0 border-y border-stone-200 py-3" aria-label="Tu valoración guardada">
+                  <h4 className="font-semibold text-slate-950">{personalVerdictTitle159(selectedPersonalVerdict)}</h4>
+                  <p className="mt-1 text-sm leading-6 text-stone-600">Es tu valoración guardada de esta referencia. No sustituye la ficha sensorial ni verifica una añada desconocida.</p>
+                </section>}
+                {isNative && user && nativeVerdicts?.status === 'unavailable' && !nativeConsumer?.canExplainAffinity && <p role="status" className="text-sm leading-6 text-stone-600">No se pudieron consultar tus valoraciones guardadas para este vino.</p>}
                 {isNative && selectedCandidate && <LabelAnalysisView isNativePlatform={isNative} showIdentity={false}
                   identity={selectedCandidate} identityLabel={nativeConsumer?.identityLabel ?? 'Referencia propuesta'}
                   catalogIdentityLinked={Boolean(nativeConsumer?.catalogIdentityLinked)}

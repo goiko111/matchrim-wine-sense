@@ -78,6 +78,7 @@ await test('Exactly one configuration replacement; supported-language filter and
     ['cpu-default', 'request.usesCPUOnly = true', 'request.usesCPUOnly = false'],
     ['auto-language', 'request.automaticallyDetectsLanguage = false', 'request.automaticallyDetectsLanguage = true'],
     ['literal-text', 'request.usesLanguageCorrection = true', 'request.usesLanguageCorrection = false'],
+    ['lower-half-roi', 'request.minimumTextHeight = 0', 'request.minimumTextHeight = 0\n        request.regionOfInterest = CGRect(x: 0, y: 0, width: 1, height: 0.5)'],
     ['expanded-latin', '["es-ES", "en-US", "fr-FR"]', '["es-ES", "en-US", "fr-FR", "it-IT", "de-DE", "pt-PT"]'],
   ]) {
     const changed = transform122(source, variant);

@@ -542,6 +542,31 @@ await test('Swift has exactly one test method; all taps are named queries and on
   assert(source.indexOf('Loaded authenticated Home required') < source.indexOf('try tap(app.links.matching'));
   for (const marker of MARKERS) assert.equal(source.split('"' + marker + '"').length - 1, 1, marker);
 });
+await test('directional reveal keeps eight total swipes and cannot bypass named-target or audit requirements', () => {
+  const source = fs.readFileSync(new URL('./MatchrimCellar144Probe.swift', import.meta.url), 'utf8');
+  const reveal = source.slice(source.indexOf('        func reveal('), source.indexOf('        func tap('));
+  assert.equal((reveal.match(/for _ in 0\.\.<8/g) || []).length, 1);
+  assert.equal((reveal.match(/\.swipe(?:Up|Down)\(\)/g) || []).length, 2);
+  assert(!reveal.includes('for direction'));
+  assert(reveal.indexOf('try require(item.exists') < reveal.indexOf('if item.isHittable'));
+  assert(reveal.includes('surfaceFrame.intersection(windowFrame)'));
+  assert(reveal.includes('if above { surface.swipeDown() } else { surface.swipeUp() }'));
+  assert(reveal.includes('try require(item.exists && item.isHittable, "Named element not reachable")'));
+  assert(source.includes('try reveal((byStyle ? styleScores : exactScores).firstMatch)'));
+  assert(source.includes('explanations.count == 5 && axes == Set(["potencia", "acidez", "dulzor", "tanino", "fruta"])'));
+  assert(source.includes('try require(accessibilityIssues == 0, "Unfiltered wine-detail accessibility issues remain")'));
+});
+await test('retained max158 failure is still failure, never upgraded by five exposed axes', () => {
+  const read = file => fs.readFileSync(new URL('../qa-artifacts/night105-20261021/' + file, import.meta.url), 'utf8');
+  const log = read('cellar144-max158-r1/runtime.log');
+  assert(log.includes('Named element not reachable'));
+  assert.equal(evaluate(log, { code: 0 }).passed, false);
+  const receipt = JSON.parse(read('cellar144-max158-r1/RESULT.json'));
+  assert.equal(receipt.passed, false); assert.equal(receipt.reason, 'CHILD_FAILED');
+  const host = JSON.parse(read('MAX158-HOST.json'));
+  assert.equal(host.passed, false); assert.equal(host.restored, true); assert.equal(host.original, 'large');
+});
+await import('./check-matchrim-cellar158.mjs');
 await test('selectors are grounded in actual source and retained read-only AX, without historical score expectations', () => {
   const read = name => fs.readFileSync(new URL('../' + name, import.meta.url), 'utf8');
   const probe = read('scripts/MatchrimCellar144Probe.swift');
