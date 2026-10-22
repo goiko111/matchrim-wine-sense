@@ -256,3 +256,19 @@ All own heavy/simulator jobs ended and their leases were released at00:00:39UTC.
 | Fruit |3.3 |4 |0.7 |Intermediate |
 
 The same cached wine produces28 distinct bounded scores across the existing50 synthetic131 profiles, with no new dataset, account, rating or application write. This demonstrates arithmetic sensitivity, not50 real users or empirical taste accuracy. The trace does not capture the live detail packet or prove that its publicID/attributes are identical to the cached search row; it demonstrates consistency with the recorded UI number only. The failed native accessibility suite remains failed. The app's simple positive/acidity and negative/intensity explanation agrees with this calculation; full sensory provenance remains unspecified by the public catalogue.
+
+## Affinity Accessibility145, Runtime Pending
+
+Independent review of the new read-only144 Bodega probe caught assumptions contradicted by retained native AX: interpolated numbers/initial labels were separate StaticTexts, and NativeAffinitySummary had nested duplicate disclosure buttons. The native-only presentation now groups each current/reference-style/initial sentence into a complete text child and gives disclosures one explicit label with hidden-from-AX visible text. No affinity, rating, source, storage or profile formula changes.
+
+| Before | After | Why |
+| --- | --- | --- |
+| Separate score/punctuation AX fragments | One complete reference-style score and initial sentence | Read the actual value together; avoid reporting an exposed initial as missing |
+| Duplicate nested detail buttons | One labelled summary with decorative/visible children hidden from AX | Preserve a44pt action and remove repeated spoken controls |
+| Decorated native score repeats its visible children | Existing spoken score label with hidden visual children | Keep the visual hierarchy without duplicate number announcements |
+
+145 evaluates actual JSX against3abfd07: four disclosure cases, six score cases,48 initial/date/delta cases and32 actual rated/unrated/missing/zero-score SSR cases pass with unchanged visible text. The six110 presentation groups and11 consumer95 affinity groups pass. UIKit/VoiceOver speech and the new native144 readback are still unrun. Historical standalone rating97 was also attempted: its obsolete import mock and pre98 whole-MyWines hash cannot consume the already existing110+ source; it is not reported green or treated as a newly reproduced application failure. Its file/oracle remains unchanged.145 tests the current presentation/rating priority directly without weakening that historical freeze.
+
+144 has131 mock/source safety checks, one fixed read-only method, seven screenshot/AX pairs and two structured UI readbacks. It can visit only the existing QA account's Flor de Muga Blanco2022 and Manzanilla La Gitana; it cannot authenticate, save/rate, alter stock, analyze or issue harness network requests. A missing initial stays null with an explicit historical gap, and even a successful current-score readback cannot certify new-save persistence. The consumed119 save reservation is not reused. Swift compilation and live selectors remain pending.
+
+Manual review of the eight non-top1 lists inr8 also confirms why filename hits are only a proxy: the Foral177 photo explicitly says Old Vines despite its shorter expected filename, and Surani027 contains both Surani and the script Sorani. Other cases genuinely lack a decisive visible qualifier/producer (for example164 has two catalogue producers for the same name). No expected metadata, proposals, metrics or aliases were changed from this inspection. Full200 recognition remains NO-GO.

@@ -19,7 +19,7 @@ export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: 
           <h4 className="mt-1 text-lg font-semibold leading-6 text-slate-950">{result.title}</h4>
         </div>
         <p className="shrink-0 text-2xl font-bold tabular-nums text-red-900" aria-label={`Afinidad orientativa: ${result.score} de 100`}>
-          ≈{result.score}<span className="text-sm font-medium text-stone-500">/100</span>
+          <span aria-hidden="true">≈{result.score}<span className="text-sm font-medium text-stone-500">/100</span></span>
         </p>
       </div>
       <div className="space-y-2 text-sm leading-6 text-stone-700">
@@ -29,7 +29,7 @@ export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: 
         <p className="text-xs leading-5 text-stone-500">Basado en tu perfil y en la ficha de este vino. El gusto también depende del momento y de cómo se sirva.</p>
       </div>
       <details className="min-w-0 border-t border-stone-200 pt-3 text-sm" data-testid="native-affinity-details">
-        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-medium text-stone-800">Ver el detalle de afinidad<ChevronDown className="h-4 w-4 shrink-0" aria-hidden="true" /></summary>
+        <summary aria-label="Ver el detalle de afinidad" className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-medium text-stone-800"><span aria-hidden="true">Ver el detalle de afinidad</span><ChevronDown className="h-4 w-4 shrink-0" aria-hidden="true" /></summary>
         <dl className="mt-2 divide-y divide-stone-100">
           {result.dimensions.map(dimension => <div className="flex min-w-0 flex-wrap justify-between gap-x-4 gap-y-1 py-3" key={dimension.key}>
             <dt className="font-medium capitalize text-stone-800">{dimension.label}</dt>

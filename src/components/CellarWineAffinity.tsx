@@ -38,9 +38,7 @@ export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRet
       {view.current !== null && <Progress value={view.current} role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={view.current} aria-label={`Afinidad actual orientativa de ${wine.name}`} className="h-2" />}
       {view.initial ? (
         <p className="text-xs text-slate-600">
-          {view.initial.phase === 'saved' ? 'Al guardar' : 'Primera afinidad registrada'}: {view.initial.score}/100
-          {' \u00b7 '}{new Date(view.initial.recorded_at).toLocaleDateString('es-ES')}
-          {view.delta !== null && view.delta !== 0 && ` \u00b7 ${view.delta > 0 ? '+' : ''}${view.delta} puntos desde entonces`}
+          {`${view.initial.phase === 'saved' ? 'Al guardar' : 'Primera afinidad registrada'}: ${view.initial.score}/100 \u00b7 ${new Date(view.initial.recorded_at).toLocaleDateString('es-ES')}${view.delta !== null && view.delta !== 0 ? ` \u00b7 ${view.delta > 0 ? '+' : ''}${view.delta} puntos desde entonces` : ''}`}
         </p>
       ) : <p className="text-xs text-slate-500">{referenceStyle ? 'No hay una afinidad inicial verificada de esta añada.' : 'No hay una afinidad inicial guardada para este vino.'}</p>}
       <p className="text-xs leading-5 text-slate-600">{snapshot?.status === 'ready' && snapshot.profile
@@ -71,7 +69,7 @@ export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRet
   );
   const calculation = referenceStyle ? <>
     <CellarReferenceStyle110 view={referenceStyle} snapshot={snapshot} onRetryProfile={onRetryProfile} />
-    <details className="text-sm"><summary className="flex min-h-11 cursor-pointer items-center gap-2 font-medium"><CircleHelp className="h-4 w-4 shrink-0" aria-hidden="true" />Datos de esta añada</summary>
+    <details className="text-sm"><summary aria-label="Datos de esta añada" className="flex min-h-11 cursor-pointer items-center gap-2 font-medium"><CircleHelp className="h-4 w-4 shrink-0" aria-hidden="true" /><span aria-hidden="true">Datos de esta añada</span></summary>
       <div className="space-y-2 pt-2">{exactCalculation}</div>
     </details>
   </> : exactCalculation;
@@ -83,8 +81,8 @@ export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRet
         </p>
         <p className="text-sm leading-5 text-slate-600">{rating.note}</p>
         <details className="space-y-2" data-testid="rated-cellar-style97">
-          <summary className="flex min-h-11 cursor-pointer items-center gap-2 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-            <CircleHelp className="h-4 w-4 shrink-0" aria-hidden="true" />Ver afinidad por estilo
+          <summary aria-label="Ver afinidad por estilo" className="flex min-h-11 cursor-pointer items-center gap-2 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            <CircleHelp className="h-4 w-4 shrink-0" aria-hidden="true" /><span aria-hidden="true">Ver afinidad por estilo</span>
           </summary>
           <p className="text-xs leading-5 text-slate-600">{'Tu valoraci\u00f3n de este vino tiene prioridad. Esta cifra compara su estilo con tu perfil; no sustituye lo que ya has probado.'}</p>
           {calculation}
