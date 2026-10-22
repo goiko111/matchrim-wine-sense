@@ -79,13 +79,28 @@ final class MatchrimCellar144Tests: XCTestCase {
                   let value = Int(label[range]), (0...100).contains(value) else { return nil }
             return value
         }
+        let dimensionPattern = "^(potencia|acidez|dulzor|tanino|fruta): tu perfil ([0-9]+[.][0-9])/5; este vino ([0-9]+[.][0-9])/5$"
+        func validDimension(_ label: String) -> Bool {
+            guard let regex = try? NSRegularExpression(pattern: dimensionPattern),
+                let match = regex.firstMatch(in: label, range: NSRange(label.startIndex..., in: label)) else { return false }
+            return [2, 3].allSatisfy { index in
+                guard let range = Range(match.range(at: index), in: label),
+                    let value = Double(label[range]) else { return false }
+                return value.isFinite && (0...5).contains(value)
+            }
+        }
 
         app.launch()
         defer { app.terminate() }
         try require(app.wait(for: .runningForeground, timeout: 15)
                     && app.frame.height > app.frame.width, "Existing portrait app required; do not change settings")
+        try require(wait(20) {
+            app.buttons["Abrir perfil"].exists && app.buttons["Abrir perfil"].isHittable
+                && app.buttons["Buscar vino o bodega"].exists && app.staticTexts["Para ti"].exists
+                && app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Ver por qu\u{00e9} ")).count > 0
+        }, "Loaded authenticated Home required before navigation; do not authenticate or retry")
         try tap(app.links.matching(NSPredicate(format: "label == %@", "Perfil")))
-        let identity = exact(app, "info@winerim.com")
+        let identity = app.otherElements.matching(NSPredicate(format: "label == %@", "Correo de tu cuenta: info@winerim.com"))
         try require(identity.firstMatch.waitForExistence(timeout: 15) && identity.count == 1
                     && identity.firstMatch.isHittable && app.textFields.count == 0,
                     "Visible literal QA email on Profile required; never authenticate")
@@ -114,15 +129,13 @@ final class MatchrimCellar144Tests: XCTestCase {
             try require(selected(category.firstMatch) && cards.allSatisfy { $0.count == 1 }, "Category/cards changed")
             try tap(cards[index])
             try require(app.buttons["Cerrar vino"].waitForExistence(timeout: 10), "Known detail did not open")
-            let candidates = app.descendants(matching: .any).containing(.button, identifier: "Cerrar vino")
-                .allElementsBoundByIndex.filter {
-                    $0.buttons.matching(NSPredicate(format: "label == %@", "Cerrar vino")).count == 1
-                        && exact($0, names[index]).count == 1
-                        && exact($0, ratingLabels[index]).count == 1
-                }
-            guard let detail = candidates.min(by: { $0.frame.width * $0.frame.height < $1.frame.width * $1.frame.height }) else {
-                try require(false, "Unique wine/rating-scoped detail unavailable"); return
-            }
+            let dialogs = app.otherElements.matching(NSPredicate(format: "label == %@", "Tu vino, cuadro de di\u{00e1}logo de web"))
+            try require(dialogs.count == 1, "Unique observed web dialog required")
+            let detail = dialogs.firstMatch
+            let heading = detail.otherElements.matching(NSPredicate(format: "label == %@", names[index]))
+            try require(heading.count == 1 && exact(heading.firstMatch, names[index]).count == 1
+                && detail.buttons.matching(NSPredicate(format: "label == %@", "Cerrar vino")).count == 1
+                && exact(detail, ratingLabels[index]).count == 1, "Exact visible wine heading, saved rating and close required")
             if index == 0 { try require(exact(detail, "2022").count == 1, "Flor detail must expose 2022") }
             capture("0\(index + 4)-rating-first")
             try disclosure(detail, "Ver afinidad por estilo")
@@ -156,16 +169,33 @@ final class MatchrimCellar144Tests: XCTestCase {
             let provenanceNeedle = byStyle ? "La ficha p\u{00fa}blica no especifica" : "Basado en tu perfil y en la ficha de este vino."
             let provenance = detail.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", provenanceNeedle))
             try require(provenance.count == 1, "Source-backed explanation/provenance unavailable")
-            let explanations = detail.staticTexts.allElementsBoundByIndex.map { $0.label }.filter {
-                byStyle ? ($0.hasPrefix("Encaja contigo por su ") || $0.contains("que tu preferencia habitual.")
-                    || $0 == "Ficha Winerim sin a\u{00f1}ada. Orienta sobre el estilo, no verifica los datos de tu cosecha.")
-                    : ($0.hasPrefix("Tu perfil: ") || $0 == "Lo que podr\u{00ed}a gustarte menos")
+            let explanations: [String]
+            if byStyle {
+                explanations = detail.staticTexts.allElementsBoundByIndex.map { $0.label }.filter {
+                    $0.hasPrefix("Encaja contigo por su ") || $0.contains("que tu preferencia habitual.")
+                        || $0 == "Ficha Winerim sin a\u{00f1}ada. Orienta sobre el estilo, no verifica los datos de tu cosecha."
+                }
+            } else {
+                explanations = detail.otherElements.matching(NSPredicate(format: "label MATCHES %@", dimensionPattern))
+                    .allElementsBoundByIndex.map { $0.label }
+                let axes = Set(explanations.compactMap { $0.split(separator: ":").first.map(String.init) })
+                try require(explanations.count == 5 && axes == Set(["potencia", "acidez", "dulzor", "tanino", "fruta"])
+                    && explanations.allSatisfy(validDimension), "All five named profile/wine dimensions must be exposed with bounded values")
             }
             try require(!explanations.isEmpty, "Read-only explanation content required")
             try reveal((byStyle ? styleScores : exactScores).firstMatch)
             try genuine()
             let evidenceName = index == 0 ? "06-flor-readback" : "07-gitana-readback"
             capture(evidenceName)
+            var accessibilityIssues = 0
+            try app.performAccessibilityAudit(for: [.contrast, .sufficientElementDescription, .textClipped, .trait]) { issue in
+                accessibilityIssues += 1
+                text(String(describing: issue), evidenceName + "-audit-issue")
+                emit("CELLAR144_AUDIT_ISSUE")
+                return false
+            }
+            try require(accessibilityIssues == 0, "Unfiltered wine-detail accessibility issues remain")
+            text("contrast/sufficientElementDescription/textClipped/trait: completed with zero reported issues; none suppressed. Checked current detail viewport only, not VoiceOver speech or all scrolling content.", evidenceName + "-audit")
             let firstVerified = detail.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Primera afinidad registrada:"))
                 .allElementsBoundByIndex.map { $0.label }
             let record: [String: Any] = ["schemaVersion": 1, "runId": runID, "account": "info@winerim.com",

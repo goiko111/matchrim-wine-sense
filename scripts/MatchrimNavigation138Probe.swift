@@ -22,7 +22,7 @@ final class MatchrimNavigation138Tests: XCTestCase {
         try require(app.frame.height > app.frame.width, app, "Portrait required; do not change device settings")
 
         try navigate(.profile, app)
-        let identity = app.staticTexts.matching(NSPredicate(format: "label == %@", "info@winerim.com"))
+        let identity = app.otherElements.matching(NSPredicate(format: "label == %@", "Correo de tu cuenta: info@winerim.com"))
         try require(identity.firstMatch.waitForExistence(timeout: 15) && identity.count == 1
                     && identity.firstMatch.isHittable, app, "Literal existing QA identity must be visible on Profile; no auth attempt")
         try authenticated(app)

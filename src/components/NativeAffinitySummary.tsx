@@ -33,7 +33,7 @@ export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: 
         <dl className="mt-2 divide-y divide-stone-100">
           {result.dimensions.map(dimension => <div className="flex min-w-0 flex-wrap justify-between gap-x-4 gap-y-1 py-3" key={dimension.key}>
             <dt className="font-medium capitalize text-stone-800">{dimension.label}</dt>
-            <dd className="min-w-0 text-xs leading-5 text-stone-600">Tu perfil: {dimension.profileValue.toFixed(1)}/5 · Este vino: {dimension.wineValue.toFixed(1)}/5</dd>
+            <dd className="min-w-0 text-xs leading-5 text-stone-600" aria-label={`${dimension.label}: tu perfil ${dimension.profileValue.toFixed(1)}/5; este vino ${dimension.wineValue.toFixed(1)}/5`}><span aria-hidden="true">Tu perfil: {dimension.profileValue.toFixed(1)}/5 · Este vino: {dimension.wineValue.toFixed(1)}/5</span></dd>
           </div>)}
         </dl>
         <p className="mt-3 text-xs leading-5 text-stone-500">Comparamos cinco rasgos del vino con tu perfil. La cifra indica encaje sensorial: no es una probabilidad de que te guste ni una valoración de calidad.</p>

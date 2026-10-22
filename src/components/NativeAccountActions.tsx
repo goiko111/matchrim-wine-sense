@@ -44,7 +44,7 @@ export default function NativeAccountActions() {
     <div className="mb-3 flex min-w-0 items-start justify-between gap-3">
       <div className="min-w-0 [overflow-wrap:anywhere]" aria-label="Cuenta actual">
         <p className="text-xs font-medium leading-5 text-stone-500">Tu cuenta</p>
-        <p className="text-sm font-semibold leading-6 text-stone-950">{user.email || 'Sesion iniciada'}</p>
+        <p className="text-sm font-semibold leading-6 text-stone-950" aria-label={user.email ? `Correo de tu cuenta: ${user.email}` : 'Sesion iniciada'}><span aria-hidden="true">{user.email || 'Sesion iniciada'}</span></p>
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

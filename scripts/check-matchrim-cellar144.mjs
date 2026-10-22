@@ -16,7 +16,8 @@ const syntheticRecord = (wine, runId, initial = null, current = 43, byStyle = tr
   initialLabel: initial === null ? null : 'Al guardar: ' + (byStyle ? '\u2248' : '') + initial + '/100'
     + (byStyle ? ' por estilo.' : ' \u00b7 20/10/2026'),
   initialUnavailableReason: initial === null ? 'Initial-at-save not exposed in this readback; historical data gap' : null,
-  firstVerifiedLabels: [], explanation: byStyle ? ['Encaja contigo por su frescura.'] : ['Tu perfil: 3.0/5 \u00b7 Este vino: 2.0/5'],
+  firstVerifiedLabels: [], explanation: byStyle ? ['Encaja contigo por su frescura.']
+    : ['potencia', 'acidez', 'dulzor', 'tanino', 'fruta'].map(axis => axis + ': tu perfil 3.0/5; este vino 2.0/5'),
   provenance: byStyle ? 'Compara tu perfil actual con la ficha guardada. La ficha pública no especifica si los atributos proceden de una cata o han sido generados.'
     : 'Basado en tu perfil y en la ficha de este vino. El gusto también depende del momento y de cómo se sirva.',
   evidenceName: wine.evidenceName, newSavePersistenceValidated: false,
@@ -127,7 +128,8 @@ function fixture() {
     put(output + '/attachments', '', 0o755, true);
     const runId = JSON.parse(entries.get(output + '/project/Probe97.xctestplan').data).defaultOptions.environmentVariableEntries[0].value;
     const attachments = [...VIEWS.flatMap(view => [[view, 'png'], [view + '-ax', 'txt']]),
-      ['scope', 'txt'], ...WINES.map(wine => [wine.attachment, 'json'])].map(([name, extension], index) => {
+      ['scope', 'txt'], ...WINES.map(wine => [wine.attachment, 'json']),
+      ...WINES.map(wine => [wine.evidenceName + '-audit', 'txt'])].map(([name, extension], index) => {
       const exportedFileName = 'evidence-' + index + '.' + extension;
       const wine = WINES.find(wine => wine.attachment === name);
       let bytes = 'synthetic evidence';
@@ -203,7 +205,7 @@ await test('environment allowlist strips opaque secrets and test injection', () 
   assert.deepEqual(sanitizedEnvironment({ OPAQUE: 'secret', PATH: '/bad', HOME: '/home', XCTestConfigurationFilePath: 'bad' }),
     { HOME: '/home', PATH: '/usr/bin:/bin:/usr/sbin:/sbin', DEVELOPER_DIR: '/Applications/Xcode-26.0.1.app/Contents/Developer' });
 });
-await test('mock success binds existing installed app, exact method, private outputs and seven evidence pairs plus two strict structured readbacks', async () => {
+await test('mock success binds existing installed app, exact method, seven evidence pairs, two strict readbacks and two unfiltered detail audits', async () => {
   const f = fixture(), { receipt } = await f.run(); assert.equal(receipt.passed, true, JSON.stringify(receipt));
   assert.equal(receipt.authSubmissionsRequested, 0);
   assert.equal(receipt.analysisOrMatchingActionsRequested, 0); assert.equal(receipt.dataMutationsRequested, 0);
@@ -349,6 +351,13 @@ for (const [name, log] of [
   assert.equal(evaluate(log, { code: 0 }).passed, false);
   const f = fixture(); f.state.log = log; assert.equal((await f.run()).receipt.passed, false);
 });
+await test('Observed Xcode single fixed iteration is accepted, never a repeated or ambiguous iteration count', () => {
+  const log = green.replace('started.', 'started (Iteration 1 of 1).');
+  assert.equal(evaluate(log, { code: 0, signal: null }).passed, true);
+  for (const value of ['0 of 1', '2 of 1', '1 of 2', '1 of 10', '01 of 1', '1 of 1 extra']) {
+    assert.equal(evaluate(log.replace('Iteration 1 of 1', 'Iteration ' + value), { code: 0, signal: null }).passed, false);
+  }
+});
 await test('CRLF exact pass; exit, signal, spawn error and stop override markers', () => {
   assert.equal(evaluate(green.replaceAll('\n', '\r\n'), { code: 0 }).passed, true);
   for (const result of [{ code: 65 }, { code: null }, { code: 0, signal: 'SIGINT' }, { code: 0, spawnError: true }]) {
@@ -400,6 +409,21 @@ await test('first-verified affinity is retained as context and cannot fill a mis
   parsed.initialLabel = record.firstVerifiedLabels[0]; parsed.initial = 34; parsed.initialPresent = true;
   parsed.initialUnavailableReason = null;
   assert.throws(() => parseReadback(parsed, WINES[0], runId), /READBACK_INITIAL_LABEL_HOLD/);
+});
+await test('Exact readback requires five different named dimensions with bounded profile and wine values', () => {
+  const runId = randomUUID();
+  for (const mutate of [
+    row => { row.explanation = ['Lo que podría gustarte menos']; },
+    row => { row.explanation.pop(); },
+    row => { row.explanation[4] = row.explanation[0]; },
+    row => { row.explanation[0] = row.explanation[0].replace('3.0', '5.1'); },
+    row => { row.explanation[0] = row.explanation[0].replace('2.0', '-1.0'); },
+    row => { row.explanation[0] = row.explanation[0].replace('potencia:', 'unknown:'); },
+    row => { row.explanation[0] = row.explanation[0].replace('2.0', 'NaN'); },
+  ]) {
+    const record = syntheticRecord(WINES[0], runId, null, 43, false); mutate(record);
+    assert.throws(() => parseReadback(record, WINES[0], runId), /READBACK_DIMENSIONS_HOLD/);
+  }
 });
 for (const [name, mutate] of [
   ['extra key', row => { row.untrusted = true; }],
@@ -475,8 +499,13 @@ await test('two exposed initials remove the data gap but never assert new-save p
 for (const [name, mutate] of [
   ['missing Flor JSON', rows => { rows[0].attachments = rows[0].attachments.filter(row => !row.suggestedHumanReadableName.includes('flor-record')); }],
   ['missing Gitana JSON', rows => { rows[0].attachments = rows[0].attachments.filter(row => !row.suggestedHumanReadableName.includes('gitana-record')); }],
-  ['duplicate JSON', rows => { rows[0].attachments.push(rows[0].attachments.at(-1)); }],
-  ['same exported JSON path', rows => { rows[0].attachments.at(-1).exportedFileName = rows[0].attachments.at(-2).exportedFileName; }],
+  ['duplicate JSON', rows => { rows[0].attachments.push(rows[0].attachments.find(row => row.suggestedHumanReadableName.includes('gitana-record'))); }],
+  ['same exported JSON path', rows => {
+    const find = name => rows[0].attachments.find(row => row.suggestedHumanReadableName.includes(name));
+    find('gitana-record').exportedFileName = find('flor-record').exportedFileName;
+  }],
+  ['missing Flor detail audit', rows => { rows[0].attachments = rows[0].attachments.filter(row => !row.suggestedHumanReadableName.includes('06-flor-readback-audit')); }],
+  ['missing Gitana detail audit', rows => { rows[0].attachments = rows[0].attachments.filter(row => !row.suggestedHumanReadableName.includes('07-gitana-readback-audit')); }],
   ['unrelated extra evidence', rows => { rows[0].attachments.push({ ...rows[0].attachments[0], suggestedHumanReadableName: 'other' }); }],
 ]) await test(name + ' cannot satisfy the two-record contract', async () => {
   const f = fixture(); f.state.evidenceMutation = mutate;
@@ -505,6 +534,9 @@ await test('Swift has exactly one test method; all taps are named queries and on
   assert(!/\[[^\]\n]+\]\.count/.test(source), 'Element subscript must never receive query count');
   assert(source.includes('let names = ["Flor de Muga Blanco", "Manzanilla La Gitana"]'));
   assert(source.includes('"Ver " + name'));
+  assert(source.includes('performAccessibilityAudit(for: [.contrast, .sufficientElementDescription, .textClipped, .trait])'));
+  assert.match(source, /emit\("CELLAR144_AUDIT_ISSUE"\)\s+return false/);
+  assert(source.indexOf('Loaded authenticated Home required') < source.indexOf('try tap(app.links.matching'));
   for (const marker of MARKERS) assert.equal(source.split('"' + marker + '"').length - 1, 1, marker);
 });
 await test('selectors are grounded in actual source and retained read-only AX, without historical score expectations', () => {

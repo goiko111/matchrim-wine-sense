@@ -32,7 +32,7 @@ const elements = (source, tag) => {
   };
   visit(tree); return matches;
 };
-let disclosureCases = 0, scoreCases = 0, initialCases = 0;
+let disclosureCases = 0, scoreCases = 0, initialCases = 0, dimensionCases = 0;
 for (const file of files) {
   const current = fs.readFileSync(file, 'utf8');
   const previous = execFileSync('git', ['show', base + ':' + file], { encoding: 'utf8' });
@@ -83,9 +83,21 @@ for (const file of files) {
       const children = React.Children.toArray(item.props.children);
       assert.equal(children.length, 1); assert.equal(children[0].props['aria-hidden'], 'true'); scoreCases++;
     }
+    const oldDimension = elements(previous, 'dd'), dimensions = elements(current, 'dd');
+    assert.equal(oldDimension.length, 1); assert.equal(dimensions.length, 1);
+    for (const label of ['potencia', 'acidez', 'dulzor', 'tanino', 'fruta']) {
+      for (const [profileValue, wineValue] of [[0, 5], [1.4, 4], [5, 0]]) {
+        const values = { dimension: { label, profileValue, wineValue } }, item = render(dimensions[0], values);
+        assert.equal(normalized(item), normalized(render(oldDimension[0], values)));
+        assert.equal(item.props['aria-label'], `${label}: tu perfil ${profileValue.toFixed(1)}/5; este vino ${wineValue.toFixed(1)}/5`);
+        const children = React.Children.toArray(item.props.children);
+        assert.equal(children.length, 1); assert.equal(children[0].props['aria-hidden'], 'true'); dimensionCases++;
+      }
+    }
   }
 }
 assert.equal(disclosureCases, 4); assert.equal(scoreCases, 6); assert.equal(initialCases, 48);
+assert.equal(dimensionCases, 15);
 const require = createRequire(import.meta.url);
 let activeView, resolves = 0;
 const loadCellar = source => {
@@ -132,5 +144,5 @@ assert.equal(resolves, 0); assert.equal(ratingCases, 32);
 const host = fs.readFileSync('src/pages/MyWines.tsx', 'utf8');
 assert.match(host, /\{isNative && <CellarWineAffinity wine=\{wine\}/);
 assert.equal((host.match(/<CellarWineAffinity /g) || []).length, 1);
-console.log(JSON.stringify({ disclosureCases, scoreCases, initialCases, ratingCases, networkCalls: 0, applicationWrites: 0,
+console.log(JSON.stringify({ disclosureCases, scoreCases, initialCases, ratingCases, dimensionCases, networkCalls: 0, applicationWrites: 0,
   scope: 'Actual native-only JSX evaluated against unchanged visible labels at3abfd07. Scores/initials form single text children; summaries and decorated scores expose one explicit label. UIKit AX/touch/VoiceOver speech still require runtime verification.' }));

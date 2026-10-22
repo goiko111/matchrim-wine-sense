@@ -58,7 +58,7 @@ export function evaluate(log, result, stopped = null) {
   const expected = /^-\[(?:\w+\.)?MatchrimNavigation138Tests testExistingQAReadOnlyNavigation138\]$/;
   const summaries = [...log.matchAll(/Executed (\d+) tests?, with (\d+) failures/g)];
   const positions = MARKERS.map(marker => lines.indexOf(marker));
-  const start = lines.findIndex(line => /^Test Case '.*' started\./.test(line));
+  const start = lines.findIndex(line => /^Test Case '.*' started(?:\.| \(Iteration 1 of 1\)\.)$/.test(line));
   const end = lines.findIndex(line => /^Test Case '.*' passed[. ]/.test(line));
   const passed = result?.code === 0 && !result.signal && !result.spawnError && !stopped
     && MARKERS.every(marker => count(marker) === 1)

@@ -327,6 +327,13 @@ for (const [name, log] of [
   assert.equal(evaluate(log, { code: 0 }).passed, false);
   const f = fixture(); f.state.log = log; assert.equal((await f.run()).receipt.passed, false);
 });
+await test('Observed Xcode single fixed iteration is accepted, never a repeated or ambiguous iteration count', () => {
+  const log = green.replace('started.', 'started (Iteration 1 of 1).');
+  assert.equal(evaluate(log, { code: 0, signal: null }).passed, true);
+  for (const value of ['0 of 1', '2 of 1', '1 of 2', '1 of 10', '01 of 1', '1 of 1 extra']) {
+    assert.equal(evaluate(log.replace('Iteration 1 of 1', 'Iteration ' + value), { code: 0, signal: null }).passed, false);
+  }
+});
 await test('CRLF exact pass; exit, signal, spawn error and stop override markers', () => {
   assert.equal(evaluate(green.replaceAll('\n', '\r\n'), { code: 0 }).passed, true);
   for (const result of [{ code: 65 }, { code: null }, { code: 0, signal: 'SIGINT' }, { code: 0, spawnError: true }]) {

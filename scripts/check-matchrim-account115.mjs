@@ -40,6 +40,13 @@ assert(html.includes('aria-label="Cuenta actual"'));
 assert(html.includes('synthetic@example.invalid'));
 assert(!html.includes('synthetic-owner'));
 assert(html.includes('aria-label="Ajustes de cuenta"'));
+const walk = node => Array.isArray(node) ? node.flatMap(walk) : React.isValidElement(node)
+  ? [node, ...walk(node.props.children)] : [];
+const emailNodes = walk(component()).filter(node => node.type === 'p' && node.props['aria-label'] === 'Correo de tu cuenta: synthetic@example.invalid');
+assert.equal(emailNodes.length, 1);
+assert.equal(emailNodes[0].props.children.type, 'span');
+assert.equal(emailNodes[0].props.children.props['aria-hidden'], 'true');
+assert.equal(emailNodes[0].props.children.props.children, user.email);
 assert(source.includes('shrink-0'));
 assert(source.includes('[overflow-wrap:anywhere]'));
 user = { id: 'synthetic-owner', email: 'x'.repeat(220) + '@example.invalid' };
@@ -50,5 +57,5 @@ user = { id: 'synthetic-owner', email: null };
 html = render(); assert(html.includes('Sesion iniciada')); assert(!html.includes('synthetic-owner'));
 assert.equal(signOutCalls, 0);
 assert(!source.includes('supabase'));
-console.log(JSON.stringify({ groups: 8, networkCalls: 0, accountMutations: 0,
+console.log(JSON.stringify({ groups: 9, networkCalls: 0, accountMutations: 0,
   scope: 'Actual native account component with mocked dependencies; no UIKit, real login or visual-layout claim' }));

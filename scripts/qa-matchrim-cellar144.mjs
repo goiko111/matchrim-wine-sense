@@ -66,7 +66,7 @@ export function evaluate(log, result, stopped = null) {
   const expected = /^-\[(?:\w+\.)?MatchrimCellar144Tests testExistingQAReadOnlyCellar144\]$/;
   const summaries = [...log.matchAll(/Executed (\d+) tests?, with (\d+) failures/g)];
   const positions = MARKERS.map(marker => lines.indexOf(marker));
-  const start = lines.findIndex(line => /^Test Case '.*' started\./.test(line));
+  const start = lines.findIndex(line => /^Test Case '.*' started(?:\.| \(Iteration 1 of 1\)\.)$/.test(line));
   const end = lines.findIndex(line => /^Test Case '.*' passed[. ]/.test(line));
   const passed = result?.code === 0 && !result.signal && !result.spawnError && !stopped
     && MARKERS.every(marker => count(marker) === 1)
@@ -130,6 +130,17 @@ export function parseReadback(value, expected, runId) {
   check(Array.isArray(value.explanation) && value.explanation.length > 0 && value.explanation.every(nonempty)
     && nonempty(value.provenance) && value.provenance.includes(byStyle
       ? 'La ficha pública no especifica' : 'Basado en tu perfil y en la ficha de este vino.'), 'READBACK_PROVENANCE_HOLD');
+  if (!byStyle) {
+    const axes = new Set();
+    check(value.explanation.length === 5, 'READBACK_DIMENSIONS_HOLD');
+    for (const label of value.explanation) {
+      const match = label.match(/^(potencia|acidez|dulzor|tanino|fruta): tu perfil ([0-9]+[.][0-9])\/5; este vino ([0-9]+[.][0-9])\/5$/);
+      check(match && !axes.has(match[1]) && match.slice(2).every(raw => Number(raw) >= 0 && Number(raw) <= 5),
+        'READBACK_DIMENSIONS_HOLD');
+      axes.add(match[1]);
+    }
+    check(axes.size === 5, 'READBACK_DIMENSIONS_HOLD');
+  }
   return value;
 }
 
@@ -142,7 +153,8 @@ export function verifyEvidence({ io = fs, output, runId }) {
     && row.configurationName === 'Cellar144Once' && row.repetitionNumber === 1
     && !row.isAssociatedWithFailure), 'EVIDENCE_RUN_HOLD');
   const expected = [...VIEWS.flatMap(view => [[view, 'png'], [view + '-ax', 'txt']]),
-    ['scope', 'txt'], ...WINES.map(wine => [wine.attachment, 'json'])];
+    ['scope', 'txt'], ...WINES.map(wine => [wine.attachment, 'json']),
+    ...WINES.map(wine => [wine.evidenceName + '-audit', 'txt'])];
   check(attachments.length === expected.length, 'EVIDENCE_COUNT_HOLD');
   const seen = new Set(), records = [];
   for (const [name, extension] of expected) {
