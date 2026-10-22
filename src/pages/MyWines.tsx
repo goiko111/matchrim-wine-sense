@@ -2176,7 +2176,7 @@ const MyWinesForOwner = () => {
               </div>
             </Tabs>
             {isNative && <details className="min-w-0 border-y border-stone-200 py-2" data-testid="native-cellar-learning97">
-              <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium text-stone-700">Tu perfil de gustos</summary>
+              <summary aria-label="Tu perfil de gustos" className="min-h-11 cursor-pointer py-3 text-sm font-medium text-stone-700"><span aria-hidden="true">Tu perfil de gustos</span></summary>
               <p className="text-sm leading-6 text-stone-600">{cellarProfile?.note || 'Cargando tu perfil.'}</p>
               <Button type="button" variant="outline" className="mt-3 min-h-11" onClick={() => navigate('/profile')}>Ver mi perfil</Button>
             </details>}
