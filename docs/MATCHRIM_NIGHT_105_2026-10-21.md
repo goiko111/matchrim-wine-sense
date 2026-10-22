@@ -242,3 +242,17 @@ Candidate103-r12/b24b731 passes typecheck/assets and bound `uikit103-r10` build/
 `visual-dense128-r7` passes10 automated captures onr12. Manual320px review approves the144px caption/control clearance, but the393px/200percent priority label is ellipsized, so its MANUAL-REVIEW is not full layout approval.142 changes only native priority/service SelectTrigger classes to multiline/no-clamp/auto-height with44pt minimum. The exact whole-file inverse restores135 and all prior comparison assertions; ten directed mutations are rejected. Five direct web SSR comparisons remain byte-identical toba74ee1, and the old96 target/135/nested menu guard checks pass. Actual DOM/Range overflow, caption and pointer assertions now cover the complete priority label at200percent, plus service format when present. New build/visual evidence is pending, not inferred from these unit checks.
 
 All own heavy/simulator jobs ended and their leases were released at00:00:39UTC. Only the Matchrim writer was reacquired; other authorized tasks have the shared render/desktop turn. No resource theft, unrelated process cleanup, web/main publication, paid provider start or Lovable turn.
+
+## Recorded Affinity Trace143
+
+`reference143-r3/REPORT.json` reproduces the recorded66/100 using the actual current QA Profile AX values and the cached public search-row attributes for the explicitly selected Terre d'Aigle2020. The formula/mapping/shared normalization sources are byte-equal to the clean0173c17 native-flow source; the native pass and input-photo hashes are checked, and network is forbidden in the trace process. Initial143 preflight incorrectly expected the shared Supabase helper in the preparation's fingerprint map; it now verifies its frozen Git source too. This local preflight failure issued no request or application write.
+
+| Dimension | Observed QA profile | Cached wine | Difference | Explanation tone |
+| --- | ---: | ---: | ---: | --- |
+| Body |1.4 |4 |2.6 |Main friction |
+| Acidity |4 |4 |0 |Main match |
+| Sweetness |2 |4 |2 |Friction |
+| Tannin |1.1 |0 |1.1 |Intermediate |
+| Fruit |3.3 |4 |0.7 |Intermediate |
+
+The same cached wine produces28 distinct bounded scores across the existing50 synthetic131 profiles, with no new dataset, account, rating or application write. This demonstrates arithmetic sensitivity, not50 real users or empirical taste accuracy. The trace does not capture the live detail packet or prove that its publicID/attributes are identical to the cached search row; it demonstrates consistency with the recorded UI number only. The failed native accessibility suite remains failed. The app's simple positive/acidity and negative/intensity explanation agrees with this calculation; full sensory provenance remains unspecified by the public catalogue.
