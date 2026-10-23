@@ -58,6 +58,8 @@ try {
     const saved = { ...candidate, place_details: { winerim_public_catalogue: reference } };
     assert(readCellarPublicReference107(saved));
     assert.equal(makeCellarReferenceStyle110(saved, nv, snapshot), null);
+    const display = nativeWineConsumerResult(applyGlobalCatalogue103(candidate, snapshot.profile, nv), snapshot.profile);
+    assert.equal(display.affinityValue, 'Ver ficha'); assert.equal(display.canExplainAffinity, false);
   });
   await test('Persisted public-store vectors and initial scores are quarantined only in native evaluation', () => {
     const trace = makeCellarCatalogEvidence(candidate, `winerim-public-store:${observed.id}`, attributes); assert(trace);

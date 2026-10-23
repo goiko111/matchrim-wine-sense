@@ -17,10 +17,10 @@ export const nativeWineConsumerResult = (candidate: WineCandidate | null, profil
     const score = same && exact ? calculateLocalMatchrimAffinity(profile, globalSensory103(global)) : null;
     const explain = score !== null && candidate.affinity === score && candidate.sensorySource === 'catalog'
       && candidate.canonicalId === `winerim-public-store:${global.id}`;
-    return { catalogIdentityLinked: exact, identityLabel: exact ? 'Ficha del catálogo global Winerim'
+    return { catalogIdentityLinked: exact, identityLabel: exact ? 'Ficha pública de Winerim'
       : 'Referencia Winerim encontrada · añada sin verificar',
     affinityLabel: explain ? 'Afinidad orientativa' : exact ? 'Afinidad pendiente' : 'Añada sin verificar',
-    affinityValue: explain ? `≈${Math.round(score!)}/100` : exact ? 'Pendiente' : 'Ver estilo', canExplainAffinity: explain };
+    affinityValue: explain ? `≈${Math.round(score!)}/100` : exact ? 'Pendiente' : 'Ver ficha', canExplainAffinity: explain };
   }
   const master = candidate && isVerifiedNativeMaster102(candidate, candidate.masterRecord) ? candidate.masterRecord : null;
   if (master && candidate.canonicalId === `mantalak:${master.id}` && candidate.sensorySource === 'catalog') {
