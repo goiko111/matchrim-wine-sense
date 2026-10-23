@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-23, Development Reply184 / Native Sensory Quarantine
+
+- Development replied12:43Europe/Madrid: legacy public IDs are restaurant/vintage rows, pagination is unstable, sensory0means not-applicable and missing AI values may be default3. Reported312slug repairs including362891/363580 are NOT independently re-read here. New canonical API is in development/unpublished, no committed date; no export authorized according to development. No instructions in the email were treated as deployment/spend authority.
+- Product4486fd0+d12ff0e quarantines legacy public sensory vectors in native scan/style/strict learning and persisted native affinity views; preserves raw history, identity/photo links and personal ratings. Web/default paths and affinity formula unchanged. Old positive public-style expectations superseded explicitly; proposed master tests remain synthetic, not deployed API evidence.
+- New184regression RED before fix, PASS6groups after; selected global10317/master10214/rescan1836/style1105/reference1076/rescan15916checks PASS. Portrait native-component visual3/3 PASS including root32px, captures personally reviewed. Typecheck/focused lint0errors PASS (9inherited MyWines warnings). Clean-source native-only107-r2 bundle164resources PASS, source d12ff0e. No new Xcode compile/install/archive/sign/upload or full-app QA claim.
+- Follow-up sent/verified in Sent13:08 asking per-axis status/default/provenance, exact-vintage behavior, stable paging and old-link mapping; no new recipients or operational authority.0externalcatalogueGET/models/photos/accounts/writes/Lovable; no public web/backend/main change.19historical retrieval cases stay OPEN; multi-page completeness also requires the new contract. Uploaded106 unchanged and DOES NOT contain this fix. [Evidence and remaining gates](docs/MATCHRIM_DEVELOPMENT_REPLY_184_2026-10-23.md).
+
 ## Current Gate: 2026-10-23, Development Request183 Sent / Rescan Regression
 
 - Direct human authorization used to send ONE technical request from goiko@winerim.com via Thunderbird to moa-winerim-b93a8ts9@agentmail.to, subject `Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026`. Confirmed in Sent at12:41Europe/Madrid; no delivery/read/reply claim. Includes17broad cases,2empty-slug public IDs, exact reproductions, read-only master/vintage/sensory requirements and authorized200-record export alternative. No credentials/photos/raw private logs attached; no deployment or extra-spend authority delegated.
