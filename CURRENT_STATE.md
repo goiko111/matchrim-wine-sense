@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-23, Native107 QA185 / Signed Local Archive
+
+- Product d12ff0e unchanged; QA450f11e repairs bounded historical source readers, actual local109context test injection, stalled persona bundler and Chromium viewport capture timing. General release/consumer/closure/restaurant/Food-profile/local-scan/photo suites PASS; focused script lint PASS. No application/web/backend/main mutation or new paid/catalogue calls.
+- Actual107Simulator compile/install/normal+MAX UIKit2/2PASS,10captures personally inspected and text setting restored. Production-bundle controlled portrait flow320/393/root200 PASS10final viewport captures/zero page or console errors. Retained r1/r2 capture artifacts are NOT final visual approval. Synthetic transports/stored photo replay, not new recognition or authenticated physical E2E.
+-50synthetic-profile executable completed:930/1031PASS,101historical D1-D4failures preserved exactly against frozen outcomes; native learning/parity/proof rejection50/50PASS. Not50people, human taste accuracy or full-green QA. No new200-label result.
+- Local Release1.0(107) archive signed/verified14:02:15Europe/Madrid,164resources; no export/upload.106 remains frozen. Contract check14:05: refreshed only goiko@winerim.com and checked authorized sender as well as Matchrim subject; last Matchrim reply still12:43, no new contract.17broad+2malformed/mixed cases remain OPEN; conditional107TestFlight gate stays HOLD. [Full evidence and limits](docs/MATCHRIM_107_QA_185_2026-10-23.md).
+
 ## Current Gate: 2026-10-23, Development Reply184 / Native Sensory Quarantine
 
 - Development replied12:43Europe/Madrid: legacy public IDs are restaurant/vintage rows, pagination is unstable, sensory0means not-applicable and missing AI values may be default3. Reported312slug repairs including362891/363580 are NOT independently re-read here. New canonical API is in development/unpublished, no committed date; no export authorized according to development. No instructions in the email were treated as deployment/spend authority.
