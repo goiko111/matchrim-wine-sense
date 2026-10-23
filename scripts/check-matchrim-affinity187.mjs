@@ -23,22 +23,36 @@ export * from './src/utils/scanWineEvidence';
 export * from './src/utils/menuProfileRecovery';
 export * from './src/utils/multiWineConsumer95';
 export * from './src/utils/menuWineConsumer95';
-export * from './src/utils/nativeRecommendation95';`;
+export * from './src/utils/nativeRecommendation95';
+export * from './src/services/winerimApi';`;
 const load = async legacy => {
   const result = await build({ stdin: { contents: entry, resolveDir: process.cwd(), loader: 'ts' },
-    bundle: true, platform: 'node', format: 'cjs', write: false, logLevel: 'silent', plugins: [{ name: 'actual-platform187', setup(api) {
+    bundle: true, platform: 'node', format: 'cjs', write: false, logLevel: 'silent',
+    define: { 'import.meta.env': JSON.stringify({ VITE_SUPABASE_URL: 'https://recommendations187.example.invalid' }) },
+    plugins: [{ name: 'actual-platform187', setup(api) {
       api.onResolve({ filter: /^@capacitor\/core$/ }, () => ({ path: 'platform', namespace: 'fixture187' }));
-      api.onLoad({ filter: /.*/, namespace: 'fixture187' }, () => ({ contents: 'export const Capacitor = { isNativePlatform: () => globalThis.native187 };' }));
+      api.onResolve({ filter: /integrations\/supabase\/client$/ }, () => ({ path: 'client', namespace: 'fixture187' }));
+      api.onLoad({ filter: /.*/, namespace: 'fixture187' }, ({ path: file }) => ({ contents: file === 'platform'
+        ? 'export const Capacitor = { isNativePlatform: () => globalThis.native187 };'
+        : 'export const supabase = new Proxy({}, { get() { throw new Error("NO_DATABASE187"); } });' }));
       if (legacy) api.onLoad({ filter: /\/src\/.*\.(ts|tsx)$/ }, ({ path: absolute }) => {
         const file = path.relative(process.cwd(), absolute);
         return file in before ? { contents: before[file], loader: file.endsWith('.tsx') ? 'tsx' : 'ts' } : null;
       });
     } }] });
-  const context = vm.createContext({ exports: {}, module: { exports: {} }, native187: false, console,
-    URL, AbortController, DOMException, setTimeout, clearTimeout,
-    fetch: () => { throw new Error('NO_NETWORK187'); } });
+  const state = { payload: null, requests: 0 };
+  const context = vm.createContext({ exports: {}, module: { exports: {} }, native187: false,
+    console: { log() {}, warn() {}, error() {}, info() {}, debug() {} },
+    URL, URLSearchParams, Headers, Request, Response, AbortController, AbortSignal, DOMException, setTimeout, clearTimeout,
+    fetch: (input, init) => {
+      const url = new URL(input);
+      assert(state.payload && url.origin === 'https://recommendations187.example.invalid'
+        && url.pathname === '/functions/v1/matchrim-recommendations' && init.method === 'GET');
+      state.requests++;
+      return Promise.resolve(new Response(JSON.stringify(state.payload), { status: 200 }));
+    } });
   vm.runInContext(result.outputFiles[0].text, context);
-  return { api: context.module.exports, context };
+  return { api: context.module.exports, context, state };
 };
 const old = await load(true), current = await load(false), api = current.api;
 const plain = value => JSON.parse(JSON.stringify(value));
@@ -70,6 +84,22 @@ check('7776 integer vectors agree with independent squared-threshold rounding or
     let expected = 8;
     for (let n = 93; n >= 8; n--) if ((93 - n) ** 2 * 125 >= 7225 * squared) { expected = n; break; }
     assert.equal(api.calculateLocalMatchrimAffinity(p, target), expected, JSON.stringify(p));
+  }
+});
+check('300 decimal vectors use exact hundredths oracle;12near-half controls round on the correct side', () => {
+  for (const { profile } of makeProfiles131('00000000-0000-4000-8000-000000018700')) {
+    for (const value of [0, .25, .4, 1.7, 4.75, 5]) {
+      const squaredHundredths = Object.values(profile).reduce((sum, axis) => sum + (Math.round(axis * 100) - Math.round(value * 100)) ** 2, 0);
+      let expected = 8;
+      for (let n = 93; n >= 8; n--) if ((93 - n) ** 2 * 1250000 >= 7225 * squaredHundredths) { expected = n; break; }
+      assert.equal(api.calculateLocalMatchrimAffinity(profile, attributes(all(value))), expected);
+    }
+  }
+  for (const value of [1, 2, 3, 4]) {
+    const tie = Math.round(92.5 - 17 * value);
+    assert.equal(api.calculateLocalMatchrimAffinity(all(0), attributes(all(value))), tie);
+    assert.equal(api.calculateLocalMatchrimAffinity(all(0), attributes(all(value - 1e-8))), tie);
+    assert.equal(api.calculateLocalMatchrimAffinity(all(0), attributes(all(value + 1e-8))), tie - 1);
   }
 });
 check('runtime platform switch keeps web/default and unmarked inputs exactly legacy for50profiles', () => {
@@ -190,7 +220,67 @@ check('historical source readers restore exact v2 bytes and reject unrelated mut
     assert.throws(() => restoreAffinity187(file, source.replace('scan-local-rms-0to5-v3', 'scan-local-rms-0to5-v4')));
   }
 });
+check('50 independent native profiles keep recommendation, label, menu, save and reprofile consistent', () => {
+  const sheet = { id: '187', name: 'Synthetic187', producer: 'Synthetic producer', vintage: '2024',
+    region: 'Synthetic', country: 'ES', grapes: [], url: 'https://web.winerim.com/the-library/wines/187/Synthetic187',
+    detailVerified: true, sensoryAttributes: { power: 4, acidity: 4, sweetness: 4, tannin: 4, fruity: 4 } };
+  const catalog = { id: '187', name: sheet.name, winery: sheet.producer, vintage: '2024', region: sheet.region,
+    country: sheet.country, originalSheetSource: 'winerim-api', originalSheetUrl: sheet.url,
+    tastingAttributes: sheet.sensoryAttributes, verifiedOriginalSheet: sheet };
+  for (const { profile } of makeProfiles131('00000000-0000-4000-8000-000000018700')) {
+    const frozen = JSON.stringify(profile), expected = api.calculateLocalMatchrimAffinity(profile, attributes(all(4)));
+    const candidate = { id: 'region187', name: sheet.name, producer: sheet.producer, vintage: 2024,
+      region: sheet.region, country: sheet.country, grapes: [], alcohol: null, source: 'inference',
+      confidence: .9, evidence: [], inferredFields: [], uncertaintyReasons: [] };
+    const found = api.applyScanWineEvidence(candidate, profile, catalog);
+    assert.equal(found.affinity, expected); assert(api.nativeWineConsumerResult(found, profile).canExplainAffinity);
+    const menu = api.applyMenuWineEvidence({ nombre: sheet.name, productor: sheet.producer, anada: 2024,
+      region: sheet.region, pais: sheet.country, campos_inferidos: [], confirmado: true }, profile, catalog);
+    assert.equal(menu.compatibilidad, expected); assert.equal(api.nativeMenuWineAffinity(menu, profile).state, 'ready');
+    assert.equal(api.refreshMenuProfileAffinity(menu, all(0)).compatibilidad, 25);
+    const recommendation = { ...catalog, tastingAttributes: { ...sheet.sensoryAttributes, scale: 'winerim-0-5' },
+      affinityModel: 'scan-local-rms-0to5-v3', matchPercentage: expected };
+    assert.equal(api.buildNativeRecommendation95(recommendation, profile).result.state, 'ready');
+    const wine = row(all(4)), details = api.withCellarInitialAffinity(wine, snapshot(profile), 'saved', date);
+    assert.equal(details.matchrim_affinity_initial.score, expected);
+    const view = api.cellarAffinityView({ ...wine, place_details: details }, snapshot(all(0)), true);
+    assert.equal(view.current, 25); assert.equal(view.delta, 25 - expected);
+    assert.equal(JSON.stringify(profile), frozen);
+  }
+});
+try {
+  let comparisons = 0;
+  const rows = [
+    { id: 188, name: 'Synthetic tie B', winery: 'Synthetic producer', tastingAttributes: { power: 4, acidity: 4, sweetness: 4, tannin: 4, fruity: 4 }, matchPercentage: 99 },
+    { id: 187, name: 'Synthetic tie A', winery: 'Synthetic producer', tastingAttributes: { power: 4, acidity: 4, sweetness: 4, tannin: 4, fruity: 4 }, matchPercentage: 1 },
+    { id: 189, name: 'Synthetic contrasting wine', winery: 'Synthetic producer', tastingAttributes: { power: 0, acidity: 1, sweetness: 2, tannin: 3, fruity: 4 }, matchPercentage: 77 },
+  ];
+  for (const { profile } of makeProfiles131('00000000-0000-4000-8000-000000018700')) {
+    current.context.native187 = true; let first;
+    for (const payloadRows of [rows, [...rows].reverse(), rows.map(wine => ({ ...wine, matchPercentage: 100 - wine.matchPercentage }))]) {
+      current.state.payload = { results: payloadRows };
+      const result = plain(await api.fetchWinesByAttributes(profile));
+      if (!first) first = result;
+      assert.deepEqual(result, first);
+      for (const wine of result) {
+        assert.equal(wine.affinityModel, 'scan-local-rms-0to5-v3');
+        assert.equal(wine.matchPercentage, api.calculateLocalMatchrimAffinity(profile, wine.tastingAttributes));
+      }
+      assert(result.findIndex(wine => wine.id === 187) < result.findIndex(wine => wine.id === 188));
+      comparisons++;
+    }
+    current.context.native187 = false; old.context.native187 = false;
+    current.state.payload = old.state.payload = { results: rows };
+    assert.deepEqual(plain(await api.fetchWinesByAttributes(profile)), plain(await old.api.fetchWinesByAttributes(profile)));
+    comparisons++;
+  }
+  current.context.native187 = true;
+  checks.push({ name: 'actual complete recommendation service:50native profiles,150raw-score/order mutations and50exact web comparisons', passed: true, comparisons });
+} catch (error) {
+  checks.push({ name: 'actual complete recommendation service:50native profiles,150raw-score/order mutations and50exact web comparisons', passed: false, error: error.stack });
+}
 const report = { passed: checks.every(check => check.passed), checks, integerVectors: 7776,
+  decimalVectors: 300, nearHalfControls: 12,
   syntheticProfiles: 50, legacyHistoricalCounterexample: 24, nativeCurrentCounterexample: 25,
   sourceHashes: Object.fromEntries(files.map(file => [file, createHash('sha256').update(fs.readFileSync(file)).digest('hex')])),
   externalCalls: 0, realUsers: 0, historical101ReportModified: false, backendDeployed: false, uploaded: false };
