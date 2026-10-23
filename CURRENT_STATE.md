@@ -2,6 +2,7 @@
 
 ## Current Gate: 2026-10-23, Exact19-Case Backend Package180
 
+- Continuation181:6negative confirmation/affinity paths PASS against the two retained malformed public rows; raw selection, synthetic guessed-slug selection and injected sensory objects all rejected without a detail request. Focused lint PASS,0newexternalGET/models/uploads/Lovable/writes. Not a source repair or recognition/native QA pass.19cases still OPEN; ready-to-forward developer message prepared, not sent.
 - Product105/1a14f81 unchanged;19cases still OPEN. New package runs all36queries through the actual catalogue client with37exact retained receipts: statuses/counts match, both bad IDs excluded;8evidence assertions and focused lint PASS.0newGET/model/upload/Lovable/write; no TestFlight or web publication.
 -17broad-only+2schema/mixed contain21partial queries, counts88-1631;6exceed manual400. Exact source repairs are public-store362891 and363580, not assumed master IDs. Correction: retained/fresh ALTOTINTO pages all count60 and page2 SHA is identical;177's count-drift prose was wrong, now corrected without altering receipts.
 - Capacity2.1GiB: no new heavy run. Existing heartbeat updated for silent capacity checks and only interrupted visual QA resumption when>=5GiB/leases allow; no external reads, web/backend mutation or TestFlight upload. Current visual gate is still HOLD, not a pass. [Development request, honest progress and reproducible cases](docs/MATCHRIM_DEVELOPMENT_GATE_180_2026-10-23.md).

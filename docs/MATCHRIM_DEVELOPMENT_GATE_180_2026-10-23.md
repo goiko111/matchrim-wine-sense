@@ -107,3 +107,20 @@ uses no external catalogue/model calls, changes no web/backend/owner account and
 cannot upload TestFlight. It pauses after visual closure or a new actionable
 human-dependent failure. This is scheduled continuation, not a currently running
 simulator test. Catalogue source repairs still need the backend owner.
+
+## Continuation181: Source Defect Safety
+
+No product/source-catalogue repair is claimed. The new focused test
+`check-matchrim-source-defects181.ts` runs six negative paths through actual
+confirmation/affinity code using the two exact retained malformed public rows:
+raw row selection rejected, an explicitly synthetic invented-slug clone rejected,
+and untrusted injected sensory details rejected for each ID. No detail query is
+attempted and no identity/affinity is created. Focused lint PASS.
+
+Evidence: `qa-artifacts/continuation181-20261023/SOURCE_DEFECTS.json`, including
+original response fingerprints and source guard hashes. This is a controlled
+safety regression, not recognition, native QA or an upstream correction.
+Zero new public/model/image/Lovable calls, production writes, web changes or
+TestFlight uploads. The19 cases remain open; disk is still below5GiB, so the
+existing conditional visual continuation is unchanged. No message has been sent
+to development; the user receives ready-to-forward text with exact reproductions.
