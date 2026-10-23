@@ -113,7 +113,12 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
     && !isLiteralWineStyleName95(value)
     && !['vieilles vignes', 'old vines'].includes(tokens(value).join(' '))
     && !tokens(value).every(word => generic.has(word) || queryMetadata.has(word) || automaticQueryMetadata.has(word));
-  const dates = wineYearRoles105(evidence.map(text => ({ text })));
+  // Preserve the same spatial year roles used by local recognition. Geometry
+  // cannot omit another dated observation or introduce external award context.
+  const boundLines = Array.isArray(lines) && lines.length > 0 && lines.length <= 100
+    && Array.from(lines).every(line => evidence.includes(line?.text))
+    && evidence.filter(text => /\b(?:19|20)\d{2}\b/.test(text)).every(text => lines.some(line => line.text === text));
+  const dates = wineYearRoles105(boundLines ? lines : evidence.map(text => ({ text })));
   const possible = dates.roles.filter(role => role.role === 'vintage' || role.role === 'unclassified');
   const supportedHint = typeof vintageHint === 'number' && Number.isSafeInteger(vintageHint)
     && vintageHint >= 1900 && vintageHint <= new Date().getUTCFullYear()
@@ -150,5 +155,15 @@ export const globalRecoveryQueries104 = (name: string, evidence: readonly string
     if (bounded.slice(0, 2).every(query => constituents.includes(tokens(query).join(' ')))
       && automaticMeaningful(stack.text) && automaticMeaningful(stack.fallback)) return [stack.text, stack.fallback];
   }
-  return bounded.slice(0, 2);
+  const selected = bounded.slice(0, 2);
+  // Do not spend a second read on a constituent already covered by a fully
+  // observed distinctive phrase. No third query is backfilled after removal.
+  return selected.filter(query => (groundedName && query === automaticName)
+    || roles.preferred.some(value => tokens(value).join(' ') === tokens(query).join(' '))
+    || !selected.some(other => {
+    if (query === other) return false;
+    const key = tokens(query).join(' '), words = tokens(other);
+    const distinctive = new Set(words.filter(word => !generic.has(word) && !queryMetadata.has(word) && !automaticQueryMetadata.has(word)));
+    return words.length <= 4 && distinctive.size >= 2 && (` ${words.join(' ')} `).includes(` ${key} `);
+    }));
 };
