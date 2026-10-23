@@ -1,7 +1,7 @@
 import type { WinerimWineWithMatch } from '../services/winerimApi';
 import type { MatchrimProfileLike } from './matchrimPassport';
 import { buildConsumerAffinity, type ConsumerAffinityResult } from './consumerAffinity95';
-import { calculateLocalMatchrimAffinity } from './wineAffinityExplanation';
+import { calculateLocalMatchrimAffinity, currentLocalAffinityModel187 } from './wineAffinityExplanation';
 
 const profileKeys = ['potente', 'acidez', 'dulce', 'tanico', 'afrutado'] as const;
 const sensoryKeys = ['power', 'acidity', 'sweetness', 'tannin', 'fruity'] as const;
@@ -34,7 +34,7 @@ export const buildNativeRecommendation95 = (
     return pending('profile', 'Completa tu test de paladar para saber cuánto encaja este vino contigo.');
   }
   const currentScore = calculateLocalMatchrimAffinity(profile, attributes);
-  if (wine.affinityModel !== 'scan-local-l2-0to5-v2' || currentScore === null
+  if (wine.affinityModel !== currentLocalAffinityModel187(attributes) || currentScore === null
     || wine.matchPercentage !== currentScore) {
     return pending('score', 'Esta recomendación aún no está actualizada para tus gustos. Vuelve a cargar tus recomendaciones antes de comparar.');
   }

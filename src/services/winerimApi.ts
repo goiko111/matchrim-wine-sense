@@ -6,7 +6,7 @@ import { buildMatchrimAffinityCalibration, MATCHRIM_AFFINITY_MODEL } from '@/uti
 import { normalizeMatchrimProfileForClassifier } from '@/utils/matchrimPassport';
 import { canonicalLabelSearchQuery, isSafeCanonicalLabelMatch, hasAmbiguousCanonicalMatches } from '@/utils/winerimLabelIdentity';
 import { resolveMatchrimEdgeFunctionName } from '@/utils/matchrimEdgeRouting';
-import { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } from '@/utils/wineAffinityExplanation';
+import { calculateLocalMatchrimAffinity, currentLocalAffinityModel187, normalizeWineAttributesForInsight } from '@/utils/wineAffinityExplanation';
 import { isNonWineIdentity } from '@/utils/wineCategory';
 import { catalogWineFromVerifiedSheet, lookupWinerimOriginalSheet, hasExactWinerimProducer, hasWinerimGeographyConflict, validateWinerimOriginalSensory, validateWinerimOriginalSheetUrl, type WinerimOriginalSheet } from '@/utils/winerimOriginalSheet';
 
@@ -53,7 +53,7 @@ export interface WinerimWineWithMatch extends WinerimWine {
   matchPercentage: number;
   rawMatchPercentage?: number;
   affinityConfidence?: number;
-  affinityModel?: typeof MATCHRIM_AFFINITY_MODEL | 'raw-v1' | 'scan-local-l2-v1' | 'scan-local-l2-0to5-v2';
+  affinityModel?: typeof MATCHRIM_AFFINITY_MODEL | 'raw-v1' | 'scan-local-l2-v1' | 'scan-local-l2-0to5-v2' | 'scan-local-rms-0to5-v3';
   matchSource?: 'winerim-api' | 'style-range';
   styleName?: PublicWineStyle;
 }
@@ -589,7 +589,7 @@ export const fetchWinesByAttributes = async (
       const score = calculateLocalMatchrimAffinity(quizResult, wine.tastingAttributes);
       if (score === null) return null;
       return { ...wine, matchPercentage: score, rawMatchPercentage: undefined, affinityConfidence: undefined,
-        affinityModel: wine.tastingAttributes?.scale === 'winerim-0-5' ? 'scan-local-l2-0to5-v2' as const : 'scan-local-l2-v1' as const };
+        affinityModel: currentLocalAffinityModel187(wine.tastingAttributes) };
     }
     const rawMatchPercentage = wine.matchPercentage;
     if (options.affinityCalibrationConfidence === null || options.affinityCalibrationConfidence === undefined) {

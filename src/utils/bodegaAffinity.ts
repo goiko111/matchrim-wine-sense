@@ -1,10 +1,11 @@
 import { z } from 'zod';
+import { Capacitor } from '@capacitor/core';
 import type { Json } from '@/integrations/supabase/types';
 import type { ScanProfileSnapshot } from './scanProfile';
 import type { MatchrimProfileLike } from './matchrimPassport';
 import type { TrainableWine } from './matchrimLearning';
 import type { WineAttributeInput } from './wineAffinityExplanation';
-import { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } from './wineAffinityExplanation';
+import { calculateLocalMatchrimAffinity, currentLocalAffinityModel187, normalizeWineAttributesForInsight } from './wineAffinityExplanation';
 
 export interface CellarAffinityWine {
   name: string;
@@ -50,6 +51,7 @@ const initialFields = {
 const initialSchema = z.discriminatedUnion('model', [
   z.object({ ...initialFields, version: z.literal(1), model: z.literal('scan-local-l2-v1'), scale: z.undefined().optional() }),
   z.object({ ...initialFields, version: z.literal(2), model: z.literal('scan-local-l2-0to5-v2'), scale: z.literal('winerim-0-5') }),
+  z.object({ ...initialFields, version: z.literal(3), model: z.literal('scan-local-rms-0to5-v3'), scale: z.literal('winerim-0-5') }),
 ]);
 const persistedIdentitySchema = z.object({ name: z.string(), producer: z.string().nullable(),
   vintage: z.number().int().nullable(), region: z.string().nullable(), country: z.string().nullable() });
@@ -111,7 +113,7 @@ export const readCellarInitialAffinity = (wine: CellarAffinityWine, native = fal
   if (!parsed.success || !attributes || parsed.data.scale !== attributes.scale
     || parsed.data.identity_signature !== identitySignature(wine)
     || parsed.data.attribute_signature !== attributesSignature(attributes)
-    || calculateLocalMatchrimAffinity(parsed.data.profile as MatchrimProfileLike, attributes) !== parsed.data.score) return null;
+    || calculateLocalMatchrimAffinity(parsed.data.profile as MatchrimProfileLike, attributes, parsed.data.model) !== parsed.data.score) return null;
   return parsed.data;
 };
 
@@ -135,11 +137,13 @@ export const confirmsCellarSaveEvidence = (data: unknown, expected: CellarAffini
 
 export const cellarAffinityView = (wine: CellarAffinityWine, snapshot: ScanProfileSnapshot | null, native = false) => {
   const attributes = readCellarSensoryEvidence(wine, native);
-  const current = attributes ? calculateLocalMatchrimAffinity(snapshot?.profile, attributes) : null;
+  const model = currentLocalAffinityModel187(attributes, native);
+  const current = attributes ? calculateLocalMatchrimAffinity(snapshot?.profile, attributes, model) : null;
   const initial = readCellarInitialAffinity(wine, native);
+  const modelChanged = current !== null && Boolean(initial && initial.model !== model);
   const sensoryHold = native && hasLegacyPublicSensory184(wine);
-  return { current, initial, attributes, delta: current !== null && initial ? current - initial.score : null,
-    sensoryHold,
+  return { current, initial, attributes, delta: current !== null && initial?.model === model ? current - initial.score : null,
+    sensoryHold, modelChanged,
     reason: !snapshot ? 'Cargando tu perfil de gustos.'
       : !snapshot.profile ? snapshot.note
         : !attributes ? 'Falta una ficha sensorial verificable de esta referencia; no basta con su nombre o una estimaci\u00f3n de IA.'
@@ -148,15 +152,18 @@ export const cellarAffinityView = (wine: CellarAffinityWine, snapshot: ScanProfi
 
 export const withCellarInitialAffinity = (
   wine: CellarAffinityWine, snapshot: ScanProfileSnapshot | null, phase: 'saved' | 'first_verified',
-  recordedAt = new Date().toISOString(),
+  recordedAt = new Date().toISOString(), native = Capacitor.isNativePlatform(),
 ): Json => {
   const details = { ...record(wine.place_details) };
   if (readCellarInitialAffinity(wine)) return details as Json;
   // Invalidated identities must not retain another wine's historical score.
   delete details.matchrim_affinity_initial;
-  const view = cellarAffinityView(wine, snapshot);
+  const model = currentLocalAffinityModel187(record(wine.sensory_attributes) as WineAttributeInput | null, native);
+  const view = cellarAffinityView(wine, snapshot, native);
   if (view.current !== null && view.attributes && snapshot?.profile && snapshot.source !== 'unavailable') {
-    const initial = initialSchema.safeParse({ ...(view.attributes.scale === 'winerim-0-5'
+    const initial = initialSchema.safeParse({ ...(model === 'scan-local-rms-0to5-v3'
+      ? { version: 3, model, scale: 'winerim-0-5' }
+      : view.attributes.scale === 'winerim-0-5'
       ? { version: 2, model: 'scan-local-l2-0to5-v2', scale: view.attributes.scale }
       : { version: 1, model: 'scan-local-l2-v1' }),
       identity_signature: identitySignature(wine), attribute_signature: attributesSignature(view.attributes),

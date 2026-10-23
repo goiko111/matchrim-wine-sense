@@ -5,7 +5,7 @@ import type { MatchrimProfileLike } from './matchrimPassport';
 import type { ScanProfileSnapshot } from './scanProfile';
 import { globalSensory103, isGlobalWine103, type GlobalWine103 } from './nativeGlobalCatalogue103';
 import { makeCellarPublicReference107, readCellarPublicReference107 } from './cellarPublicReference107';
-import { calculateLocalMatchrimAffinity, normalizeWineAttributesForInsight } from './wineAffinityExplanation';
+import { calculateLocalMatchrimAffinity, currentLocalAffinityModel187, normalizeWineAttributesForInsight } from './wineAffinityExplanation';
 
 const key = 'matchrim_reference_style110';
 const axis = z.number().finite().min(0).max(5);
@@ -78,7 +78,7 @@ export const makeCellarReferenceStyle110 = (
     return JSON.stringify(previous.public_reference) === JSON.stringify(publicReference) ? previous as unknown as Json : null;
   }
   const profile = validSnapshot(snapshot);
-  const initial = profile ? { score: calculateLocalMatchrimAffinity(profile.profile, attributes),
+  const initial = profile ? { score: calculateLocalMatchrimAffinity(profile.profile, attributes, 'scan-local-l2-0to5-v2'),
     recorded_at: recordedAt, profile: profile.profile, profile_source: profile.profile_source, samples: profile.samples } : null;
   const parsed = schema.safeParse({ version: 1, model: 'reference-style-l2-0to5-v1', scale: 'winerim-0-5',
     provenance: 'unspecified', recorded_at: recordedAt, public_reference: publicReference,
@@ -100,7 +100,7 @@ export const readCellarReferenceStyle110 = (wine: CellarAffinityWine): CellarRef
     || JSON.stringify(embedded) !== JSON.stringify(linked)
     || data.attribute_signature !== signature(data.attributes)
     || (data.initial && (data.initial.recorded_at !== data.recorded_at
-      || calculateLocalMatchrimAffinity(data.initial.profile, data.attributes) !== data.initial.score))) return null;
+      || calculateLocalMatchrimAffinity(data.initial.profile, data.attributes, 'scan-local-l2-0to5-v2') !== data.initial.score))) return null;
   // JSONB may reorder object keys; 107 supplies a stable validated reference shape.
   const { url: _url, ...publicReference } = embedded;
   return { ...data, public_reference: publicReference as Json };
@@ -113,7 +113,8 @@ export const cellarReferenceStyleView110 = (
   if (!data) return null;
   const profile = validSnapshot(snapshot);
   const current = profile ? calculateLocalMatchrimAffinity(profile.profile, data.attributes) : null;
-  return { current, initial: data.initial, delta: current !== null && data.initial ? current - data.initial.score : null,
+  return { current, initial: data.initial, delta: current !== null && data.initial
+    && currentLocalAffinityModel187(data.attributes) === 'scan-local-l2-0to5-v2' ? current - data.initial.score : null,
     attributes: data.attributes };
 };
 

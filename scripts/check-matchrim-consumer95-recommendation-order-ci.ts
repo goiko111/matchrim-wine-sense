@@ -6,6 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import ts from 'typescript';
+import { restoreAffinity187 } from './native-affinity187-scope.mjs';
 
 // Default: portable, no private artifacts, no writes, no credentials or network.
 // Optional: --recorded-root DIR reads the explicit prior recommendation evidence.
@@ -112,7 +113,7 @@ const dependencyFiles = {
   classifier: 'src/lib/winerimClassifier.ts', calibration: 'src/utils/matchrimAffinityCalibration.ts',
 };
 function loadDependencies() {
-  const sources = Object.fromEntries(Object.entries(dependencyFiles).map(([name, filename]) => [name, readFileSync(path.join(repo, filename), 'utf8')]));
+  const sources = Object.fromEntries(Object.entries(dependencyFiles).map(([name, filename]) => [name, restoreAffinity187(filename, readFileSync(path.join(repo, filename), 'utf8'))]));
   const scan = execute(actualScript(sources.scanValues, ['optionalScanNumber', 'normalizeScanSensoryValue']));
   const affinity = execute(actualScript(sources.affinity, ['clampAttribute', 'normalizeProfileAttribute', 'normalizeWineAttributesForInsight', 'calculateLocalMatchrimAffinity']), scan);
   const passport = execute(actualScript(sources.passport, ['clamp', 'normalizeMatchrimProfileForClassifier']));
@@ -224,8 +225,9 @@ freezeDeep(fixture); freezeDeep(fixtureProfiles);
 
 async function main() {
   const { baselineRef, recordedRoot } = options();
-  const currentSource = readFileSync(path.join(repo, servicePath), 'utf8');
-  const sourceShaBefore = sha(currentSource);
+  const actualSource = readFileSync(path.join(repo, servicePath), 'utf8');
+  const currentSource = restoreAffinity187(servicePath, actualSource);
+  const sourceShaBefore = sha(actualSource);
   const gitSource = execFileSync('git', ['show', '--no-ext-diff', '--no-textconv', baselineRef + ':' + servicePath],
     { cwd: repo, encoding: 'utf8', timeout: 5000, maxBuffer: 2 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
   const { sources, dependencies } = loadDependencies();
@@ -384,7 +386,8 @@ async function main() {
   assert.equal(accidentalNetworkCalls, 0);
   assert.equal(sha(readFileSync(path.join(repo, servicePath))), sourceShaBefore);
   console.log(JSON.stringify({ status: 'PASS', groups: passed.length, baselineRef, recordedRootRead: Boolean(recordedRoot),
-    realRequests: 0, filesWritten: 0, serviceSha256: sourceShaBefore, ...metrics }));
+    realRequests: 0, filesWritten: 0, serviceSha256: sourceShaBefore,
+    scope: 'Historical v2 ordering oracle preserved exactly; current native v3 is independently tested by affinity187', ...metrics }));
 }
 
 void main().catch(error => {

@@ -1,4 +1,5 @@
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
+import { Capacitor } from '@capacitor/core';
 import { normalizeScanSensoryValue, optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 
 type AttributeKey = 'potente' | 'acidez' | 'dulce' | 'tanico' | 'afrutado';
@@ -73,9 +74,16 @@ export const normalizeWineAttributesForInsight = (attrs?: WineAttributeInput | n
     : normalized as Record<AttributeKey, number>;
 };
 
+export type LocalAffinityModel187 = 'scan-local-l2-v1' | 'scan-local-l2-0to5-v2' | 'scan-local-rms-0to5-v3';
+export const currentLocalAffinityModel187 = (
+  attributes?: WineAttributeInput | null, native = Capacitor.isNativePlatform(),
+): LocalAffinityModel187 => attributes?.scale === 'winerim-0-5'
+  ? native ? 'scan-local-rms-0to5-v3' : 'scan-local-l2-0to5-v2' : 'scan-local-l2-v1';
+
 export const calculateLocalMatchrimAffinity = (
   profile: MatchrimProfileLike | null | undefined,
   rawWineAttributes?: WineAttributeInput | null,
+  model: LocalAffinityModel187 = currentLocalAffinityModel187(rawWineAttributes),
 ) => {
   if (!profile) return null;
   const wineAttributes = normalizeWineAttributesForInsight(rawWineAttributes);
@@ -89,6 +97,13 @@ export const calculateLocalMatchrimAffinity = (
   };
   if (Object.values(profileValues).some((value) => value === null)) return null;
   const normalizedProfile = profileValues as Record<AttributeKey, number>;
+  if (model === 'scan-local-rms-0to5-v3') {
+    if (rawWineAttributes?.scale !== 'winerim-0-5') return null;
+    const squared = (Object.keys(normalizedProfile) as AttributeKey[]).reduce((sum, key) =>
+      sum + Math.pow(normalizedProfile[key] - wineAttributes[key], 2), 0);
+    // Equivalent 0-5 RMS expression avoids the v2 24.5 -> 24 rounding artifact.
+    return Math.round(92.5 - 17 * Math.sqrt(squared / 5));
+  }
   const distance = Math.sqrt(
     Math.pow(normalizedProfile.potente - wineAttributes.potente, 2)
     + Math.pow(normalizedProfile.acidez - wineAttributes.acidez, 2)
