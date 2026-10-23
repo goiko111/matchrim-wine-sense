@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-23, Native Learning186 /107HOLD
+
+- Local source58e9055 corrects a real native-v2 server mismatch: aiRIM/Food no longer learn from `winerim-public-store:` sensory traces that client184 already quarantines. RED retained;556current-learning checks/50synthetic profiles,104Food groups,47aiRIM groups and release/Food regressions PASS. Default/web/unknown tags byte-equivalent; no deployed backend change. Direct Supabase readback denied, no Lovable credits used.
+- Historical101remain preserved: D1=45old learner/parity controls, D2=51web/old evidence controls, D3=4old scale controls, D4=1actual v2rounding tie. They are not101distinct current-native bugs and were not relabeled green. D4still needs a native-only versioned scorer/history validator; no global formula change.
+- Clean-source107-r3 TypeScript/native bundle PASS.164resources/all source fingerprints/227isolated iOS files exactly match107-r2; signed107archive reverified, not rebuilt/exported/uploaded. Prior UIKit/portrait maximum-text visual evidence remains applicable to identical bytes, not a fresh live recognition pass. Server patch is NOT included in or activated by that archive.
+- Actual scoped inbox refresh18:32Europe/Madrid: last Matchrim reply still12:43, no API contract.17broad+2malformed/mixed cases OPEN; no new200-label result.0new paid/model/photo/catalogue/Lovable calls; budgets unchanged; main/web untouched.107conditional upload stays HOLD. [Evidence and exact residual](docs/MATCHRIM_NATIVE_LEARNING_186_2026-10-23.md).
+
 ## Current Gate: 2026-10-23, Native107 QA185 / Signed Local Archive
 
 - Product d12ff0e unchanged; QA450f11e repairs bounded historical source readers, actual local109context test injection, stalled persona bundler and Chromium viewport capture timing. General release/consumer/closure/restaurant/Food-profile/local-scan/photo suites PASS; focused script lint PASS. No application/web/backend/main mutation or new paid/catalogue calls.
