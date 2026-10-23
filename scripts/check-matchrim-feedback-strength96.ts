@@ -7,6 +7,7 @@ import { calculateLearnedMatchrimProfile as platform } from '../src/utils/matchr
 import { cellarTrainingRows, makeCellarCatalogEvidence, withCellarInitialAffinity } from '../src/utils/bodegaAffinity';
 import { resolveScanProfile } from '../src/utils/scanProfile';
 import { projectFeedbackServer96 } from './matchrim-feedback-server96-scope';
+import { restoreProfile185 } from './native-profile185-scope.mjs';
 
 const axes = ['potente', 'acidez', 'dulce', 'tanico', 'afrutado'] as const;
 const vector = (value: number) => Object.fromEntries(axes.map(key => [key, value])) as Record<typeof axes[number], number>;
@@ -132,7 +133,7 @@ check('all frontend learner imports use selector; full caller bodies and legacy 
   const files = ['src/pages/Index.tsx', 'src/pages/Profile.tsx', 'src/pages/UseMatchrim.tsx',
     'src/components/AiRimConversation.tsx', 'src/components/MatchrimFunction.tsx', 'src/utils/scanProfile.ts'];
   for (const file of files) {
-    const source = readFileSync(file, 'utf8');
+    const source = restoreProfile185(file, readFileSync(file, 'utf8'));
     const current = file === 'src/components/AiRimConversation.tsx' || file === 'src/components/MatchrimFunction.tsx'
       ? projectFeedbackServer96(file, source) : source;
     const old = execFileSync('git', ['show', `06d56c76af9135559926e99b321ed8b00225c229:${file}`], { encoding: 'utf8' });

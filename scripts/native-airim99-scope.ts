@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { restoreFeedbackScope185 } from './native-profile185-scope.mjs';
 
 export const nativeAiRim99Baseline = 'd7d81e18e5219b1aedcca641f71ae4d46980faf8';
 export const nativeAiRim99Paths = ['src/components/AiRimConversation.tsx', 'src/pages/LiquidIntelligence.tsx'] as const;
@@ -50,6 +51,7 @@ export function restoreNativeAiRim99(file: string, source: string): string {
 }
 
 export function restoreNativeAiRim99FeedbackScope96(source: string): string {
+  source = restoreFeedbackScope185(source);
   if (digest(source) === 'd91bf23bc5bb71494acd0072d285ccb8682ed9d0ee0f8c1b394a9e0c8586e9af') return source;
   source = once(source, "import { restoreNativeAiRim99 } from './native-airim99-scope';\n", '');
   source = once(source, "  if (file === 'src/components/AiRimConversation.tsx') source = restoreNativeAiRim99(file, source);\n", '');

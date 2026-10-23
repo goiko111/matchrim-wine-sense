@@ -6,6 +6,7 @@ import { runInNewContext } from 'node:vm';
 import ts from 'typescript';
 import * as geometry from '../src/utils/imageCropGeometry';
 import type * as ImageAnalysis from '../src/utils/imageAnalysis';
+import { restoreNativeMaster102 } from './native-master102-scope.mjs';
 
 // Execute the complete real module with the existing read/decode/canvas lifecycle
 // boundaries mocked. Pixel dimensions are synthetic; this does not measure memory.
@@ -278,7 +279,7 @@ await check('Only explicit native matte joins existing limits; read/decode/resiz
   const sha256 = (value: Buffer) => createHash('sha256').update(value).digest('hex');
   for (const [name, expected] of reviewedRecognition96) {
     assert.equal(sha256(execFileSync('git', ['show', `${baseline}:${name}`])), expected.before, `Exact c25 policy source: ${name}`);
-    assert.equal(sha256(readFileSync(name)), expected.current, `Exact reviewed recognition96 source: ${name}`);
+    assert.equal(sha256(Buffer.from(restoreNativeMaster102(name, readFileSync(name, 'utf8')))), expected.current, `Exact reviewed recognition96 source: ${name}`);
   }
   const output = execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-recognition96.ts'], { encoding: 'utf8' });
   const report = JSON.parse(output.trim().split('\n').at(-1)!);
@@ -296,11 +297,12 @@ await check('White matte is explicit native opt-in; default and other options ke
     assert.equal(subject.activity.encodes, 1);
   }
 });
-await check('Actual label call supplies native limits only; original three arguments and all other startScan code stay exact', async () => {
+await check('Actual label call supplies native limits only; bounded native inverses preserve the historical startScan', async () => {
   const scannerPath = 'src/components/wine-import/MultiWineLabelScanner.tsx';
   const scanner = readFileSync(scannerPath, 'utf8');
   const parse = (text: string) => ts.createSourceFile(scannerPath, text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
-  const current = parse(scanner), legacy = parse(execFileSync('git', ['show', `${baseline}:${scannerPath}`], { encoding: 'utf8' }));
+  const actual = parse(scanner), current = parse(restoreNativeMaster102(scannerPath, scanner));
+  const legacy = parse(execFileSync('git', ['show', `${baseline}:${scannerPath}`], { encoding: 'utf8' }));
   let call: ts.CallExpression | undefined;
   const scanBody = (tree: ts.SourceFile) => {
     let value: ts.ArrowFunction | undefined;
@@ -313,6 +315,14 @@ await check('Actual label call supplies native limits only; original three argum
   };
   const now = scanBody(current), old = scanBody(legacy);
   assert.ok(call); assert.equal(call.arguments.length, 4);
+  const actualCalls: ts.CallExpression[] = [];
+  const visitActual = (node: ts.Node) => {
+    if (ts.isCallExpression(node) && node.expression.getText(actual) === 'prepareImageForAnalysis') actualCalls.push(node);
+    ts.forEachChild(node, visitActual);
+  };
+  visitActual(actual);
+  assert.equal(actualCalls.length, 1);
+  assert.equal(actualCalls[0].getText(actual), call.getText(current), 'Actual preparation call is not changed by the historical projection');
   assert.deepEqual(call.arguments.slice(0, 3).map(argument => argument.getText(current)), ['file', '2400', 'controller.signal']);
   for (const native of [false, true]) {
     const args: unknown[][] = [], input = file(), controller = new AbortController();

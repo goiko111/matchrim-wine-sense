@@ -87,11 +87,13 @@ const stamp = '2026-10-17T10:00:00.000Z';
 const snapshot = (p: Profile): ScanProfileSnapshot => ({ profile: p, source: 'quiz', samples: 0, status: 'ready', note: 'SYNTHETIC ONLY' });
 const checks: Array<{ persona: string; invariant: string; passed: boolean; defect?: string; error?: string; actual?: unknown; expected?: unknown }> = [];
 async function check(persona: string, invariant: string, run: () => unknown | Promise<unknown>, defect?: string) {
+  if (process.env.MATCHRIM_PERSONA_TRACE185 === '1') console.log(`START ${persona}: ${invariant}`);
   try { await run(); checks.push({ persona, invariant, passed: true, defect }); }
   catch (error) {
     const e = error as Error & { actual?: unknown; expected?: unknown };
     checks.push({ persona, invariant, passed: false, defect, error: e.message, actual: e.actual, expected: e.expected });
   }
+  if (process.env.MATCHRIM_PERSONA_TRACE185 === '1') console.log(`${checks.at(-1)?.passed ? 'PASS' : 'FAIL'} ${persona}: ${invariant}`);
 }
 
 const personas = [
@@ -152,21 +154,11 @@ Object.defineProperty(globalThis, 'window', { configurable: true, value: { local
 // Import the actual service with only Capacitor and the database transport substituted.
 const serviceState = { native: true, owner: '', base: all(0), rows: [] as unknown[], queries: [] as Array<{ table: string; owner?: string }> };
 Object.assign(globalThis, { __consumer95: serviceState });
-const serviceBuild = await esbuild.build({ entryPoints: [resolve(root, 'src/services/matchrimScanProfile.ts')],
-  bundle: true, write: false, platform: 'node', format: 'esm', alias: { '@': resolve(root, 'src') }, logLevel: 'silent',
-  plugins: [{ name: 'consumer95-memory-transport', setup(build) {
-    build.onResolve({ filter: /^(@\/integrations\/supabase\/client|@capacitor\/core)$/ }, args => ({ path: args.path, namespace: 'consumer95' }));
-    build.onLoad({ filter: /.*/, namespace: 'consumer95' }, args => ({ contents: args.path === '@capacitor/core'
-      ? 'export const Capacitor = { isNativePlatform: () => globalThis.__consumer95.native };'
-      : `export const supabase = { from(table) {
-          const s = globalThis.__consumer95, q = { table }; s.queries.push(q);
-          const result = () => ({ data: q.owner === s.owner ? table === 'quiz_results' ? s.base : s.rows : table === 'quiz_results' ? null : [], error: null });
-          const chain = { select: () => chain, order: () => chain, limit: () => chain, not: () => chain,
-            eq: (key, value) => { if (key === 'user_id') q.owner = value; return chain; }, abortSignal: () => chain,
-            maybeSingle: async () => result(), then: (yes, no) => Promise.resolve(result()).then(yes, no) };
-          return chain;
-        } };` }));
-  } }],
+const serviceBuild = esbuild.buildSync({ entryPoints: [resolve(root, 'src/services/matchrimScanProfile.ts')],
+  bundle: true, write: false, platform: 'node', format: 'esm', logLevel: 'silent',
+  alias: { '@': resolve(root, 'src'),
+    '@/integrations/supabase/client': resolve(root, 'scripts/fixtures/consumer185-transport.mjs'),
+    '@capacitor/core': resolve(root, 'scripts/fixtures/consumer185-capacitor.mjs') },
 });
 const { loadMatchrimScanProfile: loadService } = await import('data:text/javascript;base64,' + Buffer.from(serviceBuild.outputFiles[0].text).toString('base64')) as {
   loadMatchrimScanProfile: (owner: string | null, signal: AbortSignal) => Promise<ScanProfileSnapshot>;
@@ -1056,6 +1048,7 @@ await check('GLOBAL', 'imported contract sources, HEAD and branch unchanged', ()
   assert.deepEqual(criticalHashes(), initialSourceHashes);
 });
 const sourcePaths = [...new Set(['scripts/check-matchrim-consumer95-personas.ts', 'src/data/quizData.ts', 'src/utils/wineAffinityExplanation.ts',
+  'scripts/fixtures/consumer185-transport.mjs', 'scripts/fixtures/consumer185-capacitor.mjs',
   'src/utils/scanWineEvidence.ts', 'src/utils/winerimOriginalSheet.ts', 'src/utils/bodegaAffinity.ts',
   'src/utils/matchrimLearning.ts', 'src/utils/matchrimLocalOwner.ts', 'src/utils/matchrimLocalProfile.ts',
   'src/utils/scanProfile.ts', 'src/services/matchrimScanProfile.ts', 'src/utils/menuWineActions.ts',

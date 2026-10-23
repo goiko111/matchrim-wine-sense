@@ -120,7 +120,7 @@ const mutations = [
   [sheetFile, 'photo parser', 'const detail = parseLibraryWine(detailPayload);', 'const detail = detailPayload;'],
   [pageFile, 'web copy', 'Mis Vinos', 'Changed web title'],
   [pageFile, 'load handler', 'const loadWines = async () => {', 'const loadWines = async () => { throw Error();'],
-  [pageFile, 'affinity formula', 'const affinity = cellarAffinityView(enriched, snapshot).current;', 'const affinity = 99;'],
+  [pageFile, 'affinity formula', 'const affinity = cellarAffinityView(enriched, snapshot, isNative).current;', 'const affinity = 99;'],
   [pageFile, 'training eligibility in photo update', 'Boolean(wine.rating && wine.use_for_profile_training)', 'true'],
   [pageFile, 'photo native-only gate', 'isNative && !wine.image_url && safeWineImageUrl98(catalog?.photo)', 'true && !wine.image_url && safeWineImageUrl98(catalog?.photo)'],
   [pageFile, 'existing photo protection', '!wine.image_url && safeWineImageUrl98(catalog?.photo)', 'safeWineImageUrl98(catalog?.photo)'],

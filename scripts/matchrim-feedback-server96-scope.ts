@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { restoreNativeFoodSummary96 } from './check-matchrim-food-summary96';
 import { restoreNativeAiRim99 } from './native-airim99-scope';
+import { restoreStrength185 } from './native-profile185-scope.mjs';
 
 const foodSummaryOutput96 = execFileSync(process.execPath, ['--import', 'tsx', 'scripts/check-matchrim-food-summary96.ts'], {
   encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 60000,
@@ -79,6 +80,7 @@ export const projectFeedbackServer96 = (file: string, source: string): string =>
 };
 
 export const projectStrengthTest96 = (source: string) => {
+  source = restoreStrength185(source);
   for (const [from, to] of [
     ["import { projectFeedbackServer96 } from './matchrim-feedback-server96-scope';\n", ''],
     ["    const source = readFileSync(file, 'utf8');\n    const current = file === 'src/components/AiRimConversation.tsx' || file === 'src/components/MatchrimFunction.tsx'\n      ? projectFeedbackServer96(file, source) : source;", "    const current = readFileSync(file, 'utf8');"],

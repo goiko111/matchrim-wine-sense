@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { restoreNativeSensory184 } from './native-sensory184-scope.mjs';
 
 const hash = source => createHash('sha256').update(source).digest('hex');
 const currentHash = 'da1238b2f6ec9a558239cf2fbd4dc7280de296d636a8d7bc388a520c3f58c73b';
@@ -8,6 +9,7 @@ const previousHash = '30cacda70065dd9836aea3063a656882710614ea6cbf3ae388ccc7273f
 // Remove only the reviewed native110/103/147 amendments before old98 oracles.
 // Current style/affinity behavior is exercised directly, not through this inverse.
 export const restoreCellarEvolution150 = (file, source) => {
+  source = restoreNativeSensory184(file, source);
   if (file !== 'src/pages/MyWines.tsx' || hash(source) !== currentHash) return source;
   const hunks = [
     ["import { cellarDisplayAffinity110, isHighCellarAffinity110 } from '@/utils/cellarReferenceStyle110';\nimport { readCellarPublicReference107 } from '@/utils/cellarPublicReference107';\n", ''],

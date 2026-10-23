@@ -75,7 +75,8 @@ const helperCode = compile([
   declarations(parse('src/utils/imageAnalysis.ts'), qualityNames),
   declarations(parse('src/utils/imageCropGeometry.ts'), ['getCropGeometry']),
   declarations(parse('src/utils/scanAnalysisPolicy.ts'), policyNames),
-  `globalThis.helpers = { ${[...identityNames, ...qualityNames, ...policyNames].join(', ')} };`,
+  declarations(parse('src/services/nativeScanContext159.ts'), ['loadNativeScanContext159']),
+  `globalThis.helpers = { ${[...identityNames, ...qualityNames, ...policyNames, 'loadNativeScanContext159'].join(', ')} };`,
 ].join('\n'), 'local-scan109-pure-extracts.ts');
 
 const placeholder = 'Etiqueta por identificar';
@@ -106,7 +107,7 @@ function host(options = {}) {
   const state = { localBatch: false, localReading: null, preview: null, quality: null,
     scanProfile: null, regions: [], coverage: null, selectedRegionId: null, phase: 'idle',
     analysisProgress: 0, analysisConcurrency: 0, scanMetrics: null, errorMessage: null,
-    confirmed: false, saving: false, batchLocked: false, saveResults: [], nativeResultView: 'scene' };
+    confirmed: false, saving: false, batchLocked: false, saveResults: [], nativeResultView: 'scene', nativeVerdicts: null };
   const refs = { savingRef: { current: false }, saveLifetime: { current: { active: true, generation: 0 } },
     batchRef: { current: null }, abortRef: { current: null }, continuationRef: { current: null },
     lastFileRef: { current: null }, preparedSizeRef: { current: null }, scanProfileRef: { current: null } };
@@ -181,7 +182,8 @@ function host(options = {}) {
     };
   }
   const context = vm.createContext(scope);
-  const helperScope = { hasWinerimGeographyConflict: forbidden('hasWinerimGeographyConflict') };
+  const helperScope = { hasWinerimGeographyConflict: forbidden('hasWinerimGeographyConflict'),
+    loadMatchrimScanProfile: scope.loadMatchrimScanProfile, loadNativeSavedVerdicts159: async () => null };
   helperCode.runInNewContext(helperScope, { timeout: 1000 });
   Object.assign(scope, helperScope.helpers);
   const realGroups = scope.getConfirmableWineGroups;

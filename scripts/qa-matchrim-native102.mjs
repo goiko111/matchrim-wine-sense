@@ -77,7 +77,16 @@ try {
   page.on('console', message => { if (message.type() === 'error') report.consoleErrors.push(message.text()); });
   const capture = async name => {
     guard();
+    await page.evaluate(async () => {
+      await document.fonts.ready;
+      await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    });
     const geometry = await page.evaluate(() => ({ viewport: innerWidth, viewportHeight: innerHeight, document: document.documentElement.scrollWidth,
+      navigation: (() => { const nav = document.querySelector('nav[aria-label="Navegación principal"]');
+        const rect = nav?.getBoundingClientRect();
+        return rect ? { top: rect.top, bottom: rect.bottom, left: rect.left, right: rect.right,
+          links: [...nav.querySelectorAll('a')].map(link => ({ label: link.getAttribute('aria-label'),
+            fontSize: getComputedStyle(link).fontSize, height: link.getBoundingClientRect().height })) } : null; })(),
       dialog: (() => { const r = document.querySelector('[role=dialog]')?.getBoundingClientRect(); return r ? { top: r.top, bottom: r.bottom, left: r.left, right: r.right } : null; })() }));
     assert(geometry.document <= geometry.viewport + 1, name + ' page overflow');
     if (geometry.dialog) {
@@ -89,9 +98,9 @@ try {
         && bounds.y + bounds.height <= geometry.viewportHeight + 1, name + ' footer remains reachable');
       geometry.closeButton = bounds;
     }
-    // A full-page Chromium capture resizes the layout viewport and tiles fixed drawers.
-    // Keep overlay evidence at the actual device viewport, not a stitched tall page.
-    write(name + '.png', await page.screenshot({ fullPage: !geometry.dialog }));
+    // Full-page Chromium captures can repeat sticky native navigation or resize drawers.
+    // Record the actual device viewport for every state, including non-modal pages.
+    write(name + '.png', await page.screenshot({ fullPage: false, animations: 'disabled' }));
     write(name + '-aria.txt', await page.locator('body').ariaSnapshot());
     report.snapshots.push({ name, geometry });
   };
