@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import { restoreFeedbackScope186 } from './native-learning186-scope.mjs';
 
 const hash = value => createHash('sha256').update(value).digest('hex');
 const once = (source, after, before) => {
@@ -31,6 +32,7 @@ export function restoreStrength185(source) {
 }
 
 export function restoreFeedbackScope185(source) {
+  source = restoreFeedbackScope186(source);
   const oldHash = '3bc133a4db6b944b49124423edca11fb4893cfb499f35f0a5eeb7c7752a4757a';
   if (hash(source) === oldHash) return source;
   source = once(source, "import { restoreStrength185 } from './native-profile185-scope.mjs';\n", '');

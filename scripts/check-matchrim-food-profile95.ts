@@ -19,6 +19,7 @@ import * as legacy from '../supabase/functions/_shared/matchrim-learning';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '../src/utils/matchrimLearning';
 import { cellarTrainingRows, makeCellarCatalogEvidence, type CellarAffinityWine } from '../src/utils/bodegaAffinity';
 import { parseFoodScanResponse } from '../src/utils/foodScanResponse';
+import { makeProfiles131 } from './matchrim-profiles131-fixture.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 process.chdir(root);
@@ -117,6 +118,22 @@ function fixture(scenarios: Record<string, Scenario>, code = source, providerPay
   return { run, queries, prompts, authTokens };
 }
 const profileLine = (prompt: string) => prompt.split('\n').find(line => line.startsWith('Perfil Matchrim'));
+
+await check('native186: 50 owner-bound Food prompts exclude public sensory defaults without a client-profile override', async () => {
+  for (const { profile: p } of makeProfiles131('00000000-0000-4000-8000-000000018600')) {
+    const row = wine('public186', all(3));
+    row.place_details.bodega_sensory_evidence = makeCellarCatalogEvidence(row, 'winerim-public-store:186', row.sensory_attributes!);
+    const before = JSON.stringify(row);
+    const f = fixture({ 'SYN-AUTH': { base: p, rows: [row, { ...wine('foreign186', all(5)), user_id: 'OTHER-OWNER' }] } });
+    const result = await f.run('SYN-AUTH', all(5), undefined, { matchrimLearningModel: profile95.NATIVE_MATCHRIM_LEARNING_MODEL });
+    assert.equal(result.status, 200);
+    assert.equal((result.body.profile_context as Record<string, unknown>).status, 'base');
+    assert.equal((result.body.profile_context as Record<string, unknown>).samples, 0);
+    assert.equal(profileLine(f.prompts[0]), `Perfil Matchrim del usuario (escala 0-5): potencia=${p.potente}, acidez=${p.acidez}, dulzura=${p.dulce}, taninos=${p.tanico}, afrutado=${p.afrutado}.`);
+    assert(f.queries.every(q => q.filters.some(filter => filter[0] === 'user_id' && filter[1] === 'SYN-OWNER')));
+    assert.equal(JSON.stringify(row), before);
+  }
+});
 
 await check('exact profile reader preserves zeros/decimals and rejects coercion/invalid/missing axes', () => {
   const p = { potente: 0, acidez: 0.25, dulce: 2.5, tanico: 4.75, afrutado: 5 };

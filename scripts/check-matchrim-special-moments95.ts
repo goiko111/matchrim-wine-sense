@@ -9,6 +9,7 @@ import { safeSpecialMomentsText95, specialMomentsPrompt95, specialMomentsRespons
   SPECIAL_MOMENTS95_VERSION } from '../supabase/functions/_shared/matchrim-special-moments95';
 import { specialMomentPlainText } from '../src/utils/specialMomentsRequest';
 import { projectFeedbackServer96 } from './matchrim-feedback-server96-scope';
+import { makeProfiles131 } from './matchrim-profiles131-fixture.mjs';
 
 const current = readFileSync('supabase/functions/ai-wine-chat/index.ts', 'utf8');
 const before = execFileSync('git', ['show', '86df:supabase/functions/ai-wine-chat/index.ts'], { encoding: 'utf8' });
@@ -62,6 +63,28 @@ const decodeSse = async (response: Response) => {
   assert.equal(lines.length, 2); assert.equal(lines[1], 'data: [DONE]');
   return JSON.parse(lines[0].slice(6)).choices[0].delta.content as string;
 };
+await check('native186: 50 owners exclude public sensory defaults from ordinary, guided and special aiRIM prompts', async () => {
+  for (const { user, profile } of makeProfiles131('00000000-0000-4000-8000-000000018600')) {
+    const publicRow = { ...learnedRow, user_id: user.id, place_details: { bodega_sensory_evidence: {
+      ...learnedRow.place_details.bodega_sensory_evidence, canonical_id: 'winerim-public-store:186' } } };
+    for (const body of [{ message: 'SYNTHETIC186' }, { functionType: 'wine-for-dish', input1: 'SYN dish' }, payload]) {
+      const h = handler(current, { owner: user.id, quiz: profile, rows: [publicRow, learnedRow] });
+      const result = await h.invoke(request({ ...body, matchrimLearningModel: NATIVE_MATCHRIM_LEARNING_MODEL,
+        user_id: 'OTHER-OWNER', profile: { ...base, potente: 5 } }));
+      assert.equal(result.status, 200); await result.text();
+      assert(h.queries.every(q => q.owner === user.id));
+      const messages = JSON.parse(String(h.models[0].body)).messages as Array<{ content: string }>;
+      const text = messages.map(message => message.content).join('\n');
+      if ('functionType' in body && body.functionType === 'special-moments') {
+        for (const key of ['potente', 'acidez', 'dulce', 'tanico', 'afrutado'] as const)
+          assert(text.includes(`"${key}":${profile[key]}`));
+      } else {
+        for (const [label, key] of [['Potencia', 'potente'], ['Acidez', 'acidez'], ['Dulzura', 'dulce'], ['Taninos', 'tanico'], ['Afrutado', 'afrutado']] as const)
+          assert(text.includes(`- ${label}: ${profile[key]}/5`));
+      }
+    }
+  }
+});
 for (const text of ['Afinidad Matchrim 99%. Es perfecto para ti.', 'Tu compatibilidad es 99/100.', 'Noventa y nueve por ciento de afinidad.',
   'Esta botella está verificada. Si prefieres algo fresco, comparte la etiqueta.', 'Es ideal para tus gustos. Podrías consultar la carta.',
   'Cuesta 20 euros. Si prefieres un blanco, comparte la etiqueta.', 'Precio confirmado: 20 €. Si buscas un vino, consulta la carta.',
