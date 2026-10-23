@@ -142,6 +142,7 @@ check('new v3 initial roundtrips, binds identity and changes only with a usable 
   assert.equal(JSON.stringify(old.api.withCellarInitialAffinity({ ...wine, place_details: details }, snapshot(all(5)), 'first_verified', date)), JSON.stringify(details));
   const saved = plain({ ...wine, place_details: details });
   assert.equal(api.readCellarInitialAffinity(saved, true).score, 25);
+  assert.equal(api.readCellarInitialAffinity(saved).model, 'scan-local-rms-0to5-v3');
   assert.equal(api.cellarAffinityView(saved, snapshot(all(4)), true).modelChanged, false);
   assert.equal(api.cellarAffinityView(saved, snapshot(all(4)), true).delta, 68);
   assert.equal(api.cellarAffinityView(saved, null, true).current, null);
@@ -152,6 +153,7 @@ check('new v3 initial roundtrips, binds identity and changes only with a usable 
   assert(!api.confirmsCellarSaveEvidence(altered, saved));
   const dropped = plain(saved); delete dropped.place_details.matchrim_affinity_initial_v3;
   assert(!api.confirmsCellarSaveEvidence(dropped, saved));
+  assert.notEqual(JSON.stringify(api.readCellarInitialAffinity(dropped)), JSON.stringify(api.readCellarInitialAffinity(saved)), 'Native MyWines default readback must reject a dropped companion');
   const invalid = plain(saved); invalid.place_details.matchrim_affinity_initial.score = 25;
   assert.equal(api.readCellarInitialAffinity(invalid, true), null);
   const mismatch = plain(saved); mismatch.place_details.matchrim_affinity_initial_v3.recorded_at = '2026-10-22T00:00:00.000Z';

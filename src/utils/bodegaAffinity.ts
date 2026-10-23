@@ -121,7 +121,7 @@ const initialBinding187 = (value: z.infer<typeof initialSchema>) => JSON.stringi
   value.profile, value.profile_source, value.samples, value.scale,
 ]);
 
-export const readCellarInitialAffinity = (wine: CellarAffinityWine, native = false) => {
+export const readCellarInitialAffinity = (wine: CellarAffinityWine, native = Capacitor.isNativePlatform()) => {
   const legacy = readStoredInitial187(wine, 'matchrim_affinity_initial', native);
   if (!native || legacy?.model !== 'scan-local-l2-0to5-v2') return legacy;
   const current = readStoredInitial187(wine, 'matchrim_affinity_initial_v3', native);
@@ -172,7 +172,7 @@ export const withCellarInitialAffinity = (
   recordedAt = new Date().toISOString(), native = Capacitor.isNativePlatform(),
 ): Json => {
   const details = { ...record(wine.place_details) };
-  if (readCellarInitialAffinity(wine)) return details as Json;
+  if (readCellarInitialAffinity(wine, false)) return details as Json;
   // Invalidated identities must not retain another wine's historical score.
   delete details.matchrim_affinity_initial;
   delete details.matchrim_affinity_initial_v3;
