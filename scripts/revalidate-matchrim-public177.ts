@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { assertLeases112, boundedFetch112, captureSources112, loadCache112, newState112, sha112, verifySources112 } from './benchmark-matchrim-native112';
 
 const root = 'https://app.winerim.com/api/v1/restaurant/00000000-0000-0000-0000-000000000001/wines';
+const loadedRunnerSHA177 = sha112(fs.readFileSync(fileURLToPath(import.meta.url)));
 export const safeURL177 = (value: string) => {
   const url = new URL(value);
   assert.equal(url.origin + url.pathname, root);
@@ -59,6 +60,7 @@ export async function main177(argv = process.argv.slice(2)) {
   const receipts = JSON.parse(fs.readFileSync(path.dirname(source) + '/CACHE_READS.json', 'utf8')) as { sourceReceipt: string }[];
   const folders = [...new Set(receipts.map(row => path.dirname(row.sourceReceipt.split('#')[0])))];
   const sources = captureSources112(repo), runner = fileURLToPath(import.meta.url), runnerSHA256 = sha112(fs.readFileSync(runner));
+  assert.equal(runnerSHA256, loadedRunnerSHA177, 'LOADED_RUNNER_DRIFT');
   const guard = () => {
     assertLeases112(JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json', 'utf8')).leases, process.env);
     const disk = fs.statfsSync(repo); assert(disk.bavail * disk.bsize >= 5 * 1024 ** 3, 'LOW_DISK_HOLD');
@@ -85,7 +87,8 @@ export async function main177(argv = process.argv.slice(2)) {
     for (const item of planned) {
       if (state.held) break;
       try {
-        const response = await fetcher(item.url, { method: 'GET', credentials: 'omit', redirect: 'error', referrerPolicy: 'no-referrer' });
+        const response = await fetcher(item.url, { method: 'GET', credentials: 'omit', redirect: 'error', referrerPolicy: 'no-referrer',
+          headers: { Accept: 'application/json' } });
         const text = await response.text();
         let envelope: { count?: unknown; page?: unknown; results?: unknown } | null = null;
         try { envelope = JSON.parse(text); } catch { /* Retain non-JSON service failures without inventing an empty catalogue. */ }

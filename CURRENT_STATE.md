@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-23, Public500 Revalidation / Candidate105
+
+- Latest product `1a14f81`: source-bound spatial year/query handling and protected producer priority; clean native105-r11 bundle/typecheck and Simulator compile/install PASS. No new archive or TestFlight upload. Fixed lower-half OCR experiment rejected after18/20 readings lost source lines; production plugin unchanged.
+- Fresh owner-authorized public tranche23/24GET,0models/uploads/Lovable. All20historical500 URLs now200; source cause unknown. Two exact empty-slug pages remain defective. Braida page2 completed within the SAME cap, not another reservation. Paid50requests/EUR15 unchanged; no web/backend publication.
+- Actual200 Vision receipt replay r21:181evaluable retrieval/19incomplete,7abstentions,55proposal lists,46top1/48top3 expected-name proxies. Before162/38/44/36/38; no eligibility regression. NOT181 identified wines, expert accuracy, sensory coverage or fresh gallery E2E. Residual17broad+2schema/mixed; no remaining checked500 scene.
+- Visual replay harness fixed exact-receipt shadowing of current200 by old500. Corrected run generated18captures/zero page or unplanned-network errors; final guard LOW_DISK_HOLD at4.8GiB, therefore NOT visual PASS. Final capacity fell to2.8GiB and own heavy lease was released. Sources reverified; no deletion/foreign-process action. Full native/physical and catalogue release gates stay open. [Current evidence, matrix and limits](docs/MATCHRIM_REVALIDATION_177_2026-10-23.md).
+
 ## Current Gate: 2026-10-21, Native Visual98 First Block Implemented
 
 - Product `ec13656`: bottle-first Home, shared native wine photo/affinity/detail/save, compact Mis vinos and owner-bound explicit-save draft. Original-fiche photo now survives strict verification and can fill a missing saved photo without replacing owner imagery. No identity/score/learning relaxation.

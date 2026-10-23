@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { plan177, safeURL177 } from './revalidate-matchrim-public177';
 import { sha112, loadCache112 } from './benchmark-matchrim-native112';
 
@@ -37,5 +39,12 @@ test('Missing receipts, unsafe routes and an oversized batch fail closed before 
   const pages = Array.from({ length: 25 }, (_, i) => ({ query: 'Casa ' + i, status: 'unavailable' }));
   for (const page of pages) cache.set(url(page.query), entry(500, {}));
   assert.throws(() => plan177({ rows: [{ pages }], failures: pages.map(page => ({ url: url(page.query) })) }, cache));
+});
+test('The real live CLI refuses an absent authorization before creating files or starting reads', () => {
+  const output = 'qa-artifacts/continuation176-20261023/public177-live-r999'; assert(!fs.existsSync(output));
+  const child = spawnSync(process.execPath, ['--import', 'tsx', 'scripts/revalidate-matchrim-public177.ts', output, 'live'],
+    { encoding: 'utf8', env: { PATH: process.env.PATH, HOME: process.env.HOME } });
+  assert.equal(child.status, 1); assert(child.stderr.includes('EXPLICIT_PUBLIC_READ_AUTHORIZATION_REQUIRED'));
+  assert(!fs.existsSync(output));
 });
 console.log(JSON.stringify({ groups, publicGET: 0, models: 0, scope: 'Synthetic revalidation planning only; no fresh server status or recognition claim' }));

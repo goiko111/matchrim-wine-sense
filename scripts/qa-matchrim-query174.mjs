@@ -5,23 +5,26 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { createServer } from 'vite';
 import react from '@vitejs/plugin-react-swc';
-import { loadCache112, loadRuntime112, captureSources112, verifySources112, assertLeases112 } from './benchmark-matchrim-native112.ts';
+import { loadRuntime112, captureSources112, verifySources112, assertLeases112 } from './benchmark-matchrim-native112.ts';
+import { pinCache179 } from './pin-matchrim-cache179.ts';
 
 const repo = process.cwd(), out = path.resolve(process.argv[2]);
 const stackedMode = process.argv[3] === 'stacked175';
-assert(process.argv[3] === undefined || stackedMode);
-assert(path.dirname(out) === path.join(repo, 'qa-artifacts/continuation174-20261022') && /^visual(?:-stacked)?-r[1-9]\d*$/.test(path.basename(out)) && !fs.existsSync(out));
+const revalidatedMode = process.argv[3] === 'revalidated177';
+assert(process.argv[3] === undefined || stackedMode || revalidatedMode);
+assert(path.dirname(out) === path.join(repo, revalidatedMode ? 'qa-artifacts/continuation176-20261023' : 'qa-artifacts/continuation174-20261022')
+  && /^visual(?:-stacked|-revalidated)?-r[1-9]\d*$/.test(path.basename(out)) && !fs.existsSync(out));
 const check = () => {
   assertLeases112(JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json')).leases, process.env);
   const disk = fs.statfsSync(repo); assert(disk.bavail * disk.bsize >= 5 * 1024 ** 3, 'LOW_DISK_HOLD');
 };
 check(); fs.mkdirSync(out, { mode: 0o700 });
-const reportPath = 'qa-artifacts/night105-20261021/native112-corpus200-' + (stackedMode ? 'r17' : 'r16') + '/REPORT.json';
+const reportPath = 'qa-artifacts/night105-20261021/native112-corpus200-' + (revalidatedMode ? 'r21' : stackedMode ? 'r17' : 'r16') + '/REPORT.json';
 const report = JSON.parse(fs.readFileSync(reportPath));
 const receipts = JSON.parse(fs.readFileSync(path.dirname(reportPath) + '/CACHE_READS.json'));
-const folders = [...new Set(receipts.map(row => path.dirname(row.sourceReceipt.split('#')[0]))), path.resolve(path.dirname(reportPath))];
-const cache = loadCache112(repo, folders), runtime = await loadRuntime112(), sources = captureSources112(repo);
-const ids = stackedMode ? ['img-002', 'img-089', 'img-195'] : ['img-021', 'img-116', 'img-184', 'img-106'];
+const cache = pinCache179(repo, receipts), runtime = await loadRuntime112(), sources = captureSources112(repo);
+const ids = revalidatedMode ? ['img-084', 'img-094', 'img-099', 'img-190', 'img-193', 'img-200']
+  : stackedMode ? ['img-002', 'img-089', 'img-195'] : ['img-021', 'img-116', 'img-184', 'img-106'];
 const scenes = ids.map(id => {
   const row = report.rows.find(item => item.imageId === id); assert(row);
   const image = path.resolve('qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/' + id + '.jpg');
