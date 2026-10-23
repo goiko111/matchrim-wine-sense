@@ -82,6 +82,8 @@ try {
     const panel = page.getByTestId('cellar-wine-affinity');
     await panel.getByText('≈25/100', { exact: true }).waitFor();
     assert.match(await panel.innerText(), /Al guardar: 24\/100/);
+    assert.match(await panel.innerText(), /Hemos actualizado el c\u00e1lculo\./);
+    assert(!(await panel.innerText()).includes('\\u00'), 'No escaped Unicode codes in visible copy');
     assert.match(await panel.innerText(), /esta diferencia no indica que hayan cambiado tus gustos/);
     assert(!/\+1 punto/.test(await panel.innerText()));
     await panel.scrollIntoViewIfNeeded();

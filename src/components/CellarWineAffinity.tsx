@@ -41,7 +41,7 @@ export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRet
           {`${view.initial.phase === 'saved' ? 'Al guardar' : 'Primera afinidad registrada'}: ${view.initial.score}/100 \u00b7 ${new Date(view.initial.recorded_at).toLocaleDateString('es-ES')}${view.delta !== null && view.delta !== 0 ? ` \u00b7 ${view.delta > 0 ? '+' : ''}${view.delta} ${Math.abs(view.delta) === 1 ? 'punto' : 'puntos'} desde entonces` : ''}`}
         </p>
       ) : <p className="text-xs text-slate-500">{view.sensoryHold ? 'La estimaci\u00f3n anterior queda en revisi\u00f3n; tus datos siguen guardados.' : referenceStyle ? 'No hay una afinidad inicial verificada de esta añada.' : 'No hay una afinidad inicial guardada para este vino.'}</p>}
-      {view.modelChanged && <p className="text-xs leading-5 text-slate-600">Hemos actualizado el c\u00e1lculo. Tu afinidad inicial se conserva; esta diferencia no indica que hayan cambiado tus gustos.</p>}
+      {view.modelChanged && <p className="text-xs leading-5 text-slate-600">{'Hemos actualizado el c\u00e1lculo. Tu afinidad inicial se conserva; esta diferencia no indica que hayan cambiado tus gustos.'}</p>}
       <p className="text-xs leading-5 text-slate-600">{snapshot?.status === 'ready' && snapshot.profile
         ? !view.attributes ? view.sensoryHold ? 'Necesitamos datos de sabor fiables de esta ficha para compararlos con tus gustos.' : referenceStyle ? 'Falta una ficha sensorial verificable de esta añada.' : 'Necesito la ficha de este vino para compararlo con tus gustos.'
           : snapshot.source === 'learned' ? 'Basado en tu test y en tus valoraciones.' : 'Basado en tu test de paladar.'
