@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-23, Exact19-Case Backend Package180
+
+- Product105/1a14f81 unchanged;19cases still OPEN. New package runs all36queries through the actual catalogue client with37exact retained receipts: statuses/counts match, both bad IDs excluded;8evidence assertions and focused lint PASS.0newGET/model/upload/Lovable/write; no TestFlight or web publication.
+-17broad-only+2schema/mixed contain21partial queries, counts88-1631;6exceed manual400. Exact source repairs are public-store362891 and363580, not assumed master IDs. Correction: retained/fresh ALTOTINTO pages all count60 and page2 SHA is identical;177's count-drift prose was wrong, now corrected without altering receipts.
+- Capacity2.1GiB: no new heavy run. Existing heartbeat updated for silent capacity checks and only interrupted visual QA resumption when>=5GiB/leases allow; no external reads, web/backend mutation or TestFlight upload. Current visual gate is still HOLD, not a pass. [Development request, honest progress and reproducible cases](docs/MATCHRIM_DEVELOPMENT_GATE_180_2026-10-23.md).
+
 ## Current Gate: 2026-10-23, Public500 Revalidation / Candidate105
 
 - Latest product `1a14f81`: source-bound spatial year/query handling and protected producer priority; clean native105-r11 bundle/typecheck and Simulator compile/install PASS. No new archive or TestFlight upload. Fixed lower-half OCR experiment rejected after18/20 readings lost source lines; production plugin unchanged.

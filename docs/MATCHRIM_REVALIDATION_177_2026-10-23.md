@@ -77,9 +77,11 @@ The19 remaining IDs are003,013,017,041,045,054,060,067,069,096,118,121,151,155,1
 outcomes are in `continuation176-20261023/CHECKPOINT177.json`.
 
 Fresh malformed records still have empty slugs: public362891 in MONTEPULCIANO
-page1/count192; public363580 in ALTOTINTO page2/count60. The latter count also
-differs from its retained first-page snapshot, so mixing old/new pagination does
-not prove completeness. Neither ID has a verified independent detail receipt.
+page1/count192; public363580 in ALTOTINTO page2/count60. Correction180: both
+retained and fresh ALTOTINTO pages have count60; the earlier prose incorrectly
+claimed count drift. The exact page2 body SHA is also unchanged. The demonstrated
+defect is the empty slug, not inconsistent pagination totals. Neither ID has a
+verified independent detail receipt.
 Do not invent a slug, equate public/Mantalak namespaces, discard a required
 partial query or accept a convenient early match to make these cases green.
 
