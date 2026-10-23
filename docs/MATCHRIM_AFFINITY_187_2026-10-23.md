@@ -1,10 +1,10 @@
 # Matchrim107: versioned native affinity187
 
-Updated23October2026,19:20Europe/Madrid.
+Updated23October2026,19:31Europe/Madrid.
 Branch: `codex/matchrim82-cloud-integration-20261013`.
-Product: `1b137ae`, corrected visible copy `d820c9d`.
-Extended current-model tests: `eb14faf`. Later native persistence compatibility
-patch below is local in the same branch; no main merge.
+Product: `1b137ae`, corrected visible copy `d820c9d`, persistence compatibility
+`04569dc` and default native readback `617e59c`.
+Extended current-model tests: `eb14faf` plus617e59c. Same branch, no main merge.
 
 ## What Changed
 
@@ -50,29 +50,26 @@ Evidence root: `qa-artifacts/continuation187-20261023/`.
 
 | Gate | Actual Result | Evidence |
 | --- | --- | --- |
-| Current scorer and persistence |13groups PASS,7,776integer vectors against an independent squared-threshold oracle,300decimal vectors against an exact hundredths oracle,12near-half controls, actual old-reader/writer compatibility | `scorer-r8/RESULT.json` |
+| Current scorer and persistence |13groups PASS,7,776integer vectors against an independent squared-threshold oracle,300decimal vectors against an exact hundredths oracle,12near-half controls, actual old-reader/writer compatibility and default native companion readback | `scorer-r9/RESULT.json` |
 | Native profile workflows |50distinct synthetic profiles: recommendations, label, menu, save and reprofile consistent; zero real accounts/writes | Same receipt |
 | Complete current recommendation pipeline |50native profiles x3raw-score/order variants;50exact web comparisons against prior source; typed-ID tie order and current models preserved | Same receipt,200comparisons; only in-memory transport |
 | Historical ordering oracle |Exact hashed v2projection, frozen assertions retained; new v3tested independently with its actual platform dependency | `scripts/native-affinity187-scope.mjs` and same receipt's mutation controls |
-| Release regression |PASS | `../continuation185-20261023/native187-regression-r1/release/` |
-| Consumer and closure regression |Both PASS after correcting historical source-reader scope | `../continuation185-20261023/native187-regression-r2/RESULT.json` |
-| Bodega production-bundle visual |3/3PASS:393/320portrait and200%root text; current25, original24, explanation, no false+1;0page/console errors/unexpected calls/writes | `visual-affinity-r2/RESULT.json` |
-| Scanner production-bundle visual |10captures PASS: privacy, gallery replay, uncertainty/no invented affinity, photo, manual correction, reachable footer,320/393andmaximum text | `visual-scanner-r1/report.json` |
-| TypeScript/native bundle |PASS, clean-source d820c9d,164production resources; fixtures=false/masterConfigured=false | `candidate107-r5/preparation.json` |
-| Actual iOS compile/install and UIKit |Build PASS; portrait normal/MAX2/2PASS;10screenshots personally reviewed; content-size setting restored | `uikit107-r2/RESULT.json` |
-| Signed Release archive |PASS at19:14:14Europe/Madrid, codesign verified,164resources; no export/upload | `archive107-r2/ARCHIVE-RESULT.json` |
+| Release/consumer regression |Both PASS again on final617e59csource | `../continuation185-20261023/native187-regression-r4/RESULT.json` |
+| Closure regression |PASS on d820c9d; unchanged UI/navigation source not rerun for the later persistence-only follow-up | `../continuation185-20261023/native187-regression-r2/RESULT.json` |
+| Bodega production-bundle visual |Final617e59c3/3PASS:393/320portrait and200%root text; current25, original24, explanation, no false+1;0page/console errors/unexpected calls/writes; personally inspected | `visual-affinity-r3/RESULT.json` |
+| Scanner production-bundle visual |d820c9d10captures PASS, personally inspected: privacy, gallery replay, uncertainty/no invented affinity, photo, correction, footer,320/393andMAX. Unchanged screen/selection logic, not rerun for persistence-only follow-up | `visual-scanner-r1/report.json` |
+| TypeScript/native bundle |PASS, final clean-source617e59c,164production resources; fixtures=false/masterConfigured=false | `candidate107-r6/preparation.json` |
+| Actual iOS compile/install |Final617e59cbuild/install PASS,164resources checked/settings restored; build-only, no new navigation claim | `uikit107-r3/RESULT.json` |
+| UIKit normal/MAX smoke |d820c9d2/2PASS;10captures personally inspected/settings restored; same native executable/config fingerprints in final617e59c. Not an authenticated persistence E2E | `uikit107-r2/RESULT.json` |
+| Signed Release archive |Final617e59cPASS19:28:55Europe/Madrid, codesign verified,164resources; no export/upload | `archive107-r3/ARCHIVE-RESULT.json` |
 | Focused lint/diff |0errors/PASS | Changed187files, ESLint and `git diff --check` |
 
 The native binary uses bundle `wine.matchrim.app`, version1.0(107), team
 `8X3XTD6XYX`. Simulator installation is isolated as `wine.matchrim.qa99review`.
-The new archive is `archive107-r2/Matchrim107.xcarchive`; the older185archive is
-not the corrected product and must not be substituted.
-
-Compatibility follow-up at19:22: the dual-key persistence patch has passed the
-expanded scorer-r8tests but is NOT yet in candidate107-r5/archive107-r2. Those
-retained build results remain valid only for d820c9d, not this later source change.
-A fresh candidate, affected checks/render and archive are required before calling
-the compatibility source built or signed.
+The final archive is `archive107-r3/Matchrim107.xcarchive`, source617e59c.
+The earlier185archive and187archive-r2are retained intermediate products, NOT
+the final compatibility candidate. The server-learning patch still requires its
+own deployment; no local archive activates it.
 
 The50profiles are synthetic, not50people or confirmed preference accuracy. All
 new service/database/model boundaries in profile and browser tests are controlled
@@ -95,11 +92,17 @@ No new200-image recognition metric, physical-phone or spoken VoiceOver approval.
 - `scorer-r4` failed because the added synthetic recommendation omitted its
   required0-5scale marker. The positive fixture now includes the marker, just as
   the actual recommendation normalizer does; missing-scale rejection remains.
-  Final r7includes all expanded tests; earlier receipts are retained unchanged.
+  Final r9includes all expanded tests and backward-reader/writer compatibility;
+  earlier receipts are retained unchanged.
+- The initial single-keyv3prototype would have been unreadable to older clients.
+  The two-key patch retains their v2snapshot and binds the v3companion to the same
+  original event. A later readback correction makes default native MyWines
+  comparisons reject a dropped companion; malformed companion acknowledgements
+  also fail closed. Both defects were found before release, no real user writes.
 
 ## Contract and Deployment Follow-Up
 
-Scoped Thunderbird refresh at approximately18:54Europe/Madrid: only
+Scoped Thunderbird refresh at approximately18:54and19:30Europe/Madrid: only
 `goiko@winerim.com` refreshed. Matchrim subject and the exact authorized developer
 sender still show the12:43reply, no new canonical API contract. Sender subject
 filter restored; no inference that the API is already published.
@@ -117,7 +120,9 @@ before/after SHA256, the two importing functions (`ai-wine-chat`,
 channel. Explicitly no Lovable credits, configuration/secrets/database/main/web
 changes, paid checks or account writes; stop if cost/foreign overwrites required.
 No images, credentials or raw private logs attached. No delivery/read/reply claim.
-Inbox returned to the Matchrim filter; latest received reply remains12:43.
+Inbox returned to the Matchrim filter; final19:30check of the exact sender and
+Matchrim subject still shows12:43as latest received reply. No new contract or
+deployment receipt has arrived.
 
 ## Remaining Release Gate
 
@@ -143,3 +148,10 @@ simulator `d22d9be6-8456-4ffd-924d-10b49e331d17`; writer first
 `cb2ec138-d792-45ea-9e58-2afaae350183`. All heavy/desktop/simulator leases released
 after own operations; final writer `5a24eb0b-a1d5-491a-8bb0-9b3790a24a4d` only
 for this checkpoint. No foreign lease/process/app/cache was stopped or removed.
+Persistence follow-up used heavy `df1650d5-49d7-4c6a-87d2-52be0d093182`, simulator
+`6816e950-5da5-4c96-b7af-f7d18f10bf3c`, writers
+`eb1a8293-bf92-440e-b4a3-b505684a15da` then
+`ce7c2308-558c-4004-a66a-a01e8828746f`, and final mail-check desktop
+`1ab29a06-edf3-4012-a19a-e2a6132ea92c`; all released after own operations. Final
+checkpoint writer is `cfb1c8fe-e9e6-44e7-9e37-46d08e947bda`, held only through
+documentation/commit/push. No active build/render/test sessions remain.
