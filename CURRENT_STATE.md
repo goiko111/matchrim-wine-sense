@@ -1,5 +1,13 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-23, Versioned Native Affinity187 / Signed107Still HOLD
+
+- Later19:22compatibility source adds a bound v3companion while keeping the original v2initial key readable by older clients. Actual pre187reader/writer preserves both keys;13expanded scorer-r8groups PASS. This later patch is NOT in the signed d820c9darchive below yet; fresh affected QA/render/candidate/archive pending. No upload.
+- Product1b137ae+d820c9d closes current native D4rounding with marked0-5RMSv3; explicit v1/v2history remains immutable. Cross-model deltas suppressed and Bodega explains the calculation update. Default/web/unmarked scores preserved; source public-sensory quarantine unchanged. Historical101report remains untouched, not relabeled green.
+- Final187scorer-r7:13groups PASS,7776integer/300decimal/12near-half checks;50distinct synthetic native workflows and complete recommendation pipeline with150raw-score/order variants plus50exact web comparisons PASS. Release/consumer/closure, TypeScript and focused lint PASS. No real users or fresh recognition claim.
+- Clean-source107-r5/d820c9d bundle164resources PASS; actual iOS compile/install and normal/MAX UIKit2/2PASS,10captures inspected/settings restored. Bodega3corrected captures and scanner10captures inspected,0console/page/unexpected calls; retained first Bodega visual had a literal-accent defect, fixed by d820c9dand stronger oracle. New signed Release archive107-r2 PASS19:14:14Europe/Madrid; no export/upload. Old185archive is superseded as product.
+- Contract check18:54: still12:43reply/no new contract; direct Supabase management denied. One exact-patch/free-channel request sent and verified in Sent19:16to the authorized developer recipient; no credits or new paid checks delegated.186server patch not deployed;17broad+2malformed/mixed source cases OPEN.0new paid/model/photo/catalogue/Lovable calls; web/main untouched.107conditional TestFlight remains HOLD. [Evidence and exact residual](docs/MATCHRIM_AFFINITY_187_2026-10-23.md).
+
 ## Current Gate: 2026-10-23, Native Learning186 /107HOLD
 
 - Local source58e9055 corrects a real native-v2 server mismatch: aiRIM/Food no longer learn from `winerim-public-store:` sensory traces that client184 already quarantines. RED retained;556current-learning checks/50synthetic profiles,104Food groups,47aiRIM groups and release/Food regressions PASS. Default/web/unknown tags byte-equivalent; no deployed backend change. Direct Supabase readback denied, no Lovable credits used.

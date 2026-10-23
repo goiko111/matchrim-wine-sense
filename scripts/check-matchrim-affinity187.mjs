@@ -134,9 +134,12 @@ check('v1/v2 initial history remains immutable; v3current does not claim a learn
 check('new v3 initial roundtrips, binds identity and changes only with a usable profile', () => {
   const wine = row(all(4));
   const details = api.withCellarInitialAffinity(wine, snapshot(all(0)), 'saved', date);
-  assert.equal(details.matchrim_affinity_initial.model, 'scan-local-rms-0to5-v3');
-  assert.equal(details.matchrim_affinity_initial.version, 3);
-  assert.equal(details.matchrim_affinity_initial.score, 25);
+  assert.equal(details.matchrim_affinity_initial_v3.model, 'scan-local-rms-0to5-v3');
+  assert.equal(details.matchrim_affinity_initial_v3.version, 3);
+  assert.equal(details.matchrim_affinity_initial_v3.score, 25);
+  assert.equal(details.matchrim_affinity_initial.model, 'scan-local-l2-0to5-v2');
+  assert.equal(old.api.readCellarInitialAffinity({ ...wine, place_details: details }).score, 24);
+  assert.equal(JSON.stringify(old.api.withCellarInitialAffinity({ ...wine, place_details: details }, snapshot(all(5)), 'first_verified', date)), JSON.stringify(details));
   const saved = plain({ ...wine, place_details: details });
   assert.equal(api.readCellarInitialAffinity(saved, true).score, 25);
   assert.equal(api.cellarAffinityView(saved, snapshot(all(4)), true).modelChanged, false);
@@ -144,10 +147,15 @@ check('new v3 initial roundtrips, binds identity and changes only with a usable 
   assert.equal(api.cellarAffinityView(saved, null, true).current, null);
   assert(api.confirmsCellarSaveEvidence(saved, saved));
   assert.equal(api.readCellarInitialAffinity({ ...saved, vintage: 2025 }, true), null);
-  for (const [model, score] of [['scan-local-rms-0to5-v3', 24], ['scan-local-l2-0to5-v2', 25]]) {
-    const altered = plain(saved); Object.assign(altered.place_details.matchrim_affinity_initial, { model, score, version: model.endsWith('v3') ? 3 : 2 });
-    assert.equal(api.readCellarInitialAffinity(altered, true), null);
-  }
+  const altered = plain(saved); altered.place_details.matchrim_affinity_initial_v3.score = 24;
+  assert.equal(api.readCellarInitialAffinity(altered, true).model, 'scan-local-l2-0to5-v2');
+  assert(!api.confirmsCellarSaveEvidence(altered, saved));
+  const dropped = plain(saved); delete dropped.place_details.matchrim_affinity_initial_v3;
+  assert(!api.confirmsCellarSaveEvidence(dropped, saved));
+  const invalid = plain(saved); invalid.place_details.matchrim_affinity_initial.score = 25;
+  assert.equal(api.readCellarInitialAffinity(invalid, true), null);
+  const mismatch = plain(saved); mismatch.place_details.matchrim_affinity_initial_v3.recorded_at = '2026-10-22T00:00:00.000Z';
+  assert.equal(api.readCellarInitialAffinity(mismatch, true).model, 'scan-local-l2-0to5-v2');
 });
 check('public sensory quarantine survives v3 save/current; malformed and missing values abstain', () => {
   const wine = row(all(4)); wine.place_details.bodega_sensory_evidence.canonical_id = 'winerim-public-store:187';
@@ -242,7 +250,9 @@ check('50 independent native profiles keep recommendation, label, menu, save and
       affinityModel: 'scan-local-rms-0to5-v3', matchPercentage: expected };
     assert.equal(api.buildNativeRecommendation95(recommendation, profile).result.state, 'ready');
     const wine = row(all(4)), details = api.withCellarInitialAffinity(wine, snapshot(profile), 'saved', date);
-    assert.equal(details.matchrim_affinity_initial.score, expected);
+    assert.equal(details.matchrim_affinity_initial_v3.score, expected);
+    const originalWriter = old.api.withCellarInitialAffinity({ ...wine, place_details: details }, snapshot(all(0)), 'first_verified', date);
+    assert.equal(JSON.stringify(originalWriter), JSON.stringify(details));
     const view = api.cellarAffinityView({ ...wine, place_details: details }, snapshot(all(0)), true);
     assert.equal(view.current, 25); assert.equal(view.delta, 25 - expected);
     assert.equal(JSON.stringify(profile), frozen);

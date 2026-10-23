@@ -107,14 +107,26 @@ export const cellarTrainingRows = (rows: TrainableWine[], strict: boolean): Trai
   });
 };
 
-export const readCellarInitialAffinity = (wine: CellarAffinityWine, native = false) => {
-  const parsed = initialSchema.safeParse(record(wine.place_details)?.matchrim_affinity_initial);
+const readStoredInitial187 = (wine: CellarAffinityWine, key: string, native: boolean) => {
+  const parsed = initialSchema.safeParse(record(wine.place_details)?.[key]);
   const attributes = readCellarSensoryEvidence(wine, native);
   if (!parsed.success || !attributes || parsed.data.scale !== attributes.scale
     || parsed.data.identity_signature !== identitySignature(wine)
     || parsed.data.attribute_signature !== attributesSignature(attributes)
     || calculateLocalMatchrimAffinity(parsed.data.profile as MatchrimProfileLike, attributes, parsed.data.model) !== parsed.data.score) return null;
   return parsed.data;
+};
+const initialBinding187 = (value: z.infer<typeof initialSchema>) => JSON.stringify([
+  value.identity_signature, value.attribute_signature, value.recorded_at, value.phase,
+  value.profile, value.profile_source, value.samples, value.scale,
+]);
+
+export const readCellarInitialAffinity = (wine: CellarAffinityWine, native = false) => {
+  const legacy = readStoredInitial187(wine, 'matchrim_affinity_initial', native);
+  if (!native || legacy?.model !== 'scan-local-l2-0to5-v2') return legacy;
+  const current = readStoredInitial187(wine, 'matchrim_affinity_initial_v3', native);
+  return current?.model === 'scan-local-rms-0to5-v3' && initialBinding187(current) === initialBinding187(legacy)
+    ? current : legacy;
 };
 
 export const confirmsCellarSaveEvidence = (data: unknown, expected: CellarAffinityWine): boolean => {
@@ -132,7 +144,12 @@ export const confirmsCellarSaveEvidence = (data: unknown, expected: CellarAffini
   if (!readCellarSensoryEvidence(actual)) return false;
   if (Object.prototype.hasOwnProperty.call(expectedDetails, 'matchrim_affinity_initial')
     !== Object.prototype.hasOwnProperty.call(actualDetails, 'matchrim_affinity_initial')) return false;
-  return JSON.stringify(readCellarInitialAffinity(actual)) === JSON.stringify(readCellarInitialAffinity(expected));
+  const currentSnapshot = Object.prototype.hasOwnProperty.call(expectedDetails, 'matchrim_affinity_initial_v3');
+  if (currentSnapshot !== Object.prototype.hasOwnProperty.call(actualDetails, 'matchrim_affinity_initial_v3')) return false;
+  const actualInitial = readCellarInitialAffinity(actual, currentSnapshot);
+  const expectedInitial = readCellarInitialAffinity(expected, currentSnapshot);
+  if (currentSnapshot && (actualInitial?.model !== 'scan-local-rms-0to5-v3' || expectedInitial?.model !== 'scan-local-rms-0to5-v3')) return false;
+  return JSON.stringify(actualInitial) === JSON.stringify(expectedInitial);
 };
 
 export const cellarAffinityView = (wine: CellarAffinityWine, snapshot: ScanProfileSnapshot | null, native = false) => {
@@ -158,6 +175,7 @@ export const withCellarInitialAffinity = (
   if (readCellarInitialAffinity(wine)) return details as Json;
   // Invalidated identities must not retain another wine's historical score.
   delete details.matchrim_affinity_initial;
+  delete details.matchrim_affinity_initial_v3;
   const model = currentLocalAffinityModel187(record(wine.sensory_attributes) as WineAttributeInput | null, native);
   const view = cellarAffinityView(wine, snapshot, native);
   if (view.current !== null && view.attributes && snapshot?.profile && snapshot.source !== 'unavailable') {
@@ -169,7 +187,14 @@ export const withCellarInitialAffinity = (
       identity_signature: identitySignature(wine), attribute_signature: attributesSignature(view.attributes),
       score: view.current, recorded_at: recordedAt, phase, profile: snapshot.profile,
       profile_source: snapshot.source, samples: snapshot.samples });
-    if (initial.success) details.matchrim_affinity_initial = initial.data;
+    if (initial.success) {
+      if (model === 'scan-local-rms-0to5-v3') {
+        // Older clients must retain a readable immutable snapshot as well.
+        details.matchrim_affinity_initial = { ...initial.data, version: 2, model: 'scan-local-l2-0to5-v2',
+          score: calculateLocalMatchrimAffinity(snapshot.profile, view.attributes, 'scan-local-l2-0to5-v2') };
+        details.matchrim_affinity_initial_v3 = initial.data;
+      } else details.matchrim_affinity_initial = initial.data;
+    }
   }
   return details as Json;
 };
