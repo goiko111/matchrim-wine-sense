@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-23, Targeted Visual Closure182 / Local106
+
+- Product0583668: ONE native catalogue-thumbnail class now keeps96x56px dimensions under maximum text. Personal review caught whole-word breaks after original mechanical r3 passed; new r4 oracle reproduces RED, corrected r5 passes18/18 with no split primary words/overflow/page errors or automatic confirmations.12normal PNGs byte-identical;4changed maximum-text proposal views personally inspected. This is scoped retained-response Chromium QA, NOT whole-app UIKit/recognition/physical approval.
+- Exact one-class/native-caller scope and18TSX handler groups/focused lint PASS. Clean-source app TypeScript/native-only bundle PASS; local1.0(106) Simulator compile/install PASS07:26:26UTC, installed resources verified/settings restored. No archive/sign/export/phone/TestFlight or production web/main/backend change.0externalGET/models/uploads/Lovable.
+-17broad+2schema cases remain OPEN; no new200-image recognition or affinity metric. Heavy/iOS leases actually released; capacity heartbeat actually PAUSED after closing this targeted visual scope. Release stays NO-GO. [Evidence, retained RED and exact scope](docs/MATCHRIM_VISUAL_CLOSURE_182_2026-10-23.md).
+
 ## Current Gate: 2026-10-23, Exact19-Case Backend Package180
 
 - Continuation181:6negative confirmation/affinity paths PASS against the two retained malformed public rows; raw selection, synthetic guessed-slug selection and injected sensory objects all rejected without a detail request. Focused lint PASS,0newexternalGET/models/uploads/Lovable/writes. Not a source repair or recognition/native QA pass.19cases still OPEN; ready-to-forward developer message prepared, not sent.
