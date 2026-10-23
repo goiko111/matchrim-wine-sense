@@ -31,7 +31,7 @@ export const readMatchrimProfile95 = (value: unknown): MatchrimProfile95 | null 
     tanico: input.tanico as number, afrutado: input.afrutado as number };
 };
 
-const readTraining = (value: unknown): Training95 | null => {
+const readTraining = (value: unknown, native = false): Training95 | null => {
   const wine = record(value);
   if (!wine || typeof wine.name !== 'string' || wine.use_for_profile_training !== true
     || (wine.rating !== 'love' && wine.rating !== 'ok' && wine.rating !== 'not_for_me')) return null;
@@ -39,6 +39,7 @@ const readTraining = (value: unknown): Training95 | null => {
   const evidence = record(details?.bodega_sensory_evidence);
   if (!sensory || !evidence || evidence.scale !== sensory.scale || evidence.source !== 'catalog'
     || typeof evidence.canonical_id !== 'string' || !evidence.canonical_id.trim()) return null;
+  if (native && evidence.canonical_id.startsWith('winerim-public-store:')) return null;
   const marked = sensory.scale === 'winerim-0-5' && evidence.version === 2;
   const legacy = sensory.scale === undefined && evidence.scale === undefined && evidence.version === 1;
   if (!marked && !legacy) return null;
@@ -72,7 +73,7 @@ export const calculateLearnedMatchrimProfile95 = (base: unknown, rows: readonly 
   type Candidate = { row: Training95 | null; timestamp: number | null; conflicting: boolean };
   const latest = new Map<string, Candidate>(), withoutId: Training95[] = [];
   for (const value of rows) {
-    const row = readTraining(value);
+    const row = readTraining(value, strengthAware);
     const id = record(value)?.id;
     if (typeof id !== 'string' || !id) { if (row) withoutId.push(row); continue; }
     const candidate: Candidate = { row, timestamp: ratingTimestamp(value), conflicting: false };
