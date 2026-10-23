@@ -94,6 +94,20 @@ function App(){const[selected,setSelected]=React.useState(null);return React.cre
       for (const button of await page.getByRole('button').all()) {
         const b = await button.boundingBox(); assert(b && b.width >= 44 && b.height >= 44 && b.x >= 0 && b.x + b.width <= width + 1);
       }
+      if (revalidatedMode) {
+        const splitWords = await page.evaluate(() => {
+          const split = [];
+          for (const title of document.querySelectorAll('[data-testid="global-recovery104"] li p.font-semibold')) {
+            const text = title.firstChild; if (!text || text.nodeType !== Node.TEXT_NODE) continue;
+            for (const word of text.textContent.matchAll(/\p{L}{5,}/gu)) {
+              const range = document.createRange(); range.setStart(text, word.index); range.setEnd(text, word.index + word[0].length);
+              if (range.getClientRects().length > 1) split.push(word[0]);
+            }
+          }
+          return split;
+        });
+        assert.deepEqual(splitWords, [], 'PRIMARY_WINE_WORD_SPLIT:' + splitWords.join(','));
+      }
       const name = `${scene.id}-${width}${large ? '-large' : ''}.png`;
       await page.screenshot({ path: out + '/' + name, fullPage: true }); screenshots.push(name);
       if (style) await style.evaluate(element => element.remove());
