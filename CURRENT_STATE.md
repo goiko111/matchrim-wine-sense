@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-23, Development Request183 Sent / Rescan Regression
+
+- Direct human authorization used to send ONE technical request from goiko@winerim.com via Thunderbird to moa-winerim-b93a8ts9@agentmail.to, subject `Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026`. Confirmed in Sent at12:41Europe/Madrid; no delivery/read/reply claim. Includes17broad cases,2empty-slug public IDs, exact reproductions, read-only master/vintage/sensory requirements and authorized200-record export alternative. No credentials/photos/raw private logs attached; no deployment or extra-spend authority delegated.
+- New focused rescan183 regression PASS6groups/50distinct synthetic profile transitions/8controlled response reads; focused lint PASS. Previous scores clear on newNV/missing sensory/profile removal/correction, and fresh zero values survive. Exact-year rows are explicitly synthetic; the retained Vidure source is stillNV.0externalGET/models/accounts/writes/Lovable; no product change or new UIKit/recognition/taste claim.
+- Frozen uploaded106/0583668 unchanged.19catalogue cases remain OPEN pending source contract/repair and actual validation; TestFlight installation status still unverified. [Sent request, local validation and next evidence gate](docs/MATCHRIM_DEVELOPMENT_HANDOFF_183_2026-10-23.md).
+
 ## Current Gate: 2026-10-23, Limited Private106 Uploaded
 
 - Latest direct human request `sube la 106 a testflight` authorizes this limited beta despite the disclosed19catalogue cases, NOT a full recognition/release approval. Fresh signed Release106 and distribution IPA pass team/bundle/version/debug-entitlement and164resource checks from frozen0583668. One upload only; Apple acknowledged10:34:49Europe/Madrid (08:34:49UTC), exit0/processing/upload succeeded.106is consumed; do not resubmit it for delayed visibility.
