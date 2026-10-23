@@ -38,7 +38,10 @@ export const GlobalWineReference103 = ({ candidate, profile }: { candidate: Wine
       <p className="text-sm leading-6 text-stone-700">Comparación de tus gustos con la ficha sin añada. No es la afinidad verificada de tu botella ni una probabilidad de que te guste.</p>
     </div>}
     {wine.sensory && styleScore === null && <Button asChild className="h-auto min-h-11 max-w-full whitespace-normal px-3 py-3"><Link to="/matchrim">Completar mi test de gustos</Link></Button>}
-    <p className="text-xs leading-5 text-stone-600">Fuente: ficha pública Winerim. No especifica si el perfil sensorial procede de una cata o de datos generados.{!wine.sensory && ' Faltan atributos sensoriales completos.'}</p>
+    <p className="text-sm leading-6 text-stone-600">Vino encontrado en Winerim. Aún necesitamos datos de sabor fiables para decirte cuánto encaja contigo.</p>
+    <details className="text-xs leading-5 text-stone-600"><summary className="flex min-h-11 cursor-pointer items-center">Por qué falta la afinidad</summary>
+      Esta ficha puede contener valores de relleno sin distinguirlos de datos disponibles. No los usamos para calcular tu afinidad ni para aprender tus gustos.
+    </details>
     <Button asChild variant="outline" className="h-auto min-h-11 max-w-full gap-2 whitespace-normal px-3 py-3 text-left">
       <a href={wine.url} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer"><BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" /> Ver ficha original Winerim</a>
     </Button>

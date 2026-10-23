@@ -90,6 +90,9 @@ export const readCellarReferenceStyle110 = (wine: CellarAffinityWine): CellarRef
   const parsed = schema.safeParse(record(wine.place_details)?.[key]);
   if (!parsed.success) return null;
   const data = parsed.data as CellarReferenceStyle110;
+  // Legacy public vectors can be server defaults. Keep stored history intact,
+  // but do not revive its score without a new sourced sensory contract.
+  if (data.provenance === 'unspecified') return null;
   const embedded = readCellarPublicReference107({ ...wine,
     place_details: { winerim_public_catalogue: data.public_reference } });
   const linked = readCellarPublicReference107(wine);
@@ -130,6 +133,6 @@ export const confirmsCellarReferenceStyle110 = (data: unknown, expected: CellarA
 
 // Presentation/filtering only; never use this score as training evidence.
 export const cellarDisplayAffinity110 = (wine: CellarAffinityWine, snapshot: ScanProfileSnapshot | null) =>
-  cellarAffinityView(wine, snapshot).current ?? cellarReferenceStyleView110(wine, snapshot)?.current ?? null;
+  cellarAffinityView(wine, snapshot, true).current ?? cellarReferenceStyleView110(wine, snapshot)?.current ?? null;
 export const isHighCellarAffinity110 = (wine: CellarAffinityWine & { rating?: string | null }, snapshot: ScanProfileSnapshot | null) =>
   wine.rating !== 'not_for_me' && (cellarDisplayAffinity110(wine, snapshot) ?? -1) >= 70;

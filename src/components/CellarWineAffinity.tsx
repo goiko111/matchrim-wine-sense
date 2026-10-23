@@ -20,7 +20,7 @@ interface Props {
 export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRetryProfile }: Props) => {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
-  const view = cellarAffinityView(wine, snapshot);
+  const view = cellarAffinityView(wine, snapshot, true);
   const referenceStyle = view.current === null ? cellarReferenceStyleView110(wine, snapshot) : null;
   const rating = wine.rating === 'not_for_me'
     ? { title: 'Ya sabes que no te gusta', note: 'Lo marcaste como un vino que no quieres repetir.', Icon: ThumbsDown }
@@ -40,9 +40,9 @@ export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRet
         <p className="text-xs text-slate-600">
           {`${view.initial.phase === 'saved' ? 'Al guardar' : 'Primera afinidad registrada'}: ${view.initial.score}/100 \u00b7 ${new Date(view.initial.recorded_at).toLocaleDateString('es-ES')}${view.delta !== null && view.delta !== 0 ? ` \u00b7 ${view.delta > 0 ? '+' : ''}${view.delta} ${Math.abs(view.delta) === 1 ? 'punto' : 'puntos'} desde entonces` : ''}`}
         </p>
-      ) : <p className="text-xs text-slate-500">{referenceStyle ? 'No hay una afinidad inicial verificada de esta añada.' : 'No hay una afinidad inicial guardada para este vino.'}</p>}
+      ) : <p className="text-xs text-slate-500">{view.sensoryHold ? 'La estimaci\u00f3n anterior queda en revisi\u00f3n; tus datos siguen guardados.' : referenceStyle ? 'No hay una afinidad inicial verificada de esta añada.' : 'No hay una afinidad inicial guardada para este vino.'}</p>}
       <p className="text-xs leading-5 text-slate-600">{snapshot?.status === 'ready' && snapshot.profile
-        ? !view.attributes ? referenceStyle ? 'Falta una ficha sensorial verificable de esta añada.' : 'Necesito la ficha de este vino para compararlo con tus gustos.'
+        ? !view.attributes ? view.sensoryHold ? 'Necesitamos datos de sabor fiables de esta ficha para compararlos con tus gustos.' : referenceStyle ? 'Falta una ficha sensorial verificable de esta añada.' : 'Necesito la ficha de este vino para compararlo con tus gustos.'
           : snapshot.source === 'learned' ? 'Basado en tu test y en tus valoraciones.' : 'Basado en tu test de paladar.'
         : view.reason}</p>
       {!view.attributes && <Button variant="outline" className="min-h-11 w-full whitespace-normal" onClick={onResolve} disabled={resolving} aria-busy={resolving}>
@@ -81,10 +81,10 @@ export const CellarWineAffinity = ({ wine, snapshot, resolving, onResolve, onRet
         </p>
         <p className="text-sm leading-5 text-slate-600">{rating.note}</p>
         <details className="space-y-2" data-testid="rated-cellar-style97">
-          <summary aria-label="Ver afinidad por estilo" className="flex min-h-11 cursor-pointer items-center gap-2 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-            <CircleHelp className="h-4 w-4 shrink-0" aria-hidden="true" /><span aria-hidden="true">Ver afinidad por estilo</span>
+          <summary aria-label={view.current !== null || referenceStyle ? 'Ver afinidad por estilo' : 'Por qu\u00e9 no hay afinidad'} className="flex min-h-11 cursor-pointer items-center gap-2 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            <CircleHelp className="h-4 w-4 shrink-0" aria-hidden="true" /><span aria-hidden="true">{view.current !== null || referenceStyle ? 'Ver afinidad por estilo' : 'Por qu\u00e9 no hay afinidad'}</span>
           </summary>
-          <p className="text-xs leading-5 text-slate-600">{'Tu valoraci\u00f3n de este vino tiene prioridad. Esta cifra compara su estilo con tu perfil; no sustituye lo que ya has probado.'}</p>
+          <p className="text-xs leading-5 text-slate-600">{view.current !== null || referenceStyle ? 'Tu valoraci\u00f3n de este vino tiene prioridad. Esta cifra compara su estilo con tu perfil; no sustituye lo que ya has probado.' : 'Tu valoraci\u00f3n sigue guardada. Calcular la afinidad requiere tambi\u00e9n datos fiables del vino.'}</p>
           {calculation}
         </details>
       </> : calculation}

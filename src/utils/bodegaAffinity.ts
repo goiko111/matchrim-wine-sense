@@ -54,6 +54,11 @@ const initialSchema = z.discriminatedUnion('model', [
 const persistedIdentitySchema = z.object({ name: z.string(), producer: z.string().nullable(),
   vintage: z.number().int().nullable(), region: z.string().nullable(), country: z.string().nullable() });
 
+export const hasLegacyPublicSensory184 = (wine: CellarAffinityWine) => {
+  const trace = record(record(wine.place_details)?.bodega_sensory_evidence);
+  return typeof trace?.canonical_id === 'string' && trace.canonical_id.startsWith('winerim-public-store:');
+};
+
 export const makeCellarCatalogEvidence = (
   wine: CellarAffinityWine, canonicalId: string | number, attributes: WineAttributeInput,
 ): Json | null => {
@@ -65,29 +70,30 @@ export const makeCellarCatalogEvidence = (
     identity_signature: identitySignature(wine), attribute_signature: signature };
 };
 
-export const readCellarSensoryEvidence = (wine: CellarAffinityWine) => {
+export const readCellarSensoryEvidence = (wine: CellarAffinityWine, native = false) => {
   const attributes = record(wine.sensory_attributes) as WineAttributeInput | null;
   if (!attributes || !normalizeWineAttributesForInsight(attributes)) return null;
   const details = record(wine.place_details);
   const trace = evidenceSchema.safeParse(details?.bodega_sensory_evidence);
-  if (trace.success && trace.data.scale === attributes.scale && trace.data.identity_signature === identitySignature(wine)
+  if (trace.success && !(native && hasLegacyPublicSensory184(wine))
+    && trace.data.scale === attributes.scale && trace.data.identity_signature === identitySignature(wine)
     && trace.data.attribute_signature === attributesSignature(attributes)) return attributes;
   // Legacy menu metadata does not bind identity or attributes; require reverification.
   return null;
 };
 
-export const isVerifiedCellarTrainingWine = (value: unknown): boolean => {
+export const isVerifiedCellarTrainingWine = (value: unknown, native = false): boolean => {
   const wine = record(value);
   return Boolean(wine && typeof wine.name === 'string' && wine.use_for_profile_training === true
     && ['love', 'ok', 'not_for_me'].includes(String(wine.rating))
-    && readCellarSensoryEvidence(wine as unknown as CellarAffinityWine));
+    && readCellarSensoryEvidence(wine as unknown as CellarAffinityWine, native));
 };
 
 export const cellarTrainingRows = (rows: TrainableWine[], strict: boolean): TrainableWine[] => {
   if (!strict) return rows;
-  return rows.filter(isVerifiedCellarTrainingWine).map(wine => {
+  return rows.filter(wine => isVerifiedCellarTrainingWine(wine, true)).map(wine => {
     const details = record(record(wine)?.place_details);
-    const sensory = readCellarSensoryEvidence(wine as unknown as CellarAffinityWine)!;
+    const sensory = readCellarSensoryEvidence(wine as unknown as CellarAffinityWine, true)!;
     const attributes = normalizeWineAttributesForInsight(sensory)!;
     const raw = details?.matchrim_rating_at;
     const timestamp = typeof raw === 'string' && Number.isFinite(Date.parse(raw)) ? raw : null;
@@ -99,9 +105,9 @@ export const cellarTrainingRows = (rows: TrainableWine[], strict: boolean): Trai
   });
 };
 
-export const readCellarInitialAffinity = (wine: CellarAffinityWine) => {
+export const readCellarInitialAffinity = (wine: CellarAffinityWine, native = false) => {
   const parsed = initialSchema.safeParse(record(wine.place_details)?.matchrim_affinity_initial);
-  const attributes = readCellarSensoryEvidence(wine);
+  const attributes = readCellarSensoryEvidence(wine, native);
   if (!parsed.success || !attributes || parsed.data.scale !== attributes.scale
     || parsed.data.identity_signature !== identitySignature(wine)
     || parsed.data.attribute_signature !== attributesSignature(attributes)
@@ -127,11 +133,13 @@ export const confirmsCellarSaveEvidence = (data: unknown, expected: CellarAffini
   return JSON.stringify(readCellarInitialAffinity(actual)) === JSON.stringify(readCellarInitialAffinity(expected));
 };
 
-export const cellarAffinityView = (wine: CellarAffinityWine, snapshot: ScanProfileSnapshot | null) => {
-  const attributes = readCellarSensoryEvidence(wine);
+export const cellarAffinityView = (wine: CellarAffinityWine, snapshot: ScanProfileSnapshot | null, native = false) => {
+  const attributes = readCellarSensoryEvidence(wine, native);
   const current = attributes ? calculateLocalMatchrimAffinity(snapshot?.profile, attributes) : null;
-  const initial = readCellarInitialAffinity(wine);
+  const initial = readCellarInitialAffinity(wine, native);
+  const sensoryHold = native && hasLegacyPublicSensory184(wine);
   return { current, initial, attributes, delta: current !== null && initial ? current - initial.score : null,
+    sensoryHold,
     reason: !snapshot ? 'Cargando tu perfil de gustos.'
       : !snapshot.profile ? snapshot.note
         : !attributes ? 'Falta una ficha sensorial verificable de esta referencia; no basta con su nombre o una estimaci\u00f3n de IA.'

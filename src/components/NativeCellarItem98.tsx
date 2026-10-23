@@ -20,7 +20,7 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, child
   const [resolved, setResolved] = useState<{ key: string; url: string } | null>(null);
   const identityKey = JSON.stringify([wine.name, wine.producer, wine.vintage]);
   if (!native) return <>{children}</>;
-  const view = cellarAffinityView(wine, snapshot);
+  const view = cellarAffinityView(wine, snapshot, true);
   const reference = readCellarPublicReference107(wine);
   const style = view.current === null ? cellarReferenceStyleView110(wine, snapshot) : null;
   const displayScore = view.current ?? style?.current ?? null;

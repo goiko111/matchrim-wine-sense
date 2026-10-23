@@ -45,18 +45,19 @@ await check('Two missing vintages remain a style reference, never an exact senso
   assert.equal(applied.canonicalId, null); assert.equal(applied.affinity, null);
   assert.equal(nativeWineConsumerResult(applied, profile).catalogIdentityLinked, false);
 });
-await check('A synthetic exact2020 sensory binding calculates without OCR confidence promotion', async () => {
+await check('Exact2020 public identity cannot authorize legacy default-bearing sensory values', async () => {
   const row = { ...observed, vintage: '2020' }, h = fixture([{ ...search, results: [row] }, row]);
   const nv = candidate;
   const result = await h.client.lookup(nv); assert.equal(result.status, 'exact'); if (!('wine' in result)) throw new Error('wine');
   const applied = applyGlobalCatalogue103(nv, profile, result.wine);
   assert.equal(applied.canonicalId, 'winerim-public-store:364050'); assert.equal(applied.confidence, .8);
-  assert.equal(applied.affinityConfidence, null); assert.equal(nativeWineConsumerResult(applied, profile).canExplainAffinity, true);
+  assert.equal(applied.affinityConfidence, null); assert.equal(applied.affinity, null);
+  assert.equal(nativeWineConsumerResult(applied, profile).canExplainAffinity, false);
   assert.equal(nativeWineConsumerResult({ ...applied, affinity: 100 }, profile).canExplainAffinity, false);
   assert.equal(nativeWineConsumerResult({ ...applied, canonicalId: 'mantalak:364050' }, profile).canExplainAffinity, false);
   assert.equal(nativeWineConsumerResult(correctWineCandidateIdentity(applied, { name: applied.name }), profile).catalogIdentityLinked, false);
 });
-await check('Fifty synthetic profiles recompute from the observed axes with the unchanged formula', async () => {
+await check('Fifty synthetic profiles cannot turn legacy public vectors into affinity', async () => {
   const row = { ...observed, vintage: '2020' };
   const result = await fixture([{ ...search, results: [row] }, row]).client.lookup(candidate); if (!('wine' in result)) throw new Error('wine');
   for (let index = 0; index < 50; index++) {
@@ -64,7 +65,8 @@ await check('Fifty synthetic profiles recompute from the observed axes with the 
     const person = { potente, acidez, dulce, tanico, afrutado };
     const value = applyGlobalCatalogue103(candidate, person, result.wine);
     assert.equal(value.affinity, calculateLocalMatchrimAffinity(person, globalSensory103(result.wine)));
-    assert.equal(nativeWineConsumerResult(value, person).canExplainAffinity, true);
+    assert.equal(value.affinity, null);
+    assert.equal(nativeWineConsumerResult(value, person).canExplainAffinity, false);
     assert.equal(applyGlobalCatalogue103({ ...candidate, vintage: null }, person, result.wine).affinity ?? null, null);
   }
 });
@@ -126,10 +128,10 @@ await check('No producer alias is invented for Chivite Family Estates; unknown s
   const result = await fixture([search, { ...observed, tastingAttributes: { power: 99 } }]).client.lookup({ ...candidate, vintage: null });
   assert('wine' in result && result.wine.sensory === null);
 });
-await check('Sensory zero is preserved and JSON cannot self-certify a global record', async () => {
+await check('Legacy zero means no-applicability, not a measured axis; JSON cannot self-certify', async () => {
   const result = await fixture([search, { ...observed, tastingAttributes: { power: 4, acidity: 3, sweetness: 0, tannin: 3, fruity: 4 } }]).client.lookup(candidate);
-  if (!('wine' in result)) throw new Error('wine'); assert.equal(result.wine.sensory?.sweetness, 0);
-  assert(Object.isFrozen(result.wine)); assert(Object.isFrozen(result.wine.sensory));
+  if (!('wine' in result)) throw new Error('wine'); assert.equal(result.wine.sensory, null);
+  assert(Object.isFrozen(result.wine));
   assert.equal(applyGlobalCatalogue103(candidate, profile, structuredClone(result.wine)), candidate);
 });
 await check('Cancellation rejects even when the fetch adapter ignores AbortSignal', async () => {

@@ -224,7 +224,10 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
         const detail = parsed.data, id = identity(detail), previous = identity(selected);
         if (detail.id !== selected.id || detail.slugname !== selected.slugname || isNonWineIdentity(detail.name, detail.type)
           || !sameReference(input, id) || !sameReference(previous, id) || id.vintage !== previous.vintage) return { status: 'ambiguous' };
-        const sensory = validateWinerimOriginalSensory(detail.tastingAttributes);
+        // Backend contract clarification184: this legacy vector can contain
+        // indistinguishable default3 values and0 means not applicable. Numeric
+        // validation alone cannot authorize affinity or profile training.
+        const sensory = null;
         if (sensory) Object.freeze(sensory);
         const wine: GlobalWine103 = Object.freeze({ namespace: 'winerim-public-store', id: detail.id, ...id,
           slug: detail.slugname, url: `https://web.winerim.com/matchrim/store/${detail.id}/${detail.slugname}`,
@@ -294,6 +297,6 @@ export const applyGlobalCatalogue103 = (candidate: WineCandidate, profile: Match
   return { ...candidate, globalRecord: wine, masterRecord: null, originalSheet: null,
     canonicalId: exact ? `winerim-public-store:${wine.id}` : null, sensoryAttributes, sensorySource: 'catalog',
     affinity: calculateLocalMatchrimAffinity(profile, sensoryAttributes), affinityConfidence: null,
-    affinityReason: exact ? 'Afinidad orientativa con la ficha pública de Winerim. La API no indica si los atributos proceden de una cata o han sido generados.'
+    affinityReason: exact ? 'Vino encontrado. Falta una ficha sensorial que distinga datos disponibles de valores de relleno para calcular tu afinidad.'
       : `Winerim tiene esta referencia sin añada. ${candidate.vintage ? `No verifica la ficha sensorial de ${candidate.vintage}.` : 'La cosecha de tu botella no está confirmada.'} Puedes consultar su estilo general por separado.` };
 };

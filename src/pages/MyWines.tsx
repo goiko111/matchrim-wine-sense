@@ -224,7 +224,7 @@ const normalizeUserWine = (wine: UserWine): UserWine => {
   const trace = wine.place_details && typeof wine.place_details === 'object' && !Array.isArray(wine.place_details)
     ? wine.place_details.menu_wine_evidence : null;
   const calibrated = !menuPrice || (trace && typeof trace === 'object' && !Array.isArray(trace) && trace.affinity_calibrated === true);
-  const sensory = catalog && (!Capacitor.isNativePlatform() || readCellarSensoryEvidence(wine))
+  const sensory = catalog && (!Capacitor.isNativePlatform() || readCellarSensoryEvidence(wine, true))
     ? normalizeSensoryAttributesTo5(wine.sensory_attributes) : null;
   return {
     ...wine,
@@ -607,7 +607,7 @@ const MyWinesForOwner = () => {
 	      if (error) throw error;
 	      setLearningWines(((data as LearningWine[]) || []).map((wine) => ({
 	        ...wine,
-	        sensory_attributes: (isNative && !readCellarSensoryEvidence(wine)) || (readMenuPrice(wine.place_details, null) && !hasStoredMenuCatalogEvidence(wine.place_details))
+	        sensory_attributes: (isNative && !readCellarSensoryEvidence(wine, true)) || (readMenuPrice(wine.place_details, null) && !hasStoredMenuCatalogEvidence(wine.place_details))
             ? null : normalizeSensoryAttributesTo5(wine.sensory_attributes),
 	        use_for_profile_training: wine.use_for_profile_training && (!readMenuPrice(wine.place_details, null)
             || hasStoredMenuCatalogEvidence(wine.place_details)),
@@ -1004,7 +1004,7 @@ const MyWinesForOwner = () => {
       const enriched = { ...wine, sensory_attributes: attributes,
         place_details: { ...existing, bodega_sensory_evidence: evidence } };
       const details = withCellarInitialAffinity(enriched, snapshot, phase);
-      const affinity = cellarAffinityView(enriched, snapshot).current;
+      const affinity = cellarAffinityView(enriched, snapshot, isNative).current;
       const update = { sensory_attributes: attributes as Json, place_details: details,
         matchrim_affinity: affinity, use_for_profile_training: Boolean(wine.rating && wine.use_for_profile_training),
         ...(isNative && !wine.image_url && safeWineImageUrl98(catalog?.photo) ? { image_url: safeWineImageUrl98(catalog?.photo) } : {}) };
@@ -1017,7 +1017,7 @@ const MyWinesForOwner = () => {
       const persisted = { ...enriched, sensory_attributes: data?.sensory_attributes, place_details: data?.place_details };
       if (!confirmsWineMutation(data, wine.id, { matchrim_affinity: affinity, use_for_profile_training: update.use_for_profile_training,
         ...('image_url' in update ? { image_url: update.image_url } : {}) })
-        || !readCellarSensoryEvidence(persisted)
+        || !readCellarSensoryEvidence(persisted, isNative)
         || JSON.stringify(readCellarInitialAffinity(persisted)) !== JSON.stringify(readCellarInitialAffinity({ ...enriched, place_details: details }))) {
         throw new Error('Catalog enrichment not confirmed');
       }
