@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-23, Limited Private106 Uploaded
+
+- Latest direct human request `sube la 106 a testflight` authorizes this limited beta despite the disclosed19catalogue cases, NOT a full recognition/release approval. Fresh signed Release106 and distribution IPA pass team/bundle/version/debug-entitlement and164resource checks from frozen0583668. One upload only; Apple acknowledged10:34:49Europe/Madrid (08:34:49UTC), exit0/processing/upload succeeded.106is consumed; do not resubmit it for delayed visibility.
+- Installable TestFlight status is NOT confirmed. Existing browser tab remains/login; page binding timed out. Normal Apple login requested for later verification; Xcode cached authentication successfully uploaded. No tester/group/invitation/notes/review/App Store submission was changed or verified. No web/main/backend publication.
+-17broad+2malformed cases remain OPEN; no new recognition/affinity claim, catalogue GET/model/photo upload/Lovable spend or account/phone mutation. Heavy lease actually released after upload; final writer only for docs. [Package fingerprints, Apple evidence and limitations](docs/MATCHRIM_TESTFLIGHT_106_2026-10-23.md).
+
 ## Current Gate: 2026-10-23, Targeted Visual Closure182 / Local106
 
 - Product0583668: ONE native catalogue-thumbnail class now keeps96x56px dimensions under maximum text. Personal review caught whole-word breaks after original mechanical r3 passed; new r4 oracle reproduces RED, corrected r5 passes18/18 with no split primary words/overflow/page errors or automatic confirmations.12normal PNGs byte-identical;4changed maximum-text proposal views personally inspected. This is scoped retained-response Chromium QA, NOT whole-app UIKit/recognition/physical approval.
