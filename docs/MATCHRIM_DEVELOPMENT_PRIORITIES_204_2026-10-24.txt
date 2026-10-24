@@ -1,0 +1,25 @@
+STATUS: SENT 24-Oct-2026 17:02:09 Europe/Madrid; Sent UID5563; 1a360d6a-e66a-4b49-a222-a3b798ba2833@winerim.com
+TO: moa-winerim-b93a8ts9@agentmail.to
+THREAD: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026
+
+Hola equipo:
+
+Goiko nos autoriza a coordinar prioridades y pedir seguimiento de lo solicitado. Gracias por vuestra respuesta de las15:53. Prioridades para desbloquear Matchrim, con el presupuesto y los permisos actuales intactos:
+
+P0-A. Buscador del maestro completo. Es el primer bloqueo funcional: confirmáis que ELIGIBLE_ROW excluye vinos verificados sin carta activa; nuestro caso217480 devuelve ficha200 y búsqueda0. Pedimos responsable, estado actual, siguiente entrega y previsión o bloqueo concreto. Antes de cualquier cambio, enviad propuesta de contrato/diff usando el código ya disponible, sin consultas nuevas.
+
+Como alternativa a crear filas de carta para todo el catálogo, valorad una búsqueda opt-in del maestro verificado, independiente de restaurantes/stock/precio. mantalakWineId debe ser siempre la identidad; id público, representativePublicId y webUrl podrán ser nulos sin inventarlos. La ruta actual seguiría compatible. Necesitamos total/paginación deterministas y búsqueda literal de Migratoria/Frontonio y Bagante, sin cambiar nombres ni introducir alias. Esto es propuesta para revisar, no autorización para crear cartas, filas, usuarios, datos o desplegar.
+
+P0-B. Puente seguro de la app. Gracias por confirmar que cbjynrbvrhcmpaojmqdp es Lovable Cloud y que no existe la vía CLI gratuita. Marcadlo BLOQUEADO POR AUTORIZACION, no como pendiente de otro intento403. Necesitamos estimación/acotación del mínimo turno Lovable y ficheros exactos; no gastar, modificar main ni guardar secretos hasta autorización expresa. Nuestra rama ya deriva X-Matchrim-User del UUID verificado. No reenviar claves.
+
+P1. Contrato sensorial versionado. El sentido de evidence=1, exact/generic/no_exact_row, 0=no_aplica y source:null=unrecorded sirve como base de revisión; no damos aprobación final ni autorización de publicación. El correo recibido contiene solo text/plain y text/html: no llegaron sensory-evidence-1.schema.json ni EJEMPLOS.json, tampoco enlaces. Reenviad esos dos ficheros existentes o el JSON íntegro, sin regenerar atributos ni hacer nuevas consultas.
+
+Al revisarlo exigiremos: no heredar otra añada; no convertir un3 en dato genuino ni sospecha en prueba; no afirmar cata humana; R2 solo como sospecha documentada; ausencia explícita para las cinco fichas sin filas; manejo definido y no arbitrario de las filas genéricas duplicadas que habéis detectado. Media de búsqueda nunca es evidencia de añada.
+
+P2. Calidad de datos: grafía Fuissé/Fussé y posible discrepancia Scattola/Altotinto. Mantener separados los IDs217297/79032, sin fusionar ni renombrar. Primero explicad qué evidencia existente respalda cada referencia; no investigar fotos ni lanzar consultas nuevas en esta tanda.
+
+Por favor devolved una tabla con prioridad, responsable, estado (sin iniciar/en análisis/preparado/bloqueado), próxima entrega y fecha estimada o dependencia. No hace falta otro informe general. Si ya hay avances en lo pedido antes, citad el commit/contrato o artefacto existente y qué falta exactamente.
+
+Importante: seguimos sin autorización para más GET/SQL, modelos, fotos, exportaciones, créditos, cambios de backend/main/web/datos/permisos ni despliegues. Los recuentos de vuestra respuesta quedan atribuidos a vuestro análisis, no como benchmark nuestro. Este seguimiento solo solicita estado, contrato y planificación con material existente; cualquier acción que exceda eso debe esperar permiso.107 sigueHOLD.
+
+Gracias.

@@ -1,0 +1,25 @@
+{
+  "sentUID": 5563,
+  "storeOffset": 2052582846,
+  "messageId": "<1a360d6a-e66a-4b49-a222-a3b798ba2833@winerim.com>",
+  "date": "Sat, 24 Oct 2026 17:02:09 +0200",
+  "from": [
+    [
+      "Goiko || Winerim",
+      "goiko@winerim.com"
+    ]
+  ],
+  "to": [
+    [
+      "Moa Winerim",
+      "moa-winerim-b93a8ts9@agentmail.to"
+    ]
+  ],
+  "cc": [],
+  "bcc": [],
+  "inReplyTo": "<010001a16e3014e3-2408b0e1-afdc-4f7c-bb2a-6dea58b7ffc7-000000@email.amazonses.com>",
+  "attachments": 0,
+  "normalizedChars": 3432,
+  "bodyMatches": true,
+  "deliveryOrReadClaimed": false
+}

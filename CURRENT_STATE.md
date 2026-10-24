@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-24, Development204 Reply Received / Priorities SENT /107HOLD
+
+- Human authorized development coordination/urgency/follow-up, not spending or main/backend/web changes. Refreshed authorized account, found actual15:53reply/Inbox157E6to203message. Developer confirms active-menu search filter as cause of missing verified wines; their15,900/59,990(26.5%)count is attributed, not independently re-queried or recognition accuracy. Says Cloud-only deployment requiresmain+Lovablecredits, no freeCLIroute. Sensoryevidence=1remains proposal; claimed schema/examples did NOT arrive (exact MIMEonlyplain/html,0attachments/links), and4duplicate generic rows reported. [Source/gates](docs/MATCHRIM_DEVELOPMENT_204_2026-10-24.md).
+- Sent priorities17:02:09MadridtoauthorizedMoa,SentUID5563/message1a360d6a-e66a-4b49-a222-a3b798ba2833, exact3432normalized chars/noCCBCCattachments independently MIME-verified. P0-Afullmaster search contract/status/owner/ETA, P0-BsafeCloudbridge authorization gate, P1resend existing sensoryJSON/duplicatehandling, P2literaldataquality. Requests existing material only; reiterates no new GET/SQL/photos/models/datachanges/credits/deploy. No schema approval or permission to manufacture restaurant rows.
+- Native goal remainsblocked/conserved, no duplicate/resume/globalconfig/automation claimed; human clarified ambiguous globaldelay question pending. Disk4.95GiBLOW_DISK_HOLD: no heavy suite/build/render/OCR/browser, cleanup or foreign processes. Own desktop released, writer checkpoint only.0newAPI/model/image/Keychain/tests/build/product/main/web/backendchanges, caps unchanged/exhausted, signed107617e59c unchanged/HOLD.
+
 ## Current Gate: 2026-10-24, Master203 Nine Details Exist / Search Coverage Contradiction /107HOLD
 
 - Human explicitly approved the separate12free-read allowance. Executed exactly9export-hint detail diagnostics+3literal controls, allHTTP200; ledger and bodies in qa-fixtures/master203/responses. All9details exist;7lack public rows,5lack sensory rows,3generic/source:null, Bossanova only2022/source:null. No confirmed photo identities/affinity or200-recognition claim. New12/12exhausted, prior caps/EUR15unchanged,0IA/images/Lovable/writes/deploys. [Exact matrix/gates](docs/MATCHRIM_MASTER_203_2026-10-24.md).
