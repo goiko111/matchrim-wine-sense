@@ -6,15 +6,15 @@ import { createMasterBridge194 } from '../_shared/matchrim-master194.ts';
 Deno.serve(createMasterBridge194({
   authenticate: async (token, signal) => {
     const url = Deno.env.get('SUPABASE_URL'), anonKey = Deno.env.get('SUPABASE_ANON_KEY');
-    if (!url || !anonKey || token === anonKey || signal.aborted) return false;
+    if (!url || !anonKey || token === anonKey || signal.aborted) return null;
     const auth = createClient(url, anonKey, {
       global: { headers: { Authorization: `Bearer ${token}` },
         fetch: (input, init) => fetch(input, { ...init, signal }) },
       auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
     });
     const { data, error } = await auth.auth.getUser(token);
-    return !error && Boolean(data.user?.id)
-      && (data.user as { is_anonymous?: boolean } | null)?.is_anonymous !== true && !signal.aborted;
+    return !error && (data.user as { is_anonymous?: boolean } | null)?.is_anonymous !== true
+      && !signal.aborted ? data.user?.id ?? null : null;
   },
   readSecret: () => Deno.env.get('MATCHRIM_GOIKO_KEY'),
   fetcher: fetch,

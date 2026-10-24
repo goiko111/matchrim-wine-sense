@@ -1,0 +1,27 @@
+{
+  "scope": "Focused local checks after inactive server bridge change; not hosted/native or fresh image-provider E2E",
+  "checks": [
+    {"command":"node --import tsx scripts/check-matchrim-master-bridge194.ts","exitCode":0,"passedGroups":9},
+    {"command":"node --import tsx scripts/check-matchrim-master-reference195.ts","exitCode":0,"passedGroups":11},
+    {"command":"node --import tsx scripts/check-matchrim-visual-identities197.ts","exitCode":0,"photosHashVerified":19,"unsafePairsRejected":8},
+    {"command":"tsc -p scripts/tsconfig.master195.json --noEmit","exitCode":0},
+    {"command":"strict ES2022/Bundler/DOM/Node tsc on bridge194 and visual197 scripts","initialExitCode":2,"initialErrors":["Visual197 callback implicit any at original lines14,17,18,31"],"correction":"Typed JSON fixture shapes and asserted byId existence","finalExitCode":0},
+    {"command":"eslint on bridge handler, entrypoint, bridge194/reference195/visual197 scripts","exitCode":0},
+    {"command":"git diff --check","exitCode":0}
+  ],
+  "externalCatalogueRequests":0,
+  "modelCalls":0,
+  "newOcrRuns":0,
+  "lovableAgentTurns":0,
+  "keychainReads":0,
+  "backendDeployment":false,
+  "appActivation":false,
+  "confirmedPhotoIdentities":0,
+  "blindGroundTruth":false,
+  "newNativeBuild":false,
+  "testFlightUpload":false,
+  "capsResetOrExpanded":false,
+  "resource":"writer-matchrim-native99",
+  "leaseId":"19b89531-f494-4229-af1f-664b613a7479",
+  "noHeavyResourceUsed":true
+}

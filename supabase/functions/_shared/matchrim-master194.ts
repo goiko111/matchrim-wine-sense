@@ -56,7 +56,7 @@ export const masterRequestUrl194 = (input: unknown): string | null => {
 };
 
 export type MasterBridgeDependencies194 = {
-  authenticate: (token: string, signal: AbortSignal) => Promise<boolean>;
+  authenticate: (token: string, signal: AbortSignal) => Promise<string | null>;
   readSecret: () => string | undefined;
   fetcher: typeof fetch;
   timeoutMs?: number;
@@ -106,7 +106,10 @@ export const createMasterBridge194 = (deps: MasterBridgeDependencies194) => asyn
     if (request.signal.aborted) return json(499, { error: 'CANCELLED' });
     // The callback verifies the session with Supabase Auth, not JWT metadata or
     // merely the presence of an Authorization header.
-    if (!await bounded(deps.authenticate(token, controller.signal))) return json(401, { error: 'AUTH_REQUIRED' });
+    const userId = await bounded(deps.authenticate(token, controller.signal));
+    if (typeof userId !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
+      return json(401, { error: 'AUTH_REQUIRED' });
+    }
     let url: string | null;
     try { url = masterRequestUrl194((await readJson(request.body, REQUEST_BYTES)).value); }
     catch { if (controller.signal.aborted) throw new Error('STOPPED'); return json(400, { error: 'INVALID_REQUEST' }); }
@@ -115,7 +118,9 @@ export const createMasterBridge194 = (deps: MasterBridgeDependencies194) => asyn
     if (!usableKey(key)) return json(503, { error: 'CATALOGUE_NOT_CONFIGURED' });
     const pending = deps.fetcher(url, { method: 'GET', redirect: 'error', credentials: 'omit',
       referrerPolicy: 'no-referrer', signal: controller.signal,
-      headers: { Accept: 'application/json', 'X-Matchrim-Key': key } });
+      // Internal quota identity comes only from Auth; never forward caller headers,
+      // the JWT, email, profile or ratings to the catalogue.
+      headers: { Accept: 'application/json', 'X-Matchrim-Key': key, 'X-Matchrim-User': userId.toLowerCase() } });
     void pending.then(response => { if (controller.signal.aborted) void response.body?.cancel().catch(() => undefined); }, () => undefined);
     const response = await bounded(pending);
     if (!response.ok || response.redirected || (response.url && response.url !== url)) {
@@ -131,7 +136,9 @@ export const createMasterBridge194 = (deps: MasterBridgeDependencies194) => asyn
       void response.body?.cancel().catch(() => undefined); return json(502, { error: 'CATALOGUE_INVALID_RESPONSE' });
     }
     const body = await readJson(response.body, RESPONSE_BYTES);
-    if (!object(body.value) || body.raw.includes(key) || JSON.stringify(body.value).includes(JSON.stringify(key).slice(1, -1))) {
+    const serialized = JSON.stringify(body.value);
+    if (!object(body.value) || [key, token, userId, userId.toLowerCase()].some(privateValue =>
+      body.raw.includes(privateValue) || serialized.includes(JSON.stringify(privateValue).slice(1, -1)))) {
       return json(502, { error: 'CATALOGUE_INVALID_RESPONSE' });
     }
     return json(200, body.value);

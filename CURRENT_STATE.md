@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-24, Master197 Verified-User Bridge /19Literal Photos /107HOLD
+
+- Received exact cached13:06developer response to verified Sent5559; no claim of fresh inbox completeness. They also get403; CLI free route is conditional on project ownership, Cloud agent needs main/credits. Lovable metadata enabled/supabase does not identify owner; no existing project tab found, no browser created. No deploy, secret copy, new catalogue/model/image calls, spend, web/main change or107upload.
+- Prepared inactive bridge now derives X-Matchrim-User only from Auth-verified UUID, rejects invalid/spoofed identity and key/JWT/ID echoes.9/9bridge and11/11adapter offline groups PASS; focused types/lint PASS.19existing photos personally inspected/hash-matched,8unsafe pairs rejected: literal Fuissé/API Fussé, Frontonio Migratoria absent, Bossanova/Giacondi and Selección/Anécdota source mismatch. Not blind GT, confirmed identities or200vision accuracy. No invented alias/year/sensory data.
+- Sensory proposal remains undeployed and unverified per-axis; R2is suspicion, unflagged3not genuine. Prepared response asks exact additive JSON/owner/free channel and source-image semantics, NOT SENT until receipt proves it. Signed107617e59c unchanged/native195inactive. Caps unchanged; release gate HOLD. [Details and remaining gate](docs/MATCHRIM_MASTER_197_2026-10-24.md).
+
 ## Current Gate: 2026-10-24, Master196 Development Request SENT /107HOLD
 
 - Previous goal turn made code/evidence progress; this turn first verified the desktop resource owner's actual in-progress thread, waited on its live handle until completed, then ACQUIRED own mac-desktop56afcc60-727f-4c1b-9c96-889f7d960c95. Human-idle samples292->297->302seconds; no foreign task interrupted or lease stolen. Left unrelated compose/draft unchanged and restored the original foreground/folder after own work.

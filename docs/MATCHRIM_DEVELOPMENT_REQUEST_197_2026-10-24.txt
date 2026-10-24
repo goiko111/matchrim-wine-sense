@@ -1,0 +1,22 @@
+STATUS: PREPARED / NOT SENT
+TO: moa-winerim-b93a8ts9@agentmail.to
+THREAD: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026
+
+Hola equipo:
+
+Recibida vuestra respuesta de las 13:06. El puente local ya deriva X-Matchrim-User únicamente del UUID devuelto por auth.getUser, rechaza identidad inválida y nunca reenvía la cabecera del cliente, JWT, email, perfil ni valoraciones. 9/9 grupos del puente y 11/11 del adaptador pasan offline. Sigue sin desplegar/activar; os pasaré el commit de esta misma rama.
+
+El backend se ha descrito y gestionado hasta ahora como Lovable Cloud. El metadato accesible solo confirma stack Supabase y no su propietario; ambos accesos administrativos dan denegado/403. No consideremos verificada la vía CLI solo por existir el comando. ¿Podéis confirmar con el responsable de este proyecto si es Cloud y quién puede desplegar únicamente la función y depositar MATCHRIM_GOIKO_KEY? Si exige main o créditos, necesitamos la alternativa y coste exacto antes de ejecutar. No autoriza cambios de main/web, nueva infraestructura, permisos, créditos ni gastos. No enviéis la clave por correo.
+
+Para el contrato sensorial, la separación por eje/origen/ámbito es adecuada como propuesta, pero aún no autoriza publicación. Preparad por favor un diff/esquema JSON versionado y ejemplos exactos para La Zorrera 2015/2019, Vidure 2020 y Meursault217346/2022, con ausencia frente a no-aplicable, source_verified nunca emitido sin prueba, regla/versión/motivo si suspected_default, y media de búsqueda no específica de añada. R2 debe seguir siendo sospecha con excepciones, no origen demostrado ni valor corregido. Un 3 sin regla no es valor genuino confirmado. Aclarad también los 87 registros de diferencia y si el nuevo parámetro vintage cambia o solo añade campos, manteniendo compatibilidad.
+
+La revisión manual de las 19 fotos aporta datos que no son solo ambigüedades del cliente:
+- MIGRATORIA/Bodegas Frontonio se lee en la foto, pero la búsqueda literal devuelve cero y el fallback completo no lo incluye.
+- La foto dice Pouilly-Fuissé Premier Cru En Servy/Domaine Vaupré; el candidato217430 dice Pouilly-Fussé. Pedimos verificar la grafía, no inventar un alias.
+- La foto BAGANTE realmente dice BAGANTE; no la cambiaremos a VAGANTE para forzar un resultado.
+- Los enlaces públicos reparados362891 y363580 son legibles, pero sus fichas215213/Giacondi y215439/Anécdota Chenin Blanc no coinciden con las fotos Bossanova Montepulciano y Altotinto Selección2021. ¿Cuál es la semántica de esa asociación de imagen/origen? No pedimos fusionar referencias por compartir bodega.
+- La foto Meursault Les Grands Charrons2022 no puede usar la única fila2024; Campillo1995lleva una medalla2004, no una segunda añada; DESDE1921/1857/1870son fundaciones.
+
+No hace falta releer el catálogo ni llamar modelos para preparar la respuesta: los40payloads y la revisión literal están en la rama. No autorizamos nuevas lecturas, IA/imágenes, exportaciones, cuentas, valoraciones, Lovable, cambios de datos/backend/main/web o despliegue del contrato. Los cupos6+40están agotados; el límite50peticiones/15EUR y24públicas no se amplían.107sigue bloqueada hasta validación real.
+
+Gracias.

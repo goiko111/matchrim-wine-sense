@@ -122,7 +122,8 @@ try {
   });
   await test('Prepared native adapter traverses actual bridge and decoder with controlled session and retained payloads, no native key', async () => {
     let functionsCalls = 0, upstreamCalls = 0;
-    const handler = createMasterBridge194({ authenticate: async token => token === 'controlled-session195',
+    const handler = createMasterBridge194({ authenticate: async token => token === 'controlled-session195'
+      ? '19500000-0000-4000-8000-000000000001' : null,
       readSecret: () => 'controlled-server-key195', fetcher: async (url, init) => {
         upstreamCalls++; assert.equal(init?.method, 'GET');
         assert.equal(new Headers(init.headers).get('X-Matchrim-Key'), 'controlled-server-key195');

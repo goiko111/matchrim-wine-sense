@@ -6,6 +6,7 @@ import { createMasterBridge194, masterRequestUrl194 } from '../supabase/function
 import { masterSearchParams188, parseMasterPage188, parseMasterDetail188, parseMasterMapping188 } from '../src/utils/nativeMasterContract188';
 
 const KEY = 'controlled-server-key194', TOKEN = 'controlled-session194';
+const USER = '194abcde-0000-4000-8000-000000000001';
 const originalFetch = globalThis.fetch;
 globalThis.fetch = async () => { throw new Error('NO_EXTERNAL_CALLS_IN_BRIDGE194'); };
 let groups = 0;
@@ -18,17 +19,19 @@ const request = (value: unknown = body, options: RequestInit = {}) => new Reques
 const fixture = (name: string) => JSON.parse(fs.readFileSync(name, 'utf8'));
 const harness = (response: typeof fetch = async () => Response.json({ results: [] }), timeoutMs = 200) => {
   let auth = 0, secret = 0, calls = 0;
-  const handler = createMasterBridge194({ authenticate: async token => { auth++; return token === TOKEN; },
+  const handler = createMasterBridge194({ authenticate: async token => { auth++; return token === TOKEN ? USER : null; },
     readSecret: () => { secret++; return KEY; }, timeoutMs,
     fetcher: async (url, init) => {
       calls++; assert.equal(init?.method, 'GET'); assert.equal(init.redirect, 'error'); assert.equal(init.credentials, 'omit');
-      assert.equal(init.body, undefined); assert.deepEqual(init.headers, { Accept: 'application/json', 'X-Matchrim-Key': KEY });
+      assert.equal(init.body, undefined); assert.deepEqual(init.headers,
+        { Accept: 'application/json', 'X-Matchrim-Key': KEY, 'X-Matchrim-User': USER });
       return response(url, init);
     } });
   return { handler, counts: () => ({ auth, secret, calls }) };
 };
 const clean = async (response: Response) => {
   const text = await response.text(); assert(!text.includes(KEY)); assert(!text.includes(TOKEN));
+  assert(!text.includes(USER)); assert(!response.headers.has('x-matchrim-user'));
   assert.equal(response.headers.get('cache-control'), 'no-store'); assert(!response.headers.has('set-cookie'));
   assert(!response.headers.has('x-matchrim-key')); assert(!response.headers.has('access-control-allow-credentials'));
   return JSON.parse(text);
@@ -75,7 +78,7 @@ try {
     const controller = new AbortController(); controller.abort();
     assert.equal((await h.handler(request(body, { signal: controller.signal }))).status, 499);
     assert.equal(h.counts().calls, 0); assert.equal(h.counts().secret, 0);
-    const unconfigured = createMasterBridge194({ authenticate: async () => true, readSecret: () => undefined,
+    const unconfigured = createMasterBridge194({ authenticate: async () => USER, readSecret: () => undefined,
       fetcher: async () => { throw new Error('MUST_NOT_FETCH'); } });
     assert.equal((await unconfigured(request())).status, 503);
   });
@@ -121,6 +124,7 @@ try {
       await clean(response); assert.equal(h.counts().calls, 1);
     }
     for (const respond of [async () => { throw new Error(KEY); }, async () => Response.json({ key: KEY }),
+      async () => Response.json({ user: USER }), async () => Response.json({ token: TOKEN }),
       async () => new Response('{"key":"' + [...KEY].map(char => `\\u${char.charCodeAt(0).toString(16).padStart(4, '0')}`).join('') + '"}',
         { headers: { 'Content-Type': 'application/json' } }),
       async () => new Response('not JSON'), async () => Response.json([]),
@@ -130,7 +134,7 @@ try {
     }
   });
   await test('Deadline bounds Auth, fetch and response body; cancellation aborts catalogue signal', async () => {
-    const authStall = createMasterBridge194({ authenticate: async () => new Promise<boolean>(() => undefined),
+    const authStall = createMasterBridge194({ authenticate: async () => new Promise<string | null>(() => undefined),
       readSecret: () => { throw new Error('MUST_NOT_READ'); }, fetcher: globalThis.fetch, timeoutMs: 20 });
     assert.equal((await authStall(request())).status, 504);
     for (const respond of [async () => new Promise<Response>(() => undefined),
@@ -145,7 +149,7 @@ try {
   await test('Actual entrypoint verifies getUser with user token; missing/anonymous/rejected users cannot read catalogue', async () => {
     const source = fs.readFileSync('supabase/functions/matchrim-master-catalog/index.ts', 'utf8');
     const js = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
-    let user: { id: string; is_anonymous?: boolean } | null = { id: 'controlled-user194' }, authError = false;
+    let user: { id: string; is_anonymous?: boolean } | null = { id: USER }, authError = false;
     let handler: ReturnType<typeof createMasterBridge194> | undefined, calls = 0, userChecks = 0;
     const env = { SUPABASE_URL: 'https://controlled-auth.invalid', SUPABASE_ANON_KEY: 'controlled-anon194', MATCHRIM_GOIKO_KEY: KEY };
     const createClient = (url: string, anon: string, options: { global: { headers: { Authorization: string }; fetch: typeof fetch }; auth: { persistSession: boolean } }) => {
@@ -158,13 +162,39 @@ try {
         if (specifier === 'https://esm.sh/@supabase/supabase-js@2.7.1') return { createClient };
         if (specifier === '../_shared/matchrim-master194.ts') return { createMasterBridge194 };
         throw new Error('UNAPPROVED_MODULE');
-      }, fetch: async () => { calls++; return Response.json({ controlled: true }); } });
+      }, fetch: async (_url: string, init: RequestInit) => {
+        calls++; assert.equal(new Headers(init.headers).get('X-Matchrim-User'), USER);
+        assert(!new Headers(init.headers).has('Authorization')); return Response.json({ controlled: true });
+      } });
     assert(handler); assert.equal((await handler(request())).status, 200); assert.equal(calls, 1);
-    for (const identity of [null, { id: 'anonymous', is_anonymous: true }]) {
+    for (const identity of [null, { id: USER, is_anonymous: true }, { id: 'invalid-id' }, { id: '' }]) {
       user = identity; assert.equal((await handler(request())).status, 401);
     }
-    user = { id: 'rejected-user' }; authError = true; assert.equal((await handler(request())).status, 401);
-    assert.equal(calls, 1); assert.equal(userChecks, 4);
+    user = { id: USER }; authError = true; assert.equal((await handler(request())).status, 401);
+    assert.equal(calls, 1); assert.equal(userChecks, 6);
+  });
+  await test('Quota identity is trusted Auth UUID only; forged client IDs and invalid trusted identities fail closed', async () => {
+    const seen: string[] = [];
+    let verified: string | null = USER;
+    let secrets = 0;
+    const handler = createMasterBridge194({ authenticate: async () => verified,
+      readSecret: () => { secrets++; return KEY; }, fetcher: async (_url, init) => {
+        const headers = new Headers(init?.headers);
+        assert(!headers.has('Authorization')); seen.push(headers.get('X-Matchrim-User')!);
+        return Response.json({ results: [] });
+      } });
+    const spoofed = () => request(body, { headers: { Authorization: `Bearer ${TOKEN}`,
+      'Content-Type': 'application/json', 'X-Matchrim-User': 'attacker-controlled-user' } });
+    assert.equal((await handler(spoofed())).status, 200);
+    verified = USER.toUpperCase(); assert.equal((await handler(spoofed())).status, 200);
+    verified = '19400000-0000-4000-8000-000000000002';
+    assert.equal((await handler(spoofed())).status, 200);
+    assert.deepEqual(seen, [USER, USER, verified]);
+    assert.equal((await handler(request({ ...body, userId: USER }))).status, 400);
+    for (const invalid of [null, '', 'true', 'controlled-user', `${USER}\r\nX-Evil: yes`, 'x'.repeat(65)]) {
+      verified = invalid; assert.equal((await handler(spoofed())).status, 401);
+    }
+    assert.equal(secrets, 3); assert.equal(seen.length, 3);
   });
   console.log(JSON.stringify({ passed: groups, failed: 0, externalRequests: 0, keychainReads: 0,
     deployment: false, appActivation: false, scope: 'Controlled in-memory server bridge; not hosted integration or image recognition' }));
