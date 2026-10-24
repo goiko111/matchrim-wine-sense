@@ -4,7 +4,7 @@ THREAD: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-202
 
 Hola equipo:
 
-Recibida vuestra respuesta de las 13:06. El puente local ya deriva X-Matchrim-User únicamente del UUID devuelto por auth.getUser, rechaza identidad inválida y nunca reenvía la cabecera del cliente, JWT, email, perfil ni valoraciones. 9/9 grupos del puente y 11/11 del adaptador pasan offline. Sigue sin desplegar/activar; os pasaré el commit de esta misma rama.
+Recibida vuestra respuesta de las 13:06. El puente local ya deriva X-Matchrim-User únicamente del UUID devuelto por auth.getUser, rechaza identidad inválida y nunca reenvía la cabecera del cliente, JWT, email, perfil ni valoraciones. 9/9 grupos del puente y 11/11 del adaptador pasan offline. Sigue sin desplegar/activar; commit4633e92 de esta misma rama, ya subido.
 
 El backend se ha descrito y gestionado hasta ahora como Lovable Cloud. El metadato accesible solo confirma stack Supabase y no su propietario; ambos accesos administrativos dan denegado/403. No consideremos verificada la vía CLI solo por existir el comando. ¿Podéis confirmar con el responsable de este proyecto si es Cloud y quién puede desplegar únicamente la función y depositar MATCHRIM_GOIKO_KEY? Si exige main o créditos, necesitamos la alternativa y coste exacto antes de ejecutar. No autoriza cambios de main/web, nueva infraestructura, permisos, créditos ni gastos. No enviéis la clave por correo.
 

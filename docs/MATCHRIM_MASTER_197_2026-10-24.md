@@ -125,3 +125,27 @@ and affected native QA are actually validated. Do not call this app complete.
 Resources: writer-matchrim-native99/19b89531-f494-4229-af1f-664b613a7479;
 disk7.0GiB at initial check, no heavy/render/build/OCR/phone job. Other tasks'
 heavy leases respected. Release only own resources after checkpoint.
+
+## Final Checkpoint: External Deployment Hold
+
+Product/tests/evidence committed and pushed as4633e92. Released own writer lease
+before requesting desktop, preserving alphabetical acquisition. mac-desktop
+returned BUSY(owner01a0b478-ec1a-7681-b71d-e8ef2100e382,
+lease7ce226f1-399a-4437-9555-0fef7d55f696). Compact wait_threads verified that
+owner's actual live turn inProgress, then three bounded120s waits returned
+inProgress, not a lease-only assumption. No interruption, instruction, stale
+lease takeover, UI input, app close or force quit. Our new reply remains **NOT
+SENT**;196's earlier request was sent and its developer response is verified.
+No repeated green suites or artificial build while waiting. Writer reacquired
+only for checkpoint asda76e0da-abcf-4ef4-9d88-7817e2262f5d.
+
+The same actual project-management denial / missing safe deploy channel has
+persisted through goal turns195,196and197; development independently confirms
+403, and no owner deployment/contract receipt has arrived. Offline internal
+delta is finished. Remaining work needs an external state change: a verified
+owner/Cloud-safe no-extra-cost deployment capability and versioned sensory
+contract; further real catalogue/hosted reads are not authorized by exhausted
+tranches. No cost expansion, hidden permission workaround or main/web push.
+The goal is blocked at this checkpoint, not achieved, completed or human-paused.
+Resume after actual access/contract/capacity change; do not create an automation
+or loop unchanged network probes.107remainsHOLD.
