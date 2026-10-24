@@ -8,7 +8,7 @@ Gracias por vuestra respuesta del 24-oct a las 09:33 UTC. La clave de Goiko ya e
 
 Ya estan comprobados los detalles canonicos 215213/215439 a partir de los IDs publicos 362891/363580. La paginacion acotada de AMARONE y repeticion de pagina tambien pasan. Esto no confirma por si solo la identidad de las fotos ni las anadas.
 
-Hemos preparado un puente aislado de solo lectura, matchrim-master-catalog, y un adaptador para el contrato real, no el antiguo 102. Rama: codex/matchrim82-cloud-integration-20261013 del repo https://github.com/goiko111/matchrim-wine-sense. El puente esta en def71ea; las pruebas con respuestas conservadas pasan, pero NO esta desplegado ni activado en la app.
+Hemos preparado un puente aislado de solo lectura, matchrim-master-catalog, y un adaptador para el contrato real, no el antiguo 102. Rama: codex/matchrim82-cloud-integration-20261013 del repo https://github.com/goiko111/matchrim-wine-sense. El puente esta en def71ea y el adaptador en 077dfc9; sus 11 grupos de pruebas locales pasan, pero NO esta desplegado ni activado en la app. El preflight OPTIONS de la ruta devuelve 404 y la gestion Supabase sigue denegada.
 
 Necesitamos cerrar dos puntos, sin gastar ni modificar datos:
 

@@ -42,6 +42,11 @@ channel. Free Lovable project metadata read shows latest6bc28b400c3777c9c5161508
 last edit23Oct17:41:47UTC, agentFinishedtrue. That proves neither deployed code
 nor a new suitable proxy. No agent prompt, publish call or credits used.
 
+Unauthenticated OPTIONS to the exact matchrim-master-catalog endpoint returned
+HTTP404in168ms. No body/headers/credentials sent, no catalogue GET or model call.
+This confirms the public endpoint is unavailable for the prepared transport,
+not a hosted session/source verification. Do not present the local bridge as live.
+
 Safe deployment still requires a verified available channel and secret deposit
 on the server. Existing40read allowance is exhausted; do not run a canary that
 forwards a catalogue GET or delegate reads as a hidden budget extension.
@@ -108,6 +113,11 @@ authorized thread. **NOT SENT at this checkpoint.** Desktop has been occupied
 by another task/user input; no foreign lease/focus/filter/account was disturbed.
 Asked the human only for a two-minute free-desktop window to send it safely,
 not a new budget, credential or scope authorization. Reply pending at checkpoint.
+Latest actual mac-desktop acquisition attempt returned BUSY (foreign lease
+31ea5025-6272-4fee-9034-6927979fbe1f). Separate within-process HID samples increased
+2.38->8.42->14.45->20.49seconds: isolated very-low idle readings between tools
+are not enough to claim continuous human activity. The verified BUSY resource,
+not that ambiguous metric, prevents the mail send. No lease was stolen/expired.
 Do not claim delivery or silently create an email through mailbox-file writes.
 
 Request: verified no-extra-cost server deployment route/owner step; additive
@@ -130,3 +140,6 @@ changes; no heavy/simulator/iPhone resource claimed. Release own leases after
 checkpoint/commit/push. Next real gates: send the scoped request when desktop
 is safe, verified deploy/secret channel, hosted/native integration and sensory
 contract evidence, then affected QA and only then107TestFlight. No upload now.
+Adapter/code committed and pushed077dfc943427c8c3d86b6fad8e668426c1f1a438;
+writer lease released. A short writer-only checkpoint lease records the later
+OPTIONS/BUSY evidence and is released after its documentation commit.
