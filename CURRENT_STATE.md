@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-24, Authenticated Catalogue191 Probe Ready / Keychain Input Pending
+
+- Fresh scoped Thunderbird receive~11:28and exact sender+Matchrim filters: still four Matchrim replies/latest10:58, no new secure-transport response. Subject-only filter restored. This closes the preceding UI-interrupted check, not the catalogue gate.
+- Goiko has the API key and requests macOS Keychain storage, but value not supplied/saved: metadata lookup11:34still item-not-found. Keychain Access Add disabled; Terminal CUA explicitly denied, not bypassed. Human given official `security add-generic-password ... -T "" -w` hidden-input command, service wine.matchrim.goiko-api/account goiko. Never ask value in chat or put it in frontend/IPA.
+- Human authorizes a NEW separate tranche of up to6authenticated free GETs, zero IA/images/Lovable/writes; earlier50paid/EUR15/24public ceilings not reset. Implemented single-use probe191(default plan-only, Keychain server-side-memory read, reserve-before-send, fixedsixURLs, redirects/size/deadline/auth/rate/secret-echo guards).5/5offline groups, focused strict TypeScript/lint PASS,0actual reads/key retrievals. Waiting for hidden-input save, then permitted six-read check;17broad+2source cases/production proxy and conditional107gate remain open. [Evidence and exact next step](docs/MATCHRIM_MASTER_191_2026-10-24.md).
+
 ## Current Gate: 2026-10-24, Canonical API188 Contract Received /107HOLD
 
 - Follow-up189: human-authorized secure-access request sent24Oct11:14from goiko@winerim.com to moa-winerim-b93a8ts9@agentmail.to in the existing Matchrim thread; verified SentUID5557/recipient/body. Asked exact authenticated server proxy/key channel, no secrets by email/frontend/IPA, no new credits/main/web/admin/private-data changes. No reply/delivery claim or new live catalogue call.17+2cases and107conditional HOLD unchanged. Desktop released immediately after verification.
