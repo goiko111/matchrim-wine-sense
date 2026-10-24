@@ -1,4 +1,4 @@
-STATUS: PREPARED / NOT SENT
+STATUS: SENT 24-Oct-2026 13:44:06 Europe/Madrid; Sent UID5560; b0b5361c-f301-4386-963d-364758291034@winerim.com
 TO: moa-winerim-b93a8ts9@agentmail.to
 THREAD: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026
 
