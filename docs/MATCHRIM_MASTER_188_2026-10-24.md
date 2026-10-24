@@ -1,5 +1,32 @@
 # Matchrim 107: canonical API contract received
 
+## Follow-Up Sent: 24 October, 11:14 Europe/Madrid
+
+Direct human authorization: ask development to enable secure access, retain the
+web/spend restrictions and upload107 only after validation. Sent one reply in
+the existing Matchrim thread, from `goiko@winerim.com` to
+`moa-winerim-b93a8ts9@agentmail.to`, no CC/attachments/secrets. Verified in Sent,
+UID5557: recipient, timestamp11:14 and complete body. This supersedes the
+"not sent" draft status below; no delivery/read/reply claim.
+
+Asked for the existing authenticated server proxy/function, source revision and
+input/output contract using `MATCHRIM_SEARCH_KEY`, or the exact secure server-only
+key delivery step if none exists. Explicitly no credentials by email/frontend/IPA,
+admin access, private-data permission changes, main/web changes, new Lovable
+credits or other spend; stop and specify any such prerequisite. Requested only
+existing deployment/acceptance receipts, not a new delegated paid validation run.
+
+No new catalogue/model/image calls, account writes, deployment or TestFlight
+upload. The contract/examples already passed offline checks; no green suite was
+repeated while awaiting the server transport.17broad+2source cases stay OPEN.
+The signed107archive and validation condition are unchanged.
+
+Desktop lease `c270d592-a5d7-4b55-bb26-4790e8ae3955` was released immediately
+after confirming Sent. Final writer `0200ef87-ac2a-4848-8e00-3917291c0148` held
+only through this checkpoint/commit/push and released after completion. Foreign
+coordination requests did not interrupt the send or authorize messaging back;
+no foreign app/process/lease was changed.
+
 Updated 24 October 2026, 11:06 Europe/Madrid. Branch
 `codex/matchrim82-cloud-integration-20261013`. Contract adapter/tests: `443a2f8`.
 
