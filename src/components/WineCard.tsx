@@ -37,7 +37,10 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
           </div>
         </div>
         <div className="mt-3"><NativeAffinitySummary result={evidence.result} /></div>
-        {evidence.sourceAvailable && <div className="mt-4"><WinerimSheetLookup identity={{ name: wine.name, producer: wine.winery, vintage: wine.vintage, region: wine.region, country: wine.country }} /></div>}
+        {evidence.sourceAvailable && <details className="mt-4 border-t border-stone-200 pt-2">
+          <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium text-stone-700">Ficha y origen de los datos</summary>
+          <WinerimSheetLookup identity={{ name: wine.name, producer: wine.winery, vintage: wine.vintage, region: wine.region, country: wine.country }} />
+        </details>}
         <NativeWineSave98 wine={wine} />
       </div>
     );

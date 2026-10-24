@@ -1,0 +1,379 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://app.winerim.com/api/v1/matchrim/schemas/sensory-evidence-1.json",
+  "title": "sensory-evidence-1 (PROPUESTA, no publicado)",
+  "description": "Bloque aditivo. Solo se emite si la petición lleva evidence=1. Sin ese parametro la respuesta es byte a byte la actual. Ningun campo existente cambia de nombre, tipo, valor ni orden.",
+  "type": "object",
+  "definitions": {
+    "axis": {
+      "enum": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity",
+        "aging"
+      ]
+    },
+    "state": {
+      "enum": [
+        "absent",
+        "not_applicable",
+        "source_verified",
+        "suspected_default",
+        "ai_estimate_recorded",
+        "unknown_origin"
+      ],
+      "description": "Precedencia de arriba abajo en este orden: absent, not_applicable, source_verified, suspected_default, ai_estimate_recorded, unknown_origin."
+    },
+    "rule": {
+      "type": "object",
+      "required": [
+        "id",
+        "version",
+        "reason",
+        "isProofOfOrigin",
+        "knownExceptions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^R[0-9]+$"
+        },
+        "version": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "isProofOfOrigin": {
+          "const": false
+        },
+        "knownExceptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "proof": {
+      "type": "object",
+      "description": "Obligatorio para source_verified. Hoy no existe ningun dato que lo respalde, asi que sensory-evidence-1 no lo emite nunca.",
+      "required": [
+        "kind",
+        "reference",
+        "verifiedAt"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "human_tasting",
+            "producer_sheet",
+            "external_source"
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verifiedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "axisEvidence": {
+      "type": "object",
+      "required": [
+        "value",
+        "state"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 5
+        },
+        "state": {
+          "$ref": "#/definitions/state"
+        },
+        "rule": {
+          "$ref": "#/definitions/rule"
+        },
+        "proof": {
+          "$ref": "#/definitions/proof"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "absent"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "const": null
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "not_applicable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "const": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "suspected_default"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "rule"
+            ],
+            "properties": {
+              "value": {
+                "const": 3
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "source_verified"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "proof"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "unknown_origin",
+                  "ai_estimate_recorded"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5
+              }
+            }
+          }
+        }
+      ]
+    },
+    "origin": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "unrecorded"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "model",
+            "confidence",
+            "generatedAt"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "ai_recorded"
+            },
+            "model": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "confidence": {
+              "type": "number"
+            },
+            "generatedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "properties": {
+    "attributesByVintage": {
+      "description": "Cada entrada actual conserva sus campos. Se anaden scope, origin y evidence.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "enum": [
+              "exact",
+              "generic"
+            ],
+            "description": "generic exactamente cuando vintage es null."
+          },
+          "origin": {
+            "$ref": "#/definitions/origin"
+          },
+          "evidence": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "#/definitions/axis"
+            },
+            "additionalProperties": {
+              "$ref": "#/definitions/axisEvidence"
+            }
+          },
+          "conflict": {
+            "enum": [
+              "duplicate_generic"
+            ],
+            "description": "Solo en filas genericas cuando el vino tiene mas de una. Las filas se devuelven todas, como hoy; ninguna se elige."
+          }
+        },
+        "required": [
+          "scope",
+          "origin",
+          "evidence"
+        ]
+      }
+    },
+    "vintageResolution": {
+      "description": "Solo si la peticion lleva vintage=AAAA ademas de evidence=1. No filtra, ni reordena, ni elimina nada de attributesByVintage.",
+      "type": "object",
+      "required": [
+        "requested",
+        "status",
+        "exactRowPresent",
+        "genericRowCount",
+        "genericRowPresent",
+        "knownVintages",
+        "offeredScope"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "requested": {
+          "type": "string",
+          "pattern": "^[0-9]{4}$"
+        },
+        "status": {
+          "enum": [
+            "exact",
+            "no_exact_row"
+          ]
+        },
+        "exactRowPresent": {
+          "type": "boolean"
+        },
+        "genericRowPresent": {
+          "type": "boolean"
+        },
+        "knownVintages": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "description": "Mismo contenido que vintages; informativo, la ausencia no prueba que la añada no exista."
+        },
+        "offeredScope": {
+          "enum": [
+            "exact",
+            "generic_only",
+            "generic_ambiguous",
+            "none"
+          ],
+          "description": "exact: usar la fila de esa añada. generic_only: solo la fila generica, nunca presentada como de esa añada. none: ninguna fila aplicable; las filas de otras añadas no se ofrecen. generic_ambiguous: hay mas de una fila generica; no se elige ninguna ni se ofrece como aplicable."
+        },
+        "genericRowCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Numero de filas genericas (vintage null). Mas de una es un conflicto de datos."
+        }
+      }
+    },
+    "evidenceMethod": {
+      "type": "object",
+      "required": [
+        "version",
+        "sourceVerifiedEmittedToday",
+        "note"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "sensory-evidence-1"
+        },
+        "sourceVerifiedEmittedToday": {
+          "const": false
+        },
+        "rulesActive": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "tastingAttributesScope": {
+      "description": "En cada resultado de /wines/search cuando evidence=1.",
+      "const": "catalogue_average_not_vintage_specific"
+    },
+    "evidenceStatus": {
+      "enum": [
+        "no_rows",
+        "rows_present"
+      ],
+      "description": "Con evidence=1. no_rows: el vino no tiene ninguna fila de atributos (ausencia explicita; no es 0 ni 3)."
+    }
+  }
+}

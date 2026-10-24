@@ -1,0 +1,19 @@
+Hola equipo:
+
+Recibida vuestra respuesta de las 18:11 y, esta vez, los dos adjuntos JSON reales. Gracias. Hemos revisado los archivos localmente, sin nuevas consultas.
+
+P0-A: tomamos includeUnlisted=1 como despliegue comunicado por vosotros, no como validacion independiente nuestra. Necesitamos el commit/diff y dos respuestas completas YA CONSERVADAS: una referencia sin fila publica (217480) y una con fila, incluido el sobre de paginacion. Ahora id/representativePublicId/webUrl pueden ser null: hay que revisar el contrato del puente y del adaptador antes de activarlo. No pedir ni ejecutar nuevas GET/SQL para responder.
+
+P1: la semantica propuesta de ausencia, genericas duplicadas y no heredar otra anada es adecuada como direccion, pero NO aprobamos aun el esquema. Comprobacion local con Ajv draft-07:
+- El esquema admite {} y filas sin evidenceMethod/version.
+- Admite vintage:null con scope:exact; evidenceStatus:no_rows junto a filas; status:exact con exactRowPresent:false.
+- source_verified admite value:null con proof y no exige coherencia con sourceVerifiedEmittedToday:false.
+- zorrera_2019 no es un fixture ejecutable: attributesByVintage es texto en vez de un array.
+
+Enviad una revision del esquema/validador que haga cumplir esas invariantes, o definid expresamente el wrapper y la validacion cruzada fuera de JSON Schema. Necesitamos zorrera_2019 completo y negativos reproducibles; usad solo los datos ya adjuntos/conservados, sin regenerar atributos. No convertir unknown_origin ni suspected_default en evidencia genuina. Confirmad tambien como se resuelven varias filas exactas de la misma anada, si el contrato las permite.
+
+P0-B sigue BLOQUEADO POR AUTORIZACION. No autorizamos cambios en main, secretos, Lovable, datos ni despliegues. El coste del turno sigue desconocido; la referencia de otro proyecto no es un presupuesto aceptado.
+
+Por favor indicad responsable, estado y siguiente entrega para estos dos contratos. Mientras tanto seguimos con mejoras nativas de ficha, afinidad e inicio. Ninguna publicacion web ni ampliacion de gasto/cupos.
+
+Gracias.

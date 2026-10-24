@@ -92,9 +92,9 @@ const NativeAppHome = ({
   const hasCode = hasQuizResults && Boolean(matchrimCode);
   const ownerId = user?.id ?? null;
   const [recentScans, setRecentScans] = useState<ScanHistoryItem[]>(() => getScanHistory(ownerId).slice(0, 3));
-  const [selection, setSelection] = useState<{ wine: WinerimWineWithMatch; ownerId: string | null } | null>(null);
+  const [selection, setSelection] = useState<{ wine: WinerimWineWithMatch; ownerId: string | null; open: boolean; trigger?: HTMLButtonElement } | null>(null);
   useLayoutEffect(() => { setSelection(null); }, [ownerId, activeProfile, recommendations]);
-  const selectedWine = selection?.ownerId === ownerId && recommendations.includes(selection.wine)
+  const selectedWine = selection?.open && selection.ownerId === ownerId && recommendations.includes(selection.wine)
     ? selection.wine : null;
 
   useLayoutEffect(() => {
@@ -115,10 +115,12 @@ const NativeAppHome = ({
   if (isNative) return <NativeHome98 key={ownerId ?? 'anonymous'} ownerId={ownerId} hasProfile={hasCode}
     loading={loadingCode || loadingRecommendations} unavailable={recommendationsUnavailable}
     exhausted={recommendationsExhausted} recommendations={recommendations} profile={activeProfile}
-    recent={recentScans} onSelect={wine => setSelection({ wine, ownerId })}
-    detail={<DialogPrimitive.Root open={Boolean(selectedWine)} onOpenChange={open => { if (!open) setSelection(null); }}>
+    recent={recentScans} onSelect={(wine, trigger) => setSelection({ wine, ownerId, open: true, trigger })}
+    detail={<DialogPrimitive.Root open={Boolean(selectedWine)} onOpenChange={open => { if (!open) setSelection(previous => previous ? { ...previous, open: false } : null); }}>
       <DialogPrimitive.Portal><DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/40" />
-        <DialogPrimitive.Content aria-describedby="home-wine98-description" className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[94dvh] w-full max-w-xl flex-col overflow-hidden rounded-t-lg bg-white text-stone-950">
+        <DialogPrimitive.Content aria-describedby="home-wine98-description" onCloseAutoFocus={event => {
+          if (selection?.trigger?.isConnected) { event.preventDefault(); selection.trigger.focus(); }
+        }} className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[94dvh] w-full max-w-xl flex-col overflow-hidden rounded-t-lg bg-white text-stone-950">
           <div className="flex shrink-0 items-center justify-between gap-3 border-b border-stone-200 px-4 py-2">
             <DialogPrimitive.Title className="text-base font-semibold">El vino y tú</DialogPrimitive.Title>
             <DialogPrimitive.Close className="flex h-11 w-11 items-center justify-center" aria-label="Cerrar explicación del vino"><X className="h-5 w-5" aria-hidden="true" /></DialogPrimitive.Close>

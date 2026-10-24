@@ -21,7 +21,7 @@ interface Props {
   recommendations: WinerimWineWithMatch[];
   profile?: MatchrimProfileLike | null;
   recent: ScanHistoryItem[];
-  onSelect: (wine: WinerimWineWithMatch) => void;
+  onSelect: (wine: WinerimWineWithMatch, trigger?: HTMLButtonElement) => void;
   detail: ReactNode;
 }
 
@@ -37,22 +37,33 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
       </header>
       <button type="button" aria-label="Buscar vino o bodega" className="mb-6 flex min-h-12 w-full items-center gap-3 rounded-md border border-stone-300 bg-white px-4 py-3 text-left text-sm text-stone-600" onClick={() => setSearchOpen(true)}><Search className="h-5 w-5 shrink-0" aria-hidden="true" /><span className="min-w-0 flex-1 [overflow-wrap:normal]">Buscar vino</span></button>
 
+      <button type="button" className="mb-6 flex min-h-14 w-full items-center justify-between gap-3 border-y border-stone-200 py-3 text-left" onClick={() => navigate('/restaurante')}>
+        <span className="min-w-0"><span className="block text-base font-semibold">¿Qué vas a comer?</span><span className="mt-1 block text-sm text-stone-600">Elegir el vino para tu comida</span></span>
+        <ArrowRight className="h-5 w-5 shrink-0 text-red-900" aria-hidden="true" />
+      </button>
+
       <section aria-labelledby="home-wines98-title">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <h2 id="home-wines98-title" className="text-xl font-semibold">{hasProfile ? 'Para ti' : 'Tu próximo vino'}</h2>
+          <h2 id="home-wines98-title" className="text-xl font-semibold">{hasProfile ? 'Para tu paladar' : 'Tu próximo vino'}</h2>
           {hasProfile && recommendations.length > 0 && <button type="button" className="min-h-11 text-sm font-semibold text-red-900" onClick={() => navigate('/usar-matchrim')}>Ver todos</button>}
         </div>
-        {loading ? <div role="status" className="grid grid-cols-2 gap-4" aria-label="Cargando vinos">
-          {[0, 1].map(key => <div key={key} className="space-y-3"><div className="aspect-[3/4] rounded-md bg-stone-100 motion-safe:animate-pulse" /><div className="h-4 w-3/4 rounded bg-stone-100" /></div>)}
-        </div> : recommendations.length ? <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,8rem),1fr))] gap-x-4 gap-y-6 [html.matchrim-accessibility-text_&]:grid-cols-1" data-testid="native-home-wines98">
+        {loading ? <div role="status" className="space-y-4" aria-label="Cargando vinos">
+          {[0, 1].map(key => <div key={key} className="flex gap-4"><div className="h-36 w-24 shrink-0 rounded-md bg-stone-100 motion-safe:animate-pulse" /><div className="flex-1 space-y-3 py-4"><div className="h-4 w-3/4 rounded bg-stone-100" /><div className="h-4 w-1/2 rounded bg-stone-100" /></div></div>)}
+        </div> : recommendations.length ? <div className="divide-y divide-stone-200" data-testid="native-home-wines98">
           {recommendations.slice(0, 4).map(wine => {
             const { result } = buildNativeRecommendation95(wine, profile);
-            return <button key={String(wine.id)} type="button" className="min-w-0 self-start text-left" onClick={() => onSelect(wine)}
+            return <button key={String(wine.id)} type="button" className="grid min-h-44 w-full min-w-0 grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-4 py-4 text-left [html.matchrim-accessibility-text_&]:grid-cols-1" onClick={event => onSelect(wine, event?.currentTarget)}
               aria-label={`Ver por qué ${wine.name}${result.state === 'ready' ? `. Afinidad orientativa ${result.score} de 100` : '. Afinidad pendiente'}`}>
-              <NativeWinePhoto98 src={wine.photo} name={wine.name} className="mb-3 aspect-[3/4] w-full border border-stone-200" />
-              <span className="block break-words text-base font-semibold leading-6">{wine.name}</span>
-              <span className="mt-1 block break-words text-xs leading-5 text-stone-500">{[wine.winery, wine.vintage].filter(Boolean).join(' · ')}</span>
-              <span className={`mt-2 block text-sm font-semibold ${result.state === 'ready' ? 'text-emerald-800' : 'text-stone-600'}`}>{result.state === 'ready' ? `≈${result.score}/100 para ti` : 'Afinidad por calcular'}</span>
+              <NativeWinePhoto98 src={wine.photo} name={wine.name} className="h-36 w-[5.5rem] border border-stone-200" />
+              <span className="block min-w-0">
+                <span className="block break-words text-base font-semibold leading-6">{wine.name}</span>
+                <span className="mt-1 block break-words text-xs leading-5 text-stone-500">{[wine.winery, wine.vintage].filter(Boolean).join(' · ')}</span>
+                <span className={`mt-2 block text-sm font-semibold ${result.state === 'ready' && result.score >= 65 ? 'text-emerald-800' : 'text-stone-700'}`}>{result.state === 'ready' ? result.title : 'Afinidad por calcular'}</span>
+                <span className="mt-1 block text-sm leading-6 text-stone-700">{result.state === 'ready'
+                  ? result.matches[0] ?? result.caution ?? 'El encaje depende del conjunto de sus rasgos.'
+                  : result.reason === 'profile' ? 'Falta conocer tus gustos.' : 'Revisa qué datos faltan en su ficha.'}</span>
+                {result.state === 'ready' && <span className="mt-2 block text-xs font-medium text-stone-500">≈{result.score}/100 por estilo</span>}
+              </span>
             </button>;
           })}
         </div> : <div className="border-y border-stone-200 py-6">
