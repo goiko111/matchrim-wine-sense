@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-24, Canonical API188 Contract Received /107HOLD
+
+- Development replied23Oct19:37/19:47 and24Oct10:58. Release827canonical API contract now received and preserved; publication is reported, not independently authenticated. Separate server key is pending secure delivery. Main6bc28b4 independently fetched: only shared learning patch relative to95aa750, expected SHA256 confirmed. Two-function deployment reported by development; actual deployed hash/behavior unavailable, scoped Supabase get denied. No new deployment/credits by this continuation.
+- Adapter/tests443a2f8 validate actual documented format: independent filters/strict vintage, canonical vs public IDs, effective pagination/deduplication, exact/generic rows and public-ID mapping.7/7offline groups, focused strict TypeScript/lint/diff PASS. Default-bearing sensory data grants no affinity/training. Adapter remains inactive pending authenticated server transport; no key in IPA/frontend, no app/web behavior changed.
+- Supplied examples: La Zorrera2015known(180278); Vidure2020not recorded, only2018(201987). Source mappings362891->215213/363580->215439 still need independent readback and do NOT establish photo identity.17broad+2source cases remain open; no new200-image recognition metric. Existing signed107source617e59c unchanged, no export/upload.0new paid/model/image/catalogue/Lovable calls; caps unchanged. [Evidence, implemented block and exact next gate](docs/MATCHRIM_MASTER_188_2026-10-24.md).
+
 ## Current Gate: 2026-10-23, Versioned Native Affinity187 / Signed107Still HOLD
 
 - Final persistence source04569dc+617e59c keeps original v2initial readable to older clients plus a bound v3companion. Actual pre187reader/writer preserves both keys; default native readback rejects dropped/invalid companions.13expanded scorer-r9groups PASS. Clean-source617e59c107-r6 TypeScript/bundle, final release/consumer regressions,3new personally reviewed Bodega captures, fresh iOS compile/install and signed archive107-r3 PASS19:28:55Europe/Madrid,164resources. This supersedes d820c9darchive-r2as the final local product. No export/upload.
