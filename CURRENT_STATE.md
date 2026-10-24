@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-24, Master201 Fresh Mail Check / Nine-Case Clarification SENT /107HOLD
+
+- Desktop actually idle388->392->396s/ownmac0998e6bbACQUIRED. Completed account-specific Winerim Get Messages using verified selected context item/keyboard, then inspected Inbox by Matchrim subject(6messages/latest13:06) and exact Moa sender(10messages/same6Matchrim); no new Matchrim response found in refreshed Inbox. No server-wide/spam/delivery guarantee.199failed refresh preserved; exact prior filter/empty text/original GugoInbox and scroll restored, no foreign body/draft/message mutation. [Fresh check and send proof](docs/MATCHRIM_DEVELOPMENT_SENT_201_2026-10-24.md).
+- Sent prepared199clarification15:12:39Madrid fromgoiko@winerim.comtoauthorizedMoa, existing thread. SentUID5561/message765854d3-e76c-454e-b150-d8692954c703 independently MIME-verified:2057normalized characters exactly match, noCC/BCC/attachments. Corrects search-candidate versus source-image association; asks existing namespace/export semantics and safe deployment/sensory contract, no new data reads/spend/work delegated. Delivery/read/new response not claimed.199NOTSENT superseded.
+- Twelve new free reads stillPENDING, not approved/reserved/executed. No Keychain/newGET/SQL/model/images/Lovable/web/main/backend/activeproduct change, new tests/build or107upload. Separate desktop question no longer needed and cannot authorize API reads.9hints/identities/sensory remain open, native195inactive/bridge4633e92local/signed107617e59c unchanged. Goal active after actual mail progress, not achieved or re-blocked prematurely. Desktop released; writer6f48f66d checkpoint only then released.
+
 ## Current Gate: 2026-10-24, Master200 Nine-Case Diagnostic Authorization Pending /107HOLD
 
 - New human continuation reviewed6da8026and unchanged caps. get_goal returnednull, so created one bounded native objective per the explicit continuity preference; no duplicate/replacement of an active goal. This is the first fresh audit, not a new three-turn blocked transition. No active app, bridge, web/main/backend change or new build/recognition claim.

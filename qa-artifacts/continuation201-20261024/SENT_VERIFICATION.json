@@ -1,0 +1,31 @@
+{
+  "verifiedUTC": "2026-10-24T13:13:51.082295+00:00",
+  "sentCopyVerified": true,
+  "deliveryOrReadReceiptVerified": false,
+  "sender": "Goiko || Winerim <goiko@winerim.com>",
+  "recipient": "moa-winerim-b93a8ts9@agentmail.to",
+  "subject": "Re: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026",
+  "date": "Sat, 24 Oct 2026 15:12:39 +0200",
+  "messageId": "<765854d3-e76c-454e-b150-d8692954c703@winerim.com>",
+  "inReplyTo": "<53f444be-dbd3-4de4-adf4-d8399960367e@winerim.com>",
+  "folder": "Sent",
+  "UID": 5561,
+  "whitespaceNormalizedBodyMatchesPrepared": true,
+  "normalizedBodyChars": 2057,
+  "normalizedBodySHA256": "005ebd51d3725698217144184a04997a80491beef8a54f879930722b86df102d",
+  "mimeTextParameters": {
+    "text/plain": "",
+    "charset": "UTF-8",
+    "format": "flowed"
+  },
+  "attachments": 0,
+  "mailboxFileWrites": 0,
+  "catalogueGETs": 0,
+  "modelCalls": 0,
+  "lovableAgentTurns": 0,
+  "webChanges": false,
+  "testFlightUpload": false,
+  "desktopLease": "0998e6bb-8b95-46e3-9340-839805cc9495",
+  "desktopReleased": true,
+  "scope": "One own factual clarification sent via Thunderbird and bounded cached Sent copy independently MIME-verified."
+}
