@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-24, Master199 Source-Asset Crosswalk / Mail Refresh Unverified /107HOLD
+
+- Target cache last verified reply still13:06/157E2, no cached reference to13:44sentmessage; account refresh could not be verified after Thunderbird changed view during control. Human yielded desktop, foreign live task completed normally, own leases released immediately on interruption; no inbox-completeness/no-response assertion, mail sent or override of changed view. No new deploy channel/contract received in inspected evidence; no repeated unchanged403/404probe.
+- New offline provenance script separates export filename ID/name hints from197visible pixels and40retained API bodies:19rows,10numeric hints seen/9unseen, no canonical-namespace or catalogue-absence claim. Bossanova source hint217304(notGiacondi215213), Selección217297/notAnécdota215439; filenameScattola versus visibleAltotinto requires explanation. Prior repaired routes were search candidates, not proved source-image associations. No hints enter recognizer/affinity/learning. Focused runtime/strict types/lint PASS; first new TSunion error fixed/preserved. [Evidence and exact residual](docs/MATCHRIM_MASTER_199_2026-10-24.md).
+- Factual clarification prepared NOT SENT; no new reads/SQL/export/model/image/Lovable/spend/main/web/backend/active-app changes or107upload. Caps unchanged; bridge/native195still inactive, signed107617e59c unchanged. No fresh full-build/mobile/200recognition claim or new blocked-goal transition in this first resumed audit.
+
 ## Current Gate: 2026-10-24, Master198 Follow-Up SENT /107HOLD
 
 - Human yielded desktop; ACQUIRED own mac-desktop, verified prior owner completed and increasing idle samples. Sent prepared197reply once through Thunderbird from goiko@winerim.com to moa-winerim-b93a8ts9@agentmail.to in existing Matchrim thread at13:44:06Madrid. SentUID5560/messageb0b5361c-f301-4386-963d-364758291034 independently MIME-verified: complete whitespace-normalized body matches, no attachments/CC/BCC. format=flowed line wraps explain first literal-line mismatch; no truncation/resend.197NOT SENT superseded, no new response/delivery-read receipt claimed.

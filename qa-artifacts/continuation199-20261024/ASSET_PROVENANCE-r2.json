@@ -1,0 +1,479 @@
+{
+  "scope": "Existing export filename provenance versus retained responses and separate manual visual observations. Not blind ground truth or recognition input.",
+  "sourceManifest": "qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/REPORT.json",
+  "visualReview": "qa-fixtures/master197/visual-review.json",
+  "rows": [
+    {
+      "imageId": "img-003",
+      "sourceBasename": "003-217494-Valdebebas-Solea-Vendimia-Seleccionada.png",
+      "sourceSHA256": "4bdee64c1b0e2b586d258ac8ff63eadd826cc726955cd1b55673f5552ad5761d",
+      "preparedSHA256": "25a0d933f681c79d3b4a8ea8904c491ec4fddc72dc127511775f332959c82d2d",
+      "exportIdHint": 217494,
+      "filenameNameHint": "Valdebebas-Solea-Vendimia-Seleccionada",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "SOLEA / VALDEBEBAS / Vendimia Seleccionada",
+        "producer": null,
+        "vintage": null
+      },
+      "retainedCanonicalIdMatches": [],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-013",
+      "sourceBasename": "013-217482-Bagante-Mencia.png",
+      "sourceSHA256": "b0e6f9468b6f1ded45f1ddf550101c0663cec52b6a2201cb950c6dd66e8a9d04",
+      "preparedSHA256": "c5db30d286753425db4e3679fcb94af26ba72e2c444fea592955af178c0fd828",
+      "exportIdHint": 217482,
+      "filenameNameHint": "Bagante-Mencia",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "BAGANTE / Mencia / Bierzo",
+        "producer": null,
+        "vintage": null
+      },
+      "retainedCanonicalIdMatches": [],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-017",
+      "sourceBasename": "017-217480-La-Migratoria.png",
+      "sourceSHA256": "2c656ecf03a5a299ee8df6594b3ccc72e7d94cb61ae77bb1cf37535c367038bc",
+      "preparedSHA256": "dc540c845d91e4aaeea698e44baae4caed767da0f373512984513c04522e8ef5",
+      "exportIdHint": 217480,
+      "filenameNameHint": "La-Migratoria",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "MIGRATORIA",
+        "producer": "Bodegas Frontonio",
+        "vintage": null
+      },
+      "retainedCanonicalIdMatches": [],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-041",
+      "sourceBasename": "041-217456-Kriya-Trebbiano.png",
+      "sourceSHA256": "2e5c216c227c54761fa8305ffd5e2a981aa65a6d707ccf4ff3ad13ec15878fd5",
+      "preparedSHA256": "0d3544545a184353a1c0f3b948ebf46a82fc1d01a7569fe03e726611810bdf4e",
+      "exportIdHint": 217456,
+      "filenameNameHint": "Kriya-Trebbiano",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Kriya Trebbiano d'Abruzzo",
+        "producer": "Vigna Madre",
+        "vintage": null
+      },
+      "retainedCanonicalIdMatches": [],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-045",
+      "sourceBasename": "045-217452-Protos-12-Meses-en-Barrica-Seleccion-del-Sumiller.png",
+      "sourceSHA256": "ce0701cc9bb64c6a366b3b9d41d73c62938bb7f8a2456db3b75802dd614c2fb9",
+      "preparedSHA256": "613530e95068e642aa8e48b90d9792b9e8d87c0e8d3d35ba00e9f5b02104de1a",
+      "exportIdHint": 217452,
+      "filenameNameHint": "Protos-12-Meses-en-Barrica-Seleccion-del-Sumiller",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Protos 12 Meses en Barrica Seleccion del Sumiller",
+        "producer": "Protos",
+        "vintage": null
+      },
+      "retainedCanonicalIdMatches": [
+        {
+          "file": "qa-fixtures/master194/responses/09-BODY.json",
+          "kind": "search-row",
+          "mantalakWineId": 217452,
+          "name": "Protos 12 Meses en Barrica Selección del Sumiller",
+          "winery": "Protos"
+        },
+        {
+          "file": "qa-fixtures/master194/responses/10-BODY.json",
+          "kind": "detail",
+          "mantalakWineId": 217452,
+          "name": "Protos 12 Meses en Barrica Selección del Sumiller",
+          "winery": "Protos"
+        }
+      ],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-054",
+      "sourceBasename": "054-217442-Conde-de-Haro-Blanc-de-Blancs-Millesime.png",
+      "sourceSHA256": "ac85bdea7781ea2bd86ef5ca205405e3c708d1f5ba8edc61f68b8b9ba5a3a6f9",
+      "preparedSHA256": "6a6ea2913eed195ac1a39ae014a61c8805db34653fb6433c4f74c62f8af9bf53",
+      "exportIdHint": 217442,
+      "filenameNameHint": "Conde-de-Haro-Blanc-de-Blancs-Millesime",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Conde de Haro Blanc de Blancs Millesime",
+        "producer": null,
+        "vintage": "2018"
+      },
+      "retainedCanonicalIdMatches": [
+        {
+          "file": "qa-fixtures/master194/responses/11-BODY.json",
+          "kind": "search-row",
+          "mantalakWineId": 217442,
+          "name": "Conde de Haro Blanc de Blancs Millésimé",
+          "winery": "Muga"
+        }
+      ],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-060",
+      "sourceBasename": "060-217437-Amarone-della-Valpolicella-Classico-Riserva.png",
+      "sourceSHA256": "1d96875ac01fcc2b611203bdf39b37441379867746b7e4d02778941398ccf1d3",
+      "preparedSHA256": "70295fa20c98d3f190e6ea67e79f98a39d0c3618b9c03cb5192e1238366bb525",
+      "exportIdHint": 217437,
+      "filenameNameHint": "Amarone-della-Valpolicella-Classico-Riserva",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Amarone della Valpolicella",
+        "producer": "Bertani",
+        "vintage": null
+      },
+      "retainedCanonicalIdMatches": [
+        {
+          "file": "qa-fixtures/master194/responses/13-BODY.json",
+          "kind": "search-row",
+          "mantalakWineId": 217437,
+          "name": "Amarone della Valpolicella Classico Riserva",
+          "winery": "Bertani"
+        }
+      ],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-067",
+      "sourceBasename": "067-217430-Vaupre-Pouilly-Fusse-1er-Cru-En-Servy.png",
+      "sourceSHA256": "d624b1d7ef83ad26598899094a37d66af6176ecba8e8211f29a288ab616274b7",
+      "preparedSHA256": "b744afd6bfc4742cb9208a97355e8c408dfb496318fac1cd7c7e00732485cd71",
+      "exportIdHint": 217430,
+      "filenameNameHint": "Vaupre-Pouilly-Fusse-1er-Cru-En-Servy",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Pouilly-Fuisse Premier Cru En Servy",
+        "producer": "Domaine Vaupre",
+        "vintage": null
+      },
+      "retainedCanonicalIdMatches": [
+        {
+          "file": "qa-fixtures/master194/responses/16-BODY.json",
+          "kind": "search-row",
+          "mantalakWineId": 217430,
+          "name": "Vaupré Pouilly-Fussé 1er Cru En Servy",
+          "winery": "Domaine Vaupre"
+        }
+      ],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-069",
+      "sourceBasename": "069-217428-Guilleminot-Tradition.png",
+      "sourceSHA256": "49914c5443af51dd5764aa20a77d2ffd14a46becc9b72433971284422a0599f2",
+      "preparedSHA256": "93a2613f579982292407afb2494e79dd8ea2a475d0cae81ff1862855ec0635ef",
+      "exportIdHint": 217428,
+      "filenameNameHint": "Guilleminot-Tradition",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Tradition Blanc de Noirs",
+        "producer": "Guilleminot",
+        "vintage": null
+      },
+      "retainedCanonicalIdMatches": [
+        {
+          "file": "qa-fixtures/master194/responses/17-BODY.json",
+          "kind": "search-row",
+          "mantalakWineId": 217428,
+          "name": "Guilleminot Tradition",
+          "winery": "Guilleminot"
+        },
+        {
+          "file": "qa-fixtures/master194/responses/18-BODY.json",
+          "kind": "detail",
+          "mantalakWineId": 217428,
+          "name": "Guilleminot Tradition",
+          "winery": "Guilleminot"
+        }
+      ],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-096",
+      "sourceBasename": "096-217401-Sauvignon-Blanc.png",
+      "sourceSHA256": "664da359a2390ba911d965339faf6088fe31bb61eb992f100edc51a20485f69c",
+      "preparedSHA256": "a91043f10334feee1ad7eeafe563cffaa728e426a598ec016e7070ebc6c6dd8a",
+      "exportIdHint": 217401,
+      "filenameNameHint": "Sauvignon-Blanc",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Bergwein Sauvignon Blanc / Sudsteiermark DAC",
+        "producer": "Gross",
+        "vintage": null
+      },
+      "retainedCanonicalIdMatches": [
+        {
+          "file": "qa-fixtures/master194/responses/20-BODY.json",
+          "kind": "search-row",
+          "mantalakWineId": 217401,
+          "name": "Sauvignon Blanc",
+          "winery": "Gross"
+        }
+      ],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-118",
+      "sourceBasename": "118-217379-Campillo-Reserva-Especial.jpg",
+      "sourceSHA256": "e45967a269774d7190065702f7ce133f330a79283863c4e8a4e6efad52b30a67",
+      "preparedSHA256": "f3b98d34c094cd1946b450a51e71cc44d5ee0e46da6d6e48a92f7408fdddb143",
+      "exportIdHint": 217379,
+      "filenameNameHint": "Campillo-Reserva-Especial",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Campillo Reserva Especial",
+        "producer": "Bodegas Campillo",
+        "vintage": "1995"
+      },
+      "retainedCanonicalIdMatches": [],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-121",
+      "sourceBasename": "121-217376-Puligny-Montrachet.png",
+      "sourceSHA256": "024e3bb46dc7e2511b2dfdc6bebe296382b006bca46eb24fe564163d60002fba",
+      "preparedSHA256": "5cbe46b8c0cae391a3c8164cdc33697966cfda7abd4f4ef04d6c2f6ae4785bb0",
+      "exportIdHint": 217376,
+      "filenameNameHint": "Puligny-Montrachet",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Puligny-Montrachet",
+        "producer": "Pierre Girardin",
+        "vintage": null
+      },
+      "retainedCanonicalIdMatches": [],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-151",
+      "sourceBasename": "151-217346-Meursault-Les-Grands-Charrons.png",
+      "sourceSHA256": "2d54f1db99fbddadca24c05a4b607dd52eb5f7b37b75450cefb153a14597b491",
+      "preparedSHA256": "34a1d229f156061c64bf2e09b2bd890a83dc275b3dbad72053f313217d0dbbc5",
+      "exportIdHint": 217346,
+      "filenameNameHint": "Meursault-Les-Grands-Charrons",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Meursault Les Grands Charrons",
+        "producer": "Pierre Girardin",
+        "vintage": "2022"
+      },
+      "retainedCanonicalIdMatches": [
+        {
+          "file": "qa-fixtures/master194/responses/25-BODY.json",
+          "kind": "search-row",
+          "mantalakWineId": 217346,
+          "name": "Meursault Les Grands Charrons",
+          "winery": "Pierre Girardin"
+        },
+        {
+          "file": "qa-fixtures/master194/responses/26-BODY.json",
+          "kind": "detail",
+          "mantalakWineId": 217346,
+          "name": "Meursault Les Grands Charrons",
+          "winery": "Pierre Girardin"
+        }
+      ],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-155",
+      "sourceBasename": "155-217342-La-Terapia.png",
+      "sourceSHA256": "f95cad235870d0a9c1fa6e019417c313fb74e6f3992618f69effdc404b64503f",
+      "preparedSHA256": "954469dd4e34b474ba4a49bebdebaea28a112f74ac4986b4f4b96471cd69e712",
+      "exportIdHint": 217342,
+      "filenameNameHint": "La-Terapia",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "La Terapia",
+        "producer": null,
+        "vintage": "2024"
+      },
+      "retainedCanonicalIdMatches": [
+        {
+          "file": "qa-fixtures/master194/responses/27-BODY.json",
+          "kind": "search-row",
+          "mantalakWineId": 217342,
+          "name": "La Terapia",
+          "winery": "Vináticos"
+        }
+      ],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-163",
+      "sourceBasename": "163-217334-Sierra-Cantabria.png",
+      "sourceSHA256": "d3590e1343b4c89052630de9ddc0f6d29ecea12c64cf2cfd4ed313c73d17db0d",
+      "preparedSHA256": "a170b10ce0680a11592a933afa47abe32fe373bb9d9ec04f9357c54026a1d789",
+      "exportIdHint": 217334,
+      "filenameNameHint": "Sierra-Cantabria",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Sierra Cantabria Seleccion",
+        "producer": null,
+        "vintage": null
+      },
+      "retainedCanonicalIdMatches": [
+        {
+          "file": "qa-fixtures/master194/responses/29-BODY.json",
+          "kind": "search-row",
+          "mantalakWineId": 217334,
+          "name": "Sierra Cantabria",
+          "winery": "Sierra Cantabria"
+        }
+      ],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-195",
+      "sourceBasename": "195-217302-Zero-Point-Five-Sauvignon-Blanc.png",
+      "sourceSHA256": "b9b69b418206a2a81853a3d23dca34750dd27d8edf6210c9922365c26b91a492",
+      "preparedSHA256": "dcf05e4cb2b5871833221ca95ba49424e6a91ad278d100d252c64fefc23ba0d5",
+      "exportIdHint": 217302,
+      "filenameNameHint": "Zero-Point-Five-Sauvignon-Blanc",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Zero Point Five Sauvignon Blanc",
+        "producer": null,
+        "vintage": null
+      },
+      "retainedCanonicalIdMatches": [
+        {
+          "file": "qa-fixtures/master194/responses/32-BODY.json",
+          "kind": "search-row",
+          "mantalakWineId": 217302,
+          "name": "Zero Point Five Sauvignon Blanc",
+          "winery": "Leitz"
+        }
+      ],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-198",
+      "sourceBasename": "198-217299-Da-Luca-Pinot-Grigio.png",
+      "sourceSHA256": "9f438434b90049937bcbec5248e7b69f5c88481b80419e7b2c873ce320bbba66",
+      "preparedSHA256": "fe8e84cf7aa1164c5ed4e1a8dfcc109a96ed49a987022724e4617b2017170fc3",
+      "exportIdHint": 217299,
+      "filenameNameHint": "Da-Luca-Pinot-Grigio",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Da Luca",
+        "producer": null,
+        "vintage": null
+      },
+      "retainedCanonicalIdMatches": [],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-193",
+      "sourceBasename": "193-217304-Bossanova-Montepulciano-d-Abruzzo.png",
+      "sourceSHA256": "16b3b50fb1c47c9ab92f66364dcdd4cb9fdc9b5676b50658d4d02dd6627fa0b8",
+      "preparedSHA256": "b04c0b7aa49834500b63c803564de67f5fa574ad154c873d74c7284b8590ad1f",
+      "exportIdHint": 217304,
+      "filenameNameHint": "Bossanova-Montepulciano-d-Abruzzo",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Bossanova Montepulciano d'Abruzzo",
+        "producer": "Bossanova",
+        "vintage": null
+      },
+      "retainedCanonicalIdMatches": [],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    },
+    {
+      "imageId": "img-200",
+      "sourceBasename": "200-217297-Scattola-Seleccion.png",
+      "sourceSHA256": "16a78bf05f54338b8834df9a93deb21473789fb46139cba2abb8435bfcce22ac",
+      "preparedSHA256": "c74281325c0c943a0085b998381e87b5d39a7efbd74efdeb577a07a09cf9e58d",
+      "exportIdHint": 217297,
+      "filenameNameHint": "Scattola-Seleccion",
+      "namespaceVerified": false,
+      "visibleEvidence": {
+        "name": "Altotinto Seleccion",
+        "producer": "Altotinto",
+        "vintage": "2021"
+      },
+      "retainedCanonicalIdMatches": [],
+      "absentFromRetainedResponsesDoesNotMeanAbsentFromCatalogue": true,
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false
+    }
+  ],
+  "summary": {
+    "scenes": 19,
+    "sourceIdHintSeenInRetainedResponses": 10,
+    "sourceIdHintNotSeen": 9,
+    "confirmedPhotoIdentities": 0,
+    "newCatalogueRequests": 0,
+    "modelCalls": 0,
+    "newOcrRuns": 0,
+    "appChanges": false
+  }
+}

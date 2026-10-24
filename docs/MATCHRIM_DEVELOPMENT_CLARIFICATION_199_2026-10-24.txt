@@ -1,0 +1,17 @@
+STATUS: PREPARED / NOT SENT
+TO: moa-winerim-b93a8ts9@agentmail.to
+THREAD: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026
+
+Hola equipo:
+
+Una aclaración de evidencia para evitar una corrección de datos equivocada: los públicos362891/Giacondi y363580/Anécdota eran candidatos de búsquedas, no asociaciones demostradas con las fotos193/200. Sus rutas ya son legibles, pero eso no verifica esas identidades. No afirmamos que el catálogo esté enlazando esas fotos a esos dos vinos.
+
+Los archivos originales exportados por Mantalak incluyen otras pistas: 193-217304-Bossanova-Montepulciano-d-Abruzzo.png y200-217297-Scattola-Seleccion.png. El segundo muestra Altotinto Selección2021en la etiqueta. Esos números son por ahora IDs de exportación sin namespace confirmado, no los enviamos como identidad al escáner ni los usamos como ground truth independiente.
+
+De los19casos,10números de exportación coinciden con IDs canónicos en las40respuestas conservadas. Los9no observados son217494/Solea,217482/Bagante,217480/LaMigratoria,217456/KriyaTrebbiano,217379/CampilloReservaEspecial,217376/PulignyMontrachet,217299/DaLucaPinotGrigio,217304/Bossanova y217297/ScattolaSeleccion. No observarlos en esa muestra acotada no demuestra ausencia del catálogo ni distingue filtro de verificación de otras causas.
+
+¿Podéis confirmar con el contrato o exportación que ya tengáis si ese número del nombre de archivo es el ID maestro y qué significa el nombre Scattola frente a la foto Altotinto? No hace falta hacer nuevas consultas para preparar la respuesta: si no consta en lo existente, decidlo. También mantenemos separadas las observaciones de Selección frente a Sierra Cantabria genérico y Fuissé en la etiqueta frente a Fussé en archivo/API. No proponemos renombrar, fusionar ni inventar alias.
+
+La matriz de procedencia y sus controles están en esta misma rama. Seguimos esperando la vía segura sin coste para el puente y los ejemplos JSON versionados de añada/origen sensorial solicitados. No se autoriza con este correo ninguna lectura nueva del catálogo/SQL, exportación nueva, IA/imágenes, despliegue, cambios de datos/permisos/backend/main/web ni créditos. Cupos y107HOLDsin cambios.
+
+Gracias.
