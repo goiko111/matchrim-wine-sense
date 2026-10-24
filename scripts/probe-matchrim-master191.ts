@@ -57,9 +57,14 @@ type ProbeOptions191 = { key: string; fetcher: typeof fetch;
   claim: (operation: typeof masterPlan191[number], index: number) => void;
   receipt: (receipt: ProbeReceipt191, payload?: unknown) => void; timeoutMs?: number };
 
+export const usableMasterKey191 = (key: string) => {
+  if (!key.trim() || key.length > 2048 || Array.from(key).some(char => char.charCodeAt(0) < 32 || char.charCodeAt(0) === 127)) return false;
+  try { return new Headers({ 'X-Matchrim-Key': key }).get('X-Matchrim-Key') === key; }
+  catch { return false; }
+};
+
 export const runMasterProbe191 = async (options: ProbeOptions191) => {
-  assert(typeof options.key === 'string' && options.key.length >= 12 && options.key.length <= 2048
-    && !/\s/.test(options.key), 'KEY_UNAVAILABLE');
+  assert(usableMasterKey191(options.key), 'KEY_UNAVAILABLE');
   const receipts: ProbeReceipt191[] = [];
   for (const [offset, operation] of masterPlan191.entries()) {
     const index = offset + 1;
@@ -117,19 +122,30 @@ export const runMasterProbe191 = async (options: ProbeOptions191) => {
 };
 
 const main = async () => {
-  if (process.argv.slice(2).join(' ') !== '--live-6') {
+  const mode = process.argv.slice(2).join(' ');
+  if (!['--live-6', '--resume-unstarted-6'].includes(mode)) {
     console.log(JSON.stringify({ mode: 'PLAN_ONLY', keychainRead: false, requests: 0, operations: masterPlan191 }, null, 2)); return;
   }
   const root = path.resolve('qa-artifacts/continuation191-20261024/live-six-r1');
-  assert(!fs.existsSync(root), 'EXISTING_RESERVATION_REQUIRES_REVIEW_NO_RESET');
+  const resume = mode === '--resume-unstarted-6';
+  if (resume) {
+    assert(fs.existsSync(root) && fs.readdirSync(root).length === 1 && fs.readdirSync(root)[0] === 'AUTHORIZATION.json',
+      'EXISTING_RESERVATION_REQUIRES_REVIEW_NO_RESET');
+    const authorization = JSON.parse(fs.readFileSync(path.join(root, 'AUTHORIZATION.json'), 'utf8'));
+    assert(authorization.maxRequests === 6 && authorization.keyService === 'wine.matchrim.goiko-api',
+      'EXISTING_RESERVATION_REQUIRES_REVIEW_NO_RESET');
+  } else assert(!fs.existsSync(root), 'EXISTING_RESERVATION_REQUIRES_REVIEW_NO_RESET');
   let key = '';
   try {
     key = execFileSync('/usr/bin/security', ['find-generic-password', '-a', 'goiko', '-s', 'wine.matchrim.goiko-api', '-w'],
-      { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 20000, maxBuffer: 4096 }).trim();
+      { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 120000, maxBuffer: 4096 }).trim();
   } catch { throw new Error('KEYCHAIN_ENTRY_NOT_AVAILABLE_NO_REQUEST_SENT'); }
+  assert(usableMasterKey191(key), 'KEY_FORMAT_UNUSABLE_NO_REQUEST_SENT');
   fs.mkdirSync(root, { recursive: true, mode: 0o700 });
   const save = (name: string, value: unknown) => fs.writeFileSync(path.join(root, name), JSON.stringify(value, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
-  save('AUTHORIZATION.json', { authorized: 'Human answer: Sí, hasta 6 lecturas gratuitas', maxRequests: 6,
+  if (resume) save('RECOVERY-REVIEW.json', { reviewedUTC: new Date().toISOString(),
+    priorFiles: ['AUTHORIZATION.json'], priorRequestsReserved: 0, maxRequestsUnchanged: 6 });
+  else save('AUTHORIZATION.json', { authorized: 'Human answer: Sí, hasta 6 lecturas gratuitas', maxRequests: 6,
     keyService: 'wine.matchrim.goiko-api', startedUTC: new Date().toISOString(), models: 0, images: 0, paidCalls: 0 });
   const report = await runMasterProbe191({ key, fetcher: fetch,
     claim: (operation, index) => save(`${index}-RESERVED.json`, { index, name: operation.name, url: operation.url, atUTC: new Date().toISOString() }),
@@ -141,5 +157,10 @@ const main = async () => {
 };
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  void main().catch(() => { console.error('MASTER191_STOPPED_NO_SECRET_LOGGED'); process.exitCode = 1; });
+  void main().catch(error => {
+    const safeCodes = ['KEYCHAIN_ENTRY_NOT_AVAILABLE_NO_REQUEST_SENT', 'KEY_FORMAT_UNUSABLE_NO_REQUEST_SENT',
+      'EXISTING_RESERVATION_REQUIRES_REVIEW_NO_RESET'];
+    console.error(safeCodes.includes(error?.message) ? error.message : 'MASTER191_STOPPED_NO_SECRET_LOGGED');
+    process.exitCode = 1;
+  });
 }

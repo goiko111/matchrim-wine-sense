@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { masterPlan191, runMasterProbe191, type ProbeReceipt191 } from './probe-matchrim-master191';
+import { masterPlan191, runMasterProbe191, usableMasterKey191, type ProbeReceipt191 } from './probe-matchrim-master191';
 
 const contract = fs.readFileSync('qa-fixtures/master188/CONTRATO-API-827-20261024.md', 'utf8');
 const examples = [...contract.matchAll(/```json\s*([\s\S]*?)```/g)].map(match => JSON.parse(match[1]));
@@ -13,22 +13,31 @@ const payloads = [makeSearch(zorrera), zorrera, { results: [], total: 0, count: 
 const key = 'synthetic-offline-key191';
 let groups = 0;
 const check = async (name: string, work: () => Promise<void>) => { await work(); groups++; console.log('PASS', name); };
-const run = async (respond: typeof fetch, timeoutMs?: number) => {
+const run = async (respond: typeof fetch, timeoutMs?: number, probeKey = key) => {
   let claims = 0, calls = 0; const saved: { receipt: ProbeReceipt191; payload?: unknown }[] = [];
-  const report = await runMasterProbe191({ key, timeoutMs, claim: (_operation, index) => { assert.equal(index, ++claims); },
+  const report = await runMasterProbe191({ key: probeKey, timeoutMs, claim: (_operation, index) => { assert.equal(index, ++claims); },
     fetcher: async (url, init) => {
       assert.equal(claims, ++calls); assert.equal(String(url), masterPlan191[calls - 1].url);
       assert.equal(init?.method, 'GET'); assert.equal(init.credentials, 'omit'); assert.equal(init.redirect, 'error');
-      assert.deepEqual(init.headers, { Accept: 'application/json', 'X-Matchrim-Key': key }); assert.equal(init.body, undefined);
+      assert.deepEqual(init.headers, { Accept: 'application/json', 'X-Matchrim-Key': probeKey }); assert.equal(init.body, undefined);
       return respond(url, init);
     }, receipt: (receipt, payload) => { saved.push({ receipt, payload }); },
   });
-  assert.equal(claims, calls); assert(calls <= 6); assert(!JSON.stringify({ report, saved }).includes(key));
+  assert.equal(claims, calls); assert(calls <= 6); assert(!JSON.stringify({ report, saved }).includes(probeKey));
   return { report, saved, calls };
 };
 const previousFetch = globalThis.fetch;
 globalThis.fetch = async () => { throw new Error('NO_LIVE_MASTER191_TEST'); };
 try {
+  await check('The contract imposes no minimum key length: short HTTP-safe credentials are not rejected locally', async () => {
+    for (const opaque of ['short-valid', 'opaque key with spaces']) {
+      let index = 0; const result = await run(async () => Response.json(payloads[index++]), undefined, opaque);
+      assert(result.report.passed); assert.equal(result.calls, 6);
+    }
+    for (const rejected of ['', ' ', 'key\r\nInjected: header', 'key\tcontrol', 'x'.repeat(2049), '\u{1f600}']) {
+      assert.equal(usableMasterKey191(rejected), false);
+    }
+  });
   await check('Six fixed, reserved-before-send operations validate the supplied contract without granting affinity', async () => {
     assert(Object.isFrozen(masterPlan191)); assert(masterPlan191.every(Object.isFrozen));
     let index = 0; const result = await run(async () => Response.json(payloads[index++]));
