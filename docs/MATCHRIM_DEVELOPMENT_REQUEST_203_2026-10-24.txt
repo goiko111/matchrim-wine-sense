@@ -1,0 +1,16 @@
+STATUS: SENT 24-Oct-2026 15:43:31 Europe/Madrid; Sent UID5562; 83eddda0-3b3a-4e9a-9636-d0acfb86f81d@winerim.com
+TO: moa-winerim-b93a8ts9@agentmail.to
+THREAD: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026
+
+Hola equipo:
+
+Con permiso nuevo del propietario hemos hecho exactamente12GET gratuitos:9fichas por ID y3búsquedas literales. Todos200, sin IA, imágenes, escrituras ni créditos. Hay evidencia nueva que acota el problema:
+
+1. Los9IDs de exportación consultados devuelven ficha canónica. Siete no tienen representativePublicId ni webUrl:217494,217482,217480,217456,217379,217376,217299. No afirmamos que sus fotos queden identificadas solo por ese número.
+2. GET /wines/217480 devuelve La Migratoria / Bodegas Frontonio, pero /wines/search?name=Migratoria&winery=Frontonio&limit=50&page=1 devuelve total0. ¿La búsqueda está limitada a vinos con fila de carta activa? Necesitamos un contrato de búsqueda del maestro verificado que pueda devolver también referencias sin fila pública, con IDs públicos/enlace nulos, sin depender del nombre de archivo exportado. Confirmad causa y propuesta mínima con lo ya disponible; no hagáis nuevas consultas ni cambios con este correo.
+3. Cinco fichas no tienen filas sensoriales:217494,217482,217480,217379,217297. Kriya217456, Puligny217376 y DaLuca217299 tienen fila genérica/source:null; Bossanova217304 solo2022/source:null. La existencia del vino no resuelve por sí sola afinidad o añada.
+4. Bossanova+Montepulciano devuelve217304, distinto de Giacondi. Seleccion+Altotinto devuelve217297 Scattola Selección y79032 Altotinto Selección Red Blend, este último con2021conocido. La foto200 dice Altotinto Selección2021; no elegimos el primero ni tratamos el año como confirmación. Necesitamos aclarar Scattola y la semántica de la exportación con las fuentes existentes.
+
+Resultados y recibos: qa-fixtures/master203/responses en la rama codex/matchrim82-cloud-integration-20261013. Mantenemos pendientes la vía segura sin coste del puente y el contrato sensorial por eje/añada. El cupo nuevo12queda agotado. Este correo no autoriza lecturas adicionales/SQL/IA/exportaciones, cambios de datos/backend/main/web/permisos, despliegues o créditos.107HOLD sigue vigente.
+
+Gracias.

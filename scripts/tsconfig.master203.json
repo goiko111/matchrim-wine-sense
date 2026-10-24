@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig.master195.json",
+  "include": ["../src/vite-env.d.ts", "./probe-matchrim-master203.ts", "./check-matchrim-master203.ts", "./replay-matchrim-master203.ts"]
+}

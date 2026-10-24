@@ -1,0 +1,99 @@
+{
+  "answer": "Sí, hasta 12 lecturas gratuitas",
+  "questionId": "call_fb98e207954b46d081970df0def43e34",
+  "maximum": 12,
+  "details": 9,
+  "controls": 3,
+  "startedUTC": "2026-10-24T13:39:46.507Z",
+  "previousAllowancesUnchanged": true,
+  "paidBudgetEUR": 15,
+  "modelCalls": 0,
+  "imageUploads": 0,
+  "writes": 0,
+  "lovableCredits": 0,
+  "plan203": [
+    {
+      "label": "img-003-export-hint-detail",
+      "imageId": "img-003",
+      "id": 217494,
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217494",
+      "kind": "detail"
+    },
+    {
+      "label": "img-013-export-hint-detail",
+      "imageId": "img-013",
+      "id": 217482,
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217482",
+      "kind": "detail"
+    },
+    {
+      "label": "img-017-export-hint-detail",
+      "imageId": "img-017",
+      "id": 217480,
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217480",
+      "kind": "detail"
+    },
+    {
+      "label": "img-041-export-hint-detail",
+      "imageId": "img-041",
+      "id": 217456,
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217456",
+      "kind": "detail"
+    },
+    {
+      "label": "img-118-export-hint-detail",
+      "imageId": "img-118",
+      "id": 217379,
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217379",
+      "kind": "detail"
+    },
+    {
+      "label": "img-121-export-hint-detail",
+      "imageId": "img-121",
+      "id": 217376,
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217376",
+      "kind": "detail"
+    },
+    {
+      "label": "img-198-export-hint-detail",
+      "imageId": "img-198",
+      "id": 217299,
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217299",
+      "kind": "detail"
+    },
+    {
+      "label": "img-193-export-hint-detail",
+      "imageId": "img-193",
+      "id": 217304,
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217304",
+      "kind": "detail"
+    },
+    {
+      "label": "img-200-export-hint-detail",
+      "imageId": "img-200",
+      "id": 217297,
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217297",
+      "kind": "detail"
+    },
+    {
+      "label": "img-193-visible-control",
+      "imageId": "img-193",
+      "kind": "search",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/search?q=Bossanova+Montepulciano&limit=50&page=1"
+    },
+    {
+      "label": "img-200-visible-control",
+      "imageId": "img-200",
+      "kind": "search",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/search?name=Seleccion&winery=Altotinto&limit=50&page=1"
+    },
+    {
+      "label": "img-017-visible-control",
+      "imageId": "img-017",
+      "kind": "search",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/search?name=Migratoria&winery=Frontonio&limit=50&page=1"
+    }
+  ],
+  "planSHA256": "e02db029d96f58346cf456f84d98e6e619e66feca12e5be0ca3ec481a77de35f",
+  "sourceCrosswalkSHA256": "7951901e4509fe213aa0cec26a9b2482633f81b0ac08ef4222b74beea7d20b2f"
+}

@@ -1,0 +1,36 @@
+{
+  "mantalakWineId": 217379,
+  "name": "Campillo Reserva Especial",
+  "winery": "Campillo",
+  "type": "tinto",
+  "country": "ES",
+  "region": "Rioja",
+  "grapes": [
+    "Cabernet Sauvignon",
+    "Graciano",
+    "Tempranillo"
+  ],
+  "photo": "https://app.winerim.com/images/wines/6ac79ccd7c503434855008.jpg",
+  "slugname": "Campillo-Reserva-Especial-Campillo-ES",
+  "representativePublicId": null,
+  "webUrl": null,
+  "vintages": [],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": false,
+    "attributesByVintage": []
+  }
+}

@@ -1,0 +1,382 @@
+{
+  "state": "COMPLETED_DIAGNOSTIC_NOT_RELEASE_APPROVAL",
+  "requests": 12,
+  "maximum": 12,
+  "results": [
+    {
+      "imageId": "img-003",
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false,
+      "hintId": 217494,
+      "status": "canonical-detail-returned-not-photo-confirmation",
+      "name": "Valdebebas Soleá Vendimia Seleccionada",
+      "winery": "Bodegas de Occidente",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [],
+      "sensory": {
+        "requestedVintage": null,
+        "scope": "missing",
+        "vintageStatus": "unspecified",
+        "rows": 0,
+        "recordedOriginRows": 0,
+        "perAxisDefaultProvenanceAvailable": false
+      }
+    },
+    {
+      "imageId": "img-013",
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false,
+      "hintId": 217482,
+      "status": "canonical-detail-returned-not-photo-confirmation",
+      "name": "Bagante Mencía",
+      "winery": "Bodega La Serrana",
+      "grapes": [
+        "Mencía"
+      ],
+      "vintages": [],
+      "sensory": {
+        "requestedVintage": null,
+        "scope": "missing",
+        "vintageStatus": "unspecified",
+        "rows": 0,
+        "recordedOriginRows": 0,
+        "perAxisDefaultProvenanceAvailable": false
+      }
+    },
+    {
+      "imageId": "img-017",
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false,
+      "hintId": 217480,
+      "status": "canonical-detail-returned-not-photo-confirmation",
+      "name": "La Migratoria",
+      "winery": "Bodegas Frontonio",
+      "grapes": [
+        "Garnacha Negra"
+      ],
+      "vintages": [],
+      "sensory": {
+        "requestedVintage": null,
+        "scope": "missing",
+        "vintageStatus": "unspecified",
+        "rows": 0,
+        "recordedOriginRows": 0,
+        "perAxisDefaultProvenanceAvailable": false
+      }
+    },
+    {
+      "imageId": "img-041",
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false,
+      "hintId": 217456,
+      "status": "canonical-detail-returned-not-photo-confirmation",
+      "name": "Kriya Trebbiano",
+      "winery": "Vigna Madre",
+      "grapes": [
+        "Trebbiano"
+      ],
+      "vintages": [],
+      "sensory": {
+        "requestedVintage": null,
+        "scope": "generic",
+        "vintageStatus": "unspecified",
+        "rows": 1,
+        "recordedOriginRows": 0,
+        "perAxisDefaultProvenanceAvailable": false
+      }
+    },
+    {
+      "imageId": "img-118",
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false,
+      "hintId": 217379,
+      "status": "canonical-detail-returned-not-photo-confirmation",
+      "name": "Campillo Reserva Especial",
+      "winery": "Campillo",
+      "grapes": [
+        "Cabernet Sauvignon",
+        "Graciano",
+        "Tempranillo"
+      ],
+      "vintages": [],
+      "sensory": {
+        "requestedVintage": "1995",
+        "scope": "missing",
+        "vintageStatus": "unrecorded",
+        "rows": 0,
+        "recordedOriginRows": 0,
+        "perAxisDefaultProvenanceAvailable": false
+      }
+    },
+    {
+      "imageId": "img-121",
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false,
+      "hintId": 217376,
+      "status": "canonical-detail-returned-not-photo-confirmation",
+      "name": "Puligny-Montrachet",
+      "winery": "Pierre Girardin",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [],
+      "sensory": {
+        "requestedVintage": null,
+        "scope": "generic",
+        "vintageStatus": "unspecified",
+        "rows": 1,
+        "recordedOriginRows": 0,
+        "perAxisDefaultProvenanceAvailable": false
+      }
+    },
+    {
+      "imageId": "img-198",
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false,
+      "hintId": 217299,
+      "status": "canonical-detail-returned-not-photo-confirmation",
+      "name": "Da Luca Pinot Grigio",
+      "winery": "Da Luca",
+      "grapes": [
+        "Pinot Grigio"
+      ],
+      "vintages": [],
+      "sensory": {
+        "requestedVintage": null,
+        "scope": "generic",
+        "vintageStatus": "unspecified",
+        "rows": 1,
+        "recordedOriginRows": 0,
+        "perAxisDefaultProvenanceAvailable": false
+      }
+    },
+    {
+      "imageId": "img-193",
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false,
+      "hintId": 217304,
+      "status": "canonical-detail-returned-not-photo-confirmation",
+      "name": "Bossanova Montepulciano d'Abruzzo",
+      "winery": "Bossanova",
+      "grapes": [
+        "Montepulciano"
+      ],
+      "vintages": [
+        "2022"
+      ],
+      "sensory": {
+        "requestedVintage": null,
+        "scope": "missing",
+        "vintageStatus": "unspecified",
+        "rows": 1,
+        "recordedOriginRows": 0,
+        "perAxisDefaultProvenanceAvailable": false
+      }
+    },
+    {
+      "imageId": "img-200",
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false,
+      "hintId": 217297,
+      "status": "canonical-detail-returned-not-photo-confirmation",
+      "name": "Scattola Selección",
+      "winery": "Altotinto",
+      "grapes": [
+        "Cabernet Sauvignon",
+        "Nebbiolo",
+        "Petit Verdot"
+      ],
+      "vintages": [],
+      "sensory": {
+        "requestedVintage": "2021",
+        "scope": "missing",
+        "vintageStatus": "unrecorded",
+        "rows": 0,
+        "recordedOriginRows": 0,
+        "perAxisDefaultProvenanceAvailable": false
+      }
+    },
+    {
+      "imageId": "img-193",
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false,
+      "status": "literal-search-proposals-only",
+      "total": 1,
+      "complete": true,
+      "proposals": [
+        {
+          "id": 217304,
+          "name": "Bossanova Montepulciano d'Abruzzo",
+          "winery": "Bossanova",
+          "vintages": [
+            "2022"
+          ]
+        }
+      ]
+    },
+    {
+      "imageId": "img-200",
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false,
+      "status": "literal-search-proposals-only",
+      "total": 2,
+      "complete": true,
+      "proposals": [
+        {
+          "id": 217297,
+          "name": "Scattola Selección",
+          "winery": "Altotinto",
+          "vintages": []
+        },
+        {
+          "id": 79032,
+          "name": "Altotinto Selección Red Blend",
+          "winery": "Altotinto",
+          "vintages": [
+            "2022",
+            "2021",
+            "2020"
+          ]
+        }
+      ]
+    },
+    {
+      "imageId": "img-017",
+      "imageIdentityConfirmed": false,
+      "affinityAttributes": null,
+      "learningEligible": false,
+      "status": "literal-search-proposals-only",
+      "total": 0,
+      "complete": true,
+      "proposals": []
+    }
+  ],
+  "receipts": [
+    {
+      "index": 1,
+      "label": "img-003-export-hint-detail",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217494",
+      "httpStatus": 200,
+      "elapsedMs": 347,
+      "bytes": 811,
+      "sha256": "f39df0fc516d52b1e32563f930d6441cef772f1513641b18f43be3244dd11ee6"
+    },
+    {
+      "index": 2,
+      "label": "img-013-export-hint-detail",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217482",
+      "httpStatus": 200,
+      "elapsedMs": 323,
+      "bytes": 751,
+      "sha256": "6baa0c1c7a7cc86f8fbc0c3657532e5c6af97283da73739c45cc10ded3bc2171"
+    },
+    {
+      "index": 3,
+      "label": "img-017-export-hint-detail",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217480",
+      "httpStatus": 200,
+      "elapsedMs": 120,
+      "bytes": 757,
+      "sha256": "5762c993273ccdf9b631ecff4d0c312ae243054397a1474567ae22ab56e5a781"
+    },
+    {
+      "index": 4,
+      "label": "img-041-export-hint-detail",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217456",
+      "httpStatus": 200,
+      "elapsedMs": 68,
+      "bytes": 851,
+      "sha256": "2f0452f5a757724b255632ccd50ae045c28cc561dde6ae148a51d0bdae324e64"
+    },
+    {
+      "index": 5,
+      "label": "img-118-export-hint-detail",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217379",
+      "httpStatus": 200,
+      "elapsedMs": 138,
+      "bytes": 743,
+      "sha256": "4d680a7bedc1be2002e139567c8ac222c0d55e8114dd0863b4640b0450cbf8e9"
+    },
+    {
+      "index": 6,
+      "label": "img-121-export-hint-detail",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217376",
+      "httpStatus": 200,
+      "elapsedMs": 67,
+      "bytes": 860,
+      "sha256": "df7064cf7eb3d0ef1cfd73c59f9bc1f8550abf5611c6ac801b19b1ef948633a9"
+    },
+    {
+      "index": 7,
+      "label": "img-198-export-hint-detail",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217299",
+      "httpStatus": 200,
+      "elapsedMs": 127,
+      "bytes": 847,
+      "sha256": "cd34e44fe2890b77f1fc4232081767fe4263fe079e4cd5cebd01e31fd4a5807a"
+    },
+    {
+      "index": 8,
+      "label": "img-193-export-hint-detail",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217304",
+      "httpStatus": 200,
+      "elapsedMs": 88,
+      "bytes": 965,
+      "sha256": "ea3c7451e91ba5cc1b01e597528b273fb06b5b1ebf08e76018fe31797cb43b5f"
+    },
+    {
+      "index": 9,
+      "label": "img-200-export-hint-detail",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/217297",
+      "httpStatus": 200,
+      "elapsedMs": 69,
+      "bytes": 878,
+      "sha256": "9b6345c4f7feeaa0fff68d3c3b05c92a1c2ab0d8572630df26827142337ae038"
+    },
+    {
+      "index": 10,
+      "label": "img-193-visible-control",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/search?q=Bossanova+Montepulciano&limit=50&page=1",
+      "httpStatus": 200,
+      "elapsedMs": 441,
+      "bytes": 660,
+      "sha256": "13a8c60996f2b2f337bd7dd1d3ca13de8c7611f1b1b0524a990abdee3a4f1daf"
+    },
+    {
+      "index": 11,
+      "label": "img-200-visible-control",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/search?name=Seleccion&winery=Altotinto&limit=50&page=1",
+      "httpStatus": 200,
+      "elapsedMs": 213,
+      "bytes": 1198,
+      "sha256": "5d07456fb7b24854cf42f9043e6197283f7890b7918eff1a64364685e1ef6599"
+    },
+    {
+      "index": 12,
+      "label": "img-017-visible-control",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/search?name=Migratoria&winery=Frontonio&limit=50&page=1",
+      "httpStatus": 200,
+      "elapsedMs": 513,
+      "bytes": 68,
+      "sha256": "2a9b2af163c7206edd00148a64bed498ef9fb219607e710032e050703e4ce6f8"
+    }
+  ],
+  "finishedUTC": "2026-10-24T13:39:49.129Z",
+  "modelCalls": 0,
+  "imageUploads": 0,
+  "appActivated": false,
+  "testflightGate": "HOLD"
+}

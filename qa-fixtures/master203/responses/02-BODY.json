@@ -1,0 +1,34 @@
+{
+  "mantalakWineId": 217482,
+  "name": "Bagante Mencía",
+  "winery": "Bodega La Serrana",
+  "type": "tinto",
+  "country": "ES",
+  "region": "Bierzo",
+  "grapes": [
+    "Mencía"
+  ],
+  "photo": "https://app.winerim.com/images/wines/6acf1f132bba29.12346939_pending-photo-20115-4ad26bffb5113601.png",
+  "slugname": "Bagante-Mencia-Bodega-La-Serrana-ES",
+  "representativePublicId": null,
+  "webUrl": null,
+  "vintages": [],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": false,
+    "attributesByVintage": []
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "mantalakWineId": 217494,
+  "name": "Valdebebas Soleá Vendimia Seleccionada",
+  "winery": "Bodegas de Occidente",
+  "type": "tinto",
+  "country": "ES",
+  "region": "D.O.Ca Rioja",
+  "grapes": [
+    "Tempranillo"
+  ],
+  "photo": "https://app.winerim.com/images/wines/6acf2198a5b669.75988139_pending-photo-20136-3256b9b9b5f18b86.png",
+  "slugname": "Valdebebas-Solea-Vendimia-Seleccionada-Bodegas-de-Occidente-ES",
+  "representativePublicId": null,
+  "webUrl": null,
+  "vintages": [],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": false,
+    "attributesByVintage": []
+  }
+}

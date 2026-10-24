@@ -1,0 +1,45 @@
+{
+  "mantalakWineId": 217376,
+  "name": "Puligny-Montrachet",
+  "winery": "Pierre Girardin",
+  "type": "blanco",
+  "country": "FR",
+  "region": "Puligny-Montrachet",
+  "grapes": [
+    "Chardonnay"
+  ],
+  "photo": "https://app.winerim.com/images/wines/6ac78725032914.44504112_pending-photo-19905-30d65683d448301f.png",
+  "slugname": "Puligny-Montrachet-Pierre-Girardin-FR",
+  "representativePublicId": null,
+  "webUrl": null,
+  "vintages": [],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": false,
+    "attributesByVintage": [
+      {
+        "vintage": null,
+        "power": 3,
+        "sweetness": 1,
+        "acidity": 4,
+        "tannin": 0,
+        "fruity": 3,
+        "aging": 3,
+        "source": null
+      }
+    ]
+  }
+}

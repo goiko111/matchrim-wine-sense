@@ -1,0 +1,45 @@
+{
+  "mantalakWineId": 217299,
+  "name": "Da Luca Pinot Grigio",
+  "winery": "Da Luca",
+  "type": "blanco",
+  "country": "IT",
+  "region": "Terre Siciliane",
+  "grapes": [
+    "Pinot Grigio"
+  ],
+  "photo": "https://app.winerim.com/images/wines/6ac3def17911d6.28533545_pending-photo-19740-ce20b54739adb3c7.png",
+  "slugname": "Da-Luca-Pinot-Grigio-Da-Luca-IT",
+  "representativePublicId": null,
+  "webUrl": null,
+  "vintages": [],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": false,
+    "attributesByVintage": [
+      {
+        "vintage": null,
+        "power": 2,
+        "sweetness": 1,
+        "acidity": 4,
+        "tannin": 0,
+        "fruity": 4,
+        "aging": 0,
+        "source": null
+      }
+    ]
+  }
+}

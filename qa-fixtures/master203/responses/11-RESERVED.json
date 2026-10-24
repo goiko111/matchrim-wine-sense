@@ -1,0 +1,8 @@
+{
+  "index": 11,
+  "label": "img-200-visible-control",
+  "imageId": "img-200",
+  "kind": "search",
+  "url": "https://app.winerim.com/api/v1/matchrim/wines/search?name=Seleccion&winery=Altotinto&limit=50&page=1",
+  "atUTC": "2026-10-24T13:39:48.402Z"
+}

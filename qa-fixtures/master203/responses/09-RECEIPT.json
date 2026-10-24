@@ -1,0 +1,9 @@
+{
+  "index": 9,
+  "label": "img-200-export-hint-detail",
+  "url": "https://app.winerim.com/api/v1/matchrim/wines/217297",
+  "httpStatus": 200,
+  "elapsedMs": 69,
+  "bytes": 878,
+  "sha256": "9b6345c4f7feeaa0fff68d3c3b05c92a1c2ab0d8572630df26827142337ae038"
+}

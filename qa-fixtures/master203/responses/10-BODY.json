@@ -1,0 +1,35 @@
+{
+  "results": [
+    {
+      "id": 375605,
+      "representativePublicId": 375605,
+      "mantalakWineId": 217304,
+      "name": "Bossanova Montepulciano d'Abruzzo",
+      "winery": "Bossanova",
+      "type": "tinto",
+      "country": "IT",
+      "region": "Montepulciano d'Abruzzo",
+      "grapes": [
+        "Montepulciano"
+      ],
+      "vintages": [
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6ac4a01e7c71a376166637.png",
+      "slugname": "Bossanova-Montepulciano-d-Abruzzo-Bossanova-IT_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/375605/Bossanova-Montepulciano-d-Abruzzo-Bossanova-IT_2022"
+    }
+  ],
+  "count": 1,
+  "total": 1,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

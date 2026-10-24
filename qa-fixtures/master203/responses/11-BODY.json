@@ -1,0 +1,59 @@
+{
+  "results": [
+    {
+      "id": 375541,
+      "representativePublicId": 375541,
+      "mantalakWineId": 217297,
+      "name": "Scattola Selección",
+      "winery": "Altotinto",
+      "type": "tinto",
+      "country": "MX",
+      "region": "Valle De Santo Tomás",
+      "grapes": [
+        "Cabernet Sauvignon",
+        "Nebbiolo",
+        "Petit Verdot"
+      ],
+      "vintages": [],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/6ac3de3df20be0.22966751_pending-photo-19739-bbe0dc384d556aa3.png",
+      "slugname": "Scattola-Seleccion-Altotinto-MX",
+      "webUrl": "https://web.winerim.com/matchrim/store/375541/Scattola-Seleccion-Altotinto-MX"
+    },
+    {
+      "id": 368586,
+      "representativePublicId": 368586,
+      "mantalakWineId": 79032,
+      "name": "Altotinto Selección Red Blend",
+      "winery": "Altotinto",
+      "type": "tinto",
+      "country": "MX",
+      "region": "Ensenada",
+      "grapes": [
+        "Cabernet Sauvignon",
+        "Petite Sirah",
+        "Shiraz/Syrah"
+      ],
+      "vintages": [
+        2022,
+        2021,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 3.9,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3.4,
+        "fruity": 3.6
+      },
+      "photo": "https://app.winerim.com/images/wines/67501552e62d8402726402.png",
+      "slugname": "Altotinto-Seleccion-Red-Blend_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/368586/Altotinto-Seleccion-Red-Blend_2022"
+    }
+  ],
+  "count": 2,
+  "total": 2,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

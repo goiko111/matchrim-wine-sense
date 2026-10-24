@@ -45,9 +45,14 @@ export type MasterReferenceOutcome195 = {
   sensory: ReturnType<typeof describeMasterSensory195>;
   imageIdentityConfirmed: false; affinityAttributes: null; learningEligible: false;
 } | { status: 'identity-required' | 'not-found' | 'incomplete' | 'ambiguous' | 'unavailable';
-  total?: number; imageIdentityConfirmed: false; affinityAttributes: null; learningEligible: false };
+  total?: number; catalogueAbsenceConfirmed?: false; lookupScope?: 'search-response-only';
+  imageIdentityConfirmed: false; affinityAttributes: null; learningEligible: false };
 const pending = (status: Exclude<MasterReferenceOutcome195['status'], 'reference-match'>, total?: number): MasterReferenceOutcome195 =>
-  ({ status, ...(total === undefined ? {} : { total }), imageIdentityConfirmed: false, affinityAttributes: null, learningEligible: false });
+  ({ status, ...(total === undefined ? {} : { total }),
+    // A real detail exists for La Migratoria while its literal search is empty.
+    // Do not turn search coverage into a claim of absence from the master.
+    ...(status === 'not-found' ? { catalogueAbsenceConfirmed: false as const, lookupScope: 'search-response-only' as const } : {}),
+    imageIdentityConfirmed: false, affinityAttributes: null, learningEligible: false });
 
 const sameReference = (input: NativeCatalogAdmissionCandidate97, wine: Pick<MasterDetail188, 'name' | 'winery' | 'region' | 'country'>) =>
   typeof wine.name === 'string' && typeof wine.winery === 'string'

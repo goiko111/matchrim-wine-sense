@@ -1,0 +1,36 @@
+{
+  "mantalakWineId": 217297,
+  "name": "Scattola Selección",
+  "winery": "Altotinto",
+  "type": "tinto",
+  "country": "MX",
+  "region": "Valle De Santo Tomás",
+  "grapes": [
+    "Cabernet Sauvignon",
+    "Nebbiolo",
+    "Petit Verdot"
+  ],
+  "photo": "https://app.winerim.com/images/wines/6ac3de3df20be0.22966751_pending-photo-19739-bbe0dc384d556aa3.png",
+  "slugname": "Scattola-Seleccion-Altotinto-MX",
+  "representativePublicId": 375541,
+  "webUrl": "https://web.winerim.com/matchrim/store/375541/Scattola-Seleccion-Altotinto-MX",
+  "vintages": [],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": false,
+    "attributesByVintage": []
+  }
+}

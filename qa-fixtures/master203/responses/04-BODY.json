@@ -1,0 +1,45 @@
+{
+  "mantalakWineId": 217456,
+  "name": "Kriya Trebbiano",
+  "winery": "Vigna Madre",
+  "type": "blanco",
+  "country": "IT",
+  "region": "Trebbiano d'Abruzzo",
+  "grapes": [
+    "Trebbiano"
+  ],
+  "photo": "https://app.winerim.com/images/wines/6aca25f11dd597.50832226_pending-photo-20063-8efb7aef637629e7.png",
+  "slugname": "Kriya-Trebbiano-Vigna-Madre-IT",
+  "representativePublicId": null,
+  "webUrl": null,
+  "vintages": [],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": false,
+    "attributesByVintage": [
+      {
+        "vintage": null,
+        "power": 2,
+        "sweetness": 1,
+        "acidity": 4,
+        "tannin": 0,
+        "fruity": 3,
+        "aging": 0,
+        "source": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "sentUID": 5562,
+  "storeOffset": 2052579907,
+  "messageId": "83eddda0-3b3a-4e9a-9636-d0acfb86f81d@winerim.com",
+  "date": "Sat, 24 Oct 2026 15:43:31 +0200",
+  "from": "goiko@winerim.com",
+  "to": "moa-winerim-b93a8ts9@agentmail.to",
+  "cc": [],
+  "bcc": [],
+  "inReplyTo": "010001a16d971665-653cf77b-4bc9-4dda-b397-8898338e4117-000000@email.amazonses.com",
+  "attachments": 0,
+  "normalizedChars": 2005,
+  "bodyMatchesPreparedRequest": true,
+  "verification": "Bounded read of this exact Sent message, standard MIME parser, whitespace-normalized format=flowed body comparison",
+  "deliveryOrReadReceiptClaimed": false
+}
