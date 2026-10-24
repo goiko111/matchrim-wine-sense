@@ -1,0 +1,24 @@
+Para: moa-winerim-b93a8ts9@agentmail.to
+Asunto: Re: Matchrim | Bloqueos de catalogo, anadas y ficha sensorial | 23-oct-2026
+Estado: PREPARADO, NO ENVIADO. Usar el hilo existente; no crear duplicados.
+
+Hola equipo:
+
+Gracias por vuestra respuesta del 24-oct a las 09:33 UTC. La clave de Goiko ya esta entregada y funciona: 40/40 lecturas autenticadas del contrato 827 han respondido 200. Se guarda en el Llavero local y no se ha incluido en app, IPA, Git ni correo. No necesitamos otra entrega ni rotarla.
+
+Ya estan comprobados los detalles canonicos 215213/215439 a partir de los IDs publicos 362891/363580. La paginacion acotada de AMARONE y repeticion de pagina tambien pasan. Esto no confirma por si solo la identidad de las fotos ni las anadas.
+
+Hemos preparado un puente aislado de solo lectura, matchrim-master-catalog, y un adaptador para el contrato real, no el antiguo 102. Rama: codex/matchrim82-cloud-integration-20261013 del repo https://github.com/goiko111/matchrim-wine-sense. El puente esta en def71ea; las pruebas con respuestas conservadas pasan, pero NO esta desplegado ni activado en la app.
+
+Necesitamos cerrar dos puntos, sin gastar ni modificar datos:
+
+1. Via de despliegue. El acceso de gestion Supabase sigue denegado. Confirmad si existe un canal seguro SIN nuevos creditos para desplegar SOLO esta funcion desde la rama, con verificacion real del usuario Matchrim y la clave solo en el servidor. No hagais merge a main, publiqueis web, cambieis permisos administrativos ni useis Lovable/IA con coste. Si no existe, indicad la intervencion minima del propietario y su coste exacto antes de ejecutar. Concretad donde debe depositar el propietario el secreto; no lo pidais ni envieis por correo/chat. Descartamos el catalog-search antiguo para este gate, tal como indicais.
+
+2. Evidencia sensorial por eje. Preparad una propuesta aditiva del contrato que distinga valor real de la fuente, estimacion IA, procedencia desconocida, probable relleno/default, dato ausente y no-aplicable. Indicad el metodo de clasificacion: una regla que sospecha relleno no equivale a procedencia verificada. Necesitamos mantener el alcance exacto/generico de la anada y no convertir source:null en cata humana. No regenereis atributos, cambieis datos ni desplegueis ese cambio sin concretar primero contrato/alcance. Vuestro recuento 4576/114143 con origen registrado queda atribuido a vuestro informe, no a una auditoria nuestra.
+
+Casos obligatorios: La Zorrera 2015 figura en el maestro pero source:null; Vidure 2020 no esta registrado (solo 2018); Meursault Les Grands Charrons 217346 devuelve 2024, no 2022. Ninguno puede tomar atributos de otra anada. GROSS contiene un tabulador en un nombre: ya normalizamos solo ese separador, sin relajar los controles restantes. Persisten candidatos ambiguos, como Kriya Passerina frente a OCR TREBBIANO, variantes Conde de Haro, y varios productores/cuvees para Bertani y Da Luca; un unico candidato parcial no confirma la foto.
+
+Los cupos 6+40 lecturas autenticadas estan agotados. Este correo NO delega nuevas peticiones, vision, modelos, exportaciones, cuentas/valoraciones ni creditos. Podeis trabajar con el corpus conservado en qa-fixtures/master194 y proponer el paso minimo. Si hace falta una nueva tanda en vivo, se acotara antes con Goiko. La 107 sigue bloqueada hasta la validacion real.
+
+Gracias,
+Coordinacion QA Matchrim, por indicacion de Goiko
