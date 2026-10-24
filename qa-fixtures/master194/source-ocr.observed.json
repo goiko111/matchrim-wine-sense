@@ -1,0 +1,385 @@
+{
+  "scope": "Observed OCR only, not corrected identity/ground truth; generated subset of original DEVELOPMENT_CASES",
+  "sourcePackageSHA256": "34e61ef8a3f6977ca597fa1ec1dedc23fa98804ccbcfa2c8ea9d32f40826c767",
+  "cases": [
+    {
+      "imageId": "img-003",
+      "inputSHA256": "25a0d933f681c79d3b4a8ea8904c491ec4fddc72dc127511775f332959c82d2d",
+      "observedText": [
+        "SOLEÁ",
+        "VALDEBEBAS",
+        "VENOMA DILECOOUCA BR",
+        "RIOJA"
+      ],
+      "queries": [
+        {
+          "clientStatus": "partial"
+        },
+        {
+          "clientStatus": "complete"
+        }
+      ]
+    },
+    {
+      "imageId": "img-013",
+      "inputSHA256": "c5db30d286753425db4e3679fcb94af26ba72e2c444fea592955af178c0fd828",
+      "observedText": [
+        "BAGANTE",
+        "MENCIA 3895",
+        "BIERZO",
+        "BENOWINARION DE ORIBEN"
+      ],
+      "queries": [
+        {
+          "clientStatus": "complete"
+        },
+        {
+          "clientStatus": "partial"
+        }
+      ]
+    },
+    {
+      "imageId": "img-017",
+      "inputSHA256": "dc540c845d91e4aaeea698e44baae4caed767da0f373512984513c04522e8ef5",
+      "observedText": [
+        "-Mat",
+        "MIGRATORIA",
+        "BODEGAS",
+        "FRONTONIO",
+        "AUXLOCAEIEEA DE",
+        "*Bor Je 0347 10"
+      ],
+      "queries": [
+        {
+          "clientStatus": "complete"
+        },
+        {
+          "clientStatus": "partial"
+        }
+      ]
+    },
+    {
+      "imageId": "img-041",
+      "inputSHA256": "0d3544545a184353a1c0f3b948ebf46a82fc1d01a7569fe03e726611810bdf4e",
+      "observedText": [
+        "VIGNAM",
+        "#8SA00781072",
+        "109121C20 € 0.75)",
+        "KRIYA",
+        "TREBBIANO",
+        "D'ABRUZZO",
+        "VIGNAMADRE",
+        "€ VIvIno"
+      ],
+      "queries": [
+        {
+          "clientStatus": "complete"
+        },
+        {
+          "clientStatus": "partial"
+        }
+      ]
+    },
+    {
+      "imageId": "img-045",
+      "inputSHA256": "613530e95068e642aa8e48b90d9792b9e8d87c0e8d3d35ba00e9f5b02104de1a",
+      "observedText": [
+        "illet",
+        "Selecsi",
+        "Orotos",
+        "DESDE 1921",
+        "SProtos",
+        "12 MESES EN BARRICA",
+        "Seleccion del Sumiller",
+        "RIBERA DEL DUERO",
+        "DENUMVOIN BE.OOLEN",
+        "EMBOTELLADO FOR PROTOS BODECA",
+        "ENEAIOCERD DE FESUPEZ.SL. PECUSEL BOPES",
+        "ec SxNoL.",
+        "750N",
+        "SER PRIMERO",
+        "é VIVIno"
+      ],
+      "queries": [
+        {
+          "clientStatus": "partial"
+        },
+        {
+          "clientStatus": "complete"
+        }
+      ]
+    },
+    {
+      "imageId": "img-054",
+      "inputSHA256": "6a6ea2913eed195ac1a39ae014a61c8805db34653fb6433c4f74c62f8af9bf53",
+      "observedText": [
+        "C A",
+        "CONDE DE HARO",
+        "MILLESIM",
+        "CAVA",
+        "BLANC DE BLANCS"
+      ],
+      "queries": [
+        {
+          "clientStatus": "complete"
+        },
+        {
+          "clientStatus": "partial"
+        }
+      ]
+    },
+    {
+      "imageId": "img-060",
+      "inputSHA256": "70295fa20c98d3f190e6ea67e79f98a39d0c3618b9c03cb5192e1238366bb525",
+      "observedText": [
+        "BERTANI",
+        "BERTANI",
+        "DAL 1857",
+        "AMARONE",
+        "DELLA VALPOLICELLA",
+        "SENOMINAZIONE DI ORIGINE CONTROLLATA E GARANTITA"
+      ],
+      "queries": [
+        {
+          "clientStatus": "partial"
+        },
+        {
+          "clientStatus": "partial"
+        }
+      ]
+    },
+    {
+      "imageId": "img-067",
+      "inputSHA256": "b744afd6bfc4742cb9208a97355e8c408dfb496318fac1cd7c7e00732485cd71",
+      "observedText": [
+        "DOMAINE",
+        "VAUPRÉ",
+        "POUILLY-FUISSE",
+        "PREMIER CRU",
+        "EN SERVY"
+      ],
+      "queries": [
+        {
+          "clientStatus": "complete"
+        },
+        {
+          "clientStatus": "partial"
+        }
+      ]
+    },
+    {
+      "imageId": "img-069",
+      "inputSHA256": "93a2613f579982292407afb2494e79dd8ea2a475d0cae81ff1862855ec0635ef",
+      "observedText": [
+        "CHAMPAGNE",
+        "GUILLEMINOT",
+        "CHAMPAGNE",
+        "GUILLEMINOT",
+        "TRADITION",
+        "BUAND DE NOIRE"
+      ],
+      "queries": [
+        {
+          "clientStatus": "complete"
+        },
+        {
+          "clientStatus": "partial"
+        }
+      ]
+    },
+    {
+      "imageId": "img-096",
+      "inputSHA256": "a91043f10334feee1ad7eeafe563cffaa728e426a598ec016e7070ebc6c6dd8a",
+      "observedText": [
+        "STK",
+        "NGUT",
+        "GROSS",
+        "BERGWEIN",
+        "Sauvignon Blanc",
+        "Südsteiermark DAc"
+      ],
+      "queries": [
+        {
+          "clientStatus": "partial"
+        },
+        {
+          "clientStatus": "partial"
+        }
+      ]
+    },
+    {
+      "imageId": "img-118",
+      "inputSHA256": "f3b98d34c094cd1946b450a51e71cc44d5ee0e46da6d6e48a92f7408fdddb143",
+      "observedText": [
+        "OUNA",
+        "Campillo",
+        "Bolosema",
+        "tenennma",
+        "•1995-",
+        "De esta ascoha",
+        "de",
+        "botellas",
+        "EABORADO Y EMBOTELADO PALA PROMEDAD",
+        "49,87%",
+        "Especial",
+        "Rieja",
+        "DENOMINACION DE ORIGEN CALIFICADA",
+        "BODEGAS CAMPILLO",
+        "Nº 143-",
+        "LAGUARDIA - ESPAÑA",
+        "R.E: 6735-087",
+        "RESERVA ESPECIA"
+      ],
+      "queries": [
+        {
+          "clientStatus": "partial"
+        },
+        {
+          "clientStatus": "complete"
+        }
+      ]
+    },
+    {
+      "imageId": "img-121",
+      "inputSHA256": "5cbe46b8c0cae391a3c8164cdc33697966cfda7abd4f4ef04d6c2f6ae4785bb0",
+      "observedText": [
+        "PULIGNY-MONTRACHET",
+        "PIERRE GIRARDIN",
+        "MECHSAUST • CÔTE E'O\""
+      ],
+      "queries": [
+        {
+          "clientStatus": "partial"
+        },
+        {
+          "clientStatus": "partial"
+        }
+      ]
+    },
+    {
+      "imageId": "img-151",
+      "inputSHA256": "34a1d229f156061c64bf2e09b2bd890a83dc275b3dbad72053f313217d0dbbc5",
+      "observedText": [
+        "MEURSAULT",
+        "LES GRANDS CHARRONS",
+        "-2022-",
+        "PIERRE GIRARDIN",
+        "MEURSAULT - CÔTE DOR"
+      ],
+      "queries": [
+        {
+          "clientStatus": "partial"
+        },
+        {
+          "clientStatus": "complete"
+        }
+      ]
+    },
+    {
+      "imageId": "img-155",
+      "inputSHA256": "954469dd4e34b474ba4a49bebdebaea28a112f74ac4986b4f4b96471cd69e712",
+      "observedText": [
+        "LA",
+        "TERA",
+        "MA DE DUERO"
+      ],
+      "queries": [
+        {
+          "clientStatus": "partial"
+        },
+        {
+          "clientStatus": "complete"
+        }
+      ]
+    },
+    {
+      "imageId": "img-163",
+      "inputSHA256": "a170b10ce0680a11592a933afa47abe32fe373bb9d9ec04f9357c54026a1d789",
+      "observedText": [
+        "-DESDE 1870*",
+        "SIERRA CANTABRIA",
+        "SIERRA",
+        "CANTABRIA",
+        "DESDE 1870",
+        "COLECCIONISTAS DE VIRTOON",
+        "RIOJA",
+        "DENOMINACIÓN DE",
+        "GRIDEN CALIFICADA"
+      ],
+      "queries": [
+        {
+          "clientStatus": "partial"
+        }
+      ]
+    },
+    {
+      "imageId": "img-193",
+      "inputSHA256": "b04c0b7aa49834500b63c803564de67f5fa574ad154c873d74c7284b8590ad1f",
+      "observedText": [
+        "(DOC",
+        "BOSSANOVA",
+        "MONTEPULCIANO",
+        "D'ABRUZZO",
+        "DEMOMINAZIONE DI ORIGINE CONTROLLATA"
+      ],
+      "queries": [
+        {
+          "clientStatus": "complete"
+        },
+        {
+          "clientStatus": "incomplete"
+        }
+      ]
+    },
+    {
+      "imageId": "img-195",
+      "inputSHA256": "dcf05e4cb2b5871833221ca95ba49424e6a91ad278d100d252c64fefc23ba0d5",
+      "observedText": [
+        "ZERO",
+        "PONT",
+        "FIVE",
+        "SAUVICNON BLANC"
+      ],
+      "queries": [
+        {
+          "clientStatus": "complete"
+        },
+        {
+          "clientStatus": "partial"
+        }
+      ]
+    },
+    {
+      "imageId": "img-198",
+      "inputSHA256": "fe8e84cf7aa1164c5ed4e1a8dfcc109a96ed49a987022724e4617b2017170fc3",
+      "observedText": [
+        "DA",
+        "LUCA"
+      ],
+      "queries": [
+        {
+          "clientStatus": "partial"
+        }
+      ]
+    },
+    {
+      "imageId": "img-200",
+      "inputSHA256": "c74281325c0c943a0085b998381e87b5d39a7efbd74efdeb577a07a09cf9e58d",
+      "observedText": [
+        "ALTOTINTO",
+        "T",
+        "SELECCIÓN",
+        "9 meses en barrio",
+        "2021"
+      ],
+      "queries": [
+        {
+          "clientStatus": "incomplete"
+        },
+        {
+          "clientStatus": "partial"
+        }
+      ]
+    }
+  ]
+}

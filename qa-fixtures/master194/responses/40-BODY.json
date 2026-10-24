@@ -1,0 +1,122 @@
+{
+  "results": [
+    {
+      "id": 355574,
+      "representativePublicId": 355574,
+      "mantalakWineId": 214921,
+      "name": "Amarone Classico",
+      "winery": "Fidora",
+      "type": "tinto",
+      "country": "IT",
+      "region": "Valpolicella",
+      "grapes": [
+        "Corvina",
+        "Corvinone",
+        "Rondinella"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 5,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6a672f4d57f35060658299.png",
+      "slugname": "Amarone-Classico",
+      "webUrl": "https://web.winerim.com/matchrim/store/355574/Amarone-Classico"
+    },
+    {
+      "id": 176612,
+      "representativePublicId": 176612,
+      "mantalakWineId": 202489,
+      "name": "Amarone Dea Lualda",
+      "winery": "Corteforte",
+      "type": "tinto",
+      "country": "IT",
+      "region": "Amarone della Valpolicella Classico",
+      "grapes": [
+        "Corvina",
+        "Corvinone",
+        "Molinara",
+        "Rondinella"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 5,
+        "acidity": 4,
+        "sweetness": 2,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/685195f8e8f38590613801.png",
+      "slugname": "Amarone-Dea-Lualda",
+      "webUrl": "https://web.winerim.com/matchrim/store/176612/Amarone-Dea-Lualda"
+    },
+    {
+      "id": 255708,
+      "representativePublicId": 255708,
+      "mantalakWineId": 50050,
+      "name": "Aneri Amarone Stella",
+      "winery": "Aneri",
+      "type": "tinto",
+      "country": "IT",
+      "region": "Amarone della Valpolicella",
+      "grapes": [
+        "Corvina",
+        "Corvinone",
+        "Croatina",
+        "Merlot",
+        "Rondinella",
+        "Sangiovese"
+      ],
+      "vintages": [
+        2013
+      ],
+      "tastingAttributes": {
+        "power": 5,
+        "acidity": 3,
+        "sweetness": 2,
+        "tannin": 4,
+        "fruity": 5
+      },
+      "photo": "https://app.winerim.com/images/wines/69b9606dd045d250754074.png",
+      "slugname": "Aneri-Amarone-Stella_2013",
+      "webUrl": "https://web.winerim.com/matchrim/store/255708/Aneri-Amarone-Stella_2013"
+    },
+    {
+      "id": 255631,
+      "representativePublicId": 255631,
+      "mantalakWineId": 48483,
+      "name": "Le Guaite di Noemi Amarone",
+      "winery": "Le Guaite di Noemi",
+      "type": "tinto",
+      "country": "IT",
+      "region": "Amarone della Valpolicella",
+      "grapes": [
+        "Corvina",
+        "Corvinone",
+        "Rondinella"
+      ],
+      "vintages": [
+        2013,
+        2010
+      ],
+      "tastingAttributes": {
+        "power": 5,
+        "acidity": 3.5,
+        "sweetness": 2,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/67fe7a3883002820186234.png",
+      "slugname": "Le-Guaite-di-Noemi-Amarone_2010",
+      "webUrl": "https://web.winerim.com/matchrim/store/255631/Le-Guaite-di-Noemi-Amarone_2010"
+    }
+  ],
+  "count": 4,
+  "total": 149,
+  "page": 1,
+  "limit": 4,
+  "pageCount": 38
+}

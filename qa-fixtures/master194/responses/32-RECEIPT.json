@@ -1,0 +1,9 @@
+{
+  "index": 32,
+  "label": "img-195-literal-fallback",
+  "url": "https://app.winerim.com/api/v1/matchrim/wines/search?q=ZERO&limit=50&page=1",
+  "httpStatus": 200,
+  "elapsedMs": 101,
+  "bytes": 25398,
+  "sha256": "e2272672ef94f03e9acfb733c7255e08cd4da8006f18cebd286c1ab498e67f12"
+}

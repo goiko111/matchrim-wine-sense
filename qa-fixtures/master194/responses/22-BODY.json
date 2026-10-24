@@ -1,0 +1,435 @@
+{
+  "results": [
+    {
+      "id": 376674,
+      "representativePublicId": 376674,
+      "mantalakWineId": 179315,
+      "name": "Campillo 57",
+      "winery": "Campillo",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2018,
+        2016,
+        2015,
+        2013
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 3.3
+      },
+      "photo": "https://app.winerim.com/images/wines/636d1f22b76b8263766103.png",
+      "slugname": "Campillo-57",
+      "webUrl": "https://web.winerim.com/matchrim/store/376674/Campillo-57"
+    },
+    {
+      "id": 270299,
+      "representativePublicId": 270299,
+      "mantalakWineId": 190488,
+      "name": "Campillo Cuvée",
+      "winery": "Campillo",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/660fc344ed6e1473082529.png",
+      "slugname": "Campillo-Cuvee_2020",
+      "webUrl": "https://web.winerim.com/matchrim/store/270299/Campillo-Cuvee_2020"
+    },
+    {
+      "id": 370859,
+      "representativePublicId": 370859,
+      "mantalakWineId": 216916,
+      "name": "María La Viuda",
+      "winery": "Campillo",
+      "type": "tinto",
+      "country": "ES",
+      "region": "D.O.Ca Rioja",
+      "grapes": [],
+      "vintages": [
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6aaea39ef34278.84706823_pending-photo-19204-77fa076a4090356c.png",
+      "slugname": "Maria-La-Viuda-Campillo-ES_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/370859/Maria-La-Viuda-Campillo-ES_2021"
+    },
+    {
+      "id": 376695,
+      "representativePublicId": 376695,
+      "mantalakWineId": 3083,
+      "name": "Campillo Rosado",
+      "winery": "Campillo",
+      "type": "rosado",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 2,
+        "sweetness": 4,
+        "tannin": 2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/635a6fabde9db206014487.png",
+      "slugname": "Campillo-Rosado",
+      "webUrl": "https://web.winerim.com/matchrim/store/376695/Campillo-Rosado"
+    },
+    {
+      "id": 269937,
+      "representativePublicId": 269937,
+      "mantalakWineId": 6810,
+      "name": "Campillo Crianza",
+      "winery": "Campillo",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2015,
+        2014
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 1.6,
+        "sweetness": 2.4,
+        "tannin": 3.2,
+        "fruity": 3.9
+      },
+      "photo": "https://app.winerim.com/images/wines/61715f7ed14c9966544840.png",
+      "slugname": "Campillo-Crianza_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/269937/Campillo-Crianza_2022"
+    },
+    {
+      "id": 269963,
+      "representativePublicId": 269963,
+      "mantalakWineId": 176554,
+      "name": "Raro de Campillo",
+      "winery": "Campillo",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo Peludo"
+      ],
+      "vintages": [
+        2017,
+        2015,
+        2011,
+        2004
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 1.5,
+        "sweetness": 2.7,
+        "tannin": 4,
+        "fruity": 3.2
+      },
+      "photo": "https://app.winerim.com/images/wines/61f402151fc4b724609766.png",
+      "slugname": "Raro-de-Campillo_2017",
+      "webUrl": "https://web.winerim.com/matchrim/store/269963/Raro-de-Campillo_2017"
+    },
+    {
+      "id": 115469,
+      "representativePublicId": 115469,
+      "mantalakWineId": 60545,
+      "name": "Reserva Colección",
+      "winery": "Campillo",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2016
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3.7,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 3.3
+      },
+      "photo": "https://app.winerim.com/images/wines/629785cccf9a6614964101.png",
+      "slugname": "Reserva-Coleccion",
+      "webUrl": "https://web.winerim.com/matchrim/store/115469/Reserva-Coleccion"
+    },
+    {
+      "id": 241992,
+      "representativePublicId": 241992,
+      "mantalakWineId": 192421,
+      "name": "Campillo Albariño",
+      "winery": "Campillo",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Rías Baixas",
+      "grapes": [
+        "Albariño"
+      ],
+      "vintages": [
+        2024,
+        2023,
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 2.3,
+        "acidity": 4.8,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/665ad56c45c76260221993.png",
+      "slugname": "Campillo-Albarino",
+      "webUrl": "https://web.winerim.com/matchrim/store/241992/Campillo-Albarino"
+    },
+    {
+      "id": 216281,
+      "representativePublicId": 216281,
+      "mantalakWineId": 23257,
+      "name": "El Niño de Campillo",
+      "winery": "Campillo",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2022,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 3.3,
+        "acidity": 3,
+        "sweetness": 0.8,
+        "tannin": 3.3,
+        "fruity": 3.3
+      },
+      "photo": "https://app.winerim.com/images/wines/624ad7993d34d788825254.png",
+      "slugname": "El-Nino-de-Campillo",
+      "webUrl": "https://web.winerim.com/matchrim/store/216281/El-Nino-de-Campillo"
+    },
+    {
+      "id": 67280,
+      "representativePublicId": 67280,
+      "mantalakWineId": 51216,
+      "name": "Campillo Gran Reserva",
+      "winery": "Campillo",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2014,
+        2008,
+        1995,
+        1994,
+        1992,
+        1989,
+        1985,
+        1978
+      ],
+      "tastingAttributes": {
+        "power": 3.8,
+        "acidity": 3.4,
+        "sweetness": 1,
+        "tannin": 3.2,
+        "fruity": 2.8
+      },
+      "photo": "https://app.winerim.com/images/wines/5ffd8666a3918520897289.png",
+      "slugname": "Campillo-Gran-Reserva_2014",
+      "webUrl": "https://web.winerim.com/matchrim/store/67280/Campillo-Gran-Reserva_2014"
+    },
+    {
+      "id": 176147,
+      "representativePublicId": 176147,
+      "mantalakWineId": 202403,
+      "name": "Campillo Reserva 1985",
+      "winery": "Campillo",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2005,
+        2004,
+        2001,
+        1999,
+        1998,
+        1996,
+        1995,
+        1994,
+        1992,
+        1989,
+        1988,
+        1987,
+        1985,
+        1981
+      ],
+      "tastingAttributes": {
+        "power": 3.2,
+        "acidity": 3.5,
+        "sweetness": 1,
+        "tannin": 2.7,
+        "fruity": 2.5
+      },
+      "photo": "https://app.winerim.com/images/wines/684fe2bcb3141800842611.png",
+      "slugname": "Campillo-Reserva-1985",
+      "webUrl": "https://web.winerim.com/matchrim/store/176147/Campillo-Reserva-1985"
+    },
+    {
+      "id": 276305,
+      "representativePublicId": 276305,
+      "mantalakWineId": 203494,
+      "name": "Campillo Blanco Reserva",
+      "winery": "Campillo",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Chardonnay",
+        "Viura"
+      ],
+      "vintages": [
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/687a016870dcc607821201.png",
+      "slugname": "Campillo-Blanco-Reserva",
+      "webUrl": "https://web.winerim.com/matchrim/store/276305/Campillo-Blanco-Reserva"
+    },
+    {
+      "id": 251751,
+      "representativePublicId": 251751,
+      "mantalakWineId": 41614,
+      "name": "Campillo Reserva Selecta",
+      "winery": "Campillo",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2016,
+        1998
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 3.9
+      },
+      "photo": "https://app.winerim.com/images/wines/640e014fdfcaf898581006.png",
+      "slugname": "Campillo-Reserva-Selecta",
+      "webUrl": "https://web.winerim.com/matchrim/store/251751/Campillo-Reserva-Selecta"
+    },
+    {
+      "id": 95269,
+      "representativePublicId": 95269,
+      "mantalakWineId": 189351,
+      "name": "Campillo Verdejo Sobre Lías",
+      "winery": "Campillo",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Rueda",
+      "grapes": [
+        "Verdejo"
+      ],
+      "vintages": [
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/65df2cea21a62606574066.png",
+      "slugname": "Campillo-Verdejo-Sobre-Lias",
+      "webUrl": "https://web.winerim.com/matchrim/store/95269/Campillo-Verdejo-Sobre-Lias"
+    },
+    {
+      "id": 376920,
+      "representativePublicId": 376920,
+      "mantalakWineId": 6536,
+      "name": "Campillo Fermentado en Barrica Blanco",
+      "winery": "Campillo",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Viura"
+      ],
+      "vintages": [
+        2024,
+        2023,
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3.7,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/64b7943c4d84d005614876.png",
+      "slugname": "Campillo-Fermentado-en-Barrica-Blanco_2024",
+      "webUrl": "https://web.winerim.com/matchrim/store/376920/Campillo-Fermentado-en-Barrica-Blanco_2024"
+    }
+  ],
+  "count": 15,
+  "total": 15,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

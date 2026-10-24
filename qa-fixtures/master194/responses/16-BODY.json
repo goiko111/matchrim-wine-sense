@@ -1,0 +1,35 @@
+{
+  "results": [
+    {
+      "id": 376477,
+      "representativePublicId": 376477,
+      "mantalakWineId": 217430,
+      "name": "Vaupré Pouilly-Fussé 1er Cru En Servy",
+      "winery": "Domaine Vaupre",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Pouilly-Fuissé",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6ac89a456f241922373554.png",
+      "slugname": "Vaupre-Pouilly-Fusse-1er-Cru-En-Servy-Domaine-Vaupre-FR_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/376477/Vaupre-Pouilly-Fusse-1er-Cru-En-Servy-Domaine-Vaupre-FR_2022"
+    }
+  ],
+  "count": 1,
+  "total": 1,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

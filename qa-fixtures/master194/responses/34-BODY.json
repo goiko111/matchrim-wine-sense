@@ -1,0 +1,45 @@
+{
+  "mantalakWineId": 198396,
+  "name": "Sparkling Rosé",
+  "winery": "Da Luca",
+  "type": "espumoso",
+  "country": "IT",
+  "region": "Veneto",
+  "grapes": [],
+  "photo": "https://app.winerim.com/images/wines/67a0e2d1e961e959386050.png",
+  "slugname": "Sparkling-Rose",
+  "representativePublicId": 139639,
+  "webUrl": "https://web.winerim.com/matchrim/store/139639/Sparkling-Rose_2020",
+  "vintages": [
+    2020
+  ],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": true,
+    "attributesByVintage": [
+      {
+        "vintage": "2020",
+        "power": 3,
+        "sweetness": 2,
+        "acidity": 4,
+        "tannin": 1,
+        "fruity": 4,
+        "aging": null,
+        "source": null
+      }
+    ]
+  }
+}

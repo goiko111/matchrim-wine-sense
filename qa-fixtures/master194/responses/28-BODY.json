@@ -1,0 +1,47 @@
+{
+  "mantalakWineId": 73309,
+  "name": "Teran",
+  "winery": "Zidarich",
+  "type": "tinto",
+  "country": "IT",
+  "region": "Venezia Giulia",
+  "grapes": [
+    "Terrano"
+  ],
+  "photo": "https://app.winerim.com/images/wines/6a2bba850618d465969671.png",
+  "slugname": "Teran",
+  "representativePublicId": 286741,
+  "webUrl": "https://web.winerim.com/matchrim/store/286741/Teran_2011",
+  "vintages": [
+    2011
+  ],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": false,
+    "attributesByVintage": [
+      {
+        "vintage": null,
+        "power": 3,
+        "sweetness": 1,
+        "acidity": 5,
+        "tannin": 3,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "authorized": "Sí, hasta 40 lecturas gratuitas",
+  "maximum": 40,
+  "startedUTC": "2026-10-24T10:20:25.412Z",
+  "sourcePackageSHA256": "34e61ef8a3f6977ca597fa1ec1dedc23fa98804ccbcfa2c8ea9d32f40826c767",
+  "planSHA256": "9455181027afdf6dcd0fb71a9b6498067699a60a0c7d0da60004ce0f0eacd40c",
+  "priorSixRequestTrancheUnchanged": true,
+  "paidBudgetUnchanged": true,
+  "keychainService": "wine.matchrim.goiko-api"
+}

@@ -1,0 +1,412 @@
+{
+  "results": [
+    {
+      "id": 286741,
+      "representativePublicId": 286741,
+      "mantalakWineId": 73309,
+      "name": "Teran",
+      "winery": "Zidarich",
+      "type": "tinto",
+      "country": "IT",
+      "region": "Venezia Giulia",
+      "grapes": [
+        "Terrano"
+      ],
+      "vintages": [
+        2011
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 5,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6a2bba850618d465969671.png",
+      "slugname": "Teran_2011",
+      "webUrl": "https://web.winerim.com/matchrim/store/286741/Teran_2011"
+    },
+    {
+      "id": 355203,
+      "representativePublicId": 355203,
+      "mantalakWineId": 184872,
+      "name": "Terapia",
+      "winery": "La Consulta",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Terra Alta",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/64e8ce6a00480341117652.png",
+      "slugname": "Terapia",
+      "webUrl": "https://web.winerim.com/matchrim/store/355203/Terapia"
+    },
+    {
+      "id": 375912,
+      "representativePublicId": 375912,
+      "mantalakWineId": 217342,
+      "name": "La Terapia",
+      "winery": "Vináticos",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Ribera del Duero",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2024
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6ac61f881d5e5745259506.png",
+      "slugname": "La-Terapia-Vinaticos-ES_2024",
+      "webUrl": "https://web.winerim.com/matchrim/store/375912/La-Terapia-Vinaticos-ES_2024"
+    },
+    {
+      "id": 293320,
+      "representativePublicId": 293320,
+      "mantalakWineId": 192394,
+      "name": "Daigo no Shizuku",
+      "winery": "Terada Honke",
+      "type": "fortificado",
+      "country": "JP",
+      "region": "Chiba",
+      "grapes": [],
+      "vintages": [
+        1990
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3,
+        "sweetness": 5,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/665709eb4290e222600693.png",
+      "slugname": "Daigo-no-Shizuku",
+      "webUrl": "https://web.winerim.com/matchrim/store/293320/Daigo-no-Shizuku"
+    },
+    {
+      "id": 224094,
+      "representativePublicId": 224094,
+      "mantalakWineId": 207145,
+      "name": "Vega de tera Tinto",
+      "winery": "Vega de tera",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Castilla y León",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2021
+      ],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/691c9c73801f2661735919.png",
+      "slugname": "Vega-de-tera-Tinto_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/224094/Vega-de-tera-Tinto_2021"
+    },
+    {
+      "id": 204468,
+      "representativePublicId": 204468,
+      "mantalakWineId": 181096,
+      "name": "Vega de Tera Blanco",
+      "winery": "Vega de Tera",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Castilla y León",
+      "grapes": [
+        "Verdejo"
+      ],
+      "vintages": [
+        2024,
+        2022,
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/640d8f4067385241415455.png",
+      "slugname": "Vega-de-Tera-Blanco_2024",
+      "webUrl": "https://web.winerim.com/matchrim/store/204468/Vega-de-Tera-Blanco_2024"
+    },
+    {
+      "id": 224106,
+      "representativePublicId": 224106,
+      "mantalakWineId": 207146,
+      "name": "Sitrama Tinto Ecológico",
+      "winery": "Vega de tera",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Castilla y León",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2021
+      ],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/691c9e60f1c31009580655.png",
+      "slugname": "Sitrama-Tinto-Ecologico_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/224106/Sitrama-Tinto-Ecologico_2021"
+    },
+    {
+      "id": 242990,
+      "representativePublicId": 242990,
+      "mantalakWineId": 209219,
+      "name": "Terán & Tresgallo Tinto",
+      "winery": "Bodegas Terán & Tresgallo",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Tierra de Cádiz",
+      "grapes": [
+        "Bobal",
+        "Garnacha Tintorera",
+        "Mencía",
+        "Tempranillo"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/697c702d02246091292454.png",
+      "slugname": "Teran-Tresgallo-Tinto",
+      "webUrl": "https://web.winerim.com/matchrim/store/242990/Teran-Tresgallo-Tinto"
+    },
+    {
+      "id": 357255,
+      "representativePublicId": 357255,
+      "mantalakWineId": 23783,
+      "name": "Marqués de Terán Crianza",
+      "winery": "Marqués de Terán",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/61fd488ea7e42754651064.png",
+      "slugname": "Marques-de-Teran-Crianza",
+      "webUrl": "https://web.winerim.com/matchrim/store/357255/Marques-de-Teran-Crianza"
+    },
+    {
+      "id": 233277,
+      "representativePublicId": 233277,
+      "mantalakWineId": 61218,
+      "name": "Marqués de Terán Reserva",
+      "winery": "Marqués de Terán",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2015
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/61fd48faec814146117731.png",
+      "slugname": "Marques-de-Teran-Reserva_2015",
+      "webUrl": "https://web.winerim.com/matchrim/store/233277/Marques-de-Teran-Reserva_2015"
+    },
+    {
+      "id": 224107,
+      "representativePublicId": 224107,
+      "mantalakWineId": 207147,
+      "name": "Vega de Tera Tinto Roble",
+      "winery": "Vega de tera",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Castilla y León",
+      "grapes": [
+        "Tinta de Toro"
+      ],
+      "vintages": [
+        2021
+      ],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/691ca0ba50c0a544165916.png",
+      "slugname": "Vega-de-Tera-Tinto-Roble_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/224107/Vega-de-Tera-Tinto-Roble_2021"
+    },
+    {
+      "id": 224108,
+      "representativePublicId": 224108,
+      "mantalakWineId": 207148,
+      "name": "Sitrama Verdejo Barrica Lignum",
+      "winery": "Vega de Tera",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Castilla y León",
+      "grapes": [
+        "Verdejo"
+      ],
+      "vintages": [
+        2019
+      ],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/691ca2aa93234039551310.png",
+      "slugname": "Sitrama-Verdejo-Barrica-Lignum_2019",
+      "webUrl": "https://web.winerim.com/matchrim/store/224108/Sitrama-Verdejo-Barrica-Lignum_2019"
+    },
+    {
+      "id": 224110,
+      "representativePublicId": 224110,
+      "mantalakWineId": 207150,
+      "name": "Sitrama Tinto 12 meses barrica",
+      "winery": "Vega de Tera",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Castilla y León",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2016
+      ],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/691caa491bfe1155600178.png",
+      "slugname": "Sitrama-Tinto-12-meses-barrica_2016",
+      "webUrl": "https://web.winerim.com/matchrim/store/224110/Sitrama-Tinto-12-meses-barrica_2016"
+    },
+    {
+      "id": 224034,
+      "representativePublicId": 224034,
+      "mantalakWineId": 207139,
+      "name": "Luna De Cosecha Semidulce Verdejo",
+      "winery": "Vega de Tera",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Castilla y León",
+      "grapes": [
+        "Verdejo"
+      ],
+      "vintages": [],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/691c967684b2f889196200.png",
+      "slugname": "Luna-De-Cosecha-Semidulce-Verdejo",
+      "webUrl": "https://web.winerim.com/matchrim/store/224034/Luna-De-Cosecha-Semidulce-Verdejo"
+    },
+    {
+      "id": 224109,
+      "representativePublicId": 224109,
+      "mantalakWineId": 207149,
+      "name": "Vega de Tera Crianza 12 meses barrica",
+      "winery": "Vega de Tera",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Castilla y León",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2018
+      ],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/691ca95418f3c074865062.png",
+      "slugname": "Vega-de-Tera-Crianza-12-meses-barrica_2018",
+      "webUrl": "https://web.winerim.com/matchrim/store/224109/Vega-de-Tera-Crianza-12-meses-barrica_2018"
+    },
+    {
+      "id": 224065,
+      "representativePublicId": 224065,
+      "mantalakWineId": 207144,
+      "name": "Sitrama Rosado Ecológico Vegano (IGNIS)",
+      "winery": "Vega de tera",
+      "type": "rosado",
+      "country": "ES",
+      "region": "Castilla y León",
+      "grapes": [
+        "Prieto Picudo"
+      ],
+      "vintages": [
+        2022
+      ],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/691c9a779a502992730600.png",
+      "slugname": "Sitrama-Rosado-Ecologico-Vegano-IGNIS_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/224065/Sitrama-Rosado-Ecologico-Vegano-IGNIS_2022"
+    },
+    {
+      "id": 224112,
+      "representativePublicId": 224112,
+      "mantalakWineId": 207151,
+      "name": "Vega de Tera Reserva 24 meses en barrica",
+      "winery": "Vega de tera",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Castilla y León",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2018
+      ],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/691cabcd50124179043735.png",
+      "slugname": "Vega-de-Tera-Reserva-24-meses-en-barrica_2018",
+      "webUrl": "https://web.winerim.com/matchrim/store/224112/Vega-de-Tera-Reserva-24-meses-en-barrica_2018"
+    },
+    {
+      "id": 224054,
+      "representativePublicId": 224054,
+      "mantalakWineId": 207141,
+      "name": "Sitrama Verdejo Ecológico Vegano (METALLUM)",
+      "winery": "Vega de tera",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Castilla y León",
+      "grapes": [
+        "Verdejo"
+      ],
+      "vintages": [
+        2022
+      ],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/691c988ee146d038803977.png",
+      "slugname": "Sitrama-Verdejo-Ecologico-Vegano-METALLUM_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/224054/Sitrama-Verdejo-Ecologico-Vegano-METALLUM_2022"
+    }
+  ],
+  "count": 18,
+  "total": 18,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

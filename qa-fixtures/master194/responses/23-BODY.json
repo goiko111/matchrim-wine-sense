@@ -1,0 +1,62 @@
+{
+  "results": [
+    {
+      "id": 160739,
+      "representativePublicId": 160739,
+      "mantalakWineId": 200665,
+      "name": "Pierre Girardin Puligny-Montrachet 'Les Folatières'",
+      "winery": "Pierre Girardin",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Puligny-Montrachet",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/67ff6bb32ea77496323977.png",
+      "slugname": "Pierre-Girardin-Puligny-Montrachet-Les-Folatieres_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/160739/Pierre-Girardin-Puligny-Montrachet-Les-Folatieres_2022"
+    },
+    {
+      "id": 162911,
+      "representativePublicId": 162911,
+      "mantalakWineId": 200926,
+      "name": "Pierre Girardin Puligny-Montrachet 1er Cru \"Les Pucelles\"",
+      "winery": "Pierre Girardin",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Puligny-Montrachet 1er Cru 'Les Pucelles'",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2022,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 3.5,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6808b4f98d54d760771355.png",
+      "slugname": "Pierre-Girardin-Puligny-Montrachet-1er-Cru-Les-Pucelles_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/162911/Pierre-Girardin-Puligny-Montrachet-1er-Cru-Les-Pucelles_2022"
+    }
+  ],
+  "count": 2,
+  "total": 2,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

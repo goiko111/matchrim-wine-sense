@@ -1,0 +1,45 @@
+{
+  "mantalakWineId": 215439,
+  "name": "Anécdota Chenin Blanc",
+  "winery": "Altotinto",
+  "type": "blanco",
+  "country": "MX",
+  "region": "Valle de Guadalupe",
+  "grapes": [
+    "Chenin Blanc"
+  ],
+  "photo": "https://app.winerim.com/images/wines/6a879d41e6b260.57214948_pending-photo-16776-2b19705a684af27d.png",
+  "slugname": "Anecdota-Chenin-Blanc-Altotinto-MX",
+  "representativePublicId": 363580,
+  "webUrl": "https://web.winerim.com/matchrim/store/363580/Anecdota-Chenin-Blanc-Altotinto-MX",
+  "vintages": [],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": false,
+    "attributesByVintage": [
+      {
+        "vintage": null,
+        "power": 3,
+        "sweetness": 3,
+        "acidity": 4,
+        "tannin": 0,
+        "fruity": 3,
+        "aging": 2,
+        "source": null
+      }
+    ]
+  }
+}

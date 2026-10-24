@@ -1,0 +1,9 @@
+{
+  "index": 23,
+  "label": "img-121-primary",
+  "url": "https://app.winerim.com/api/v1/matchrim/wines/search?name=PULIGNY-MONTRACHET&winery=PIERRE+GIRARDIN&limit=50&page=1",
+  "httpStatus": 200,
+  "elapsedMs": 114,
+  "bytes": 1362,
+  "sha256": "d6f9d4c943ae3fb5927301197e43144b5252acd745cb2ae4c2d2abf281e0cc95"
+}

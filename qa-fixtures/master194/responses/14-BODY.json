@@ -1,0 +1,308 @@
+{
+  "mantalakWineId": 11435,
+  "name": "Amarone della Valpolicella Classico",
+  "winery": "Bertani",
+  "type": "tinto",
+  "country": "IT",
+  "region": "Amarone della Valpolicella",
+  "grapes": [
+    "Corvina",
+    "Rondinella"
+  ],
+  "photo": "https://app.winerim.com/images/wines/64180d2fa3fec593207428.png",
+  "slugname": "Amarone-della-Valpolicella-Classico",
+  "representativePublicId": 368597,
+  "webUrl": "https://web.winerim.com/matchrim/store/368597/Amarone-della-Valpolicella-Classico_2015",
+  "vintages": [
+    2021,
+    2019,
+    2016,
+    2015,
+    2013,
+    2012,
+    2011,
+    2010,
+    2008,
+    2007,
+    2005,
+    2004,
+    2003,
+    2000,
+    1998,
+    1996,
+    1994,
+    1989,
+    1986,
+    1985,
+    1981,
+    1980,
+    1975,
+    1974,
+    1973,
+    1972,
+    1971,
+    1970,
+    1967,
+    1964,
+    1962
+  ],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": true,
+    "attributesByVintage": [
+      {
+        "vintage": null,
+        "power": 5,
+        "sweetness": 1,
+        "acidity": 4,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "1967",
+        "power": 5,
+        "sweetness": 1,
+        "acidity": 4,
+        "tannin": 2,
+        "fruity": 3,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "1975",
+        "power": 3,
+        "sweetness": 2,
+        "acidity": 4,
+        "tannin": 3,
+        "fruity": 3,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "1980",
+        "power": 5,
+        "sweetness": 1,
+        "acidity": 3,
+        "tannin": 4,
+        "fruity": 3,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "1981",
+        "power": 4,
+        "sweetness": 2,
+        "acidity": 3,
+        "tannin": 3,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "1985",
+        "power": 4,
+        "sweetness": 2,
+        "acidity": 3,
+        "tannin": 3,
+        "fruity": 3,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "1986",
+        "power": 4,
+        "sweetness": 2,
+        "acidity": 4,
+        "tannin": 3,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "1989",
+        "power": 4,
+        "sweetness": 1,
+        "acidity": 4,
+        "tannin": 4,
+        "fruity": 3,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "1996",
+        "power": 5,
+        "sweetness": 2,
+        "acidity": 3,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "1998",
+        "power": 5,
+        "sweetness": 2,
+        "acidity": 3,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "2000",
+        "power": 4,
+        "sweetness": 2,
+        "acidity": 4,
+        "tannin": 3,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "2003",
+        "power": 5,
+        "sweetness": 2,
+        "acidity": 3,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": {
+          "type": "ai",
+          "model": "gpt-5",
+          "confidence": 0.88,
+          "generatedAt": "2026-03-30T11:59:20+02:00"
+        }
+      },
+      {
+        "vintage": "2004",
+        "power": 4,
+        "sweetness": 1,
+        "acidity": 4,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "2005",
+        "power": 5,
+        "sweetness": 2,
+        "acidity": 4,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "2007",
+        "power": 4,
+        "sweetness": 1,
+        "acidity": 4,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "2008",
+        "power": 4,
+        "sweetness": 2,
+        "acidity": 3,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "2010",
+        "power": 5,
+        "sweetness": 2,
+        "acidity": 4,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "2011",
+        "power": 5,
+        "sweetness": 1,
+        "acidity": 4,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "2012",
+        "power": 5,
+        "sweetness": 2,
+        "acidity": 3,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "2013",
+        "power": 5,
+        "sweetness": 2,
+        "acidity": 4,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "2015",
+        "power": 5,
+        "sweetness": 2,
+        "acidity": 3,
+        "tannin": 5,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "2016",
+        "power": 5,
+        "sweetness": 2,
+        "acidity": 4,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "2021",
+        "power": 5,
+        "sweetness": 1,
+        "acidity": 4,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": {
+          "type": "ai",
+          "model": "gpt-5",
+          "confidence": 0.88,
+          "generatedAt": "2026-03-30T11:55:14+02:00"
+        }
+      }
+    ]
+  }
+}

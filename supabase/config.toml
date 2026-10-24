@@ -2,3 +2,7 @@ project_id = "cbjynrbvrhcmpaojmqdp"
 
 [functions.search-wines-v75]
 verify_jwt = true
+
+# Prepared locally only. Deployment and native activation are separate gates.
+[functions.matchrim-master-catalog]
+verify_jwt = true

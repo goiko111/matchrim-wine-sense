@@ -23,8 +23,12 @@ const photo = safeUrl('https://app.winerim.com', '/images/wines/').nullable();
 const linkedPublicId = (url: string | null, publicId: number | null) => url === null
   || (publicId !== null && new URL(url).pathname.split('/').length === 5
     && new URL(url).pathname.split('/')[3] === String(publicId));
+// Observed catalogue names can contain a tab as a word separator. This is
+// response formatting only; query text and other control characters stay strict.
+const responseName = z.preprocess(value => typeof value === 'string' && value.length <= 240
+  ? value.replace(/\t+/g, ' ') : value, label);
 const identity = {
-  mantalakWineId: id, name: label, winery: label, type: label.nullable(),
+  mantalakWineId: id, name: responseName, winery: label, type: label.nullable(),
   country: label.nullable(), region: label.nullable(), grapes: z.array(label).max(100),
   vintages: years, photo, slugname: label.nullable(), webUrl: web,
 };

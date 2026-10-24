@@ -1,0 +1,785 @@
+{
+  "results": [
+    {
+      "id": 160721,
+      "representativePublicId": 160721,
+      "mantalakWineId": 180611,
+      "name": "Luzbel",
+      "winery": "Bodegas Frontonio",
+      "type": "espumoso",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/63e63226dc058481307808.png",
+      "slugname": "Luzbel_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/160721/Luzbel_2022"
+    },
+    {
+      "id": 254814,
+      "representativePublicId": 254814,
+      "mantalakWineId": 180222,
+      "name": "Elástico",
+      "winery": "Bodegas Frontonio",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha",
+        "Macabeo",
+        "Palomino",
+        "Rojal"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2021,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 2.9,
+        "acidity": 4,
+        "sweetness": 1.4,
+        "tannin": 1.6,
+        "fruity": 3.2
+      },
+      "photo": "https://app.winerim.com/images/wines/63a5a53ba2f15989918407.png",
+      "slugname": "Elastico_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/254814/Elastico_2022"
+    },
+    {
+      "id": 379525,
+      "representativePublicId": 379525,
+      "mantalakWineId": 2786,
+      "name": "Supersónico",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017
+      ],
+      "tastingAttributes": {
+        "power": 3.8,
+        "acidity": 3.5,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 3.9
+      },
+      "photo": "https://app.winerim.com/images/wines/67bf47a782a79283161280.png",
+      "slugname": "Supersonico_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/379525/Supersonico_2023"
+    },
+    {
+      "id": 200702,
+      "representativePublicId": 200702,
+      "mantalakWineId": 175724,
+      "name": "Botijo Rojo",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2023,
+        2021,
+        2020,
+        2018
+      ],
+      "tastingAttributes": {
+        "power": 3.8,
+        "acidity": 3.3,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4.8
+      },
+      "photo": "https://app.winerim.com/images/wines/62a993ef3b82c488389541.png",
+      "slugname": "Botijo-Rojo_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/200702/Botijo-Rojo_2023"
+    },
+    {
+      "id": 195809,
+      "representativePublicId": 195809,
+      "mantalakWineId": 178160,
+      "name": "Psicodélico",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Cribatinaja",
+        "Garnacha",
+        "Provechón",
+        "Robal"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2021,
+        2020,
+        2019
+      ],
+      "tastingAttributes": {
+        "power": 3.2,
+        "acidity": 3.1,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 3.6
+      },
+      "photo": "https://app.winerim.com/images/wines/62f38029854e8932890789.png",
+      "slugname": "Psicodelico",
+      "webUrl": "https://web.winerim.com/matchrim/store/195809/Psicodelico"
+    },
+    {
+      "id": 376622,
+      "representativePublicId": 376622,
+      "mantalakWineId": 2790,
+      "name": "Microcósmico",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2024,
+        2023,
+        2022,
+        2021,
+        2020,
+        2017
+      ],
+      "tastingAttributes": {
+        "power": 3.9,
+        "acidity": 3.1,
+        "sweetness": 1,
+        "tannin": 3.6,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/615e963bd36f5222668924.png",
+      "slugname": "Microcosmico",
+      "webUrl": "https://web.winerim.com/matchrim/store/376622/Microcosmico"
+    },
+    {
+      "id": 166387,
+      "representativePublicId": 166387,
+      "mantalakWineId": 201416,
+      "name": "Frontonio XI",
+      "winery": "Bodegas Frontonio",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Aragón",
+      "grapes": [
+        "Macabeo"
+      ],
+      "vintages": [
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3,
+        "sweetness": 0,
+        "tannin": 0,
+        "fruity": 2
+      },
+      "photo": "https://app.winerim.com/images/wines/6814a2d8ddf41409773454.png",
+      "slugname": "Frontonio-XI_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/166387/Frontonio-XI_2021"
+    },
+    {
+      "id": 305122,
+      "representativePublicId": 305122,
+      "mantalakWineId": 176003,
+      "name": "Botijo Blanco",
+      "winery": "Bodegas Frontonio",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha Blanca"
+      ],
+      "vintages": [
+        2024,
+        2023,
+        2022,
+        2021,
+        2019
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3.1,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/61780c82c3e83623030535.png",
+      "slugname": "Botijo-Blanco",
+      "webUrl": "https://web.winerim.com/matchrim/store/305122/Botijo-Blanco"
+    },
+    {
+      "id": 166386,
+      "representativePublicId": 166386,
+      "mantalakWineId": 201415,
+      "name": "Frontonio XVII",
+      "winery": "Bodegas Frontonio",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Aragón",
+      "grapes": [
+        "Macabeo"
+      ],
+      "vintages": [
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3,
+        "sweetness": 0,
+        "tannin": 0,
+        "fruity": 2
+      },
+      "photo": "https://app.winerim.com/images/wines/6814a246a58d0470306973.png",
+      "slugname": "Frontonio-XVII_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/166386/Frontonio-XVII_2022"
+    },
+    {
+      "id": 268498,
+      "representativePublicId": 268498,
+      "mantalakWineId": 211768,
+      "name": "XXIX Santa Crux",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2023
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69eddbed65566602946278.png",
+      "slugname": "XXIX-Santa-Crux_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/268498/XXIX-Santa-Crux_2023"
+    },
+    {
+      "id": 69438,
+      "representativePublicId": 69438,
+      "mantalakWineId": 2785,
+      "name": "Alas de Garnacha",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 0.5,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6453b986ea9e9585181323.png",
+      "slugname": "Alas-de-Garnacha_2020",
+      "webUrl": "https://web.winerim.com/matchrim/store/69438/Alas-de-Garnacha_2020"
+    },
+    {
+      "id": 22406,
+      "representativePublicId": 22406,
+      "mantalakWineId": 180119,
+      "name": "Parcela La Tejera",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2021,
+        2020,
+        2018
+      ],
+      "tastingAttributes": {
+        "power": 3.3,
+        "acidity": 3.8,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 3.9
+      },
+      "photo": "https://app.winerim.com/images/wines/63a05af63b1be228866139.png",
+      "slugname": "Parcela-La-Tejera",
+      "webUrl": "https://web.winerim.com/matchrim/store/22406/Parcela-La-Tejera"
+    },
+    {
+      "id": 375250,
+      "representativePublicId": 375250,
+      "mantalakWineId": 179410,
+      "name": "Parcela La Cerqueta",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018
+      ],
+      "tastingAttributes": {
+        "power": 3.9,
+        "acidity": 3.1,
+        "sweetness": 0.8,
+        "tannin": 3.2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6372c79cddfba759247692.png",
+      "slugname": "Parcela-La-Cerqueta_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/375250/Parcela-La-Cerqueta_2023"
+    },
+    {
+      "id": 375252,
+      "representativePublicId": 375252,
+      "mantalakWineId": 3624,
+      "name": "Microcósmico Macabeo",
+      "winery": "Bodegas Frontonio",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Macabeo"
+      ],
+      "vintages": [
+        2025,
+        2024,
+        2023,
+        2022,
+        2021,
+        2019,
+        2018,
+        2017
+      ],
+      "tastingAttributes": {
+        "power": 2.8,
+        "acidity": 3.4,
+        "sweetness": 0.5,
+        "tannin": 0.5,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/645e230f25e56504679063.png",
+      "slugname": "Microcosmico-Macabeo_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/375252/Microcosmico-Macabeo_2023"
+    },
+    {
+      "id": 299388,
+      "representativePublicId": 299388,
+      "mantalakWineId": 185554,
+      "name": "Telescópico Cariñena",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Cariñena"
+      ],
+      "vintages": [
+        2017,
+        2016,
+        2015
+      ],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/6515353a339df542331655.png",
+      "slugname": "Telescopico-Carinena_2015",
+      "webUrl": "https://web.winerim.com/matchrim/store/299388/Telescopico-Carinena_2015"
+    },
+    {
+      "id": 272692,
+      "representativePublicId": 272692,
+      "mantalakWineId": 2789,
+      "name": "Frontonio Telescópico",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017,
+        2016,
+        2015
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3.1,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/686b804fd1214959417431.png",
+      "slugname": "Frontonio-Telescopico",
+      "webUrl": "https://web.winerim.com/matchrim/store/272692/Frontonio-Telescopico"
+    },
+    {
+      "id": 275937,
+      "representativePublicId": 275937,
+      "mantalakWineId": 202336,
+      "name": "Microcósmico Garnacha",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Aragón",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2024,
+        2023,
+        2016
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 2.7,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/684ad6d0beb1e052472208.png",
+      "slugname": "Microcosmico-Garnacha",
+      "webUrl": "https://web.winerim.com/matchrim/store/275937/Microcosmico-Garnacha"
+    },
+    {
+      "id": 165811,
+      "representativePublicId": 165811,
+      "mantalakWineId": 179367,
+      "name": "El Jardín de las Iguales",
+      "winery": "Bodegas Frontonio",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Macabeo"
+      ],
+      "vintages": [
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017,
+        2016
+      ],
+      "tastingAttributes": {
+        "power": 2.9,
+        "acidity": 3.5,
+        "sweetness": 1.2,
+        "tannin": 0.2,
+        "fruity": 2.9
+      },
+      "photo": "https://app.winerim.com/images/wines/6370bc74eaaa1702371473.png",
+      "slugname": "El-Jardin-de-las-Iguales_2017",
+      "webUrl": "https://web.winerim.com/matchrim/store/165811/El-Jardin-de-las-Iguales_2017"
+    },
+    {
+      "id": 325199,
+      "representativePublicId": 325199,
+      "mantalakWineId": 176004,
+      "name": "Frontonio Garnacha Blanca",
+      "winery": "Bodegas Frontonio",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha Blanca"
+      ],
+      "vintages": [
+        2021,
+        2020,
+        2018,
+        2017,
+        2016,
+        2015
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3.7,
+        "sweetness": 1,
+        "tannin": 0.6,
+        "fruity": 3.1
+      },
+      "photo": "https://app.winerim.com/images/wines/61780d1ae229c558670566.png",
+      "slugname": "Frontonio-Garnacha-Blanca",
+      "webUrl": "https://web.winerim.com/matchrim/store/325199/Frontonio-Garnacha-Blanca"
+    },
+    {
+      "id": 174110,
+      "representativePublicId": 174110,
+      "mantalakWineId": 202195,
+      "name": "Frontonio Mondo Garnacha IV",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Vino de España",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2019
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6842f7ea56fd7644209793.png",
+      "slugname": "Frontonio-Mondo-Garnacha-IV_2019",
+      "webUrl": "https://web.winerim.com/matchrim/store/174110/Frontonio-Mondo-Garnacha-IV_2019"
+    },
+    {
+      "id": 208897,
+      "representativePublicId": 208897,
+      "mantalakWineId": 178809,
+      "name": "Frontonio La Loma y Los Santos",
+      "winery": "Bodegas Frontonio",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha Blanca",
+        "Macabeo"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018
+      ],
+      "tastingAttributes": {
+        "power": 2.9,
+        "acidity": 3.4,
+        "sweetness": 1.2,
+        "tannin": 0.2,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/633c5a6baeab1376443646.png",
+      "slugname": "Frontonio-La-Loma-y-Los-Santos_2018",
+      "webUrl": "https://web.winerim.com/matchrim/store/208897/Frontonio-La-Loma-y-Los-Santos_2018"
+    },
+    {
+      "id": 366904,
+      "representativePublicId": 366904,
+      "mantalakWineId": 201579,
+      "name": "Frontonio Telescópico Garnacha",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Aragón",
+      "grapes": [
+        "Garnacha",
+        "Garnacha peluda",
+        "Mazuelo"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2019,
+        2017,
+        2015
+      ],
+      "tastingAttributes": {
+        "power": 3.1,
+        "acidity": 3.9,
+        "sweetness": 1,
+        "tannin": 3.1,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/681a2a38776ba082795433.png",
+      "slugname": "Frontonio-Telescopico-Garnacha",
+      "webUrl": "https://web.winerim.com/matchrim/store/366904/Frontonio-Telescopico-Garnacha"
+    },
+    {
+      "id": 189418,
+      "representativePublicId": 189418,
+      "mantalakWineId": 188531,
+      "name": "Las Alas de Frontonio La Tejera",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha",
+        "Macabeo"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017,
+        2016
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3.5,
+        "sweetness": 1,
+        "tannin": 2.8,
+        "fruity": 3.8
+      },
+      "photo": "https://app.winerim.com/images/wines/65ba0135dadb8890703549.png",
+      "slugname": "Las-Alas-de-Frontonio-La-Tejera",
+      "webUrl": "https://web.winerim.com/matchrim/store/189418/Las-Alas-de-Frontonio-La-Tejera"
+    },
+    {
+      "id": 209077,
+      "representativePublicId": 209077,
+      "mantalakWineId": 180244,
+      "name": "El Jardín de las Iguales (Tinto)",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017,
+        2016
+      ],
+      "tastingAttributes": {
+        "power": 3.8,
+        "acidity": 3.7,
+        "sweetness": 1,
+        "tannin": 3.5,
+        "fruity": 3.7
+      },
+      "photo": "https://app.winerim.com/images/wines/63b4784fdad15340481569.png",
+      "slugname": "El-Jardin-de-las-Iguales-Tinto_2018",
+      "webUrl": "https://web.winerim.com/matchrim/store/209077/El-Jardin-de-las-Iguales-Tinto_2018"
+    },
+    {
+      "id": 252282,
+      "representativePublicId": 252282,
+      "mantalakWineId": 206526,
+      "name": "El Jardín de las Iguales Macabeo",
+      "winery": "Bodegas Frontonio",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Macabeo"
+      ],
+      "vintages": [
+        2022,
+        2021,
+        2020,
+        2019,
+        2017,
+        2016
+      ],
+      "tastingAttributes": {
+        "power": 3.5,
+        "acidity": 4.5,
+        "sweetness": 1,
+        "tannin": 0.3,
+        "fruity": 3.4
+      },
+      "photo": "https://app.winerim.com/images/wines/690319874744a593734058.png",
+      "slugname": "El-Jardin-de-las-Iguales-Macabeo_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/252282/El-Jardin-de-las-Iguales-Macabeo_2022"
+    },
+    {
+      "id": 325196,
+      "representativePublicId": 325196,
+      "mantalakWineId": 3620,
+      "name": "Telescópico Macabeo - Garnacha Blanca",
+      "winery": "Bodegas Frontonio",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Valdejalón",
+      "grapes": [
+        "Garnacha Blanca",
+        "Macabeo"
+      ],
+      "vintages": [
+        2019,
+        2018,
+        2017,
+        2016
+      ],
+      "tastingAttributes": {
+        "power": 3.3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0.3,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/62c3e731312ac896245208.png",
+      "slugname": "Telescopico-Macabeo-Garnacha-Blanca",
+      "webUrl": "https://web.winerim.com/matchrim/store/325196/Telescopico-Macabeo-Garnacha-Blanca"
+    }
+  ],
+  "count": 26,
+  "total": 26,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

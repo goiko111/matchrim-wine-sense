@@ -1,0 +1,33 @@
+{
+  "results": [
+    {
+      "id": 266441,
+      "representativePublicId": 266441,
+      "mantalakWineId": 211492,
+      "name": "Kriya Passerina",
+      "winery": "Vigna Madre",
+      "type": "blanco",
+      "country": "IT",
+      "region": "Offida",
+      "grapes": [
+        "Passerina"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69e64d03e2555750828216.png",
+      "slugname": "Kriya-Passerina",
+      "webUrl": "https://web.winerim.com/matchrim/store/266441/Kriya-Passerina"
+    }
+  ],
+  "count": 1,
+  "total": 1,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

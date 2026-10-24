@@ -1,0 +1,9 @@
+{
+  "index": 17,
+  "label": "img-069-primary",
+  "url": "https://app.winerim.com/api/v1/matchrim/wines/search?name=TRADITION&winery=GUILLEMINOT&limit=50&page=1",
+  "httpStatus": 200,
+  "elapsedMs": 246,
+  "bytes": 592,
+  "sha256": "df5f88759a9cd14361ab4c257f447b24326adc400559e46f91e5e4329b5bece1"
+}

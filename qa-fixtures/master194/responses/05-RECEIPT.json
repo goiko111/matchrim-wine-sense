@@ -1,0 +1,9 @@
+{
+  "index": 5,
+  "label": "img-017-primary",
+  "url": "https://app.winerim.com/api/v1/matchrim/wines/search?name=MIGRATORIA&winery=FRONTONIO&limit=50&page=1",
+  "httpStatus": 200,
+  "elapsedMs": 60,
+  "bytes": 68,
+  "sha256": "2a9b2af163c7206edd00148a64bed498ef9fb219607e710032e050703e4ce6f8"
+}

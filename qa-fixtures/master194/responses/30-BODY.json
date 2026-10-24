@@ -1,0 +1,79 @@
+{
+  "mantalakWineId": 178133,
+  "name": "CVC",
+  "winery": "Sierra Cantabria",
+  "type": "tinto",
+  "country": "ES",
+  "region": "Rioja",
+  "grapes": [
+    "Tempranillo"
+  ],
+  "photo": "https://app.winerim.com/images/wines/62ecb869e3c28242153139.png",
+  "slugname": "CVC",
+  "representativePublicId": 209266,
+  "webUrl": "https://web.winerim.com/matchrim/store/209266/CVC",
+  "vintages": [
+    2010,
+    2009,
+    2008
+  ],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": true,
+    "attributesByVintage": [
+      {
+        "vintage": null,
+        "power": 4,
+        "sweetness": 1,
+        "acidity": 3,
+        "tannin": 4,
+        "fruity": 3,
+        "aging": null,
+        "source": null
+      },
+      {
+        "vintage": "2008",
+        "power": 4,
+        "sweetness": 1,
+        "acidity": 3,
+        "tannin": 4,
+        "fruity": 3,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "2009",
+        "power": 4,
+        "sweetness": 1,
+        "acidity": 4,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      },
+      {
+        "vintage": "2010",
+        "power": 5,
+        "sweetness": 1,
+        "acidity": 4,
+        "tannin": 4,
+        "fruity": 4,
+        "aging": 5,
+        "source": null
+      }
+    ]
+  }
+}

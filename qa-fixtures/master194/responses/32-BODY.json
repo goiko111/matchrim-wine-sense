@@ -1,0 +1,1307 @@
+{
+  "results": [
+    {
+      "id": 265288,
+      "representativePublicId": 265288,
+      "mantalakWineId": 211354,
+      "name": "JuSa",
+      "winery": "Zeroine",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Jura",
+      "grapes": [
+        "Savagnin"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2018
+      ],
+      "tastingAttributes": {
+        "power": 3.8,
+        "acidity": 4.6,
+        "sweetness": 1,
+        "tannin": 0.2,
+        "fruity": 2.8
+      },
+      "photo": "https://app.winerim.com/images/wines/69df8b0d4f345782615972.png",
+      "slugname": "JuSa_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/265288/JuSa_2022"
+    },
+    {
+      "id": 265257,
+      "representativePublicId": 265257,
+      "mantalakWineId": 211356,
+      "name": "MaSa",
+      "winery": "Zeroine",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Jura",
+      "grapes": [
+        "Macabeo",
+        "Savagnin"
+      ],
+      "vintages": [
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/69df8d11283dd815935685.png",
+      "slugname": "MaSa_2020",
+      "webUrl": "https://web.winerim.com/matchrim/store/265257/MaSa_2020"
+    },
+    {
+      "id": 265379,
+      "representativePublicId": 265379,
+      "mantalakWineId": 211361,
+      "name": "Jupi",
+      "winery": "Zeroine",
+      "type": "tinto",
+      "country": "FR",
+      "region": "Jura",
+      "grapes": [
+        "Pinot Noir"
+      ],
+      "vintages": [
+        2023
+      ],
+      "tastingAttributes": {
+        "power": 2,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69dfb1d330630569056196.png",
+      "slugname": "Jupi_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/265379/Jupi_2023"
+    },
+    {
+      "id": 266020,
+      "representativePublicId": 266020,
+      "mantalakWineId": 211408,
+      "name": "JuTP",
+      "winery": "Zeroine",
+      "type": "tinto",
+      "country": "FR",
+      "region": "Jura",
+      "grapes": [
+        "Pinot Noir"
+      ],
+      "vintages": [
+        2023
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69e13989251b4307162388.png",
+      "slugname": "JuTP_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/266020/JuTP_2023"
+    },
+    {
+      "id": 265282,
+      "representativePublicId": 265282,
+      "mantalakWineId": 211357,
+      "name": "Piali",
+      "winery": "Zeroine",
+      "type": "tinto",
+      "country": "FR",
+      "region": "Jura",
+      "grapes": [
+        "Aligoté",
+        "Pinot Noir"
+      ],
+      "vintages": [
+        2022,
+        2019
+      ],
+      "tastingAttributes": {
+        "power": 2.1,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69df8e4fa4b3b591399699.png",
+      "slugname": "Piali_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/265282/Piali_2022"
+    },
+    {
+      "id": 265256,
+      "representativePublicId": 265256,
+      "mantalakWineId": 211359,
+      "name": "Macha",
+      "winery": "Zeroine",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Jura",
+      "grapes": [
+        "Chardonnay",
+        "Macabeo"
+      ],
+      "vintages": [
+        2024,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/69df907531852775549012.png",
+      "slugname": "Macha_2020",
+      "webUrl": "https://web.winerim.com/matchrim/store/265256/Macha_2020"
+    },
+    {
+      "id": 315933,
+      "representativePublicId": 315933,
+      "mantalakWineId": 208661,
+      "name": "ChaCha",
+      "winery": "Zeroine",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Vin de France",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2021,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/695a86b0f3eee788910470.png",
+      "slugname": "ChaCha_2020",
+      "webUrl": "https://web.winerim.com/matchrim/store/315933/ChaCha_2020"
+    },
+    {
+      "id": 265241,
+      "representativePublicId": 265241,
+      "mantalakWineId": 211358,
+      "name": "Grigri",
+      "winery": "Zeroine",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Jura",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 2,
+        "acidity": 5,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/69df8f2ec10b8038381927.png",
+      "slugname": "Grigri_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/265241/Grigri_2021"
+    },
+    {
+      "id": 271441,
+      "representativePublicId": 271441,
+      "mantalakWineId": 113969,
+      "name": "Top Zero",
+      "winery": "Giorgi",
+      "type": "espumoso",
+      "country": "IT",
+      "region": "Lombardia",
+      "grapes": [
+        "Pinot Nero"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/69fa5313a7f87333999214.png",
+      "slugname": "Top-Zero",
+      "webUrl": "https://web.winerim.com/matchrim/store/271441/Top-Zero"
+    },
+    {
+      "id": 265203,
+      "representativePublicId": 265203,
+      "mantalakWineId": 211355,
+      "name": "JuCrémant",
+      "winery": "Zeroine",
+      "type": "espumoso",
+      "country": "FR",
+      "region": "Jura",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 2.8,
+        "acidity": 4.3,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/69df8c0178387387977650.png",
+      "slugname": "JuCremant_2020",
+      "webUrl": "https://web.winerim.com/matchrim/store/265203/JuCremant_2020"
+    },
+    {
+      "id": 281222,
+      "representativePublicId": 281222,
+      "mantalakWineId": 212691,
+      "name": "Viñamar Zero",
+      "winery": "Viñamar",
+      "type": "espumoso",
+      "country": "CL",
+      "region": "Valle de Casablanca",
+      "grapes": [
+        "Moscatel"
+      ],
+      "vintages": [],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/6a194fa149490691826007.png",
+      "slugname": "Vinamar-Zero",
+      "webUrl": "https://web.winerim.com/matchrim/store/281222/Vinamar-Zero"
+    },
+    {
+      "id": 265289,
+      "representativePublicId": 265289,
+      "mantalakWineId": 196762,
+      "name": "Zeroine Jucha",
+      "winery": "Zeroine",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Jura",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2022,
+        2021,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0.1,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/672883e8a4533869857446.png",
+      "slugname": "Zeroine-Jucha_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/265289/Zeroine-Jucha_2022"
+    },
+    {
+      "id": 262181,
+      "representativePublicId": 262181,
+      "mantalakWineId": 211004,
+      "name": "Zero Immagino",
+      "winery": "Bosca",
+      "type": "espumoso",
+      "country": "IT",
+      "region": "Piamonte",
+      "grapes": [
+        "Moscato Bianco"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 2,
+        "acidity": 4,
+        "sweetness": 3,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69cbdf3c276c0722629715.png",
+      "slugname": "Zero-Immagino",
+      "webUrl": "https://web.winerim.com/matchrim/store/262181/Zero-Immagino"
+    },
+    {
+      "id": 268713,
+      "representativePublicId": 268713,
+      "mantalakWineId": 185191,
+      "name": "Zeroine L Gaga",
+      "winery": "Zeroine",
+      "type": "tinto",
+      "country": "FR",
+      "region": "Vin de France",
+      "grapes": [
+        "Gamay"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2021,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 2.9,
+        "acidity": 3.9,
+        "sweetness": 0.9,
+        "tannin": 1.6,
+        "fruity": 4.3
+      },
+      "photo": "https://app.winerim.com/images/wines/69ef259e283f6270110339.png",
+      "slugname": "Zeroine-L-Gaga_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/268713/Zeroine-L-Gaga_2023"
+    },
+    {
+      "id": 379893,
+      "representativePublicId": 379893,
+      "mantalakWineId": 205819,
+      "name": "L21 Ma Gew Rie",
+      "winery": "Zeroine",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Vin de France",
+      "grapes": [
+        "Gewürztraminer",
+        "Riesling"
+      ],
+      "vintages": [
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 3.3,
+        "acidity": 3.3,
+        "sweetness": 1.7,
+        "tannin": 0.7,
+        "fruity": 4.3
+      },
+      "photo": "https://app.winerim.com/images/wines/68e65ce542e13959398609.png",
+      "slugname": "L21-Ma-Gew-Rie",
+      "webUrl": "https://web.winerim.com/matchrim/store/379893/L21-Ma-Gew-Rie"
+    },
+    {
+      "id": 317298,
+      "representativePublicId": 317298,
+      "mantalakWineId": 211773,
+      "name": "Zeroine Als Pi",
+      "winery": "Zeroine",
+      "type": "tinto",
+      "country": "FR",
+      "region": "Vin de France",
+      "grapes": [
+        "Pinot Noir"
+      ],
+      "vintages": [
+        2023,
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 2.5,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69ede04d563d1985018374.png",
+      "slugname": "Zeroine-Als-Pi_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/317298/Zeroine-Als-Pi_2021"
+    },
+    {
+      "id": 167749,
+      "representativePublicId": 167749,
+      "mantalakWineId": 45453,
+      "name": "Triple Zéro Rosé",
+      "winery": "La Taille Aux Loups",
+      "type": "espumoso",
+      "country": "FR",
+      "region": "Montlouis-sur-Loire",
+      "grapes": [
+        "Gamay"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 2,
+        "tannin": 1,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/681ca7f9e9d54824142459.png",
+      "slugname": "Triple-Zero-Rose",
+      "webUrl": "https://web.winerim.com/matchrim/store/167749/Triple-Zero-Rose"
+    },
+    {
+      "id": 316273,
+      "representativePublicId": 316273,
+      "mantalakWineId": 205482,
+      "name": "Passe Tout Grain",
+      "winery": "Double Zero",
+      "type": "tinto",
+      "country": "FR",
+      "region": "Coteaux Bourguignons",
+      "grapes": [
+        "Pinot Noir"
+      ],
+      "vintages": [
+        2023
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/68daa68e5a1b8724272346.png",
+      "slugname": "Passe-Tout-Grain",
+      "webUrl": "https://web.winerim.com/matchrim/store/316273/Passe-Tout-Grain"
+    },
+    {
+      "id": 162979,
+      "representativePublicId": 162979,
+      "mantalakWineId": 125395,
+      "name": "Tarlant Zero Rosé",
+      "winery": "Tarlant",
+      "type": "espumoso",
+      "country": "FR",
+      "region": "Champagne",
+      "grapes": [
+        "Chardonnay",
+        "Pinot Meunier",
+        "Pinot Noir"
+      ],
+      "vintages": [
+        2017
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/639c1deb4de80809250110.png",
+      "slugname": "Tarlant-Zero-Rose",
+      "webUrl": "https://web.winerim.com/matchrim/store/162979/Tarlant-Zero-Rose"
+    },
+    {
+      "id": 166286,
+      "representativePublicId": 166286,
+      "mantalakWineId": 179294,
+      "name": "Miniere Brut Zéro",
+      "winery": "Miniere F. & R.",
+      "type": "espumoso",
+      "country": "FR",
+      "region": "Champagne",
+      "grapes": [
+        "Chardonnay",
+        "Pinot Meunier",
+        "Pinot Noir"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 1,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/636cb70c1f49e526513718.png",
+      "slugname": "Miniere-Brut-Zero",
+      "webUrl": "https://web.winerim.com/matchrim/store/166286/Miniere-Brut-Zero"
+    },
+    {
+      "id": 267155,
+      "representativePublicId": 267155,
+      "mantalakWineId": 211577,
+      "name": "Raimat Zero Tinto",
+      "winery": "Raimat",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Costers del Segre",
+      "grapes": [
+        "Garnacha Tinta",
+        "Shiraz/Syrah"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 2,
+        "acidity": 3,
+        "sweetness": 2,
+        "tannin": 2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69e7b56c388b5016871755.png",
+      "slugname": "Raimat-Zero-Tinto",
+      "webUrl": "https://web.winerim.com/matchrim/store/267155/Raimat-Zero-Tinto"
+    },
+    {
+      "id": 260991,
+      "representativePublicId": 260991,
+      "mantalakWineId": 119304,
+      "name": "Reví Dosaggio Zero",
+      "winery": "Revi",
+      "type": "espumoso",
+      "country": "IT",
+      "region": "Trento",
+      "grapes": [
+        "Chardonnay",
+        "Pinot Nero"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/69ae924a1d58e000809447.png",
+      "slugname": "Revi-Dosaggio-Zero",
+      "webUrl": "https://web.winerim.com/matchrim/store/260991/Revi-Dosaggio-Zero"
+    },
+    {
+      "id": 270352,
+      "representativePublicId": 270352,
+      "mantalakWineId": 119345,
+      "name": "Ferrari Perlé Zero",
+      "winery": "Ferrari",
+      "type": "espumoso",
+      "country": "IT",
+      "region": "Trento",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2014
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 5,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6814801120dd7281777175.png",
+      "slugname": "Ferrari-Perle-Zero",
+      "webUrl": "https://web.winerim.com/matchrim/store/270352/Ferrari-Perle-Zero"
+    },
+    {
+      "id": 329190,
+      "representativePublicId": 329190,
+      "mantalakWineId": 193565,
+      "name": "Zeroine Piga Gacha",
+      "winery": "Zeroine",
+      "type": "tinto",
+      "country": "FR",
+      "region": "Jura",
+      "grapes": [
+        "Gamay",
+        "Pinot Noir"
+      ],
+      "vintages": [
+        2023,
+        2022
+      ],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/6680357658b3d490359058.png",
+      "slugname": "Zeroine-Piga-Gacha_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/329190/Zeroine-Piga-Gacha_2022"
+    },
+    {
+      "id": 267157,
+      "representativePublicId": 267157,
+      "mantalakWineId": 211579,
+      "name": "Raimat Zero Blanco",
+      "winery": "Raimat",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Costers del Segre",
+      "grapes": [
+        "Chardonnay",
+        "Xarel·lo"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 2,
+        "acidity": 4,
+        "sweetness": 2,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69e7b6dd0bdce980571985.png",
+      "slugname": "Raimat-Zero-Blanco",
+      "webUrl": "https://web.winerim.com/matchrim/store/267157/Raimat-Zero-Blanco"
+    },
+    {
+      "id": 238324,
+      "representativePublicId": 238324,
+      "mantalakWineId": 184939,
+      "name": "Le Naturel Zero Zero",
+      "winery": "Aroa",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Navarra",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 2,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/64f96ad26d9c4333567951.png",
+      "slugname": "Le-Naturel-Zero-Zero",
+      "webUrl": "https://web.winerim.com/matchrim/store/238324/Le-Naturel-Zero-Zero"
+    },
+    {
+      "id": 277268,
+      "representativePublicId": 277268,
+      "mantalakWineId": 189200,
+      "name": "De Nariz Zero Dosage",
+      "winery": "De Nariz",
+      "type": "espumoso",
+      "country": "ES",
+      "region": "Cava",
+      "grapes": [
+        "Monastrell"
+      ],
+      "vintages": [
+        2023
+      ],
+      "tastingAttributes": {
+        "power": 2.3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0.7,
+        "fruity": 3.3
+      },
+      "photo": "https://app.winerim.com/images/wines/65d60e8388f7c329931252.png",
+      "slugname": "De-Nariz-Zero-Dosage_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/277268/De-Nariz-Zero-Dosage_2023"
+    },
+    {
+      "id": 269240,
+      "representativePublicId": 269240,
+      "mantalakWineId": 185209,
+      "name": "De Nariz Zero Dossage",
+      "winery": "De Nariz",
+      "type": "espumoso",
+      "country": "ES",
+      "region": "Cava",
+      "grapes": [
+        "Monastrell"
+      ],
+      "vintages": [
+        2024,
+        2021,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 2.8,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 1.4,
+        "fruity": 3.2
+      },
+      "photo": "https://app.winerim.com/images/wines/650445b811584729717247.png",
+      "slugname": "De-Nariz-Zero-Dossage_2024",
+      "webUrl": "https://web.winerim.com/matchrim/store/269240/De-Nariz-Zero-Dossage_2024"
+    },
+    {
+      "id": 282179,
+      "representativePublicId": 282179,
+      "mantalakWineId": 201650,
+      "name": "Codorniu Zero Alcohol",
+      "winery": "Codorníu",
+      "type": "espumoso",
+      "country": "ES",
+      "region": "Penedès",
+      "grapes": [
+        "Verdejo"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 2,
+        "acidity": 4,
+        "sweetness": 3,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/681dd6d94d58d981119070.png",
+      "slugname": "Codorniu-Zero-Alcohol",
+      "webUrl": "https://web.winerim.com/matchrim/store/282179/Codorniu-Zero-Alcohol"
+    },
+    {
+      "id": 358428,
+      "representativePublicId": 358428,
+      "mantalakWineId": 205749,
+      "name": "Maison Fang Near Zero",
+      "winery": "Maison Fang",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Bourgogne",
+      "grapes": [
+        "Aligoté"
+      ],
+      "vintages": [
+        2025,
+        2023
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/68e390485edc4249611155.png",
+      "slugname": "Maison-Fang-Near-Zero_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/358428/Maison-Fang-Near-Zero_2023"
+    },
+    {
+      "id": 229233,
+      "representativePublicId": 229233,
+      "mantalakWineId": 206589,
+      "name": "Alba Abiega Desde Zero",
+      "winery": "Alba Abiega",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Ribera del Duero",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2024
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3.4,
+        "sweetness": 1,
+        "tannin": 2.4,
+        "fruity": 4.4
+      },
+      "photo": "https://app.winerim.com/images/wines/6904bc6866609997294171.png",
+      "slugname": "Alba-Abiega-Desde-Zero",
+      "webUrl": "https://web.winerim.com/matchrim/store/229233/Alba-Abiega-Desde-Zero"
+    },
+    {
+      "id": 303824,
+      "representativePublicId": 303824,
+      "mantalakWineId": 184213,
+      "name": "Sčurek Penina Brut Zero",
+      "winery": "Ščurek",
+      "type": "espumoso",
+      "country": "SI",
+      "region": "Medana",
+      "grapes": [
+        "Chardonnay",
+        "Glera",
+        "Rumena Rebula"
+      ],
+      "vintages": [
+        2015
+      ],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/64cc93fe188ff576116353.png",
+      "slugname": "Scurek-Penina-Brut-Zero_2015",
+      "webUrl": "https://web.winerim.com/matchrim/store/303824/Scurek-Penina-Brut-Zero_2015"
+    },
+    {
+      "id": 168804,
+      "representativePublicId": 168804,
+      "mantalakWineId": 188108,
+      "name": "La Parcelle Zéro Dosage",
+      "winery": "Chevreux-Bournazel",
+      "type": "espumoso",
+      "country": "FR",
+      "region": "Champagne",
+      "grapes": [
+        "Pinot Meunier"
+      ],
+      "vintages": [
+        2020,
+        2019,
+        2016
+      ],
+      "tastingAttributes": {
+        "power": 2.3,
+        "acidity": 4.3,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/65a784f2dcc68248291644.png",
+      "slugname": "La-Parcelle-Zero-Dosage",
+      "webUrl": "https://web.winerim.com/matchrim/store/168804/La-Parcelle-Zero-Dosage"
+    },
+    {
+      "id": 363844,
+      "representativePublicId": 363844,
+      "mantalakWineId": 179224,
+      "name": "Tarlant Zero Brut Nature",
+      "winery": "Tarlant",
+      "type": "espumoso",
+      "country": "FR",
+      "region": "Champagne",
+      "grapes": [
+        "Chardonnay",
+        "Pinot Meunier",
+        "Pinot Noir"
+      ],
+      "vintages": [
+        2023,
+        2017
+      ],
+      "tastingAttributes": {
+        "power": 4.9,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 2.9,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/650c724c121e6803123694.png",
+      "slugname": "Tarlant-Zero-Brut-Nature",
+      "webUrl": "https://web.winerim.com/matchrim/store/363844/Tarlant-Zero-Brut-Nature"
+    },
+    {
+      "id": 282574,
+      "representativePublicId": 282574,
+      "mantalakWineId": 212846,
+      "name": "Estefanya Zero Red Blend",
+      "winery": "Viña Estefanya",
+      "type": "tinto",
+      "country": "CL",
+      "region": "Valle Central",
+      "grapes": [
+        "Cabernet Sauvignon",
+        "Carménère",
+        "Merlot"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 2,
+        "acidity": 3,
+        "sweetness": 2,
+        "tannin": 2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6a1e99ea2492b203827934.png",
+      "slugname": "Estefanya-Zero-Red-Blend",
+      "webUrl": "https://web.winerim.com/matchrim/store/282574/Estefanya-Zero-Red-Blend"
+    },
+    {
+      "id": 118303,
+      "representativePublicId": 118303,
+      "mantalakWineId": 109235,
+      "name": "Il Mattaglio Dosaggio Zero",
+      "winery": "Cantina della Volta",
+      "type": "espumoso",
+      "country": "IT",
+      "region": "Modena",
+      "grapes": [
+        "Chardonnay",
+        "Pinot Nero"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 2
+      },
+      "photo": "https://app.winerim.com/images/wines/66fa707af0881476849451.png",
+      "slugname": "Il-Mattaglio-Dosaggio-Zero",
+      "webUrl": "https://web.winerim.com/matchrim/store/118303/Il-Mattaglio-Dosaggio-Zero"
+    },
+    {
+      "id": 232344,
+      "representativePublicId": 232344,
+      "mantalakWineId": 185233,
+      "name": "Clò Clò Dosaggio Zero Rosé",
+      "winery": "Alessandra Divella",
+      "type": "espumoso",
+      "country": "IT",
+      "region": "Lombardia",
+      "grapes": [
+        "Pinot Noir"
+      ],
+      "vintages": [
+        2020,
+        2018
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 0,
+        "tannin": 2,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6506a79026da3479223923.png",
+      "slugname": "Clo-Clo-Dosaggio-Zero-Rose",
+      "webUrl": "https://web.winerim.com/matchrim/store/232344/Clo-Clo-Dosaggio-Zero-Rose"
+    },
+    {
+      "id": 117718,
+      "representativePublicId": 117718,
+      "mantalakWineId": 195651,
+      "name": "Luca Palmieri Vini ZeroTre",
+      "winery": "Luca Palmieri",
+      "type": "blanco",
+      "country": "IT",
+      "region": "Puglia",
+      "grapes": [
+        "Malvasía"
+      ],
+      "vintages": [
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 2,
+        "acidity": 3,
+        "sweetness": 3,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/66f53f2d3bf27367240816.png",
+      "slugname": "Luca-Palmieri-Vini-ZeroTre_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/117718/Luca-Palmieri-Vini-ZeroTre_2022"
+    },
+    {
+      "id": 284189,
+      "representativePublicId": 284189,
+      "mantalakWineId": 201436,
+      "name": "Franciacorta Dosaggio Zero",
+      "winery": "Corti Cugini",
+      "type": "espumoso",
+      "country": "IT",
+      "region": "Franciacorta",
+      "grapes": [
+        "Pinot Blanc"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6814b59f62b5a209852463.png",
+      "slugname": "Franciacorta-Dosaggio-Zero",
+      "webUrl": "https://web.winerim.com/matchrim/store/284189/Franciacorta-Dosaggio-Zero"
+    },
+    {
+      "id": 238325,
+      "representativePublicId": 238325,
+      "mantalakWineId": 199590,
+      "name": "Le Naturel Zero Zero Blanco",
+      "winery": "Aroa",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Navarra",
+      "grapes": [
+        "Garnacha Blanca",
+        "Viura"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 2,
+        "acidity": 4,
+        "sweetness": 0,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/67d2fcdf777d0762089981.png",
+      "slugname": "Le-Naturel-Zero-Zero-Blanco",
+      "webUrl": "https://web.winerim.com/matchrim/store/238325/Le-Naturel-Zero-Zero-Blanco"
+    },
+    {
+      "id": 378956,
+      "representativePublicId": 378956,
+      "mantalakWineId": 214908,
+      "name": "Vindemia Zero Dosage 1er Cru",
+      "winery": "Roger Coulon",
+      "type": "espumoso",
+      "country": "FR",
+      "region": "Champagne",
+      "grapes": [
+        "Chardonnay",
+        "Meunier"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 5,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6a649e2fb4f955.78622317_pending-photo-16086-21b306812cdc5cbb.png",
+      "slugname": "Vindemia-Zero-Dosage-1er-Cru-Roger-Coulon-FR",
+      "webUrl": "https://web.winerim.com/matchrim/store/378956/Vindemia-Zero-Dosage-1er-Cru-Roger-Coulon-FR"
+    },
+    {
+      "id": 288481,
+      "representativePublicId": 288481,
+      "mantalakWineId": 185232,
+      "name": "Dosaggio Zero Blanc de Blancs",
+      "winery": "Alessandra Divella",
+      "type": "espumoso",
+      "country": "IT",
+      "region": "Lombardia",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2025,
+        2021,
+        2019
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4.2,
+        "sweetness": 0.7,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6506a6f88115f973764540.png",
+      "slugname": "Dosaggio-Zero-Blanc-de-Blancs_2019",
+      "webUrl": "https://web.winerim.com/matchrim/store/288481/Dosaggio-Zero-Blanc-de-Blancs_2019"
+    },
+    {
+      "id": 86131,
+      "representativePublicId": 86131,
+      "mantalakWineId": 190532,
+      "name": "Ballabio Farfalla Zero Dosage",
+      "winery": "Ballabio",
+      "type": "espumoso",
+      "country": "IT",
+      "region": "Oltrepò Pavese",
+      "grapes": [
+        "Pinot Noir"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/661406d992951785227607.png",
+      "slugname": "Ballabio-Farfalla-Zero-Dosage",
+      "webUrl": "https://web.winerim.com/matchrim/store/86131/Ballabio-Farfalla-Zero-Dosage"
+    },
+    {
+      "id": 284139,
+      "representativePublicId": 284139,
+      "mantalakWineId": 186291,
+      "name": "Ployez-Jacquemart Dossage Zero",
+      "winery": "Ployez-Jacquemart",
+      "type": "espumoso",
+      "country": "FR",
+      "region": "Champagne",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 0,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/653a004586aa1530170253.png",
+      "slugname": "Ployez-Jacquemart-Dossage-Zero",
+      "webUrl": "https://web.winerim.com/matchrim/store/284139/Ployez-Jacquemart-Dossage-Zero"
+    },
+    {
+      "id": 356520,
+      "representativePublicId": 356520,
+      "mantalakWineId": 212120,
+      "name": "Le Naturel Zero Zero Sparkling",
+      "winery": "Castillo de Maetierra",
+      "type": "espumoso",
+      "country": "ES",
+      "region": "Vino de Mesa",
+      "grapes": [
+        "Garnacha Blanca",
+        "Viura"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 2,
+        "acidity": 4,
+        "sweetness": 2,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6a04433a3fbd7436525693.png",
+      "slugname": "Le-Naturel-Zero-Zero-Sparkling",
+      "webUrl": "https://web.winerim.com/matchrim/store/356520/Le-Naturel-Zero-Zero-Sparkling"
+    },
+    {
+      "id": 275313,
+      "representativePublicId": 275313,
+      "mantalakWineId": 137575,
+      "name": "Cantina Maestra Alta Langa Zero",
+      "winery": "Enrico Serafino",
+      "type": "espumoso",
+      "country": "IT",
+      "region": "Alta Langa",
+      "grapes": [
+        "Chardonnay",
+        "Pinot Nero"
+      ],
+      "vintages": [
+        2019
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 5,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6a0b23a638ad8603613236.png",
+      "slugname": "Cantina-Maestra-Alta-Langa-Zero_2019",
+      "webUrl": "https://web.winerim.com/matchrim/store/275313/Cantina-Maestra-Alta-Langa-Zero_2019"
+    },
+    {
+      "id": 96271,
+      "representativePublicId": 96271,
+      "mantalakWineId": 192631,
+      "name": "Casa delle Colonne Zero Riserva",
+      "winery": "Freccianera Fratelli Berlucchi",
+      "type": "espumoso",
+      "country": "IT",
+      "region": "Franciacorta",
+      "grapes": [
+        "Chardonnay",
+        "Pinot Nero"
+      ],
+      "vintages": [
+        2014
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 2
+      },
+      "photo": "https://app.winerim.com/images/wines/66600c1d07e63787979930.png",
+      "slugname": "Casa-delle-Colonne-Zero-Riserva_2014",
+      "webUrl": "https://web.winerim.com/matchrim/store/96271/Casa-delle-Colonne-Zero-Riserva_2014"
+    },
+    {
+      "id": 222178,
+      "representativePublicId": 222178,
+      "mantalakWineId": 206895,
+      "name": "Codroniu Zero Rose Alcohol Free",
+      "winery": "Codorníu",
+      "type": "espumoso",
+      "country": "ES",
+      "region": "Cava",
+      "grapes": [
+        "Macabeo",
+        "Parellada",
+        "Xarel·lo"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 2,
+        "acidity": 3,
+        "sweetness": 2,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6914c6937a3da443385193.png",
+      "slugname": "Codroniu-Zero-Rose-Alcohol-Free",
+      "webUrl": "https://web.winerim.com/matchrim/store/222178/Codroniu-Zero-Rose-Alcohol-Free"
+    },
+    {
+      "id": 375446,
+      "representativePublicId": 375446,
+      "mantalakWineId": 217302,
+      "name": "Zero Point Five Sauvignon Blanc",
+      "winery": "Leitz",
+      "type": "blanco",
+      "country": "DE",
+      "region": "Rheingau",
+      "grapes": [
+        "Sauvignon Blanc"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 2,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6ac431255eb633.50767638_pending-photo-19759-7c18961f4a2b819f.png",
+      "slugname": "Zero-Point-Five-Sauvignon-Blanc-Leitz-DE",
+      "webUrl": "https://web.winerim.com/matchrim/store/375446/Zero-Point-Five-Sauvignon-Blanc-Leitz-DE"
+    },
+    {
+      "id": 274081,
+      "representativePublicId": 274081,
+      "mantalakWineId": 112390,
+      "name": "Dosage Zéro (Vintage Collection)",
+      "winery": "Ca' del Bosco",
+      "type": "espumoso",
+      "country": "IT",
+      "region": "Franciacorta",
+      "grapes": [
+        "Chardonnay",
+        "Pinot Blanc",
+        "Pinot Nero"
+      ],
+      "vintages": [
+        2020,
+        2019,
+        2018,
+        2015,
+        2011,
+        2006
+      ],
+      "tastingAttributes": {
+        "power": 3.9,
+        "acidity": 4.3,
+        "sweetness": 0.7,
+        "tannin": 0.7,
+        "fruity": 3.1
+      },
+      "photo": "https://app.winerim.com/images/wines/645df1de399fe138104682.png",
+      "slugname": "Dosage-Zero-Vintage-Collection_2019",
+      "webUrl": "https://web.winerim.com/matchrim/store/274081/Dosage-Zero-Vintage-Collection_2019"
+    }
+  ],
+  "count": 50,
+  "total": 98,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 2
+}

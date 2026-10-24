@@ -1,0 +1,62 @@
+{
+  "results": [
+    {
+      "id": 355574,
+      "representativePublicId": 355574,
+      "mantalakWineId": 214921,
+      "name": "Amarone Classico",
+      "winery": "Fidora",
+      "type": "tinto",
+      "country": "IT",
+      "region": "Valpolicella",
+      "grapes": [
+        "Corvina",
+        "Corvinone",
+        "Rondinella"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 5,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6a672f4d57f35060658299.png",
+      "slugname": "Amarone-Classico",
+      "webUrl": "https://web.winerim.com/matchrim/store/355574/Amarone-Classico"
+    },
+    {
+      "id": 176612,
+      "representativePublicId": 176612,
+      "mantalakWineId": 202489,
+      "name": "Amarone Dea Lualda",
+      "winery": "Corteforte",
+      "type": "tinto",
+      "country": "IT",
+      "region": "Amarone della Valpolicella Classico",
+      "grapes": [
+        "Corvina",
+        "Corvinone",
+        "Molinara",
+        "Rondinella"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 5,
+        "acidity": 4,
+        "sweetness": 2,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/685195f8e8f38590613801.png",
+      "slugname": "Amarone-Dea-Lualda",
+      "webUrl": "https://web.winerim.com/matchrim/store/176612/Amarone-Dea-Lualda"
+    }
+  ],
+  "count": 2,
+  "total": 149,
+  "page": 1,
+  "limit": 2,
+  "pageCount": 75
+}

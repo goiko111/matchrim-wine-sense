@@ -1,0 +1,1385 @@
+{
+  "results": [
+    {
+      "id": 145476,
+      "representativePublicId": 145476,
+      "mantalakWineId": 14667,
+      "name": "Gaia",
+      "winery": "Grosset",
+      "type": "tinto",
+      "country": "AU",
+      "region": "Clare Valley",
+      "grapes": [
+        "Cabernet Franc",
+        "Cabernet Sauvignon"
+      ],
+      "vintages": [
+        2000
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/67bf61f1e08e4111679473.png",
+      "slugname": "Gaia_2000",
+      "webUrl": "https://web.winerim.com/matchrim/store/145476/Gaia_2000"
+    },
+    {
+      "id": 285164,
+      "representativePublicId": 285164,
+      "mantalakWineId": 213146,
+      "name": "Ecos",
+      "winery": "Bodegas Gross Hermanos",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Sierras de Málaga",
+      "grapes": [
+        "Syrah"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6a2819f43fdd0572203881.png",
+      "slugname": "Ecos",
+      "webUrl": "https://web.winerim.com/matchrim/store/285164/Ecos"
+    },
+    {
+      "id": 285128,
+      "representativePublicId": 285128,
+      "mantalakWineId": 195223,
+      "name": "Gross Rosado",
+      "winery": "Bodegas Gross Hermanos",
+      "type": "rosado",
+      "country": "ES",
+      "region": "Sierras de Málaga",
+      "grapes": [
+        "Merlot"
+      ],
+      "vintages": [
+        2023
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 1,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/66e42a338976d305400418.png",
+      "slugname": "Gross-Rosado",
+      "webUrl": "https://web.winerim.com/matchrim/store/285128/Gross-Rosado"
+    },
+    {
+      "id": 276514,
+      "representativePublicId": 276514,
+      "mantalakWineId": 212394,
+      "name": "Chiguita Viura",
+      "winery": "Jade Gross",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Rioja Alta",
+      "grapes": [
+        "Viura"
+      ],
+      "vintages": [
+        2025,
+        2024
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0.7,
+        "fruity": 3.7
+      },
+      "photo": "https://app.winerim.com/images/wines/6a0edc3c67b39735654765.png",
+      "slugname": "Chiguita-Viura_2025",
+      "webUrl": "https://web.winerim.com/matchrim/store/276514/Chiguita-Viura_2025"
+    },
+    {
+      "id": 376809,
+      "representativePublicId": 376809,
+      "mantalakWineId": 217401,
+      "name": "Sauvignon Blanc",
+      "winery": "Gross",
+      "type": "blanco",
+      "country": "AT",
+      "region": "Südsteiermark Dac",
+      "grapes": [
+        "Sauvignon Blanc"
+      ],
+      "vintages": [
+        2024
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6ac7d4452e09f3.51480140_pending-photo-19953-eaecdb5d12f95f8f.png",
+      "slugname": "Sauvignon-Blanc-Gross-AT_2024",
+      "webUrl": "https://web.winerim.com/matchrim/store/376809/Sauvignon-Blanc-Gross-AT_2024"
+    },
+    {
+      "id": 381605,
+      "representativePublicId": 381605,
+      "mantalakWineId": 79150,
+      "name": "Sangiovese Grosso",
+      "winery": "Paoloni",
+      "type": "tinto",
+      "country": "MX",
+      "region": "Valle de Guadalupe",
+      "grapes": [
+        "Sangiovese"
+      ],
+      "vintages": [
+        2021,
+        2020,
+        2019
+      ],
+      "tastingAttributes": {
+        "power": 3.4,
+        "acidity": 3.4,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 3.4
+      },
+      "photo": "https://app.winerim.com/images/wines/64df1d2ea77fe515855379.png",
+      "slugname": "Sangiovese-Grosso",
+      "webUrl": "https://web.winerim.com/matchrim/store/381605/Sangiovese-Grosso"
+    },
+    {
+      "id": 173539,
+      "representativePublicId": 173539,
+      "mantalakWineId": 201892,
+      "name": "Moon Rocket tinto",
+      "winery": "Jade Gross",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2023
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/68305db594151849183698.png",
+      "slugname": "Moon-Rocket-tinto_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/173539/Moon-Rocket-tinto_2023"
+    },
+    {
+      "id": 276400,
+      "representativePublicId": 276400,
+      "mantalakWineId": 201891,
+      "name": "Moon Rocket Blanco",
+      "winery": "Jade Gross",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Garnacha Blanca",
+        "Malvasía",
+        "Tempranillo Blanco"
+      ],
+      "vintages": [
+        2025,
+        2024
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3.4,
+        "sweetness": 1.6,
+        "tannin": 0.4,
+        "fruity": 3.4
+      },
+      "photo": "https://app.winerim.com/images/wines/68305c0ea3dba387779790.png",
+      "slugname": "Moon-Rocket-Blanco_2025",
+      "webUrl": "https://web.winerim.com/matchrim/store/276400/Moon-Rocket-Blanco_2025"
+    },
+    {
+      "id": 269095,
+      "representativePublicId": 269095,
+      "mantalakWineId": 207623,
+      "name": "Sassi Grossi Rosso",
+      "winery": "Gialdi",
+      "type": "tinto",
+      "country": "CH",
+      "region": "Ticino",
+      "grapes": [
+        "Merlot"
+      ],
+      "vintages": [
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/692595fac631c707081166.png",
+      "slugname": "Sassi-Grossi-Rosso_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/269095/Sassi-Grossi-Rosso_2022"
+    },
+    {
+      "id": 276501,
+      "representativePublicId": 276501,
+      "mantalakWineId": 212387,
+      "name": "Time is on my Side",
+      "winery": "Jade Gross",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2023
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 2.8,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6a0ed61cb6a15747594940.png",
+      "slugname": "Time-is-on-my-Side",
+      "webUrl": "https://web.winerim.com/matchrim/store/276501/Time-is-on-my-Side"
+    },
+    {
+      "id": 269088,
+      "representativePublicId": 269088,
+      "mantalakWineId": 40515,
+      "name": "Sassi Grossi Bianco",
+      "winery": "Gialdi",
+      "type": "blanco",
+      "country": "CH",
+      "region": "Ticino",
+      "grapes": [
+        "Chardonnay",
+        "Pinot Nero",
+        "Sauvignon Blanc"
+      ],
+      "vintages": [
+        2024
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69259110eb0c9497081449.png",
+      "slugname": "Sassi-Grossi-Bianco_2024",
+      "webUrl": "https://web.winerim.com/matchrim/store/269088/Sassi-Grossi-Bianco_2024"
+    },
+    {
+      "id": 95666,
+      "representativePublicId": 95666,
+      "mantalakWineId": 190447,
+      "name": "Jade Gross Harrobia",
+      "winery": "Jade Gross",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2024,
+        2023,
+        2022,
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 3.9,
+        "acidity": 3.4,
+        "sweetness": 1.1,
+        "tannin": 3.7,
+        "fruity": 3.7
+      },
+      "photo": "https://app.winerim.com/images/wines/660e445f3ee90406759633.png",
+      "slugname": "Jade-Gross-Harrobia_2024",
+      "webUrl": "https://web.winerim.com/matchrim/store/95666/Jade-Gross-Harrobia_2024"
+    },
+    {
+      "id": 280713,
+      "representativePublicId": 280713,
+      "mantalakWineId": 193769,
+      "name": "Jade Gross Jabalina",
+      "winery": "Jade Gross",
+      "type": "rosado",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2025,
+        2024,
+        2023,
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 3.4,
+        "acidity": 3.3,
+        "sweetness": 0.6,
+        "tannin": 2.7,
+        "fruity": 3.8
+      },
+      "photo": "https://app.winerim.com/images/wines/6697abf83fe74607317574.png",
+      "slugname": "Jade-Gross-Jabalina_2025",
+      "webUrl": "https://web.winerim.com/matchrim/store/280713/Jade-Gross-Jabalina_2025"
+    },
+    {
+      "id": 272060,
+      "representativePublicId": 272060,
+      "mantalakWineId": 195470,
+      "name": "Jade Gross Chiguita",
+      "winery": "Jade Gross",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Garnacha Blanca",
+        "Tempranillo Blanco",
+        "Viura"
+      ],
+      "vintages": [
+        2025,
+        2024,
+        2023,
+        2022,
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 3.2,
+        "acidity": 3.6,
+        "sweetness": 0.8,
+        "tannin": 0.1,
+        "fruity": 3.2
+      },
+      "photo": "https://app.winerim.com/images/wines/66ee9051b7eca422070559.png",
+      "slugname": "Jade-Gross-Chiguita_2025",
+      "webUrl": "https://web.winerim.com/matchrim/store/272060/Jade-Gross-Chiguita_2025"
+    },
+    {
+      "id": 245349,
+      "representativePublicId": 245349,
+      "mantalakWineId": 185037,
+      "name": "Chiguita by Jade Gross",
+      "winery": "Jade Gross",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Viura"
+      ],
+      "vintages": [
+        2025,
+        2024,
+        2023,
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3.9,
+        "sweetness": 1.1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6a0ed7e9ae2f2967166588.png",
+      "slugname": "Chiguita-by-Jade-Gross_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/245349/Chiguita-by-Jade-Gross_2023"
+    },
+    {
+      "id": 380682,
+      "representativePublicId": 380682,
+      "mantalakWineId": 193768,
+      "name": "Jade Gross Corza Beoda",
+      "winery": "Jade Gross",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2025,
+        2024,
+        2023
+      ],
+      "tastingAttributes": {
+        "power": 3.1,
+        "acidity": 3,
+        "sweetness": 0.9,
+        "tannin": 3.5,
+        "fruity": 3.5
+      },
+      "photo": "https://app.winerim.com/images/wines/6697ab49c39ba013071666.png",
+      "slugname": "Jade-Gross-Corza-Beoda_2025",
+      "webUrl": "https://web.winerim.com/matchrim/store/380682/Jade-Gross-Corza-Beoda_2025"
+    },
+    {
+      "id": 95668,
+      "representativePublicId": 95668,
+      "mantalakWineId": 190442,
+      "name": "Jade Gross Piano, Piano",
+      "winery": "Jade Gross",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2024,
+        2023,
+        2022,
+        2021,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3.4,
+        "sweetness": 0.7,
+        "tannin": 3.4,
+        "fruity": 3.4
+      },
+      "photo": "https://app.winerim.com/images/wines/660d88be94384959697771.png",
+      "slugname": "Jade-Gross-Piano-Piano_2024",
+      "webUrl": "https://web.winerim.com/matchrim/store/95668/Jade-Gross-Piano-Piano_2024"
+    },
+    {
+      "id": 376757,
+      "representativePublicId": 376757,
+      "mantalakWineId": 197704,
+      "name": "Famille Grossot Chablis",
+      "winery": "Famille Grossot",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Chablis",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2023,
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4.5,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/676eb27b72971161832575.png",
+      "slugname": "Famille-Grossot-Chablis_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/376757/Famille-Grossot-Chablis_2023"
+    },
+    {
+      "id": 176937,
+      "representativePublicId": 176937,
+      "mantalakWineId": 201335,
+      "name": "Grossheubach Alte Reben",
+      "winery": "Weingut Steintal",
+      "type": "tinto",
+      "country": "DE",
+      "region": "Franken",
+      "grapes": [
+        "Spätburgunder"
+      ],
+      "vintages": [
+        2021,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3.5,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/681113ffcaf15515448064.png",
+      "slugname": "Grossheubach-Alte-Reben_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/176937/Grossheubach-Alte-Reben_2021"
+    },
+    {
+      "id": 276513,
+      "representativePublicId": 276513,
+      "mantalakWineId": 212392,
+      "name": "Chiguita Garnacha Blanca",
+      "winery": "Jade Gross",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Rioja Alta",
+      "grapes": [
+        "Garnacha Blanca"
+      ],
+      "vintages": [
+        2025
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 1,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6a0edb9a464f3233777066.png",
+      "slugname": "Chiguita-Garnacha-Blanca_2025",
+      "webUrl": "https://web.winerim.com/matchrim/store/276513/Chiguita-Garnacha-Blanca_2025"
+    },
+    {
+      "id": 233753,
+      "representativePublicId": 233753,
+      "mantalakWineId": 197150,
+      "name": "Domane Serrig Grosse Lage",
+      "winery": "Markus Molitor",
+      "type": "blanco",
+      "country": "DE",
+      "region": "Moselle",
+      "grapes": [
+        "Riesling"
+      ],
+      "vintages": [
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 5,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/673f47592f254214242364.png",
+      "slugname": "Domane-Serrig-Grosse-Lage_2020",
+      "webUrl": "https://web.winerim.com/matchrim/store/233753/Domane-Serrig-Grosse-Lage_2020"
+    },
+    {
+      "id": 314028,
+      "representativePublicId": 314028,
+      "mantalakWineId": 123613,
+      "name": "Hugel Riesling Grossi Laüe",
+      "winery": "Hugel",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Alsace",
+      "grapes": [
+        "Riesling"
+      ],
+      "vintages": [
+        2014,
+        2013,
+        2012,
+        2011
+      ],
+      "tastingAttributes": {
+        "power": 3.5,
+        "acidity": 4.3,
+        "sweetness": 1.5,
+        "tannin": 0.3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69b1a2690f198540175964.png",
+      "slugname": "Hugel-Riesling-Grossi-Laue_2012",
+      "webUrl": "https://web.winerim.com/matchrim/store/314028/Hugel-Riesling-Grossi-Laue_2012"
+    },
+    {
+      "id": 198185,
+      "representativePublicId": 198185,
+      "mantalakWineId": 204160,
+      "name": "Thomas Tixier Grosse Terre",
+      "winery": "Thomas Tixier",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Chablis",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6899bbf9e8d84915914380.png",
+      "slugname": "Thomas-Tixier-Grosse-Terre_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/198185/Thomas-Tixier-Grosse-Terre_2022"
+    },
+    {
+      "id": 253992,
+      "representativePublicId": 253992,
+      "mantalakWineId": 9520,
+      "name": "Grosset Springvale Riesling",
+      "winery": "Grosset",
+      "type": "blanco",
+      "country": "AU",
+      "region": "Clare Valley",
+      "grapes": [
+        "Riesling"
+      ],
+      "vintages": [
+        2022,
+        2018
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 5,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69afd88b5a9ce617675595.png",
+      "slugname": "Grosset-Springvale-Riesling_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/253992/Grosset-Springvale-Riesling_2022"
+    },
+    {
+      "id": 229509,
+      "representativePublicId": 229509,
+      "mantalakWineId": 45765,
+      "name": "Jean-Pierre Grossot Chablis",
+      "winery": "Jean-Pierre Grossot",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Chablis",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2022,
+        2021,
+        2019
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/62e77ff9d2f85260658499.png",
+      "slugname": "Jean-Pierre-Grossot-Chablis_2019",
+      "webUrl": "https://web.winerim.com/matchrim/store/229509/Jean-Pierre-Grossot-Chablis_2019"
+    },
+    {
+      "id": 319654,
+      "representativePublicId": 319654,
+      "mantalakWineId": 212391,
+      "name": "Chiguita Tempranillo Blanco",
+      "winery": "Jade Gross",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Rioja Alta",
+      "grapes": [
+        "Tempranillo Blanco"
+      ],
+      "vintages": [
+        2025,
+        2024,
+        2023
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6a0edac4e43d6322834150.png",
+      "slugname": "Chiguita-Tempranillo-Blanco_2024",
+      "webUrl": "https://web.winerim.com/matchrim/store/319654/Chiguita-Tempranillo-Blanco_2024"
+    },
+    {
+      "id": 285486,
+      "representativePublicId": 285486,
+      "mantalakWineId": 80191,
+      "name": "Hugel Grossi Laüe Pinot Gris",
+      "winery": "Hugel",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Alsace",
+      "grapes": [
+        "Pinot Gris"
+      ],
+      "vintages": [
+        2014,
+        2011,
+        2010
+      ],
+      "tastingAttributes": {
+        "power": 4.7,
+        "acidity": 3.7,
+        "sweetness": 2,
+        "tannin": 0.3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69b1a1d7df5ad074986650.png",
+      "slugname": "Hugel-Grossi-Laue-Pinot-Gris_2014",
+      "webUrl": "https://web.winerim.com/matchrim/store/285486/Hugel-Grossi-Laue-Pinot-Gris_2014"
+    },
+    {
+      "id": 148915,
+      "representativePublicId": 148915,
+      "mantalakWineId": 23513,
+      "name": "Chablis Premier Cru Vaucoupin",
+      "winery": "Jean-Pierre Grossot",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Chablis",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2023,
+        2018
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 1,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6517eeeb63eb4669838093.png",
+      "slugname": "Chablis-Premier-Cru-Vaucoupin_2018",
+      "webUrl": "https://web.winerim.com/matchrim/store/148915/Chablis-Premier-Cru-Vaucoupin_2018"
+    },
+    {
+      "id": 265136,
+      "representativePublicId": 265136,
+      "mantalakWineId": 184729,
+      "name": "Chablis Premier Cru Vaucoupin",
+      "winery": "Domaine Corinne & Jean-Pierre Grossot",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Chablis",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2021,
+        2018
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/64e313df571f2949973450.png",
+      "slugname": "Chablis-Premier-Cru-Vaucoupin",
+      "webUrl": "https://web.winerim.com/matchrim/store/265136/Chablis-Premier-Cru-Vaucoupin"
+    },
+    {
+      "id": 265834,
+      "representativePublicId": 265834,
+      "mantalakWineId": 178281,
+      "name": "Corinne et Jean Pierre Grossot",
+      "winery": "Domaine Corinne & Jean-Pierre Grossot",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Chablis",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 5,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/62fdf5f739e4a673926619.png",
+      "slugname": "Corinne-et-Jean-Pierre-Grossot",
+      "webUrl": "https://web.winerim.com/matchrim/store/265834/Corinne-et-Jean-Pierre-Grossot"
+    },
+    {
+      "id": 313781,
+      "representativePublicId": 313781,
+      "mantalakWineId": 188653,
+      "name": "Christmann Idig Grosses Gewachs",
+      "winery": "Weingut A. Christmann",
+      "type": "blanco",
+      "country": "DE",
+      "region": "Pfalz",
+      "grapes": [
+        "Riesling"
+      ],
+      "vintages": [
+        2022,
+        2020,
+        2019,
+        2018,
+        2017,
+        2016,
+        2013
+      ],
+      "tastingAttributes": {
+        "power": 3.5,
+        "acidity": 4.7,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3.8
+      },
+      "photo": "https://app.winerim.com/images/wines/65bfde17cbfa7185670925.png",
+      "slugname": "Christmann-Idig-Grosses-Gewachs_2013",
+      "webUrl": "https://web.winerim.com/matchrim/store/313781/Christmann-Idig-Grosses-Gewachs_2013"
+    },
+    {
+      "id": 188041,
+      "representativePublicId": 188041,
+      "mantalakWineId": 195160,
+      "name": "Karthäuserhof Grosses Lage 1981",
+      "winery": "Karthäuserhof",
+      "type": "blanco",
+      "country": "DE",
+      "region": "Mosel-Saar-Ruwer",
+      "grapes": [
+        "Riesling"
+      ],
+      "vintages": [
+        1981
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 5,
+        "sweetness": 2,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/66e13b5949f70395864324.png",
+      "slugname": "Karthauserhof-Grosses-Lage-1981_1981",
+      "webUrl": "https://web.winerim.com/matchrim/store/188041/Karthauserhof-Grosses-Lage-1981_1981"
+    },
+    {
+      "id": 41829,
+      "representativePublicId": 41829,
+      "mantalakWineId": 178737,
+      "name": "Morstein Riesling Grosses Gewachs",
+      "winery": "Wittmann",
+      "type": "blanco",
+      "country": "DE",
+      "region": "Rheinhessen",
+      "grapes": [
+        "Riesling"
+      ],
+      "vintages": [
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 5,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/63342715c7bef669740555.png",
+      "slugname": "Morstein-Riesling-Grosses-Gewachs",
+      "webUrl": "https://web.winerim.com/matchrim/store/41829/Morstein-Riesling-Grosses-Gewachs"
+    },
+    {
+      "id": 254202,
+      "representativePublicId": 254202,
+      "mantalakWineId": 193767,
+      "name": "Jade Gross Peace, Love & Garnacha",
+      "winery": "Jade Gross",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2024,
+        2023,
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 3.4,
+        "acidity": 3.5,
+        "sweetness": 1.4,
+        "tannin": 2.3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6697aaa880dbd729383801.png",
+      "slugname": "Jade-Gross-Peace-Love-Garnacha",
+      "webUrl": "https://web.winerim.com/matchrim/store/254202/Jade-Gross-Peace-Love-Garnacha"
+    },
+    {
+      "id": 218045,
+      "representativePublicId": 218045,
+      "mantalakWineId": 24325,
+      "name": "Chablis Premier Cru Mont de Milieu",
+      "winery": "Jean-Pierre Grossot",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Chablis",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2022,
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/652a3b6d77456163384978.png",
+      "slugname": "Chablis-Premier-Cru-Mont-de-Milieu_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/218045/Chablis-Premier-Cru-Mont-de-Milieu_2022"
+    },
+    {
+      "id": 209033,
+      "representativePublicId": 209033,
+      "mantalakWineId": 182506,
+      "name": "Kirchenstuck Riesling Grosses Gewachs",
+      "winery": "Battenfeld Spanier",
+      "type": "blanco",
+      "country": "DE",
+      "region": "Rheinhessen",
+      "grapes": [
+        "Riesling"
+      ],
+      "vintages": [
+        2021,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 5,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6462451167cd4118287312.png",
+      "slugname": "Kirchenstuck-Riesling-Grosses-Gewachs_2020",
+      "webUrl": "https://web.winerim.com/matchrim/store/209033/Kirchenstuck-Riesling-Grosses-Gewachs_2020"
+    },
+    {
+      "id": 34765,
+      "representativePublicId": 34765,
+      "mantalakWineId": 181944,
+      "name": "Jean-Pierre Grossot\tChablis Premier Cru",
+      "winery": "Jean-Pierre Grossot",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Chablis",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2017
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6436bf937add0942848513.png",
+      "slugname": "Jean-Pierre-Grossot-Chablis-Premier-Cru_2017",
+      "webUrl": "https://web.winerim.com/matchrim/store/34765/Jean-Pierre-Grossot-Chablis-Premier-Cru_2017"
+    },
+    {
+      "id": 286546,
+      "representativePublicId": 286546,
+      "mantalakWineId": 206781,
+      "name": "Karl Haidle Pulvermächer Grosses Gewächs",
+      "winery": "Karl Haidle",
+      "type": "blanco",
+      "country": "DE",
+      "region": "Württemberg",
+      "grapes": [
+        "Riesling"
+      ],
+      "vintages": [
+        2020,
+        2016
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4.3,
+        "sweetness": 1,
+        "tannin": 0.7,
+        "fruity": 2.7
+      },
+      "photo": "https://app.winerim.com/images/wines/690de31196b2d197145626.png",
+      "slugname": "Karl-Haidle-Pulvermacher-Grosses-Gewachs_2020",
+      "webUrl": "https://web.winerim.com/matchrim/store/286546/Karl-Haidle-Pulvermacher-Grosses-Gewachs_2020"
+    },
+    {
+      "id": 376758,
+      "representativePublicId": 376758,
+      "mantalakWineId": 212606,
+      "name": "GROSSOT Chablis Premier Cru La Fourchaume",
+      "winery": "Famille Grossot",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Chablis 1er Cru 'Fourchaume'",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2023
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 5,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 2
+      },
+      "photo": "https://app.winerim.com/images/wines/6a16dc6b8e5ee3.52702415_6a16dc64c68cf140324555.png",
+      "slugname": "GROSSOT-Chablis-Premier-Cru-La-Fourchaume_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/376758/GROSSOT-Chablis-Premier-Cru-La-Fourchaume_2023"
+    },
+    {
+      "id": 167636,
+      "representativePublicId": 167636,
+      "mantalakWineId": 25276,
+      "name": "Jean-Pierre Grossot Premier Cru Fourchaume",
+      "winery": "Jean-Pierre Grossot",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Chablis Premier Cru",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 5,
+        "sweetness": 0,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6315c99c03a3a868351059.png",
+      "slugname": "Jean-Pierre-Grossot-Premier-Cru-Fourchaume_2020",
+      "webUrl": "https://web.winerim.com/matchrim/store/167636/Jean-Pierre-Grossot-Premier-Cru-Fourchaume_2020"
+    },
+    {
+      "id": 370602,
+      "representativePublicId": 370602,
+      "mantalakWineId": 15224,
+      "name": "Felsenberg Riesling Trocken Grosses Gewachs",
+      "winery": "Dönnhoff",
+      "type": "blanco",
+      "country": "DE",
+      "region": "Nahe",
+      "grapes": [
+        "Riesling"
+      ],
+      "vintages": [
+        2021,
+        2013,
+        1986,
+        1985
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4.7,
+        "sweetness": 1,
+        "tannin": 0.3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/633427ab892fa385348751.png",
+      "slugname": "Felsenberg-Riesling-Trocken-Grosses-Gewachs_2013",
+      "webUrl": "https://web.winerim.com/matchrim/store/370602/Felsenberg-Riesling-Trocken-Grosses-Gewachs_2013"
+    },
+    {
+      "id": 370706,
+      "representativePublicId": 370706,
+      "mantalakWineId": 211057,
+      "name": "Famille Grossot Chablis 1er Cru 'Vaucoupin'",
+      "winery": "Famille Grossot",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Chablis",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2024,
+        2023,
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/69d22f5050312961046336.png",
+      "slugname": "Famille-Grossot-Chablis-1er-Cru-Vaucoupin_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/370706/Famille-Grossot-Chablis-1er-Cru-Vaucoupin_2022"
+    },
+    {
+      "id": 378251,
+      "representativePublicId": 378251,
+      "mantalakWineId": 174468,
+      "name": "Niersteiner Hipping Riesling Grosses Gewächs",
+      "winery": "Kühling-Gillot",
+      "type": "blanco",
+      "country": "DE",
+      "region": "Rheinhessen",
+      "grapes": [
+        "Riesling"
+      ],
+      "vintages": [
+        2016
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6ab78e61bb74e6.61428747_pending-photo-19476-2e29673a6c143beb.png",
+      "slugname": "Hipping-Riesling_2016",
+      "webUrl": "https://web.winerim.com/matchrim/store/378251/Hipping-Riesling_2016"
+    },
+    {
+      "id": 244838,
+      "representativePublicId": 244838,
+      "mantalakWineId": 209384,
+      "name": "Dönnhoff Krötenpfuhl Riesling Grosses Gewäch",
+      "winery": "Dönnhoff",
+      "type": "blanco",
+      "country": "DE",
+      "region": "Nahe",
+      "grapes": [
+        "Riesling"
+      ],
+      "vintages": [
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 1,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69859b47ce0a3324519995.png",
+      "slugname": "Donnhoff-Krotenpfuhl-Riesling-Grosses-Gewach_2020",
+      "webUrl": "https://web.winerim.com/matchrim/store/244838/Donnhoff-Krotenpfuhl-Riesling-Grosses-Gewach_2020"
+    },
+    {
+      "id": 262355,
+      "representativePublicId": 262355,
+      "mantalakWineId": 211014,
+      "name": "J.P. Grossot Chablis Cuvée La Part des Anges",
+      "winery": "Jean-Pierre Grossot",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Chablis",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2022,
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 5,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/69ccd516f399b894363144.png",
+      "slugname": "J-P-Grossot-Chablis-Cuvee-La-Part-des-Anges_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/262355/J-P-Grossot-Chablis-Cuvee-La-Part-des-Anges_2021"
+    },
+    {
+      "id": 364238,
+      "representativePublicId": 364238,
+      "mantalakWineId": 63402,
+      "name": "Le Jardin de la Grosse Pierre Grand Cru 'Bouzy'",
+      "winery": "Benoît Lahaye",
+      "type": "espumoso",
+      "country": "FR",
+      "region": "Champagne Grand Cru 'Bouzy'",
+      "grapes": [
+        "Arbanne",
+        "Chardonnay",
+        "Pinot Blanc",
+        "Pinot Meunier",
+        "Pinot Noir"
+      ],
+      "vintages": [
+        2021,
+        2019,
+        2018,
+        2017
+      ],
+      "tastingAttributes": {
+        "power": 3.8,
+        "acidity": 4.8,
+        "sweetness": 1,
+        "tannin": 0.3,
+        "fruity": 3.8
+      },
+      "photo": "https://app.winerim.com/images/wines/66f17aa587328980438605.png",
+      "slugname": "Le-Jardin-de-la-Grosse-Pierre-Grand-Cru-Bouzy",
+      "webUrl": "https://web.winerim.com/matchrim/store/364238/Le-Jardin-de-la-Grosse-Pierre-Grand-Cru-Bouzy"
+    },
+    {
+      "id": 250521,
+      "representativePublicId": 250521,
+      "mantalakWineId": 65867,
+      "name": "Palazzino Grosso Sanese Chianti Classico Riserva",
+      "winery": "Podere Il Palazzino",
+      "type": "tinto",
+      "country": "IT",
+      "region": "Chianti Classico",
+      "grapes": [
+        "Sangiovese"
+      ],
+      "vintages": [
+        2019,
+        2018,
+        2016,
+        2013,
+        2009,
+        2008,
+        2007
+      ],
+      "tastingAttributes": {
+        "power": 4.4,
+        "acidity": 4,
+        "sweetness": 0.8,
+        "tannin": 3.8,
+        "fruity": 3.6
+      },
+      "photo": "https://app.winerim.com/images/wines/6812787c56521962666733.png",
+      "slugname": "Palazzino-Grosso-Sanese-Chianti-Classico-Riserva_2019",
+      "webUrl": "https://web.winerim.com/matchrim/store/250521/Palazzino-Grosso-Sanese-Chianti-Classico-Riserva_2019"
+    },
+    {
+      "id": 165378,
+      "representativePublicId": 165378,
+      "mantalakWineId": 201280,
+      "name": "Wittmann Brunnenhauschen Riesling Grosses Gewachs",
+      "winery": "Wittmann",
+      "type": "blanco",
+      "country": "DE",
+      "region": "Rheinhessen",
+      "grapes": [
+        "Riesling"
+      ],
+      "vintages": [
+        2021,
+        2020,
+        2019,
+        2018,
+        2017
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 5,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6810a843e3e22287512737.png",
+      "slugname": "Wittmann-Brunnenhauschen-Riesling-Grosses-Gewachs_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/165378/Wittmann-Brunnenhauschen-Riesling-Grosses-Gewachs_2021"
+    },
+    {
+      "id": 206239,
+      "representativePublicId": 206239,
+      "mantalakWineId": 204951,
+      "name": "Von Winning Riesling Kirchenstück Grosses Gewächs",
+      "winery": "Von Winning",
+      "type": "blanco",
+      "country": "DE",
+      "region": "Pfalz",
+      "grapes": [
+        "Riesling"
+      ],
+      "vintages": [
+        2023
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/68c689f0c6172367812252.png",
+      "slugname": "Von-Winning-Riesling-Kirchenstuck-Grosses-Gewachs_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/206239/Von-Winning-Riesling-Kirchenstuck-Grosses-Gewachs_2023"
+    },
+    {
+      "id": 381571,
+      "representativePublicId": 381571,
+      "mantalakWineId": 209629,
+      "name": "Bernkastel Doctor Riesling Kabinett VDP Grosse Lage",
+      "winery": "Weingüter Wegeler",
+      "type": "blanco",
+      "country": "DE",
+      "region": "Mosel-Saar-Ruwer",
+      "grapes": [
+        "Riesling"
+      ],
+      "vintages": [
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 4,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/698dd6a20d666150806124.png",
+      "slugname": "Bernkastel-Doctor-Riesling-Kabinett-VDP-Grosse-Lage_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/381571/Bernkastel-Doctor-Riesling-Kabinett-VDP-Grosse-Lage_2022"
+    }
+  ],
+  "count": 50,
+  "total": 57,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 2
+}

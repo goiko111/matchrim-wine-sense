@@ -1,0 +1,89 @@
+{
+  "results": [
+    {
+      "id": 255982,
+      "representativePublicId": 255982,
+      "mantalakWineId": 11090,
+      "name": "Conde de Haro Brut",
+      "winery": "Muga",
+      "type": "espumoso",
+      "country": "ES",
+      "region": "Cava",
+      "grapes": [
+        "Macabeo",
+        "Malvasía",
+        "Viura"
+      ],
+      "vintages": [
+        2019,
+        2012
+      ],
+      "tastingAttributes": {
+        "power": 2,
+        "acidity": 3,
+        "sweetness": 2,
+        "tannin": 0,
+        "fruity": 2
+      },
+      "photo": "https://app.winerim.com/images/wines/62e244bbe16b6198974890.png",
+      "slugname": "Conde-de-Haro-Brut",
+      "webUrl": "https://web.winerim.com/matchrim/store/255982/Conde-de-Haro-Brut"
+    },
+    {
+      "id": 172779,
+      "representativePublicId": 172779,
+      "mantalakWineId": 11153,
+      "name": "Conde de Haro Brut Rosé",
+      "winery": "Muga",
+      "type": "espumoso",
+      "country": "ES",
+      "region": "Cava",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2022,
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0.1,
+        "fruity": 3.1
+      },
+      "photo": "https://app.winerim.com/images/wines/62fcdf9db75a0617563754.png",
+      "slugname": "Conde-de-Haro-Brut-Rose",
+      "webUrl": "https://web.winerim.com/matchrim/store/172779/Conde-de-Haro-Brut-Rose"
+    },
+    {
+      "id": 379548,
+      "representativePublicId": 379548,
+      "mantalakWineId": 217442,
+      "name": "Conde de Haro Blanc de Blancs Millésimé",
+      "winery": "Muga",
+      "type": "espumoso",
+      "country": "ES",
+      "region": "D.O. Cava",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 5,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6ac8c6f6836bb7.16830136_pending-photo-20013-49131bc602881e29.png",
+      "slugname": "Conde-de-Haro-Blanc-de-Blancs-Millesime-Muga-ES",
+      "webUrl": "https://web.winerim.com/matchrim/store/379548/Conde-de-Haro-Blanc-de-Blancs-Millesime-Muga-ES"
+    }
+  ],
+  "count": 3,
+  "total": 3,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

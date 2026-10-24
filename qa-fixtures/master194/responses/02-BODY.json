@@ -1,0 +1,358 @@
+{
+  "results": [
+    {
+      "id": 160235,
+      "representativePublicId": 160235,
+      "mantalakWineId": 2572,
+      "name": "Solear",
+      "winery": "Barbadillo",
+      "type": "fortificado",
+      "country": "ES",
+      "region": "Jerez-Xérès-Sherry",
+      "grapes": [
+        "Palomino Fino"
+      ],
+      "vintages": [
+        2023
+      ],
+      "tastingAttributes": {
+        "power": 3.1,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 2
+      },
+      "photo": "https://app.winerim.com/images/wines/682cb18c44e02949574541.png",
+      "slugname": "Solear",
+      "webUrl": "https://web.winerim.com/matchrim/store/160235/Solear"
+    },
+    {
+      "id": 285886,
+      "representativePublicId": 285886,
+      "mantalakWineId": 193519,
+      "name": "Caray Reserva",
+      "winery": "Bodegas y Viñedos El Soleado",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Toro",
+      "grapes": [
+        "Tinta de Toro"
+      ],
+      "vintages": [],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/667d6607bddf4178781346.png",
+      "slugname": "Caray-Reserva",
+      "webUrl": "https://web.winerim.com/matchrim/store/285886/Caray-Reserva"
+    },
+    {
+      "id": 140241,
+      "representativePublicId": 140241,
+      "mantalakWineId": 198499,
+      "name": "El Vino Soleado",
+      "winery": "Bodegas Recuero",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Toledo",
+      "grapes": [],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3,
+        "sweetness": 2,
+        "tannin": 2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/67a4841516002971188553.png",
+      "slugname": "El-Vino-Soleado",
+      "webUrl": "https://web.winerim.com/matchrim/store/140241/El-Vino-Soleado"
+    },
+    {
+      "id": 208155,
+      "representativePublicId": 208155,
+      "mantalakWineId": 186640,
+      "name": "Caray Gran Reserva",
+      "winery": "Bodegas y Viñedos El Soleado",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Toro",
+      "grapes": [
+        "Tinta de Toro"
+      ],
+      "vintages": [
+        2021,
+        2014
+      ],
+      "tastingAttributes": {
+        "power": 4.5,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 3.5
+      },
+      "photo": "https://app.winerim.com/images/wines/6555ca211ccba116598971.png",
+      "slugname": "Caray-Gran-Reserva_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/208155/Caray-Gran-Reserva_2021"
+    },
+    {
+      "id": 220948,
+      "representativePublicId": 220948,
+      "mantalakWineId": 55521,
+      "name": "Roagna Solea Langhe",
+      "winery": "Roagna",
+      "type": "blanco",
+      "country": "IT",
+      "region": "Langhe",
+      "grapes": [
+        "Chardonnay",
+        "Nebbiolo"
+      ],
+      "vintages": [
+        2022,
+        2021,
+        2020,
+        2019,
+        2018
+      ],
+      "tastingAttributes": {
+        "power": 3.2,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 1,
+        "fruity": 3.7
+      },
+      "photo": "https://app.winerim.com/images/wines/6501711912b24551437881.png",
+      "slugname": "Roagna-Solea-Langhe",
+      "webUrl": "https://web.winerim.com/matchrim/store/220948/Roagna-Solea-Langhe"
+    },
+    {
+      "id": 370794,
+      "representativePublicId": 370794,
+      "mantalakWineId": 187940,
+      "name": "Solear Bicentenario",
+      "winery": "Barbadillo",
+      "type": "fortificado",
+      "country": "ES",
+      "region": "Sanlúcar de Barrameda",
+      "grapes": [
+        "Palomino Fino"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 1,
+        "fruity": 2
+      },
+      "photo": "https://app.winerim.com/images/wines/65a3b38c0b591658501978.png",
+      "slugname": "Solear-Bicentenario",
+      "webUrl": "https://web.winerim.com/matchrim/store/370794/Solear-Bicentenario"
+    },
+    {
+      "id": 292141,
+      "representativePublicId": 292141,
+      "mantalakWineId": 187825,
+      "name": "Solear En Rama Saca De Otoño",
+      "winery": "Barbadillo",
+      "type": "fortificado",
+      "country": "ES",
+      "region": "Jerez-Xérès-Sherry",
+      "grapes": [
+        "Palomino Fino"
+      ],
+      "vintages": [
+        2025,
+        2024,
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017,
+        2016,
+        2015,
+        2014,
+        2013
+      ],
+      "tastingAttributes": {
+        "power": 3.4,
+        "acidity": 3.7,
+        "sweetness": 0.9,
+        "tannin": 0.3,
+        "fruity": 2
+      },
+      "photo": "https://app.winerim.com/images/wines/659e4635d6743538393222.png",
+      "slugname": "Solear-En-Rama-Saca-De-Otono_2019",
+      "webUrl": "https://web.winerim.com/matchrim/store/292141/Solear-En-Rama-Saca-De-Otono_2019"
+    },
+    {
+      "id": 170067,
+      "representativePublicId": 170067,
+      "mantalakWineId": 201840,
+      "name": "Barbadillo Manzanilla Solear",
+      "winery": "Barbadillo",
+      "type": "fortificado",
+      "country": "ES",
+      "region": "Jerez-Xérès-Sherry",
+      "grapes": [
+        "Palomino Fino"
+      ],
+      "vintages": [
+        2023,
+        1940
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4.9,
+        "sweetness": 0.1,
+        "tannin": 0,
+        "fruity": 2
+      },
+      "photo": "https://app.winerim.com/images/wines/682dd0ce12367578862770.png",
+      "slugname": "Barbadillo-Manzanilla-Solear",
+      "webUrl": "https://web.winerim.com/matchrim/store/170067/Barbadillo-Manzanilla-Solear"
+    },
+    {
+      "id": 284469,
+      "representativePublicId": 284469,
+      "mantalakWineId": 457,
+      "name": "Solear En Rama Saca De Invierno",
+      "winery": "Barbadillo",
+      "type": "fortificado",
+      "country": "ES",
+      "region": "Jerez-Xérès-Sherry",
+      "grapes": [
+        "Palomino Fino"
+      ],
+      "vintages": [
+        2023,
+        2021,
+        2018,
+        2016,
+        2015,
+        2013,
+        1999
+      ],
+      "tastingAttributes": {
+        "power": 3.8,
+        "acidity": 4.8,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 2
+      },
+      "photo": "https://app.winerim.com/images/wines/63500165263c4171746084.png",
+      "slugname": "Solear-En-Rama-Saca-De-Invierno_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/284469/Solear-En-Rama-Saca-De-Invierno_2023"
+    },
+    {
+      "id": 276006,
+      "representativePublicId": 276006,
+      "mantalakWineId": 971,
+      "name": "Solear en Rama Saca de Primavera",
+      "winery": "Barbadillo",
+      "type": "fortificado",
+      "country": "ES",
+      "region": "Jerez-Xérès-Sherry",
+      "grapes": [
+        "Palomino Fino"
+      ],
+      "vintages": [
+        2025,
+        2024,
+        2023,
+        2022,
+        2021,
+        2019
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 2
+      },
+      "photo": "https://app.winerim.com/images/wines/66154f9f3a1f4014642132.png",
+      "slugname": "Solear-en-Rama-Saca-de-Primavera",
+      "webUrl": "https://web.winerim.com/matchrim/store/276006/Solear-en-Rama-Saca-de-Primavera"
+    },
+    {
+      "id": 95936,
+      "representativePublicId": 95936,
+      "mantalakWineId": 178878,
+      "name": "Manzanilla Solear En Rama Saca De Verano",
+      "winery": "Barbadillo",
+      "type": "fortificado",
+      "country": "ES",
+      "region": "Jerez-Xérès-Sherry",
+      "grapes": [
+        "Palomino"
+      ],
+      "vintages": [
+        2026,
+        2024,
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017,
+        2016,
+        2015,
+        2014,
+        2013,
+        1999
+      ],
+      "tastingAttributes": {
+        "power": 2.9,
+        "acidity": 3.9,
+        "sweetness": 0.7,
+        "tannin": 0,
+        "fruity": 1.9
+      },
+      "photo": "https://app.winerim.com/images/wines/63430f6fd6b33419915361.png",
+      "slugname": "Manzanilla-Solear-En-Rama-Saca-De-Verano_2026",
+      "webUrl": "https://web.winerim.com/matchrim/store/95936/Manzanilla-Solear-En-Rama-Saca-De-Verano_2026"
+    },
+    {
+      "id": 292155,
+      "representativePublicId": 292155,
+      "mantalakWineId": 200307,
+      "name": "Manzanilla Solear En Rama Saca De Primavera",
+      "winery": "Barbadillo",
+      "type": "fortificado",
+      "country": "ES",
+      "region": "Jerez-Xérès-Sherry",
+      "grapes": [
+        "Palomino Fino"
+      ],
+      "vintages": [
+        2024,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017,
+        2016,
+        2015,
+        2014
+      ],
+      "tastingAttributes": {
+        "power": 3.3,
+        "acidity": 3.8,
+        "sweetness": 0.8,
+        "tannin": 0,
+        "fruity": 2.1
+      },
+      "photo": "https://app.winerim.com/images/wines/67f39d52d38c2866931298.png",
+      "slugname": "Manzanilla-Solear-En-Rama-Saca-De-Primavera_2018",
+      "webUrl": "https://web.winerim.com/matchrim/store/292155/Manzanilla-Solear-En-Rama-Saca-De-Primavera_2018"
+    }
+  ],
+  "count": 12,
+  "total": 12,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

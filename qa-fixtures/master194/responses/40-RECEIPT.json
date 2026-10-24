@@ -1,0 +1,9 @@
+{
+  "index": 40,
+  "label": "paging-4",
+  "url": "https://app.winerim.com/api/v1/matchrim/wines/search?name=AMARONE&limit=4&page=1",
+  "httpStatus": 200,
+  "elapsedMs": 144,
+  "bytes": 2248,
+  "sha256": "54afb788e7562f49626515cb552de78b09bba65aeda4268b27564b272b8655d4"
+}

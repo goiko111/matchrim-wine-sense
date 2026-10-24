@@ -1,0 +1,9 @@
+{
+  "index": 33,
+  "label": "img-198-primary",
+  "url": "https://app.winerim.com/api/v1/matchrim/wines/search?q=DA+LUCA&limit=50&page=1",
+  "httpStatus": 200,
+  "elapsedMs": 83,
+  "bytes": 1507,
+  "sha256": "d7dfa6d326ddade9c2aba4b75516c1ae3788863819d81dd4723b1e31a7c81559"
+}

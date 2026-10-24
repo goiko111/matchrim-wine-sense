@@ -1,0 +1,9 @@
+{
+  "index": 13,
+  "label": "img-060-primary",
+  "url": "https://app.winerim.com/api/v1/matchrim/wines/search?name=AMARONE&winery=BERTANI&limit=50&page=1",
+  "httpStatus": 200,
+  "elapsedMs": 140,
+  "bytes": 2663,
+  "sha256": "9b60f1b288d86c5d741588d3f8109da34aae2d7e28a950a7db6af55e6d57ed07"
+}

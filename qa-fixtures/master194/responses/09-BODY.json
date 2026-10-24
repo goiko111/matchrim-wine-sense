@@ -1,0 +1,35 @@
+{
+  "results": [
+    {
+      "id": 377723,
+      "representativePublicId": 377723,
+      "mantalakWineId": 217452,
+      "name": "Protos 12 Meses en Barrica Selección del Sumiller",
+      "winery": "Protos",
+      "type": "tinto",
+      "country": "ES",
+      "region": "D.O. Ribera del Duero",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6ac9edd5a84198.17230038_pending-photo-20055-cac8c9afc81dc828.png",
+      "slugname": "Protos-12-Meses-en-Barrica-Seleccion-del-Sumiller-Protos-ES_2022",
+      "webUrl": "https://web.winerim.com/matchrim/store/377723/Protos-12-Meses-en-Barrica-Seleccion-del-Sumiller-Protos-ES_2022"
+    }
+  ],
+  "count": 1,
+  "total": 1,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

@@ -1,0 +1,35 @@
+{
+  "results": [
+    {
+      "id": 375880,
+      "representativePublicId": 375880,
+      "mantalakWineId": 217346,
+      "name": "Meursault Les Grands Charrons",
+      "winery": "Pierre Girardin",
+      "type": "blanco",
+      "country": "FR",
+      "region": "Meursault",
+      "grapes": [
+        "Chardonnay"
+      ],
+      "vintages": [
+        2024
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6ac6367b79da86.92377325_pending-photo-19853-e58ae387ea028472.png",
+      "slugname": "Meursault-Les-Grands-Charrons-Pierre-Girardin-FR_2024",
+      "webUrl": "https://web.winerim.com/matchrim/store/375880/Meursault-Les-Grands-Charrons-Pierre-Girardin-FR_2024"
+    }
+  ],
+  "count": 1,
+  "total": 1,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

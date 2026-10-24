@@ -1,0 +1,45 @@
+{
+  "mantalakWineId": 215213,
+  "name": "Giacondi Montepulciano D´Abruzzo",
+  "winery": "Giacondi",
+  "type": "tinto",
+  "country": "IT",
+  "region": "Abruzzo",
+  "grapes": [
+    "Montepulciano"
+  ],
+  "photo": "https://app.winerim.com/images/wines/6a7ec845923f38.06928669_pending-photo-16580-92276c0855038cc1.png",
+  "slugname": "Giacondi-Montepulciano-D-Abruzzo-Giacondi-IT",
+  "representativePublicId": 362891,
+  "webUrl": "https://web.winerim.com/matchrim/store/362891/Giacondi-Montepulciano-D-Abruzzo-Giacondi-IT",
+  "vintages": [],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": false,
+    "attributesByVintage": [
+      {
+        "vintage": null,
+        "power": 3,
+        "sweetness": 1,
+        "acidity": 4,
+        "tannin": 2,
+        "fruity": 4,
+        "aging": 1,
+        "source": null
+      }
+    ]
+  }
+}

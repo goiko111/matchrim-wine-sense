@@ -1,0 +1,154 @@
+{
+  "results": [
+    {
+      "id": 368597,
+      "representativePublicId": 368597,
+      "mantalakWineId": 11435,
+      "name": "Amarone della Valpolicella Classico",
+      "winery": "Bertani",
+      "type": "tinto",
+      "country": "IT",
+      "region": "Amarone della Valpolicella",
+      "grapes": [
+        "Corvina",
+        "Rondinella"
+      ],
+      "vintages": [
+        2021,
+        2019,
+        2016,
+        2015,
+        2013,
+        2012,
+        2011,
+        2010,
+        2008,
+        2007,
+        2005,
+        2004,
+        2003,
+        2000,
+        1998,
+        1996,
+        1994,
+        1989,
+        1986,
+        1985,
+        1981,
+        1980,
+        1975,
+        1974,
+        1973,
+        1972,
+        1971,
+        1970,
+        1967,
+        1964,
+        1962
+      ],
+      "tastingAttributes": {
+        "power": 4.7,
+        "acidity": 3.5,
+        "sweetness": 1.7,
+        "tannin": 4,
+        "fruity": 3.9
+      },
+      "photo": "https://app.winerim.com/images/wines/64180d2fa3fec593207428.png",
+      "slugname": "Amarone-della-Valpolicella-Classico_2015",
+      "webUrl": "https://web.winerim.com/matchrim/store/368597/Amarone-della-Valpolicella-Classico_2015"
+    },
+    {
+      "id": 370999,
+      "representativePublicId": 370999,
+      "mantalakWineId": 45915,
+      "name": "Amarone della Valpolicella Valpantena",
+      "winery": "Bertani",
+      "type": "tinto",
+      "country": "IT",
+      "region": "Amarone della Valpolicella",
+      "grapes": [
+        "Corvina",
+        "Croatina",
+        "Rondinella"
+      ],
+      "vintages": [
+        2024,
+        2022,
+        2021,
+        2020,
+        2019
+      ],
+      "tastingAttributes": {
+        "power": 5,
+        "acidity": 3.7,
+        "sweetness": 2,
+        "tannin": 3.8,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6482d596148d3388445184.png",
+      "slugname": "Amarone-della-Valpolicella-Valpantena",
+      "webUrl": "https://web.winerim.com/matchrim/store/370999/Amarone-della-Valpolicella-Valpantena"
+    },
+    {
+      "id": 285679,
+      "representativePublicId": 285679,
+      "mantalakWineId": 48525,
+      "name": "Amarone della Valpolicella Classico Riserva",
+      "winery": "Tenuta Santa Maria di Gaetano Bertani",
+      "type": "tinto",
+      "country": "IT",
+      "region": "Amarone della Valpolicella Classico",
+      "grapes": [
+        "Corvina",
+        "Corvinone",
+        "Rondinella"
+      ],
+      "vintages": [
+        2017,
+        2015
+      ],
+      "tastingAttributes": {
+        "power": 5,
+        "acidity": 4,
+        "sweetness": 2,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6a292e4185f15705993310.png",
+      "slugname": "Amarone-della-Valpolicella-Classico-Riserva_2017",
+      "webUrl": "https://web.winerim.com/matchrim/store/285679/Amarone-della-Valpolicella-Classico-Riserva_2017"
+    },
+    {
+      "id": 376594,
+      "representativePublicId": 376594,
+      "mantalakWineId": 217437,
+      "name": "Amarone della Valpolicella Classico Riserva",
+      "winery": "Bertani",
+      "type": "tinto",
+      "country": "IT",
+      "region": "Amarone della Valpolicella",
+      "grapes": [
+        "Corvina",
+        "Rondinella"
+      ],
+      "vintages": [
+        2015
+      ],
+      "tastingAttributes": {
+        "power": 5,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6ac8b9b05f639752845275.png",
+      "slugname": "Amarone-della-Valpolicella-Classico-Riserva-Bertani-IT_2015",
+      "webUrl": "https://web.winerim.com/matchrim/store/376594/Amarone-della-Valpolicella-Classico-Riserva-Bertani-IT_2015"
+    }
+  ],
+  "count": 4,
+  "total": 4,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

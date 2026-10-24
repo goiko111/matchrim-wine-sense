@@ -1,0 +1,739 @@
+{
+  "results": [
+    {
+      "id": 209266,
+      "representativePublicId": 209266,
+      "mantalakWineId": 178133,
+      "name": "CVC",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2010,
+        2009,
+        2008
+      ],
+      "tastingAttributes": {
+        "power": 4.1,
+        "acidity": 3.2,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 3.2
+      },
+      "photo": "https://app.winerim.com/images/wines/62ecb869e3c28242153139.png",
+      "slugname": "CVC",
+      "webUrl": "https://web.winerim.com/matchrim/store/209266/CVC"
+    },
+    {
+      "id": 193127,
+      "representativePublicId": 193127,
+      "mantalakWineId": 180867,
+      "name": "Mágico",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Alicante Bouschet",
+        "Calagraña",
+        "Garnacha",
+        "Graciano",
+        "Otras",
+        "Tempranillo",
+        "Torrontés",
+        "Viura"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017,
+        2016,
+        2010
+      ],
+      "tastingAttributes": {
+        "power": 4.6,
+        "acidity": 3.2,
+        "sweetness": 1,
+        "tannin": 3.9,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/63fcc747edb1d531583189.png",
+      "slugname": "Magico_2020",
+      "webUrl": "https://web.winerim.com/matchrim/store/193127/Magico_2020"
+    },
+    {
+      "id": 252593,
+      "representativePublicId": 252593,
+      "mantalakWineId": 4459,
+      "name": "Amancio",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017,
+        2016,
+        2015,
+        2014,
+        2013,
+        2012,
+        2011,
+        2010,
+        2009,
+        2008,
+        2007,
+        2006,
+        2005,
+        2002,
+        2001,
+        1998
+      ],
+      "tastingAttributes": {
+        "power": 4.4,
+        "acidity": 3.2,
+        "sweetness": 1,
+        "tannin": 4.3,
+        "fruity": 3.8
+      },
+      "photo": "https://app.winerim.com/images/wines/616e7e6bbbfa7049771594.png",
+      "slugname": "Amancio_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/252593/Amancio_2021"
+    },
+    {
+      "id": 243748,
+      "representativePublicId": 243748,
+      "mantalakWineId": 177262,
+      "name": "Murmurón",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo",
+        "Viura"
+      ],
+      "vintages": [
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3.8,
+        "sweetness": 1,
+        "tannin": 2.8,
+        "fruity": 3.5
+      },
+      "photo": "https://app.winerim.com/images/wines/62690a36e5f2c823920044.png",
+      "slugname": "Murmuron",
+      "webUrl": "https://web.winerim.com/matchrim/store/243748/Murmuron"
+    },
+    {
+      "id": 381253,
+      "representativePublicId": 381253,
+      "mantalakWineId": 214398,
+      "name": "Finca El Bosque",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2024,
+        2023,
+        2022,
+        2021,
+        2020,
+        2016,
+        2015,
+        2014,
+        2012,
+        2011,
+        2009,
+        2008,
+        2007,
+        2006
+      ],
+      "tastingAttributes": {
+        "power": 4.5,
+        "acidity": 3.2,
+        "sweetness": 1,
+        "tannin": 4.1,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6a4b728329bf3078014126.png",
+      "slugname": "Finca-El-Bosque_2024",
+      "webUrl": "https://web.winerim.com/matchrim/store/381253/Finca-El-Bosque_2024"
+    },
+    {
+      "id": 376063,
+      "representativePublicId": 376063,
+      "mantalakWineId": 217334,
+      "name": "Sierra Cantabria",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "D.O.Ca Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6ac5da593c0056.55252804_pending-photo-19840-6577a098e8bca0eb.png",
+      "slugname": "Sierra-Cantabria-Sierra-Cantabria-ES",
+      "webUrl": "https://web.winerim.com/matchrim/store/376063/Sierra-Cantabria-Sierra-Cantabria-ES"
+    },
+    {
+      "id": 379692,
+      "representativePublicId": 379692,
+      "mantalakWineId": 41680,
+      "name": "Colección Privada",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2024,
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017,
+        2016,
+        2015,
+        2009,
+        2008,
+        2000,
+        1996
+      ],
+      "tastingAttributes": {
+        "power": 3.9,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3.8,
+        "fruity": 3.9
+      },
+      "photo": "https://app.winerim.com/images/wines/62310753e8a57802405296.png",
+      "slugname": "Coleccion-Privada",
+      "webUrl": "https://web.winerim.com/matchrim/store/379692/Coleccion-Privada"
+    },
+    {
+      "id": 219771,
+      "representativePublicId": 219771,
+      "mantalakWineId": 3081,
+      "name": "XF Sierra Cantabria",
+      "winery": "Sierra Cantabria",
+      "type": "rosado",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Garnacha",
+        "Maturana Tinta",
+        "Sauvignon Blanc",
+        "Tempranillo",
+        "Viura"
+      ],
+      "vintages": [
+        2025,
+        2024,
+        2023,
+        2022,
+        2021,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 3.4,
+        "acidity": 2.8,
+        "sweetness": 1.9,
+        "tannin": 2.9,
+        "fruity": 3.8
+      },
+      "photo": "https://app.winerim.com/images/wines/61af47df0f420408258730.png",
+      "slugname": "XF-Sierra-Cantabria",
+      "webUrl": "https://web.winerim.com/matchrim/store/219771/XF-Sierra-Cantabria"
+    },
+    {
+      "id": 257272,
+      "representativePublicId": 257272,
+      "mantalakWineId": 35466,
+      "name": "Sierra Cantabria Cuvée",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2022,
+        2020,
+        2019,
+        2018,
+        2017,
+        2015,
+        2012
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 1.9,
+        "sweetness": 2.3,
+        "tannin": 4,
+        "fruity": 3.3
+      },
+      "photo": "https://app.winerim.com/images/wines/632ac7481eb88843827754.png",
+      "slugname": "Sierra-Cantabria-Cuvee",
+      "webUrl": "https://web.winerim.com/matchrim/store/257272/Sierra-Cantabria-Cuvee"
+    },
+    {
+      "id": 380261,
+      "representativePublicId": 380261,
+      "mantalakWineId": 6542,
+      "name": "Sierra Cantabria Blanco",
+      "winery": "Sierra Cantabria",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Viura"
+      ],
+      "vintages": [
+        2025,
+        2024,
+        2023,
+        2020,
+        2017
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3.3,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 2.6
+      },
+      "photo": "https://app.winerim.com/images/wines/62c3e5a0414b4319996723.png",
+      "slugname": "Sierra-Cantabria-Blanco_2024",
+      "webUrl": "https://web.winerim.com/matchrim/store/380261/Sierra-Cantabria-Blanco_2024"
+    },
+    {
+      "id": 373808,
+      "representativePublicId": 373808,
+      "mantalakWineId": 180443,
+      "name": "Sierra Cantabria Rosado",
+      "winery": "Sierra Cantabria",
+      "type": "rosado",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Garnacha",
+        "Tempranillo",
+        "Viura"
+      ],
+      "vintages": [
+        2025,
+        2024,
+        2023,
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 2.1,
+        "acidity": 2.9,
+        "sweetness": 2.1,
+        "tannin": 1.7,
+        "fruity": 3.5
+      },
+      "photo": "https://app.winerim.com/images/wines/63d4ec124c466181829559.png",
+      "slugname": "Sierra-Cantabria-Rosado",
+      "webUrl": "https://web.winerim.com/matchrim/store/373808/Sierra-Cantabria-Rosado"
+    },
+    {
+      "id": 258685,
+      "representativePublicId": 258685,
+      "mantalakWineId": 6796,
+      "name": "Sierra Cantabria Crianza",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1.7,
+        "tannin": 4,
+        "fruity": 3.2
+      },
+      "photo": "https://app.winerim.com/images/wines/632ac6f21018c391499679.png",
+      "slugname": "Sierra-Cantabria-Crianza",
+      "webUrl": "https://web.winerim.com/matchrim/store/258685/Sierra-Cantabria-Crianza"
+    },
+    {
+      "id": 379693,
+      "representativePublicId": 379693,
+      "mantalakWineId": 8704,
+      "name": "Sierra Cantabria Organza",
+      "winery": "Sierra Cantabria",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Garnacha Blanca",
+        "Malvasía",
+        "Viura"
+      ],
+      "vintages": [
+        2025,
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2010,
+        2008,
+        2007
+      ],
+      "tastingAttributes": {
+        "power": 3.4,
+        "acidity": 3.6,
+        "sweetness": 1.5,
+        "tannin": 0.5,
+        "fruity": 3.6
+      },
+      "photo": "https://app.winerim.com/images/wines/632ac7a8f3f55318433013.png",
+      "slugname": "Sierra-Cantabria-Organza",
+      "webUrl": "https://web.winerim.com/matchrim/store/379693/Sierra-Cantabria-Organza"
+    },
+    {
+      "id": 25174,
+      "representativePublicId": 25174,
+      "mantalakWineId": 17421,
+      "name": "Sierra Cantabria Reserva",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2019,
+        2018,
+        2017,
+        2016,
+        2014,
+        2013,
+        2004
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 3.4
+      },
+      "photo": "https://app.winerim.com/images/wines/63d6a1bdde062102996368.png",
+      "slugname": "Sierra-Cantabria-Reserva",
+      "webUrl": "https://web.winerim.com/matchrim/store/25174/Sierra-Cantabria-Reserva"
+    },
+    {
+      "id": 357337,
+      "representativePublicId": 357337,
+      "mantalakWineId": 206452,
+      "name": "Sierra Cantabria Organza",
+      "winery": "Sierra Cantabria",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Garnacha Blanca",
+        "Malvasía",
+        "Viura"
+      ],
+      "vintages": [
+        2022,
+        2020,
+        2010,
+        2009
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0.5,
+        "fruity": 3.2
+      },
+      "photo": "https://app.winerim.com/images/wines/68ff6cd0c2c8f771020053.png",
+      "slugname": "Sierra-Cantabria-Organza",
+      "webUrl": "https://web.winerim.com/matchrim/store/357337/Sierra-Cantabria-Organza"
+    },
+    {
+      "id": 213619,
+      "representativePublicId": 213619,
+      "mantalakWineId": 68938,
+      "name": "Sierra Cantabria Garnacha",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Garnacha"
+      ],
+      "vintages": [
+        2020,
+        2019
+      ],
+      "tastingAttributes": {
+        "power": 3.8,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 2.8,
+        "fruity": 4.3
+      },
+      "photo": "https://app.winerim.com/images/wines/65030d210bfae794901977.png",
+      "slugname": "Sierra-Cantabria-Garnacha_2019",
+      "webUrl": "https://web.winerim.com/matchrim/store/213619/Sierra-Cantabria-Garnacha_2019"
+    },
+    {
+      "id": 286296,
+      "representativePublicId": 286296,
+      "mantalakWineId": 6861,
+      "name": "Sierra Cantabria Selección",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2021,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 3.8,
+        "acidity": 3,
+        "sweetness": 0.4,
+        "tannin": 3.8,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/62f36c384e570573475158.png",
+      "slugname": "Sierra-Cantabria-Seleccion_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/286296/Sierra-Cantabria-Seleccion_2021"
+    },
+    {
+      "id": 277415,
+      "representativePublicId": 277415,
+      "mantalakWineId": 206340,
+      "name": "Sierra Cantabria El Puntido",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2021,
+        2018,
+        2017,
+        2016,
+        2007
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3.5,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/68f9f406cc8ab237729922.png",
+      "slugname": "Sierra-Cantabria-El-Puntido_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/277415/Sierra-Cantabria-El-Puntido_2021"
+    },
+    {
+      "id": 89527,
+      "representativePublicId": 89527,
+      "mantalakWineId": 60516,
+      "name": "Sierra Cantabria Gran Reserva",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2004
+      ],
+      "tastingAttributes": {
+        "power": 4.5,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 3.5
+      },
+      "photo": "https://app.winerim.com/images/wines/6024e3628f657208943192.png",
+      "slugname": "Sierra-Cantabria-Gran-Reserva_2004",
+      "webUrl": "https://web.winerim.com/matchrim/store/89527/Sierra-Cantabria-Gran-Reserva_2004"
+    },
+    {
+      "id": 369711,
+      "representativePublicId": 369711,
+      "mantalakWineId": 23422,
+      "name": "Sierra Cantabria Reserva Única",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Graciano",
+        "Tempranillo"
+      ],
+      "vintages": [
+        2019
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/6878f09af1739510029619.png",
+      "slugname": "Sierra-Cantabria-Reserva-Unica",
+      "webUrl": "https://web.winerim.com/matchrim/store/369711/Sierra-Cantabria-Reserva-Unica"
+    },
+    {
+      "id": 357408,
+      "representativePublicId": 357408,
+      "mantalakWineId": 202144,
+      "name": "Sierra Cantabria Gran Vino Blanco",
+      "winery": "Sierra Cantabria",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Garnacha Blanca",
+        "Malvasía",
+        "Viura"
+      ],
+      "vintages": [
+        2011,
+        2010,
+        2008
+      ],
+      "tastingAttributes": {
+        "power": 3.5,
+        "acidity": 3.7,
+        "sweetness": 1,
+        "tannin": 0.5,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/68406e53daf3d317332046.png",
+      "slugname": "Sierra-Cantabria-Gran-Vino-Blanco",
+      "webUrl": "https://web.winerim.com/matchrim/store/357408/Sierra-Cantabria-Gran-Vino-Blanco"
+    },
+    {
+      "id": 275053,
+      "representativePublicId": 275053,
+      "mantalakWineId": 202101,
+      "name": "Sierra Cantabria CVC 150 Aniversario",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2010,
+        2009,
+        2008
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/683eb4717d05e585195642.png",
+      "slugname": "Sierra-Cantabria-CVC-150-Aniversario_2008",
+      "webUrl": "https://web.winerim.com/matchrim/store/275053/Sierra-Cantabria-CVC-150-Aniversario_2008"
+    },
+    {
+      "id": 242091,
+      "representativePublicId": 242091,
+      "mantalakWineId": 179212,
+      "name": "Sierra Cantabria Colección Privada 2020",
+      "winery": "Sierra Cantabria",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Rioja",
+      "grapes": [
+        "Tempranillo"
+      ],
+      "vintages": [
+        2024,
+        2023,
+        2022,
+        2021,
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 4.6,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 4.3,
+        "fruity": 3.5
+      },
+      "photo": "https://app.winerim.com/images/wines/6364bf0576a28680880458.png",
+      "slugname": "Sierra-Cantabria-Coleccion-Privada-2020",
+      "webUrl": "https://web.winerim.com/matchrim/store/242091/Sierra-Cantabria-Coleccion-Privada-2020"
+    }
+  ],
+  "count": 23,
+  "total": 23,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

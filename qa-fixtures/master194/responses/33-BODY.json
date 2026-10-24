@@ -1,0 +1,84 @@
+{
+  "results": [
+    {
+      "id": 139639,
+      "representativePublicId": 139639,
+      "mantalakWineId": 198396,
+      "name": "Sparkling Rosé",
+      "winery": "Da Luca",
+      "type": "espumoso",
+      "country": "IT",
+      "region": "Veneto",
+      "grapes": [],
+      "vintages": [
+        2020
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 2,
+        "tannin": 1,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/67a0e2d1e961e959386050.png",
+      "slugname": "Sparkling-Rose_2020",
+      "webUrl": "https://web.winerim.com/matchrim/store/139639/Sparkling-Rose_2020"
+    },
+    {
+      "id": 137415,
+      "representativePublicId": 137415,
+      "mantalakWineId": 169311,
+      "name": "Da Luca Prosecco",
+      "winery": "Da Luca",
+      "type": "espumoso",
+      "country": "IT",
+      "region": "Prosecco",
+      "grapes": [
+        "Glera (Prosecco)"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 2,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6412c355da735825566010.png",
+      "slugname": "Da-Luca-Prosecco",
+      "webUrl": "https://web.winerim.com/matchrim/store/137415/Da-Luca-Prosecco"
+    },
+    {
+      "id": 198883,
+      "representativePublicId": 198883,
+      "mantalakWineId": 192135,
+      "name": "Luca Beso de Dante",
+      "winery": "Luca",
+      "type": "tinto",
+      "country": "AR",
+      "region": "Mendoza",
+      "grapes": [
+        "Malbec"
+      ],
+      "vintages": [
+        2022,
+        2019
+      ],
+      "tastingAttributes": {
+        "power": 3.3,
+        "acidity": 3.1,
+        "sweetness": 1,
+        "tannin": 3.1,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/665037471989d164316588.png",
+      "slugname": "Luca-Beso-de-Dante",
+      "webUrl": "https://web.winerim.com/matchrim/store/198883/Luca-Beso-de-Dante"
+    }
+  ],
+  "count": 3,
+  "total": 3,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

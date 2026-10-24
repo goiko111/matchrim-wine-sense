@@ -1,0 +1,232 @@
+{
+  "results": [
+    {
+      "id": 286037,
+      "representativePublicId": 286037,
+      "mantalakWineId": 39954,
+      "name": "Fundación 1963",
+      "winery": "Vinas del Bierzo",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Bierzo",
+      "grapes": [
+        "Mencía"
+      ],
+      "vintages": [
+        2012,
+        1963
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3.5,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/6a2a68e95406a753544361.png",
+      "slugname": "Fundacion-1963_2012",
+      "webUrl": "https://web.winerim.com/matchrim/store/286037/Fundacion-1963_2012"
+    },
+    {
+      "id": 135626,
+      "representativePublicId": 135626,
+      "mantalakWineId": 572,
+      "name": "Godello Bierzo LB",
+      "winery": "Luna Beberide",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Bierzo",
+      "grapes": [
+        "Godello"
+      ],
+      "vintages": [
+        2025,
+        2024
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 0,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/62e7e05927380704171856.png",
+      "slugname": "Godello-Bierzo-LB",
+      "webUrl": "https://web.winerim.com/matchrim/store/135626/Godello-Bierzo-LB"
+    },
+    {
+      "id": 275936,
+      "representativePublicId": 275936,
+      "mantalakWineId": 5633,
+      "name": "Pétalos del Bierzo",
+      "winery": "Descendientes de J. Palacios",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Bierzo",
+      "grapes": [
+        "Mencía"
+      ],
+      "vintages": [
+        2024,
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017,
+        2007
+      ],
+      "tastingAttributes": {
+        "power": 3.1,
+        "acidity": 3.8,
+        "sweetness": 1,
+        "tannin": 2.9,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/67bca2da4048f815109259.png",
+      "slugname": "Petalos-del-Bierzo",
+      "webUrl": "https://web.winerim.com/matchrim/store/275936/Petalos-del-Bierzo"
+    },
+    {
+      "id": 286027,
+      "representativePublicId": 286027,
+      "mantalakWineId": 177927,
+      "name": "Señorío del Bierzo",
+      "winery": "Vinos del Bierzo",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Bierzo",
+      "grapes": [
+        "Mencía"
+      ],
+      "vintages": [
+        2024,
+        1975
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/62dab120a5db5611565851.png",
+      "slugname": "Senorio-del-Bierzo",
+      "webUrl": "https://web.winerim.com/matchrim/store/286027/Senorio-del-Bierzo"
+    },
+    {
+      "id": 5768,
+      "representativePublicId": 5768,
+      "mantalakWineId": 176885,
+      "name": "Pétalos del Bierzo 2019",
+      "winery": "Descendientes de J. Palacios",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Bierzo",
+      "grapes": [
+        "Mencía"
+      ],
+      "vintages": [
+        2023,
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/622a80e7a9e63143998205.png",
+      "slugname": "Petalos-del-Bierzo-2019_2021",
+      "webUrl": "https://web.winerim.com/matchrim/store/5768/Petalos-del-Bierzo-2019_2021"
+    },
+    {
+      "id": 376073,
+      "representativePublicId": 376073,
+      "mantalakWineId": 202898,
+      "name": "Pétalos del Bierzo 2021",
+      "winery": "Descendientes de J. Palacios",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Bierzo",
+      "grapes": [
+        "Mencía"
+      ],
+      "vintages": [
+        2023,
+        2021
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/68627fd55ef55514407830.png",
+      "slugname": "Petalos-del-Bierzo-2021_2023",
+      "webUrl": "https://web.winerim.com/matchrim/store/376073/Petalos-del-Bierzo-2021_2023"
+    },
+    {
+      "id": 257438,
+      "representativePublicId": 257438,
+      "mantalakWineId": 162250,
+      "name": "Señorío del Bierzo Godello",
+      "winery": "Senorio del Bierzo",
+      "type": "blanco",
+      "country": "ES",
+      "region": "Bierzo",
+      "grapes": [
+        "Godello"
+      ],
+      "vintages": [
+        2024
+      ],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 4,
+        "sweetness": 1,
+        "tannin": 0,
+        "fruity": 3
+      },
+      "photo": "https://app.winerim.com/images/wines/69c0f23e1c6e0987822604.png",
+      "slugname": "Senorio-del-Bierzo-Godello_2024",
+      "webUrl": "https://web.winerim.com/matchrim/store/257438/Senorio-del-Bierzo-Godello_2024"
+    },
+    {
+      "id": 356992,
+      "representativePublicId": 356992,
+      "mantalakWineId": 5642,
+      "name": "Castro Ventosa El Castro de Valtuille Bierzo",
+      "winery": "Castro Ventosa - Raúl Pérez",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Bierzo",
+      "grapes": [
+        "Mencía"
+      ],
+      "vintages": [
+        2024,
+        2023,
+        2022
+      ],
+      "tastingAttributes": {
+        "power": 3.5,
+        "acidity": 3.5,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 3.5
+      },
+      "photo": "https://app.winerim.com/images/wines/62ec00b1230c7194571024.png",
+      "slugname": "Castro-Ventosa-El-Castro-de-Valtuille-Bierzo",
+      "webUrl": "https://web.winerim.com/matchrim/store/356992/Castro-Ventosa-El-Castro-de-Valtuille-Bierzo"
+    }
+  ],
+  "count": 8,
+  "total": 8,
+  "page": 1,
+  "limit": 50,
+  "pageCount": 1
+}

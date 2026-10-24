@@ -1,0 +1,45 @@
+{
+  "mantalakWineId": 217428,
+  "name": "Guilleminot Tradition",
+  "winery": "Guilleminot",
+  "type": "espumoso",
+  "country": "FR",
+  "region": "Champagne",
+  "grapes": [
+    "Pinot Noir"
+  ],
+  "photo": "https://app.winerim.com/images/wines/6ac89861eab25591829040.png",
+  "slugname": "Guilleminot-Tradition-Guilleminot-FR",
+  "representativePublicId": 377708,
+  "webUrl": "https://web.winerim.com/matchrim/store/377708/Guilleminot-Tradition-Guilleminot-FR",
+  "vintages": [],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": false,
+    "attributesByVintage": [
+      {
+        "vintage": null,
+        "power": 4,
+        "sweetness": 1,
+        "acidity": 4,
+        "tannin": 1,
+        "fruity": 3,
+        "aging": 3,
+        "source": null
+      }
+    ]
+  }
+}
