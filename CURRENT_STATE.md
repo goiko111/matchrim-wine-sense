@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-24, Keychain Confirmed / First Master192 Read401 /107HOLD
+
+- Keychain item wine.matchrim.goiko-api/accountgoiko is present (human saved11:51). Value read only into process memory, not printed or stored in source/env/artifacts. Local format guard was overrestrictive(length/spaces); f88a9e0 corrects opaque HTTP-safe keys, retains injection/size guards. Focused RED preserved,6/6offline groups/typecheck/lint PASS. No credential replacement/normalization or ACL expansion.
+- Original AUTHORIZATION-only/no-requests folder reviewed explicitly; safe unstarted recovery preserves cap6. **First actual GET24Oct11:55returns401in278ms** on exact LaZorrera2015search; stop/no retries. live-six-r1/RESULT.json false,requests1; five checks NOT RUN. New authenticated tranche1/6consumed,5unused, not a reset of old50paid/EUR15/24public caps.0IA/images/Lovable/writes. Do not rerun finished folder or burn remaining5on unchanged rejected credential.
+- Asked human to confirm only actual key value saved(no name/header/extra quotes); internal spaces alone do not prove invalidity. Actual value correctness/server activation still unverified.401follow-up prepared but NOT sent: current user-selected Thunderbird filter/active input prevented safe UI actions. Existing11:14secure-access email remains sent.17broad+2source/real200recognition/server transport gates OPEN; signed107source617e59c not uploaded. [Receipts, correction and exact next gate](docs/MATCHRIM_MASTER_192_2026-10-24.md).
+
 ## Current Gate: 2026-10-24, Authenticated Catalogue191 Probe Ready / Keychain Input Pending
 
 - Fresh scoped Thunderbird receive~11:28and exact sender+Matchrim filters: still four Matchrim replies/latest10:58, no new secure-transport response. Subject-only filter restored. This closes the preceding UI-interrupted check, not the catalogue gate.
