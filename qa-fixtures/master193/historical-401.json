@@ -1,0 +1,9 @@
+{
+  "index": 1,
+  "name": "zorrera-exact-2015",
+  "url": "https://app.winerim.com/api/v1/matchrim/wines/search?name=zorrera&winery=chivite&vintage=2015&vintageMatch=only&limit=10&page=1",
+  "elapsedMs": 278,
+  "httpStatus": 401,
+  "bytes": 0,
+  "error": "TRANSPORT_OR_BODY_REJECTED"
+}

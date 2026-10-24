@@ -55,7 +55,7 @@ export type ProbeReceipt191 = { index: number; name: string; url: string; elapse
   httpStatus: number | null; bytes: number; sha256?: string; error?: string; validation?: ReturnType<typeof outcome> };
 type ProbeOptions191 = { key: string; fetcher: typeof fetch;
   claim: (operation: typeof masterPlan191[number], index: number) => void;
-  receipt: (receipt: ProbeReceipt191, payload?: unknown) => void; timeoutMs?: number };
+  receipt: (receipt: ProbeReceipt191, payload?: unknown) => void; timeoutMs?: number; alreadyConsumed?: 0 | 1 };
 
 export const usableMasterKey191 = (key: string) => {
   if (!key.trim() || key.length > 2048 || Array.from(key).some(char => char.charCodeAt(0) < 32 || char.charCodeAt(0) === 127)) return false;
@@ -65,9 +65,11 @@ export const usableMasterKey191 = (key: string) => {
 
 export const runMasterProbe191 = async (options: ProbeOptions191) => {
   assert(usableMasterKey191(options.key), 'KEY_UNAVAILABLE');
+  const consumed = options.alreadyConsumed ?? 0;
+  assert(consumed === 0 || consumed === 1, 'UNSUPPORTED_PARTIAL_RUN');
   const receipts: ProbeReceipt191[] = [];
-  for (const [offset, operation] of masterPlan191.entries()) {
-    const index = offset + 1;
+  for (const [offset, operation] of masterPlan191.slice(consumed).entries()) {
+    const index = consumed + offset + 1;
     options.claim(operation, index); // Reserve before transport; interrupted calls remain consumed.
     const started = performance.now(), controller = new AbortController();
     let stop: () => void = () => undefined;
@@ -116,19 +118,42 @@ export const runMasterProbe191 = async (options: ProbeOptions191) => {
     options.receipt(receipt, payload); receipts.push(receipt);
     if (halt) break; // No automatic retries, even for 429 or expired credentials.
   }
-  return { passed: receipts.length === 6 && receipts.every(row => row.validation?.status === 'PASS' && !row.error),
-    requests: receipts.length, receipts, modelCalls: 0, imageUploads: 0, productionWrites: 0,
+  return { passed: receipts.length === 6 - consumed && receipts.every(row => row.validation?.status === 'PASS' && !row.error),
+    requests: receipts.length, previousRequests: consumed, cumulativeRequests: consumed + receipts.length,
+    receipts, modelCalls: 0, imageUploads: 0, productionWrites: 0,
     appActivated: false, independent200LabelRecognition: false, historicalPublicReadBudgetReset: false };
+};
+
+export const verifyRemainingFive193 = (authorization: unknown, reserved: unknown, previous: unknown) => {
+  const record = (value: unknown): Record<string, unknown> => value !== null && typeof value === 'object'
+    ? value as Record<string, unknown> : {};
+  const auth = record(authorization), reservation = record(reserved), report = record(previous);
+  const receipt = Array.isArray(report.receipts) && report.receipts.length === 1 ? record(report.receipts[0]) : {};
+  return auth.maxRequests === 6 && auth.keyService === 'wine.matchrim.goiko-api'
+    && reservation.index === 1 && reservation.name === masterPlan191[0].name && reservation.url === masterPlan191[0].url
+    && report.passed === false && report.requests === 1 && receipt.index === 1 && receipt.httpStatus === 401
+    && receipt.url === masterPlan191[0].url && report.modelCalls === 0 && report.productionWrites === 0 && report.imageUploads === 0;
 };
 
 const main = async () => {
   const mode = process.argv.slice(2).join(' ');
-  if (!['--live-6', '--resume-unstarted-6'].includes(mode)) {
+  if (!['--live-6', '--resume-unstarted-6', '--remaining-five'].includes(mode)) {
     console.log(JSON.stringify({ mode: 'PLAN_ONLY', keychainRead: false, requests: 0, operations: masterPlan191 }, null, 2)); return;
   }
-  const root = path.resolve('qa-artifacts/continuation191-20261024/live-six-r1');
+  const parent = path.resolve('qa-artifacts/continuation191-20261024/live-six-r1');
+  const remaining = mode === '--remaining-five';
+  const root = remaining ? path.join(parent, 'remaining-five-r1') : parent;
   const resume = mode === '--resume-unstarted-6';
-  if (resume) {
+  if (remaining) {
+    const files = ['AUTHORIZATION.json', 'RECOVERY-REVIEW.json', '1-RESERVED.json', '1-RECEIPT.json', 'RESULT.json'];
+    assert(!fs.existsSync(root) && fs.existsSync(parent)
+      && JSON.stringify(fs.readdirSync(parent).sort()) === JSON.stringify(files.sort()),
+    'EXISTING_RESERVATION_REQUIRES_REVIEW_NO_RESET');
+    const read = (name: string) => JSON.parse(fs.readFileSync(path.join(parent, name), 'utf8'));
+    assert(verifyRemainingFive193(read('AUTHORIZATION.json'), read('1-RESERVED.json'), read('RESULT.json')),
+      'EXISTING_RESERVATION_REQUIRES_REVIEW_NO_RESET');
+    assert.deepEqual(read('1-RECEIPT.json'), read('RESULT.json').receipts[0], 'EXISTING_RESERVATION_REQUIRES_REVIEW_NO_RESET');
+  } else if (resume) {
     assert(fs.existsSync(root) && fs.readdirSync(root).length === 1 && fs.readdirSync(root)[0] === 'AUTHORIZATION.json',
       'EXISTING_RESERVATION_REQUIRES_REVIEW_NO_RESET');
     const authorization = JSON.parse(fs.readFileSync(path.join(root, 'AUTHORIZATION.json'), 'utf8'));
@@ -143,16 +168,20 @@ const main = async () => {
   assert(usableMasterKey191(key), 'KEY_FORMAT_UNUSABLE_NO_REQUEST_SENT');
   fs.mkdirSync(root, { recursive: true, mode: 0o700 });
   const save = (name: string, value: unknown) => fs.writeFileSync(path.join(root, name), JSON.stringify(value, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
-  if (resume) save('RECOVERY-REVIEW.json', { reviewedUTC: new Date().toISOString(),
+  if (remaining) save('REMAINING-AUTHORIZATION.json', { authorized: 'Guardada. Comprueba el acceso y continúa con las cinco lecturas pendientes.',
+    reviewedUTC: new Date().toISOString(), parentResultSHA256: createHash('sha256').update(fs.readFileSync(path.join(parent, 'RESULT.json'))).digest('hex'),
+    previousRequests: 1, remainingRequests: 5, cumulativeMaximum: 6, previous401Preserved: true, operations: [2, 3, 4, 5, 6] });
+  else if (resume) save('RECOVERY-REVIEW.json', { reviewedUTC: new Date().toISOString(),
     priorFiles: ['AUTHORIZATION.json'], priorRequestsReserved: 0, maxRequestsUnchanged: 6 });
   else save('AUTHORIZATION.json', { authorized: 'Human answer: Sí, hasta 6 lecturas gratuitas', maxRequests: 6,
     keyService: 'wine.matchrim.goiko-api', startedUTC: new Date().toISOString(), models: 0, images: 0, paidCalls: 0 });
-  const report = await runMasterProbe191({ key, fetcher: fetch,
+  const report = await runMasterProbe191({ key, fetcher: fetch, alreadyConsumed: remaining ? 1 : 0,
     claim: (operation, index) => save(`${index}-RESERVED.json`, { index, name: operation.name, url: operation.url, atUTC: new Date().toISOString() }),
     receipt: (receipt, payload) => { save(`${receipt.index}-RECEIPT.json`, receipt); if (payload !== undefined) save(`${receipt.index}-BODY.json`, payload); },
   });
   key = ''; save('RESULT.json', { ...report, finishedUTC: new Date().toISOString() });
-  console.log(JSON.stringify({ passed: report.passed, requests: report.requests, output: root, modelCalls: 0, imageUploads: 0, appActivated: false }));
+  console.log(JSON.stringify({ passed: report.passed, requests: report.requests, cumulativeRequests: report.cumulativeRequests,
+    output: root, modelCalls: 0, imageUploads: 0, appActivated: false }));
   if (!report.passed) process.exitCode = 1;
 };
 

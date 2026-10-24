@@ -1,0 +1,58 @@
+{
+  "mantalakWineId": 180278,
+  "name": "La Zorrera",
+  "winery": "Chivite",
+  "type": "tinto",
+  "country": "ES",
+  "region": "Navarra",
+  "grapes": [
+    "Garnacha"
+  ],
+  "photo": "https://app.winerim.com/images/wines/63bd7b864cd47785352844.png",
+  "slugname": "La-Zorrera",
+  "representativePublicId": 336808,
+  "webUrl": "https://web.winerim.com/matchrim/store/336808/La-Zorrera",
+  "vintages": [
+    2019,
+    2015
+  ],
+  "tastingAttributes": {
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "notApplicable": 0,
+      "axes": [
+        "power",
+        "sweetness",
+        "acidity",
+        "tannin",
+        "fruity"
+      ],
+      "aging": "Crianza, de 0 (sin barrica) a 5 (gran reserva). Puede faltar (null).",
+      "note": "Enteros de 0 a 5. 0 significa \"no aplica\" (por ejemplo, taninos en un blanco), no \"poco\"."
+    },
+    "dependsOnVintage": true,
+    "attributesByVintage": [
+      {
+        "vintage": null,
+        "power": 4,
+        "sweetness": 1,
+        "acidity": 3,
+        "tannin": 3,
+        "fruity": 4,
+        "aging": null,
+        "source": null
+      },
+      {
+        "vintage": "2015",
+        "power": 4,
+        "sweetness": 0,
+        "acidity": 3,
+        "tannin": 3,
+        "fruity": 4,
+        "aging": null,
+        "source": null
+      }
+    ]
+  }
+}

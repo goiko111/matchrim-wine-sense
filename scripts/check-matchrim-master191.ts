@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { masterPlan191, runMasterProbe191, usableMasterKey191, type ProbeReceipt191 } from './probe-matchrim-master191';
+import { masterPlan191, runMasterProbe191, usableMasterKey191, verifyRemainingFive193, type ProbeReceipt191 } from './probe-matchrim-master191';
 
 const contract = fs.readFileSync('qa-fixtures/master188/CONTRATO-API-827-20261024.md', 'utf8');
 const examples = [...contract.matchAll(/```json\s*([\s\S]*?)```/g)].map(match => JSON.parse(match[1]));
@@ -29,6 +29,29 @@ const run = async (respond: typeof fetch, timeoutMs?: number, probeKey = key) =>
 const previousFetch = globalThis.fetch;
 globalThis.fetch = async () => { throw new Error('NO_LIVE_MASTER191_TEST'); };
 try {
+  await check('A corrected-key continuation consumes only operations 2-6 and cannot reset or silently expand the first failed attempt', async () => {
+    const auth = { maxRequests: 6, keyService: 'wine.matchrim.goiko-api' };
+    const reserved = { index: 1, name: masterPlan191[0].name, url: masterPlan191[0].url };
+    const receipt = { index: 1, httpStatus: 401, url: masterPlan191[0].url };
+    const previous = { passed: false, requests: 1, receipts: [receipt], modelCalls: 0, imageUploads: 0, productionWrites: 0 };
+    assert(verifyRemainingFive193(auth, reserved, previous));
+    for (const changed of [{ ...previous, requests: 0 }, { ...previous, requests: 2 }, { ...previous, passed: true },
+      { ...previous, receipts: [{ ...receipt, httpStatus: 200 }] }, { ...previous, receipts: [receipt, receipt] }]) {
+      assert.equal(verifyRemainingFive193(auth, reserved, changed), false);
+    }
+    assert.equal(verifyRemainingFive193({ ...auth, maxRequests: 7 }, reserved, previous), false);
+    assert.equal(verifyRemainingFive193(auth, { ...reserved, url: 'https://evil.example' }, previous), false);
+    let calls = 0, claims = 0;
+    const result = await runMasterProbe191({ key, alreadyConsumed: 1,
+      claim: (_operation, index) => { assert.equal(index, 2 + claims++); },
+      fetcher: async url => { assert.equal(String(url), masterPlan191[1 + calls].url); return Response.json(payloads[1 + calls++]); },
+      receipt: row => { assert(row.index >= 2 && row.index <= 6); },
+    });
+    assert(result.passed); assert.equal(calls, 5); assert.equal(claims, 5); assert.equal(result.cumulativeRequests, 6);
+    const denied = await runMasterProbe191({ key, alreadyConsumed: 1, claim: () => undefined,
+      fetcher: async () => new Response('Denied', { status: 401 }), receipt: () => undefined });
+    assert.equal(denied.requests, 1); assert.equal(denied.cumulativeRequests, 2); assert(!denied.passed);
+  });
   await check('The contract imposes no minimum key length: short HTTP-safe credentials are not rejected locally', async () => {
     for (const opaque of ['short-valid', 'opaque key with spaces']) {
       let index = 0; const result = await run(async () => Response.json(payloads[index++]), undefined, opaque);

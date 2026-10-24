@@ -1,0 +1,119 @@
+{
+  "passed": true,
+  "requests": 5,
+  "previousRequests": 1,
+  "cumulativeRequests": 6,
+  "receipts": [
+    {
+      "index": 2,
+      "name": "zorrera-detail",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/180278",
+      "elapsedMs": 232,
+      "httpStatus": 200,
+      "bytes": 942,
+      "sha256": "beb592d22595d82ee6e442d99d774a6f8e5e45a1ed1b7332a8f1a9a78c67c5a9",
+      "validation": {
+        "status": "PASS",
+        "canonicalId": 180278,
+        "name": "La Zorrera",
+        "winery": "Chivite",
+        "vintages": [
+          "2019",
+          "2015"
+        ],
+        "requestedVintageStatus": "known",
+        "sensoryScope": "exact",
+        "affinityGranted": false,
+        "learningGranted": false
+      }
+    },
+    {
+      "index": 3,
+      "name": "vidure-exact-2020",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/search?name=vidure&winery=pago+de+cirsus&vintage=2020&vintageMatch=only&limit=10&page=1",
+      "elapsedMs": 138,
+      "httpStatus": 200,
+      "bytes": 68,
+      "sha256": "fc49a3b0a894763b4a9e944b42be7f04957a400c18a5ee7dd87f2140a2e3e05b",
+      "validation": {
+        "status": "PASS",
+        "total": 0,
+        "canonicalIds": [],
+        "affinityGranted": false
+      }
+    },
+    {
+      "index": 4,
+      "name": "vidure-known-reference",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/search?name=vidure&winery=pago+de+cirsus&vintage=2020&vintageMatch=prefer&limit=10&page=1",
+      "elapsedMs": 123,
+      "httpStatus": 200,
+      "bytes": 527,
+      "sha256": "83415cef336850135df2b5f1bb11efeb31b6434d49d3746ff1aeb00e2a56150a",
+      "validation": {
+        "status": "PASS",
+        "total": 1,
+        "canonicalIds": [
+          201987
+        ],
+        "affinityGranted": false
+      }
+    },
+    {
+      "index": 5,
+      "name": "vidure-detail",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/201987",
+      "elapsedMs": 73,
+      "httpStatus": 200,
+      "bytes": 939,
+      "sha256": "42dd2aff8a1d3ff3300937677283c2e042ab2ddd19929a9b35948f8fc1ed6655",
+      "validation": {
+        "status": "PASS",
+        "canonicalId": 201987,
+        "name": "Vidure",
+        "winery": "Pago de Cirsus",
+        "vintages": [
+          "2018"
+        ],
+        "requestedVintageStatus": "other-vintages-only",
+        "sensoryScope": "generic",
+        "affinityGranted": false,
+        "learningGranted": false
+      }
+    },
+    {
+      "index": 6,
+      "name": "public-id-mapping",
+      "url": "https://app.winerim.com/api/v1/matchrim/wines/ids?publicIds=362891%2C363580",
+      "elapsedMs": 61,
+      "httpStatus": 200,
+      "bytes": 351,
+      "sha256": "8597b26f9d3e06e2fd260c7657651a6279053ea0bf0087ed1e067f969767c0d2",
+      "validation": {
+        "status": "PASS",
+        "mappings": [
+          {
+            "publicId": 362891,
+            "mantalakWineId": 215213,
+            "vintage": null,
+            "webUrl": "https://web.winerim.com/matchrim/store/362891/Giacondi-Montepulciano-D-Abruzzo-Giacondi-IT"
+          },
+          {
+            "publicId": 363580,
+            "mantalakWineId": 215439,
+            "vintage": null,
+            "webUrl": "https://web.winerim.com/matchrim/store/363580/Anecdota-Chenin-Blanc-Altotinto-MX"
+          }
+        ],
+        "affinityGranted": false
+      }
+    }
+  ],
+  "modelCalls": 0,
+  "imageUploads": 0,
+  "productionWrites": 0,
+  "appActivated": false,
+  "independent200LabelRecognition": false,
+  "historicalPublicReadBudgetReset": false,
+  "finishedUTC": "2026-10-24T10:13:23.876Z"
+}

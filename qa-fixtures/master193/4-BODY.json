@@ -1,0 +1,35 @@
+{
+  "results": [
+    {
+      "id": 364050,
+      "representativePublicId": 364050,
+      "mantalakWineId": 201987,
+      "name": "Vidure",
+      "winery": "Pago de Cirsus",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Navarra",
+      "grapes": [
+        "Cabernet Sauvignon"
+      ],
+      "vintages": [
+        2018
+      ],
+      "tastingAttributes": {
+        "power": 5,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/68370b8de5d4b340278417.png",
+      "slugname": "Vidure",
+      "webUrl": "https://web.winerim.com/matchrim/store/364050/Vidure"
+    }
+  ],
+  "count": 1,
+  "total": 1,
+  "page": 1,
+  "limit": 10,
+  "pageCount": 1
+}
