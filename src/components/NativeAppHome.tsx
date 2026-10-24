@@ -92,9 +92,9 @@ const NativeAppHome = ({
   const hasCode = hasQuizResults && Boolean(matchrimCode);
   const ownerId = user?.id ?? null;
   const [recentScans, setRecentScans] = useState<ScanHistoryItem[]>(() => getScanHistory(ownerId).slice(0, 3));
-  const [selection, setSelection] = useState<{ wine: WinerimWineWithMatch; ownerId: string | null; open: boolean; trigger?: HTMLButtonElement } | null>(null);
+  const [selection, setSelection] = useState<{ wine: WinerimWineWithMatch; ownerId: string | null; open?: boolean; trigger?: HTMLButtonElement } | null>(null);
   useLayoutEffect(() => { setSelection(null); }, [ownerId, activeProfile, recommendations]);
-  const selectedWine = selection?.open && selection.ownerId === ownerId && recommendations.includes(selection.wine)
+  const selectedWine = selection?.ownerId === ownerId && selection.open !== false && recommendations.includes(selection.wine)
     ? selection.wine : null;
 
   useLayoutEffect(() => {
