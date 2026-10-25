@@ -111,15 +111,17 @@ final class MatchrimOffline220Tests: XCTestCase {
     }
     @MainActor private func tap(_ element: XCUIElement, _ app: XCUIApplication) throws {
         XCTAssertTrue(element.waitForExistence(timeout: 10))
-        for _ in 0..<10 {
+        // MAX content can place the correction over 2,000pt below the viewport.
+        for _ in 0..<24 {
             let body = app.otherElements.matching(NSPredicate(format: "label BEGINSWITH %@", "Contenido de la región ")).firstMatch
             let clippedControl = element.elementType == .textField || ["Aplicar corrección", "Descartar cambios", "Corregir identificación"].contains(element.label)
             let frame = element.frame
             let fits = !body.exists || !clippedControl || (frame.minY >= body.frame.minY && frame.maxY <= body.frame.maxY)
             if element.isHittable && fits { break }
             if body.exists && body.frame.height > 60 {
-                let top = body.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.2))
-                let bottom = body.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
+                // Use the scrollport gutter, not the focused input's text area.
+                let top = body.coordinate(withNormalizedOffset: CGVector(dx: 0.96, dy: 0.2))
+                let bottom = body.coordinate(withNormalizedOffset: CGVector(dx: 0.96, dy: 0.8))
                 if frame.minY < body.frame.minY { top.press(forDuration: 0.1, thenDragTo: bottom) }
                 else { bottom.press(forDuration: 0.1, thenDragTo: top) }
             }

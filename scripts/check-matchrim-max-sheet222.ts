@@ -37,12 +37,13 @@ const actual = project(current), expected = project(before);
 let first = 0; while (first < actual.length && actual[first] === expected[first]) first++;
 assert(actual === expected, `Web delta at ${first}: ${JSON.stringify(actual.slice(first - 50, first + 100))} vs ${JSON.stringify(expected.slice(first - 50, first + 100))}`);
 const css = postcss.parse(fs.readFileSync('src/components/wine-import/nativeLabelSheet102.css', 'utf8'));
-let boundedHeader = false, fixedIcons = false;
+let boundedHeader = false, fixedIcons = false, compactFooter = false;
 css.walkRules(rule => {
   assert(rule.selector.split(',').every(selector => selector.trim().startsWith('html.matchrim-native-platform')), 'Native-only selectors required');
-  if (rule.selector.includes('> :first-child')) { assert(rule.selector.includes('.matchrim-accessibility-text')); boundedHeader = rule.nodes.some(node => node.type === 'decl' && node.prop === 'max-height' && node.value === 'min(28dvh, 12rem)'); }
-  if (rule.selector.includes('.matchrim-region-footer-actions')) { assert(rule.selector.includes('.matchrim-accessibility-text')); fixedIcons = rule.nodes.some(node => node.type === 'decl' && node.prop === 'height' && node.value === '44px'); }
+  if (rule.selector.includes('> :first-child')) { assert(rule.selector.includes('.matchrim-accessibility-text')); boundedHeader = rule.nodes.some(node => node.type === 'decl' && node.prop === 'max-height' && node.value === 'min(16dvh, 8rem)'); }
+  if (rule.selector.includes('> :last-child')) { assert(rule.selector.includes('.matchrim-accessibility-text')); compactFooter = rule.nodes.some(node => node.type === 'decl' && node.prop === 'grid-template-columns' && node.value === 'minmax(0, 1fr) 44px'); }
+  if (rule.selector.includes('.matchrim-region-footer-actions') && rule.selector.includes('button')) { assert(rule.selector.includes('.matchrim-accessibility-text')); fixedIcons = rule.nodes.some(node => node.type === 'decl' && node.prop === 'height' && node.value === '44px'); }
 });
-assert(boundedHeader && fixedIcons);
+assert(boundedHeader && fixedIcons && compactFooter);
 assert(current.includes("aria-label={isNative ? 'Cerrar' : undefined}"));
-console.log(JSON.stringify({ passed: true, checks: ['Full legacy web-false projection unchanged', 'All CSS native scoped', 'MAX-only bounded header', '44px icon targets', 'Explicit accessible close name'], liveCalls: 0 }));
+console.log(JSON.stringify({ passed: true, checks: ['Full legacy web-false projection unchanged', 'All CSS native scoped', 'MAX-only keyboard-safe header budget', '44px icon targets', 'Single-row MAX footer', 'Explicit accessible close name'], liveCalls: 0 }));

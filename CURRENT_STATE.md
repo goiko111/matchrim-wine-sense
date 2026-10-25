@@ -1,5 +1,10 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25,112Compiled / MAX Keyboard Defect Retained /113Fix Prepared
+
+- Clean8427f8b112preparation/typecheck/Vite164resources/unsigned simulator compile PASS. r12MAX body improves114→322pt, but runner limit prevents reaching correction; preserved FAIL. r13with measured24drag allowance reaches editor/name and actual MAX keyboard, then reveals132pt content against259/261pt Apply/Discard: genuine keyboard layout defect, MAX not approved. [Exact scope/history](docs/MATCHRIM_NATIVE_FLOW_220_2026-10-25.md).
+- Native-only header budget now min(16dvh,8rem), one-row44px footer with fixed pixel padding; no wine font reduction/default web delta. Six focused AST/CSS checks/lint PASS. Runner uses empty scrollport gutter to avoid text selection. Candidate113preparation/compile/nativeMAX/normal-close pending;111normal PASS not repeated. Own GUI/sim/heavy released afterr13 before edits, writerfb8fc708 only for delta/checkpoint; reacquire canonical order. No live call/account/key/spend/web/main/backend/phone/development reminder/TestFlight/Goal/monitor change.
+
 ## Current Gate: 2026-10-25, Native111 Normal Flow PASS / MAX222 Layout Fix Pending112QA
 
 - Clean d4f9f2c candidate111 preparation/typecheck/Vite164resources/unsigned simulator compile PASS. Native220-r11 normal stage PASS: actual app/local Vision via resident file injector, name/bodega/year/software keyboards, discard/apply, close/reopen current-batch retention and auth boundary on save; no real account/network/backend persistence. Native220-r4individual Bodega/auth/back-home PASS remains partial in cancelled run, not reclassified. Earlier renderer fixtures are not called native proof. [Progress, failed attempts, exact scope](docs/MATCHRIM_NATIVE_FLOW_220_2026-10-25.md), [bound partial receipts](qa-fixtures/native220/PARTIAL.json).

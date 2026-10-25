@@ -11,7 +11,15 @@ html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-
 /* Reserve room for an enlarged form control instead of letting title and
    footer consume the entire sheet. Long titles retain their own scrollport. */
 html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-scan-region-layout > :first-child {
-  max-height: min(28dvh, 12rem);
+  max-height: min(16dvh, 8rem);
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-scan-region-layout > :last-child {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
 }
 
 html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-region-footer-actions button,
