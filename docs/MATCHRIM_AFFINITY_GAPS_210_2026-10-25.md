@@ -102,6 +102,15 @@ coverage only; no implied permission for new service deployment or paid indexing
 
 ## Build And Release Gate
 
-New local native candidate109preparation is the next step after the source commit.
+Local native candidate109preparation PASS from clean9f4a05bf26038f0c3d56fe4c45caeb3aa8a8bc1b:
+full app TypeScript, Vite build and isolated iOS resource/project copy; production
+fixtures disabled and master URL empty. Receipt:
+`qa-artifacts/affinity210-20261025/candidate109-r1/preparation.json`.
+This is not a new Xcode simulator compile, signed archive or distributable IPA.
 108and signed107remain unchanged. No TestFlight upload or production/web/backend
-deployment authorized/performed in this block. No API/model/Lovable/Keychain calls.
+deployment performed in this block. No API/model/Lovable/Keychain calls.
+
+Heavy initially occupied by a foreign owner; no render/build started until actual
+own20d94d05ACQUIRED after its release, disk above5GiB. Own heavy released after all
+three visual jobs and candidate preparation completed. Writerba6d7076 checkpoint
+then release; no foreign app/process/cache/task changed.
