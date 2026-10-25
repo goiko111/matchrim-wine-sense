@@ -1,5 +1,10 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25,115Native MAX Functional PASS /116Short Labels Pending
+
+- Clean2d13849candidate115prep/typecheck/Vite164resources/unsigned simulator compile PASS. r17actual native MAX complete correction/discard/apply/software keyboards/current-batch retention/auth-boundary PASS; r18focused normal-close/back-hub PASS. r16failed strict bounds during overshooting drags remains FAIL; SDK-supported slow adaptive drags resolve harness without forced taps. TenMAX captures retained, key captures personally inspected.
+- Visual review catches fragmented long Apply label; native-only visible Aplicar/Descartar with full accessible names prepared. Focused checks/lint PASS.116prep/compile/changed MAX labels/local-reanalysis pending. [Scope/history](docs/MATCHRIM_NATIVE_FLOW_220_2026-10-25.md). Full VoiceOver/gallery/real persistence/linked-fiche scoring/catalogue/200labels remain distinct, no TestFlight approval. No new calls/accounts/keys/spend/web/main/backend/phone/development reminder/Goal/monitor changes; GUI/sim/heavy released afterr18, writerf1f90c63 for delta/checkpoint.
+
 ## Current Gate: 2026-10-25,114Compiled / MAX Gesture Diagnosis /115Pending
 
 -114clean b0a6636prep/typecheck/Vite164resources/unsigned simulator compile PASS, r15MAX remains FAIL with259pt body. Removing viewport-scroll reveal is not proven sufficient. Installed Vaul getScrollParent skips a directly touched scrollable body, so gutter-origin runner gestures are prevented; now short content-origin drags with strict visibility checks. MAX header rem padding imposes101pt floor; fixed12px/16px padding prepared. Seven focused checks/lint PASS.115prep/compile/MAX/normal-close/local-reanalysis pending; no full QA/200-label approval.

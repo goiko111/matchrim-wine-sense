@@ -53,11 +53,11 @@ export const NativeLabelIdentityEditor218 = ({ identity, disabled, onApply }: Pr
     {dirty && <p role="status" className="text-sm leading-6 text-stone-700">Cambios sin aplicar</p>}
     {error && <p id="identity-correction-error218" role="alert" className="text-sm leading-6 text-red-900">{error.message}</p>}
     <div className="grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-2">
-      <Button type="submit" disabled={disabled || !dirty} className="h-auto min-h-11 w-full min-w-0 gap-2 whitespace-normal px-3 py-3 text-left">
-        <Check className="h-4 w-4 shrink-0" aria-hidden="true" /><span className="min-w-0">Aplicar corrección</span>
+      <Button type="submit" aria-label="Aplicar corrección" disabled={disabled || !dirty} className="h-auto min-h-11 w-full min-w-0 gap-2 whitespace-normal px-3 py-3 text-left">
+        <Check className="h-4 w-4 shrink-0" aria-hidden="true" /><span className="min-w-0">Aplicar</span>
       </Button>
-      {dirty && <Button type="button" variant="outline" disabled={disabled} onClick={reset} className="h-auto min-h-11 w-full min-w-0 gap-2 whitespace-normal px-3 py-3 text-left">
-        <RotateCcw className="h-4 w-4 shrink-0" aria-hidden="true" /><span className="min-w-0">Descartar cambios</span>
+      {dirty && <Button type="button" aria-label="Descartar cambios" variant="outline" disabled={disabled} onClick={reset} className="h-auto min-h-11 w-full min-w-0 gap-2 whitespace-normal px-3 py-3 text-left">
+        <RotateCcw className="h-4 w-4 shrink-0" aria-hidden="true" /><span className="min-w-0">Descartar</span>
       </Button>}
     </div>
   </form>;

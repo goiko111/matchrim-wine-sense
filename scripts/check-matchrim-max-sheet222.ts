@@ -55,4 +55,7 @@ assert(boundedHeader && fixedIcons && compactFooter && fixedHeaderPadding);
 assert(current.includes("aria-label={isNative ? 'Cerrar' : undefined}"));
 assert(!current.includes("addEventListener('scroll', revealFocusedField)"));
 assert(current.includes("addEventListener('focusin', revealFocusedField)") && current.includes("addEventListener('resize', revealFocusedField)"));
+const editor = fs.readFileSync('src/components/wine-import/NativeLabelIdentityEditor218.tsx', 'utf8');
+assert(editor.includes('aria-label="Aplicar corrección"') && editor.includes('>Aplicar</span>'));
+assert(editor.includes('aria-label="Descartar cambios"') && editor.includes('>Descartar</span>'));
 console.log(JSON.stringify({ passed: true, checks: ['Full legacy web-false projection unchanged', 'All CSS native scoped', 'MAX-only keyboard-safe header budget', '44px icon targets', 'Single-row MAX footer', 'Explicit accessible close name', 'No focus restoration on manual viewport pan; focus/resize retained'], liveCalls: 0 }));

@@ -150,10 +150,13 @@ final class MatchrimOffline220Tests: XCTestCase {
             if body.exists && body.frame.height > 60 {
                 // Vaul skips the scrollable target itself in getScrollParent;
                 // start on its content, not its padding, without a text long-press.
-                let top = body.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.2))
-                let bottom = body.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
-                if frame.minY < body.frame.minY { top.press(forDuration: 0.01, thenDragTo: bottom) }
-                else { bottom.press(forDuration: 0.01, thenDragTo: top) }
+                let downward = frame.minY < body.frame.minY
+                let missing = downward ? body.frame.minY - frame.minY + 8 : frame.maxY - body.frame.maxY + 8
+                let fraction = min(0.55, max(18, missing) / body.frame.height)
+                let start = downward ? 0.2 : 0.8
+                let from = body.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: start))
+                let to = body.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: start + (downward ? fraction : -fraction)))
+                from.press(forDuration: 0.01, thenDragTo: to, withVelocity: .slow, thenHoldForDuration: 0.2)
             }
             else { app.swipeUp() }
         }
