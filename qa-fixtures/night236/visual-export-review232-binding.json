@@ -1,0 +1,125 @@
+{
+  "boundUTC": "2026-10-25T21:19:24.033Z",
+  "review": {
+    "file": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/night225/visual-export-review232.json",
+    "sha256": "144cdd6c6a757e127bd928fe90093acc92b27eeeec57e33434db8dc957a80d2b"
+  },
+  "report": {
+    "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/night105-20261021/native112-corpus200-r21/REPORT.json",
+    "sha256": "660b27fea895c3dca3d1f7378071e74b46b4fa927826982ebd5f47a229c68b1c"
+  },
+  "binding": [
+    {
+      "imageId": "img-027",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-027.jpg",
+      "sha256": "6a9cc8e0727bc69a65036f5b17348811f32aa1c59336da1f0780fb99161b5701",
+      "expected": {
+        "name": "Soranì Fiano",
+        "producer": "Tommasi"
+      },
+      "proposals": [
+        {
+          "name": "Suranì Fiano",
+          "winery": "Tommasi"
+        }
+      ]
+    },
+    {
+      "imageId": "img-033",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-033.jpg",
+      "sha256": "4ea3ded1d5a7dc107f07890170cb643f586dea2a4d091e72a26a9dd9d1c8ca9b",
+      "expected": {
+        "name": "Fagus",
+        "producer": "Bodegas Aragonesas"
+      },
+      "proposals": [
+        {
+          "name": "Fagus de Coto de Hayas",
+          "winery": "Coto de Hayas"
+        },
+        {
+          "name": "Fagus",
+          "winery": "Coto de Hayas"
+        }
+      ]
+    },
+    {
+      "imageId": "img-136",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-136.jpg",
+      "sha256": "df3c69c81a36b9c6ce38721f80a633eeb20f58c715ffd0e28fc7d15c5a030939",
+      "expected": {
+        "name": "Teófilo Reyes Roble",
+        "producer": "Zuazo Gaston"
+      },
+      "proposals": [
+        {
+          "name": "Teófilo Reyes",
+          "winery": "Bodegas Reyes"
+        }
+      ]
+    },
+    {
+      "imageId": "img-161",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-161.jpg",
+      "sha256": "73c8d8a094cf3c1f86c95dfd38d2ae5451077f2343d3d8ee93e2c578125b5e85",
+      "expected": {
+        "name": "Véhicule Rosé",
+        "producer": "Vehicule ets Catusse"
+      },
+      "proposals": [
+        {
+          "name": "Vehicule 2023",
+          "winery": "Vehicule ets Catusse"
+        }
+      ]
+    },
+    {
+      "imageId": "img-176",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-176.jpg",
+      "sha256": "26a36c00c58ff9aa05731562c02961fbdf64cbf663108b6fa2225d0c41c1a8fc",
+      "expected": {
+        "name": "Orígenes Garnacha Blanca",
+        "producer": "Dehesa de Luna"
+      },
+      "proposals": [
+        {
+          "name": "Dehesa de Luna Orígenes",
+          "winery": "Dehesa de Luna"
+        }
+      ]
+    },
+    {
+      "imageId": "img-177",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-177.jpg",
+      "sha256": "ea9c4aa61a8b9b4056bebb6cd15ff1e7b71b35729c69fca1e401030240c1adb3",
+      "expected": {
+        "name": "Foral Alvarinho",
+        "producer": "Quinta do Regueiro"
+      },
+      "proposals": [
+        {
+          "name": "Foral de Melgaço Old Vines Alvarinho",
+          "winery": "Foral de Melgaço"
+        }
+      ]
+    },
+    {
+      "imageId": "img-190",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-190.jpg",
+      "sha256": "81efcecef46bae606f91912c35a860b02e6f25b8691109769752f210652037ff",
+      "expected": {
+        "name": "Inicial Brut Nature",
+        "producer": "Raventós Basagoiti"
+      },
+      "proposals": [
+        {
+          "name": "Raventós Basagoiti Inicial",
+          "winery": "Raventós Basagoiti"
+        }
+      ]
+    }
+  ],
+  "productChanged": false,
+  "benchmarkChanged": false,
+  "externalCalls": 0
+}

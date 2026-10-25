@@ -1,0 +1,188 @@
+{
+  "checkedUTC": "2026-10-25T22:08:49.697Z",
+  "goal": "ACTIVE original five blocks until04:00Madrid; not a completion claim",
+  "candidate": {
+    "version": "1.0",
+    "build": 119,
+    "sourceCommit": "1ea9d939f0c7d6ce6c0419f9adb96f68315ae6c6",
+    "preparation": {
+      "file": "qa-artifacts/native218-20261025/candidate119-r1/preparation.json",
+      "sha256": "310e3aeb603a1b30614deeee6a9b38e7eaa7a7361e11d2e5fc4158289a37481c",
+      "typecheck": "PASS",
+      "passed": true
+    },
+    "compile": {
+      "file": "qa-artifacts/native218-20261025/compile119-r1/RESULT.json",
+      "sha256": "58615b6b5d44ef7b2c1f0956649296075dd93f54f44066dd4dcfd567215cd46f",
+      "passed": true,
+      "executableSHA256": "7eb37d9e8ea4bc0533377b395c71159a4a07e8870e1cc9767e6970417037c063",
+      "resources": 164
+    },
+    "scope": "Unsigned arm64 simulator build only. Native20question quiz/Home/relaunch not executed yet. No signing/export/TestFlight. Master connection inactive."
+  },
+  "reviews": [
+    {
+      "file": "qa-fixtures/night236/visual-export-review232.json",
+      "sha256": "144cdd6c6a757e127bd928fe90093acc92b27eeeec57e33434db8dc957a80d2b"
+    },
+    {
+      "file": "qa-fixtures/night236/visual-export-review232-binding.json",
+      "sha256": "0a0cf052961cbab55d4809aa007a224e849a4e8c83f84c459c9e396837d3413d"
+    },
+    {
+      "file": "qa-fixtures/night236/visual-incomplete-review233.json",
+      "sha256": "459350b24ec2c117ad0d68b7740172ad80c77345128c856b0023931392ab2867"
+    },
+    {
+      "file": "qa-fixtures/night236/visual-incomplete-review233-binding.json",
+      "sha256": "143ff97fd1057bd33947ea5c33bf9e54f367c6b960ee54806723d34870177eba"
+    },
+    {
+      "file": "qa-fixtures/night236/cache-order236.json",
+      "sha256": "d96c6c048dccbc1c58b7f20d6009a308dad748840d6773187c191c9523f4e361"
+    }
+  ],
+  "reports": [
+    {
+      "revision": "r21",
+      "file": "qa-artifacts/night105-20261021/native112-corpus200-r21/REPORT.json",
+      "sha256": "660b27fea895c3dca3d1f7378071e74b46b4fa927826982ebd5f47a229c68b1c",
+      "summary": {
+        "complete": false,
+        "evaluated": 181,
+        "recognitionProxyDenominator": 181,
+        "incompleteScenes": 19,
+        "abstentions": 7,
+        "withProposals": 55,
+        "top1Expected": 46,
+        "top3Expected": 48,
+        "listsWithoutExpected": 7,
+        "exitCode": 1,
+        "actualNativeVisionImages": 200,
+        "attempted": 200,
+        "publicGETStarts": 0,
+        "maximumPublicGETStarts": 0,
+        "cacheReads": 447,
+        "missingCache": 0,
+        "held": false,
+        "sourceIntegrityVerified": true,
+        "legacyAssumedJSONReads": 164,
+        "nonemptyOCR": 177,
+        "modelStarts": 0,
+        "imageUploads": 0,
+        "canonicalIdentitiesCreated": 0,
+        "productionWrites": 0
+      },
+      "errors": [],
+      "expectedHash": "7d018e648e5e7ab23aa0bffad826a03f501f2a29cc60ee090f4bf7d3d787e254"
+    },
+    {
+      "revision": "r22",
+      "file": "qa-artifacts/night105-20261021/native112-corpus200-r22/REPORT.json",
+      "sha256": "d88e2886eb1808848b52771c7445db9295867d45229d173c1334469bf9301970",
+      "summary": {
+        "complete": false,
+        "evaluated": 163,
+        "recognitionProxyDenominator": 163,
+        "incompleteScenes": 37,
+        "abstentions": 7,
+        "withProposals": 44,
+        "top1Expected": 36,
+        "top3Expected": 38,
+        "listsWithoutExpected": 6,
+        "exitCode": 1,
+        "actualNativeVisionImages": 200,
+        "attempted": 200,
+        "publicGETStarts": 0,
+        "maximumPublicGETStarts": 0,
+        "cacheReads": 447,
+        "missingCache": 0,
+        "held": false,
+        "sourceIntegrityVerified": true,
+        "legacyAssumedJSONReads": 164,
+        "nonemptyOCR": 159,
+        "modelStarts": 0,
+        "imageUploads": 0,
+        "canonicalIdentitiesCreated": 0,
+        "productionWrites": 0
+      },
+      "errors": [],
+      "expectedHash": "7d018e648e5e7ab23aa0bffad826a03f501f2a29cc60ee090f4bf7d3d787e254"
+    },
+    {
+      "revision": "r23",
+      "file": "qa-artifacts/night105-20261021/native112-corpus200-r23/REPORT.json",
+      "sha256": "9cf8268d45356e89286b6a54bce24444540ad0b42b9eca691e8e73081d9d87b2",
+      "summary": {
+        "complete": false,
+        "evaluated": 181,
+        "recognitionProxyDenominator": 181,
+        "incompleteScenes": 19,
+        "abstentions": 7,
+        "withProposals": 55,
+        "top1Expected": 46,
+        "top3Expected": 48,
+        "listsWithoutExpected": 7,
+        "exitCode": 1,
+        "actualNativeVisionImages": 200,
+        "attempted": 200,
+        "publicGETStarts": 0,
+        "maximumPublicGETStarts": 0,
+        "cacheReads": 447,
+        "missingCache": 0,
+        "held": false,
+        "sourceIntegrityVerified": true,
+        "legacyAssumedJSONReads": 164,
+        "nonemptyOCR": 177,
+        "modelStarts": 0,
+        "imageUploads": 0,
+        "canonicalIdentitiesCreated": 0,
+        "productionWrites": 0
+      },
+      "errors": [],
+      "expectedHash": "7d018e648e5e7ab23aa0bffad826a03f501f2a29cc60ee090f4bf7d3d787e254"
+    }
+  ],
+  "replayDiagnosis": {
+    "r22": "Preserved failure: cache folders inferred in first-use order allowed18old500responsebodies to replace later200responses. Different input cohort, not demonstrated product regression.",
+    "r23": "Existing pinCache179 and loadCache112 verified418unique response byte/status/header/metadata/sourceReceiptbindings before run;447cache reads. All200retrieval/proposaloutcomes and expectedmetadatahash equalr21. Current sources verified.",
+    "metrics": "181evaluable includes7abstentions;19incomplete;55proposallists;46/48top1/top3export-name proxies;7listsWithoutExpected. Not181identifiedwines or canonicalprecision/recall.",
+    "zeroOutbound": {
+      "maximumGETs": 0,
+      "publicGETStarts": 0,
+      "blockedNetworkAttempts": 0,
+      "modelCalls": 0,
+      "imageUploads": 0,
+      "newOCR": 0,
+      "productionWrites": 0
+    },
+    "overall": "EXIT1 remains because19incomplete; not allgreen."
+  },
+  "resources": {
+    "request": "3c6b1088-c75c-4c76-b09c-242194987567",
+    "heavy": "1f53c80d-a426-403e-a06b-28ce103e92af",
+    "writer": "19582783-5437-4615-936d-75664c65797a",
+    "next": "Commitcheckpoint/releaseownset; new completeheavy+ios+mac+writerrequestfor119quiz, no upgrade retainingpartials."
+  },
+  "mail": "Lastactual234refresh21:40UTC latestvisible16:14Madrid; no newerresponseobserved and no serverabsenceclaim. No outgoingmail/new reminder.",
+  "limits": {
+    "newSpend": 0,
+    "catalogueCalls": 0,
+    "keychainReads": 0,
+    "models": 0,
+    "lovable": 0,
+    "webChanged": false,
+    "mainChanged": false,
+    "backendChanged": false,
+    "realAccounts": false,
+    "phone": false,
+    "uploaded": false,
+    "monitor": "PAUSED unchanged"
+  },
+  "remaining": [
+    "Actual native119anonymousquiz/results/Home/relaunch visuals",
+    "Portrait/MAXnewchangedflows as relevant; no repeated green unrelated tests",
+    "Hostedbridge/secret/authenticatedQAwithhumanapproval",
+    "Fullcatalogue/sensoryevidence and real200identities"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "reviewedUTC": "2026-10-25T21:19:00Z",
+  "reviewMethod": "Personally inspected all seven existing prepared image files at original resolution through view_image. Compared visible front-label text with retained AppleVision lines and r21proposals/export names. No new OCR, image regeneration, catalogue/model/network call or expected-row mutation.",
+  "scope": "Supplementary visual diagnosis, not canonical identities, brand-owner alias verification, blind precision/recall or a reclassification of r21. Export expectation is not automatically photo ground truth.",
+  "rows": [
+    {
+      "imageId": "img-027",
+      "visibleText": ["MASSERIA", "SURANI", "FIANO", "PUGLIA IGT"],
+      "notVerifiedFromPhoto": ["Tommasi ownership/producer relationship", "vintage"],
+      "observation": "The main printed brand reads SURANI, while the export expects Soranì. The retained proposal Suranì Fiano is compatible with that visible spelling. The small lower cursive mark is not a reason to overwrite the clear main brand.",
+      "nextAction": "Flag the export-name spelling discrepancy for catalogue quality review. Preserve r21strict result; do not hardcode an alias or count a canonical match from this photograph."
+    },
+    {
+      "imageId": "img-033",
+      "visibleText": ["Fagus", "COTO DE HAYAS", "Selección Especial"],
+      "notVerifiedFromPhoto": ["Exact legal producer versus range/brand relationship", "vintage"],
+      "observation": "Retained Coto de Hayas proposals reflect front-label text. The capsule also contains partial ARAGONESA lettering. The photo does not establish the exact alias/ownership contract needed to equate winery fields with Bodegas Aragonesas.",
+      "nextAction": "Require existing brand/range/legal-producer aliases and canonical IDs from development; never collapse winery strings on this example alone."
+    },
+    {
+      "imageId": "img-136",
+      "visibleText": ["TEÓFILO REYES", "RIBERA DEL DUERO"],
+      "notVerifiedFromPhoto": ["Roble qualifier", "Zuazo Gaston versus Bodegas Reyes relationship", "vintage"],
+      "observation": "The expected Roble qualifier and expected producer are not clearly present in this front image. A generic Teófilo Reyes proposal is not sufficient to validate the exact exported reference.",
+      "nextAction": "Keep variant/producer resolution pending; need catalogue aliases plus exact reference evidence or a back-label capture. No guessed ageing classification."
+    },
+    {
+      "imageId": "img-161",
+      "visibleText": ["véhicule", "CABRIÈRES"],
+      "notVerifiedFromPhoto": ["Vintage2023", "Full producer text", "Exact Rosé designation"],
+      "observation": "The pale-pink contents are visible but do not prove a canonical Rosé reference or harvest. The year in the proposed catalogue name Vehicule2023is not legible evidence from this image; retained OCR only reads véhicule.",
+      "nextAction": "Do not convert a year inside a returned catalogue name into a photographed harvest. Keep explicit unknown-year/variant state until independently verified."
+    },
+    {
+      "imageId": "img-176",
+      "visibleText": ["ORÍGENES", "ECO ORGANIC BIO", "DEHESA DE LUNA"],
+      "notVerifiedFromPhoto": ["Garnacha Blanca variety", "vintage", "Exact variant beyond Orígenes"],
+      "observation": "The expected Garnacha Blanca qualifier is not printed legibly on the inspected front label. A general Orígenes proposal is not proof of this exact exported variant; OCR cannot extract absent variety text.",
+      "nextAction": "Resolve variant against a trusted catalogue/back-label source, without inferring grape or sensory attributes from bottle appearance."
+    },
+    {
+      "imageId": "img-177",
+      "visibleText": ["ALVARINHO", "FORAL", "D MELGAÇO", "OLD VINES"],
+      "notVerifiedFromPhoto": ["Quinta do Regueiro ownership/producer relationship", "vintage"],
+      "observation": "The retained proposal includes Old Vines and Melgaço, both visible on the bottle but omitted from the shortened export name. The different winery fields still require a verified alias relationship.",
+      "nextAction": "Preserve visible Old Vines qualifier. Request canonical producer/brand relationships; do not shorten the detected reference solely to make the metric pass."
+    },
+    {
+      "imageId": "img-190",
+      "visibleText": ["INICIAL", "RAVENTÓS BASAGOITI", "ST SEBASTIÀ DELS GORGS"],
+      "notVerifiedFromPhoto": ["Brut Nature designation", "vintage"],
+      "observation": "The printed front label supports Inicial and Raventós Basagoiti. Brut Nature is not legible in the inspected photo. Isolated lower numbers are not adequate harvest evidence.",
+      "nextAction": "Keep exact designation and harvest unresolved until catalogue/back-label evidence. Do not promote the general proposal or remove expected qualifiers to improve r21."
+    }
+  ],
+  "conclusion": "The seven listsWithoutExpected are textual export-reference discrepancies, not seven proven wrong bottle identities. One clear main-label/export spelling discrepancy and several unverified producer/brand or missing-qualifier relationships require differentiated diagnosis. Historical46/48top1/top3and all19incomplete cases remain unchanged.",
+  "productChanged": false,
+  "benchmarkChanged": false,
+  "realIdentityGranted": false,
+  "affinityGranted": false,
+  "spend": 0
+}

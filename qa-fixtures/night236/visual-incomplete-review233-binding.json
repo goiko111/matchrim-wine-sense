@@ -1,0 +1,279 @@
+{
+  "checkedUTC": "2026-10-25T21:22:29.963Z",
+  "report": {
+    "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/night105-20261021/native112-corpus200-r21/REPORT.json",
+    "sha256": "660b27fea895c3dca3d1f7378071e74b46b4fa927826982ebd5f47a229c68b1c"
+  },
+  "review": {
+    "file": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/night225/visual-incomplete-review233.json",
+    "sha256": "459350b24ec2c117ad0d68b7740172ad80c77345128c856b0023931392ab2867"
+  },
+  "binding": [
+    {
+      "imageId": "img-003",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-003.jpg",
+      "sha256": "25a0d933f681c79d3b4a8ea8904c491ec4fddc72dc127511775f332959c82d2d",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "SOLEÁ",
+        "VALDEBEBAS"
+      ],
+      "expectedExport": {
+        "name": "Valdebebas Soleá Vendimia Seleccionada",
+        "producer": "Bodegas de Occidente"
+      }
+    },
+    {
+      "imageId": "img-013",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-013.jpg",
+      "sha256": "c5db30d286753425db4e3679fcb94af26ba72e2c444fea592955af178c0fd828",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "BAGANTE",
+        "BIERZO"
+      ],
+      "expectedExport": {
+        "name": "Bagante Mencía",
+        "producer": "Bodega La Serrana"
+      }
+    },
+    {
+      "imageId": "img-017",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-017.jpg",
+      "sha256": "dc540c845d91e4aaeea698e44baae4caed767da0f373512984513c04522e8ef5",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "MIGRATORIA",
+        "FRONTONIO"
+      ],
+      "expectedExport": {
+        "name": "La Migratoria",
+        "producer": "Bodegas Frontonio"
+      }
+    },
+    {
+      "imageId": "img-041",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-041.jpg",
+      "sha256": "0d3544545a184353a1c0f3b948ebf46a82fc1d01a7569fe03e726611810bdf4e",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "KRIYA",
+        "D'ABRUZZO"
+      ],
+      "expectedExport": {
+        "name": "Kriya Trebbiano",
+        "producer": "Vigna Madre"
+      }
+    },
+    {
+      "imageId": "img-045",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-045.jpg",
+      "sha256": "613530e95068e642aa8e48b90d9792b9e8d87c0e8d3d35ba00e9f5b02104de1a",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "illet",
+        "Selecsi"
+      ],
+      "expectedExport": {
+        "name": "Protos 12 Meses en Barrica Selección del Sumiller",
+        "producer": "Protos"
+      }
+    },
+    {
+      "imageId": "img-054",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-054.jpg",
+      "sha256": "6a6ea2913eed195ac1a39ae014a61c8805db34653fb6433c4f74c62f8af9bf53",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "CONDE DE HARO",
+        "MILLESIM"
+      ],
+      "expectedExport": {
+        "name": "Conde de Haro Blanc de Blancs Millésimé",
+        "producer": "Muga"
+      }
+    },
+    {
+      "imageId": "img-060",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-060.jpg",
+      "sha256": "70295fa20c98d3f190e6ea67e79f98a39d0c3618b9c03cb5192e1238366bb525",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "BERTANI",
+        "AMARONE"
+      ],
+      "expectedExport": {
+        "name": "Amarone della Valpolicella Classico Riserva",
+        "producer": "Bertani"
+      }
+    },
+    {
+      "imageId": "img-067",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-067.jpg",
+      "sha256": "b744afd6bfc4742cb9208a97355e8c408dfb496318fac1cd7c7e00732485cd71",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "VAUPRÉ",
+        "POUILLY-FUISSE"
+      ],
+      "expectedExport": {
+        "name": "Vaupré Pouilly-Fussé 1er Cru En Servy",
+        "producer": "Domaine Vaupre"
+      }
+    },
+    {
+      "imageId": "img-069",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-069.jpg",
+      "sha256": "93a2613f579982292407afb2494e79dd8ea2a475d0cae81ff1862855ec0635ef",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "GUILLEMINOT",
+        "TRADITION"
+      ],
+      "expectedExport": {
+        "name": "Guilleminot Tradition",
+        "producer": "Guillemot-Michel"
+      }
+    },
+    {
+      "imageId": "img-096",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-096.jpg",
+      "sha256": "a91043f10334feee1ad7eeafe563cffaa728e426a598ec016e7070ebc6c6dd8a",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "NGUT",
+        "GROSS"
+      ],
+      "expectedExport": {
+        "name": "Sauvignon Blanc",
+        "producer": "Gross"
+      }
+    },
+    {
+      "imageId": "img-118",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-118.jpg",
+      "sha256": "f3b98d34c094cd1946b450a51e71cc44d5ee0e46da6d6e48a92f7408fdddb143",
+      "retainedVintage": 1995,
+      "retainedQueries": [
+        "Campillo",
+        "OUNA"
+      ],
+      "expectedExport": {
+        "name": "Campillo Reserva Especial",
+        "producer": "Campillo"
+      }
+    },
+    {
+      "imageId": "img-121",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-121.jpg",
+      "sha256": "5cbe46b8c0cae391a3c8164cdc33697966cfda7abd4f4ef04d6c2f6ae4785bb0",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "PULIGNY-MONTRACHET",
+        "PIERRE GIRARDIN"
+      ],
+      "expectedExport": {
+        "name": "Puligny-Montrachet",
+        "producer": "Pierre Girardin"
+      }
+    },
+    {
+      "imageId": "img-151",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-151.jpg",
+      "sha256": "34a1d229f156061c64bf2e09b2bd890a83dc275b3dbad72053f313217d0dbbc5",
+      "retainedVintage": 2022,
+      "retainedQueries": [
+        "MEURSAULT",
+        "LES GRANDS CHARRONS"
+      ],
+      "expectedExport": {
+        "name": "Meursault Les Grands Charrons",
+        "producer": "Pierre Girardin"
+      }
+    },
+    {
+      "imageId": "img-155",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-155.jpg",
+      "sha256": "954469dd4e34b474ba4a49bebdebaea28a112f74ac4986b4f4b96471cd69e712",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "TERA",
+        "MA DE DUERO"
+      ],
+      "expectedExport": {
+        "name": "La Terapia",
+        "producer": "Vináticos"
+      }
+    },
+    {
+      "imageId": "img-163",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-163.jpg",
+      "sha256": "a170b10ce0680a11592a933afa47abe32fe373bb9d9ec04f9357c54026a1d789",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "SIERRA CANTABRIA"
+      ],
+      "expectedExport": {
+        "name": "Sierra Cantabria",
+        "producer": "Sierra Cantabria"
+      }
+    },
+    {
+      "imageId": "img-193",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-193.jpg",
+      "sha256": "b04c0b7aa49834500b63c803564de67f5fa574ad154c873d74c7284b8590ad1f",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "BOSSANOVA",
+        "MONTEPULCIANO"
+      ],
+      "expectedExport": {
+        "name": "Bossanova Montepulciano d'Abruzzo",
+        "producer": "Bossanova"
+      }
+    },
+    {
+      "imageId": "img-195",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-195.jpg",
+      "sha256": "dcf05e4cb2b5871833221ca95ba49424e6a91ad278d100d252c64fefc23ba0d5",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "ZERO PONT FIVE",
+        "ZERO"
+      ],
+      "expectedExport": {
+        "name": "Zero Point Five Sauvignon Blanc",
+        "producer": "Leitz"
+      }
+    },
+    {
+      "imageId": "img-198",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-198.jpg",
+      "sha256": "fe8e84cf7aa1164c5ed4e1a8dfcc109a96ed49a987022724e4617b2017170fc3",
+      "retainedVintage": null,
+      "retainedQueries": [
+        "LUCA"
+      ],
+      "expectedExport": {
+        "name": "Da Luca Pinot Grigio",
+        "producer": "Da Luca"
+      }
+    },
+    {
+      "imageId": "img-200",
+      "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-200.jpg",
+      "sha256": "c74281325c0c943a0085b998381e87b5d39a7efbd74efdeb577a07a09cf9e58d",
+      "retainedVintage": 2021,
+      "retainedQueries": [
+        "ALTOTINTO",
+        "SELECCIÓN"
+      ],
+      "expectedExport": {
+        "name": "Scattola Selección",
+        "producer": "Altotinto"
+      }
+    }
+  ],
+  "networkCalls": 0,
+  "benchmarkChanged": false
+}

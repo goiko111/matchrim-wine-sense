@@ -1,0 +1,27 @@
+{
+  "checkedUTC": "2026-10-25T22:07:27.061Z",
+  "prior": "native112-corpus200-r21",
+  "method": "Existing loadCache112 plus independent pinCache179 equality for all used response bytes/status/headers/metadata/sourceReceipt",
+  "order": [
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/global103-20261021/ocr200-r1",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/night105-20261021/native112-corpus200-r17",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/night105-20261021/native112-pilot20-r2",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/night105-20261021/public-pages111-r1",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/night105-20261021/native112-corpus200-r10",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/night105-20261021/native112-corpus200-r3",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/night105-20261021/native112-corpus200-r16",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/night105-20261021/native112-corpus200-r1",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/night105-20261021/native112-corpus200-r7",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/night105-20261021/native112-corpus200-r6",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/night105-20261021/public-query169-r1",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/night105-20261021/native112-corpus200-r2",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/night105-20261021/native112-corpus200-r5",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/continuation176-20261023/public177-live-r1",
+    "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/continuation176-20261023/public178-live-r1"
+  ],
+  "uniquePinnedResponses": 418,
+  "priorReads": 447,
+  "mismatches": 0,
+  "networkCalls": 0,
+  "r22Failure": "Folder order inferred from first-use order let older500overwrite18newer200responses. Preserve r22, not product regression proof."
+}
