@@ -2,6 +2,45 @@ import Foundation
 import XCTest
 
 final class MatchrimOffline220Tests: XCTestCase {
+    @MainActor func testAnonymousQuizAndHome() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")
+        app.terminate(); app.launch(); XCUIDevice.shared.orientation = .portrait
+        defer { capture(app, "quiz225-end") }
+        let skip = app.buttons["Saltar guía"].firstMatch
+        if skip.waitForExistence(timeout: 2) && skip.isHittable { skip.tap() }
+        XCTAssertTrue(app.buttons["Buscar vino o bodega"].waitForExistence(timeout: 15))
+        capture(app, "quiz225-home-before")
+        try tap(app.buttons["Conocer mis gustos"].firstMatch, app)
+        try tap(app.buttons["Comenzar el test"].firstMatch, app)
+        for index in 0..<20 {
+            XCTAssertTrue(app.staticTexts["Pregunta \(index + 1) de 20"].firstMatch.waitForExistence(timeout: 8))
+            let label = ["Me gusta", "Me da igual", "No me gusta"][index % 3]
+            let answer = app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", label)).firstMatch
+            XCTAssertTrue(answer.waitForExistence(timeout: 8))
+            for _ in 0..<8 {
+                if answer.isHittable && answer.frame.minY >= 0 && answer.frame.maxY <= app.frame.height { break }
+                app.swipeUp()
+            }
+            XCTAssertTrue(answer.isHittable)
+            XCTAssertGreaterThanOrEqual(answer.frame.minY, 0)
+            XCTAssertLessThanOrEqual(answer.frame.maxY, app.frame.height)
+            answer.tap()
+            if index == 0 || index == 19 { capture(app, "quiz225-question-\(index + 1)") }
+            try tap(app.buttons[index == 19 ? "Ver mi perfil" : "Siguiente"].firstMatch, app)
+        }
+        XCTAssertTrue(app.staticTexts["Tu perfil"].firstMatch.waitForExistence(timeout: 10))
+        capture(app, "quiz225-results")
+        try tap(app.links["Inicio"].firstMatch, app)
+        XCTAssertTrue(app.buttons["Mis gustos"].firstMatch.waitForExistence(timeout: 10))
+        XCTAssertFalse(app.buttons["Conocer mis gustos"].firstMatch.exists)
+        capture(app, "quiz225-home-local-profile")
+        app.terminate(); app.launch()
+        XCTAssertTrue(app.buttons["Buscar vino o bodega"].waitForExistence(timeout: 15))
+        XCTAssertTrue(app.buttons["Mis gustos"].firstMatch.waitForExistence(timeout: 10))
+        capture(app, "quiz225-home-reopened-local-profile")
+    }
+
     @MainActor func testMaxDiscardVisualCoverage() throws {
         continueAfterFailure = false
         let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")

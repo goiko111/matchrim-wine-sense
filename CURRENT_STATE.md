@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25, Candidate118 Compiled / Home225 Visual Recovery PASS / Native Quiz Pending
+
+- New Goal remains ACTIVE exact five-block objective until04:00; no monitor resume or scope/gate expansion. Native signed-in Home no longer borrows/writes anonymous taste cache, errors/history failures/invalid vectors are explicit+retryable, account read8second timeout and abandoned loading cleared.10new controller groups+6affected owner groups/focused lint PASS; web legacy controller scenarios/full Home JSX preserved.
+- Clean a6e7946candidate118r2preparation/typecheck/Vite164resources/unsigned arm64 compile118-r1 PASS. Earlier118r1TS2339 retained FAIL; native abort now before maybeSingle.225isolated actual Home component visual-r1:4narrow/200%text error/retry/profile-route cases PASS, zero errors/external requests; two captures personally inspected. Not UIKit/RLS/real accounts/200recognition. [Checkpoint](docs/MATCHRIM_NIGHT_225_2026-10-25.md). Actual native anonymous20question quiz/Home/restart coverage prepared only, pending canonical full resource claim. Own heavy52f6725d released after compile, writer25dd6d3a only checkpoint/QA harness then release/full queue.
+- Named authorized Thunderbird account refreshed; latest Matchrim reply still16:14visible, no later thread reply observed, not server-wide absence proof. Original filter/tab restored; no outgoing mail; desktopb7e7fc10released. Catalogue/master/sensory/real200/authenticated persistence gates unchanged. No new catalogue/model/Lovable/Keychain/account/phone/spend/main/backend/web/TestFlight.
+
 ## Current Gate: 2026-10-25, New Five-Block Goal ACTIVE / Native Home225 Recovery Fix Prepared
 
 - Independently get_goal confirms ACTIVE exact human objective: work until04:00 on agreed five blocks, correct/validate candidate with evidence, no web/extra spend, follow development. This supersedes old BLOCKED objective status only; existing monitor stays PAUSED. No new permissions/calls/accounts/deploy/TestFlight inferred.

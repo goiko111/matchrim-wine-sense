@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { execFileSync, spawn, spawnSync } from 'node:child_process';
 
 const repo = process.cwd(), out = path.resolve(process.argv[2]);
-const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close', 'rescan', 'discard-visual'].includes(mode));
+const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close', 'rescan', 'discard-visual', 'quiz'].includes(mode));
 const sizeMode = process.argv[7] || 'both'; assert(['both', 'normal', 'max'].includes(sizeMode));
 if (mode === 'discard-visual') assert.equal(sizeMode, 'max', 'DISCARD_VISUAL_REQUIRES_ACTUAL_MAX_TEXT');
 assert(path.dirname(out) === path.join(repo, 'qa-artifacts/native218-20261025') && /^native220-r\d+$/.test(path.basename(out)) && !fs.existsSync(out));
@@ -29,7 +29,7 @@ const guard = () => {
 };
 const run = args => { guard(); return execFileSync('/usr/bin/xcrun', args, { env, encoding: 'utf8', timeout: 120000 }); };
 const verifySource = () => {
-  assert(prep.passed && compiled.passed && [110, 111, 112, 113, 114, 115, 116, 117].includes(prep.build) && compiled.sourceCommit === prep.commit);
+  assert(prep.passed && compiled.passed && [110, 111, 112, 113, 114, 115, 116, 117, 118].includes(prep.build) && compiled.sourceCommit === prep.commit);
   for (const [file, hash] of Object.entries(prep.sourceFingerprints)) assert.equal(sha(fs.readFileSync(path.join(repo, file))), hash, file);
   for (const [file, hash] of Object.entries(prep.webResources)) assert.equal(sha(fs.readFileSync(appSource + '/public/' + file)), hash, file);
   assert.equal(sha(fs.readFileSync(appSource + '/App')), compiled.app.executableSHA256);
@@ -37,7 +37,9 @@ const verifySource = () => {
 guard(); verifySource(); fs.mkdirSync(out, { mode: 0o700 });
 const receipt = { startedUTC: new Date().toISOString(), passed: false, sourceCommit: prep.commit, build: prep.build, bundleId, device,
   leases: { heavy: env.MATCHRIM102_HEAVY_LEASE_ID, simulator: env.MATCHRIM104_SIMULATOR_LEASE_ID, desktop: env.MATCHRIM220_DESKTOP_LEASE_ID, writer: env.MATCHRIM102_WRITER_LEASE_ID },
-  scope: `Compiled${prep.build} native app, ${previous ? 'exact own previously isolated anonymous' : 'fresh'} QA container, external network denied by CSP plus early JS guards. Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only; not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.`, stages: [],
+  scope: `Compiled${prep.build} native app, ${previous ? 'exact own previously isolated anonymous' : 'fresh'} QA container, external network denied by CSP plus early JS guards. ${mode === 'quiz'
+    ? 'Actual anonymous 20-question quiz, local profile/Home and restart retention only; no account, OCR or gallery test in this mode.'
+    : 'Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only.'} Not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.`, stages: [],
   liveAccountsUsed: false, catalogueDataInjected: false, modelCallsPermitted: 0, webPublished: false, uploaded: false };
 let originalSize;
 try {
@@ -93,6 +95,7 @@ try {
     if (mode === 'close') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testNativeCloseAndHubReturn');
     if (mode === 'rescan') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testLocalReanalysisRequiresReview');
     if (mode === 'discard-visual') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testMaxDiscardVisualCoverage');
+    if (mode === 'quiz') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testAnonymousQuizAndHome');
     const fd = fs.openSync(root + '/runtime.log', 'wx', 0o600);
     const child = spawn(env.DEVELOPER_DIR + '/usr/bin/xcodebuild', args, { env, stdio: ['ignore', fd, fd] });
     let stopped = null;

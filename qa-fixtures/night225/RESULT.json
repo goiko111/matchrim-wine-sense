@@ -1,0 +1,72 @@
+{
+  "createdUTC": "2026-10-25T20:40:58.329Z",
+  "goal": "ACTIVE exact five-block objective until04:00 Madrid; not completed",
+  "productCommit": "a6e79463d849ec8cf36d475ae18d05473139f831",
+  "build": 118,
+  "regression": {
+    "baseline": "feaa229",
+    "expected": "No signed-in recommendation from local cache when account quiz is missing",
+    "actualBefore": "Unrelated local profile vector returned",
+    "baselineExpectedFailure": {
+      "path": "qa-fixtures/night225/baseline-red.log",
+      "sha256": "0500df57a7a7b3c9d46959cb9d608fdc4d579e29473fe369c5db4891974eb04c"
+    },
+    "newControllerGroups": 10,
+    "affectedPreEffectOwnerGroups": 6,
+    "syntheticOwnerTransitions": 50,
+    "focusedLint": "PASS",
+    "fullWebHomeJSX": "Identical to feaa229",
+    "legacyControllerScenarios": 4
+  },
+  "preparation": {
+    "path": "qa-artifacts/native218-20261025/candidate118-r2/preparation.json",
+    "sha256": "bcf6304ea967c8367acc0fdb667ba83bda8700a9b685d93b259ba0e348318d8a"
+  },
+  "compile": {
+    "path": "qa-artifacts/native218-20261025/compile118-r1/RESULT.json",
+    "sha256": "bbbc5b0058b19c9ff371f607735cb41c164e8d7f8d3c0ce73206daafa3b038a2"
+  },
+  "retainedFailedPreparation": {
+    "path": "qa-artifacts/native218-20261025/candidate118-r1/preparation.json",
+    "sha256": "b4e9a98481e72ef694b5adfbadd5803be654aca59c6ef3fb8362a2655f2caa31"
+  },
+  "retainedFailedTypecheck": {
+    "path": "qa-artifacts/native218-20261025/candidate118-r1/typecheck.log",
+    "sha256": "d5bebb252836576982df717aef78c9f33d389280ac5abe0e912ab4639ff47194"
+  },
+  "visual": {
+    "path": "qa-artifacts/home225-20261025/visual-r1/RESULT.json",
+    "sha256": "4be0f9c7145dcd9f90b96d818eb033b9c37fb530943e9a52a08b521fa5f3bd69"
+  },
+  "personallyInspectedCaptures": [
+    {
+      "path": "qa-artifacts/home225-20261025/visual-r1/profile-320.png",
+      "sha256": "56e14700d8aafa777b169209d59ee5283d56ecd449b0d505cb2bca0f44792561"
+    },
+    {
+      "path": "qa-artifacts/home225-20261025/visual-r1/wines-393-large-text.png",
+      "sha256": "2c48092143bdabc47ae33c2c5d86ae703d7e639517ebe12115bcc05ecd43c66e"
+    }
+  ],
+  "sourceHashes": {
+    "src/pages/Index.tsx": "5eabf87f2e14cf17493a6669c877cba0126c9f8199ed7f68f11eb188645ae0cd",
+    "src/utils/nativeHomeRead225.ts": "d02d7f81f3fdc865142093bcb1ae7a27a4726ff3e2ef8cf7608192f33a991d79",
+    "src/components/NativeAppHome.tsx": "eb88254b83640413f5b851c78d09a4447209c83751123f63a1a62db0517d3a3f",
+    "src/components/NativeHome98.tsx": "b8e4d7249870105176ec820117bee4d8551986a7077d5196f6a5f27acd201f54",
+    "scripts/check-matchrim-home-profile225.mjs": "c08cd78aa5672f4059b2e455dcc3f1dfbb49d168381ead7173e1c90b2de3ca67"
+  },
+  "nativeQuiz": "Prepared; not executed",
+  "externalCalls": 0,
+  "paidCalls": 0,
+  "newSpend": 0,
+  "webPublished": false,
+  "backendMutated": false,
+  "realAccountsUsed": false,
+  "phoneUsed": false,
+  "testFlightUploaded": false,
+  "limitations": [
+    "Synthetic controller/auth/query transports do not validate deployed RLS or real account persistence.",
+    "Visual component tests use mobile Chromium with inert search/nav leaves, not actual native error screen.",
+    "Catalogue/sensory/real200-label recognition gates unchanged."
+  ]
+}

@@ -35,6 +35,10 @@ Own atomic heavy52f6725d/writer25dd6d3a claimed after queued offer, volume15,537
 
 First118preparationr1 stops at TS2339: installed Supabase builder does not expose abortSignal after maybeSingle. Failure retained unchanged. Moved native abort binding before maybeSingle, matching the installed service pattern; no new SDK, backend or query. New clean-source118r2preparation/compile still pending at this checkpoint. No earlier failure relabelled PASS.
 
+Clean-sourcea6e7946candidate118r2preparation/typecheck/Vite164resources and unsigned arm64 compile118-r1 now PASS. No signing/export/upload. Heavy released immediately after compile. Four225visual cases PASS; normal/profile and large/history captures personally inspected, no layout overlap/overflow in the inspected error content. Preparing only missing actual native anonymous20-question quiz/Home/restart coverage, mode quiz. No profile/auth/OCR answer injection; external traffic stays denied. Quiz radio activation checks visible native bounds, not a falsely asserted44pt radio AX box; touch-row semantics remain separate. Runtime/native captures still pending.
+
+Authorized named-account Thunderbird refresh repeated while heavy queue waited: same Matchrim thread latest visible16:14Madrid, no newer thread reply visible, online/no explicit completion banner. Original empty filter and selected tab restored; no outgoing mail. Own globalb7e7fc10lease acquired after289sidle/no foreign UI runner, then released. An ad-hoc local Mork parser returned no reliable count and is not used as evidence of no mail. No remote catalogue/model/key calls made.
+
 ## Remaining Five-Block Coverage
 
 | Block | Current evidence | Next independent delta |
