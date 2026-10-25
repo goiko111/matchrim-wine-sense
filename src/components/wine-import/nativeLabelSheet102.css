@@ -8,6 +8,11 @@ html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-
   overflow-y: auto;
 }
 
+/* At MAX, the decorative icon must not split the visible Discard label. */
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet [data-testid="native-identity-editor218"] button[aria-label="Descartar cambios"] > svg {
+  display: none;
+}
+
 /* Reserve room for an enlarged form control instead of letting title and
    footer consume the entire sheet. Long titles retain their own scrollport. */
 html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-scan-region-layout > :first-child {

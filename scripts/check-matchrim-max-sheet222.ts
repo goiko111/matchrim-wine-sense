@@ -44,18 +44,23 @@ const actual = project(current), expected = project(before);
 let first = 0; while (first < actual.length && actual[first] === expected[first]) first++;
 assert(actual === expected, `Web delta at ${first}: ${JSON.stringify(actual.slice(first - 50, first + 100))} vs ${JSON.stringify(expected.slice(first - 50, first + 100))}`);
 const css = postcss.parse(fs.readFileSync('src/components/wine-import/nativeLabelSheet102.css', 'utf8'));
-let boundedHeader = false, fixedIcons = false, compactFooter = false, fixedHeaderPadding = false;
+let boundedHeader = false, fixedIcons = false, compactFooter = false, fixedHeaderPadding = false, roomForDiscard = false;
 css.walkRules(rule => {
   assert(rule.selector.split(',').every(selector => selector.trim().startsWith('html.matchrim-native-platform')), 'Native-only selectors required');
   if (rule.selector.includes('> :first-child')) { assert(rule.selector.includes('.matchrim-accessibility-text')); boundedHeader = rule.nodes.some(node => node.type === 'decl' && node.prop === 'max-height' && node.value === 'min(12dvh, 6rem)'); fixedHeaderPadding = rule.nodes.some(node => node.type === 'decl' && node.prop === 'padding' && node.value === '12px 16px'); }
   if (rule.selector.includes('> :last-child')) { assert(rule.selector.includes('.matchrim-accessibility-text')); compactFooter = rule.nodes.some(node => node.type === 'decl' && node.prop === 'grid-template-columns' && node.value === 'minmax(0, 1fr) 44px'); }
   if (rule.selector.includes('.matchrim-region-footer-actions') && rule.selector.includes('button')) { assert(rule.selector.includes('.matchrim-accessibility-text')); fixedIcons = rule.nodes.some(node => node.type === 'decl' && node.prop === 'height' && node.value === '44px'); }
+  if (rule.selector.includes('[data-testid="native-identity-editor218"] button[aria-label="Descartar cambios"] > svg')) {
+    assert(rule.selector.includes('.matchrim-accessibility-text'));
+    roomForDiscard = rule.nodes.some(node => node.type === 'decl' && node.prop === 'display' && node.value === 'none');
+  }
 });
 assert(boundedHeader && fixedIcons && compactFooter && fixedHeaderPadding);
+assert(roomForDiscard, 'MAX Discard must reserve full label width without its decorative icon');
 assert(current.includes("aria-label={isNative ? 'Cerrar' : undefined}"));
 assert(!current.includes("addEventListener('scroll', revealFocusedField)"));
 assert(current.includes("addEventListener('focusin', revealFocusedField)") && current.includes("addEventListener('resize', revealFocusedField)"));
 const editor = fs.readFileSync('src/components/wine-import/NativeLabelIdentityEditor218.tsx', 'utf8');
 assert(editor.includes('aria-label="Aplicar corrección"') && editor.includes('>Aplicar</span>'));
 assert(editor.includes('aria-label="Descartar cambios"') && editor.includes('>Descartar</span>'));
-console.log(JSON.stringify({ passed: true, checks: ['Full legacy web-false projection unchanged', 'All CSS native scoped', 'MAX-only keyboard-safe header budget', '44px icon targets', 'Single-row MAX footer', 'Explicit accessible close name', 'No focus restoration on manual viewport pan; focus/resize retained'], liveCalls: 0 }));
+console.log(JSON.stringify({ passed: true, checks: ['Full legacy web-false projection unchanged', 'All CSS native scoped', 'MAX-only keyboard-safe header budget', '44px icon targets', 'Single-row MAX footer', 'Explicit accessible close name', 'No focus restoration on manual viewport pan; focus/resize retained', 'MAX Discard reserves label width; visible and accessible names retained'], liveCalls: 0 }));

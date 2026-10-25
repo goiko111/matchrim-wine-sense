@@ -1,0 +1,49 @@
+{
+  "createdUTC": "2026-10-25T20:06:50.330Z",
+  "owner": "019f9da7-ae96-7c60-a1b4-fafb75b04d6d",
+  "mail": {
+    "account": "goiko@winerim.com",
+    "authorizedThread": "Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026",
+    "soleSender": "moa-winerim-b93a8ts9@agentmail.to",
+    "refreshPerformed": true,
+    "method": "Thunderbird Archivo > Recibir mensajes nuevos de > goiko@winerim.com (exact named account, not all accounts)",
+    "visibleLatestThreadReplyMadrid": "2026-10-25T16:14:24+01:00",
+    "newerThreadReplyVisible": false,
+    "explicitServerCompletionBannerCaptured": false,
+    "observedOnlineMode": true,
+    "refreshErrorVisible": false,
+    "originalEmptyFilterRestored": true,
+    "originalSelectedTabRestored": true,
+    "newMailSent": false,
+    "queueRequest": "b50196cd-9d2e-4905-9a9a-2f2d766c80ca",
+    "desktopLease": "48b91ec6-671c-4f66-b0e1-6acb4bd11ec9",
+    "leaseReleased": true
+  },
+  "before": {
+    "build": 116,
+    "productSource": "8e29693456a774215a03de4b33d61015c615859d",
+    "runtimeReceipt": "qa-artifacts/native218-20261025/native220-r21/RESULT.json",
+    "runtimeReceiptSHA256": "2161e7f9ccb17e9ff631f020e3c77b7ea4e944f95dd4bb1bdc6994dea5b9eeb4",
+    "xctestFunctionalPassed": true,
+    "visualApproval": false,
+    "personallyViewedCapture": "qa-artifacts/native218-20261025/native220-r21/max/attachments/78DCA9A3-068F-4BB0-AB12-6A5D8995BE24.png",
+    "captureSHA256": "ecf6893d4815d5570aaac10c94db40c4c58fe7189dbd1b98c54138be1e9ab1e1",
+    "defect": "Visible Descartar breaks as Descarta / r at actual MAX with software keyboard despite entire button fitting scrollport.",
+    "bodyHeightPt": 293,
+    "discardButtonHeightPt": 200
+  },
+  "localFix": {
+    "scope": "Native MAX only, hide decorative Discard svg; no text-size, handler, accessible-name, normal-mode or web change.",
+    "focusedRegressionRed": "MAX Discard must reserve full label width without its decorative icon",
+    "focusedChecksAfterFix": 8,
+    "focusedESLint": "PASS",
+    "candidate117Pending": true
+  },
+  "newPaidCalls": 0,
+  "catalogueCalls": 0,
+  "keychainReads": 0,
+  "webPublished": false,
+  "backendMutated": false,
+  "phoneUsed": false,
+  "testFlightUploaded": false
+}

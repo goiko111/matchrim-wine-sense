@@ -1,5 +1,17 @@
 # Native flow220 / empty unknown-name draft221
 
+## Follow-up224: Actual Discard Capture Reveals Defect
+
+Human yields Mac; RESOURCE-QUEUE-V2 prior mail request claimed, exact named authorized account refreshed in Thunderbird, sender-filtered Matchrim thread still ends16:14Madrid. Online/no refresh error visible, but no explicit server-completion banner captured; no absolute claim of no mail on server. Original filter/tab restored, no outgoing mail. Bound observations: `qa-fixtures/native224/BEFORE.json`.
+
+Atomic heavy/ios/mac/writer claimd20f6c6e, disk16GiB/HIDidle86s/no foreign runner. Only missing `discard-visual` native220-r21 runs on compiled116 with previous owned anonymous container/hash guards. XCTest PASS, **personal visual FAIL**: MAX Descartar breaks its last letter into a second line. Exact capture preserved at `qa-artifacts/native218-20261025/native220-r21/max/attachments/78DCA9A3-068F-4BB0-AB12-6A5D8995BE24.png`. Body293pt/button200pt, entire button visible, so functional bounding assertions alone cannot approve glyph layout.
+
+| Before | After | Why |
+| --- | --- | --- |
+| Actual116MAX shows Descarta / r beside decorative icon | NativeMAX-only Discard SVG hidden;117visual verification pending | Reserve label width without reducing preferred text size or changing accessible name/handler |
+
+Added focused regression first fails with expected width-reservation message, then eight native-scoping/web-projection/layout/labels checks and lint PASS after CSS-only fix. Normal icon and web unaffected. New117prep/compile/targeted visual run pending; no full green-suite replay. No paid/catalogue/model/Lovable/key/account/phone/main/backend/web/TestFlight changes. Prior116native functional PASS preserved, not reclassified as visual approval.
+
 ## Latest Verified Checkpoint: Candidate116
 
 Finite local milestone closure, not app/Goal completion. Product source8e29693456a774215a03de4b33d61015c615859d. Candidate116prep/typecheck/Vite164resources and unsigned arm64 simulator compile PASS. No signing/export/upload. Receipts and failures bound in `qa-fixtures/native222/RESULT.json`; older `native220/PARTIAL.json` is preserved unchanged.
