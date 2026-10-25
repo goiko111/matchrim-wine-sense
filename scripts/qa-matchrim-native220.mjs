@@ -29,7 +29,7 @@ const guard = () => {
 };
 const run = args => { guard(); return execFileSync('/usr/bin/xcrun', args, { env, encoding: 'utf8', timeout: 120000 }); };
 const verifySource = () => {
-  assert(prep.passed && compiled.passed && [110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121].includes(prep.build) && compiled.sourceCommit === prep.commit);
+  assert(prep.passed && compiled.passed && [110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122].includes(prep.build) && compiled.sourceCommit === prep.commit);
   for (const [file, hash] of Object.entries(prep.sourceFingerprints)) assert.equal(sha(fs.readFileSync(path.join(repo, file))), hash, file);
   for (const [file, hash] of Object.entries(prep.webResources)) assert.equal(sha(fs.readFileSync(appSource + '/public/' + file)), hash, file);
   assert.equal(sha(fs.readFileSync(appSource + '/App')), compiled.app.executableSHA256);
@@ -77,7 +77,8 @@ try {
   const template = 'qa-artifacts/native99-20261021/native-audit-project';
   fs.cpSync(template + '/Probe97.xcodeproj', project + '/Probe97.xcodeproj', { recursive: true });
   const plan = JSON.parse(fs.readFileSync(template + '/Probe97.xctestplan'));
-  plan.defaultOptions.defaultTestExecutionTimeAllowance = 240; plan.defaultOptions.maximumTestExecutionTimeAllowance = 240;
+  const testSeconds = mode === 'quiz' ? 360 : 240;
+  plan.defaultOptions.defaultTestExecutionTimeAllowance = testSeconds; plan.defaultOptions.maximumTestExecutionTimeAllowance = testSeconds;
   fs.writeFileSync(project + '/Probe97.xctestplan', JSON.stringify(plan, null, 2) + '\n');
   const probe = fs.readFileSync('scripts/MatchrimOffline220.swift', 'utf8').replaceAll('wine.matchrim.qa110offline220v1', bundleId);
   const targetIds = [...probe.matchAll(/XCUIApplication\(bundleIdentifier: "([^"]+)"\)/g)].map(match => match[1]);
@@ -100,7 +101,7 @@ try {
     const child = spawn(env.DEVELOPER_DIR + '/usr/bin/xcodebuild', args, { env, stdio: ['ignore', fd, fd] });
     let stopped = null;
     const stop = reason => { if (stopped) return; stopped = reason; child.kill('SIGINT'); setTimeout(() => { if (child.exitCode === null && child.signalCode === null) child.kill('SIGKILL'); }, 10000).unref(); };
-    const timer = setTimeout(() => stop('WALL_LIMIT'), 360000);
+    const timer = setTimeout(() => stop('WALL_LIMIT'), mode === 'quiz' ? 480000 : 360000);
     const watch = setInterval(() => { try { guard(); } catch (error) { stop(String(error)); } }, 3000);
     try { stage.result = await new Promise(resolve => { child.once('error', error => resolve({ error: String(error) })); child.once('close', (code, signal) => resolve({ code, signal })); }); }
     finally { clearTimeout(timer); clearInterval(watch); fs.closeSync(fd); }

@@ -1,6 +1,6 @@
 # Native240: Explain The Taste Profile Before Its Code
 
-Original five-block Goal ACTIVE until04:00Madrid. No web deployment, catalogue/model/Lovable/Keychain call, real account, iPhone or extra spend.120normal native flow PASS; MAX remains unapproved after retained r27-r29failures.121scroll correction prepared, not yet compiled/approved.
+Original five-block Goal ACTIVE until04:00Madrid. No web deployment, catalogue/model/Lovable/Keychain call, real account, iPhone or extra spend.120normal native flow PASS;121compiled/MAXfunctionalPASS but visualFAIL.122result corrections prepared, not yet compiled/approved. [Bound native241 evidence](../qa-fixtures/native241/RESULT.json).
 
 ## Native Baseline
 
@@ -36,3 +36,17 @@ Native241now scrolls the current question section to its start before focusing i
 | Before: inspected120MAXr29 | After:241prepared | Why |
 |---|---|---|
 | Next question retains the previous scroll offset; question2and all choices can lie above the viewport. | Native question-ID effect scrolls its section to the beginning before announcing/focusing the heading. | Preserve context and reachable controls after Next/Previous without shrinking accessibility text. |
+
+##121Native Proof And122Prepared
+
+Clean67e7f59121r2preparation/typecheck and compile121-r1 PASS; earlier121r1preparation is superseded by the safe-area scroll margin, not a failed build. Actualnative220-r30MAX completes all20answers with visible counters, results, Inicio and local-profile retention after relaunch,215seconds. FunctionalPASSretained unchanged. Three captures personally inspected: the result initially inherits the last-question offset, starts halfway through preferences, and breaks Escanear midword. VisualFAIL, not ready for TestFlight. Earlier question2offset is resolved; no fontsize reduction or offscreen forced taps.
+
+Native122prepared correction resets result position/focus at the safe area, stacks preference label/value at accessibility sizes, and fixes decorative icon/padding/gap widths while preserving the selected text size and whole-word wrapping. Nine actual component/hook/expression groups (including50distinct vectors) and focused lint PASS. The quiz harness now requires a visible result title, captures all five MAXpreferences, and has a bounded360second quiz/480second wall allowance for this expanded coverage (non-quiz allowance unchanged). Normal/MAXnative122is pending, no visual claim from source assertions.
+
+| Before: personally inspected121MAX | After:122prepared | Why |
+|---|---|---|
+| Result opens in the middle of preferences. | Result root scrolls below the safe area and focuses its title on result change. | The first message should explain the completed test. |
+| Escanear splits after Escanea because rem-sized icon/padding consume the width. |20px icon,16px side padding,8px gap and whole-word label wrapping. | Preserve full accessibility text with understandable commands. |
+| Two narrow preference columns at MAX leave fragile word widths. | One full-width label/value column only at accessibility sizes. | Preserve readable labels and descriptions without shrinking type. |
+
+At23:11UTC the authorized Thunderbird account was refreshed and only the sender-filtered Matchrim thread checked. Latest visible reply remains25Oct16:14Madrid; no later reply observed, no explicit completion banner/server-absence proof. No outgoing reminder; filter and original tab restored. Native GUI/heavy/simulator leases released after the completed run; writer only for this prepared delta, then release and new complete queue request.

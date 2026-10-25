@@ -39,7 +39,9 @@ check('Native question counter is a single accessible text node; legacy question
   assert.equal(current.slice(current.lastIndexOf('  return (')), previous.slice(previous.lastIndexOf('  return (')));
 });
 const element = (type, props, ...children) => ({ type, props: props ?? {}, children: children.flat(Infinity) });
-const react = { __esModule: true, default: { createElement: element } };
+const hooks = { refs: [], effects: [] };
+const react = { __esModule: true, default: { createElement: element },
+  useRef: () => hooks.refs.shift() ?? ({ current: null }), useEffect: callback => hooks.effects.push(callback) };
 const load = (file, require) => {
   const module = { exports: {} };
   vm.runInNewContext(ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: {
@@ -92,6 +94,26 @@ check('Return navigation is local, pending saves disable restart and invalid pro
   }
   const invalid = Component({ result: all(NaN), onRestart: Restart });
   assert.equal(flatten(invalid).some(node => node.type === Passport), false);
+});
+check('Native results reset the visible page before focusing the title, below the safe area', () => {
+  const calls = [];
+  hooks.effects = [];
+  hooks.refs = [{ current: { scrollIntoView: options => calls.push(['scroll', { ...options }]) } },
+    { current: { focus: options => calls.push(['focus', { ...options }]) } }];
+  const tree = Component({ result: all(3), onRestart: Restart });
+  hooks.effects[0]();
+  assert.deepEqual(calls, [['scroll', { block: 'start', behavior: 'instant' }], ['focus', { preventScroll: true }]]);
+  assert(tree.props.className.includes('scroll-mt-[calc(12px+var(--matchrim-safe-top))]'));
+});
+check('MAX preference rows stack and fixed icon/chrome widths leave words their space', () => {
+  const nodes = flatten(Component({ result: all(3), onRestart: Restart }));
+  const rows = nodes.filter(node => node.type === 'div' && node.props.className?.includes('grid-cols-['));
+  assert.equal(rows.length, 5);
+  assert(rows.every(node => node.props.className.includes('[html.matchrim-accessibility-text_&]:grid-cols-1')));
+  assert(nodes.filter(node => node.type === 'dd').every(node => node.props.className.includes('[html.matchrim-accessibility-text_&]:text-left')));
+  const buttons = nodes.filter(node => node.type === Button);
+  assert(buttons.every(node => ['gap-[8px]', 'px-[16px]', 'py-[12px]'].every(token => node.props.className.includes(token))));
+  assert(buttons.every(node => node.children.some(child => child?.type === 'span' && child.props.className.includes('[overflow-wrap:normal]'))));
 });
 console.log(JSON.stringify({ passed: true, groups: checks.length, checks, syntheticProfiles: 50, externalCalls: 0,
   scope: 'Actual routing/component expressions and pure preference summaries with inert UI/router leaves; not native visual, real-user taste or live catalogue QA.' }));

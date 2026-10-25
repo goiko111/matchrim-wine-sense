@@ -1,0 +1,89 @@
+{
+  "recordedUTC": "2026-10-25T23:13:29.456Z",
+  "runs": {
+    "native220-r26": {
+      "file": "qa-artifacts/native218-20261025/native220-r26/RESULT.json",
+      "sha256": "43bf2d746336d1b400374c8dc65de8871f0af8f8d17a9f68109ece32ee2e9830",
+      "passed": true,
+      "build": 120,
+      "sourceCommit": "812ef9bdd35fedc27f5154f7f188fe69ada09df1"
+    },
+    "native220-r27": {
+      "file": "qa-artifacts/native218-20261025/native220-r27/RESULT.json",
+      "sha256": "1e3bfdc54693b29259601b36927767a3d8c0cf5e4495dd78026ade1e219451da",
+      "passed": false,
+      "build": 120,
+      "sourceCommit": "812ef9bdd35fedc27f5154f7f188fe69ada09df1"
+    },
+    "native220-r28": {
+      "file": "qa-artifacts/native218-20261025/native220-r28/RESULT.json",
+      "sha256": "a2eac91c087862d3c04aafa13dd824c9ae3c91430928ecc1ee21208531b1b646",
+      "passed": false,
+      "build": 120,
+      "sourceCommit": "812ef9bdd35fedc27f5154f7f188fe69ada09df1"
+    },
+    "native220-r29": {
+      "file": "qa-artifacts/native218-20261025/native220-r29/RESULT.json",
+      "sha256": "9faba8deef02a4316173f474c2c7a7b1f9e0397c7cb74928c0c3e9fbc59578c7",
+      "passed": false,
+      "build": 120,
+      "sourceCommit": "812ef9bdd35fedc27f5154f7f188fe69ada09df1"
+    },
+    "native220-r30": {
+      "file": "qa-artifacts/native218-20261025/native220-r30/RESULT.json",
+      "sha256": "017d05d3c07792e36a67ab777b7c2cac9a7b6ae1d30f55135372fc9da623fe2b",
+      "passed": true,
+      "build": 121,
+      "sourceCommit": "67e7f594f257c539b8aef8d2acbf8752f7a63d12"
+    }
+  },
+  "preparation": {
+    "file": "qa-artifacts/native218-20261025/candidate121-r2/preparation.json",
+    "sha256": "b1f98ff7d587902a1e52cd2318370965fd346676b351c44d0c8f507367a10eff"
+  },
+  "compile": {
+    "file": "qa-artifacts/native218-20261025/compile121-r1/RESULT.json",
+    "sha256": "5a6cfbd92d69bc13f89168b2918a995303eb12da7fef5f5b8ad315b9a012529f"
+  },
+  "functionalMax121": "PASS20questions/result/Home/relaunch",
+  "visual121": "FAIL: result inherits old offset and Escanear fragments midword; not TestFlight-approved",
+  "personallyInspected": [
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r30/max/attachments/FC59C303-3BEE-48A5-826B-8E5B5D4A15A8.png",
+      "sha256": "2e84fffec8beb802794c6a30df12f1694f6e416b8d45a8d49a1a200a4c2c6ddc"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r30/max/attachments/358D0B73-3460-45FC-A256-DBE1DA944B3D.png",
+      "sha256": "2e84fffec8beb802794c6a30df12f1694f6e416b8d45a8d49a1a200a4c2c6ddc"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r30/max/attachments/FBD86DB8-9390-4353-815E-245F331EF1E9.png",
+      "sha256": "e9fbcbb0d499370f119536cb765c0eb2a2b9804ffc8e64801c2dcbd2dce1f4e3"
+    }
+  ],
+  "retainedFailures": "r27 Home gesture; r28 question1 gesture; r29 real stale question2 offset. None reclassified as passing.",
+  "prepared122": "Native result reset/safe area; MAX single-column traits; fixed icon/padding widths and word wrapping. Nine focused groups/lint PASS; compile/native proof pending.",
+  "mail": {
+    "checkedUTC": "2026-10-25T23:11:00Z",
+    "method": "Thunderbird Archivo > Recibir mensajes nuevos de > goiko@winerim.com, sender-filter Moa; exact thread rows only",
+    "latestVisibleMadrid": "25Oct16:14",
+    "newerThreadReplyObserved": false,
+    "serverAbsenceProven": false,
+    "explicitCompletionBanner": false,
+    "outgoing": false,
+    "emptyFilterOriginalTabRestored": true,
+    "desktopLease": "63db6f86-a85c-4dbe-8f25-8b6dc5550cae",
+    "released": true,
+    "hidIdleSeconds": 5123
+  },
+  "limits": {
+    "newCatalogueModelLovableKeychainCalls": 0,
+    "realAccounts": false,
+    "phone": false,
+    "extraSpend": 0,
+    "webPublished": false,
+    "backendChanged": false,
+    "mainChanged": false,
+    "testflightUploaded": false
+  }
+}

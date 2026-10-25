@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-26,121MAX Functional PASS / Result Visual FAIL /122Prepared
+
+- Goal ACTIVE until04:00Madrid; monitorPAUSED. Clean67e7f59121r2prep/typecheck/unsignedsimcompilePASS, actualr30MAX20questions/visible counters/result/Inicio/relaunchPASS in215s. Personal review of3captures: question offset fixed, but result starts mid-page and Escanear splits midword. Preserve functionalPASSand visualFAIL separately. [Bound receipt](qa-fixtures/native241/RESULT.json).
+- Native122prepared result-root reset/safearea/title focus, accessibility one-column traits, fixed icon/padding widths+whole-word commands.9focused groups/50distinct vectors/lintPASS; actual122normal/MAX/personal visuals pending. No web JSX/controller/publish/backend/main/key/catalogue/model/Lovable/phone/accounts/spend/TestFlight change. Catalogue/sensory/200realidentity gates unchanged.
+- Named-account mail refreshed23:11UTC; exact Matchrim thread latest visible25Oct16:14Madrid, no newer observed or server-absence proof. No outgoing; filter/original tab restored. Own heavy/ios/mac released after actual completed QA; writer5222a0cf only this delta/checkpoint then release/new full122queue. No foreign processes/leases touched.
+
 ## Current Gate: 2026-10-26,120Normal Quiz PASS / MAX Question Offset Defect /121Prepared
 
 - Goal ACTIVE until04:00Madrid; monitorPAUSED. Clean812ef9b120prep/typecheck/unsignedsimulatorcompile PASS. Actualr26normal20questions/new plain-language preferences/Inicio/relaunchPASS; two result captures personally inspected, single AXcounter verified. MAXr27/r28/r29FAILretained: content gestures resolve Home/first-question harness failures, r29reveals real question2stale bottom offset. Not Home scroll failure, not full120QAapproval.

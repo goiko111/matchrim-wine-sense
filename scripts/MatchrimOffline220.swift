@@ -35,7 +35,17 @@ final class MatchrimOffline220Tests: XCTestCase {
         for label in ["Cuerpo", "Frescura", "Dulzor", "Taninos", "Fruta"] {
             XCTAssertTrue(app.staticTexts[label].firstMatch.exists)
         }
+        let resultTitle = app.staticTexts["Tu perfil"].firstMatch
+        XCTAssertGreaterThanOrEqual(resultTitle.frame.minY, 0, "Results must not inherit the last question's scroll offset")
+        XCTAssertLessThanOrEqual(resultTitle.frame.maxY, app.frame.height)
         capture(app, "quiz240-results-initial")
+        if app.staticTexts["Cuerpo"].firstMatch.frame.height > 35 {
+            for (label, value) in [("Cuerpo", "Ligero"), ("Frescura", "Equilibrada"), ("Dulzor", "Un toque dulce"), ("Taninos", "Suaves"), ("Fruta", "Presente")] {
+                try tap(app.staticTexts[label].firstMatch, app, activate: false)
+                try tap(app.staticTexts[value].firstMatch, app, activate: false)
+                capture(app, "quiz242-preference-\(label)")
+            }
+        }
         try tap(app.buttons["Escanear un vino"].firstMatch, app, activate: false)
         capture(app, "quiz225-results")
         try tap(app.links["Inicio"].firstMatch, app)
@@ -53,7 +63,7 @@ final class MatchrimOffline220Tests: XCTestCase {
         let prefix = app.staticTexts["Pregunta"].firstMatch
         let combined = app.staticTexts["Pregunta \(number) de 20"].firstMatch
         for _ in 0..<40 {
-            if combined.exists { return }
+            if combined.exists && combined.frame.minY >= 0 && combined.frame.maxY <= app.frame.height { return }
             if prefix.exists {
                 let start = prefix.frame
                 let current = app.staticTexts.matching(NSPredicate(format: "label == %@", String(number)))
