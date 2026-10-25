@@ -181,8 +181,8 @@ await check('legitimate v1 numeric evidence preserves native compatibility; unbo
   const row = wine('v1-string', all(2), 'love', stamp, false);
   assert.equal(profile95.calculateLearnedMatchrimProfile95(all(3), [{ ...row, sensory_attributes: { ...row.sensory_attributes, potencia: '2' } }]).samples, 0);
   const coercion = { ...row, sensory_attributes: { ...row.sensory_attributes, potencia: '2' } };
-  assert.equal(calculateLearnedMatchrimProfile(all(3), cellarTrainingRows([coercion] as unknown as TrainableWine[], true)).samples, 1,
-    'Explicit negative control: native v1 historically coerces numeric strings; v95 deliberately refuses them');
+  assert.equal(calculateLearnedMatchrimProfile(all(3), cellarTrainingRows([coercion] as unknown as TrainableWine[], true)).samples, 0,
+    'Native230 strict history and v95 both reject coerced sensory evidence');
 });
 await check('latest before eligibility excludes newer opt-out/invalid proof; equal-date rating/attribute conflicts abstain in both orders', () => {
   const row = wine('latest', all(0));
@@ -201,8 +201,8 @@ await check('latest before eligibility excludes newer opt-out/invalid proof; equ
     assert.deepEqual(profile95.calculateLearnedMatchrimProfile95(all(3), rows).profile, all(3.6));
   }
   const conflictingAttributes = [wine('latest', all(0)), wine('latest', all(5))];
-  assert.equal(native(all(3), conflictingAttributes).samples, 1,
-    'Native historical selector takes a last conflicting attribute row; v95 explicitly abstains rather than inheriting order');
+  assert.equal(native(all(3), conflictingAttributes).samples, 0,
+    'Native230 and v95 both abstain on equal-date conflicting attributes rather than inheriting order');
 });
 await check('120-day recency independent anchor and rating-date-only fallback match native', () => {
   const old = wine('dated-old', all(5), 'love', '2026-01-01T12:00:00.000Z');
@@ -483,6 +483,6 @@ const report = { syntheticOnly: true, groups: checks.length, checks, profiles: 5
   sourceSha256: sha(source), helperSha256: sha(read('supabase/functions/_shared/matchrim-profile95.ts')),
   legacyLearningUnchanged: true, limitations: ['No deployed endpoint/provider/real account operations. Synthetic contracts are not human taste validation.',
     'v1 numeric bound evidence preserves native legacy normalization; v1 strings are deliberately excluded rather than coerced.',
-    'Duplicate raw rows resolve before eligibility; same-date contradictory attributes/identity abstain conservatively even where native legacy selector takes the last row.'] };
+    'Duplicate raw rows resolve before eligibility; native230 strict selection now also abstains on equal-date contradictory attributes/identity. Legacy web selection is unchanged.'] };
 if (output) { mkdirSync(resolve(output), { recursive: true }); writeFileSync(resolve(output, 'food-profile95-results.json'), JSON.stringify(report, null, 2) + '\n'); }
 console.log(JSON.stringify({ groups: checks.length, profiles: 50, outbound, result: 'PASS', legacyLearningUnchanged: true }));

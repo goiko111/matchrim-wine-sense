@@ -1,0 +1,378 @@
+{
+  "checkedUTC": "2026-10-25T21:13:10.937Z",
+  "passed": false,
+  "byScenario": {
+    "newer-optout": {
+      "passed": 0,
+      "total": 100
+    },
+    "newer-unrated": {
+      "passed": 0,
+      "total": 100
+    },
+    "newer-invalid-proof": {
+      "passed": 0,
+      "total": 100
+    },
+    "same-date-attributes-conflict": {
+      "passed": 0,
+      "total": 100
+    },
+    "same-row-duplicate": {
+      "passed": 100,
+      "total": 100
+    },
+    "separate-vintages": {
+      "passed": 100,
+      "total": 100
+    }
+  },
+  "syntheticProfiles": 50,
+  "comparisons": 600,
+  "failed": 400,
+  "examples": [
+    {
+      "profile": 1,
+      "scenario": "newer-optout",
+      "reverse": false,
+      "passed": false,
+      "actual": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.5,
+          "dulce": 1.1,
+          "tanico": 1.6,
+          "afrutado": 2.1
+        },
+        "samples": 1,
+        "confidence": 8
+      },
+      "expected": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.75,
+          "dulce": 1.5,
+          "tanico": 2.25,
+          "afrutado": 3
+        },
+        "samples": 0,
+        "confidence": 0
+      }
+    },
+    {
+      "profile": 1,
+      "scenario": "newer-optout",
+      "reverse": true,
+      "passed": false,
+      "actual": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.5,
+          "dulce": 1.1,
+          "tanico": 1.6,
+          "afrutado": 2.1
+        },
+        "samples": 1,
+        "confidence": 8
+      },
+      "expected": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.75,
+          "dulce": 1.5,
+          "tanico": 2.25,
+          "afrutado": 3
+        },
+        "samples": 0,
+        "confidence": 0
+      }
+    },
+    {
+      "profile": 1,
+      "scenario": "newer-unrated",
+      "reverse": false,
+      "passed": false,
+      "actual": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.5,
+          "dulce": 1.1,
+          "tanico": 1.6,
+          "afrutado": 2.1
+        },
+        "samples": 1,
+        "confidence": 8
+      },
+      "expected": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.75,
+          "dulce": 1.5,
+          "tanico": 2.25,
+          "afrutado": 3
+        },
+        "samples": 0,
+        "confidence": 0
+      }
+    },
+    {
+      "profile": 1,
+      "scenario": "newer-unrated",
+      "reverse": true,
+      "passed": false,
+      "actual": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.5,
+          "dulce": 1.1,
+          "tanico": 1.6,
+          "afrutado": 2.1
+        },
+        "samples": 1,
+        "confidence": 8
+      },
+      "expected": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.75,
+          "dulce": 1.5,
+          "tanico": 2.25,
+          "afrutado": 3
+        },
+        "samples": 0,
+        "confidence": 0
+      }
+    },
+    {
+      "profile": 1,
+      "scenario": "newer-invalid-proof",
+      "reverse": false,
+      "passed": false,
+      "actual": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.5,
+          "dulce": 1.1,
+          "tanico": 1.6,
+          "afrutado": 2.1
+        },
+        "samples": 1,
+        "confidence": 8
+      },
+      "expected": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.75,
+          "dulce": 1.5,
+          "tanico": 2.25,
+          "afrutado": 3
+        },
+        "samples": 0,
+        "confidence": 0
+      }
+    },
+    {
+      "profile": 1,
+      "scenario": "newer-invalid-proof",
+      "reverse": true,
+      "passed": false,
+      "actual": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.5,
+          "dulce": 1.1,
+          "tanico": 1.6,
+          "afrutado": 2.1
+        },
+        "samples": 1,
+        "confidence": 8
+      },
+      "expected": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.75,
+          "dulce": 1.5,
+          "tanico": 2.25,
+          "afrutado": 3
+        },
+        "samples": 0,
+        "confidence": 0
+      }
+    },
+    {
+      "profile": 1,
+      "scenario": "same-date-attributes-conflict",
+      "reverse": false,
+      "passed": false,
+      "actual": {
+        "profile": {
+          "potente": 0.9,
+          "acidez": 1.4,
+          "dulce": 2,
+          "tanico": 2.5,
+          "afrutado": 3
+        },
+        "samples": 1,
+        "confidence": 8
+      },
+      "expected": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.75,
+          "dulce": 1.5,
+          "tanico": 2.25,
+          "afrutado": 3
+        },
+        "samples": 0,
+        "confidence": 0
+      }
+    },
+    {
+      "profile": 1,
+      "scenario": "same-date-attributes-conflict",
+      "reverse": true,
+      "passed": false,
+      "actual": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.5,
+          "dulce": 1.1,
+          "tanico": 1.6,
+          "afrutado": 2.1
+        },
+        "samples": 1,
+        "confidence": 8
+      },
+      "expected": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.75,
+          "dulce": 1.5,
+          "tanico": 2.25,
+          "afrutado": 3
+        },
+        "samples": 0,
+        "confidence": 0
+      }
+    },
+    {
+      "profile": 1,
+      "scenario": "same-row-duplicate",
+      "reverse": false,
+      "passed": true,
+      "actual": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.5,
+          "dulce": 1.1,
+          "tanico": 1.6,
+          "afrutado": 2.1
+        },
+        "samples": 1,
+        "confidence": 8
+      },
+      "expected": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.5,
+          "dulce": 1.1,
+          "tanico": 1.6,
+          "afrutado": 2.1
+        },
+        "samples": 1,
+        "confidence": 8
+      }
+    },
+    {
+      "profile": 1,
+      "scenario": "same-row-duplicate",
+      "reverse": true,
+      "passed": true,
+      "actual": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.5,
+          "dulce": 1.1,
+          "tanico": 1.6,
+          "afrutado": 2.1
+        },
+        "samples": 1,
+        "confidence": 8
+      },
+      "expected": {
+        "profile": {
+          "potente": 0,
+          "acidez": 0.5,
+          "dulce": 1.1,
+          "tanico": 1.6,
+          "afrutado": 2.1
+        },
+        "samples": 1,
+        "confidence": 8
+      }
+    },
+    {
+      "profile": 1,
+      "scenario": "separate-vintages",
+      "reverse": false,
+      "passed": true,
+      "actual": {
+        "profile": {
+          "potente": 0.5,
+          "acidez": 1,
+          "dulce": 1.5,
+          "tanico": 2,
+          "afrutado": 2.5
+        },
+        "samples": 2,
+        "confidence": 14
+      },
+      "expected": {
+        "profile": {
+          "potente": 0.5,
+          "acidez": 1,
+          "dulce": 1.5,
+          "tanico": 2,
+          "afrutado": 2.5
+        },
+        "samples": 2,
+        "confidence": 14
+      }
+    },
+    {
+      "profile": 1,
+      "scenario": "separate-vintages",
+      "reverse": true,
+      "passed": true,
+      "actual": {
+        "profile": {
+          "potente": 0.5,
+          "acidez": 1,
+          "dulce": 1.5,
+          "tanico": 2,
+          "afrutado": 2.5
+        },
+        "samples": 2,
+        "confidence": 14
+      },
+      "expected": {
+        "profile": {
+          "potente": 0.5,
+          "acidez": 1,
+          "dulce": 1.5,
+          "tanico": 2,
+          "afrutado": 2.5
+        },
+        "samples": 2,
+        "confidence": 14
+      }
+    }
+  ],
+  "sources": {
+    "src/utils/bodegaAffinity.ts": "aa580fef0fa8090c3b657d3ce3716df231ed0cdd80c50e45f6ffb947d5cf8d64",
+    "src/utils/matchrimLearning.ts": "070999f26f18b8ff3958b1d2864d5bf9f3ddb23aaffe7e0c1eee05b5af5d3fee",
+    "supabase/functions/_shared/matchrim-profile95.ts": "9339dc69de5fb72a38a7c1af46fa5dad4ff96f0eefce87724d608283a55f27e6"
+  },
+  "externalCalls": 0,
+  "scope": "Actual native strict Bodega-to-learner pipeline versus existing Food95 contract on synthetic versioned history, both orders. Synthetic catalogue binding, not real wine evidence or 50human users/RLS/native UI. Duplicate-version stress cases do not prove a current single-snapshot database failure."
+}

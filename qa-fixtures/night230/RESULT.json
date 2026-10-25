@@ -1,0 +1,86 @@
+{
+  "createdUTC": "2026-10-25T21:16:48.096Z",
+  "goal": "ACTIVE original five blocks until04:00Madrid",
+  "evidence": [
+    {
+      "file": "qa-fixtures/night230/learning-lifecycle230-r1.json",
+      "sha256": "196a1961a3665fb8dd9ff8d1631fa1309015891b7624929e7f6c8fdd022d2b4b"
+    },
+    {
+      "file": "qa-fixtures/night230/learning-lifecycle230-r5.json",
+      "sha256": "4a7f7aec498b088e7d9bbf9a5d9ae230584f3ba1c87fd2483dd9e66ecdd0ecae"
+    }
+  ],
+  "intermediates": [
+    {
+      "file": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/night225/learning-lifecycle230-r2.json",
+      "sha256": "d3fa74fe3a81d72177e63f99cde3695556c8325da1866c930b1dd46b07d52a38"
+    },
+    {
+      "file": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/night225/learning-lifecycle230-r3.json",
+      "sha256": "b5d5e849ecfc817a101980525f9b516d84e6ffc4356f1bb08ceeaa223903588e"
+    },
+    {
+      "file": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/night225/learning-lifecycle230-r4.json",
+      "sha256": "fa6513fd47307d5671e4018128e85f63094a163ede464688c6ac342ee03ca52a"
+    }
+  ],
+  "baselineCorrection": "r1had50labelled iterations but only3distinct taste vectors. Its deterministic4failing history scenarios remain valid counterexamples, not fifty distinct users. r4/r5 generator corrected; asserted50distinct vectors. Do not claim matched-cohort precision/recall or human taste validation.",
+  "before": {
+    "comparisons": 600,
+    "passed": 200,
+    "failed": 400,
+    "distinctProfiles": 3,
+    "scenarios": "Neweroptout/unrated/invalidproof and equal-date conflictingattributes failed; repeatedrowandseparatevintagepassed"
+  },
+  "after": {
+    "comparisons": 600,
+    "passed": 600,
+    "failed": 0,
+    "distinctProfiles": 50,
+    "initialAffinitySnapshots": 50,
+    "affinityReReads": 600,
+    "legacyWebArrayUnchanged": true,
+    "malformedHistoryAbstains": true
+  },
+  "affectedChecks": {
+    "home225": 10,
+    "bodega84": 10,
+    "foodProfile95": 104,
+    "focusedLint": "PASS",
+    "evidence": "Tool-observed stdout; no separate logs claimed"
+  },
+  "productChanges": [
+    "Strict native selection resolves versions by actual rating date before filtering eligibility",
+    "Equal-date conflicting sensory/identity/rating abstains without order dependence",
+    "Native exact sensory evidence rejects nonnumeric coercion",
+    "Native Home passes full history to strict selector; nonnative branch remains unchanged"
+  ],
+  "scope": "Actual native strict Bodega-to-learner and affinity functions with synthetic catalogue bindings and isolated versioned history, compared with existing Food95 contract. Not native UI, RLS, real users, real wine truth, deployed providers,200image accuracy or single-snapshot DB reproduction.",
+  "resources": {
+    "cancelledRequest": "9ca903ec-aa18-4080-889f-0aef911abd12",
+    "reason": "New deterministic learning inconsistency required focused native source correction before candidate freeze; no queue priority retained",
+    "writerLease": "b313ca2a-b823-4ade-bbce-1661688b53b2",
+    "release": "Required after checkpoint/commit before new full heavy request"
+  },
+  "pending": [
+    "Candidate119 preparation/typecheck/compile from clean new source",
+    "Native anonymous quiz/results/Home/relaunch",
+    "Current-code retained200cache-only replay",
+    "Hosted catalogue/sensory provenance/real200gates"
+  ],
+  "limits": {
+    "externalCatalogueReads": 0,
+    "modelCalls": 0,
+    "lovableCalls": 0,
+    "keychainReads": 0,
+    "realAccounts": false,
+    "phone": false,
+    "webChanged": false,
+    "mainChanged": false,
+    "backendChanged": false,
+    "testFlight": false,
+    "newSpend": 0,
+    "monitor": "PAUSED unchanged"
+  }
+}

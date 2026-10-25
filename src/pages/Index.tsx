@@ -125,7 +125,7 @@ const Index = () => {
 
       if (data) {
         const wines = (userWines || []) as HomeUserWine[];
-        const trainingWines = cellarTrainingRows(wines.filter((wine) => (
+        const trainingWines = cellarTrainingRows(native ? wines : wines.filter((wine) => (
           wine.use_for_profile_training === true && Boolean(wine.rating) && Boolean(wine.sensory_attributes)
         )), Capacitor.isNativePlatform());
         const learned = calculateLearnedMatchrimProfile(data, trainingWines);

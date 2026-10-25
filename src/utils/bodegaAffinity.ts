@@ -91,9 +91,39 @@ export const isVerifiedCellarTrainingWine = (value: unknown, native = false): bo
     && readCellarSensoryEvidence(wine as unknown as CellarAffinityWine, native));
 };
 
+const selectNativeTrainingHistory230 = (rows: TrainableWine[]): TrainableWine[] => {
+  type Candidate = { wine: TrainableWine; eligible: boolean; timestamp: number; binding: string; conflicting: boolean };
+  const latest = new Map<string, Candidate>(), withoutId: TrainableWine[] = [];
+  for (const wine of rows) {
+    const raw = record(wine);
+    if (!raw) continue;
+    const details = record(raw.place_details), sensory = record(raw.sensory_attributes);
+    const values = sensory ? [sensory.power ?? sensory.potencia, sensory.acidity ?? sensory.acidez,
+      sensory.sweetness ?? sensory.dulzura ?? sensory.dulce,
+      sensory.tannin ?? sensory.taninos ?? sensory.tanico, sensory.fruity ?? sensory.afrutado] : [];
+    const eligible = isVerifiedCellarTrainingWine(wine, true) && values.length === 5
+      && values.every(value => typeof value === 'number' && Number.isFinite(value) && value >= 0);
+    const trace = record(details?.bodega_sensory_evidence);
+    const binding = JSON.stringify([trace?.identity_signature, trace?.version, trace?.attribute_signature]);
+    const rawDate = details?.matchrim_rating_at;
+    const date = typeof rawDate === 'string' ? Date.parse(rawDate) : NaN;
+    const next: Candidate = { wine, eligible, timestamp: Number.isFinite(date) ? date : -Infinity,
+      binding, conflicting: false };
+    if (!wine.id) { if (eligible) withoutId.push(wine); continue; }
+    const previous = latest.get(wine.id);
+    if (previous && next.timestamp === previous.timestamp && (previous.conflicting || !eligible || !previous.eligible
+      || wine.rating !== previous.wine.rating || binding !== previous.binding)) {
+      latest.set(wine.id, { ...next, conflicting: true });
+    } else if (!previous || next.timestamp >= previous.timestamp) latest.set(wine.id, next);
+  }
+  // Keep invalid/opted-out updates until versions are resolved; otherwise old
+  // taste evidence can be resurrected by filtering out its replacement first.
+  return [...withoutId, ...[...latest.values()].flatMap(row => row.eligible && !row.conflicting ? [row.wine] : [])];
+};
+
 export const cellarTrainingRows = (rows: TrainableWine[], strict: boolean): TrainableWine[] => {
   if (!strict) return rows;
-  return rows.filter(wine => isVerifiedCellarTrainingWine(wine, true)).map(wine => {
+  return selectNativeTrainingHistory230(rows).map(wine => {
     const details = record(record(wine)?.place_details);
     const sensory = readCellarSensoryEvidence(wine as unknown as CellarAffinityWine, true)!;
     const attributes = normalizeWineAttributesForInsight(sensory)!;
