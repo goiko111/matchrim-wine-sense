@@ -1,0 +1,196 @@
+{
+  "createdUTC": "2026-10-25T15:57:03.287Z",
+  "sourceCommit": "1042989f0029a9b3151b451b86a70567cda168eb",
+  "sourceDirty": false,
+  "build": 110,
+  "version": "1.0",
+  "typecheck": "PASS",
+  "vite": true,
+  "compile": {
+    "startedUTC": "2026-10-25T15:52:31.393Z",
+    "passed": true,
+    "sourceCommit": "1042989f0029a9b3151b451b86a70567cda168eb",
+    "sourceDirty": false,
+    "build": 110,
+    "args": [
+      "build",
+      "-quiet",
+      "-workspace",
+      "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/native218-20261025/candidate110-r1/production/ios/App/App.xcworkspace",
+      "-scheme",
+      "App",
+      "-configuration",
+      "Debug",
+      "-sdk",
+      "iphonesimulator",
+      "-destination",
+      "generic/platform=iOS Simulator",
+      "-derivedDataPath",
+      "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/native218-20261025/compile110-r1/derived",
+      "-resultBundlePath",
+      "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/native218-20261025/compile110-r1/result.xcresult",
+      "-disableAutomaticPackageResolution",
+      "-skipPackageUpdates",
+      "-jobs",
+      "1",
+      "ARCHS=arm64",
+      "ONLY_ACTIVE_ARCH=YES",
+      "CODE_SIGNING_ALLOWED=NO",
+      "CURRENT_PROJECT_VERSION=110"
+    ],
+    "leases": {
+      "heavy": "bb1d6b74-c735-4d36-8721-a425e562a263",
+      "writer": "25b7aadc-b5af-4667-b32d-2ec7fff48867"
+    },
+    "scope": "Unsigned arm64 iOS Simulator compile only; no boot/install/launch, UIKit, recognition, catalogue validation, signing, export or TestFlight.",
+    "app": {
+      "path": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/native218-20261025/compile110-r1/derived/Build/Products/Debug-iphonesimulator/App.app",
+      "executableSHA256": "7eb37d9e8ea4bc0533377b395c71159a4a07e8870e1cc9767e6970417037c063",
+      "infoSHA256": "7c12fc2d00c0d2c264dee8a70eb22ffc0a9523fcef3d815e4c0547a6d2c072f7",
+      "resources": 164
+    },
+    "stopped": null,
+    "result": {
+      "code": 0,
+      "signal": null
+    },
+    "finishedUTC": "2026-10-25T15:53:20.802Z"
+  },
+  "unit": {
+    "passed": true,
+    "checks": [
+      "No-op keeps the exact reference and its zero affinity",
+      "vintage clears all previous catalogue/sensory/affinity authority",
+      "clearVintage clears all previous catalogue/sensory/affinity authority",
+      "name clears all previous catalogue/sensory/affinity authority",
+      "producer clears all previous catalogue/sensory/affinity authority",
+      "clearProducer clears all previous catalogue/sensory/affinity authority",
+      "Validation normalizes optional fields without manufacturing a harvest",
+      "Invalid names, control characters and harvests cannot be applied",
+      "Actual scanner handler applies only native, unlocked, current selection",
+      "Legacy web projection equals preserved1550bae"
+    ],
+    "liveCalls": 0,
+    "scope": "Synthetic correction and actual extracted handler; not OCR, UIKit, user learning or live saving."
+  },
+  "visualFunctional": {
+    "startedUTC": "2026-10-25T15:49:19.315Z",
+    "passed": true,
+    "sources": {
+      "src/utils/nativeIdentityCorrection218.ts": "2a1a7a2fc98d45cf568595682a6ddab175d4a998e24e334207e1e01e002578b5",
+      "src/components/wine-import/NativeLabelIdentityEditor218.tsx": "ae3cb380659432ac396d1915d8467c1231336ba625b4ffb3b7e06943721a50e7",
+      "src/components/wine-import/MultiWineLabelScanner.tsx": "9c898f40f7916004b1c1036ebee876073d0fa16de99758af06b42dd9c114205f",
+      "src/components/wine-import/LabelAnalysisView.tsx": "8b055e45d0a71453e3d1583c85f6871434e97a4c99c6987373003f598bc8494d",
+      "src/components/CellarWineAffinity.tsx": "9674f158a4b77a2405d169a0a12e06f929640cc84c851aee0a59ac99d134fd00",
+      "src/utils/labelScanSave.ts": "0313b288ae007f236faed348671bda5ddb60d8eae5ede07fcf160e76fb7a1ab5"
+    },
+    "scope": "Actual native editor/label/affinity/cellar components plus real local save ledger, controlled retained/synthetic state. Not full app, UIKit, native OCR, remote saving, learning, 200-label recognition or TestFlight QA.",
+    "liveCalls": 0,
+    "finishedUTC": "2026-10-25T15:49:27.230Z",
+    "checks": [
+      "draft/cancel/invalid/apply/invalidation-320",
+      "local-ledger/cellar/rescan-320",
+      "selection/MAX/long/locked-320",
+      "draft/cancel/invalid/apply/invalidation-393",
+      "local-ledger/cellar/rescan-393",
+      "selection/MAX/long/locked-393"
+    ],
+    "screenshots": [
+      "draft-320.png",
+      "invalid-320.png",
+      "changed-harvest-320.png",
+      "saved-without-old-score-320.png",
+      "rescan-and-initial-320.png",
+      "long-name-320.png",
+      "draft-393.png",
+      "invalid-393.png",
+      "changed-harvest-393.png",
+      "saved-without-old-score-393.png",
+      "rescan-and-initial-393.png",
+      "long-name-393.png"
+    ],
+    "errors": []
+  },
+  "visualEditorLayout": {
+    "startedUTC": "2026-10-25T15:50:20.401Z",
+    "passed": true,
+    "sources": {
+      "src/utils/nativeIdentityCorrection218.ts": "2a1a7a2fc98d45cf568595682a6ddab175d4a998e24e334207e1e01e002578b5",
+      "src/components/wine-import/NativeLabelIdentityEditor218.tsx": "6153a6f13a26e508a541898dadb9517875b046b7e41f994b2b14b7a857cf952e",
+      "src/components/wine-import/MultiWineLabelScanner.tsx": "9c898f40f7916004b1c1036ebee876073d0fa16de99758af06b42dd9c114205f",
+      "src/components/wine-import/LabelAnalysisView.tsx": "8b055e45d0a71453e3d1583c85f6871434e97a4c99c6987373003f598bc8494d",
+      "src/components/CellarWineAffinity.tsx": "9674f158a4b77a2405d169a0a12e06f929640cc84c851aee0a59ac99d134fd00",
+      "src/utils/labelScanSave.ts": "0313b288ae007f236faed348671bda5ddb60d8eae5ede07fcf160e76fb7a1ab5"
+    },
+    "scope": "Actual native editor/label/affinity/cellar components plus real local save ledger, controlled retained/synthetic state. Not full app, UIKit, native OCR, remote saving, learning, 200-label recognition or TestFlight QA.",
+    "liveCalls": 0,
+    "finishedUTC": "2026-10-25T15:50:25.107Z",
+    "checks": [
+      "stacked-editor-controls-320",
+      "stacked-editor-controls-393"
+    ],
+    "screenshots": [
+      "draft-320.png",
+      "draft-393.png"
+    ],
+    "errors": []
+  },
+  "evidence": [
+    {
+      "file": "qa-artifacts/native218-20261025/unit-red.log",
+      "sha256": "38f26c93c8717f1ac594dff87b4988cfaf38b7d57ca1bf1129a0d3ce4404b05d"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/unit-green.log",
+      "sha256": "330aa8a290789e73a7fe1a670ff68add78034eec8999780da0c4d58199a7ba28"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/unit-projection-r2.log",
+      "sha256": "b6cae68140cbafefaf2e019a1842c9e6b214a1ad9ce517368899f4293cf9f9b0"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/unit-final-r2.log",
+      "sha256": "a1aa15e955247b7e469a23d7c41a548c078c363f970ecfb595765d33a2a24857"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/typecheck.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/lint-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/visual-r1/RESULT.json",
+      "sha256": "220674011ddf8788f252c948dacf62eb5e28a42de9bbde86c94415eff2061218"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/visual-r2/RESULT.json",
+      "sha256": "ab880d9273da24302af1fceb3131988bee4852f09d628ba01f477ce291f38d94"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/visual-r3/RESULT.json",
+      "sha256": "3ccd494cc6a31049616d3fffb647a0386c093f0a1e8649cc186eefaafe7224cc"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/candidate110-r1/preparation.json",
+      "sha256": "e7be672fe5143d04db1e2bb945f5a7be9d7d4d163886768322ee8b72559e2d4d"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/compile110-r1/RESULT.json",
+      "sha256": "a2f32c9e56a708e726296b7468ede2e69ea50be4929ec69002de2bdb7db1682f"
+    }
+  ],
+  "visualReview": {
+    "personallyInspected": 14,
+    "initialMaxFragmentationNotApproved": true,
+    "finalLayoutApproved": true
+  },
+  "liveCalls": 0,
+  "webPublished": false,
+  "backendChanged": false,
+  "testflightUploaded": false,
+  "nativeUIKitWalkthrough": "PENDING_RESOURCE",
+  "full200LabelRecognition": "NOT_VALIDATED",
+  "goalsAndAutomationsChanged": false
+}
