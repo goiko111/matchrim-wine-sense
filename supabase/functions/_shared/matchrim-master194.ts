@@ -31,7 +31,7 @@ export const masterRequestUrl194 = (input: unknown): string | null => {
   }
   if (input.operation !== 'search' || !only(input, ['operation', 'query']) || !object(input.query)) return null;
   const query = input.query;
-  if (!only(query, ['q', 'name', 'winery', 'vintage', 'vintageMatch', 'page', 'limit'])) return null;
+  if (!only(query, ['q', 'name', 'winery', 'vintage', 'vintageMatch', 'page', 'limit', 'includeUnlisted'])) return null;
   const params = new URLSearchParams(), words: string[] = [];
   for (const field of ['name', 'winery', 'q']) {
     if (query[field] === undefined) continue;
@@ -48,6 +48,12 @@ export const masterRequestUrl194 = (input: unknown): string | null => {
   if (query.vintageMatch !== undefined) {
     if (!query.vintage || (query.vintageMatch !== 'only' && query.vintageMatch !== 'prefer')) return null;
     params.set('vintageMatch', query.vintageMatch);
+  }
+  if (query.includeUnlisted !== undefined) {
+    const flag = query.includeUnlisted;
+    if (flag === true || flag === '1') params.set('includeUnlisted', '1');
+    else if (flag === false || flag === '0') params.set('includeUnlisted', '0');
+    else return null;
   }
   const page = query.page === undefined ? 1 : query.page, limit = query.limit === undefined ? 10 : query.limit;
   if (!id(page) || !id(limit) || limit > 50 || page * limit > 10000) return null;
