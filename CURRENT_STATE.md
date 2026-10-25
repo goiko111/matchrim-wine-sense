@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25, Native218 Correction Implemented / Controlled Mobile QA PASS
+
+- Independent finite native work; prior Goal remains BLOCKED and existing monitor PAUSED, neither resumed/replaced. Native correction now edits name/producer/optional harvest transactionally with explicit apply/discard. Changed identity clears old master/global/original/canonical/sensory/affinity authority; no-op keeps zero score, local placeholders remain uncertain. Existing web-false projection equals1550bae. [Scope and evidence](docs/MATCHRIM_NATIVE_CORRECTION_218_2026-10-25.md).
+-10focused unit groups and app typecheck/focused lint PASS. Actual-component controlled mobile flowr2sixgroups/12captures plus changed-layout-onlyr3twogroups/2captures, personally inspected. Found/fixed retained masterRecord and MAX fragmented action labels; preserved initial red/harness errors. Local ledger/Bodega/reload fixtures only, NOT native OCR, UIKit/full-app E2E,200-label or real learning approval. Candidate109frozen; new product candidate preparation/compile pending.
+- Cached actual development16:14Madrid217reply preserved master218: reports0f91d8e opt-in bridge correction/redeployment, unknown credit cost and unrequestedmain dependency/type churn. External claims only; no changes adopted/reverted or new authorization inferred. Still needs secure Cloudsecret and separately authorized authenticated live QA. No duplicate reminder, live calls/Keychain/phone/accounts/spend/web/main/backend mutation or TestFlight. Own heavybb1d6b74 and writer25b7aadc for this bounded block; release on completion.
+
 ## Current Gate: 2026-10-25, Post217 External Gate Repeated / Native Goal BLOCKED
 
 - After real216implementation and verified217send, three consecutive goal continuations made no further progress: same cached latest14:38reply/UID88084, no new source; desktop occupied by foreign mac32cf45dc and actual input below1second prevents fresh server check. Cache-only observation is NOT proof of no server reply and NOT a verified live-process wait. No process/session is running for Matchrim; no repeated suite, new reminder, polling loop, cleanup or scope expansion used as filler.

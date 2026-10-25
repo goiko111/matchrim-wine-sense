@@ -33,6 +33,8 @@ import { GlobalWineRecovery104 } from '@/components/wine-import/GlobalWineRecove
 import { AiRimContextGuide } from '@/components/AiRimContextGuide';
 import { WineComparisonWorkspace } from '@/components/wine-import/WineComparisonWorkspace';
 import { LabelAnalysisView } from '@/components/wine-import/LabelAnalysisView';
+import { NativeLabelIdentityEditor218 } from '@/components/wine-import/NativeLabelIdentityEditor218';
+import { correctNativeIdentity218, type NativeIdentity218 } from '@/utils/nativeIdentityCorrection218';
 import { Button } from '@/components/ui/button';
 import {
   Drawer,
@@ -883,6 +885,20 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     }));
   };
 
+  const editNativeIdentity218 = (identity: NativeIdentity218) => {
+    if (!isNative || batchRef.current || loading || !selectedRegion || !selectedCandidate) return;
+    updateRegion(selectedRegion.id, current => {
+      if (current.selectedCandidateId !== selectedCandidate.id || current.status === 'discarded') return current;
+      const candidate = current.candidates.find(value => value.id === selectedCandidate.id);
+      if (!candidate || candidate.name !== selectedCandidate.name || candidate.producer !== selectedCandidate.producer
+        || candidate.vintage !== selectedCandidate.vintage) return current;
+      const corrected = correctNativeIdentity218(candidate, identity);
+      if (!corrected || corrected === candidate) return current;
+      return { ...current, status: localBatch && isPendingLocalIdentity109(corrected) ? 'uncertain' : 'recognized', error: null, fallback: null,
+        candidates: current.candidates.map(value => value.id === candidate.id ? corrected : value) };
+    });
+  };
+
   const identifySelectedManually = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (batchRef.current || loading || !selectedRegion) return;
@@ -1111,7 +1127,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         {manualWineIdentityNotice(selectedCandidate.affinity)}
       </div>
     )}
-    <div className="grid gap-3 sm:grid-cols-2">
+    {isNative ? <NativeLabelIdentityEditor218 key={selectedCandidate.id} identity={selectedCandidate}
+      disabled={regionActionsLocked} onApply={editNativeIdentity218} /> : <div className="grid gap-3 sm:grid-cols-2">
       <label className="text-sm font-medium text-slate-800">
         Vino
         <Input id="region-wine-name" disabled={regionActionsLocked} className="mt-1 min-h-11" value={selectedCandidate.name} onChange={(event) => editCandidate({ name: event.target.value })} />
@@ -1120,7 +1137,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         Bodega
         <Input disabled={regionActionsLocked} className="mt-1 min-h-11" value={selectedCandidate.producer ?? ''} onChange={(event) => editCandidate({ producer: event.target.value || null })} />
       </label>
-    </div>
+    </div>}
   </>;
   const sceneDiagnostics = <>
     {summary.deferred > 0 && (
