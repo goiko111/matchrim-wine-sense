@@ -1,0 +1,51 @@
+[
+  {
+    "file": "01-busqueda-defecto-migratoria.json",
+    "method": "GET",
+    "url": "https://app.winerim.com/api/v1/matchrim/wines/search?q=Migratoria",
+    "status": 200,
+    "utc": "2026-10-25T13:21:25Z"
+  },
+  {
+    "file": "02-busqueda-includeUnlisted-migratoria.json",
+    "method": "GET",
+    "url": "https://app.winerim.com/api/v1/matchrim/wines/search?q=Migratoria&includeUnlisted=1",
+    "status": 200,
+    "utc": "2026-10-25T13:21:25Z"
+  },
+  {
+    "file": "03-busqueda-defecto-control-listado.json",
+    "method": "GET",
+    "url": "https://app.winerim.com/api/v1/matchrim/wines/search?q=Altotinto&limit=5",
+    "status": 200,
+    "utc": "2026-10-25T13:21:26Z"
+  },
+  {
+    "file": "04-ficha-217480.json",
+    "method": "GET",
+    "url": "https://app.winerim.com/api/v1/matchrim/wines/217480",
+    "status": 200,
+    "utc": "2026-10-25T13:21:26Z"
+  },
+  {
+    "file": "05-ficha-control-78397.json",
+    "method": "GET",
+    "url": "https://app.winerim.com/api/v1/matchrim/wines/78397",
+    "status": 200,
+    "utc": "2026-10-25T13:21:26Z"
+  },
+  {
+    "file": "06-busqueda-amplia-includeUnlisted-pagina1.json",
+    "method": "GET",
+    "url": "https://app.winerim.com/api/v1/matchrim/wines/search?q=Rioja&includeUnlisted=1&limit=50&page=1",
+    "status": 200,
+    "utc": "2026-10-25T13:21:26Z"
+  },
+  {
+    "file": "07-busqueda-amplia-includeUnlisted-pagina2.json",
+    "method": "GET",
+    "url": "https://app.winerim.com/api/v1/matchrim/wines/search?q=Rioja&includeUnlisted=1&limit=50&page=2",
+    "status": 200,
+    "utc": "2026-10-25T13:21:26Z"
+  }
+]

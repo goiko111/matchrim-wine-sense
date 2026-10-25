@@ -1,0 +1,14 @@
+{
+  "mode": "EXACT_CACHED_MIME_SUPPLIED_CAPTURES_NOT_OUR_LIVE_CALLS",
+  "messageId": "010001a17320e20c-7a2f5af0-3fa1-4e0b-8944-43cb1aadffd1-000000@email.amazonses.com",
+  "dateMadrid": "2026-10-25T13:54:57+01:00",
+  "from": "Moa Winerim <moa-winerim-b93a8ts9@agentmail.to>",
+  "to": "Goiko || Winerim <goiko@winerim.com>",
+  "inReplyTo": "5bdda026-e513-4cae-897c-eb9c9b510f72@winerim.com",
+  "primaryBody": "Hola:\n\nDesde nuestra respuesta de las 13:02 no ha cambiado nada en el catálogo completo, el puente, las fichas sensoriales, las imágenes de etiquetas ni el contrato de datos externos. Resumen por punto (responsable de todos: Winerim backend):\n\nP0-A · Catálogo e identidades/añadas\n- Preparado: includeUnlisted=1 en producción (release 829).\n- Falta: las capturas completas de 217480, de un control listado y de la paginación.\n- Dependencia: autorización para hacer esas consultas.\n- Plazo estimado tras la autorización: el mismo día.\n\nP0-B · Puente seguro\n- Preparado: la función con sus 3 ficheros, revisada y sin desplegar.\n- Falta, en orden: merge a main de esos ficheros, un mensaje a Lovable para desplegar solo la función y el alta del secreto.\n- Dependencia: autorización del propietario.\n- Plazo estimado tras la autorización: el mismo día.\n- Gasto: no tenemos una estimación de créditos que pueda aprobarse por adelantado sin consumirlos. La única referencia es un despliegue parecido en otro proyecto (en torno a 0,7 créditos); es orientativa, no un presupuesto.\n\nP1 · Evidencia sensorial\n- Preparado: contrato rev3, validado técnicamente.\n- Falta: implementarlo en la API y auditar el rango de confidence de los valores guardados.\n- Dependencia: autorización y decisión de alcance.\n- Plazo: sin estimar hasta fijar el alcance.\n\nP1 · Recuperación visual\n- No hay índice visual. Sin cambios ni trabajo previsto.\n\nP2 · Datos externos\n- No existe contrato. Sin cambios.\n\nOs avisaremos en este hilo en cuanto haya autorización o avance.\n\nUn saludo,\nEquipo Winerim",
+  "primaryBodySha256": "c817f8139a3b7ac54ae039f6cff696999ac003c933a224358bc94f442d708b69",
+  "attachments": [],
+  "newLocalCatalogueOrProviderCalls": 0,
+  "claimedAuthorizationIndependentlyVerified": false,
+  "deploymentIndependentlyVerified": false
+}

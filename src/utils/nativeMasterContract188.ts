@@ -34,9 +34,15 @@ const identity = {
 };
 const searchRow = z.object({ ...identity, id, representativePublicId: id, tastingAttributes: z.unknown() })
   .refine(row => row.id === row.representativePublicId && linkedPublicId(row.webUrl, row.id));
-const page = z.object({ results: z.array(searchRow).max(50), count: z.number().int().min(0).max(50),
+const pagination = { count: z.number().int().min(0).max(50),
   total: z.number().int().nonnegative().safe(), page: z.number().int().positive().safe(),
-  limit: z.number().int().min(1).max(50), pageCount: z.number().int().nonnegative().safe() });
+  limit: z.number().int().min(1).max(50), pageCount: z.number().int().nonnegative().safe() };
+const page = z.object({ results: z.array(searchRow).max(50), ...pagination });
+// Explicit opt-in decoder for the supplied829captures. A missing public row
+// does not remove the canonical identity or create a synthetic store link.
+const unlistedSearchRow216 = z.object({ ...identity, id: z.null(), representativePublicId: z.null(),
+  webUrl: z.null(), tastingAttributes: z.unknown() });
+const optInPage216 = z.object({ results: z.array(z.union([searchRow, unlistedSearchRow216])).max(50), ...pagination });
 const sensoryAxes = ['power', 'sweetness', 'acidity', 'tannin', 'fruity'] as const;
 const axis = z.number().int().min(0).max(5);
 const sensoryRow = z.object({ vintage: year.nullable(), power: axis, sweetness: axis, acidity: axis,
@@ -51,6 +57,7 @@ const detail = z.object({ ...identity, representativePublicId: id.nullable(), ta
 }) });
 
 export type MasterPage188 = z.infer<typeof page>;
+export type MasterPage216 = z.infer<typeof optInPage216>;
 export type MasterDetail188 = z.infer<typeof detail>;
 export type MasterQuery188 = { name?: string; winery?: string; q?: string; vintage?: string;
   vintageMatch?: 'prefer' | 'only'; page?: number; limit?: number };
@@ -81,15 +88,21 @@ export const masterSearchParams188 = (query: MasterQuery188): URLSearchParams | 
   return params;
 };
 
-export const parseMasterPage188 = (value: unknown, expectedPage: number, expectedLimit: number): MasterPage188 | null => {
-  const parsed = page.safeParse(value);
-  if (!parsed.success) return null;
-  const row = parsed.data;
+const validPageMetrics = (row: MasterPage216,
+  expectedPage: number, expectedLimit: number) => {
   if (row.page !== expectedPage || row.limit !== expectedLimit || row.count !== row.results.length
     || row.count > row.limit || row.pageCount !== Math.ceil(row.total / row.limit)
-    || new Set(row.results.map(wine => wine.mantalakWineId)).size !== row.count) return null;
+    || new Set(row.results.map(wine => wine.mantalakWineId)).size !== row.count) return false;
   const expectedCount = Math.max(0, Math.min(row.limit, row.total - (row.page - 1) * row.limit));
-  return row.count === expectedCount ? row : null;
+  return row.count === expectedCount;
+};
+export const parseMasterPage188 = (value: unknown, expectedPage: number, expectedLimit: number): MasterPage188 | null => {
+  const parsed = page.safeParse(value);
+  return parsed.success && validPageMetrics(parsed.data, expectedPage, expectedLimit) ? parsed.data : null;
+};
+export const parseMasterPage216 = (value: unknown, expectedPage: number, expectedLimit: number): MasterPage216 | null => {
+  const parsed = optInPage216.safeParse(value);
+  return parsed.success && validPageMetrics(parsed.data, expectedPage, expectedLimit) ? parsed.data : null;
 };
 
 export type MasterPages188 = { rows: MasterPage188['results']; lastPage: number;

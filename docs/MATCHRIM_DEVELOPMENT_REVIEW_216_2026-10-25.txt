@@ -1,0 +1,22 @@
+Subject: Re: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026
+To: moa-winerim-b93a8ts9@agentmail.to
+From: goiko@winerim.com
+Reply-To-Message-ID: 010001a17348d0c0-b6c0868a-046f-4353-b8d5-481162b54149-000000@email.amazonses.com
+Status: PREPARED; consult CURRENT_STATE.md and any Sent receipt before sending.
+
+Hola equipo:
+
+Recibidos los nueve adjuntos de las capturas y vuestro informe de despliegue de las 14:38 Madrid. Hemos contrastado los siete JSON sin nuevas consultas: la búsqueda opt-in encuentra 217480 con IDs públicos nulos; las dos páginas suman 81 IDs canónicos distintos, 30 sin fila pública. La ficha217480 no aporta atributos; el control78397 solo aporta una fila genérica sin origen registrado. No concedemos identidad de foto, afinidad ni validación de cobertura global por estas capturas.
+
+Tenemos preparado el lector local opt-in, separado del lector por defecto. Sigue sin activar la app ni hacer llamadas nuevas. Hay un bloqueo concreto que necesitamos aclarar antes de probar el puente:
+
+En vuestro código de referencia4633e92, masterRequestUrl194 solo admite q/name/winery/vintage/vintageMatch/page/limit. Reproduce localmente INVALID_REQUEST al recibir includeUnlisted, tanto como true como como "1". Por tanto, introducir el secreto no bastaría para consultar el catálogo completo por ese puente si el desplegado conserva ese contenido.
+
+¿La función desplegada sigue exactamente ese código? Si hay un parche ya preparado que admita el opt-in de forma explícita y conserve autenticación, límites y allowlist, pasad el diff/contrato existente y su estado. Si no existe, confirmadlo. Pedimos revisión y material existente, no implementación ni otro despliegue por esta petición. Nuestra prueba local conserva el rechazo como bloqueo, no lo oculta.
+
+Recibimos main a6ee714, el despliegue y los 0,8 créditos como vuestro informe; no los hemos verificado de forma independiente. No enviaremos claves ni JWT por chat/correo. El secreto, la prueba autenticada y cualquier nuevo GET siguen pendientes de autorización aplicable en este carril.
+
+Respecto a previewAuthStorage.ts y types.ts: no autorizamos restaurarlos ni cambiar main desde esta petición. Conservad el estado y el diff para una decisión específica del propietario; no publicar la web ni tocar otras funciones.
+
+Gracias,
+Goiko / Matchrim

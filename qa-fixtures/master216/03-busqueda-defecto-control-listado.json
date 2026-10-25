@@ -1,0 +1,131 @@
+{
+  "results": [
+    {
+      "id": 320305,
+      "representativePublicId": 320305,
+      "mantalakWineId": 78397,
+      "name": "Anécdota",
+      "winery": "Altotinto",
+      "type": "tinto",
+      "country": "MX",
+      "region": "Ensenada",
+      "grapes": [
+        "Merlot",
+        "Tempranillo"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 3,
+        "acidity": 3,
+        "sweetness": 3,
+        "tannin": 2,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/64dccb164b504391760611.png",
+      "slugname": "Anecdota",
+      "webUrl": "https://web.winerim.com/matchrim/store/320305/Anecdota"
+    },
+    {
+      "id": 227370,
+      "representativePublicId": 227370,
+      "mantalakWineId": 207693,
+      "name": "Vino Cero",
+      "winery": "Altotinto",
+      "type": "tinto",
+      "country": "MX",
+      "region": "Baja California",
+      "grapes": [
+        "Cabernet Sauvignon",
+        "Nebbiolo",
+        "Petit Verdot"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69280f07a3633020201018.png",
+      "slugname": "Vino-Cero",
+      "webUrl": "https://web.winerim.com/matchrim/store/227370/Vino-Cero"
+    },
+    {
+      "id": 375298,
+      "representativePublicId": 375298,
+      "mantalakWineId": 77225,
+      "name": "Altotinto Nebbiolo",
+      "winery": "Altotinto",
+      "type": "tinto",
+      "country": "MX",
+      "region": "Ensenada",
+      "grapes": [
+        "Nebbiolo"
+      ],
+      "vintages": [
+        2019
+      ],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 2,
+        "tannin": 3,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/63ef78c8628e5409146751.png",
+      "slugname": "Altotinto-Nebbiolo",
+      "webUrl": "https://web.winerim.com/matchrim/store/375298/Altotinto-Nebbiolo"
+    },
+    {
+      "id": 375541,
+      "representativePublicId": 375541,
+      "mantalakWineId": 217297,
+      "name": "Scattola Selección",
+      "winery": "Altotinto",
+      "type": "tinto",
+      "country": "MX",
+      "region": "Valle De Santo Tomás",
+      "grapes": [
+        "Cabernet Sauvignon",
+        "Nebbiolo",
+        "Petit Verdot"
+      ],
+      "vintages": [],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/6ac3de3df20be0.22966751_pending-photo-19739-bbe0dc384d556aa3.png",
+      "slugname": "Scattola-Seleccion-Altotinto-MX",
+      "webUrl": "https://web.winerim.com/matchrim/store/375541/Scattola-Seleccion-Altotinto-MX"
+    },
+    {
+      "id": 268341,
+      "representativePublicId": 268341,
+      "mantalakWineId": 211747,
+      "name": "ReEncuentro Reserva",
+      "winery": "Altotinto",
+      "type": "tinto",
+      "country": "MX",
+      "region": "Baja California",
+      "grapes": [
+        "Cabernet Franc",
+        "Cabernet Sauvignon"
+      ],
+      "vintages": [],
+      "tastingAttributes": {
+        "power": 4,
+        "acidity": 3,
+        "sweetness": 1,
+        "tannin": 4,
+        "fruity": 4
+      },
+      "photo": "https://app.winerim.com/images/wines/69ebdd7bc47ae878850383.png",
+      "slugname": "ReEncuentro-Reserva",
+      "webUrl": "https://web.winerim.com/matchrim/store/268341/ReEncuentro-Reserva"
+    }
+  ],
+  "count": 5,
+  "total": 18,
+  "page": 1,
+  "limit": 5,
+  "pageCount": 4
+}

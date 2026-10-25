@@ -1,0 +1,27 @@
+{
+  "results": [
+    {
+      "id": null,
+      "representativePublicId": null,
+      "mantalakWineId": 217480,
+      "name": "La Migratoria",
+      "winery": "Bodegas Frontonio",
+      "type": "tinto",
+      "country": "ES",
+      "region": "Sierra de Gredos",
+      "grapes": [
+        "Garnacha Negra"
+      ],
+      "vintages": [],
+      "tastingAttributes": null,
+      "photo": "https://app.winerim.com/images/wines/6acf10bba530f2.80892612_pending-photo-20114-5895ffce8e804c1c.png",
+      "slugname": "La-Migratoria-Bodegas-Frontonio-ES",
+      "webUrl": null
+    }
+  ],
+  "count": 1,
+  "total": 1,
+  "page": 1,
+  "limit": 10,
+  "pageCount": 1
+}

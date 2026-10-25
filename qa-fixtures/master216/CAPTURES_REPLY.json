@@ -1,0 +1,60 @@
+{
+  "mode": "EXACT_CACHED_MIME_SUPPLIED_CAPTURES_NOT_OUR_LIVE_CALLS",
+  "messageId": "010001a17348d0c0-b6c0868a-046f-4353-b8d5-481162b54149-000000@email.amazonses.com",
+  "dateMadrid": "2026-10-25T14:38:34+01:00",
+  "from": "Moa Winerim <moa-winerim-b93a8ts9@agentmail.to>",
+  "to": "Goiko || Winerim <goiko@winerim.com>",
+  "inReplyTo": "5bdda026-e513-4cae-897c-eb9c9b510f72@winerim.com",
+  "primaryBody": "Hola equipo:\n\nEl usuario ha autorizado las capturas y el puente (25-oct, ~13:10 UTC). Adjuntamos las capturas; el puente está desplegado pero **todavía no activo**: falta el secreto. Nada más ha cambiado: no publicamos la web ni tocamos otras funciones, y no hemos escrito datos.\n\n**P0-A · Capturas (adjuntas, carpeta `capturas-25oct`)**\nSiete GET de solo lectura a producción (release 829), respuestas íntegras. El `README.md` da la URL, la hora UTC y lo que comprueba cada una.\n- **217480, modo por defecto:** `results: []`, `total: 0`.\n- **217480, `includeUnlisted=1`:** aparece con `mantalakWineId` 217480; `id`, `representativePublicId` y `webUrl` a `null`; `tastingAttributes: null`. Sin campo `listed`. Su ficha (`/wines/217480`) responde 200 con los mismos tres campos a `null`, `vintages: []` y `attributesByVintage: []`.\n- **Control listado: 78397** (búsqueda «Altotinto», modo por defecto). En la ficha, `representativePublicId` 320305 y `webUrl` rellenos.\n- **Paginación** (`q=Rioja`, `limit=50`, `includeUnlisted=1`): `total` 81 y `pageCount` 2 en las dos páginas; 50 + 31 resultados; ningún `mantalakWineId` repetido entre páginas. Hay vinos sin fila pública en ambas (18 y 12).\n- La foto de 217480 es un fichero `pending-photo-…` (la de alta del catálogo); no sabemos si está revisada.\n- Estas capturas no miden la cobertura del catálogo; solo cubren estas consultas.\n\n**P0-B · Puente**\n| Paso | Estado |\n|---|---|\n| Código en `main` de `matchrim-wine-sense` | Hecho: commit `a6ee714`. Solo `matchrim-master-catalog/index.ts`, `_shared/matchrim-master194.ts` y las 2 líneas de `config.toml`. Contenido de vuestro commit `4633e92` |\n| Despliegue de la función | Hecho: un único mensaje a Lovable; desplegó solo `matchrim-master-catalog` (verificó los dos ficheros contra `a6ee714`). **Coste: 0,8 créditos** |\n| Secreto `MATCHRIM_GOIKO_KEY` | **Pendiente**: no existe en Cloud → Secrets. Lo introduce el usuario a mano; no pasa por ningún chat ni correo |\n| Prueba autenticada | **Pendiente**: sin secreto y sin JWT de un usuario registrado de prueba no se puede hacer. Hoy solo sabemos que la ruta existe y rechaza con 401 una llamada sin cabecera de autorización |\n\nSin secreto la función responde `503 CATALOGUE_NOT_CONFIGURED`. Cuando esté el secreto, necesitamos un JWT de un usuario registrado no anónimo de prueba (vuestro, que no compartimos por correo) para la prueba autenticada; decidid quién la hace.\n\nLos commits automáticos de Lovable (`225f855` y `da81013`) tocaron `src/integrations/supabase/previewAuthStorage.ts` y `types.ts`, como ya pasó en el despliegue anterior. Los dejamos tal cual; indicadnos si queréis que los restauremos.\n\nGracias,\nEquipo Winerim",
+  "primaryBodySha256": "47542d5747beb777343a6d9e0df6125e8f4925d6ff3d72afecb9dd0056cea650",
+  "attachments": [
+    {
+      "name": "01-busqueda-defecto-migratoria.json",
+      "bytes": 93,
+      "sha256": "e7645bfcf863da59411949067730822134c39d943174e970943b399750c00f16"
+    },
+    {
+      "name": "02-busqueda-includeUnlisted-migratoria.json",
+      "bytes": 650,
+      "sha256": "4ff256da2d6cc51fda6f524cc3e87ddfa6136e40c3a5aeb35200d78ba8601dad"
+    },
+    {
+      "name": "03-busqueda-defecto-control-listado.json",
+      "bytes": 3515,
+      "sha256": "fe09e31c07b25756b025f7cd984606af2e6480a4938472e39fb9b77eb6252533"
+    },
+    {
+      "name": "04-ficha-217480.json",
+      "bytes": 923,
+      "sha256": "5b892e916ca6407b5ce0b16240eaa498b212025c70f3db57ee02694842016c06"
+    },
+    {
+      "name": "05-ficha-control-78397.json",
+      "bytes": 1103,
+      "sha256": "54b2ba424c80b98611d011403474763316457c84f055038c7fcef95f666f9b79"
+    },
+    {
+      "name": "06-busqueda-amplia-includeUnlisted-pagina1.json",
+      "bytes": 33771,
+      "sha256": "6f2ec51c52333bbf657f2e0e5005f8972ff11c9ce469972085a1204deca0dc82"
+    },
+    {
+      "name": "07-busqueda-amplia-includeUnlisted-pagina2.json",
+      "bytes": 21609,
+      "sha256": "b8c550388de7fd7acb71f7f15d1e53082cbd7e5aeb79832b6f0427bbc8f4c0c5"
+    },
+    {
+      "name": "README.md",
+      "bytes": 3068,
+      "sha256": "4c6792b6adb6a63247687a576f35ab208103a8404f013a8ffb890eef863d514f"
+    },
+    {
+      "name": "_llamadas.json",
+      "bytes": 1570,
+      "sha256": "b6fb95800b98104369a11f69da299dbed763e6c023a5eddf86c60345cb4a33ed"
+    }
+  ],
+  "newLocalCatalogueOrProviderCalls": 0,
+  "claimedAuthorizationIndependentlyVerified": false,
+  "deploymentIndependentlyVerified": false
+}
