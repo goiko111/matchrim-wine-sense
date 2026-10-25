@@ -22,3 +22,6 @@ verify_jwt = true
 
 [functions.restaurant-import91]
 verify_jwt = true
+
+[functions.matchrim-master-catalog]
+verify_jwt = true
