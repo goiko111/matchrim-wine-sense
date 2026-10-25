@@ -148,11 +148,12 @@ final class MatchrimOffline220Tests: XCTestCase {
             let fits = !body.exists || !clippedControl || (frame.minY >= body.frame.minY && frame.maxY <= body.frame.maxY)
             if element.isHittable && fits { break }
             if body.exists && body.frame.height > 60 {
-                // Use the scrollport gutter, not the focused input's text area.
-                let top = body.coordinate(withNormalizedOffset: CGVector(dx: 0.96, dy: 0.2))
-                let bottom = body.coordinate(withNormalizedOffset: CGVector(dx: 0.96, dy: 0.8))
-                if frame.minY < body.frame.minY { top.press(forDuration: 0.1, thenDragTo: bottom) }
-                else { bottom.press(forDuration: 0.1, thenDragTo: top) }
+                // Vaul skips the scrollable target itself in getScrollParent;
+                // start on its content, not its padding, without a text long-press.
+                let top = body.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.2))
+                let bottom = body.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
+                if frame.minY < body.frame.minY { top.press(forDuration: 0.01, thenDragTo: bottom) }
+                else { bottom.press(forDuration: 0.01, thenDragTo: top) }
             }
             else { app.swipeUp() }
         }

@@ -1,5 +1,10 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25,114Compiled / MAX Gesture Diagnosis /115Pending
+
+-114clean b0a6636prep/typecheck/Vite164resources/unsigned simulator compile PASS, r15MAX remains FAIL with259pt body. Removing viewport-scroll reveal is not proven sufficient. Installed Vaul getScrollParent skips a directly touched scrollable body, so gutter-origin runner gestures are prevented; now short content-origin drags with strict visibility checks. MAX header rem padding imposes101pt floor; fixed12px/16px padding prepared. Seven focused checks/lint PASS.115prep/compile/MAX/normal-close/local-reanalysis pending; no full QA/200-label approval.
+- No live calls/accounts/keys/spend/web/main/backend/phone/development reminder/TestFlight/Goal/monitor changes. Own GUI/sim/heavy released afterr15, writer8821a29d only for edits/checkpoint. [Exact failures and attribution](docs/MATCHRIM_NATIVE_FLOW_220_2026-10-25.md).
+
 ## Current Gate: 2026-10-25,113Compiled / Native MAX Focus-Pan Correction /114Pending
 
 -113clean a2a68f0prep/typecheck/Vite164resources/unsigned simulator compile PASS. Actualr14MAX types name+producer, fails reaching year; body259pt/Discard261pt and viewport-scroll focus restoration compete with manual pans. Preserved FAIL, not full native approval. Native helper no longer recentres on viewport scroll; focus/input/resize retained, header12dvh/6rem. Seven focused native-scoping/web-projection/CSS checks and lint PASS;114prep/compile/MAX + focused normal-close + local-reanalysis pending.

@@ -12,6 +12,7 @@ html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-
    footer consume the entire sheet. Long titles retain their own scrollport. */
 html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-scan-region-layout > :first-child {
   max-height: min(12dvh, 6rem);
+  padding: 12px 16px;
 }
 
 html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-scan-region-layout > :last-child {
