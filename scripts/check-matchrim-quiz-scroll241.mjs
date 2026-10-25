@@ -32,6 +32,7 @@ calls.length = 0; native = false; Component(props(2)); effect(); assert.deepEqua
 native = true; heading = null; Component(props(3)); assert.doesNotThrow(() => effect());
 const prior = execFileSync('git', ['show', `812ef9b:${file}`], { encoding: 'utf8' });
 assert.equal(source.slice(source.lastIndexOf('  return (')), prior.slice(prior.lastIndexOf('  return (')));
+assert(source.includes('scroll-mt-[calc(12px+var(--matchrim-safe-top))]'));
 console.log(JSON.stringify({ passed: true, groups: 4, nativeSectionBeforeFocus: true,
   questionChangeDependency: true, webAndNullSafe: true, legacyJSXUnchanged: true,
   scope: 'Actual component hook expressions with controlled DOM refs; not native scroll or VoiceOver approval.' }));

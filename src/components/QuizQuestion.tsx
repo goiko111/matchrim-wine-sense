@@ -45,7 +45,7 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   };
   if (isNative) {
     return (
-      <section className="matchrim-native-quiz-question mx-auto w-full min-w-0 max-w-2xl px-0 pb-[24px]">
+      <section className="matchrim-native-quiz-question mx-auto w-full min-w-0 max-w-2xl scroll-mt-[calc(12px+var(--matchrim-safe-top))] px-0 pb-[24px]">
         <div className="flex min-w-0 flex-wrap items-center justify-between gap-[8px] text-sm text-slate-500">
           <span>{`Pregunta ${currentQuestionIndex + 1} de ${totalQuestions}`}</span>
           <progress aria-label="Progreso del test" value={currentQuestionIndex + 1} max={totalQuestions} className="h-2 w-[96px] max-w-full accent-red-800" />
