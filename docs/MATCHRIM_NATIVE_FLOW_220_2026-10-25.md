@@ -1,5 +1,23 @@
 # Native flow220 / empty unknown-name draft221
 
+## Latest Verified Checkpoint: Candidate116
+
+Finite local milestone closure, not app/Goal completion. Product source8e29693456a774215a03de4b33d61015c615859d. Candidate116prep/typecheck/Vite164resources and unsigned arm64 simulator compile PASS. No signing/export/upload. Receipts and failures bound in `qa-fixtures/native222/RESULT.json`; older `native220/PARTIAL.json` is preserved unchanged.
+
+| Test | Actual Result | Evidence |
+| --- | --- | --- |
+| MAX actual correction, three fields and real software/numeric keyboards | PASS, discard/apply/reopen/auth boundary; no forced/clipped taps | native220-r19,116 |
+| Normal close and return to scan hub | PASS; this close code is unchanged in116 | native220-r18,115 |
+| Local reanalysis after manual identity | PASS; old name removed, proposed reference, no automatic reconfirmation | native220-r20,116 |
+| Normal full correction | Earlier111PASS retained; not repeated as an unrelated suite | native220-r11/normal |
+| Bodega anonymous/auth/back home | Earlier individual PASS retained; its parent run remains cancelled/failed | native220-r4/normal |
+
+Eight latest screenshots personally inspected: normal close/hub, MAX applied short Apply/year keyboard/reopened identity, and all three before/after/review reanalysis captures. Short Apply now fits one line in the inspected MAX image. Discard retains full accessible name and passed native interaction, but individual MAX Discard glyph layout was not separately captured; do not claim universal pixel approval. Header deliberately has its own scrollport for long MAX titles, rather than reducing preferred wine text.
+
+Native local Vision runs on the same resident Biografo image via explicit File injection, with external CSP/transport guards; no recognition response/profile/auth/catalogue fixture injected. Catalogue unavailable is expected in this isolated test and is not evidence that the wine is absent from Winerim. Reanalysis replaces the earlier manual candidate with a new uncertain local candidate and leaves saving gated on review. It is not a canonical-ID accuracy test or reanalysis of a previously linked sensory fiche.
+
+Remaining gates: authenticated save/Bodega/restart persistence, actual linked-fiche score invalidation, full spoken VoiceOver, Photos/gallery, hosted global catalogue/sensory contract and real200-label recognition. Prior failedr12–r16remain failed; corrected harness content-target/slow-drag strategy is recorded, not hidden by passingr17/r19. No repeated old green unit groups, new external calls/keys/accounts/spend/main/backend/web/phone/development reminder or TestFlight. Existing blocked Goal and paused monitor unchanged. Dedicated simulator/app not reset/deleted/shut down, foreign Gameinar untouched. Owned GUI/simulator/heavy leases released afterr20; writer only for final checkpoint/branch commit and release.
+
 Finite MATCHRIM-NATIVE-FLOW-1, separate from the preserved blocked Goal. No monitor, account, phone, backend/main/web publication, paid call, catalogue GET/SQL, Keychain or development reminder. Existing110source1042989 reused without recompiling it.
 
 ## Isolation And Evidence
@@ -10,7 +28,7 @@ Finite MATCHRIM-NATIVE-FLOW-1, separate from the preserved blocked Goal. No moni
 - Resident img061 (Biografo del Vino), SHAa6528cc35c53594c4325f063b798395550f385cc71530ea98bb5c489592bff6d, is passed as a File using a clearly named QA-only control. This bypasses Photos/gallery: do not claim native gallery approval. Actual native Vision and the production scanner run; no OCR/matching answers are mocked. With catalogue blocked the wine remains unidentified, correctly without invented affinity.
 - All receipts, AX trees, captures and XCTest videos: `qa-artifacts/native218-20261025/native220-r1` onwards. No earlier failed run is overwritten or reclassified.
 
-## Current Results
+## Initial Observations (Superseded By Latest Checkpoint Above)
 
 | Segment | Result |
 | --- | --- |

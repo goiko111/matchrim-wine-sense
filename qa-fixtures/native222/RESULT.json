@@ -1,0 +1,352 @@
+{
+  "createdUTC": "2026-10-25T17:26:30.522Z",
+  "milestone": "MATCHRIM-NATIVE-FLOW-1",
+  "owner": "019f9da7-ae96-7c60-a1b4-fafb75b04d6d",
+  "scope": "Actual compiled native app in owned anonymous simulator container, local Vision via resident File injector and denied external network. Not gallery, canonical recognition, linked-fiche native score accuracy, real accounts/persistence, full VoiceOver or TestFlight approval.",
+  "candidate": 116,
+  "productSource": "8e29693456a774215a03de4b33d61015c615859d",
+  "previousPartial": "qa-fixtures/native220/PARTIAL.json",
+  "previousPartialSHA256": "f3269bccc9d22105706792ea9d4d98611f6e8d57f3cf6aad2dd6db1d1b4ec272",
+  "compiles": [
+    {
+      "build": 112,
+      "source": "8427f8bebb3c7db638bdc26c97d1f04b04738193",
+      "passed": true,
+      "root": "qa-artifacts/native218-20261025/compile112-r1",
+      "receiptSHA256": "67a25b9fd60e4b5377a09e484a3939bdc2ccaad448d8c7a30c1779948f2d124c",
+      "preparationSHA256": "5733f37f1c4ab572a1def0173b5f12b9cec331ab77b1128682f36cac6eaefc88",
+      "executableSHA256": "7eb37d9e8ea4bc0533377b395c71159a4a07e8870e1cc9767e6970417037c063",
+      "infoSHA256": "23d2446c4850c34455acdc916d2c3146b2555f2964a6ef8a94c6dc909cf62ff3"
+    },
+    {
+      "build": 113,
+      "source": "a2a68f0ce20606a55a6fe1e31a60dbd172e8dfff",
+      "passed": true,
+      "root": "qa-artifacts/native218-20261025/compile113-r1",
+      "receiptSHA256": "4624ca02a9de90f4b144250aae5b9c2978cd11692443d103f2b9d95763860966",
+      "preparationSHA256": "dca93a6ec0fa3720e527cf6548b6f583467ebdd1089350778b292d77fa88b7c9",
+      "executableSHA256": "7eb37d9e8ea4bc0533377b395c71159a4a07e8870e1cc9767e6970417037c063",
+      "infoSHA256": "015ab8d837db3c3f37fa024dff8da73695053f9314f03df13c8f456c8cd5eae4"
+    },
+    {
+      "build": 114,
+      "source": "b0a66368c57ae36283c4d2dd15bb2cd163cd647e",
+      "passed": true,
+      "root": "qa-artifacts/native218-20261025/compile114-r1",
+      "receiptSHA256": "ba1874382797f78c5bfe3a65ff719c5b3501af7bb6698ab4900439162af804f5",
+      "preparationSHA256": "e18ade22c4bfbd942b99a86a86f605e874d1a65ef7f5ac661b4a9a13473f7b0b",
+      "executableSHA256": "7eb37d9e8ea4bc0533377b395c71159a4a07e8870e1cc9767e6970417037c063",
+      "infoSHA256": "8539515b56e4b4120774d8d830b793dceb991c0afe378f1ce53e431f28c67087"
+    },
+    {
+      "build": 115,
+      "source": "2d13849b403ae43445c0a235ad1ecc5219c68ab6",
+      "passed": true,
+      "root": "qa-artifacts/native218-20261025/compile115-r1",
+      "receiptSHA256": "ae7d50d71a765023b08270fe671971fa7b9c0a860f748f7afa4676214282ddc7",
+      "preparationSHA256": "a703d07b272a98d3a69299dacc717ca7565f80a80736df9a2b9aeab60f0a886c",
+      "executableSHA256": "7eb37d9e8ea4bc0533377b395c71159a4a07e8870e1cc9767e6970417037c063",
+      "infoSHA256": "39e5cc89a299a74ecc4db855935d2025dac81e9927df757a35007741fa02f9ce"
+    },
+    {
+      "build": 116,
+      "source": "8e29693456a774215a03de4b33d61015c615859d",
+      "passed": true,
+      "root": "qa-artifacts/native218-20261025/compile116-r1",
+      "receiptSHA256": "814f5928913a55c09e556727c6903faa0f40908c76eafec7408de003d70ffd59",
+      "preparationSHA256": "1c12de70d63f4e65647c624a4b2a3960a89458c193009734dc0eb982dfad303d",
+      "executableSHA256": "7eb37d9e8ea4bc0533377b395c71159a4a07e8870e1cc9767e6970417037c063",
+      "infoSHA256": "61767a110d5b802943eb1231b974be13e8f827e25f80a9895a78c7594c1ab75f"
+    }
+  ],
+  "native": [
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r12",
+      "receiptSHA256": "03b173869d77bcc92f542667b56700d912c7cd29350fe88eea6581cfa2db54bb",
+      "source": "8427f8bebb3c7db638bdc26c97d1f04b04738193",
+      "build": 112,
+      "overallPassed": false,
+      "stages": [
+        {
+          "name": "max",
+          "resultPath": "qa-artifacts/native218-20261025/native220-r12/max/result.xcresult",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "XCTAssertLessThanOrEqual failed: (\"735.0\") is greater than (\"709.0\") - Control hidden behind the fixed footer",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ],
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "liveAccountsUsed": false,
+      "catalogueDataInjected": false
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r13",
+      "receiptSHA256": "22d984ae37afc5165385e270036ea4776c4f652956543ba24835040fe594b093",
+      "source": "8427f8bebb3c7db638bdc26c97d1f04b04738193",
+      "build": 112,
+      "overallPassed": false,
+      "stages": [
+        {
+          "name": "max",
+          "resultPath": "qa-artifacts/native218-20261025/native220-r13/max/result.xcresult",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "XCTAssertTrue failed - Attributes: TextField, 0x11ede2410, {{50.0, 543.0}, {340.0, 122.0}}, label: 'Bodega'\nElement subtree:\n →TextField, 0x11ede2410, {{50.0, 543.0}, {340.0, 122.0}}, label: 'Bodega'\nPath to element:\n →Application, 0x11eddd5f0, pid: 2837, label: 'Matchrim'\n  ↳Window (Main), 0x11eddeac0, {{0.0, 0.0}, {440.0, 956.0}}\n   ↳Other, 0x11eddef30, {{0.0, 0.0}, {440.0, 956.0}}\n    ↳Other, 0x11eddf050, {{0.0, 0.0}, {440.0, 956.0}}\n     ↳WebView, 0x11eddebe0, {{0.0, 0.0}, {440.0, 543.0}}\n      ↳WebView, 0x11edded00, {{0.0, 0.0}, {440.0, 543.0}}\n       ↳WebView, 0x11eddf170, {{0.0, 0.0}, {440.0, 543.0}}\n        ↳Other, 0x11eddf290, {{0.0, 0.0}, {440.0, 543.0}}\n         ↳Other, 0x11eddf3b0, {{0.0, 0.0}, {440.0, 543.0}}\n          ↳Other, 0x11eddf4d0, {{0.0, -716.0}, {440.0, 543.0}}\n           ↳Other, 0x11eddf5f0, {{0.0, -716.0}, {440.0, 3507.0}}, label: 'Matchrim | Tu código sensorial para elegir vino'\n            ↳Other, 0x11eddfa70, {{0.0, 62.0}, {440.0, 482.0}}, label: 'Etiqueta por identificar, cuadro de diálogo de web'\n             ↳Other, 0x11eddfb90, {{1.0, 114.0}, {438.0, 428.0}}, label: 'Panel desplazable de la región 1, región'\n              ↳Other, 0x11ede0130, {{1.0, 266.0}, {438.0, 132.0}}, label: 'Contenido de la región 1, región'\n               ↳Other, 0x11ede18d0, {{50.0, -417.0}, {340.0, 2054.0}}\n                ↳Other, 0x11ede1d50, {{50.0, 236.0}, {340.0, 1401.0}}, label: 'Corregir vino y añada, formulario'\n                 ↳Other, 0x11ede21d0, {{50.0, 469.0}, {340.0, 196.0}}\n                  ↳TextField, 0x11ede2410, {{50.0, 543.0}, {340.0, 122.0}}, label: 'Bodega'\nQuery chain:\n →Find: Application 'wine.matchrim.qa112offline220v12'\n  Output: {\n    Application, 0x132d143a0, pid: 2837, label: 'Matchrim'\n  }\n  ↪︎Find: Descendants matching type TextField\n    Output: {\n      TextField, 0x11edf2b90, {{50.0, 310.0}, {340.0, 123.0}}, label: 'Vino', value: Control QA220, Keyboard Focused, Focused\n      TextField, 0x11edf2ef0, {{50.0, 543.0}, {340.0, 122.0}}, label: 'Bodega'\n      TextField, 0x11edf3250, {{50.0, 775.0}, {340.0, 123.0}}, label: 'Añada (opcional)'\n    }\n    ↪︎Find: Elements matching predicate '\"Bodega\" IN identifiers'\n      Output: {\n        TextField, 0x11ee189a0, {{50.0, 543.0}, {340.0, 122.0}}, label: 'Bodega'\n      }\n      ↪︎Find: First Match\n        Output: {\n          TextField, 0x11ef314e0, {{50.0, 543.0}, {340.0, 122.0}}, label: 'Bodega'\n        }\n",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ],
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "liveAccountsUsed": false,
+      "catalogueDataInjected": false
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r14",
+      "receiptSHA256": "807c908004dbdcb36e4619ffd4cedfbe9935cb40fe63dff7328a0f671814c0f8",
+      "source": "a2a68f0ce20606a55a6fe1e31a60dbd172e8dfff",
+      "build": 113,
+      "overallPassed": false,
+      "stages": [
+        {
+          "name": "max",
+          "resultPath": "qa-artifacts/native218-20261025/native220-r14/max/result.xcresult",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "XCTAssertTrue failed - Attributes: TextField, 0x11e748640, {{50.0, 565.0}, {340.0, 123.0}}, label: 'Añada (opcional)'\nElement subtree:\n →TextField, 0x11e748640, {{50.0, 565.0}, {340.0, 123.0}}, label: 'Añada (opcional)'\nPath to element:\n →Application, 0x11e743b80, pid: 4410, label: 'Matchrim'\n  ↳Window (Main), 0x11e744a40, {{0.0, 0.0}, {440.0, 956.0}}\n   ↳Other, 0x11e744e00, {{0.0, 0.0}, {440.0, 956.0}}\n    ↳Other, 0x11e744f20, {{0.0, 0.0}, {440.0, 956.0}}\n     ↳WebView, 0x11e744b60, {{0.0, 0.0}, {440.0, 543.0}}\n      ↳WebView, 0x11e744c80, {{0.0, 0.0}, {440.0, 543.0}}\n       ↳WebView, 0x11e745040, {{0.0, 0.0}, {440.0, 543.0}}\n        ↳Other, 0x11e745160, {{0.0, 0.0}, {440.0, 543.0}}\n         ↳Other, 0x11e745280, {{0.0, 0.0}, {440.0, 543.0}}\n          ↳Other, 0x11e7453a0, {{0.0, -717.0}, {440.0, 543.0}}\n           ↳Other, 0x11e7454c0, {{0.0, -717.0}, {440.0, 3507.0}}, label: 'Matchrim | Tu código sensorial para elegir vino'\n            ↳Other, 0x11e745940, {{0.0, 62.0}, {440.0, 482.0}}, label: 'Etiqueta por identificar, cuadro de diálogo de web'\n             ↳Other, 0x11e745a60, {{1.0, 114.0}, {438.0, 428.0}}, label: 'Panel desplazable de la región 1, región'\n              ↳Other, 0x11e746000, {{1.0, 215.0}, {438.0, 259.0}}, label: 'Contenido de la región 1, región'\n               ↳Other, 0x11e7477a0, {{50.0, -627.0}, {340.0, 2054.0}}\n                ↳Other, 0x11e747c20, {{50.0, 26.0}, {340.0, 1401.0}}, label: 'Corregir vino y añada, formulario'\n                 ↳Other, 0x11e748400, {{50.0, 492.0}, {340.0, 196.0}}\n                  ↳TextField, 0x11e748640, {{50.0, 565.0}, {340.0, 123.0}}, label: 'Añada (opcional)'\nQuery chain:\n →Find: Application 'wine.matchrim.qa113offline220v14'\n  Output: {\n    Application, 0x11e75a9e0, pid: 4410, label: 'Matchrim'\n  }\n  ↪︎Find: Descendants matching type TextField\n    Output: {\n      TextField, 0x11e666b50, {{50.0, 100.0}, {340.0, 122.0}}, label: 'Vino', value: Control QA220\n      TextField, 0x11e666eb0, {{50.0, 332.0}, {340.0, 123.0}}, label: 'Bodega', value: Productor QA220, Keyboard Focused, Focused\n      TextField, 0x11e667210, {{50.0, 565.0}, {340.0, 123.0}}, label: 'Añada (opcional)'\n    }\n    ↪︎Find: Elements matching predicate '\"Añada (opcional)\" IN identifiers'\n      Output: {\n        TextField, 0x11e65b600, {{50.0, 565.0}, {340.0, 123.0}}, label: 'Añada (opcional)'\n      }\n      ↪︎Find: First Match\n        Output: {\n          TextField, 0x11f912430, {{50.0, 565.0}, {340.0, 123.0}}, label: 'Añada (opcional)'\n        }\n",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ],
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "liveAccountsUsed": false,
+      "catalogueDataInjected": false
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r15",
+      "receiptSHA256": "a215d465fd34429c7b254c849a537a7f37d832e96163b804e205ca9b377f7c54",
+      "source": "b0a66368c57ae36283c4d2dd15bb2cd163cd647e",
+      "build": 114,
+      "overallPassed": false,
+      "stages": [
+        {
+          "name": "max",
+          "resultPath": "qa-artifacts/native218-20261025/native220-r15/max/result.xcresult",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "XCTAssertLessThanOrEqual failed: (\"573.0\") is greater than (\"475.0\") - Control hidden behind the fixed footer",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ],
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "liveAccountsUsed": false,
+      "catalogueDataInjected": false
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r16",
+      "receiptSHA256": "4a46550a17b8d619e0977d28a556e62d33ad26cae881942561e52bcad0d9c69b",
+      "source": "2d13849b403ae43445c0a235ad1ecc5219c68ab6",
+      "build": 115,
+      "overallPassed": false,
+      "stages": [
+        {
+          "name": "max",
+          "resultPath": "qa-artifacts/native218-20261025/native220-r16/max/result.xcresult",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "XCTAssertGreaterThanOrEqual failed: (\"-2.0\") is less than (\"182.0\") - Control above visible sheet content",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ],
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "liveAccountsUsed": false,
+      "catalogueDataInjected": false
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r17",
+      "receiptSHA256": "3fdcc88ae0023fc912e7f7c5f45fa08a0210102892af000974d92faafde2f63a",
+      "source": "2d13849b403ae43445c0a235ad1ecc5219c68ab6",
+      "build": 115,
+      "overallPassed": true,
+      "stages": [
+        {
+          "name": "max",
+          "resultPath": "qa-artifacts/native218-20261025/native220-r17/max/result.xcresult",
+          "total": 1,
+          "passed": 1,
+          "failed": 0,
+          "failures": []
+        }
+      ],
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "liveAccountsUsed": false,
+      "catalogueDataInjected": false
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r18",
+      "receiptSHA256": "8f1eee74f96fe6ee4d0bd264f063ed765647e154d74cccbc330d2e6a01c354e0",
+      "source": "2d13849b403ae43445c0a235ad1ecc5219c68ab6",
+      "build": 115,
+      "overallPassed": true,
+      "stages": [
+        {
+          "name": "normal",
+          "resultPath": "qa-artifacts/native218-20261025/native220-r18/normal/result.xcresult",
+          "total": 1,
+          "passed": 1,
+          "failed": 0,
+          "failures": []
+        }
+      ],
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "liveAccountsUsed": false,
+      "catalogueDataInjected": false
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r19",
+      "receiptSHA256": "3e9ce5765a84b684de9a205a9ead9d165067422c8ee189b87b46e826c5d19e30",
+      "source": "8e29693456a774215a03de4b33d61015c615859d",
+      "build": 116,
+      "overallPassed": true,
+      "stages": [
+        {
+          "name": "max",
+          "resultPath": "qa-artifacts/native218-20261025/native220-r19/max/result.xcresult",
+          "total": 1,
+          "passed": 1,
+          "failed": 0,
+          "failures": []
+        }
+      ],
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "liveAccountsUsed": false,
+      "catalogueDataInjected": false
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r20",
+      "receiptSHA256": "9038a415ed6329396f4b08b1affc3c849201edf52d68267a1423b36c6c7e7bbb",
+      "source": "8e29693456a774215a03de4b33d61015c615859d",
+      "build": 116,
+      "overallPassed": true,
+      "stages": [
+        {
+          "name": "normal",
+          "resultPath": "qa-artifacts/native218-20261025/native220-r20/normal/result.xcresult",
+          "total": 1,
+          "passed": 1,
+          "failed": 0,
+          "failures": []
+        }
+      ],
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "liveAccountsUsed": false,
+      "catalogueDataInjected": false
+    }
+  ],
+  "personallyViewed": [
+    {
+      "path": "qa-artifacts/native218-20261025/native220-r18/normal/attachments/56D98A87-D65C-4948-832F-6AC46662ADC0.png",
+      "sha256": "af9d61eb5ad09e37598decae0499dd323856e24444ea4221d5cc1a1b8f9c24ed"
+    },
+    {
+      "path": "qa-artifacts/native218-20261025/native220-r18/normal/attachments/C6B9975B-2C82-4CA5-AB1B-55ABFBB6572B.png",
+      "sha256": "76a6145284376239183fef3b642a8cacbb1924a9b6312f9a24d3319113f97bef"
+    },
+    {
+      "path": "qa-artifacts/native218-20261025/native220-r19/max/attachments/0BD8DE7B-A400-40D4-9762-90C28D7E706F.png",
+      "sha256": "3de54a5a99b6a6bafc8930c8598dad02c6fdffeb6036631f67432fa3f2722eac"
+    },
+    {
+      "path": "qa-artifacts/native218-20261025/native220-r19/max/attachments/B265079B-62BD-46E2-A47A-0E435B80A296.png",
+      "sha256": "b3791949c4567896a4a9cfbc0673de38e71f50cbbdde2b12e7de36c384235191"
+    },
+    {
+      "path": "qa-artifacts/native218-20261025/native220-r19/max/attachments/B844AA1B-19EE-4DD7-B1C2-CCCB8222789A.png",
+      "sha256": "b67d3a217902fb34857d3f31b85280bf5ca3c06ce94cbe7460856694d728ebf5"
+    },
+    {
+      "path": "qa-artifacts/native218-20261025/native220-r20/normal/attachments/082A1A0F-3E22-40FD-8C5B-768F779F5193.png",
+      "sha256": "060512351eab6750223a21724411532b4d85f2d7f39f6e06ab622da62890d1fa"
+    },
+    {
+      "path": "qa-artifacts/native218-20261025/native220-r20/normal/attachments/ECA5790A-BF15-40C8-B528-F587822D6D16.png",
+      "sha256": "dac9c1c297fb87773fd3632c672eae005d53e963abda7ec6db75cdabae269f60"
+    },
+    {
+      "path": "qa-artifacts/native218-20261025/native220-r20/normal/attachments/16705EE0-E5BB-4832-A0C7-3E6FCA38548B.png",
+      "sha256": "90b0e9832387ea1c3957682f858901dfb7d1d116d2c47ad74c758f7feb313403"
+    }
+  ],
+  "verifiedLatest": {
+    "maxCorrection": "native220-r19",
+    "normalCloseUnchanged": "native220-r18 (115; close product unchanged in116)",
+    "localReanalysis": "native220-r20"
+  },
+  "notValidated": [
+    "Authenticated save/Bodega after restart",
+    "Native linked-fiche score invalidation",
+    "Full VoiceOver spoken traversal",
+    "Native Photos/gallery",
+    "Global hosted catalogue and sensory coverage",
+    "Canonical200labelrecognition",
+    "MAX individual Discard glyph layout not separately captured"
+  ],
+  "externalCalls": 0,
+  "paidCalls": 0,
+  "webPublished": false,
+  "backendMutated": false,
+  "phoneUsed": false,
+  "testFlightUploaded": false
+}

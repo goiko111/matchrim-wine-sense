@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25, Candidate116 Local Native Milestone Verified / External Gates Preserved
+
+- Clean8e29693candidate116prep/typecheck/Vite164resources/unsigned arm64 simulator compile PASS. Actual native220-r19MAX complete correction/software keyboards/discard/apply/current-batch reopen/auth-boundary PASS. Focused r18normal-close/hub PASS on115(close code unchanged); r20local-reanalysis PASS on116: old manual name removed, proposed/uncertain result and no auto-reconfirmation. Earlier111normal and individualr4Bodega/back retained with exact parent-run limitations, not repeated/reclassified.
+- Native unknown drafts start empty; MAX header/footer no longer consume the usable body, fixed44px icon targets/accessible close, short Apply/Discard labels with full accessible names; focused AST/CSS/labels/lint PASS and legacy web projection preserved. Eight latest captures personally inspected. Apply MAX one-line verified; individual Discard glyph layout/full VoiceOver/gallery/authenticated persistence/native linked-fiche scoring remain distinct unverified coverage. [Checkpoint](docs/MATCHRIM_NATIVE_FLOW_220_2026-10-25.md), [bound receipts and retained failures](qa-fixtures/native222/RESULT.json).
+- No new external calls/keys/accounts/ratings/spend/web/main/backend/phone/development reminder/TestFlight. Global hosted catalogue/sensory/real200recognition still NOT approved. Existing Goal remains BLOCKED and monitor PAUSED unchanged. Finite MATCHRIM-NATIVE-FLOW-1 local block closed with these limits, not the app. GUI/sim/heavy released afterr20; writerfc7d7efb for final checkpoint/branch commit then release. Own app terminated and DynamicType restored by runner; no resets/cleanup/foreign process or simulator changes.
+
 ## Current Gate: 2026-10-25,115Native MAX Functional PASS /116Short Labels Pending
 
 - Clean2d13849candidate115prep/typecheck/Vite164resources/unsigned simulator compile PASS. r17actual native MAX complete correction/discard/apply/software keyboards/current-batch retention/auth-boundary PASS; r18focused normal-close/back-hub PASS. r16failed strict bounds during overshooting drags remains FAIL; SDK-supported slow adaptive drags resolve harness without forced taps. TenMAX captures retained, key captures personally inspected.
