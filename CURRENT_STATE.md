@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25, Native226 Cancellation Fixed /119Pending / Retained200 Reconciled
+
+- Original five-block Goal ACTIVE until04:00, monitor PAUSED unchanged. Read-only200matrix now binds latest r21 (not older r13):181historically evaluated/19incomplete,46/48top1/top3export-reference proposal proxies, no canonical accuracy claim. Three current bound sources differ, so fresh cache-only current-code replay is needed. Later9detail diagnostics still confirm no photo identity/affinity/learning. [Scope and matrix](docs/MATCHRIM_NIGHT_226_2026-10-25.md).
+- Actual225helper regression finds pre-aborted+resolved read winning Promise.race. Native-only abort-before/after and rejection-consumption fix;8focused lifecycle groups/focused lint PASS, affected225controller10groups PASS. Parent cancelled guard already prevents late UI updates; no real-account leak claimed. Original6caseFAIL/intermediatePASS retained with source hashes; current evidence night226. No unrelated green suite repeat/web delta.
+- Cancelled own unclaimed native118quiz queue9f186091 because newly demonstrated helper defect requires119before final QA.118compiled history retained, not TestFlight-ready. Writerb89a5ce6 only fix/checkpoint/commit then release; next complete heavy+writer119prep/compile queue, then native anonymous20question/Home/restart. No foreign leases/processes altered. Last mail check225latest16:14visible, no later server reply claimed. Zero new catalogue/model/Lovable/Keychain/account/phone/spend/main/backend/web/TestFlight actions.
+
 ## Current Gate: 2026-10-25, Candidate118 Compiled / Home225 Visual Recovery PASS / Native Quiz Pending
 
 - New Goal remains ACTIVE exact five-block objective until04:00; no monitor resume or scope/gate expansion. Native signed-in Home no longer borrows/writes anonymous taste cache, errors/history failures/invalid vectors are explicit+retryable, account read8second timeout and abandoned loading cleared.10new controller groups+6affected owner groups/focused lint PASS; web legacy controller scenarios/full Home JSX preserved.

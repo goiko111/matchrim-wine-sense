@@ -4,10 +4,15 @@ export const withNativeHomeRead225 = async <T>(
   read: PromiseLike<T>, signal: AbortSignal, abortTransport: () => void,
   timeoutMs = NATIVE_HOME_READ_TIMEOUT_MS225,
 ): Promise<T> => {
+  if (signal.aborted) {
+    // The caller may already have started its read; absorb its eventual failure.
+    void Promise.resolve(read).catch(() => undefined);
+    throw new DOMException('Cancelled', 'AbortError');
+  }
   let deadline: ReturnType<typeof setTimeout> | undefined;
   let onAbort: (() => void) | undefined;
   try {
-    return await Promise.race([
+    const result = await Promise.race([
       read,
       new Promise<never>((_resolve, reject) => {
         onAbort = () => reject(new DOMException('Cancelled', 'AbortError'));
@@ -19,6 +24,8 @@ export const withNativeHomeRead225 = async <T>(
         }, timeoutMs);
       }),
     ]);
+    if (signal.aborted) throw new DOMException('Cancelled', 'AbortError');
+    return result;
   } finally {
     clearTimeout(deadline);
     if (onAbort) signal.removeEventListener('abort', onAbort);

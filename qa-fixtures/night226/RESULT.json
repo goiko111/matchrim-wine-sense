@@ -1,0 +1,40 @@
+{
+  "createdUTC": "2026-10-25T20:49:49.264Z",
+  "goal": "ACTIVE original until04:00 Madrid; not complete",
+  "retained200Audit": {
+    "file": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/night225/retained200-226.json",
+    "sha256": "5dc66d9aaad0e407846d529227d505bb40598c419020a7d589633e494e9b9767"
+  },
+  "originalFailure": {
+    "file": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/night225/home-cancellation226-r1.json",
+    "sha256": "5fdafa3c2b427bf495b1437a23f868e5101ba7e138d5072efcc603e3974c5ef9"
+  },
+  "intermediateSixCasePass": {
+    "file": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/night225/home-cancellation226-r2.json",
+    "sha256": "91bd8a90f5d38d1c40db9b1d5274ebaa1bead044f1804d3c5a82660b3e8876b6"
+  },
+  "finalHelper": {
+    "file": "src/utils/nativeHomeRead225.ts",
+    "sha256": "cd66b1946768ba845cec463fa54263f7d578de6b63db04b171490ad5ab05b84d"
+  },
+  "finalRegression": {
+    "file": "scripts/check-matchrim-home-cancel226.mjs",
+    "sha256": "8e4f9aa295f295beabbcff5b41b9f75a032a2955c000b3fa4759f7a8058da970"
+  },
+  "finalFocusedChecks": 8,
+  "checksOutcome": "PASS observed from direct local tool command; no captured stdout file is claimed",
+  "affectedHomeControllerChecks": 10,
+  "focusedESLint": "PASS",
+  "fix": "Abort before and after awaiting; consume already-started pre-aborted rejection",
+  "notDemonstrated": "No actual account leak, deployed RLS or native UI result from this unit test",
+  "cancelledOwnUnclaimedRequest": "9f186091-6cfd-4c36-9aa4-75276acffb9f",
+  "writerLease": "b89a5ce6-1770-44d6-b5ee-b9745f706ace",
+  "candidate118": "Historical compiled; native quiz not executed",
+  "candidate119": "Pending preparation/compile",
+  "newExternalCalls": 0,
+  "newSpend": 0,
+  "webPublished": false,
+  "backendMutated": false,
+  "phoneUsed": false,
+  "testFlightUploaded": false
+}
