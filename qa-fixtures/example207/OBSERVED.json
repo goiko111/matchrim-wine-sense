@@ -1,0 +1,297 @@
+{
+  "source": "Actual local macOS Apple Vision pixel OCR; not iPhone plugin or canonical catalogue matching",
+  "canonicalIdentityValidated": false,
+  "providerCalls": 0,
+  "runs": [
+    {
+      "root": "qa-artifacts/example207-20261025/ocr-r1",
+      "rawSHA256": "6bb7ad414bdc916d3d5c0a29b196b6b1071a8291b5a25864c2ad0f4feb58b061",
+      "receiptSHA256": "2d348f71db0a4327f87e37a9b0cafbaff9e4a98c54a451890736df0722cfc0b9",
+      "raw": {
+        "customWords": [],
+        "height": 1599,
+        "iPhonePluginExecuted": false,
+        "lines": [
+          {
+            "box": {
+              "height": 0.0475000000000001,
+              "width": 0.2873563300238715,
+              "x": 0.321839077325229,
+              "y": 0.5193750009767428
+            },
+            "confidence": 1,
+            "text": "Le Quatre Putes"
+          },
+          {
+            "box": {
+              "height": 0.016285357475280815,
+              "width": 0.1459714592827691,
+              "x": 0.39444722200315974,
+              "y": 0.5769866314874325
+            },
+            "confidence": 1,
+            "text": "Pinot Noir"
+          },
+          {
+            "box": {
+              "height": 0.010775861740112358,
+              "width": 0.0613026809692383,
+              "x": 0.42911877522419306,
+              "y": 0.6185344828422283
+            },
+            "confidence": 1,
+            "text": "2023"
+          }
+        ],
+        "providerCalls": 0,
+        "recognitionLanguages": [
+          "es-ES",
+          "en-US",
+          "fr-FR"
+        ],
+        "revision": 3,
+        "source": "apple-vision-macos",
+        "sourceSHA256": "109348469c88dbdc7c7cfdc3cd00c435e53d887687d6460548dcc6f8468f66a0",
+        "totalMs": 519.659333,
+        "width": 899
+      },
+      "receipt": {
+        "owner": "019f9da7-ae96-7c60-a1b4-fafb75b04d6d",
+        "leaseId": "8c023ed0-3bdb-4124-a22b-b474fa4dc355",
+        "startedUTC": "2026-10-25T08:07:11.952Z",
+        "sourceSHA256": {
+          "scripts/qa-matchrim-example207.swift": "9cd1afd461686e8a54935bd91c51c41ab2b60235ec99d97efa2993e584948ff5",
+          "scripts/qa-matchrim-example207.mjs": "1bbd2d5374194fb2d0662dc06e971ca61cf40210c08d18e6a710c81e5a3b5454",
+          "ios/App/App/MatchrimOCRPlugin106.swift": "46b1a538abe4f5aef195025535bcf7dc77f3b29ad8e8eb8ea9f864ac157ba237"
+        },
+        "sourceImageSHA256": "109348469c88dbdc7c7cfdc3cd00c435e53d887687d6460548dcc6f8468f66a0",
+        "passed": true,
+        "externalCalls": 0,
+        "networkDeniedBySandbox": true,
+        "iPhonePluginExecuted": false,
+        "appBuildChanged": false,
+        "canonicalIdentityValidated": false,
+        "literalChecks": [
+          {
+            "text": "Pinot Noir",
+            "found": true
+          },
+          {
+            "text": "2023",
+            "found": true
+          }
+        ],
+        "tentativeCursiveHumanText": "Les Quatre Piliers",
+        "tentativeCursiveTextConfirmed": false,
+        "actualLines": [
+          "Le Quatre Putes",
+          "Pinot Noir",
+          "2023"
+        ],
+        "totalMs": 519.659333,
+        "scope": "Pixel OCR on macOS only; not canonical matching, affinity or iPhone UI QA",
+        "finishedUTC": "2026-10-25T08:07:18.087Z"
+      }
+    },
+    {
+      "root": "qa-artifacts/example207-20261025/ocr-r2",
+      "rawSHA256": "5cd74a1e6e81d7ee1ed9cfdebfd8a27bc9d91572ef3b01c4605d1096d5e154ce",
+      "receiptSHA256": "b483be0583966ae2a40a82b711fe3fab9d396f069c1185d01eb6674fd6ae84f8",
+      "raw": {
+        "customWords": [],
+        "height": 369,
+        "iPhonePluginExecuted": false,
+        "languageCorrection": true,
+        "lines": [
+          {
+            "box": {
+              "height": 0.22162162162162158,
+              "width": 0.744318181818182,
+              "x": 0.11363636454190344,
+              "y": 0.34054053984797295
+            },
+            "confidence": 1,
+            "text": "Le Quate Pies"
+          },
+          {
+            "box": {
+              "height": 0.0694728490468618,
+              "width": 0.38151944767345075,
+              "x": 0.28935391728685694,
+              "y": 0.597696007831543
+            },
+            "confidence": 1,
+            "text": "Pinot Noir"
+          },
+          {
+            "box": {
+              "height": 0.05405405405405406,
+              "width": 0.1477272727272727,
+              "x": 0.38636363759469694,
+              "y": 0.7783783781081081
+            },
+            "confidence": 1,
+            "text": "2023"
+          }
+        ],
+        "manualRegion": [
+          0.28,
+          0.44,
+          0.39,
+          0.23
+        ],
+        "providerCalls": 0,
+        "recognitionLanguages": [
+          "es-ES",
+          "en-US",
+          "fr-FR"
+        ],
+        "revision": 3,
+        "source": "apple-vision-macos",
+        "sourceSHA256": "109348469c88dbdc7c7cfdc3cd00c435e53d887687d6460548dcc6f8468f66a0",
+        "totalMs": 346.421667,
+        "width": 352
+      },
+      "receipt": {
+        "owner": "019f9da7-ae96-7c60-a1b4-fafb75b04d6d",
+        "leaseId": "8c023ed0-3bdb-4124-a22b-b474fa4dc355",
+        "startedUTC": "2026-10-25T08:08:07.994Z",
+        "sourceSHA256": {
+          "scripts/qa-matchrim-example207.swift": "74898fb634e321c6e65c87bb509316937e11bc04376d76b5849d473b32720cff",
+          "scripts/qa-matchrim-example207.mjs": "5232dddd916577b322a32d7f0646b227f012e5895b1efee8c363e5669c47e932",
+          "ios/App/App/MatchrimOCRPlugin106.swift": "46b1a538abe4f5aef195025535bcf7dc77f3b29ad8e8eb8ea9f864ac157ba237"
+        },
+        "mode": "manual-region",
+        "manualRegionIsNotAutomaticDetection": true,
+        "sourceImageSHA256": "109348469c88dbdc7c7cfdc3cd00c435e53d887687d6460548dcc6f8468f66a0",
+        "passed": true,
+        "externalCalls": 0,
+        "networkDeniedBySandbox": true,
+        "iPhonePluginExecuted": false,
+        "appBuildChanged": false,
+        "canonicalIdentityValidated": false,
+        "literalChecks": [
+          {
+            "text": "Pinot Noir",
+            "found": true
+          },
+          {
+            "text": "2023",
+            "found": true
+          }
+        ],
+        "tentativeCursiveHumanText": "Les Quatre Piliers",
+        "tentativeCursiveTextConfirmed": false,
+        "actualLines": [
+          "Le Quate Pies",
+          "Pinot Noir",
+          "2023"
+        ],
+        "totalMs": 346.421667,
+        "recognitionGate": "partial-reading-only",
+        "scope": "Pixel OCR on macOS only; not canonical matching, affinity or iPhone UI QA",
+        "finishedUTC": "2026-10-25T08:08:12.625Z"
+      }
+    },
+    {
+      "root": "qa-artifacts/example207-20261025/ocr-r3",
+      "rawSHA256": "e466d4f13affd2fc3ee831b136943a91911a4365a1c103a4d5dc9764a037ba57",
+      "receiptSHA256": "cb4d5404456fd674595da718208c93c6f80ac41a4788c34266b3840cc5ddf5ca",
+      "raw": {
+        "customWords": [],
+        "height": 369,
+        "iPhonePluginExecuted": false,
+        "languageCorrection": false,
+        "lines": [
+          {
+            "box": {
+              "height": 0.22162162162162158,
+              "width": 0.744318181818182,
+              "x": 0.11363636454190344,
+              "y": 0.34054053984797295
+            },
+            "confidence": 0.30000001192092896,
+            "text": "L Quete Ptes"
+          },
+          {
+            "box": {
+              "height": 0.0694728490468618,
+              "width": 0.38151944767345075,
+              "x": 0.28935391728685694,
+              "y": 0.597696007831543
+            },
+            "confidence": 0.5,
+            "text": "Pinot Noir"
+          },
+          {
+            "box": {
+              "height": 0.05405405405405406,
+              "width": 0.1477272727272727,
+              "x": 0.38636363759469694,
+              "y": 0.7783783781081081
+            },
+            "confidence": 1,
+            "text": "2023"
+          }
+        ],
+        "manualRegion": [
+          0.28,
+          0.44,
+          0.39,
+          0.23
+        ],
+        "providerCalls": 0,
+        "recognitionLanguages": [
+          "es-ES",
+          "en-US",
+          "fr-FR"
+        ],
+        "revision": 3,
+        "source": "apple-vision-macos",
+        "sourceSHA256": "109348469c88dbdc7c7cfdc3cd00c435e53d887687d6460548dcc6f8468f66a0",
+        "totalMs": 219.906791,
+        "width": 352
+      },
+      "receipt": {
+        "owner": "019f9da7-ae96-7c60-a1b4-fafb75b04d6d",
+        "leaseId": "8c023ed0-3bdb-4124-a22b-b474fa4dc355",
+        "startedUTC": "2026-10-25T08:08:28.520Z",
+        "sourceSHA256": {
+          "scripts/qa-matchrim-example207.swift": "74898fb634e321c6e65c87bb509316937e11bc04376d76b5849d473b32720cff",
+          "scripts/qa-matchrim-example207.mjs": "5232dddd916577b322a32d7f0646b227f012e5895b1efee8c363e5669c47e932",
+          "ios/App/App/MatchrimOCRPlugin106.swift": "46b1a538abe4f5aef195025535bcf7dc77f3b29ad8e8eb8ea9f864ac157ba237"
+        },
+        "mode": "manual-region-no-correction",
+        "manualRegionIsNotAutomaticDetection": true,
+        "sourceImageSHA256": "109348469c88dbdc7c7cfdc3cd00c435e53d887687d6460548dcc6f8468f66a0",
+        "passed": true,
+        "externalCalls": 0,
+        "networkDeniedBySandbox": true,
+        "iPhonePluginExecuted": false,
+        "appBuildChanged": false,
+        "canonicalIdentityValidated": false,
+        "literalChecks": [
+          {
+            "text": "Pinot Noir",
+            "found": true
+          },
+          {
+            "text": "2023",
+            "found": true
+          }
+        ],
+        "tentativeCursiveHumanText": "Les Quatre Piliers",
+        "tentativeCursiveTextConfirmed": false,
+        "actualLines": [
+          "L Quete Ptes",
+          "Pinot Noir",
+          "2023"
+        ],
+        "totalMs": 219.906791,
+        "recognitionGate": "partial-reading-only",
+        "scope": "Pixel OCR on macOS only; not canonical matching, affinity or iPhone UI QA",
+        "finishedUTC": "2026-10-25T08:08:32.649Z"
+      }
+    }
+  ]
+}

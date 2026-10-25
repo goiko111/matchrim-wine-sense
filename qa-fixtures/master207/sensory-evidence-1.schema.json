@@ -1,0 +1,771 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://app.winerim.com/api/v1/matchrim/schemas/sensory-evidence-1.json",
+  "title": "sensory-evidence-1, revision 2 (PROPUESTA, no publicado)",
+  "description": "Raiz = el bloque ADITIVO que se mezcla en la ficha GET /wines/{id}?evidence=1[&vintage=AAAA] (la ficha conserva ademas todos sus campos actuales, por eso additionalProperties es true). Cada resultado de /wines/search?evidence=1 se valida contra #/definitions/searchResult. Sin evidence=1 la respuesta es la actual. Lo que JSON Schema no expresa esta en VALIDACION-CRUZADA.md y se ejecuta en validate.py.",
+  "type": "object",
+  "required": [
+    "evidenceMethod",
+    "evidenceStatus",
+    "attributesByVintage"
+  ],
+  "properties": {
+    "evidenceMethod": {
+      "$ref": "#/definitions/evidenceMethod"
+    },
+    "evidenceStatus": {
+      "enum": [
+        "no_rows",
+        "rows_present"
+      ]
+    },
+    "attributesByVintage": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/row"
+      }
+    },
+    "vintageResolution": {
+      "$ref": "#/definitions/vintageResolution"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "evidenceStatus": {
+            "const": "no_rows"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "attributesByVintage": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidenceStatus": {
+            "const": "rows_present"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "attributesByVintage": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidenceStatus": {
+            "const": "no_rows"
+          }
+        },
+        "required": [
+          "vintageResolution"
+        ]
+      },
+      "then": {
+        "properties": {
+          "vintageResolution": {
+            "properties": {
+              "exactRowPresent": {
+                "const": false
+              },
+              "genericRowCount": {
+                "const": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidenceMethod": {
+            "properties": {
+              "sourceVerifiedEmittedToday": {
+                "const": false
+              }
+            },
+            "required": [
+              "sourceVerifiedEmittedToday"
+            ]
+          }
+        },
+        "required": [
+          "evidenceMethod"
+        ]
+      },
+      "then": {
+        "properties": {
+          "attributesByVintage": {
+            "items": {
+              "properties": {
+                "evidence": {
+                  "additionalProperties": {
+                    "properties": {
+                      "state": {
+                        "not": {
+                          "const": "source_verified"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "definitions": {
+    "evidenceMethod": {
+      "type": "object",
+      "required": [
+        "version",
+        "sourceVerifiedEmittedToday",
+        "note"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": "sensory-evidence-1"
+        },
+        "sourceVerifiedEmittedToday": {
+          "type": "boolean"
+        },
+        "rulesActive": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^R[0-9]+@[0-9]+$"
+          },
+          "uniqueItems": true
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "required": [
+        "id",
+        "version",
+        "reason",
+        "isProofOfOrigin",
+        "knownExceptions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^R[0-9]+$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "isProofOfOrigin": {
+          "const": false
+        },
+        "knownExceptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "proof": {
+      "type": "object",
+      "required": [
+        "kind",
+        "reference",
+        "verifiedAt"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "human_tasting",
+            "producer_sheet",
+            "external_source"
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verifiedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "axisEvidence": {
+      "type": "object",
+      "required": [
+        "value",
+        "state"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "value": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 5
+        },
+        "state": {
+          "enum": [
+            "absent",
+            "not_applicable",
+            "source_verified",
+            "suspected_default",
+            "ai_estimate_recorded",
+            "unknown_origin"
+          ]
+        },
+        "rule": {
+          "$ref": "#/definitions/rule"
+        },
+        "proof": {
+          "$ref": "#/definitions/proof"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "absent"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "const": null
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "rule"
+                  ]
+                },
+                {
+                  "required": [
+                    "proof"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "not_applicable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "const": 0
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "rule"
+                  ]
+                },
+                {
+                  "required": [
+                    "proof"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "suspected_default"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "rule"
+            ],
+            "properties": {
+              "value": {
+                "const": 3
+              }
+            },
+            "not": {
+              "required": [
+                "proof"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "source_verified"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "value",
+              "proof"
+            ],
+            "properties": {
+              "value": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5
+              }
+            },
+            "not": {
+              "required": [
+                "rule"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "unknown_origin",
+                  "ai_estimate_recorded"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "rule"
+                  ]
+                },
+                {
+                  "required": [
+                    "proof"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "origin": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "unrecorded"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "model",
+            "confidence",
+            "generatedAt"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "ai_recorded"
+            },
+            "model": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "confidence": {
+              "type": "number"
+            },
+            "generatedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      ]
+    },
+    "row": {
+      "type": "object",
+      "required": [
+        "vintage",
+        "scope",
+        "origin",
+        "evidence"
+      ],
+      "properties": {
+        "vintage": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9]{4}$"
+        },
+        "scope": {
+          "enum": [
+            "exact",
+            "generic"
+          ]
+        },
+        "conflict": {
+          "enum": [
+            "duplicate_generic"
+          ]
+        },
+        "origin": {
+          "$ref": "#/definitions/origin"
+        },
+        "evidence": {
+          "type": "object",
+          "required": [
+            "power",
+            "sweetness",
+            "acidity",
+            "tannin",
+            "fruity",
+            "aging"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "power": {
+              "$ref": "#/definitions/axisEvidence"
+            },
+            "sweetness": {
+              "$ref": "#/definitions/axisEvidence"
+            },
+            "acidity": {
+              "$ref": "#/definitions/axisEvidence"
+            },
+            "tannin": {
+              "$ref": "#/definitions/axisEvidence"
+            },
+            "fruity": {
+              "$ref": "#/definitions/axisEvidence"
+            },
+            "aging": {
+              "$ref": "#/definitions/axisEvidence"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "scope": {
+                "const": "exact"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "vintage": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "scope": {
+                "const": "generic"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "vintage": {
+                "const": null
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "conflict"
+            ]
+          },
+          "then": {
+            "properties": {
+              "scope": {
+                "const": "generic"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "vintageResolution": {
+      "type": "object",
+      "required": [
+        "requested",
+        "status",
+        "exactRowPresent",
+        "genericRowPresent",
+        "genericRowCount",
+        "knownVintages",
+        "offeredScope"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "requested": {
+          "type": "string",
+          "pattern": "^[0-9]{4}$"
+        },
+        "status": {
+          "enum": [
+            "exact",
+            "no_exact_row"
+          ]
+        },
+        "exactRowPresent": {
+          "type": "boolean"
+        },
+        "genericRowPresent": {
+          "type": "boolean"
+        },
+        "genericRowCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "knownVintages": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "uniqueItems": true
+        },
+        "offeredScope": {
+          "enum": [
+            "exact",
+            "generic_only",
+            "generic_ambiguous",
+            "none"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "exact"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "exactRowPresent": {
+                "const": true
+              },
+              "offeredScope": {
+                "const": "exact"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "no_exact_row"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "exactRowPresent": {
+                "const": false
+              },
+              "offeredScope": {
+                "enum": [
+                  "generic_only",
+                  "generic_ambiguous",
+                  "none"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "genericRowPresent": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "genericRowCount": {
+                "minimum": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "genericRowPresent": {
+                "const": false
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "genericRowCount": {
+                "const": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "no_exact_row"
+              },
+              "genericRowCount": {
+                "const": 0
+              }
+            },
+            "required": [
+              "status",
+              "genericRowCount"
+            ]
+          },
+          "then": {
+            "properties": {
+              "offeredScope": {
+                "const": "none"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "no_exact_row"
+              },
+              "genericRowCount": {
+                "const": 1
+              }
+            },
+            "required": [
+              "status",
+              "genericRowCount"
+            ]
+          },
+          "then": {
+            "properties": {
+              "offeredScope": {
+                "const": "generic_only"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "no_exact_row"
+              },
+              "genericRowCount": {
+                "minimum": 2
+              }
+            },
+            "required": [
+              "status",
+              "genericRowCount"
+            ]
+          },
+          "then": {
+            "properties": {
+              "offeredScope": {
+                "const": "generic_ambiguous"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "searchResult": {
+      "type": "object",
+      "required": [
+        "mantalakWineId",
+        "tastingAttributesScope"
+      ],
+      "properties": {
+        "mantalakWineId": {
+          "type": "integer"
+        },
+        "tastingAttributesScope": {
+          "const": "catalogue_average_not_vintage_specific"
+        }
+      }
+    }
+  }
+}

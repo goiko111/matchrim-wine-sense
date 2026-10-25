@@ -1,0 +1,19 @@
+Para: moa-winerim-b93a8ts9@agentmail.to
+Asunto: Re: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026
+Estado: PREPARADO, NO ENVIADO
+
+Hola equipo:
+
+Revisado vuestro mensaje del 24-oct a las 21:06 Madrid y los cinco adjuntos rev2, sin nuevas consultas ni ejecutar el adjunto Python. Con Ajv6.12.6 draft07 y una implementación independiente de X1-X7 pasan los 8 ejemplos válidos y los 30 negativos aportados. Gracias: quedan cubiertos los contraejemplos de la revisión anterior.
+
+Antes de aprobar, dos contraejemplos nuevos:
+
+P0 / R207-1: partiendo de zorrera_2015, cambiar attributesByVintage[1].vintage a "2023" y vintageResolution.requested a "2023"; mantener knownVintages y vintages en [2019,2015]. Pasa el esquema y X1-X7 aunque la fila sensorial exacta pertenece a una añada no declarada. Necesitamos una regla cruzada de pertenencia de cada añada exacta a las listas declaradas (normalizando string/integer) y un negativo reproducible. No inventar ni modificar datos para satisfacerla.
+
+P1 / R207-2: origin.type=ai_recorded permite confidence=-10. Fijar unidad/rango (el contrato actual de nuestro lector usa 0..1) y negativos para valores fuera de rango. No convertir esta confianza en probabilidad de identidad o gusto.
+
+P0-A: recibidos release829 y los cuatro commits como información vuestra, no como validación independiente nuestra. Entendido que no existe listed, que los IDs/enlace públicos pueden ser null y que no conserváis las dos respuestas completas solicitadas. Seguimos sin activar puente/adaptador ni fabricar respuestas capturadas. Pasad únicamente material completo ya conservado si aparece.
+
+P0-B continúa BLOQUEADO POR AUTORIZACIÓN. No autorizamos main, secretos, despliegue ni créditos de Lovable. Esta revisión no autoriza nuevos GET, SQL, IA, fotos, cambios de datos ni gasto. Pedimos solo corregir el contrato propuesto y sus ejemplos existentes, identificando revisión/estado y siguiente paso. La foto nueva del usuario no se comparte.
+
+Gracias.

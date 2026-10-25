@@ -1,0 +1,37 @@
+{
+  "_nota": "Casos negativos reproducibles: cada uno parte de un ejemplo valido de EJEMPLOS.json (base), aplica operaciones set/del por ruta (separada por puntos; los numeros son indices) y debe FALLAR en la capa indicada (schema o cross). 'base' null = documento literal en 'doc'. Ejecutar: python3 validate.py",
+  "schema": [
+    {"id":"N01","expect":"{} no vale","doc":{}},
+    {"id":"N02","expect":"falta evidenceMethod","base":"zorrera_2015","ops":[{"del":"evidenceMethod"}]},
+    {"id":"N03","expect":"evidenceMethod sin version","base":"zorrera_2015","ops":[{"del":"evidenceMethod.version"}]},
+    {"id":"N04","expect":"version distinta","base":"zorrera_2015","ops":[{"set":"evidenceMethod.version","value":"sensory-evidence-2"}]},
+    {"id":"N05","expect":"scope exact con vintage null","base":"zorrera_2015","ops":[{"set":"attributesByVintage.1.vintage","value":null}]},
+    {"id":"N06","expect":"scope generic con añada","base":"zorrera_2015","ops":[{"set":"attributesByVintage.0.vintage","value":"2015"}]},
+    {"id":"N07","expect":"no_rows junto a filas","base":"zorrera_2015","ops":[{"set":"evidenceStatus","value":"no_rows"}]},
+    {"id":"N08","expect":"rows_present sin filas","base":"ficha_sin_filas","ops":[{"set":"evidenceStatus","value":"rows_present"}]},
+    {"id":"N09","expect":"status exact con exactRowPresent false","base":"zorrera_2015","ops":[{"set":"vintageResolution.exactRowPresent","value":false}]},
+    {"id":"N10","expect":"source_verified con value null aunque lleve prueba","base":"zorrera_2015","ops":[{"set":"evidenceMethod.sourceVerifiedEmittedToday","value":true},{"set":"attributesByVintage.1.evidence.power","value":{"value":null,"state":"source_verified","proof":{"kind":"human_tasting","reference":"x","verifiedAt":"2026-10-24T00:00:00Z"}}}]},
+    {"id":"N11","expect":"source_verified sin prueba","base":"zorrera_2015","ops":[{"set":"evidenceMethod.sourceVerifiedEmittedToday","value":true},{"set":"attributesByVintage.1.evidence.power","value":{"value":4,"state":"source_verified"}}]},
+    {"id":"N12","expect":"source_verified con sourceVerifiedEmittedToday false","base":"zorrera_2015","ops":[{"set":"attributesByVintage.1.evidence.power","value":{"value":4,"state":"source_verified","proof":{"kind":"human_tasting","reference":"x","verifiedAt":"2026-10-24T00:00:00Z"}}}]},
+    {"id":"N13","expect":"suspected_default sin regla","base":"ilustrativo_suspected_default","ops":[{"del":"attributesByVintage.0.evidence.tannin.rule"}]},
+    {"id":"N14","expect":"suspected_default con valor distinto de 3","base":"ilustrativo_suspected_default","ops":[{"set":"attributesByVintage.0.evidence.tannin.value","value":4}]},
+    {"id":"N15","expect":"regla que se declara prueba de origen","base":"ilustrativo_suspected_default","ops":[{"set":"attributesByVintage.0.evidence.tannin.rule.isProofOfOrigin","value":true}]},
+    {"id":"N16","expect":"absent con valor 0","base":"zorrera_2015","ops":[{"set":"attributesByVintage.1.evidence.aging.value","value":0}]},
+    {"id":"N17","expect":"offeredScope generic_only sin fila generica","base":"meursault_217346_2022","ops":[{"set":"vintageResolution.offeredScope","value":"generic_only"}]},
+    {"id":"N18","expect":"offeredScope generic_only con dos genericas","base":"generica_duplicada","ops":[{"set":"vintageResolution.offeredScope","value":"generic_only"}]},
+    {"id":"N19","expect":"un eje sin evidencia","base":"zorrera_2015","ops":[{"del":"attributesByVintage.1.evidence.fruity"}]},
+    {"id":"N20","expect":"resultado de busqueda sin tastingAttributesScope","search":true,"doc":{"mantalakWineId":217346}}
+  ],
+  "cross": [
+    {"id":"C01","expect":"X1 valor plano distinto del de evidence","base":"zorrera_2015","ops":[{"set":"attributesByVintage.1.power","value":2}]},
+    {"id":"C02","expect":"X3 dos filas exactas de la misma añada","base":"zorrera_2015","ops":[{"set":"attributesByVintage.2","value":{"vintage":"2015","power":4,"sweetness":0,"acidity":3,"tannin":3,"fruity":4,"aging":null,"source":null,"scope":"exact","origin":{"type":"unrecorded"},"evidence":{"power":{"value":4,"state":"unknown_origin"},"sweetness":{"value":0,"state":"not_applicable"},"acidity":{"value":3,"state":"unknown_origin"},"tannin":{"value":3,"state":"unknown_origin"},"fruity":{"value":4,"state":"unknown_origin"},"aging":{"value":null,"state":"absent"}}}}]},
+    {"id":"C03","expect":"X2 genericRowCount distinto de las filas genericas","base":"zorrera_2015","ops":[{"set":"vintageResolution.genericRowCount","value":2},{"set":"vintageResolution.exactRowPresent","value":true}]},
+    {"id":"C04","expect":"X2 duplicadas genericas sin conflict","base":"generica_duplicada","ops":[{"del":"attributesByVintage.1.conflict"}]},
+    {"id":"C05","expect":"X4 status exact sin fila de esa añada","base":"zorrera_2015","ops":[{"set":"vintageResolution.requested","value":"2019"}]},
+    {"id":"C06","expect":"X4 knownVintages distinto de vintages","base":"zorrera_2015","ops":[{"set":"vintageResolution.knownVintages","value":[2015]}]},
+    {"id":"C07","expect":"X5 unknown_origin con origen de IA registrado","base":"zorrera_2015","ops":[{"set":"attributesByVintage.1.origin","value":{"type":"ai_recorded","model":"m","confidence":0.5,"generatedAt":"2026-04-25T00:00:00Z"}}]},
+    {"id":"C08","expect":"X6 regla no listada en rulesActive","base":"ilustrativo_suspected_default","ops":[{"set":"evidenceMethod.rulesActive","value":[]}]},
+    {"id":"C09","expect":"X6 R2 sobre un tinto","base":"ilustrativo_suspected_default","ops":[{"set":"type","value":"tinto"}]},
+    {"id":"C10","expect":"X7 R2 activa y no aplicada: blanco con taninos 3 como unknown_origin","base":"ilustrativo_suspected_default","ops":[{"set":"attributesByVintage.0.evidence.tannin","value":{"value":3,"state":"unknown_origin"}}]}
+  ]
+}

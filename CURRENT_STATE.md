@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25, Example207 Partial OCR / Sensoryrev2 Counterexamples /108HOLD
+
+- New user photo preserved privately outside Git with exact SHA109348469c88dbdc7c7cfdc3cd00c435e53d887687d6460548dcc6f8468f66a0. Actual offline macOS AppleVision3runs read PinotNoir/2023 but disagree on cursive name; even wrong original text has confidence1.0. Manual label crop and correction-off do NOT fix identity. No producer/canonical/sensory/affinity invented; no photo/provider/catalogue calls.7/7focused synthetic+actual-observation contract groups PASS; initial incorrect all-confidence1test retained/fixed honestly. [Evidence and boundaries](docs/MATCHRIM_EXAMPLE_207_2026-10-25.md).
+- Found actual cached development24Oct21:06reply/UID157ED/five rev2attachments, not a fresh server refresh. Independent Ajv8valid+30negative cases PASS, but two added gaps reproduce: exact2023row/request absent from declared2015/2019vintages; AIconfidence-10accepted. Contract NOT approved, sensory not deployed; includeUnlisted829deployment attributed, full captured envelopes still unavailable. Scoped review prepared NOT SENT due continuous desktop activity; no GUI interference.0newGET/SQL/model/Lovable/Keychain/main/web/backend/phone changes; budgets unchanged.
+- Product remains verified local108sourceccff399; no new app change, build or TestFlight. Heavy initiallyBUSY then own8c023ed0ACQUIRED/released after3OCRjobs, writer9914805a checkpoint then release. Photo/QA fixtures are not200-label recognition or full-catalogue/affinity validation. Next send prepared207review safely and obtain corrected existing contract material; do not repeat green mobile/build suites for this QA-only delta.
+
 ## Current Gate: 2026-10-24, Native108 Presentation QA / Catalogue Contract HOLD
 
 - Final product `ccff399` (after `a9a59b2`): clean native108preparation/typecheck/Vite164resources PASS; iOS simulator compile/install PASS. Full49native/web-equivalence checks and focused lint PASS. Controlled mobile layout19checks/18captures plus final scroll/focus7checks/4viewport captures PASS/inspected. No formula/data/history/web-return change; original107archive frozen,108not signed/exported/uploaded.
