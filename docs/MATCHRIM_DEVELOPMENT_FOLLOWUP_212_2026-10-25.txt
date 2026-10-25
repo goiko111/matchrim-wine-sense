@@ -1,0 +1,28 @@
+Subject: Re: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026
+To: moa-winerim-b93a8ts9@agentmail.to
+From: goiko@winerim.com
+Reply-To-Message-ID: 010001a172335bec-9919f2c4-8a1c-4588-8df4-b4b0420efa64-000000@email.amazonses.com
+Status: PREPARED; consult CURRENT_STATE.md and a Sent receipt before sending again.
+
+Hola equipo:
+
+Hemos repetido la rev3 con Ajv draft-07 y nuestra validación X1-X8: 46/46 casos pasan con el motivo de rechazo esperado (9 válidos, 23 negativos de esquema, 11 negativos cruzados y 3 positivos de frontera). Los contraejemplos R207-1 y R207-2 quedan corregidos en esos casos. Gracias.
+
+Es una validación técnica acotada del material recibido, no una aprobación general de implementación, despliegue o datos de producción. No hemos comprobado rangos de confidence ya guardados ni evidencia sensorial real por atributo. No hace falta consultar datos nuevos para responder a este correo.
+
+Necesitamos estado, responsable y fecha prevista de los siguientes puntos, por urgencia:
+
+P0-A, catálogo completo: ¿cómo va la entrega del contrato y de las respuestas completas ya capturadas para includeUnlisted=1, incluida 217480 y un control listado? Necesitamos confirmar paginación, cobertura y correspondencia mantalakWineId/ID público/añadas sin fabricar identidades. Si no existen capturas previas, indicadlo; no hagáis nuevas consultas bajo esta petición.
+
+P0-B, puente seguro: entendemos que sigue bloqueado por autorización. ¿Existe ya una vía técnica de despliegue sin coste adicional y sin modificar main ni la web? Si no, devolved la acción mínima del propietario y su impacto exacto; no está autorizada aquí ninguna publicación, cambio de secretos ni turno de Lovable.
+
+P1, fichas sensoriales: tras esta revisión, ¿cuál sería vuestro siguiente paso y plazo propuesto? Necesitamos procedencia y ámbito por atributo/añada, separar valores genuinos de defaults/inferencias y conocer los huecos de cobertura. La confianza del generador no debe presentarse como probabilidad de identidad ni de gusto. No implementéis ni saneéis filas por esta solicitud.
+
+P1, recuperación visual de etiquetas: cuando el OCR es parcial, Matchrim debe poder acotar por datos observados y comparar imágenes reales de etiquetas, absteniéndose si no hay match fiable. Compartid solo las capacidades/contratos ya existentes: imágenes y su origen/revisión, relación con ID canónico y añada, filtros disponibles, cobertura completa/parcial y si hay un endpoint o índice visual utilizable. No basta tomar las primeras 10-15 referencias de una búsqueda incompleta. No pedimos crear ni pagar un índice nuevo.
+
+P2, datos externos: ¿hay ya un contrato para aportar fichas técnicas con URL, fecha, añada, unidad y procedencia por atributo cuando Winerim carece de evidencia? Si no existe, basta confirmarlo. No iniciar búsquedas, extracción ni proveedores externos.
+
+Por favor responded con una tabla breve: punto, estado real, responsable, fecha estimada y bloqueo/acción mínima. P0-A y P0-B son prioritarios sobre cambios cosméticos. Mantenemos cero nuevas llamadas de catálogo/SQL/IA/imágenes/Lovable, cero escrituras o despliegues y ninguna ampliación del gasto. Seguimos con pruebas locales; TestFlight permanece bloqueado hasta validar la integración real.
+
+Gracias,
+Goiko / Matchrim
