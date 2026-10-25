@@ -2,6 +2,29 @@ import Foundation
 import XCTest
 
 final class MatchrimOffline220Tests: XCTestCase {
+    @MainActor func testNativeCloseAndHubReturn() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")
+        app.terminate(); app.launch(); XCUIDevice.shared.orientation = .portrait
+        let skip = app.buttons["Saltar guía"].firstMatch
+        if skip.waitForExistence(timeout: 2) && skip.isHittable { skip.tap() }
+        XCTAssertTrue(app.buttons["Buscar vino o bodega"].waitForExistence(timeout: 15))
+        try tap(app.links["Escanear"].firstMatch, app)
+        try tap(app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Botellas")).firstMatch, app)
+        let checkbox = app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "He leído el aviso de privacidad del escáner")).firstMatch
+        if checkbox.waitForExistence(timeout: 3) { try tap(checkbox, app); try tap(app.buttons["Entiendo y continuar"].firstMatch, app) }
+        try tap(app.switches["Una etiqueta"].firstMatch, app)
+        try tap(app.buttons["QA220 cargar etiqueta local"].firstMatch, app)
+        let correct = app.buttons["Corregir identificación"].firstMatch
+        XCTAssertTrue(correct.waitForExistence(timeout: 45))
+        capture(app, "close-control-before")
+        try tap(app.buttons["Cerrar"].firstMatch, app)
+        XCTAssertTrue(app.buttons["Revisar vinos"].firstMatch.waitForExistence(timeout: 8))
+        try tap(app.buttons["Volver a tipos de escaneo"].firstMatch, app)
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Botellas")).firstMatch.waitForExistence(timeout: 8))
+        capture(app, "close-return-hub")
+    }
+
     @MainActor func testAnonymousBodegaBack() throws {
         continueAfterFailure = false
         let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")
@@ -62,12 +85,12 @@ final class MatchrimOffline220Tests: XCTestCase {
         try fill(app.textFields["Bodega"].firstMatch, "Productor QA220", app)
         try fill(app.textFields["Añada (opcional)"].firstMatch, "2023", app)
         try tap(app.buttons["Aplicar corrección"].firstMatch, app)
-        XCTAssertTrue(app.staticTexts["Control QA220 · 2023"].firstMatch.waitForExistence(timeout: 8))
+        XCTAssertTrue(app.otherElements.matching(NSPredicate(format: "label == %@", "Control QA220 · 2023")).firstMatch.waitForExistence(timeout: 8))
         XCTAssertFalse(app.staticTexts["Cambios sin aplicar"].exists)
         capture(app, "06-manual-correction-no-invented-score")
         try tap(app.buttons["Cerrar"].firstMatch, app)
         try tap(app.buttons["Revisar vinos"].firstMatch, app)
-        XCTAssertTrue(app.staticTexts["Control QA220 · 2023"].firstMatch.waitForExistence(timeout: 8), "Correction must survive closing/reopening the current batch")
+        XCTAssertTrue(app.otherElements.matching(NSPredicate(format: "label == %@", "Control QA220 · 2023")).firstMatch.waitForExistence(timeout: 8), "Correction must survive closing/reopening the current batch")
         capture(app, "07-correction-retained-current-batch")
         try tap(app.buttons["Cerrar"].firstMatch, app)
         try tap(app.buttons["Confirmar 1 referencia"].firstMatch, app)
@@ -89,13 +112,27 @@ final class MatchrimOffline220Tests: XCTestCase {
     @MainActor private func tap(_ element: XCUIElement, _ app: XCUIApplication) throws {
         XCTAssertTrue(element.waitForExistence(timeout: 10))
         for _ in 0..<10 {
-            if element.isHittable { break }
             let body = app.otherElements.matching(NSPredicate(format: "label BEGINSWITH %@", "Contenido de la región ")).firstMatch
-            if body.exists && body.frame.height > 60 { body.swipeUp() }
+            let clippedControl = element.elementType == .textField || ["Aplicar corrección", "Descartar cambios", "Corregir identificación"].contains(element.label)
+            let frame = element.frame
+            let fits = !body.exists || !clippedControl || (frame.minY >= body.frame.minY && frame.maxY <= body.frame.maxY)
+            if element.isHittable && fits { break }
+            if body.exists && body.frame.height > 60 {
+                let top = body.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.2))
+                let bottom = body.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
+                if frame.minY < body.frame.minY { top.press(forDuration: 0.1, thenDragTo: bottom) }
+                else { bottom.press(forDuration: 0.1, thenDragTo: top) }
+            }
             else { app.swipeUp() }
         }
         XCTAssertTrue(element.isHittable, element.debugDescription)
+        let body = app.otherElements.matching(NSPredicate(format: "label BEGINSWITH %@", "Contenido de la región ")).firstMatch
+        if body.exists && (element.elementType == .textField || ["Aplicar corrección", "Descartar cambios", "Corregir identificación"].contains(element.label)) {
+            XCTAssertGreaterThanOrEqual(element.frame.minY, body.frame.minY - 1, "Control above visible sheet content")
+            XCTAssertLessThanOrEqual(element.frame.maxY, body.frame.maxY + 1, "Control hidden behind the fixed footer")
+        }
         XCTAssertGreaterThanOrEqual(element.frame.height, 43)
+        XCTAssertGreaterThanOrEqual(element.frame.width, 43)
         element.tap()
     }
     @MainActor private func capture(_ app: XCUIApplication, _ name: String) {

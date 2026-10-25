@@ -1709,7 +1709,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     <Trash2 className="h-4 w-4" /><span className={isNative ? 'sr-only' : undefined}>Descartar</span>
                   </Button>
                 </div>
-                <DrawerClose asChild><Button type="button" variant="secondary" className="min-h-11">Cerrar</Button></DrawerClose>
+                <DrawerClose asChild><Button type="button" variant="secondary" className={isNative ? 'matchrim-region-close-action min-h-11' : 'min-h-11'}
+                  aria-label={isNative ? 'Cerrar' : undefined} title={isNative ? 'Cerrar' : undefined}>
+                  {isNative ? <><X className="matchrim-region-close-icon" aria-hidden="true" /><span className="matchrim-region-close-text">Cerrar</span></> : 'Cerrar'}
+                </Button></DrawerClose>
               </DrawerFooter>
             </div>
           )}

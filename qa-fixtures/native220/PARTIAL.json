@@ -1,0 +1,314 @@
+{
+  "createdUTC": "2026-10-25T16:44:41.698Z",
+  "native": [
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r1",
+      "receiptSHA256": "2fc4e5d9bae64d1dda47282074ba2492a8f49f15aa27fcd068bc7f86af8b33aa",
+      "build": 110,
+      "source": "1042989f0029a9b3151b451b86a70567cda168eb",
+      "overallPassed": false,
+      "reusedOwnQAContainer": null,
+      "scope": "Compiled110 native app, fresh QA container, external network denied by CSP plus early JS guards. Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only; not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.",
+      "stages": [
+        {
+          "name": "normal",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "XCTAssertTrue failed",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r2",
+      "receiptSHA256": "4b9c0d72216d045c02aec99c409b8881d04239efb6a45528cdee2b8e76c437c8",
+      "build": 110,
+      "source": "1042989f0029a9b3151b451b86a70567cda168eb",
+      "overallPassed": false,
+      "reusedOwnQAContainer": null,
+      "scope": "Compiled110 native app, fresh QA container, external network denied by CSP plus early JS guards. Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only; not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.",
+      "stages": [
+        {
+          "name": "normal",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "XCTAssertTrue failed - Actual offline native OCR must finish; no model or catalogue fallback",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r3",
+      "receiptSHA256": "f8b7685a0725ff749a037bd3587629adb2af2f48091efc5844bf0d9998c6ad69",
+      "build": 110,
+      "source": "1042989f0029a9b3151b451b86a70567cda168eb",
+      "overallPassed": false,
+      "reusedOwnQAContainer": null,
+      "scope": "Compiled110 native app, fresh QA container, external network denied by CSP plus early JS guards. Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only; not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.",
+      "stages": [
+        {
+          "name": "normal",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "XCTAssertEqual failed: (\"Optional(\"Control QA220Etiqueta por identificar\")\") is not equal to (\"Optional(\"Control QA220\")\")",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r4",
+      "receiptSHA256": "d80eac2ef2accd22bbc3bcb2e1f5b87542ac872dd17fdb41c2f25c3390abd0e7",
+      "build": 110,
+      "source": "1042989f0029a9b3151b451b86a70567cda168eb",
+      "overallPassed": false,
+      "reusedOwnQAContainer": null,
+      "scope": "Compiled110 native app, fresh QA container, external network denied by CSP plus early JS guards. Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only; not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.",
+      "stages": [
+        {
+          "name": "normal",
+          "total": 2,
+          "passed": 1,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "Test operation was canceled.",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 2,
+              "testIdentifierString": "Probe97UITests-Runner (95976) encountered an error",
+              "testName": "Probe97UITests-Runner (95976) encountered an error"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r5",
+      "receiptSHA256": "57157ca561a15e9df2a5d5aa3d53ac62d499d22d3c216ad7105ecf3b708a0e56",
+      "build": 110,
+      "source": "1042989f0029a9b3151b451b86a70567cda168eb",
+      "overallPassed": false,
+      "reusedOwnQAContainer": null,
+      "scope": "Compiled110 native app, fresh QA container, external network denied by CSP plus early JS guards. Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only; not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.",
+      "stages": [
+        {
+          "name": "normal",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "XCTAssertTrue failed - Use observed native Select All; never assume cursor is at the end",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r6",
+      "receiptSHA256": "05600eb6a23665319c8307fa20719c968166b8a0fe16dca5d94b00838eceefd1",
+      "build": 110,
+      "source": "1042989f0029a9b3151b451b86a70567cda168eb",
+      "overallPassed": false,
+      "reusedOwnQAContainer": null,
+      "scope": "Compiled110 native app, fresh QA container, external network denied by CSP plus early JS guards. Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only; not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.",
+      "stages": [
+        {
+          "name": "normal",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "Failed to get matching snapshot: No matches found for first query match sequence: `Descendants matching type TextField` -> `Elements matching predicate '\"Bodega\" IN identifiers'`, given input App element pid: 96526",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r7",
+      "receiptSHA256": "91d8cfa6cafcc44df794bb65eb44c7bbd9dfc5d0c5db9e47f8889d09e8a11f7a",
+      "build": 110,
+      "source": "1042989f0029a9b3151b451b86a70567cda168eb",
+      "overallPassed": false,
+      "reusedOwnQAContainer": null,
+      "scope": "Compiled110 native app, fresh QA container, external network denied by CSP plus early JS guards. Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only; not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.",
+      "stages": [
+        {
+          "name": "normal",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "XCTAssertEqual failed: (\"Optional(\"Control QA220Etiqueta por identificar\")\") is not equal to (\"Optional(\"Control QA220\")\")",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r8",
+      "receiptSHA256": "2191f993f52c2795a8355163aac30acad7aa7d3d65450885c843bde5fb689f36",
+      "build": 111,
+      "source": "d4f9f2c2f82397c92cc3d209a31739ecc079aea5",
+      "overallPassed": false,
+      "reusedOwnQAContainer": null,
+      "scope": "Compiled111 native app, fresh QA container, external network denied by CSP plus early JS guards. Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only; not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.",
+      "stages": [
+        {
+          "name": "normal",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "Failed to get matching snapshot: No matches found for first query match sequence: `Descendants matching type TextField` -> `Elements matching predicate '\"Bodega\" IN identifiers'`, given input App element pid: 98097",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r9",
+      "receiptSHA256": "3797a74b958e2b32d22edb0f99c2175a117cfdc4275f2e6c88e37cc540fb674d",
+      "build": 111,
+      "source": "d4f9f2c2f82397c92cc3d209a31739ecc079aea5",
+      "overallPassed": false,
+      "reusedOwnQAContainer": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/native218-20261025/native220-r8",
+      "scope": "Compiled111 native app, fresh QA container, external network denied by CSP plus early JS guards. Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only; not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.",
+      "stages": [
+        {
+          "name": "normal",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "XCTAssertTrue failed - Attributes: TextField, 0x1236155b0, {{17.0, 789.0}, {406.0, 45.0}}, label: 'Bodega'\nElement subtree:\n →TextField, 0x1236155b0, {{17.0, 789.0}, {406.0, 45.0}}, label: 'Bodega'\nPath to element:\n →Application, 0x123611940, pid: 98510, label: 'Matchrim'\n  ↳Window (Main), 0x123611a60, {{0.0, 0.0}, {440.0, 956.0}}\n   ↳Other, 0x1236120d0, {{0.0, 0.0}, {440.0, 956.0}}\n    ↳Other, 0x1236121f0, {{0.0, 0.0}, {440.0, 956.0}}\n     ↳WebView, 0x123611e30, {{0.0, 0.0}, {440.0, 543.0}}\n      ↳WebView, 0x123611f50, {{0.0, 0.0}, {440.0, 543.0}}\n       ↳WebView, 0x123612310, {{0.0, 0.0}, {440.0, 543.0}}\n        ↳Other, 0x123612430, {{0.0, 0.0}, {440.0, 543.0}}\n         ↳Other, 0x123612550, {{0.0, 0.0}, {440.0, 543.0}}\n          ↳Other, 0x123612670, {{0.0, 0.0}, {440.0, 543.0}}\n           ↳Other, 0x123612790, {{0.0, 0.0}, {440.0, 1103.0}}, label: 'Matchrim | Tu código sensorial para elegir vino'\n            ↳Other, 0x123612c10, {{0.0, 62.0}, {440.0, 482.0}}, label: 'Etiqueta por identificar, cuadro de diálogo de web'\n             ↳Other, 0x123612d30, {{1.0, 81.0}, {438.0, 461.0}}, label: 'Panel desplazable de la región 1, región'\n              ↳Other, 0x1236132d0, {{1.0, 158.0}, {438.0, 307.0}}, label: 'Contenido de la región 1, región'\n               ↳Other, 0x123614a70, {{17.0, 571.0}, {406.0, 489.0}}\n                ↳Other, 0x123614ef0, {{17.0, 685.0}, {406.0, 375.0}}, label: 'Corregir vino y añada, formulario'\n                 ↳Other, 0x123615370, {{17.0, 765.0}, {406.0, 69.0}}\n                  ↳TextField, 0x1236155b0, {{17.0, 789.0}, {406.0, 45.0}}, label: 'Bodega'\nQuery chain:\n →Find: Application 'wine.matchrim.qa111offline220v8'\n  Output: {\n    Application, 0x1061f8890, pid: 98510, label: 'Matchrim'\n  }\n  ↪︎Find: Descendants matching type TextField\n    Output: {\n      TextField, 0x12400f530, {{17.0, 709.0}, {406.0, 45.0}}, label: 'Vino', value: Control QA220, Keyboard Focused, Focused\n      TextField, 0x12400f890, {{17.0, 789.0}, {406.0, 45.0}}, label: 'Bodega'\n      TextField, 0x12400fbf0, {{17.0, 869.0}, {406.0, 45.0}}, label: 'Añada (opcional)'\n    }\n    ↪︎Find: Elements matching predicate '\"Bodega\" IN identifiers'\n      Output: {\n        TextField, 0x12371c550, {{17.0, 789.0}, {406.0, 45.0}}, label: 'Bodega'\n      }\n      ↪︎Find: First Match\n        Output: {\n          TextField, 0x106676090, {{17.0, 789.0}, {406.0, 45.0}}, label: 'Bodega'\n        }\n",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r10",
+      "receiptSHA256": "f0c40c5b1fcd65a6e5ae1a9d667d4aa38b68ec05c955d90d979dd6931ce70ebc",
+      "build": 111,
+      "source": "d4f9f2c2f82397c92cc3d209a31739ecc079aea5",
+      "overallPassed": false,
+      "reusedOwnQAContainer": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/native218-20261025/native220-r9",
+      "scope": "Compiled111 native app, exact own previously isolated anonymous QA container, external network denied by CSP plus early JS guards. Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only; not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.",
+      "stages": [
+        {
+          "name": "normal",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "XCTAssertTrue failed",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "root": "qa-artifacts/native218-20261025/native220-r11",
+      "receiptSHA256": "8f820734af78d185e262eef860cb6c91ba227129a3360dca02ca4573542f1501",
+      "build": 111,
+      "source": "d4f9f2c2f82397c92cc3d209a31739ecc079aea5",
+      "overallPassed": false,
+      "reusedOwnQAContainer": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/native218-20261025/native220-r10",
+      "scope": "Compiled111 native app, exact own previously isolated anonymous QA container, external network denied by CSP plus early JS guards. Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only; not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.",
+      "stages": [
+        {
+          "name": "normal",
+          "total": 1,
+          "passed": 1,
+          "failed": 0,
+          "failures": []
+        },
+        {
+          "name": "max",
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "failures": [
+            {
+              "failureText": "XCTAssertTrue failed",
+              "targetName": "Probe97UITests",
+              "testIdentifier": 1,
+              "testIdentifierString": "MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary()",
+              "testIdentifierURL": "test://com.apple.xcode/Probe97/Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary",
+              "testName": "testNativeOfflineCorrectionAndAuthBoundary()"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "source111": "d4f9f2c2f82397c92cc3d209a31739ecc079aea5",
+  "preparation111Passed": true,
+  "compile111Passed": true,
+  "webChanged": false,
+  "newExternalCalls": 0,
+  "scope": "Partial native evidence only; native220-r11 normal passes, MAX fails. r4 individual Bodega pass does not turn cancelled run green. No full-flow/persistence/200-label/TestFlight approval."
+}

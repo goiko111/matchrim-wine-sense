@@ -7,7 +7,7 @@ import { execFileSync, spawn } from 'node:child_process';
 
 const repo = process.cwd(), prep = JSON.parse(fs.readFileSync(path.resolve(process.argv[2], 'preparation.json')));
 const out = path.resolve(process.argv[3]), developer = '/Applications/Xcode-26.0.1.app/Contents/Developer';
-assert(path.dirname(out) === path.join(repo, 'qa-artifacts/native218-20261025') && /^compile(?:110|111)-r\d+$/.test(path.basename(out)) && !fs.existsSync(out));
+assert(path.dirname(out) === path.join(repo, 'qa-artifacts/native218-20261025') && /^compile(?:110|111|112)-r\d+$/.test(path.basename(out)) && !fs.existsSync(out));
 const sha = value => createHash('sha256').update(value).digest('hex');
 const guard = () => {
   const leases = JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json')).leases;
@@ -18,7 +18,7 @@ const guard = () => {
   const disk = fs.statfsSync(repo); assert(Number(disk.bavail) * Number(disk.bsize) >= 5 * 1024 ** 3, 'LOW_DISK_HOLD');
 };
 const verify = app => {
-  assert(prep.passed && [110, 111].includes(prep.build) && !prep.sourceDirty && prep.typecheck === 'PASS');
+  assert(prep.passed && [110, 111, 112].includes(prep.build) && !prep.sourceDirty && prep.typecheck === 'PASS');
   for (const [file, expected] of Object.entries(prep.sourceFingerprints)) assert.equal(sha(fs.readFileSync(path.join(repo, file))), expected, file);
   if (app) {
     for (const [file, expected] of Object.entries(prep.webResources)) assert.equal(sha(fs.readFileSync(path.join(app, 'public', file))), expected, file);

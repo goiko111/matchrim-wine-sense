@@ -7,3 +7,45 @@ html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-
 html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-scan-region-body {
   overflow-y: auto;
 }
+
+/* Reserve room for an enlarged form control instead of letting title and
+   footer consume the entire sheet. Long titles retain their own scrollport. */
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-scan-region-layout > :first-child {
+  max-height: min(28dvh, 12rem);
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-region-footer-actions button,
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-region-close-action {
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  line-height: 1;
+  -webkit-text-size-adjust: 100%;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-region-close-action {
+  width: 44px;
+  align-self: flex-end;
+}
+
+html.matchrim-native-platform .matchrim-scan-region-sheet .matchrim-region-close-icon {
+  display: none;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-region-close-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-sheet .matchrim-region-close-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
