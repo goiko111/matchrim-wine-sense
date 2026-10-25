@@ -1,0 +1,674 @@
+{
+  "_nota": "Rev 3. Cada entrada de 'valid' es un bloque completo ejecutable (raiz del esquema). Valores de atributos y vintages reales de produccion (contrato 827 y corpus conservado) salvo los marcados ilustrativos; los campos de evidencia son los PROPUESTOS y no existen aun en la API.",
+  "valid": {
+    "zorrera_2015": {
+      "_nota": "source:null no se convierte en cata humana ni en IA: origin.unrecorded. Acidez y taninos valen 3, no hay regla activa que los alcance (La Zorrera es tinto: R2 no aplica) y quedan unknown_origin, no 'genuinos'. Dulzor 0 es not_applicable por la escala publicada. aging null es absent: distinto de 0.",
+      "request": "GET /wines/180278?evidence=1&vintage=2015",
+      "evidenceMethod": {
+        "version": "sensory-evidence-1",
+        "sourceVerifiedEmittedToday": false,
+        "rulesActive": [
+          "R2@1"
+        ],
+        "note": "suspected_default es una sospecha por regla, no prueba de origen ni valor corregido. source_verified no se emite sin prueba. Un 3 sin regla activa no es un valor genuino confirmado."
+      },
+      "evidenceStatus": "rows_present",
+      "vintageResolution": {
+        "requested": "2015",
+        "status": "exact",
+        "exactRowPresent": true,
+        "genericRowPresent": true,
+        "knownVintages": [
+          2019,
+          2015
+        ],
+        "offeredScope": "exact",
+        "genericRowCount": 1
+      },
+      "attributesByVintage": [
+        {
+          "vintage": null,
+          "power": 4,
+          "sweetness": 1,
+          "acidity": 3,
+          "tannin": 3,
+          "fruity": 4,
+          "aging": null,
+          "source": null,
+          "scope": "generic",
+          "origin": {
+            "type": "unrecorded"
+          },
+          "evidence": {
+            "power": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "sweetness": {
+              "value": 1,
+              "state": "unknown_origin"
+            },
+            "acidity": {
+              "value": 3,
+              "state": "unknown_origin"
+            },
+            "tannin": {
+              "value": 3,
+              "state": "unknown_origin"
+            },
+            "fruity": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "aging": {
+              "value": null,
+              "state": "absent"
+            }
+          }
+        },
+        {
+          "vintage": "2015",
+          "power": 4,
+          "sweetness": 0,
+          "acidity": 3,
+          "tannin": 3,
+          "fruity": 4,
+          "aging": null,
+          "source": null,
+          "scope": "exact",
+          "origin": {
+            "type": "unrecorded"
+          },
+          "evidence": {
+            "power": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "sweetness": {
+              "value": 0,
+              "state": "not_applicable"
+            },
+            "acidity": {
+              "value": 3,
+              "state": "unknown_origin"
+            },
+            "tannin": {
+              "value": 3,
+              "state": "unknown_origin"
+            },
+            "fruity": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "aging": {
+              "value": null,
+              "state": "absent"
+            }
+          }
+        }
+      ],
+      "mantalakWineId": 180278,
+      "vintages": [
+        2019,
+        2015
+      ]
+    },
+    "zorrera_2019": {
+      "_nota": "2019 es una añada conocida (la lista alguna carta) pero no tiene fila propia: no hereda la fila 2015. Solo la fila generica, con scope generic, puede ofrecerse y nunca como valor de 2019.",
+      "request": "GET /wines/180278?evidence=1&vintage=2019",
+      "evidenceMethod": {
+        "version": "sensory-evidence-1",
+        "sourceVerifiedEmittedToday": false,
+        "rulesActive": [
+          "R2@1"
+        ],
+        "note": "suspected_default es una sospecha por regla, no prueba de origen ni valor corregido. source_verified no se emite sin prueba. Un 3 sin regla activa no es un valor genuino confirmado."
+      },
+      "evidenceStatus": "rows_present",
+      "vintageResolution": {
+        "requested": "2019",
+        "status": "no_exact_row",
+        "exactRowPresent": false,
+        "genericRowPresent": true,
+        "knownVintages": [
+          2019,
+          2015
+        ],
+        "offeredScope": "generic_only",
+        "genericRowCount": 1
+      },
+      "attributesByVintage": [
+        {
+          "vintage": null,
+          "power": 4,
+          "sweetness": 1,
+          "acidity": 3,
+          "tannin": 3,
+          "fruity": 4,
+          "aging": null,
+          "source": null,
+          "scope": "generic",
+          "origin": {
+            "type": "unrecorded"
+          },
+          "evidence": {
+            "power": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "sweetness": {
+              "value": 1,
+              "state": "unknown_origin"
+            },
+            "acidity": {
+              "value": 3,
+              "state": "unknown_origin"
+            },
+            "tannin": {
+              "value": 3,
+              "state": "unknown_origin"
+            },
+            "fruity": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "aging": {
+              "value": null,
+              "state": "absent"
+            }
+          }
+        },
+        {
+          "vintage": "2015",
+          "power": 4,
+          "sweetness": 0,
+          "acidity": 3,
+          "tannin": 3,
+          "fruity": 4,
+          "aging": null,
+          "source": null,
+          "scope": "exact",
+          "origin": {
+            "type": "unrecorded"
+          },
+          "evidence": {
+            "power": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "sweetness": {
+              "value": 0,
+              "state": "not_applicable"
+            },
+            "acidity": {
+              "value": 3,
+              "state": "unknown_origin"
+            },
+            "tannin": {
+              "value": 3,
+              "state": "unknown_origin"
+            },
+            "fruity": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "aging": {
+              "value": null,
+              "state": "absent"
+            }
+          }
+        }
+      ],
+      "mantalakWineId": 180278,
+      "vintages": [
+        2019,
+        2015
+      ]
+    },
+    "vidure_2020": {
+      "_nota": "La fila 2018 sigue en el array (no se elimina) pero offeredScope es generic_only: no es evidencia de 2020. La busqueda con vintage=2020&vintageMatch=only sigue devolviendo total 0, como hoy. 2018 no sustituye a 2020.",
+      "request": "GET /wines/201987?evidence=1&vintage=2020",
+      "evidenceMethod": {
+        "version": "sensory-evidence-1",
+        "sourceVerifiedEmittedToday": false,
+        "rulesActive": [
+          "R2@1"
+        ],
+        "note": "suspected_default es una sospecha por regla, no prueba de origen ni valor corregido. source_verified no se emite sin prueba. Un 3 sin regla activa no es un valor genuino confirmado."
+      },
+      "evidenceStatus": "rows_present",
+      "vintageResolution": {
+        "requested": "2020",
+        "status": "no_exact_row",
+        "exactRowPresent": false,
+        "genericRowPresent": true,
+        "knownVintages": [
+          2018
+        ],
+        "offeredScope": "generic_only",
+        "genericRowCount": 1
+      },
+      "attributesByVintage": [
+        {
+          "vintage": null,
+          "power": 5,
+          "sweetness": 1,
+          "acidity": 3,
+          "tannin": 4,
+          "fruity": 4,
+          "aging": 4,
+          "source": null,
+          "scope": "generic",
+          "origin": {
+            "type": "unrecorded"
+          },
+          "evidence": {
+            "power": {
+              "value": 5,
+              "state": "unknown_origin"
+            },
+            "sweetness": {
+              "value": 1,
+              "state": "unknown_origin"
+            },
+            "acidity": {
+              "value": 3,
+              "state": "unknown_origin"
+            },
+            "tannin": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "fruity": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "aging": {
+              "value": 4,
+              "state": "unknown_origin"
+            }
+          }
+        },
+        {
+          "vintage": "2018",
+          "power": 4,
+          "sweetness": 1,
+          "acidity": 3,
+          "tannin": 4,
+          "fruity": 4,
+          "aging": null,
+          "source": null,
+          "scope": "exact",
+          "origin": {
+            "type": "unrecorded"
+          },
+          "evidence": {
+            "power": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "sweetness": {
+              "value": 1,
+              "state": "unknown_origin"
+            },
+            "acidity": {
+              "value": 3,
+              "state": "unknown_origin"
+            },
+            "tannin": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "fruity": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "aging": {
+              "value": null,
+              "state": "absent"
+            }
+          }
+        }
+      ],
+      "mantalakWineId": 201987,
+      "vintages": [
+        2018
+      ]
+    },
+    "meursault_217346_2022": {
+      "_nota": "Para 2022 no hay fila exacta ni generica: offeredScope none, ningun atributo aplicable. La fila 2024 sigue visible como fila de 2024. aging 3 queda unknown_origin: R2 solo mira taninos. Taninos 0 en un blanco es not_applicable, no 'poco'.",
+      "request": "GET /wines/217346?evidence=1&vintage=2022",
+      "evidenceMethod": {
+        "version": "sensory-evidence-1",
+        "sourceVerifiedEmittedToday": false,
+        "rulesActive": [
+          "R2@1"
+        ],
+        "note": "suspected_default es una sospecha por regla, no prueba de origen ni valor corregido. source_verified no se emite sin prueba. Un 3 sin regla activa no es un valor genuino confirmado."
+      },
+      "evidenceStatus": "rows_present",
+      "vintageResolution": {
+        "requested": "2022",
+        "status": "no_exact_row",
+        "exactRowPresent": false,
+        "genericRowPresent": false,
+        "knownVintages": [
+          2024
+        ],
+        "offeredScope": "none",
+        "genericRowCount": 0
+      },
+      "attributesByVintage": [
+        {
+          "vintage": "2024",
+          "power": 4,
+          "sweetness": 1,
+          "acidity": 4,
+          "tannin": 0,
+          "fruity": 4,
+          "aging": 3,
+          "source": null,
+          "scope": "exact",
+          "origin": {
+            "type": "unrecorded"
+          },
+          "evidence": {
+            "power": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "sweetness": {
+              "value": 1,
+              "state": "unknown_origin"
+            },
+            "acidity": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "tannin": {
+              "value": 0,
+              "state": "not_applicable"
+            },
+            "fruity": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "aging": {
+              "value": 3,
+              "state": "unknown_origin"
+            }
+          }
+        }
+      ],
+      "mantalakWineId": 217346,
+      "vintages": [
+        2024
+      ]
+    },
+    "ficha_sin_filas": {
+      "_nota": "Sin filas: ninguna evidencia aplicable. No es 0 ni 3. La ausencia de filas no prueba que el vino no tenga cata, solo que el catalogo no la tiene.",
+      "request": null,
+      "evidenceMethod": {
+        "version": "sensory-evidence-1",
+        "sourceVerifiedEmittedToday": false,
+        "rulesActive": [
+          "R2@1"
+        ],
+        "note": "suspected_default es una sospecha por regla, no prueba de origen ni valor corregido. source_verified no se emite sin prueba. Un 3 sin regla activa no es un valor genuino confirmado."
+      },
+      "evidenceStatus": "no_rows",
+      "vintageResolution": {
+        "requested": "2022",
+        "status": "no_exact_row",
+        "exactRowPresent": false,
+        "genericRowPresent": false,
+        "knownVintages": [],
+        "offeredScope": "none",
+        "genericRowCount": 0
+      },
+      "attributesByVintage": []
+    },
+    "generica_duplicada": {
+      "_nota": "Forma con valores ILUSTRATIVOS, NO un vino concreto: cuatro vinos del catalogo tienen dos filas genericas (el indice unico no restringe filas con añada vacia). Regla propuesta, no arbitraria: no se elige ninguna; se devuelven ambas, como hoy, marcadas; no se ofrece ninguna generica como aplicable. Las filas con añada exacta no se ven afectadas. Corregir los datos es una decision aparte.",
+      "request": "GET /wines/{id}?evidence=1&vintage=2021",
+      "evidenceMethod": {
+        "version": "sensory-evidence-1",
+        "sourceVerifiedEmittedToday": false,
+        "rulesActive": [
+          "R2@1"
+        ],
+        "note": "suspected_default es una sospecha por regla, no prueba de origen ni valor corregido. source_verified no se emite sin prueba. Un 3 sin regla activa no es un valor genuino confirmado."
+      },
+      "evidenceStatus": "rows_present",
+      "vintageResolution": {
+        "requested": "2021",
+        "status": "no_exact_row",
+        "exactRowPresent": false,
+        "genericRowPresent": true,
+        "genericRowCount": 2,
+        "knownVintages": [],
+        "offeredScope": "generic_ambiguous"
+      },
+      "attributesByVintage": [
+        {
+          "vintage": null,
+          "power": 4,
+          "sweetness": 1,
+          "acidity": 3,
+          "tannin": 3,
+          "fruity": 4,
+          "aging": null,
+          "source": null,
+          "scope": "generic",
+          "conflict": "duplicate_generic",
+          "origin": {
+            "type": "unrecorded"
+          },
+          "evidence": {
+            "power": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "sweetness": {
+              "value": 1,
+              "state": "unknown_origin"
+            },
+            "acidity": {
+              "value": 3,
+              "state": "unknown_origin"
+            },
+            "tannin": {
+              "value": 3,
+              "state": "unknown_origin"
+            },
+            "fruity": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "aging": {
+              "value": null,
+              "state": "absent"
+            }
+          }
+        },
+        {
+          "vintage": null,
+          "power": 3,
+          "sweetness": 1,
+          "acidity": 4,
+          "tannin": 3,
+          "fruity": 4,
+          "aging": null,
+          "source": null,
+          "scope": "generic",
+          "conflict": "duplicate_generic",
+          "origin": {
+            "type": "unrecorded"
+          },
+          "evidence": {
+            "power": {
+              "value": 3,
+              "state": "unknown_origin"
+            },
+            "sweetness": {
+              "value": 1,
+              "state": "unknown_origin"
+            },
+            "acidity": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "tannin": {
+              "value": 3,
+              "state": "unknown_origin"
+            },
+            "fruity": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "aging": {
+              "value": null,
+              "state": "absent"
+            }
+          }
+        }
+      ]
+    },
+    "ilustrativo_suspected_default": {
+      "_nota": "NO es un vino real: forma de suspected_default (blanco, taninos 3, R2@1).",
+      "type": "blanco",
+      "evidenceMethod": {
+        "version": "sensory-evidence-1",
+        "sourceVerifiedEmittedToday": false,
+        "rulesActive": [
+          "R2@1"
+        ],
+        "note": "suspected_default es una sospecha por regla, no prueba de origen ni valor corregido. source_verified no se emite sin prueba. Un 3 sin regla activa no es un valor genuino confirmado."
+      },
+      "evidenceStatus": "rows_present",
+      "attributesByVintage": [
+        {
+          "vintage": "2021",
+          "scope": "exact",
+          "origin": {
+            "type": "unrecorded"
+          },
+          "tannin": 3,
+          "evidence": {
+            "power": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "sweetness": {
+              "value": 1,
+              "state": "unknown_origin"
+            },
+            "acidity": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "tannin": {
+              "value": 3,
+              "state": "suspected_default",
+              "rule": {
+                "id": "R2",
+                "version": "1",
+                "reason": "Valor 3 en taninos en un vino de tipo blanco: en este tipo el 85,5 % de las filas usan 0 (no aplica) y el generador guarda 3 cuando falta el eje.",
+                "isProofOfOrigin": false,
+                "knownExceptions": [
+                  "blancos con maceracion o contacto con pieles",
+                  "blancos con barrica",
+                  "espumosos de uva tinta o rosados"
+                ]
+              }
+            },
+            "fruity": {
+              "value": 4,
+              "state": "unknown_origin"
+            },
+            "aging": {
+              "value": null,
+              "state": "absent"
+            }
+          }
+        }
+      ]
+    },
+    "ai_recorded_ilustrativo": {
+      "_nota": "NO es un vino real: forma de una fila con origen de IA registrado y confidence en 0..1 (no es probabilidad de identidad ni de gusto).",
+      "type": "tinto",
+      "evidenceMethod": {
+        "version": "sensory-evidence-1",
+        "sourceVerifiedEmittedToday": false,
+        "rulesActive": [
+          "R2@1"
+        ],
+        "note": "suspected_default es una sospecha por regla, no prueba de origen ni valor corregido. source_verified no se emite sin prueba. Un 3 sin regla activa no es un valor genuino confirmado."
+      },
+      "evidenceStatus": "rows_present",
+      "attributesByVintage": [
+        {
+          "vintage": "2021",
+          "scope": "exact",
+          "origin": {
+            "type": "ai_recorded",
+            "model": "gpt-5",
+            "confidence": 0.8,
+            "generatedAt": "2026-04-01T00:00:00Z"
+          },
+          "power": 4,
+          "sweetness": 1,
+          "acidity": 3,
+          "tannin": 4,
+          "fruity": 4,
+          "aging": null,
+          "evidence": {
+            "power": {
+              "value": 4,
+              "state": "ai_estimate_recorded"
+            },
+            "sweetness": {
+              "value": 1,
+              "state": "ai_estimate_recorded"
+            },
+            "acidity": {
+              "value": 3,
+              "state": "ai_estimate_recorded"
+            },
+            "tannin": {
+              "value": 4,
+              "state": "ai_estimate_recorded"
+            },
+            "fruity": {
+              "value": 4,
+              "state": "ai_estimate_recorded"
+            },
+            "aging": {
+              "value": null,
+              "state": "absent"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "search": {
+    "busqueda_217346": {
+      "request": "GET /wines/search?name=Meursault+Les+Grands+Charrons&winery=Pierre+Girardin&vintage=2022&evidence=1",
+      "resultItem": {
+        "mantalakWineId": 217346,
+        "vintages": [
+          2024
+        ],
+        "tastingAttributes": {
+          "power": 4,
+          "acidity": 4,
+          "sweetness": 1,
+          "tannin": 0,
+          "fruity": 4
+        },
+        "tastingAttributesScope": "catalogue_average_not_vintage_specific"
+      }
+    }
+  }
+}

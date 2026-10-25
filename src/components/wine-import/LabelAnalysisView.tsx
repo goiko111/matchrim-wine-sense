@@ -3,6 +3,7 @@ import { BookOpen, Check, Pencil } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import './nativeLabelSheet102.css';
+import type { NativeAffinityGap210 } from '@/utils/multiWineConsumer95';
 
 interface LabelAnalysisViewProps {
   isNativePlatform: boolean;
@@ -12,6 +13,7 @@ interface LabelAnalysisViewProps {
   catalogIdentityLinked: boolean;
   canExplainAffinity: boolean;
   hasProfile: boolean;
+  pendingAffinity?: NativeAffinityGap210 | null;
   affinity: ReactNode;
   catalogueReference?: ReactNode;
   lookup: ReactNode;
@@ -24,7 +26,7 @@ interface LabelAnalysisViewProps {
 
 // Presentation only: the scanner retains identity, lookup and affinity authority.
 export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, identity, identityLabel,
-  catalogIdentityLinked, canExplainAffinity, hasProfile, affinity, catalogueReference, lookup, disabled,
+  catalogIdentityLinked, canExplainAffinity, hasProfile, pendingAffinity, affinity, catalogueReference, lookup, disabled,
   onFindSheet, onCorrect, onReturnToBatch, children = null }: LabelAnalysisViewProps) => {
   if (!isNativePlatform) return <>{children}</>;
 
@@ -38,17 +40,23 @@ export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, ident
     </div> : <p className="text-xs leading-5 text-stone-500">{identityLabel}</p>}
 
     {canExplainAffinity ? affinity : catalogueReference || <div className="min-w-0 space-y-2 border-y border-stone-200 py-3" data-testid="native-label-next-step">
-      <h4 className="font-semibold text-slate-950">Afinidad pendiente</h4>
-      <p className="text-sm leading-6 text-stone-700">{catalogIdentityLinked
+      <h4 className="font-semibold text-slate-950">{pendingAffinity?.title ?? 'Afinidad pendiente'}</h4>
+      <p className="text-sm leading-6 text-stone-700" data-testid="native-affinity-gap-reason">{pendingAffinity?.description ?? (catalogIdentityLinked
         ? hasProfile ? 'La ficha está enlazada, pero aún faltan datos para calcular tu afinidad.'
           : 'La ficha está enlazada. Completa tu test para compararla con tus gustos.'
-        : 'Aún no hay una ficha enlazada para comparar este vino con tus gustos.'}</p>
+        : 'Aún no hay una ficha enlazada para comparar este vino con tus gustos.')}</p>
+      {pendingAffinity && <p className="text-sm leading-6 text-stone-700" data-testid="native-affinity-gap-next-step">{pendingAffinity.nextStep}</p>}
       {!catalogIdentityLinked && (lookup || <Button type="button" disabled={disabled} onClick={onFindSheet}
         className="h-auto min-h-11 w-full min-w-0 gap-2 whitespace-normal bg-red-950 px-3 py-3 text-left text-white hover:bg-red-900">
         <BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" /><span className="min-w-0 [overflow-wrap:anywhere]">Buscar ficha para mi afinidad</span>
       </Button>)}
-      {catalogIdentityLinked && !hasProfile && <Button asChild className="h-auto min-h-11 max-w-full whitespace-normal">
+      {catalogIdentityLinked && (!hasProfile || pendingAffinity?.reason === 'profile') && <Button asChild className="h-auto min-h-11 max-w-full whitespace-normal">
         <Link to="/matchrim">Completar mi test</Link>
+      </Button>}
+      {catalogIdentityLinked && pendingAffinity && ['sensory', 'score'].includes(pendingAffinity.reason) && <Button
+        type="button" variant="outline" disabled={disabled} onClick={onFindSheet}
+        className="h-auto min-h-11 max-w-full gap-2 whitespace-normal px-3 py-3 text-left">
+        <BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" /> Revisar ficha
       </Button>}
     </div>}
 

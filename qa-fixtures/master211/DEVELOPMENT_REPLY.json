@@ -1,0 +1,38 @@
+{
+  "uid": "15803",
+  "messageId": "<010001a172335bec-9919f2c4-8a1c-4588-8df4-b4b0420efa64-000000@email.amazonses.com>",
+  "date": "Sun, 25 Oct 2026 08:35:30 +0000",
+  "inReplyTo": "<d0d77d86-c653-4919-9a5e-11659ca83057@winerim.com>",
+  "source": "cached authorized reply; not fresh server refresh",
+  "sender": "moa-winerim-b93a8ts9@agentmail.to",
+  "primaryText": "Hola equipo:\n\nGracias por la revisión con Ajv. Adjuntamos la **rev3** de `sensory-evidence-1` (esquema, ejemplos, negativos, validador y validación cruzada), que corrige vuestros dos contraejemplos. **Estado: preparado para revisión; siguiente paso, vuestra aprobación.** No está implementado en la API ni autoriza publicar nada. Sin consultas ni datos nuevos, y sin tocar nada de P0-A ni P0-B.\n\n- **R207-1 (P0).** Nueva regla cruzada **X8**: cada fila `scope: exact` debe tener su añada en las listas declaradas, `vintages` de la ficha y `knownVintages`, normalizando string e integer. Una fila exacta de una añada no declarada es inválida; no se corrige ampliando las listas. Negativo reproducible **C11**, con exactamente vuestra mutación: sobre `zorrera_2015`, `attributesByVintage[1].vintage` y `vintageResolution.requested` a «2023», con las listas en [2019, 2015]. Pasa el esquema y X1–X7, y falla solo por X8.\n- **R207-2 (P1).** `origin.confidence` queda fijado en **0..1** en el esquema. Negativos **N21, N22 y N23** con −10, −0,01 y 1,01, que fallan por `minimum` o `maximum` en esa ruta. Valores 0 y 1 válidos (P01 y P02). Queda escrito que esa confianza es la que el generador registró en su propia estimación de esa fila: **no es una probabilidad de identidad del vino ni de gusto, ni afinidad**, y no convierte ningún estado en evidencia genuina. Una salvedad: el código que guarda ese valor no impone el rango, y no hemos comprobado que los valores ya guardados estén todos en 0..1.\n\nEl validador ahora exige que cada negativo falle **por el motivo esperado** (el validador y la ruta en el esquema, o el código X en la validación cruzada), no solo que falle. Resultado local con Python `jsonschema` draft-07 (no Ajv): 9 válidos, 23 negativos de esquema, 11 de validación cruzada y 3 positivos, todo como se espera. Os pedimos que lo repitáis con vuestro Ajv y vuestra implementación de X1–X8.\n\n| Contrato | Responsable | Estado | Siguiente paso |\n|---|---|---|---|\n| `sensory-evidence-1` **rev3** | Winerim (esquema y validador); Goiko (revisión) | Preparado para revisión | Vuestra aprobación. Nuestra implementación solo después, con nuestra decisión |\n\nP0-A y P0-B sin cambios: P0-B sigue **BLOQUEADO POR AUTORIZACIÓN**.\n\nGracias,\nEquipo Winerim",
+  "attachments": [
+    {
+      "name": "sensory-evidence-1.schema.json",
+      "bytes": 17177,
+      "sha256": "921a87cce49e6ba37496c1841703c55a3bf8c953386fc9eb84a7556ec1c32660"
+    },
+    {
+      "name": "EJEMPLOS.json",
+      "bytes": 20300,
+      "sha256": "453755461a8e04fe6c47dda76d5db0b0e3bc30bbfb9de900b258db51627311fd"
+    },
+    {
+      "name": "NEGATIVOS.json",
+      "bytes": 11928,
+      "sha256": "97771cbb32ea869b8f3505751a869484fa2bdb0d5d13362b1f0a23be91f21ddc"
+    },
+    {
+      "name": "VALIDACION-CRUZADA.md",
+      "bytes": 3071,
+      "sha256": "c38f163cf5f8bcd317453e05484db74658be615ed0595d4c1e1ab98399f839c8"
+    },
+    {
+      "name": "validate.py",
+      "bytes": 5101,
+      "sha256": "393444ee14f6dc9534921f95e2a791ed1f26eb2e50d4294eb237fbf93b0f6d06"
+    }
+  ],
+  "attachmentCodeExecuted": false,
+  "newExternalCalls": 0
+}

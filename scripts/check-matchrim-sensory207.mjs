@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const Ajv = require('ajv');
 const folder = 'qa-fixtures/master207/';
@@ -12,7 +13,7 @@ const search = ajv.compile({ $ref: schema.$id + '#/definitions/searchResult' });
 const axes = ['power', 'sweetness', 'acidity', 'tannin', 'fruity', 'aging'];
 // Independent, local implementation of the developer's documented X1-X7 checks.
 // This reviews a proposed contract; it is not an app decoder or an API approval.
-const cross = block => {
+export const cross = block => {
   const errors = [], rows = block.attributesByVintage, rules = block.evidenceMethod.rulesActive ?? [];
   for (const row of rows) {
     for (const axis of axes) {
@@ -39,7 +40,7 @@ const cross = block => {
   }
   return errors;
 };
-const apply = (base, ops) => {
+export const apply = (base, ops) => {
   const result = structuredClone(base);
   for (const op of ops) {
     const parts = (op.set ?? op.del).split('.'); let current = result;
@@ -51,6 +52,7 @@ const apply = (base, ops) => {
   }
   return result;
 };
+if (process.argv[1] && fileURLToPath(import.meta.url) === fs.realpathSync(process.argv[1])) {
 let checks = 0;
 const check = (name, run) => { run(); checks++; console.log('PASS', name); };
 for (const [name, doc] of Object.entries(examples.valid)) check(`valid ${name}`, () => {
@@ -82,3 +84,4 @@ console.log(JSON.stringify({ passed: true, regressionChecks: checks,
   suppliedValid: Object.keys(examples.valid).length + Object.keys(examples.search).length,
   suppliedNegative: negatives.schema.length + negatives.cross.length,
   reviewApproved: false, counterexamples, externalCalls: 0, attachmentCodeExecuted: false }, null, 2));
+}

@@ -1434,6 +1434,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     <span className={isNative ? 'min-w-0 w-full text-left [overflow-wrap:anywhere]' : 'shrink-0 text-right'}>
                       <span data-testid="scan-affinity-value" className="block font-bold text-red-900">{isNative ? consumer?.affinityValue : group.candidate.affinity == null ? '-' : `${identityConfirmed ? '' : '≈'}${Math.round(group.candidate.affinity)}%`}</span>
                       <span className="block text-[11px] text-slate-500">{isNative ? consumer?.affinityLabel : group.candidate.affinity == null ? 'Sin datos' : identityConfirmed ? 'Afinidad' : 'Estimación'}</span>
+                      {isNative && consumer?.pending && <span className="mt-1 block text-xs leading-5 text-stone-700" data-testid="native-affinity-gap-summary">{consumer.pending.summary}</span>}
                       {personalVerdict && <span className="mt-1 block font-semibold text-stone-900" data-testid="native-rescan-personal-verdict">{personalVerdictTitle159(personalVerdict)}</span>}
                     </span>
                   </button>
@@ -1522,6 +1523,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   identity={selectedCandidate} identityLabel={nativeConsumer?.identityLabel ?? 'Referencia propuesta'}
                   catalogIdentityLinked={Boolean(nativeConsumer?.catalogIdentityLinked)}
                   canExplainAffinity={Boolean(nativeConsumer?.canExplainAffinity)} hasProfile={Boolean(scanProfile?.profile)}
+                  pendingAffinity={nativeConsumer?.pending}
                   affinity={affinityExplanation} disabled={regionActionsLocked}
                   catalogueReference={isGlobalWine103(selectedCandidate, selectedCandidate.globalRecord)
                     ? <GlobalWineReference103 candidate={selectedCandidate} profile={scanProfile?.profile ?? null} /> : null}
