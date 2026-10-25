@@ -80,7 +80,10 @@ export const lookupMasterReference195 = async (
   let calls = 0;
   const read = async (operation: MasterOperation195) => {
     if (controller.signal.aborted || ++calls > 2) throw new Error('MASTER_READ_BOUND');
-    return Promise.race([invoke(operation, controller.signal), deadline]);
+    const result = await Promise.race([invoke(operation, controller.signal), deadline]);
+    // A transport may resolve in the same turn in which it ignores cancellation.
+    if (controller.signal.aborted) throw new Error('STOPPED');
+    return result;
   };
   try {
     const page = parseMasterPage188(await read({ operation: 'search', query }), 1, 50);

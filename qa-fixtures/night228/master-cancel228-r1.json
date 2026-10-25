@@ -1,0 +1,23 @@
+{
+  "checkedUTC": "2026-10-25T21:00:32.975Z",
+  "sourceSHA256": "92b35ad2e6ebb17840e69796f60353170ca988eb8e8e0c22723325d761f09b6d",
+  "cases": [
+    {
+      "wrapper": "direct-controlled-transport",
+      "expected": "AbortError",
+      "actual": "reference-match",
+      "passed": false,
+      "calls": 2
+    },
+    {
+      "wrapper": "actual-client-invoker",
+      "expected": "AbortError",
+      "actual": "AbortError",
+      "passed": true,
+      "calls": 2
+    }
+  ],
+  "passed": false,
+  "externalCalls": 0,
+  "scope": "Cancellation exactly when controlled detail resolves. Actual local inactive resolver with retained detail; client wrapper also tested. Not a live backend, account leak or active-app failure."
+}

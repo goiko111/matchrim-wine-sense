@@ -1,0 +1,32 @@
+{
+  "checkedUTC": "2026-10-25T20:55:13.045Z",
+  "passed": true,
+  "checks": [
+    "Actual native195invoker forwards opt-in to reviewed main bridge and216decoder retains canonical unlisted row",
+    "Invalid opt-in never reaches the catalogue transport",
+    "Cancellation before invocation starts no client or catalogue call",
+    "A private-value echo is rejected, not delivered as catalogue data"
+  ],
+  "sourceSnapshot": {
+    "file": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/night225/github227-source.json",
+    "sha256": "c11b251fe99dea9555aaf27bc38891bc2064a548d6167dce5df6f2160fa784fd"
+  },
+  "retainedInput": {
+    "file": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-fixtures/master216/02-busqueda-includeUnlisted-migratoria.json",
+    "sha256": "4ff256da2d6cc51fda6f524cc3e87ddfa6136e40c3a5aeb35200d78ba8601dad"
+  },
+  "actualLocalSources": {
+    "src/utils/nativeMasterReference195.ts": "92b35ad2e6ebb17840e69796f60353170ca988eb8e8e0c22723325d761f09b6d",
+    "src/utils/nativeMasterOptIn216.ts": "9be75755c29bafd50a8a187673674cad64f3ab2388d2bce9bdf033b23a477bf8",
+    "src/utils/nativeMasterContract188.ts": "90fde66c15fe5673f8dd78ab891ae00e803a4d1ebf0d7c2a23e366b6c2c247e6"
+  },
+  "scope": "Controlled offline contract composition: actual client invoker, reviewed current-main bridge with entirely synthetic auth/secret/network callbacks, actual retained unlisted response and actual216decoder. Not hosted deployment, current live API, real authentication, native UI, photo identity or sensory validation.",
+  "mockCatalogueFetches": 2,
+  "externalCatalogueReads": 0,
+  "realKeysRead": 0,
+  "realAccountsUsed": false,
+  "appActivated": false,
+  "imageIdentitiesConfirmed": 0,
+  "affinityGranted": false,
+  "newSpend": 0
+}

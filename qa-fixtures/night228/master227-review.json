@@ -1,0 +1,33 @@
+{
+  "checkedUTC": "2026-10-25T20:53:50.440Z",
+  "passed": true,
+  "checks": [
+    "Actual main accepts only true/false/1/0 spellings and forwards normalized flags",
+    "Absent opt-in remains absent and unrelated request fields fail",
+    "Identity IDs, query bounds and canonical endpoint remain strict",
+    "Exact main authentication, byte limits, secret handling and forwarding code are otherwise unchanged"
+  ],
+  "sourceReceipt": {
+    "file": "/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/night225/github227-source.json",
+    "sha256": "c11b251fe99dea9555aaf27bc38891bc2064a548d6167dce5df6f2160fa784fd"
+  },
+  "mainBridgeSHA256": "af3adff8e727282ee059dd73b56dcf3d1a461cacc68919734e5689bcd31ca937",
+  "localBridgeSHA256": "b3d24f762e83e632abd5182cacc136805c64ed072cfc87a658a7ff94f41a2d04",
+  "mainEntrySHA256": "faa839ed0800ef976d39bd594e799e644ccbfb3604ec0c42b9c1beca7e28c69f",
+  "commit": "0f91d8efd52d8963dd613beadf7803d6d2b6f228",
+  "independentlyVerified": "GitHub commit and current main source contain the strict includeUnlisted patch, with otherwise identical reviewed bridge/entry code.",
+  "notVerified": [
+    "Hosted deployed byte/version equality",
+    "Cloud secret existence",
+    "Authenticated live bridge behavior",
+    "Full catalogue coverage",
+    "Sensory evidence implementation",
+    "200-photo identities"
+  ],
+  "scope": "Four focused pure builder/source checks. Does not execute downloaded imports, backend factory, developer tests or network/auth callbacks. No app/backend/main mutation or deployment.",
+  "githubReadOperations": 3,
+  "catalogueRequests": 0,
+  "modelCalls": 0,
+  "keychainReads": 0,
+  "newSpend": 0
+}

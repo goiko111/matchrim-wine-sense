@@ -1,0 +1,91 @@
+{
+  "createdUTC": "2026-10-25T21:10:58.323Z",
+  "goal": "ACTIVE original five blocks until04:00Madrid; monitor remains PAUSED",
+  "evidence": [
+    {
+      "file": "qa-fixtures/night228/github227-source.json",
+      "sha256": "c11b251fe99dea9555aaf27bc38891bc2064a548d6167dce5df6f2160fa784fd"
+    },
+    {
+      "file": "qa-fixtures/night228/master227-review.json",
+      "sha256": "07ab619805b9cadf349bc04b5b88f8dc7a2262caec611dd2e52d777b5c391500"
+    },
+    {
+      "file": "qa-fixtures/night228/master227-chain.json",
+      "sha256": "406db7729884569bd4e98c3fd09d60444f9027adf5d36209c4b9d20752cfda53"
+    },
+    {
+      "file": "qa-fixtures/night228/master-cancel228-r1.json",
+      "sha256": "b56674119588a5e9b6bb0f261e8b68d5c881ad9e7d71f0801662e24e81b1c305"
+    },
+    {
+      "file": "qa-fixtures/night228/master-cancel228-r2-red.json",
+      "sha256": "7af4f42e41ccfabf22ee05289d194b36606d83a9aaa8e2e0be79036836ccd7ec"
+    },
+    {
+      "file": "qa-fixtures/night228/master-cancel228-r3-green.json",
+      "sha256": "4311fcedeb61ad415facc7c2df921082af04d8fe74e37b1bd9550804f5964ada"
+    }
+  ],
+  "sourceVerification227": {
+    "githubReadOperations": 3,
+    "catalogueReads": 0,
+    "modelCalls": 0,
+    "readScope": "Existing authorized repository only, source review and synthetic contract composition, not hosted deployment proof"
+  },
+  "cancellation228": {
+    "passed": 6,
+    "total": 6,
+    "initialPassed": 5,
+    "initialTotal": 6,
+    "affectedReference195Groups": 11,
+    "referenceRegressionEvidence": "Tool-observed stdout only; no separate output log claimed",
+    "focusedLint": "PASS",
+    "activatedInApp": false,
+    "actualClientInvokerAlreadyProtected": true
+  },
+  "mail": {
+    "checkedUTC": "2026-10-25T21:08:00Z",
+    "account": "goiko@winerim.com",
+    "thread": "Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026",
+    "authorizedSender": "moa-winerim-b93a8ts9@agentmail.to",
+    "action": "Archivo > Recibir mensajes nuevos de > goiko@winerim.com",
+    "latestVisible": "25Oct2026 16:14Madrid",
+    "newerThreadReplyObserved": false,
+    "explicitServerCompletionBanner": false,
+    "serverAbsenceProven": false,
+    "sent": false,
+    "filterRestored": true,
+    "originalSelectedTabRestored": true,
+    "lease": "10593ae3-6bb7-4f78-a6ca-7f55a1a27e5d",
+    "released": true,
+    "hidIdleBeforeSeconds": 1539,
+    "noXCTestRunnerOrXcodebuildObserved": true
+  },
+  "resources": {
+    "cancelledRequest": "70f15880-9327-45d3-bb05-e69d050e8053",
+    "reason": "Newly demonstrated resolver cancellation defect requires focused source correction before freezing candidate119; not a queue priority bypass for routine checkpoint writes",
+    "writerLease": "5f6000dd-54c0-412c-b62d-36478d4e681b",
+    "release": "Required after this checkpoint/commit before any new complete resource request"
+  },
+  "limits": {
+    "catalogueReadsThisTurn": 0,
+    "modelCalls": 0,
+    "keychainReads": 0,
+    "lovableCalls": 0,
+    "spend": 0,
+    "webChanged": false,
+    "mainChanged": false,
+    "backendChanged": false,
+    "realAccounts": false,
+    "phone": false,
+    "testFlight": false
+  },
+  "pending": [
+    "Clean119 preparation and compile",
+    "Native20question quiz, results, Home and relaunch",
+    "Current-code retained200cache-only replay",
+    "Hosted bridge secret and separately authorized live QA",
+    "Real200identity/sensory gates"
+  ]
+}

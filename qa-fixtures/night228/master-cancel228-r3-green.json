@@ -1,0 +1,36 @@
+{
+  "checkedUTC": "2026-10-25T21:10:02.884Z",
+  "passed": true,
+  "cases": [
+    {
+      "name": "Direct detail resolution cannot win over cancellation inside its transport",
+      "passed": true
+    },
+    {
+      "name": "Actual client invoker preserves cancellation before exposing its detail",
+      "passed": true
+    },
+    {
+      "name": "Cancellation in a queued search continuation starts no detail request",
+      "passed": true
+    },
+    {
+      "name": "Aborting an unresolved detail settles without a retry or late match",
+      "passed": true
+    },
+    {
+      "name": "Owned deadline keeps unavailable distinct from human cancellation",
+      "passed": true
+    },
+    {
+      "name": "Cancellation removes its caller listener, even with immediate transport resolution",
+      "passed": true
+    }
+  ],
+  "sources": {
+    "src/utils/nativeMasterReference195.ts": "fd5d83401bef96f24ea1ff85e3398b1e81323de9f0a28899ac370253c35d0a10",
+    "scripts/check-matchrim-master-cancel228.mjs": "4e675c2c894e41e6a47b5c695762835a3792b37faf8f83e8cd11ca5a64cc23ee"
+  },
+  "externalCalls": 0,
+  "scope": "Actual inactive native resolver with controlled transports and retained catalogue payloads. Not deployed API, photo recognition, active-app leak or affinity validation."
+}

@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25, Native Master228 Cancellation Fixed / Source227 Opt-in Verified /119Still Pending
+
+- Original five-block Goal ACTIVE until04:00Madrid; monitor PAUSED unchanged. Independently reviewed GitHub0f91d8e/current-main opt-in patch and identical authenticated entry;4source checks+4actual client/reviewed bridge/retained216decoder composition groups PASS with synthetic transports. Source verified, NOT hosted version/Cloud secret/live catalogue/photo identity/sensory approval.3GitHubreads, zero catalogue/model/Lovable/Keychain reads. [Bound receipt](qa-fixtures/night228/RESULT.json).
+- New actual inactive195resolver counterexample: direct controlled detail resolves while aborting, producing reference-match; actual client invoker already rejects. Added post-await owned-signal veto. Six lifecycle groups PASS after retained5/6RED,11affected reference/vintage/sensory/bridge regressions+focused lint PASS. No active-app leak or new recognition/affinity authority claimed. [Scope and before/after](docs/MATCHRIM_NIGHT_228_2026-10-25.md).
+- Cancelled unclaimed119queue70f15880 because new demonstrated source defect requires correction before candidate freeze, acquired only writer5f6000dd for fix/checkpoint. Not cancelling for routine checkpoint/priority evasion; full new119heavy+writer request after clean commit/release.119prep/compile, native anonymous quiz/Home/relaunch and current-code cache200replay still pending. Named account refreshed21:08UTC under own desktop10593ae3; latest visible Matchrim16:14Madrid unchanged, no server-absence claim/mail send, filter/tab restored and desktop released. No web/main/backend/real account/phone/spend/TestFlight change.
+
 ## Current Gate: 2026-10-25, Native226 Cancellation Fixed /119Pending / Retained200 Reconciled
 
 - Original five-block Goal ACTIVE until04:00, monitor PAUSED unchanged. Read-only200matrix now binds latest r21 (not older r13):181historically evaluated/19incomplete,46/48top1/top3export-reference proposal proxies, no canonical accuracy claim. Three current bound sources differ, so fresh cache-only current-code replay is needed. Later9detail diagnostics still confirm no photo identity/affinity/learning. [Scope and matrix](docs/MATCHRIM_NIGHT_226_2026-10-25.md).
