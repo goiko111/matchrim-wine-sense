@@ -6,11 +6,11 @@ Status: PREPARED; consult CURRENT_STATE.md and any Sent receipt before sending.
 
 Hola equipo:
 
-Recibidos los nueve adjuntos de las capturas y vuestro informe de despliegue de las 14:38 Madrid. Hemos contrastado los siete JSON sin nuevas consultas: la búsqueda opt-in encuentra 217480 con IDs públicos nulos; las dos páginas suman 81 IDs canónicos distintos, 30 sin fila pública. La ficha217480 no aporta atributos; el control78397 solo aporta una fila genérica sin origen registrado. No concedemos identidad de foto, afinidad ni validación de cobertura global por estas capturas.
+Recibidos los nueve adjuntos de las capturas y vuestro informe de despliegue de las 14:38 Madrid. Hemos contrastado los siete JSON sin nuevas consultas: la búsqueda opt-in encuentra 217480 con IDs públicos nulos; las dos páginas suman 81 IDs canónicos distintos, 30 sin fila pública. La ficha de 217480 no aporta atributos; el control 78397 solo aporta una fila genérica sin origen registrado. No concedemos identidad de foto, afinidad ni validación de cobertura global por estas capturas.
 
 Tenemos preparado el lector local opt-in, separado del lector por defecto. Sigue sin activar la app ni hacer llamadas nuevas. Hay un bloqueo concreto que necesitamos aclarar antes de probar el puente:
 
-En vuestro código de referencia4633e92, masterRequestUrl194 solo admite q/name/winery/vintage/vintageMatch/page/limit. Reproduce localmente INVALID_REQUEST al recibir includeUnlisted, tanto como true como como "1". Por tanto, introducir el secreto no bastaría para consultar el catálogo completo por ese puente si el desplegado conserva ese contenido.
+En vuestro código de referencia 4633e92, masterRequestUrl194 solo admite q/name/winery/vintage/vintageMatch/page/limit. Reproduce localmente INVALID_REQUEST al recibir includeUnlisted, tanto con true como con "1". Por tanto, introducir el secreto no bastaría para consultar el catálogo completo por ese puente si el desplegado conserva ese contenido.
 
 ¿La función desplegada sigue exactamente ese código? Si hay un parche ya preparado que admita el opt-in de forma explícita y conserve autenticación, límites y allowlist, pasad el diff/contrato existente y su estado. Si no existe, confirmadlo. Pedimos revisión y material existente, no implementación ni otro despliegue por esta petición. Nuestra prueba local conserva el rechazo como bloqueo, no lo oculta.
 

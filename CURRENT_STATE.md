@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25, Development217 Bridge Opt-in Review SENT
+
+- Previous goal continuation was no progress (desktop busy), not a verified live-process wait. This turn resource changed: desktop free/HID idle over10minutes/no foreign runner, own mac06b1ea45ACQUIRED. Sent exact prepared216review to actual14:38reply fromgoiko@winerim.comtosoleauthorizedMoa at15:55Madrid, SentUID5571/messageff84533a-7d8f-4223-a692-5bba65d8b923. Full2013character normalized body checked before send, Sent UI and bounded MIME match; noCCBCCattachments. [Receipt](qa-fixtures/master217/SENT_VERIFICATION.json). Supersedes prior NOTSENT status, do not resend. Sending proved, not delivery/read or new response.
+- Asks whether deployed bridge equals4633e92and for any existing opt-in patch/diff/state; no new implementation/deploy/main restoration/secret/GET/model/Lovable/spend authorization or delegation. Native216tests/candidate109unchanged, no repeat suites/build/UI/product changes. Monitor remains PAUSED; native Goal ACTIVE/not complete.
+- Restored original empty Inbox/sender-on/subject-off filters; own desktop released after actual send/verification. Writerd5562988only draft wording and receipt/checkpoint/push, then release. No loops, foreign lease/process/cache/task changes, new API/model calls, key retrieval or web/main/backend mutation. Remaining gates: developer's bridge opt-in clarification, safe secret/channel and separately authorized authenticated QA; no TestFlight.
+
 ## Current Gate: 2026-10-25, Master216 Captures Replayed / Opt-in Decoder PASS / Bridge Review Prepared
 
 - Goal resumed ACTIVE by native state; fresh audit, this turn progress not completion/wait. Cached actual13:54and14:38replies to215received, exact9attachments/primary bodies/hashes in qa-fixtures/master216. Development reports maina6ee714/Cloud deployment0.8credits/7reads and external authorization, plus Lovable previewAuthStorage/types main changes. Attributed only: no independently verified authorization/deployment/hash; commit absent locally. No restore/main/secret/call permissions inferred.

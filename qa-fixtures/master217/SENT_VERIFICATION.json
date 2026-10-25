@@ -1,0 +1,21 @@
+{
+  "mode": "GUI_SEND_AND_BOUNDED_SENT_MIME_VERIFICATION",
+  "sentUid": 5571,
+  "messageId": "ff84533a-7d8f-4223-a692-5bba65d8b923@winerim.com",
+  "inReplyTo": "010001a17348d0c0-b6c0868a-046f-4353-b8d5-481162b54149-000000@email.amazonses.com",
+  "dateMadrid": "2026-10-25T15:55:27+01:00",
+  "from": "Goiko || Winerim <goiko@winerim.com>",
+  "to": "Moa Winerim <moa-winerim-b93a8ts9@agentmail.to>",
+  "cc": null,
+  "bcc": null,
+  "attachments": 0,
+  "normalizedBodyMatchesPrepared": true,
+  "normalizedBodySha256": "ea218ee30525d22c1062f16038fec88de3ef791f3054c1142787dd1015a602f4",
+  "uiBodyVerifiedBeforeSend": true,
+  "uiBodyChars": 2014,
+  "sentUiVerified": true,
+  "deliveryOrReadConfirmed": false,
+  "newCatalogueOrModelCalls": 0,
+  "spendAuthorizationExpanded": false,
+  "implementationOrDeploymentRequested": false
+}
