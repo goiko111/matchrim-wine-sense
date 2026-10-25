@@ -20,8 +20,9 @@ final class MatchrimOffline220Tests: XCTestCase {
             XCTAssertTrue(answer.waitForExistence(timeout: 8))
             for _ in 0..<8 {
                 if answer.isHittable && answer.frame.minY >= 0 && answer.frame.maxY <= app.frame.height { break }
-                app.swipeUp()
+                swipeContent(app)
             }
+            if !answer.isHittable { capture(app, "quiz240-answer-\(index + 1)-unreachable") }
             XCTAssertTrue(answer.isHittable)
             XCTAssertGreaterThanOrEqual(answer.frame.minY, 0)
             XCTAssertLessThanOrEqual(answer.frame.maxY, app.frame.height)
@@ -34,6 +35,7 @@ final class MatchrimOffline220Tests: XCTestCase {
         for label in ["Cuerpo", "Frescura", "Dulzor", "Taninos", "Fruta"] {
             XCTAssertTrue(app.staticTexts[label].firstMatch.exists)
         }
+        capture(app, "quiz240-results-initial")
         try tap(app.buttons["Escanear un vino"].firstMatch, app, activate: false)
         capture(app, "quiz225-results")
         try tap(app.links["Inicio"].firstMatch, app)
@@ -254,7 +256,7 @@ final class MatchrimOffline220Tests: XCTestCase {
                 let to = body.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: start + (downward ? fraction : -fraction)))
                 from.press(forDuration: 0.01, thenDragTo: to, withVelocity: .slow, thenHoldForDuration: 0.2)
             }
-            else { app.swipeUp() }
+            else { swipeContent(app) }
         }
         XCTAssertTrue(element.isHittable, element.debugDescription)
         let body = app.otherElements.matching(NSPredicate(format: "label BEGINSWITH %@", "Contenido de la región ")).firstMatch
@@ -265,6 +267,14 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertGreaterThanOrEqual(element.frame.height, 43)
         XCTAssertGreaterThanOrEqual(element.frame.width, 43)
         if activate { element.tap() }
+    }
+    @MainActor private func swipeContent(_ app: XCUIApplication) {
+        let main = app.otherElements["principal"].firstMatch
+        let surface = main.exists && main.frame.height > 100 ? main : app
+        // Keep both endpoints inside content, above the fixed tab bar.
+        let from = surface.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.65))
+        let to = surface.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25))
+        from.press(forDuration: 0.01, thenDragTo: to, withVelocity: .slow, thenHoldForDuration: 0.2)
     }
     @MainActor private func capture(_ app: XCUIApplication, _ name: String) {
         let picture = XCTAttachment(screenshot: XCUIScreen.main.screenshot()); picture.name = name; picture.lifetime = .keepAlways; add(picture)

@@ -34,7 +34,10 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   const isNative = Capacitor.isNativePlatform();
   const title = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
-    if (isNative) title.current?.focus({ preventScroll: true });
+    if (isNative) {
+      title.current?.closest('section')?.scrollIntoView({ block: 'start', behavior: 'instant' });
+      title.current?.focus({ preventScroll: true });
+    }
   }, [isNative, question.id]);
   // Función para manejar el cambio de respuesta que automáticamente avanza
   const handleAnswerChange = (value: string) => {

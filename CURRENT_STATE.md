@@ -1,5 +1,10 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-26,120Normal Quiz PASS / MAX Question Offset Defect /121Prepared
+
+- Goal ACTIVE until04:00Madrid; monitorPAUSED. Clean812ef9b120prep/typecheck/unsignedsimulatorcompile PASS. Actualr26normal20questions/new plain-language preferences/Inicio/relaunchPASS; two result captures personally inspected, single AXcounter verified. MAXr27/r28/r29FAILretained: content gestures resolve Home/first-question harness failures, r29reveals real question2stale bottom offset. Not Home scroll failure, not full120QAapproval.
+- Native241scrolls question section on question-ID change before heading focus, webJSXexact;4focused hook groups/lint PASS, affected240tests rechecked.121preparation/compile/normal+MAXpending. [Scope/evidence history](docs/MATCHRIM_NATIVE_RESULTS_240_2026-10-25.md). No new account/catalogue/model/Lovable/Keychain/phone/spend/backend/main/web/TestFlight. Retained200and hosted/sensory gates unchanged.
+
 ## Current Gate: 2026-10-25,119Native Quiz PASS / Plain-Language Native240 Prepared /120Pending
 
 - Original five-block Goal ACTIVE until04:00Madrid; monitorPAUSED. Full819c7b82actualclaim/HIDidle3335s/disk>=5GiB/nootherUIrunner:119r25actual20questions/result/Inicio/relaunchPASS in exact own anonymous119v23container with externalnetworkdenied. Four captures personallyinspected. Retainr23counter-fragmentharnessFAIL andr24SwiftquerycompileFAIL, notproductfailures. Native119normalfunctionalpass does not approve new240UI. [Baseline/preparedreceipt](qa-fixtures/native240/PREPARED.json).
