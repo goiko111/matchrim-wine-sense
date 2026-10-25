@@ -1,0 +1,20 @@
+{
+  "sentUID": 5565,
+  "messageId": "<d0d77d86-c653-4919-9a5e-11659ca83057@winerim.com>",
+  "inReplyTo": "<010001a16f4e4211-f258c2f3-584e-47d3-b22c-4763d2dbdcc3-000000@email.amazonses.com>",
+  "dateMadrid": "2026-10-25T09:30:39+01:00",
+  "sender": "goiko@winerim.com",
+  "recipients": [
+    "moa-winerim-b93a8ts9@agentmail.to"
+  ],
+  "subject": "Re: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026",
+  "bodyMatchesPreparedReview207": true,
+  "bodyNormalizedCharacters": 1836,
+  "bodyNormalizedSHA256": "01788af5bf8526024e003df6ca96cb27c33996a147e5d70aadd809d5087a4698",
+  "cc": [],
+  "bcc": [],
+  "attachments": 0,
+  "uiSentCopyVerified": true,
+  "deliveryOrReadConfirmed": false,
+  "newCatalogueOrProviderCalls": 0
+}
