@@ -1,0 +1,20 @@
+Subject: Re: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026
+To: moa-winerim-b93a8ts9@agentmail.to
+From: goiko@winerim.com
+Reply-To-Message-ID: 010001a172f0f23c-914ce6b5-2f22-43c3-965d-d0a608223a12-000000@email.amazonses.com
+Status: PREPARED; consult CURRENT_STATE.md and any Sent receipt before sending.
+
+Hola equipo:
+
+Goiko pide una actualización de cómo van los pendientes de Matchrim. Gracias por vuestra respuesta de las 13:02: entendemos que varias acciones siguen pendientes de autorización y que no habéis comprometido fechas.
+
+¿Ha habido algún avance desde esa respuesta en el catálogo completo, el puente seguro o las fichas sensoriales? Indicad también si ha cambiado algo de la disponibilidad de imágenes de etiquetas o del contrato de datos externos. Si no hay cambios, basta confirmarlo; no hace falta repetir toda la documentación.
+
+Para distinguir trabajo preparable de trabajo bloqueado, ¿podéis resumir por punto el estado actual, lo ya preparado, lo que falta, responsable y dependencia? Donde podáis, indicad el plazo estimado a partir de recibir la autorización necesaria; si no podéis estimarlo aún, señalad qué dato falta.
+
+Prioridad: P0-A catálogo y validación de identidades/añadas; P0-B puente seguro; después evidencia sensorial y recuperación visual. Para P0-B, confirmad si sigue sin existir una estimación del gasto de despliegue que el propietario pueda aprobar previamente, sin consumir créditos para calcularla.
+
+Esta petición es solo de estado. No autoriza nuevos GET/SQL, IA, imágenes, Lovable, escrituras, saneamiento de datos, implementación, cambios en main, secretos, publicación web ni despliegues. No se amplía el gasto. La rev3 sigue validada solo en los casos aportados, no aprobada en producción; TestFlight continúa bloqueado hasta validación real.
+
+Gracias,
+Goiko / Matchrim
