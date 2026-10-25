@@ -5,8 +5,9 @@ import { createHash } from 'node:crypto';
 import { execFileSync, spawn, spawnSync } from 'node:child_process';
 
 const repo = process.cwd(), out = path.resolve(process.argv[2]);
-const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close', 'rescan'].includes(mode));
+const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close', 'rescan', 'discard-visual'].includes(mode));
 const sizeMode = process.argv[7] || 'both'; assert(['both', 'normal', 'max'].includes(sizeMode));
+if (mode === 'discard-visual') assert.equal(sizeMode, 'max', 'DISCARD_VISUAL_REQUIRES_ACTUAL_MAX_TEXT');
 assert(path.dirname(out) === path.join(repo, 'qa-artifacts/native218-20261025') && /^native220-r\d+$/.test(path.basename(out)) && !fs.existsSync(out));
 const prep = JSON.parse(fs.readFileSync((process.argv[4] || 'qa-artifacts/native218-20261025/candidate110-r1') + '/preparation.json'));
 const compiled = JSON.parse(fs.readFileSync((process.argv[5] || 'qa-artifacts/native218-20261025/compile110-r1') + '/RESULT.json'));
@@ -91,6 +92,7 @@ try {
     if (mode === 'correction') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary');
     if (mode === 'close') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testNativeCloseAndHubReturn');
     if (mode === 'rescan') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testLocalReanalysisRequiresReview');
+    if (mode === 'discard-visual') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testMaxDiscardVisualCoverage');
     const fd = fs.openSync(root + '/runtime.log', 'wx', 0o600);
     const child = spawn(env.DEVELOPER_DIR + '/usr/bin/xcodebuild', args, { env, stdio: ['ignore', fd, fd] });
     let stopped = null;

@@ -18,6 +18,12 @@ Native local Vision runs on the same resident Biografo image via explicit File i
 
 Remaining gates: authenticated save/Bodega/restart persistence, actual linked-fiche score invalidation, full spoken VoiceOver, Photos/gallery, hosted global catalogue/sensory contract and real200-label recognition. Prior failedr12–r16remain failed; corrected harness content-target/slow-drag strategy is recorded, not hidden by passingr17/r19. No repeated old green unit groups, new external calls/keys/accounts/spend/main/backend/web/phone/development reminder or TestFlight. Existing blocked Goal and paused monitor unchanged. Dedicated simulator/app not reset/deleted/shut down, foreign Gameinar untouched. Owned GUI/simulator/heavy leases released afterr20; writer only for final checkpoint/branch commit and release.
 
+### Focused Follow-up223: Prepared, Not Executed
+
+`testMaxDiscardVisualCoverage`/runner mode `discard-visual` now targets only the missing MAX Discard glyph capture. It requires size `max`, loads the same resident photo through the existing offline guard, opens correction and enters one manual name. It scrolls the actual Discard control entirely into the body without activating it, captures screen+AX for personal glyph review, then discards and closes without save/account access. Helper's new `activate:false` parameter preserves all prior visibility/touch-target assertions; default tap behavior unchanged.
+
+Node syntax, focused ESLint and Swift frontend parse-only PASS. No UIKit compile/runtime/visual result yet: desktop acquisition succeeded but actual input idle stayed below1second, so GUI was skipped and resource released. Do not mark the missing glyph review done or rerun all green tests as a substitute. When safe, acquire canonical resources in alphabetical order, require idle/no foreign runners/at least5GiB, and invoke the existing runner with a NEW unused output (`native220-r21` only if still absent), mode `discard-visual`, candidate116-r1, compile116-r1, previous owned native220-r20, size `max`. No new product compilation is needed for this QA-only source delta. Bound status: `qa-fixtures/native223/STATUS.json`.
+
 Finite MATCHRIM-NATIVE-FLOW-1, separate from the preserved blocked Goal. No monitor, account, phone, backend/main/web publication, paid call, catalogue GET/SQL, Keychain or development reminder. Existing110source1042989 reused without recompiling it.
 
 ## Isolation And Evidence

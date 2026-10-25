@@ -2,6 +2,30 @@ import Foundation
 import XCTest
 
 final class MatchrimOffline220Tests: XCTestCase {
+    @MainActor func testMaxDiscardVisualCoverage() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")
+        app.terminate(); app.launch(); XCUIDevice.shared.orientation = .portrait
+        let skip = app.buttons["Saltar guía"].firstMatch
+        if skip.waitForExistence(timeout: 2) && skip.isHittable { skip.tap() }
+        XCTAssertTrue(app.buttons["Buscar vino o bodega"].waitForExistence(timeout: 15))
+        try tap(app.links["Escanear"].firstMatch, app)
+        try tap(app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Botellas")).firstMatch, app)
+        let checkbox = app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "He leído el aviso de privacidad del escáner")).firstMatch
+        if checkbox.waitForExistence(timeout: 3) { try tap(checkbox, app); try tap(app.buttons["Entiendo y continuar"].firstMatch, app) }
+        try tap(app.switches["Una etiqueta"].firstMatch, app)
+        try tap(app.buttons["QA220 cargar etiqueta local"].firstMatch, app)
+        try tap(app.buttons["Corregir identificación"].firstMatch, app)
+        try fill(app.textFields["Vino"].firstMatch, "Control visual QA223", app)
+        let discard = app.buttons["Descartar cambios"].firstMatch
+        try tap(discard, app, activate: false)
+        capture(app, "max-discard-visible-before-activation-review-glyphs")
+        try tap(discard, app)
+        XCTAssertFalse(app.staticTexts["Cambios sin aplicar"].exists)
+        try tap(app.buttons["Cerrar"].firstMatch, app)
+        capture(app, "max-discard-return-no-save")
+    }
+
     @MainActor func testLocalReanalysisRequiresReview() throws {
         continueAfterFailure = false
         let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")
@@ -138,7 +162,7 @@ final class MatchrimOffline220Tests: XCTestCase {
         field.typeText(value)
         XCTAssertEqual(field.value as? String, value)
     }
-    @MainActor private func tap(_ element: XCUIElement, _ app: XCUIApplication) throws {
+    @MainActor private func tap(_ element: XCUIElement, _ app: XCUIApplication, activate: Bool = true) throws {
         XCTAssertTrue(element.waitForExistence(timeout: 10))
         // MAX content can place the correction over 2,000pt below the viewport.
         for _ in 0..<24 {
@@ -168,7 +192,7 @@ final class MatchrimOffline220Tests: XCTestCase {
         }
         XCTAssertGreaterThanOrEqual(element.frame.height, 43)
         XCTAssertGreaterThanOrEqual(element.frame.width, 43)
-        element.tap()
+        if activate { element.tap() }
     }
     @MainActor private func capture(_ app: XCUIApplication, _ name: String) {
         let picture = XCTAttachment(screenshot: XCUIScreen.main.screenshot()); picture.name = name; picture.lifetime = .keepAlways; add(picture)

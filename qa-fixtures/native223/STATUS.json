@@ -1,0 +1,46 @@
+{
+  "checkedUTC": "2026-10-25T18:23:26.071Z",
+  "productCandidate": 116,
+  "productSource": "8e29693456a774215a03de4b33d61015c615859d",
+  "mail": {
+    "scope": "Only indexed replies from moa-winerim-b93a8ts9@agentmail.to to goiko@winerim.com in the existing Matchrim catalogue/vintages/sensory thread",
+    "mode": "BOUNDED_LOCAL_INDEX_NOT_FRESH_SERVER_CHECK",
+    "indexSHA256": "d08ee3bfb8fa5bc08222dba5f2971f1f6a11ba6a7ca9fa5da5ca17c9cff612a0",
+    "indexModifiedUTC": "2026-10-25T18:00:13.154Z",
+    "uniqueIndexedAuthorizedReplies": 14,
+    "latestMessageId": "010001a173a08d18-90e2d3ec-aa45-4f78-b2ff-8ff102843530-000000@email.amazonses.com",
+    "latestDateUTC": "2026-10-25T15:14:24Z",
+    "matchesKnownMaster218": true,
+    "newerIndexedReplyObserved": false,
+    "serverAbsenceProven": false,
+    "refreshPerformed": false,
+    "desktopLease": "2eec6531-b021-42f4-9c70-8a978f04ce5a",
+    "leaseAcquiredButNoGUIAction": true,
+    "hidIdleSecondsAtPreflight": 0.211047041,
+    "hidIdleSecondsAfterIndependentWork": 0.127843375,
+    "desktopLeaseReleased": true,
+    "newMailSent": false
+  },
+  "preparedTest": {
+    "name": "testMaxDiscardVisualCoverage",
+    "mode": "discard-visual",
+    "sizeRequired": "max",
+    "usesExistingCompiled116": true,
+    "usesExistingOwnedAnonymousContainer": true,
+    "sourceHashes": {
+      "swift": "e0506ae53f22e30ccb64db6e395b1572fb7d8fde1c4beaf3ca8bbd490d92a1ed",
+      "runner": "5a6da8762ff144db70cf228c6114ca5550c01d5303999bfcf38f9681e27341db"
+    },
+    "nodeSyntax": "PASS",
+    "focusedESLint": "PASS",
+    "swiftFrontendParseOnly": "PASS",
+    "nativeRuntimeExecuted": false,
+    "visualApproval": false
+  },
+  "externalCalls": 0,
+  "paidCalls": 0,
+  "keychainReads": 0,
+  "webPublished": false,
+  "backendMutated": false,
+  "uploaded": false
+}
