@@ -113,7 +113,7 @@ check('MAX preference rows stack and fixed icon/chrome widths leave words their 
   assert(rows.every(node => node.props.className.includes('[html.matchrim-accessibility-text_&]:grid-cols-1')));
   assert(nodes.filter(node => node.type === 'dd').every(node => node.props.className.includes('[html.matchrim-accessibility-text_&]:text-left')));
   const buttons = nodes.filter(node => node.type === Button);
-  assert(buttons.every(node => ['gap-[8px]', 'px-[16px]', 'py-[12px]'].every(token => node.props.className.includes(token))));
+  assert(buttons.every(node => ['gap-[8px]', 'px-[16px]', 'py-[12px]', '[&_svg]:size-[20px]'].every(token => node.props.className.includes(token))));
   assert(buttons.every(node => node.children.some(child => child?.type === 'span' && child.props.className.includes('[overflow-wrap:normal]'))));
 });
 console.log(JSON.stringify({ passed: true, groups: checks.length, checks, syntheticProfiles: 50, externalCalls: 0,

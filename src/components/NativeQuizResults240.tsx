@@ -41,10 +41,10 @@ const NativeQuizResults240: React.FC<Props> = ({ result, onRestart, returnTo, re
       </dl>
     </section>
     <div className="grid min-w-0 gap-2">
-      <Button className="h-auto min-h-[48px] w-full gap-[8px] whitespace-normal bg-red-900 px-[16px] py-[12px] text-white" onClick={() => navigate(getSafeRedirectPath(returnTo, '/escanear/etiqueta'))}>
+      <Button className="h-auto min-h-[48px] w-full gap-[8px] whitespace-normal bg-red-900 px-[16px] py-[12px] text-white [&_svg]:size-[20px]" onClick={() => navigate(getSafeRedirectPath(returnTo, '/escanear/etiqueta'))}>
         <Camera aria-hidden="true" className="h-[20px] w-[20px] shrink-0" /><span className="min-w-0 [overflow-wrap:normal]">{returnTo ? 'Continuar' : 'Escanear un vino'}</span>
       </Button>
-      <Button variant="outline" className="h-auto min-h-[48px] w-full gap-[8px] whitespace-normal px-[16px] py-[12px]" onClick={() => navigate('/restaurante')}>
+      <Button variant="outline" className="h-auto min-h-[48px] w-full gap-[8px] whitespace-normal px-[16px] py-[12px] [&_svg]:size-[20px]" onClick={() => navigate('/restaurante')}>
         <Utensils aria-hidden="true" className="h-[20px] w-[20px] shrink-0" /><span className="min-w-0 [overflow-wrap:normal]">Elegir vino para mi comida</span>
       </Button>
     </div>
@@ -55,7 +55,7 @@ const NativeQuizResults240: React.FC<Props> = ({ result, onRestart, returnTo, re
       </summary>
       <div className="min-w-0 pb-4"><MatchrimPassport profile={result} compact showUseAction={false} /></div>
     </details>
-    <Button variant="ghost" className="h-auto min-h-[48px] w-full gap-[8px] whitespace-normal px-[16px] py-[12px]" onClick={onRestart} disabled={restartDisabled}>
+    <Button variant="ghost" className="h-auto min-h-[48px] w-full gap-[8px] whitespace-normal px-[16px] py-[12px] [&_svg]:size-[20px]" onClick={onRestart} disabled={restartDisabled}>
       <RotateCcw aria-hidden="true" className="h-[20px] w-[20px] shrink-0" /><span className="min-w-0 [overflow-wrap:normal]">Repetir el test</span>
     </Button>
   </div>;
