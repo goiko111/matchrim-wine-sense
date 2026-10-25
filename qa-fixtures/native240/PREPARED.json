@@ -1,0 +1,107 @@
+{
+  "checkedUTC": "2026-10-25T22:51:32.458Z",
+  "phase": "native240implemented,120build/visual pending",
+  "goal": "ACTIVE originalfiveblocksuntil04:00Madrid",
+  "runs": [
+    {
+      "run": "r23",
+      "file": "qa-artifacts/native218-20261025/native220-r23/RESULT.json",
+      "sha256": "d9866ff25fd6501b2ec0a6a55025309dcea1c99f047ebd83bddd54cef6843749",
+      "passed": false,
+      "source": "1ea9d939f0c7d6ce6c0419f9adb96f68315ae6c6",
+      "build": 119,
+      "probeSHA256": "636f0f6c753dca3496c4e0f0e915d1a1e93a93ea3ec6a6da5f4f4a4f57f8cc42",
+      "scope": "Compiled119 native app, fresh QA container, external network denied by CSP plus early JS guards. Actual anonymous 20-question quiz, local profile/Home and restart retention only; no account, OCR or gallery test in this mode. Not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.",
+      "error": "AssertionError [ERR_ASSERTION]: NATIVE220_FAILED:normal\n    at file:///Users/GOIKO/2matchrim76-recognition-20261008/scripts/qa-matchrim-native220.mjs:109:5\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+    },
+    {
+      "run": "r24",
+      "file": "qa-artifacts/native218-20261025/native220-r24/RESULT.json",
+      "sha256": "fa60652fe30d8628d11d321222b377efad8cb89a0a9575da75f34e6d58a41499",
+      "passed": false,
+      "source": "1ea9d939f0c7d6ce6c0419f9adb96f68315ae6c6",
+      "build": 119,
+      "probeSHA256": "b0d615236cc225538b8a6feac56a267b91ce441dc589db49efdf627842ead0a7",
+      "scope": "Compiled119 native app, exact own previously isolated anonymous QA container, external network denied by CSP plus early JS guards. Actual anonymous 20-question quiz, local profile/Home and restart retention only; no account, OCR or gallery test in this mode. Not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.",
+      "error": "AssertionError [ERR_ASSERTION]: NATIVE220_FAILED:normal\n    at file:///Users/GOIKO/2matchrim76-recognition-20261008/scripts/qa-matchrim-native220.mjs:109:5\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+    },
+    {
+      "run": "r25",
+      "file": "qa-artifacts/native218-20261025/native220-r25/RESULT.json",
+      "sha256": "0f02f4226cee776760b3fba44ec530f9cd32c2ad8202943b2efade8cdc4afcfa",
+      "passed": true,
+      "source": "1ea9d939f0c7d6ce6c0419f9adb96f68315ae6c6",
+      "build": 119,
+      "probeSHA256": "f8ad1b3004e665fa434aac24630f59b6eb8d0d33c586bb498a1e54d0e8f4bd6a",
+      "scope": "Compiled119 native app, exact own previously isolated anonymous QA container, external network denied by CSP plus early JS guards. Actual anonymous 20-question quiz, local profile/Home and restart retention only; no account, OCR or gallery test in this mode. Not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.",
+      "error": null
+    }
+  ],
+  "reviewed": [
+    {
+      "name": "quiz225-home-reopened-local-profile_0_C5770FBB-D67D-4955-9C37-C16AF45E0853.png",
+      "file": "qa-artifacts/native218-20261025/native220-r25/normal/attachments/11CCF542-DCE6-4758-B1ED-BBAB94D69182.png",
+      "sha256": "10e3e7c1cabd61376428a8d02599da0021957d546fd55dce13bef09906d2f5ba",
+      "personallyInspected": true
+    },
+    {
+      "name": "quiz225-results_0_88B014D5-C73B-4DC7-B530-BE4ABF3F2397.png",
+      "file": "qa-artifacts/native218-20261025/native220-r25/normal/attachments/5B5E96B3-31F2-4F8B-8A91-223883ED757F.png",
+      "sha256": "17285c6bb47d584b3d819efc793579daa2b747c1eb03acb60411bfab50ac9da2",
+      "personallyInspected": true
+    },
+    {
+      "name": "quiz225-question-20_0_7740D0BF-1B27-452E-8C8B-2DF15CE00E80.png",
+      "file": "qa-artifacts/native218-20261025/native220-r25/normal/attachments/1950271B-95FC-42B5-914B-41BF7D1A2CF5.png",
+      "sha256": "32b5fa2897b242ffda8c5e6ed49cf80ea43b0498f5cbab834e57e926d57cb3df",
+      "personallyInspected": true
+    },
+    {
+      "name": "quiz225-question-1_0_13C0A0BD-0042-4762-B8D6-59CCFAD541C1.png",
+      "file": "qa-artifacts/native218-20261025/native220-r25/normal/attachments/9CF7389A-E2B7-4674-B1C0-1E0C8E3A61C2.png",
+      "sha256": "840b9679bd2f71c80f476248c2288815ada8519071b52ca128f76e586b5b7df9",
+      "personallyInspected": true
+    }
+  ],
+  "baseline": "119r25actual20questionquiz/result/Home/relaunchPASS; firstcounterfragmentharnessfailr23andSwiftquerycompilefailr24remainFAIL. Baselinefunctionalpassisnot240visualapproval.",
+  "nativeChange": "Standalone native result renders exact five test preferences in plain language, scan/food choices first, code/share secondary; native counter becomes one text node. No legacy query hooks mounted through native result route. Existing web component body and legacy question JSX unchanged.",
+  "checks": {
+    "newFocusedGroups": 7,
+    "distinctSyntheticVectors": 50,
+    "affectedConsumer95ProfileGroups": 10,
+    "focusedLint": "PASS0errors;3preexistingQuizResultswarningsretained",
+    "evidence": "Tool-observed stdout, no separate log claimed"
+  },
+  "currentSources": {
+    "src/components/NativeQuizResults240.tsx": "4bef8a7772c3535d59c931e765bd6d5bd6b1d72f4ab2b1cd773efb04839b295f",
+    "src/utils/nativeTasteSummary240.ts": "ef4a6928dacd1906aed8cd17b81f6e152c5be358509cec67436f65cece4c74fa",
+    "src/components/QuizResults.tsx": "d02ac794a28a03be9a7152e6915e8d6193bf0d61d83681b62a666972994f08a9",
+    "src/components/QuizQuestion.tsx": "7986d31a22445909a4320b398cbfd25ba4e46a001dab87e1e1d6756fc893ad4e",
+    "scripts/check-matchrim-native-results240.mjs": "6b24760502aa2a6f35afa082bb33d0eb747f5f29163c0cd9a0d4c2973db710a2",
+    "scripts/MatchrimOffline220.swift": "83f9b961d779bde1cae4d8fa4c3572c0556d9fc196ce8c85bee2a8215145f1de"
+  },
+  "ownedLeases": {
+    "heavy": "bca96994-e5b1-4b73-b06b-69404e0fa483",
+    "simulator": "eb223f96-868c-481b-9eae-1e7af31355dc",
+    "desktop": "63db6f86-a85c-4dbe-8f25-8b6dc5550cae",
+    "writer": "5222a0cf-10eb-4dea-a65f-85e8cc1c8144"
+  },
+  "limits": {
+    "newCatalogue": 0,
+    "models": 0,
+    "Lovable": 0,
+    "Keychain": 0,
+    "spend": 0,
+    "webChanged": false,
+    "mainChanged": false,
+    "backendChanged": false,
+    "realAccount": false,
+    "phone": false,
+    "uploaded": false
+  },
+  "pending": [
+    "Clean120prep/typecheck/compile",
+    "Actual120native normal/MAXquestion/result/Home/relaunch visuals",
+    "Hostedbridge/sensory/catalogue/real200identity gates"
+  ]
+}

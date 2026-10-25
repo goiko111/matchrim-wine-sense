@@ -14,7 +14,7 @@ final class MatchrimOffline220Tests: XCTestCase {
         try tap(app.buttons["Conocer mis gustos"].firstMatch, app)
         try tap(app.buttons["Comenzar el test"].firstMatch, app)
         for index in 0..<20 {
-            XCTAssertTrue(app.staticTexts["Pregunta \(index + 1) de 20"].firstMatch.waitForExistence(timeout: 8))
+            try assertQuizQuestion(index + 1, app)
             let label = ["Me gusta", "Me da igual", "No me gusta"][index % 3]
             let answer = app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", label)).firstMatch
             XCTAssertTrue(answer.waitForExistence(timeout: 8))
@@ -30,6 +30,11 @@ final class MatchrimOffline220Tests: XCTestCase {
             try tap(app.buttons[index == 19 ? "Ver mi perfil" : "Siguiente"].firstMatch, app)
         }
         XCTAssertTrue(app.staticTexts["Tu perfil"].firstMatch.waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["Tus preferencias"].firstMatch.waitForExistence(timeout: 8))
+        for label in ["Cuerpo", "Frescura", "Dulzor", "Taninos", "Fruta"] {
+            XCTAssertTrue(app.staticTexts[label].firstMatch.exists)
+        }
+        try tap(app.buttons["Escanear un vino"].firstMatch, app, activate: false)
         capture(app, "quiz225-results")
         try tap(app.links["Inicio"].firstMatch, app)
         XCTAssertTrue(app.buttons["Mis gustos"].firstMatch.waitForExistence(timeout: 10))
@@ -39,6 +44,34 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertTrue(app.buttons["Buscar vino o bodega"].waitForExistence(timeout: 15))
         XCTAssertTrue(app.buttons["Mis gustos"].firstMatch.waitForExistence(timeout: 10))
         capture(app, "quiz225-home-reopened-local-profile")
+    }
+
+    @MainActor private func assertQuizQuestion(_ number: Int, _ app: XCUIApplication) throws {
+        // WKWebView may expose the interpolated counter as four text nodes.
+        let prefix = app.staticTexts["Pregunta"].firstMatch
+        let combined = app.staticTexts["Pregunta \(number) de 20"].firstMatch
+        for _ in 0..<40 {
+            if combined.exists { return }
+            if prefix.exists {
+                let start = prefix.frame
+                let current = app.staticTexts.matching(NSPredicate(format: "label == %@", String(number)))
+                    .allElementsBoundByIndex.first { element in
+                        abs(element.frame.minY - start.minY) < 3
+                            && abs(element.frame.minX - start.maxX) < 6
+                    }
+                if let current {
+                    let totals = app.staticTexts.matching(NSPredicate(format: "label == %@", "20")).allElementsBoundByIndex
+                    let total = totals.contains { element in
+                        abs(element.frame.minY - start.minY) < 3 && element.frame.minX > current.frame.maxX + 8
+                    }
+                    if total { return }
+                }
+            }
+            Thread.sleep(forTimeInterval: 0.2)
+        }
+        capture(app, "quiz225-counter-\(number)-unresolved")
+        XCTFail("Expected visible quiz counter \(number) of20, combined or aligned WK text nodes")
+        throw NSError(domain: "MatchrimQuizCounter", code: number)
     }
 
     @MainActor func testMaxDiscardVisualCoverage() throws {

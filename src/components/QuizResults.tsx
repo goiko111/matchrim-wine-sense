@@ -22,6 +22,7 @@ import RegionCard from './RegionCard';
 import { aggregateGrapes, aggregateRegions, filterWinesByGrape, filterWinesByRegion } from '@/utils/winerimDataAggregation';
 import MatchrimPassport from './MatchrimPassport';
 import { buildAuthRedirectPath } from '@/utils/navigation';
+import NativeQuizResults240 from './NativeQuizResults240';
 
 interface WineStyle {
   id: string;
@@ -1296,4 +1297,6 @@ const QuizResults: React.FC<QuizResultsProps> = ({ result, description, recommen
   );
 };
 
-export default QuizResults;
+export default function QuizResultsPlatform240(props: QuizResultsProps) {
+  return Capacitor.isNativePlatform() ? <NativeQuizResults240 {...props} /> : <QuizResults {...props} />;
+}

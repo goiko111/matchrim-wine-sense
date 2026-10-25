@@ -138,8 +138,8 @@ ${marker}`);
   return { render, trainingEffect, recommendationEffect, queries, wineCalls, learningCalls, slots, helpers: sandbox.exports.helpers95 };
 };
 
-const resultSource = readFileSync(resolve(root, 'src/components/QuizResults.tsx'), 'utf8');
-const resultAst = ts.createSourceFile('QuizResults.tsx', resultSource, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+const resultSource = readFileSync(resolve(root, 'src/components/NativeQuizResults240.tsx'), 'utf8');
+const resultAst = ts.createSourceFile('NativeQuizResults240.tsx', resultSource, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 let resultPassport = '';
 const visit = (node: ts.Node) => {
   if (ts.isJsxSelfClosingElement(node) && node.tagName.getText(resultAst) === 'MatchrimPassport') resultPassport = node.getText(resultAst);
@@ -152,7 +152,7 @@ const resultCode = ts.transpileModule('exports.result95 = (result) => (' + resul
 const resultSandbox: any = { exports: {}, MatchrimPassport: 'MatchrimPassport', require: () => ({ jsx, jsxs: jsx }) };
 vm.runInNewContext(resultCode, resultSandbox);
 
-await check('50 synthetic profiles: real native Profile JSX passes the exact quiz vector to the same Passport callsite as QuizResults', () => {
+await check('50 synthetic profile cases: real native Profile JSX passes the exact quiz vector to the native240result Passport callsite', () => {
   for (const profile of profiles) {
     const actual = actor(source, true, profile).render(), passport = nodes(actual.tree).find(n => n.type === 'MatchrimPassport');
     assert.ok(passport); assert.deepEqual(vector(passport.props.profile), vector(profile));

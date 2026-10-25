@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25,119Native Quiz PASS / Plain-Language Native240 Prepared /120Pending
+
+- Original five-block Goal ACTIVE until04:00Madrid; monitorPAUSED. Full819c7b82actualclaim/HIDidle3335s/disk>=5GiB/nootherUIrunner:119r25actual20questions/result/Inicio/relaunchPASS in exact own anonymous119v23container with externalnetworkdenied. Four captures personallyinspected. Retainr23counter-fragmentharnessFAIL andr24SwiftquerycompileFAIL, notproductfailures. Native119normalfunctionalpass does not approve new240UI. [Baseline/preparedreceipt](qa-fixtures/native240/PREPARED.json).
+- Visualbaseline shows code/passport dominates while taste traits hidden; native240now explains five exact test preferences first, plain summary + scan/food commands, code/share/QR secondarywithchevron. New platformwrapper prevents legacyqueryhooks on native; originalwebcomponentbody and questionJSX retained. Native questioncounter one textnode.7focusedgroups/50distinctvectors +10affectedProfile95groups/focusedlintPASS;3preexistinglegacyQuizResultswarningsunchanged. [Before/after and gates](docs/MATCHRIM_NATIVE_RESULTS_240_2026-10-25.md). New120preparation/typecheck/compile/normal+MAXnativevisual pending before approval.
+- Own heavybca96994/simeb223f96/mac63db6f86/writer5222a0cf remain only while actual work runs; release or renewonlyownperguard. No foreign process/lease touched, no realaccount/phone/Keychain/catalogue/model/Lovable/spend/web/main/backend/TestFlight. Exact-cache200r23still181evaluable/19incomplete, not200canonicalidentity/affinity approval; hostedsecret/provenance/liveQA gates unchanged.
+
 ## Current Gate: 2026-10-25, Candidate119 Compiled / Exact-Cache200 Revalidated / Native Quiz Pending
 
 - Original five-block Goal ACTIVE until04:00Madrid, monitor PAUSED. Clean1ea9d93candidate1.0(119) preparation/typecheck/Vite164resources and unsignedarm64simulatorcompile PASS; master connection inactive, no signing/export/upload. Native20question quiz/results/Home/relaunch remains unexecuted. [Bound236receipt](qa-fixtures/night236/RESULT.json), [scope](docs/MATCHRIM_NIGHT_236_2026-10-25.md).
