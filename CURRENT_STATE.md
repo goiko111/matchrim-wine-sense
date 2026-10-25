@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25, Candidate117 Focused MAX Discard Visual PASS / Mail Refreshed
+
+- Exact authorized-account Thunderbird refresh completed; Matchrim thread latest visible reply remains25Oct16:14Madrid. No later thread reply visible, no explicit server-completion banner captured; not an absolute no-mail-on-server claim. Original tab/filter restored, no outgoing mail. Bound observation native224/BEFORE.json preserved.
+- Clean6d5c540 candidate117 preparation/typecheck/Vite164resources/unsigned arm64 simulator compile PASS. Actual native220-r22 focused MAX Discard with real software keyboard PASS; personally inspected capture shows Descartar on one line, entire button reachable140pt in294pt body, accessible name Descartar cambios unchanged. Discard and close return without save PASS. Previous116r21 functionalPASS/visualFAIL (Descarta/r,200pt) retained unchanged. Eight focused regression groups and lint PASS; unrelated green suites not repeated. [Bound before/after](qa-fixtures/native224/RESULT.json), [scope/evidence](docs/MATCHRIM_NATIVE_FLOW_220_2026-10-25.md).
+- NativeMAX-only decorative icon removal; no font reduction, handler/normal/web change. Local resident photo uses actual AppleVision via QA File injection, not Photos/gallery or canonical200-label approval. Own app terminated/content size restored; own GUI/simulator/heavy leases released afterr22. Writer8a0075f2 only for receipt/checkpoint/branch commit-push then release. No new catalogue/model/Lovable/Keychain/account/phone/spend/main/backend/web/TestFlight action. Catalogue/sensory/authenticated persistence/real200 remain separate gates; Goal BLOCKED/monitor PAUSED unchanged.
+
 ## Current Gate: 2026-10-25, Mail Refreshed / Actual MAX Discard Visual Defect /117Fix Pending
 
 - Human explicitly yields Mac and requests mail plus focused visual closure. Claimed prior queueb50196cd/mac48b91ec6, selected only authorized Inbox/sender filter and exact Archivo > Recibir mensajes nuevos de > goiko@winerim.com. Thread still shows latest16:14Madrid; no later thread reply visible, online/no visible error, but no explicit server-completion banner captured. No mail sent; empty filter/original selected tab restored; lease released. [Bound observation](qa-fixtures/native224/BEFORE.json).

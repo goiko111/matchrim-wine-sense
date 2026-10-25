@@ -1,0 +1,97 @@
+{
+  "createdUTC": "2026-10-25T20:13:19.799Z",
+  "owner": "019f9da7-ae96-7c60-a1b4-fafb75b04d6d",
+  "sourceCommit": "6d5c540302a92414776eceb8f3394494f7eaeba7",
+  "build": 117,
+  "beforeObservation": {
+    "path": "qa-fixtures/native224/BEFORE.json",
+    "sha256": "0e922369ca22a14c89898c3a09b8f5c9b563641ebfbccca604c107ede1fc7890"
+  },
+  "preparation": {
+    "path": "qa-artifacts/native218-20261025/candidate117-r1/preparation.json",
+    "sha256": "140e55225589113ab7af6a4e18b3d1c050e3e73f34f479b552cec4bfa04f692d"
+  },
+  "compile": {
+    "path": "qa-artifacts/native218-20261025/compile117-r1/RESULT.json",
+    "sha256": "84da95857676d25bbc6924ceb34eda9a599f2cb517306fe468a25a484e390f22"
+  },
+  "runtime": {
+    "path": "qa-artifacts/native218-20261025/native220-r22/RESULT.json",
+    "sha256": "5fe774334eac2cf66e9170d39b31884d98fc73af46aa277f48f8f50e0a483ec7"
+  },
+  "expectedActual": [
+    {
+      "case": "Before116MAX",
+      "expected": "Visible Discard label on one line",
+      "actual": "Descarta / r; entire button visible",
+      "functional": "PASS",
+      "visual": "FAIL",
+      "bodyHeightPt": 293,
+      "discardButtonHeightPt": 200
+    },
+    {
+      "case": "After117MAX",
+      "expected": "One-line label, full visible touch target and unchanged accessible name with actual software keyboard",
+      "actual": "Descartar one line, Descartar cambios accessible name, full visible control",
+      "functional": "PASS",
+      "visual": "PASS",
+      "bodyHeightPt": 294,
+      "discardButtonHeightPt": 140
+    },
+    {
+      "case": "Discard then close",
+      "expected": "Return without save",
+      "actual": "XCTest PASS, return capture personally inspected",
+      "functional": "PASS",
+      "visual": "PASS"
+    }
+  ],
+  "personallyInspectedCaptures": [
+    {
+      "path": "qa-artifacts/native218-20261025/native220-r21/max/attachments/78DCA9A3-068F-4BB0-AB12-6A5D8995BE24.png",
+      "sha256": "ecf6893d4815d5570aaac10c94db40c4c58fe7189dbd1b98c54138be1e9ab1e1"
+    },
+    {
+      "path": "qa-artifacts/native218-20261025/native220-r22/max/attachments/FC9B8C94-318B-469A-AA22-E145FC380E0E.png",
+      "sha256": "6e8dbc5aeae167bad964d7f5031442deba9ab2a95eaa12cea259d41ed930460a"
+    },
+    {
+      "path": "qa-artifacts/native218-20261025/native220-r22/max/attachments/2DE9DDED-E6C3-4A82-B124-3D972EF1C15F.png",
+      "sha256": "6cefea3ea59cefd83a703d3c83e8eecd64efa07303fcca6af4165edfb97ef9fc"
+    }
+  ],
+  "accessibilityEvidence": [
+    {
+      "path": "qa-artifacts/native218-20261025/native220-r22/max/attachments/FAB340C9-3D95-48BA-ACD2-BA4F6AA46744.txt",
+      "sha256": "df01367acdab44223cd6212c9e5d5c8896890de32a5117e7f3dfb3d91abe268a"
+    },
+    {
+      "path": "qa-artifacts/native218-20261025/native220-r22/max/attachments/B55C7334-9281-4D7C-AB63-4A0CDAE4EFD1.txt",
+      "sha256": "bc3080395e855e63a8995837ba4375b72baa4b6d5dd6f5d8f0e471b8e9b2d2a7"
+    }
+  ],
+  "focusedRegression": {
+    "initialRed": "MAX Discard must reserve full label width without its decorative icon",
+    "groupsAfterFix": 8,
+    "focusedESLint": "PASS",
+    "unrelatedGreenSuitesRepeated": false
+  },
+  "scope": "Focused isolated native MAX Discard visual and interaction only; local resident File injection and actual AppleVision. Not native gallery, canonical identity accuracy, 200-label recognition, authenticated persistence, linked-fiche score invalidation, full spoken VoiceOver or TestFlight approval.",
+  "cleanup": {
+    "ownAppTerminated": true,
+    "contentSizeRestored": true,
+    "ownHeavySimulatorDesktopLeasesReleased": true
+  },
+  "newCatalogueCalls": 0,
+  "newModelCalls": 0,
+  "newLovableCalls": 0,
+  "newKeychainReads": 0,
+  "newSpend": 0,
+  "phoneUsed": false,
+  "realAccountsUsed": false,
+  "webChanged": false,
+  "backendMutated": false,
+  "testFlightUploaded": false,
+  "goal": "BLOCKED unchanged",
+  "monitor": "PAUSED unchanged"
+}

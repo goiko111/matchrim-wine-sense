@@ -1,6 +1,18 @@
 # Native flow220 / empty unknown-name draft221
 
-## Follow-up224: Actual Discard Capture Reveals Defect
+## Follow-up224: Candidate117 Focused MAX Discard Visual PASS
+
+Product source6d5c540302a92414776eceb8f3394494f7eaeba7. Clean117preparation/typecheck/Vite164resources and unsigned arm64 simulator compile PASS. Only the missing Discard visual coverage was repeated after the CSS-only nativeMAX fix; no unrelated green-suite replay. Actual native220-r22 XCTest PASS with the real MAX software keyboard. Before-activation and return captures personally inspected: Descartar now stays on one line, full140pt button fits the294pt body, and the accessible name remains Descartar cambios. Explicit discard and close return without save pass. This closes that focused visual gate, not the entire app.
+
+| Before | After | Why |
+| --- | --- | --- |
+|116r21 actual MAX Descartar breaks as Descarta / r beside decorative icon; button200pt |117r22 actual MAX Descartar is one line; button140pt, full accessible name retained | Hide only the decorative Discard SVG at nativeMAX, reserving width without reducing preferred text size or changing the action |
+
+Before: [retained visual failure](/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/native218-20261025/native220-r21/max/attachments/78DCA9A3-068F-4BB0-AB12-6A5D8995BE24.png). After: [personally inspected MAX capture](/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/native218-20261025/native220-r22/max/attachments/FC9B8C94-318B-469A-AA22-E145FC380E0E.png). Return: [without save](/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/native218-20261025/native220-r22/max/attachments/2DE9DDED-E6C3-4A82-B124-3D972EF1C15F.png). Hashed receipts/AX/captures: `qa-fixtures/native224/RESULT.json`. Prior r21functionalPASS remains visualFAIL and is never reclassified.
+
+Owned heavy/ios/mac/writer atomic claimae9432d6, disk16.28GiB/HIDidle410s/no foreign runner. Fresh owned anonymous QA117container, local resident File input and actual AppleVision; CSP/early guards deny external transport. Not gallery, remote catalogue, canonical recognition, real-account save or full VoiceOver. Runner terminates own app/restores content size; own heavy/simulator/desktop released after runtime, writer only for final documentation/commit-push then release. Mail refresh result below unchanged; no new outgoing mail or further account refresh. No paid/catalogue/model/Lovable/Keychain/phone/main/backend/web/TestFlight action; blocked Goal and paused monitor unchanged. Hosted catalogue/sensory/real200-label/authenticated persistence remain unvalidated gates.
+
+### Preserved Before Checkpoint224: Actual Discard Capture Reveals Defect
 
 Human yields Mac; RESOURCE-QUEUE-V2 prior mail request claimed, exact named authorized account refreshed in Thunderbird, sender-filtered Matchrim thread still ends16:14Madrid. Online/no refresh error visible, but no explicit server-completion banner captured; no absolute claim of no mail on server. Original filter/tab restored, no outgoing mail. Bound observations: `qa-fixtures/native224/BEFORE.json`.
 
