@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25, Post217 External Gate Repeated / Native Goal BLOCKED
+
+- After real216implementation and verified217send, three consecutive goal continuations made no further progress: same cached latest14:38reply/UID88084, no new source; desktop occupied by foreign mac32cf45dc and actual input below1second prevents fresh server check. Cache-only observation is NOT proof of no server reply and NOT a verified live-process wait. No process/session is running for Matchrim; no repeated suite, new reminder, polling loop, cleanup or scope expansion used as filler.
+- Fresh resumed blocked audit threshold now met; actual update_goal returned **blocked** (tokens383815). Objective preserved, not complete or human-paused. Monitor remains PAUSED. Clean product source010d49d/verified outboundba3ca61; current216reader remains inactive, candidate109not released, no new key/query/deploy/web/main/backend changes.
+- Minimum next action: when shared desktop is safely available, resume and refresh only authorized Thunderbird account for the already-sent217clarification; review any existing deployed/patch evidence for includeUnlisted. Then require safe secret configuration and explicitly authorized authenticated QA before bridge/app activation. No additional development reminder or new expensive work needed merely to wait. Existing paid/free limits exhausted/unchanged; do not infer permission from development's claim of authorization elsewhere.
+- Own writercc803ebf only saves this bounded checkpoint/push then release; no GUI/heavy resource acquired, no foreign lease/app/process touched. Do not reopen/automatically resume this blocked Goal through the paused monitor or resource-policy adoption.
+
 ## Current Gate: 2026-10-25, Development217 Bridge Opt-in Review SENT
 
 - Previous goal continuation was no progress (desktop busy), not a verified live-process wait. This turn resource changed: desktop free/HID idle over10minutes/no foreign runner, own mac06b1ea45ACQUIRED. Sent exact prepared216review to actual14:38reply fromgoiko@winerim.comtosoleauthorizedMoa at15:55Madrid, SentUID5571/messageff84533a-7d8f-4223-a692-5bba65d8b923. Full2013character normalized body checked before send, Sent UI and bounded MIME match; noCCBCCattachments. [Receipt](qa-fixtures/master217/SENT_VERIFICATION.json). Supersedes prior NOTSENT status, do not resend. Sending proved, not delivery/read or new response.
