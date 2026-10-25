@@ -97,7 +97,7 @@ export async function fetchPinnedRestaurantUrl91(
     let size = 0;
     let wireBytes = 0;
     let maxBody: number = RESTAURANT_IMPORT_LIMITS91.fileBytes;
-    const chunks: Uint8Array[] = [];
+    const chunks: Uint8Array<ArrayBuffer>[] = [];
     parser[HTTPParser.kOnHeadersComplete] = (info) => {
       if (complete || info.upgrade || info.versionMajor !== 1) throw new Error('Unsupported HTTP response');
       if (info.statusCode >= 100 && info.statusCode < 200) {
