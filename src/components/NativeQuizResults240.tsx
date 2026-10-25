@@ -48,7 +48,7 @@ const NativeQuizResults240: React.FC<Props> = ({ result, onRestart, returnTo, re
         <Utensils aria-hidden="true" className="h-[20px] w-[20px] shrink-0" /><span className="min-w-0 [overflow-wrap:normal]">Elegir vino para mi comida</span>
       </Button>
     </div>
-    <p className="text-sm leading-relaxed text-stone-600">Es una estimaci&oacute;n inicial de tus gustos, no una garant&iacute;a para cualquier vino.</p>
+    <p className="text-sm leading-relaxed text-stone-600">Orientaci&oacute;n inicial basada en comida y aromas. No confirma todav&iacute;a qu&eacute; vinos te gustan.</p>
     <details className="min-w-0 border-y border-stone-200">
       <summary className="flex min-h-[48px] cursor-pointer items-center justify-between gap-[12px] py-3 text-sm font-medium">
         <span className="min-w-0 [overflow-wrap:normal]">Mi c&oacute;digo y compartir</span><ChevronDown aria-hidden="true" className="h-[20px] w-[20px] shrink-0" />

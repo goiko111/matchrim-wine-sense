@@ -80,6 +80,7 @@ const text = node => typeof node === 'string' ? node : node && typeof node === '
 check('Actual native result shows five preferences before a closed secondary sharing disclosure', () => {
   const tree = Component({ result: all(3), onRestart: Restart }), nodes = flatten(tree);
   assert(text(tree).includes('Tus preferencias')); assert.equal(nodes.filter(node => node.type === 'dt').length, 5);
+  assert(text(tree).includes('basada en comida y aromas'));
   assert.equal(nodes.find(node => node.type === 'details').props.open, undefined);
   const buttons = nodes.filter(node => node.type === Button);
   buttons[0].props.onClick(); assert.equal(routes.pop(), '/escanear/etiqueta');

@@ -1,0 +1,56 @@
+{
+  "recordedUTC": "2026-10-25T23:32:04.729Z",
+  "quizSourceSHA256": "9adf01e4cc82b765508845fec214f48007475dbf3b6d709f76d314eccb9a7485",
+  "readOnlyQuizAudit": {
+    "questionCount": 20,
+    "distinctSyntheticVectors": 10000,
+    "equalBodyAndTannin": 9134,
+    "fraction": 0.9134,
+    "correlation": 0.9149125638330209,
+    "bodyWeightSum": 18,
+    "tanninWeightSum": 17,
+    "soleDifferentQuestion": 19,
+    "soleDifferentQuestionText": "Te gusta el curry?",
+    "rawSeparationBound": 0.2777777777777778,
+    "roundedSeparationBound": 1,
+    "proof": "All body/tannin weights equal except curry body=tannin+1. Difference=5*(c*t-T)/(t*(t+1)) bounded by5/(t+1), with t=17. Therefore initial test cannot independently express body/tannin more than1point apart.",
+    "interpretation": "Initial proxy limitation, not a post-learning bound; no evidence of predictive correctness from this mathematical audit. No arbitrary scoring/profile recalibration performed."
+  },
+  "newNativeLearningCases": [
+    {
+      "scenario": "body-with-soft-tannin",
+      "initialBodyTannin": [3, 3],
+      "syntheticSensoryTarget": [5, 0],
+      "learnedBodyTannin": [4.1, 1.3],
+      "fixtureRows": 6,
+      "internalHelperScoreBeforeAfter": [78, 90],
+      "actualNativeBodega": { "initial": 65, "currentBefore": 65, "currentAfter": 80, "delta": 15, "model": "scan-local-rms-0to5-v3", "initialSnapshotUnchanged": true },
+      "internalEvidenceConfidenceNotProbability": 35,
+      "optOutAndNoProofBothAbstain": true
+    },
+    {
+      "scenario": "light-with-firm-tannin",
+      "initialBodyTannin": [3, 3],
+      "syntheticSensoryTarget": [0, 5],
+      "learnedBodyTannin": [1.3, 4.1],
+      "fixtureRows": 6,
+      "internalHelperScoreBeforeAfter": [77, 90],
+      "actualNativeBodega": { "initial": 65, "currentBefore": 65, "currentAfter": 80, "delta": 15, "model": "scan-local-rms-0to5-v3", "initialSnapshotUnchanged": true },
+      "internalEvidenceConfidenceNotProbability": 35,
+      "optOutAndNoProofBothAbstain": true
+    }
+  ],
+  "initialProfileUnchanged": true,
+  "expandedActualBodegaCheckUTC": "2026-10-25T23:47:36.192Z",
+  "learningSources": {
+    "src/utils/bodegaAffinity.ts": "d9c31b887e3c449e840a4a173640c9ba8f0cb4166eb0cbc94a2365ca436978b5",
+    "src/utils/matchrimLearning.ts": "070999f26f18b8ff3958b1d2864d5bf9f3ddb23aaffe7e0c1eee05b5af5d3fee",
+    "supabase/functions/_shared/matchrim-training-evidence.ts": "dabfbb5960b296689c3928daf2f4efb6131f7d0d61b6cc215410d4bbd1a1183f"
+  },
+  "scope": "Actual scoring/strict native learning functions, controlled answer vectors and sensory evidence fixtures. Not10000people, a year study, real wine outcomes, actual account persistence or200identity validation.",
+  "externalCalls": 0,
+  "productMutated": false,
+  "realAccountWrites": 0,
+  "spend": 0,
+  "next": "Retain source/candidate122queue. At the next normal owned writer checkpoint preserve this audit in repo, document initial-proxy limitation and make native result basis explicit (food/aroma answers, not wine tasting), without recalibrating old profiles or changing web. True initial-axis calibration requires independent taste feedback/direct validated anchors; do not claim fixed merely by wording. Continue pending122normal/MAXvisual proof."
+}

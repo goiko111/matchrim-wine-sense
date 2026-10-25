@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-26,122Native Validation Claimed / Initial Quiz Limitation Proven
+
+- Previous Goal turn progress:243actual formula audit10000distinct synthetic answers confirms initial body/tannin coupling (9134equal, rawdifference<=5/18, rounded<=1); not10000people/predictive validation. Expanded actual strict native Bodega cases separate3/3to4.1/1.3or1.3/4.1, preserve initial65and update current80(+15), optout/no-proof abstain. Raw helper78/77to90is explicitly NOT native score. [Evidence/scope](docs/MATCHRIM_QUIZ_INTELLIGENCE_243_2026-10-26.md).
+- Native-only result now names food/aroma proxy basis; no scoring/profile recalibration or web delta. Nine focused groups/portable audits/lintPASS. Full19264e52claimACQUIRED after actual dependency releases,11GiB/HIDidle2296s/no foreign runner. New heavy485991d3/sim9cae2eb2/macfa09f5cc/writer527469ee only122clean prep/typecheck/compile/normal+MAX/5trait personal visual proof, still pending; no partial upgrade or foreign lease change.
+- Goal ACTIVE until04:00Madrid, monitorPAUSED. Last actual mail23:11UTC latestvisible25Oct16:14Madrid unchanged/notserverabsenceproof. Catalogue/sensory/200realidentity and human Cloudsecret/6freeGETanswers remain pending. No new business API/key/account/phone/spend/backend/main/web/TestFlight action.
+
 ## Current Gate: 2026-10-26,121MAX Functional PASS / Result Visual FAIL /122Prepared
 
 - Goal ACTIVE until04:00Madrid; monitorPAUSED. Clean67e7f59121r2prep/typecheck/unsignedsimcompilePASS, actualr30MAX20questions/visible counters/result/Inicio/relaunchPASS in215s. Personal review of3captures: question offset fixed, but result starts mid-page and Escanear splits midword. Preserve functionalPASSand visualFAIL separately. [Bound receipt](qa-fixtures/native241/RESULT.json).
