@@ -54,6 +54,8 @@ interface NativeAppHomeProps {
   recommendationsUnavailable?: boolean;
   recommendationsExhausted?: boolean;
   activeProfile?: MatchrimProfileLike | null;
+  nativeHomeReadError?: 'profile' | 'wines' | null;
+  onRetryNativeHome?: () => void;
 }
 
 const scanTypeLabels: Record<ScanHistoryItem['type'], string> = {
@@ -85,6 +87,8 @@ const NativeAppHome = ({
   recommendationsUnavailable = false,
   recommendationsExhausted = false,
   activeProfile = null,
+  nativeHomeReadError = null,
+  onRetryNativeHome,
 }: NativeAppHomeProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -113,6 +117,7 @@ const NativeAppHome = ({
   };
 
   if (isNative) return <NativeHome98 key={ownerId ?? 'anonymous'} ownerId={ownerId} hasProfile={hasCode}
+    readError={nativeHomeReadError} onRetry={onRetryNativeHome}
     loading={loadingCode || loadingRecommendations} unavailable={recommendationsUnavailable}
     exhausted={recommendationsExhausted} recommendations={recommendations} profile={activeProfile}
     recent={recentScans} onSelect={(wine, trigger) => setSelection({ wine, ownerId, open: true, trigger })}

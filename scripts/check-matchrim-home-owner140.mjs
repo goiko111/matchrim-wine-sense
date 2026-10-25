@@ -29,7 +29,8 @@ const input = (owner = 'owner-0') => ({ user: { id: owner }, authLoading: false,
   activeProfile: { potente: 1.2, acidez: 4, dulce: 0, tanico: 2.5, afrutado: 3 },
   loadingHomeProfile: false, hasQuizResults: true, homeMatchrimCode: 'SYNTHETIC-CODE',
   learningInfo: { samples: 2, confidence: 12 }, recommendations: [{ id: 1, name: 'Synthetic Private Recommendation' }],
-  loadingRecommendations: false, recommendationsUnavailable: false, recommendationsExhausted: false });
+  loadingRecommendations: false, recommendationsUnavailable: false, recommendationsExhausted: false,
+  nativeHomeReadError: null, setNativeHomeRetry() {} });
 let groups = 0;
 const test = (name, work) => { work(); groups++; console.log('PASS ' + name); };
 test('Fifty native owner transitions hide old recommendations and active vectors before effects run', () => {

@@ -6,6 +6,7 @@ import NativeAppHome from '@/components/NativeAppHome';
 import { useAuth } from '@/contexts/AuthContext';
 import { generateMatchrimCode, type MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { readMatchrimLocalProfile } from '@/utils/matchrimLocalProfile';
+import { withNativeHomeRead225 } from '@/utils/nativeHomeRead225';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '@/utils/matchrimLearningPlatform';
 import {
   selectUnseenWineRecommendations,
@@ -38,12 +39,17 @@ const Index = () => {
   const [loadingRecommendations, setLoadingRecommendations] = useState(false);
   const [recommendationsUnavailable, setRecommendationsUnavailable] = useState(false);
   const [recommendationsExhausted, setRecommendationsExhausted] = useState(false);
+  const [nativeHomeReadError, setNativeHomeReadError] = useState<'profile' | 'wines' | null>(null);
+  const [nativeHomeRetry, setNativeHomeRetry] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
+    const nativeRead = Capacitor.isNativePlatform() ? new AbortController() : null;
 
     const checkQuizResults = async () => {
-      const localProfile = readMatchrimLocalProfile();
+      const native = Capacitor.isNativePlatform();
+      const localProfile = native && user ? null : readMatchrimLocalProfile();
+      if (native) setNativeHomeReadError(null);
 
       if (localProfile) {
         setCodeProfile(localProfile);
@@ -72,21 +78,43 @@ const Index = () => {
       setSavedWines([]);
       setSavedWineOwnerId(null);
 
-      const [{ data, error }, { data: userWines, error: userWinesError }] = await Promise.all([
-        supabase
+      const quizQuery = supabase
           .from('quiz_results')
           .select('potente, acidez, dulce, tanico, afrutado')
           .eq('user_id', user.id)
           .order('created_at', { ascending: false })
           .limit(1)
-          .maybeSingle(),
-        supabase
+          .maybeSingle();
+      const winesQuery = supabase
           .from('user_wines')
           .select('id, name, producer, vintage, region, country, place_details, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
-          .eq('user_id', user.id),
+          .eq('user_id', user.id);
+      const pending = Promise.all([
+        nativeRead ? quizQuery.abortSignal(nativeRead.signal) : quizQuery,
+        nativeRead ? winesQuery.abortSignal(nativeRead.signal) : winesQuery,
       ]);
+      const [{ data, error }, { data: userWines, error: userWinesError }] = await (
+        nativeRead ? withNativeHomeRead225(pending, nativeRead.signal, () => nativeRead.abort()) : pending
+      ).catch(failure => {
+        if (!nativeRead) throw failure;
+        return [{ data: null, error: failure }, { data: null, error: failure }] as Awaited<typeof pending>;
+      });
 
       if (cancelled) return;
+
+      const invalidNativeProfile = native && data && !['potente', 'acidez', 'dulce', 'tanico', 'afrutado'].every(key =>
+        typeof data[key] === 'number' && Number.isFinite(data[key]) && data[key] >= 0 && data[key] <= 5);
+      if (native && (error || userWinesError || invalidNativeProfile)) {
+        setNativeHomeReadError(error || invalidNativeProfile ? 'profile' : 'wines');
+        setCodeProfile(null);
+        setActiveProfile(null);
+        setHasQuizResults(false);
+        setLearningInfo(null);
+        setSavedWines([]);
+        setSavedWineOwnerId(user.id);
+        setLoadingHomeProfile(false);
+        return;
+      }
 
       if (error) {
         console.error('Error checking Matchrim code for home:', error);
@@ -115,7 +143,7 @@ const Index = () => {
         })));
         setSavedWineOwnerId(user.id);
         setHasQuizResults(true);
-        try {
+        if (!native) try {
           localStorage.setItem('matchrim_quiz_result', JSON.stringify(data));
         } catch {
           // Local cache is only used to make the next decision screen immediate.
@@ -137,14 +165,16 @@ const Index = () => {
     checkQuizResults();
     return () => {
       cancelled = true;
+      nativeRead?.abort();
     };
-  }, [authLoading, user]);
+  }, [authLoading, user, nativeHomeRetry]);
 
   useEffect(() => {
     const expectedOwnerId = user?.id || 'anonymous';
     if (!activeProfile || loadingHomeProfile || savedWineOwnerId !== expectedOwnerId) {
       setRecommendations([]);
       setRecommendationsExhausted(false);
+      if (Capacitor.isNativePlatform()) setLoadingRecommendations(false);
       return;
     }
 
@@ -186,10 +216,16 @@ const Index = () => {
     <NativeAppHome
       onboardingReady={!authLoading && savedWineOwnerId === (user?.id ?? 'anonymous')}
       hasSavedWines={savedWineOwnerId === user?.id && savedWines.length > 0}
-      hasQuizResults={hasQuizResults}
-      matchrimCode={homeMatchrimCode}
-      loadingCode={loadingHomeProfile}
-      learningInfo={learningInfo}
+      hasQuizResults={Capacitor.isNativePlatform() && (authLoading || loadingHomeProfile
+        || savedWineOwnerId !== (user?.id ?? 'anonymous')) ? false : hasQuizResults}
+      matchrimCode={Capacitor.isNativePlatform() && (authLoading || loadingHomeProfile
+        || savedWineOwnerId !== (user?.id ?? 'anonymous')) ? '' : homeMatchrimCode}
+      loadingCode={Capacitor.isNativePlatform() ? authLoading || loadingHomeProfile
+        || savedWineOwnerId !== (user?.id ?? 'anonymous') : loadingHomeProfile}
+      learningInfo={Capacitor.isNativePlatform() && (authLoading || loadingHomeProfile
+        || savedWineOwnerId !== (user?.id ?? 'anonymous')) ? null : learningInfo}
+      nativeHomeReadError={Capacitor.isNativePlatform() ? nativeHomeReadError : null}
+      onRetryNativeHome={() => setNativeHomeRetry(value => value + 1)}
       activeProfile={Capacitor.isNativePlatform() && !authLoading && !loadingHomeProfile
         && savedWineOwnerId === (user?.id ?? 'anonymous') ? activeProfile : null}
       recommendations={Capacitor.isNativePlatform() && (authLoading || loadingHomeProfile

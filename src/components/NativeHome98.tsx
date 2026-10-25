@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Dialog from '@radix-ui/react-dialog';
-import { ArrowRight, Camera, ChevronRight, Search, UserRound, X } from 'lucide-react';
+import { ArrowRight, Camera, ChevronRight, RefreshCw, Search, UserRound, X } from 'lucide-react';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { NativeWineSearch97 } from '@/components/wine-import/NativeWineSearch97';
@@ -23,10 +23,12 @@ interface Props {
   recent: ScanHistoryItem[];
   onSelect: (wine: WinerimWineWithMatch, trigger?: HTMLButtonElement) => void;
   detail: ReactNode;
+  readError?: 'profile' | 'wines' | null;
+  onRetry?: () => void;
 }
 
 export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhausted,
-  recommendations, profile, recent, onSelect, detail }: Props) => {
+  recommendations, profile, recent, onSelect, detail, readError, onRetry }: Props) => {
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   return <div className="matchrim-app-shell matchrim-native-home-shell min-h-screen bg-[#fafafa] text-stone-950" data-testid="native-home98">
@@ -49,6 +51,14 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
         </div>
         {loading ? <div role="status" className="space-y-4" aria-label="Cargando vinos">
           {[0, 1].map(key => <div key={key} className="flex gap-4"><div className="h-36 w-24 shrink-0 rounded-md bg-stone-100 motion-safe:animate-pulse" /><div className="flex-1 space-y-3 py-4"><div className="h-4 w-3/4 rounded bg-stone-100" /><div className="h-4 w-1/2 rounded bg-stone-100" /></div></div>)}
+        </div> : readError ? <div role="alert" className="border-y border-stone-200 py-5" data-testid="native-home-read-error225">
+          <p className="text-base font-semibold">{readError === 'profile' ? 'No hemos podido cargar tus gustos' : 'No hemos podido cargar tu bodega'}</p>
+          <p className="mt-2 text-sm leading-6 text-stone-600">{readError === 'profile'
+            ? 'No necesitas repetir el test. Vuelve a cargarlo para ver recomendaciones para ti.'
+            : 'Necesitamos tus vinos y valoraciones para actualizar las recomendaciones.'}</p>
+          <button type="button" className="mt-3 inline-flex min-h-11 items-center gap-2 font-semibold text-red-900" onClick={onRetry}>
+            <RefreshCw className="h-4 w-4 shrink-0" aria-hidden="true" />Reintentar carga
+          </button>
         </div> : recommendations.length ? <div className="divide-y divide-stone-200" data-testid="native-home-wines98">
           {recommendations.slice(0, 4).map(wine => {
             const { result } = buildNativeRecommendation95(wine, profile);
@@ -81,8 +91,8 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
           <span className="min-w-0 flex-1"><span className="block break-words text-sm font-medium">{item.title}</span>{item.subtitle && <span className="mt-1 block break-words text-xs text-stone-500">{item.subtitle}</span>}</span><ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
         </button>)}</div>
       </section>}
-      <button type="button" className="mt-7 flex min-h-14 w-full items-center justify-between gap-3 border-t border-stone-200 py-4 text-left text-sm font-medium text-stone-600" onClick={() => navigate(hasProfile ? '/profile' : '/matchrim')}>
-        {hasProfile ? 'Mis gustos' : 'Conocer mis gustos'}<ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+      <button type="button" className="mt-7 flex min-h-14 w-full items-center justify-between gap-3 border-t border-stone-200 py-4 text-left text-sm font-medium text-stone-600" onClick={() => navigate(hasProfile || readError ? '/profile' : '/matchrim')}>
+        {hasProfile || readError ? 'Mis gustos' : 'Conocer mis gustos'}<ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
       </button>
     </main>
     <Dialog.Root open={searchOpen} onOpenChange={setSearchOpen}>

@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25, New Five-Block Goal ACTIVE / Native Home225 Recovery Fix Prepared
+
+- Independently get_goal confirms ACTIVE exact human objective: work until04:00 on agreed five blocks, correct/validate candidate with evidence, no web/extra spend, follow development. This supersedes old BLOCKED objective status only; existing monitor stays PAUSED. No new permissions/calls/accounts/deploy/TestFlight inferred.
+- Actual Home controller reproduces post-effect signed-in fallback to an unrelated local vector, not covered by pre-effect140test. Native fix prevents signed-in local fallback/cache writes, blocks profile/history errors or invalid vectors, supplies error+retry and8second abortable read, clears abandoned recommendation loading, gates personal status props on ownership.10new synthetic-controller groups +6affected140groups/lint PASS; full web Home JSX and four legacy controller scenarios preserved. [Scope, before/after, five-block coverage](docs/MATCHRIM_NIGHT_225_2026-10-25.md). Not real users/RLS/authenticated persistence or new recognition accuracy.
+-118preparation/typecheck/compile and225visual error/retry/native quiz remain pending; foreign heavy-local respected. Own writerdbfba30f for edits/checkpoint, release before full heavy+writer queue. Last thread mail check224latest16:14visible; no newer reply claimed. Catalogue/sensory/200real labels remain gated. Zero new catalogue/model/Lovable/Keychain/account/phone/spend/main/backend/web/TestFlight actions.
+
 ## Current Gate: 2026-10-25, Candidate117 Focused MAX Discard Visual PASS / Mail Refreshed
 
 - Exact authorized-account Thunderbird refresh completed; Matchrim thread latest visible reply remains25Oct16:14Madrid. No later thread reply visible, no explicit server-completion banner captured; not an absolute no-mail-on-server claim. Original tab/filter restored, no outgoing mail. Bound observation native224/BEFORE.json preserved.
