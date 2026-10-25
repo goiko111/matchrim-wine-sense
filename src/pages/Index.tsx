@@ -83,14 +83,13 @@ const Index = () => {
           .select('potente, acidez, dulce, tanico, afrutado')
           .eq('user_id', user.id)
           .order('created_at', { ascending: false })
-          .limit(1)
-          .maybeSingle();
+          .limit(1);
       const winesQuery = supabase
           .from('user_wines')
           .select('id, name, producer, vintage, region, country, place_details, rating, sensory_attributes, use_for_profile_training, created_at, updated_at')
           .eq('user_id', user.id);
       const pending = Promise.all([
-        nativeRead ? quizQuery.abortSignal(nativeRead.signal) : quizQuery,
+        (nativeRead ? quizQuery.abortSignal(nativeRead.signal) : quizQuery).maybeSingle(),
         nativeRead ? winesQuery.abortSignal(nativeRead.signal) : winesQuery,
       ]);
       const [{ data, error }, { data: userWines, error: userWinesError }] = await (

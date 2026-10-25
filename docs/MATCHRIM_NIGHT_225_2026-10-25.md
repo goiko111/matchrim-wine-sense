@@ -29,6 +29,12 @@ Native-only correction:
 - Focused lint PASS. Current full web Home JSX return equals priorfeaa229 verbatim; controller before/after behavior matches for missing/success/profile-error/wine-error cases in web mode.
 - Candidate118preparation/typecheck/compile and actual visual225error view are pending.117previous Discard-only visual PASS remains valid for that code, not new225native coverage. No TestFlight-ready claim.
 
+###225 Validation Delta
+
+Own atomic heavy52f6725d/writer25dd6d3a claimed after queued offer, volume15,537,808KiB. Isolated Chromium225visual-r1 passes4cases (profile/history read errors at320normal and393with200%text), all retry/profile-route/reachable-touch-target/no-horizontal-overflow assertions, no console/page/external requests. Profile320 and history393captures personally inspected. This is actual component rendering with synthetic error props/inert nav/search leaves, not native UIKit/account persistence.
+
+First118preparationr1 stops at TS2339: installed Supabase builder does not expose abortSignal after maybeSingle. Failure retained unchanged. Moved native abort binding before maybeSingle, matching the installed service pattern; no new SDK, backend or query. New clean-source118r2preparation/compile still pending at this checkpoint. No earlier failure relabelled PASS.
+
 ## Remaining Five-Block Coverage
 
 | Block | Current evidence | Next independent delta |
