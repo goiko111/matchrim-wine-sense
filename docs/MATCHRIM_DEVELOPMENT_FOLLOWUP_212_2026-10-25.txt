@@ -18,7 +18,9 @@ P0-B, puente seguro: entendemos que sigue bloqueado por autorización. ¿Existe 
 
 P1, fichas sensoriales: tras esta revisión, ¿cuál sería vuestro siguiente paso y plazo propuesto? Necesitamos procedencia y ámbito por atributo/añada, separar valores genuinos de defaults/inferencias y conocer los huecos de cobertura. La confianza del generador no debe presentarse como probabilidad de identidad ni de gusto. No implementéis ni saneéis filas por esta solicitud.
 
-P1, recuperación visual de etiquetas: cuando el OCR es parcial, Matchrim debe poder acotar por datos observados y comparar imágenes reales de etiquetas, absteniéndose si no hay match fiable. Compartid solo las capacidades/contratos ya existentes: imágenes y su origen/revisión, relación con ID canónico y añada, filtros disponibles, cobertura completa/parcial y si hay un endpoint o índice visual utilizable. No basta tomar las primeras 10-15 referencias de una búsqueda incompleta. No pedimos crear ni pagar un índice nuevo.
+P1, recuperación visual de etiquetas: cuando el OCR es parcial, Matchrim debe poder acotar por datos observados y comparar imágenes reales de etiquetas, absteniéndose si no hay match fiable.
+
+Compartid solo las capacidades/contratos ya existentes: imágenes y su origen/revisión, relación con ID canónico y añada, filtros disponibles, cobertura completa/parcial y si hay un endpoint o índice visual utilizable. No basta tomar las primeras 10-15 referencias de una búsqueda incompleta. No pedimos crear ni pagar un índice nuevo.
 
 P2, datos externos: ¿hay ya un contrato para aportar fichas técnicas con URL, fecha, añada, unidad y procedencia por atributo cuando Winerim carece de evidencia? Si no existe, basta confirmarlo. No iniciar búsquedas, extracción ni proveedores externos.
 

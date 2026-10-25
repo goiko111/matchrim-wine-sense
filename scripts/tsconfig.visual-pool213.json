@@ -1,0 +1,5 @@
+{
+  "extends": "../tsconfig.app.json",
+  "compilerOptions": { "types": ["vite/client", "node"], "noEmit": true },
+  "include": ["../src/utils/nativeVisualCandidatePool213.ts", "./check-matchrim-visual-pool213.ts"]
+}
