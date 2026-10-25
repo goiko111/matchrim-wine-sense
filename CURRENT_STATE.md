@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25, Native220 Actual App Partial / Unknown Draft221 Improved
+
+- Finite MATCHRIM-NATIVE-FLOW-1 uses compiled110in fresh isolated QA containers on existing B18822EFsimulator. Shipping110executable/resources preserved except explicit QA-only CSP/early network guard/local-file injector. No OCR/matching/auth/profile data fixture injected; actual local Vision leads to uncertain sheet with blocked catalogue. NOT gallery/canonical200recognition or full E2E approval. Native individual Bodega-anonymous/auth/back-home test passes inr4, overallr4cancelled after a harness bundle-binding issue; captures inspected. [Exact results/failures/scope](docs/MATCHRIM_NATIVE_FLOW_220_2026-10-25.md).
+- Correction runner not yet complete; caret/menu/scroll strategies failed and remain recordedr1-r7, not product PASS. Found concrete UX issue: unidentified draft presents status message as editable name. Native221now starts only unknown-name drafts empty; candidate and known-name data unchanged, year-only cannot apply. Five focused checks/lint PASS. New111preparation/compile/native continuation pending; frozen110and ten prior218green groups not rerun/reclassified.
+- Authenticated save/Bodega persistence requires a real account+backend and cannot be certified under this no-account/no-network run. Full software keyboard/VoiceOver, linked-fiche native invalidation and live catalogue remain HOLD. No TestFlight, web/main/backend/development/mail/Keychain/budget/Goal/monitor change. Own heavy9ea6c2fa/simf858f0f8/mac61ed1f58/writer997338bd held only during active native operations/checkpoint; foreign Gameinar device untouched, no resets/cleanup.
+
 ## Current Gate: 2026-10-25, Native218 Correction Implemented / Controlled Mobile QA PASS
 
 - Independent finite native work; prior Goal remains BLOCKED and existing monitor PAUSED, neither resumed/replaced. Native correction now edits name/producer/optional harvest transactionally with explicit apply/discard. Changed identity clears old master/global/original/canonical/sensory/affinity authority; no-op keeps zero score, local placeholders remain uncertain. Existing web-false projection equals1550bae. [Scope and evidence](docs/MATCHRIM_NATIVE_CORRECTION_218_2026-10-25.md).

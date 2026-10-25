@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import { nativeIdentityDraft218, validateNativeIdentity218 } from '../src/utils/nativeIdentityCorrection218';
+const unknown = { name: 'Etiqueta por identificar', producer: null, vintage: 2020 };
+assert.deepEqual(nativeIdentityDraft218(unknown), { name: '', producer: '', vintage: '2020' });
+assert.equal(unknown.name, 'Etiqueta por identificar', 'Only the draft changes; not the candidate/identity');
+assert.equal(validateNativeIdentity218(nativeIdentityDraft218(unknown)).ok, false, 'A harvest alone cannot apply an empty identity');
+const known = { name: 'Nombre real', producer: 'Bodega real', vintage: 2023 };
+assert.deepEqual(nativeIdentityDraft218(known), { name: 'Nombre real', producer: 'Bodega real', vintage: '2023' });
+const edited = validateNativeIdentity218({ ...nativeIdentityDraft218(unknown), name: 'Nombre escrito' });
+assert.deepEqual(edited, { ok: true, identity: { name: 'Nombre escrito', producer: null, vintage: 2020 } });
+console.log(JSON.stringify({ passed: true, checks: ['Unknown draft is empty', 'Candidate unchanged', 'Harvest-only draft rejected', 'Known identity preserved', 'Explicit typed name required'], liveCalls: 0 }));

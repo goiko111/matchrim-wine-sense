@@ -2,14 +2,14 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Check, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { validateNativeIdentity218, type IdentityValidation218, type NativeIdentity218 } from '@/utils/nativeIdentityCorrection218';
+import { nativeIdentityDraft218, validateNativeIdentity218, type IdentityValidation218, type NativeIdentity218 } from '@/utils/nativeIdentityCorrection218';
 
 interface Props {
   identity: NativeIdentity218;
   disabled: boolean;
   onApply: (identity: NativeIdentity218) => void;
 }
-const draftFrom = (identity: NativeIdentity218) => ({ name: identity.name, producer: identity.producer ?? '', vintage: identity.vintage == null ? '' : String(identity.vintage) });
+const draftFrom = nativeIdentityDraft218;
 
 export const NativeLabelIdentityEditor218 = ({ identity, disabled, onApply }: Props) => {
   const [draft, setDraft] = useState(() => draftFrom(identity));
@@ -17,7 +17,7 @@ export const NativeLabelIdentityEditor218 = ({ identity, disabled, onApply }: Pr
   const form = useRef<HTMLFormElement>(null);
   const { name, producer, vintage } = identity;
   useEffect(() => {
-    setDraft({ name, producer: producer ?? '', vintage: vintage == null ? '' : String(vintage) }); setError(null);
+    setDraft(draftFrom({ name, producer, vintage })); setError(null);
   }, [name, producer, vintage]);
   const dirty = JSON.stringify(draft) !== JSON.stringify(draftFrom(identity));
   const reset = () => { setDraft(draftFrom(identity)); setError(null); };

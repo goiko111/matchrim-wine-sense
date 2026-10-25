@@ -1,7 +1,12 @@
 import { correctWineCandidateIdentity, type WineCandidate } from './multiWineScan';
+import { isPendingLocalIdentity109 } from './nativeSingleLabel109';
 
 export type NativeIdentity218 = Pick<WineCandidate, 'name' | 'producer' | 'vintage'>;
 type Draft218 = { name: string; producer: string; vintage: string };
+export const nativeIdentityDraft218 = (identity: NativeIdentity218): Draft218 => ({
+  name: isPendingLocalIdentity109(identity) ? '' : identity.name,
+  producer: identity.producer ?? '', vintage: identity.vintage == null ? '' : String(identity.vintage),
+});
 export type IdentityValidation218 = { ok: true; identity: NativeIdentity218 }
   | { ok: false; field: keyof Draft218; message: string };
 const safeText = (value: string) => value.length <= 240 && !Array.from(value).some(char => {
