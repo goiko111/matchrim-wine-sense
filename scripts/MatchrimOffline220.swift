@@ -2,6 +2,35 @@ import Foundation
 import XCTest
 
 final class MatchrimOffline220Tests: XCTestCase {
+    @MainActor func testLocalReanalysisRequiresReview() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")
+        app.terminate(); app.launch(); XCUIDevice.shared.orientation = .portrait
+        let skip = app.buttons["Saltar guía"].firstMatch
+        if skip.waitForExistence(timeout: 2) && skip.isHittable { skip.tap() }
+        XCTAssertTrue(app.buttons["Buscar vino o bodega"].waitForExistence(timeout: 15))
+        try tap(app.links["Escanear"].firstMatch, app)
+        try tap(app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Botellas")).firstMatch, app)
+        let checkbox = app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "He leído el aviso de privacidad del escáner")).firstMatch
+        if checkbox.waitForExistence(timeout: 3) { try tap(checkbox, app); try tap(app.buttons["Entiendo y continuar"].firstMatch, app) }
+        try tap(app.switches["Una etiqueta"].firstMatch, app)
+        try tap(app.buttons["QA220 cargar etiqueta local"].firstMatch, app)
+        try tap(app.buttons["Corregir identificación"].firstMatch, app)
+        try fill(app.textFields["Vino"].firstMatch, "Reescaneo QA220", app)
+        try tap(app.buttons["Aplicar corrección"].firstMatch, app)
+        let manual = app.otherElements.matching(NSPredicate(format: "label == %@", "Reescaneo QA220")).firstMatch
+        XCTAssertTrue(manual.waitForExistence(timeout: 8))
+        capture(app, "rescan-before-local-reading")
+        try tap(app.buttons["Reanalizar"].firstMatch, app)
+        XCTAssertTrue(app.buttons["Corregir identificación"].firstMatch.waitForExistence(timeout: 45))
+        XCTAssertFalse(manual.exists, "New local OCR must not retain an old manual identity")
+        XCTAssertTrue(app.staticTexts["Referencia propuesta"].firstMatch.exists)
+        capture(app, "rescan-after-uncertain-no-invented-affinity")
+        try tap(app.buttons["Cerrar"].firstMatch, app)
+        XCTAssertFalse(app.buttons["Confirmar 1 referencia"].firstMatch.exists, "Reanalysis must not automatically reconfirm the old reference")
+        capture(app, "rescan-still-requires-review")
+    }
+
     @MainActor func testNativeCloseAndHubReturn() throws {
         continueAfterFailure = false
         let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")

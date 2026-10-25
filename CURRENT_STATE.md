@@ -1,5 +1,10 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-25,113Compiled / Native MAX Focus-Pan Correction /114Pending
+
+-113clean a2a68f0prep/typecheck/Vite164resources/unsigned simulator compile PASS. Actualr14MAX types name+producer, fails reaching year; body259pt/Discard261pt and viewport-scroll focus restoration compete with manual pans. Preserved FAIL, not full native approval. Native helper no longer recentres on viewport scroll; focus/input/resize retained, header12dvh/6rem. Seven focused native-scoping/web-projection/CSS checks and lint PASS;114prep/compile/MAX + focused normal-close + local-reanalysis pending.
+- No new live call/account/key/spend/web/main/backend/phone/development reminder/TestFlight/Goal/monitor change. Own GUI/sim/heavy released afterr14 before edits, writer79ddc9d1 only for delta/checkpoint. [Evidence/scope](docs/MATCHRIM_NATIVE_FLOW_220_2026-10-25.md). Prior111normal remains PASS, not repeated or mistaken for200recognition/authenticated persistence.
+
 ## Current Gate: 2026-10-25,112Compiled / MAX Keyboard Defect Retained /113Fix Prepared
 
 - Clean8427f8b112preparation/typecheck/Vite164resources/unsigned simulator compile PASS. r12MAX body improves114→322pt, but runner limit prevents reaching correction; preserved FAIL. r13with measured24drag allowance reaches editor/name and actual MAX keyboard, then reveals132pt content against259/261pt Apply/Discard: genuine keyboard layout defect, MAX not approved. [Exact scope/history](docs/MATCHRIM_NATIVE_FLOW_220_2026-10-25.md).

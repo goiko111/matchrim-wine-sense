@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { execFileSync, spawn, spawnSync } from 'node:child_process';
 
 const repo = process.cwd(), out = path.resolve(process.argv[2]);
-const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close'].includes(mode));
+const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close', 'rescan'].includes(mode));
 const sizeMode = process.argv[7] || 'both'; assert(['both', 'normal', 'max'].includes(sizeMode));
 assert(path.dirname(out) === path.join(repo, 'qa-artifacts/native218-20261025') && /^native220-r\d+$/.test(path.basename(out)) && !fs.existsSync(out));
 const prep = JSON.parse(fs.readFileSync((process.argv[4] || 'qa-artifacts/native218-20261025/candidate110-r1') + '/preparation.json'));
@@ -28,7 +28,7 @@ const guard = () => {
 };
 const run = args => { guard(); return execFileSync('/usr/bin/xcrun', args, { env, encoding: 'utf8', timeout: 120000 }); };
 const verifySource = () => {
-  assert(prep.passed && compiled.passed && [110, 111, 112, 113].includes(prep.build) && compiled.sourceCommit === prep.commit);
+  assert(prep.passed && compiled.passed && [110, 111, 112, 113, 114].includes(prep.build) && compiled.sourceCommit === prep.commit);
   for (const [file, hash] of Object.entries(prep.sourceFingerprints)) assert.equal(sha(fs.readFileSync(path.join(repo, file))), hash, file);
   for (const [file, hash] of Object.entries(prep.webResources)) assert.equal(sha(fs.readFileSync(appSource + '/public/' + file)), hash, file);
   assert.equal(sha(fs.readFileSync(appSource + '/App')), compiled.app.executableSHA256);
@@ -90,6 +90,7 @@ try {
       'CODE_SIGNING_ALLOWED=NO', 'PRODUCT_BUNDLE_IDENTIFIER=wine.matchrim.offline220.uitests', 'ONLY_ACTIVE_ARCH=YES'];
     if (mode === 'correction') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testNativeOfflineCorrectionAndAuthBoundary');
     if (mode === 'close') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testNativeCloseAndHubReturn');
+    if (mode === 'rescan') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testLocalReanalysisRequiresReview');
     const fd = fs.openSync(root + '/runtime.log', 'wx', 0o600);
     const child = spawn(env.DEVELOPER_DIR + '/usr/bin/xcodebuild', args, { env, stdio: ['ignore', fd, fd] });
     let stopped = null;

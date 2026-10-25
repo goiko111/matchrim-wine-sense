@@ -9,6 +9,13 @@ const project = (source: string) => {
   const transformed = ts.transform(tree, [ctx => {
     const bool = (node: ts.Node) => node.kind === ts.SyntaxKind.FalseKeyword ? false : node.kind === ts.SyntaxKind.TrueKeyword ? true : null;
     const visit: ts.Visitor = node => {
+      // These effects return before any side effect on the legacy web path.
+      if (ts.isExpressionStatement(node) && ts.isCallExpression(node.expression) && ts.isIdentifier(node.expression.expression)
+        && ['useEffect', 'useLayoutEffect'].includes(node.expression.expression.text)) {
+        const callback = node.expression.arguments[0];
+        if (callback && ts.isArrowFunction(callback) && ts.isBlock(callback.body)
+          && callback.body.statements[0]?.getText(tree) === 'if (!isNative || !selectedRegionId) return;') return ctx.factory.createEmptyStatement();
+      }
       if (ts.isIdentifier(node) && node.text === 'isNative') return ctx.factory.createFalse();
       const n = ts.visitEachChild(node, visit, ctx);
       if (ts.isConditionalExpression(n) && bool(n.condition) !== null) return bool(n.condition) ? n.whenTrue : n.whenFalse;
@@ -40,10 +47,12 @@ const css = postcss.parse(fs.readFileSync('src/components/wine-import/nativeLabe
 let boundedHeader = false, fixedIcons = false, compactFooter = false;
 css.walkRules(rule => {
   assert(rule.selector.split(',').every(selector => selector.trim().startsWith('html.matchrim-native-platform')), 'Native-only selectors required');
-  if (rule.selector.includes('> :first-child')) { assert(rule.selector.includes('.matchrim-accessibility-text')); boundedHeader = rule.nodes.some(node => node.type === 'decl' && node.prop === 'max-height' && node.value === 'min(16dvh, 8rem)'); }
+  if (rule.selector.includes('> :first-child')) { assert(rule.selector.includes('.matchrim-accessibility-text')); boundedHeader = rule.nodes.some(node => node.type === 'decl' && node.prop === 'max-height' && node.value === 'min(12dvh, 6rem)'); }
   if (rule.selector.includes('> :last-child')) { assert(rule.selector.includes('.matchrim-accessibility-text')); compactFooter = rule.nodes.some(node => node.type === 'decl' && node.prop === 'grid-template-columns' && node.value === 'minmax(0, 1fr) 44px'); }
   if (rule.selector.includes('.matchrim-region-footer-actions') && rule.selector.includes('button')) { assert(rule.selector.includes('.matchrim-accessibility-text')); fixedIcons = rule.nodes.some(node => node.type === 'decl' && node.prop === 'height' && node.value === '44px'); }
 });
 assert(boundedHeader && fixedIcons && compactFooter);
 assert(current.includes("aria-label={isNative ? 'Cerrar' : undefined}"));
-console.log(JSON.stringify({ passed: true, checks: ['Full legacy web-false projection unchanged', 'All CSS native scoped', 'MAX-only keyboard-safe header budget', '44px icon targets', 'Single-row MAX footer', 'Explicit accessible close name'], liveCalls: 0 }));
+assert(!current.includes("addEventListener('scroll', revealFocusedField)"));
+assert(current.includes("addEventListener('focusin', revealFocusedField)") && current.includes("addEventListener('resize', revealFocusedField)"));
+console.log(JSON.stringify({ passed: true, checks: ['Full legacy web-false projection unchanged', 'All CSS native scoped', 'MAX-only keyboard-safe header budget', '44px icon targets', 'Single-row MAX footer', 'Explicit accessible close name', 'No focus restoration on manual viewport pan; focus/resize retained'], liveCalls: 0 }));

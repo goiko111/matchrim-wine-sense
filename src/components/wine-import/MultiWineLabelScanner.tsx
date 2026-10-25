@@ -247,7 +247,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     window.addEventListener('focusin', revealFocusedField);
     window.addEventListener('input', revealFocusedField);
     window.visualViewport?.addEventListener('resize', revealFocusedField);
-    window.visualViewport?.addEventListener('scroll', revealFocusedField);
+    // A manual pan must be able to move away from the focused input.
     const observer = new ResizeObserver(revealFocusedField);
     const observeFrame = requestAnimationFrame(() => {
       const body = regionEditorBody.current;
@@ -266,7 +266,6 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       window.removeEventListener('focusin', revealFocusedField);
       window.removeEventListener('input', revealFocusedField);
       window.visualViewport?.removeEventListener('resize', revealFocusedField);
-      window.visualViewport?.removeEventListener('scroll', revealFocusedField);
     };
   }, [isNative, selectedRegionId]);
 
