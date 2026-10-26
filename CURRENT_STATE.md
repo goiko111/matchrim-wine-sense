@@ -1,5 +1,10 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-26, Native266 Real Accessible-Row Defect Fixed / Rebuild125Required
+
+- Fresh normalr46 remainsFAIL at Sin calcular after selecting Vinos. Actual AX proves the row's explicit Abrir detalle label masks all visible identity/affinity content; this is a genuine app accessibility defect, not only a harness mismatch. Native-only row label now includes producer, indicated(not verified)year, identity state, actual consumer affinity value/label/gap and separate personal verdict. Web label unchanged. New AST-extracted actualJSX regression retains oldRED and tests missingdata/calculated/personal/unknownyear/web cases; eight affected259UIgroups/ESLintPASS. Swift test now checks the row's accessible value/state, not nonexistent child StaticText.
+- Source change supersedes candidate125-r1 compiled/signed artifacts; they remain preserved but MUST NOT be uploaded. No125upload occurred, so rebuild same unused125 in fresh candidate125-r2/compile125-r2 permitted. Old distribution125runner remains bound to ae8ec22 and will reject current productfingerprints; rebind only after exact new candidate QA/signature and authorization, never bypass guards. Next runtime fullnormal/MAX pending. Previous265partial/failures remain unchanged; no beta/upload approval assumed from Cerrar primeroelQAvisual.
+
 ## Current Gate: 2026-10-26, Owner Requires Visual Before125Upload / Native265 Partial Only
 
 - Owner explicitly chose Cerrar primero el QA visual, NOT limited beta acceptance. No authorization file/export/upload. Then granted10minutes Mac availability: full own resource set acquired12:39:11UTC, no foreign runners, >5GiB; GUI/heavy/simulator released12:48:23UTC after terminal runs and restored size/terminated own apps. No future desktop availability assumed from this10minute reply.

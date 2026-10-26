@@ -130,7 +130,19 @@ try {
   });
   await check('New master lookup exists only inside the native guarded primary view; scanner web JSX stays unchanged', () => {
     const file = 'src/components/wine-import/MultiWineLabelScanner.tsx';
-    const current = fs.readFileSync(file, 'utf8');
+    let current = fs.readFileSync(file, 'utf8');
+    const scannerTree = ts.createSourceFile('scanner.tsx', current, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+    const aria = [];
+    const visit = node => {
+      if (ts.isJsxAttribute(node) && node.name.getText(scannerTree) === 'aria-label'
+        && node.initializer && ts.isJsxExpression(node.initializer) && node.initializer.expression
+        && ts.isConditionalExpression(node.initializer.expression)
+        && node.initializer.expression.getText(scannerTree).includes('Abrir detalle de ${group.candidate.name}')) aria.push(node.initializer.expression);
+      ts.forEachChild(node, visit);
+    };
+    visit(scannerTree); assert.equal(aria.length, 1);
+    assert.equal(aria[0].condition.getText(scannerTree), 'isNative');
+    current = current.slice(0, aria[0].getStart(scannerTree)) + aria[0].whenFalse.getText(scannerTree) + current.slice(aria[0].end);
     const previous = execFileSync('git', ['show', `c4f9e37:${file}`], { encoding: 'utf8' });
     const slice = value => value.slice(value.indexOf('                {isNative && selectedCandidate && <LabelAnalysisView'),
       value.indexOf('                {isNative && selectedCandidate && nativeConsumer?.canExplainAffinity'));

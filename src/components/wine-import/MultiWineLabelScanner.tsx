@@ -1435,7 +1435,12 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     onClick={() => setSelectedRegionId(regions.find((region) => (
                       group.regionIds.includes(region.id) && getSelectedCandidate(region)?.id === group.candidate.id
                     ))?.id ?? group.regionIds[0])}
-                    aria-label={`Abrir detalle de ${group.candidate.name}`}
+                    aria-label={isNative ? [
+                      `Abrir detalle de ${group.candidate.name}`, group.candidate.producer,
+                      group.candidate.vintage ? `Añada indicada: ${group.candidate.vintage}` : null,
+                      consumer?.identityLabel, `${consumer?.affinityLabel}: ${consumer?.affinityValue}`,
+                      consumer?.pending?.summary, personalVerdict ? personalVerdictTitle159(personalVerdict) : null,
+                    ].filter(Boolean).join('. ') : `Abrir detalle de ${group.candidate.name}`}
                   >
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-red-950 text-sm font-bold text-white">{index + 1}</span>
                     <span className={isNative ? 'min-w-0 w-full' : 'min-w-0 flex-1'}>

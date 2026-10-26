@@ -43,7 +43,10 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertFalse(app.links["Ver ficha original Winerim"].firstMatch.exists, "Unlisted canonical ID must not become a fake public URL")
         try tap(app.buttons["Cerrar"].firstMatch, app)
         try tap(app.buttons["Vinos (1)"].firstMatch, app)
-        XCTAssertTrue(app.staticTexts["Sin calcular"].firstMatch.waitForExistence(timeout: 8))
+        let row = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Abrir detalle de La Migratoria")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 8))
+        XCTAssertTrue(row.label.contains("Sin calcular"), "Reader must hear the visible affinity state")
+        XCTAssertTrue(row.label.contains("Referencia del catálogo Winerim"), "Reader must hear the linked identity state")
         capture(app, "master259-batch-honest-gap")
         try tap(app.buttons["Revisar vinos"].firstMatch, app)
         try tap(app.buttons["Corregir identificación"].firstMatch, app)
