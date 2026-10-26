@@ -1,0 +1,23 @@
+{
+  "build": 125,
+  "version": "1.0",
+  "bundleId": "wine.matchrim.app",
+  "sourceCommit": "ae8ec225210eb97178dc7aedf0c72ef891c22388",
+  "releaseArchive": "PASS",
+  "signatureVerified": true,
+  "verifiedResources": 165,
+  "startedUTC": "2026-10-26T11:46:14.770Z",
+  "finishedUTC": "2026-10-26T11:46:56.343Z",
+  "artifactReceipt": "qa-artifacts/native218-20261025/archive125-r1/ARCHIVE-RESULT.json",
+  "artifactReceiptSHA256": "dfe7cf67f82ba5ad892ab7dd6022a755e9eb793177f8c76b4f9df6b785c28213",
+  "exported": false,
+  "uploaded": false,
+  "testFlightInstallableConfirmed": false,
+  "limitedBetaAcceptance": "AWAITING_HUMAN_CHOICE",
+  "newNativeNormalAndMaxVisualQA": "PENDING",
+  "fullRecognitionAndSensoryValidation": "NOT_APPROVED",
+  "webPublished": false,
+  "backendDeployed": false,
+  "newCatalogueOrModelCalls": 0,
+  "extraSpend": 0
+}

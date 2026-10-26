@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-26,125 Release Archive Signed / Limited Beta Decision Pending
+
+- New human asks to upload125. Existing gates disclosed; async choice pending: upload a limited private beta accepting unfinished new normal/MAX visual QA and sensory gaps, or close visual first. No assumed answer, no authorization file created and no Apple upload/export attempted. General release/200recognition approval remains absent.
+- Source ae8ec22 clean preparation retained. New Release archive125-r1 PASS11:46:14-11:46:56UTC, bundlewine.matchrim.app1.0(125), codesign strict verification PASS and all165bundled resources match. [Bound archive receipt](qa-fixtures/native264/ARCHIVE.json). Original native125unsigned compile remains valid; signed archive is NOT native visual QA, App Store export or TestFlight availability.
+- New source-bound125distribution runner and negative permission/version/source tests plus focused lint PASS (435759a). Existing106runner/history unchanged. Export/upload requires a real owner acceptance record, fixed build/team/source, independently verified IPA and Apple acknowledgement; no auto-resubmission on ambiguous upload. Archive resources obtained atomically after FIFO, own heavy released after terminal archive; writer only for checkpoint then release. Initial visual requeste4d5befc cancelled before claim to prepare release runner, no simulator test executed. No web/main/backend publication, additional catalogue/model/Auth/image/Lovable queries, phone/accounts/ratings or extra spend. Previous GoalBLOCKED/monitorPAUSED remain unchanged; this packaging work follows the new direct user request.
+
 ## Current Gate: 2026-10-26, Native125 Visual Resource Hold / Goal Blocked Audit
 
 - Three consecutive goal turns retain the same unsatisfied native visual prerequisite: no safe acquired full heavy-local/ios-simulator/mac-desktop/writer set. The first completed125compile but could not obtain the visual set; subsequent continuations queued347d6ded and revalidated WAITING behind prior offers, not a running UI test. Latest fresh HID idle0.097755s also prevents desktop control. No live simulator runner/session was started or claimed; this is not a verified-process wait or a visual PASS. Disk remains above5GiB (~16GiB), so disk is not the current blocker.
