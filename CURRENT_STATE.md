@@ -1,5 +1,10 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-26, Session256 Recovered From Own QA Simulator / Auth400 / Clarify QA Mailbox
+
+- Owner correctly notes QA account/password were created byagent; recovery email/access unavailable. Acknowledged responsibility, no repeated download/unknownpassword demand. Read only exact QA99review WebKit Authkey on ownB188simulator via SQLite mode=ro/query_only; validated boundQA, no appstart/phone/databasewrites/passwordread/unrelatedaccount scan. Recovered tokenexpired24Oct18:14:03UTC with refresh DIFFERENT from failed132; privateexport0600outsideiCloud. [Redacted receipt](qa-fixtures/session256/RESULT.json), [256history](docs/MATCHRIM_SESSION_255_2026-10-26.md).
+- Exactly1different-token refresh reserved as alternative to unusedpasswordlogin, returns400andstops; aggregate historical+newAuthrefresh2, no passwordsubmission. Both400failures preserved, specificAutherrornotretained/no revocation or account-status inference. New253resume branch TS/lintPASS, no green suite repeat. SAMEcatalogue **0/6used**, no IA/images/Lovable/spend/web/main/backend/phone/TestFlight. Asked whether mail fails to arrive or mailbox inaccessible; no reset/newaccount or moretokenattempts.255humanloginnotexecuted/notrequireduntilrealaccountaccess.124/source899bdf1unchanged, GoalBLOCKED/monitorPAUSED. Owniosdfcdd765released; writer2032efa7onlycheckpointthenrelease.
+
 ## Current Gate: 2026-10-26, Session255 Local Recovery Prepared / Human QA Password Entry Required
 
 - User cannot download old private access file. No repeated hydration attempt. Prepared human-run `python3 scripts/login-matchrim-qa255.py`: masked TTY-only password input, one same-account QA Authlogin, no password stored, strict bound identity/issuer/expiry, mode0600session in mode0700Library/Application Support/Matchrim QA/session255(outside iCloud). Not executed; any necessary password recovery/change remains human-only in existing Matchrim UI, no email/reset submitted. [Scope and verified tests](docs/MATCHRIM_SESSION_255_2026-10-26.md).

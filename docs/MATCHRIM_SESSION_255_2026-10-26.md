@@ -46,3 +46,39 @@ web/main/backend/TestFlight, GoalBLOCKED and monitorPAUSED unchanged.
 Own canonical writer8d6849f4-4507-4b4e-a92f-659de4f8db23, request
 824e30ed-0496-4868-9fee-3f4a354af817, only this preparation/tests/checkpoint/commit;
 released after completion. No desktop/heavy/simulator/phone lease or operation.
+
+## Follow-up256: ownership corrected, own native session recovered but rejected
+
+The owner points out the agent created the QA account/password and says access
+or recovery mail is unavailable. Acknowledged responsibility; no more attempts
+to make the owner download the unavailable file or enter an unknown password.
+Asked only whether recovery mail fails to arrive or the mailbox is inaccessible.
+No reset email, password change or replacement account submitted.
+
+Acquired ios-simulator/writer atomically (request0c08bb3c), no desktop/heavy.
+Read exactly the Supabase Auth key from the existing QA99review WebKit local
+SQLite in mode=ro/query_only, validated the same bound QA owner. No app launch,
+phone, unrelated account/key/browser scan, database mutation or password read.
+Exported only the session mode0600 outside iCloud. Token expired24Oct18:14:03UTC;
+its refresh token differed from the failed132token. Source256lint PASS.
+
+New253mode --resume-simulator-session reserved exactly one refresh of that
+different token, as an alternative to the unused routine password-login route.
+It returned400and stopped. This was not a retry of the failed132token; the
+historical failed refresh remains counted, aggregate Authrefresh attempts2.
+Specific Auth error code was not retained, so do not assert revocation cause,
+account existence/deletion, mail delivery or validity of a password/Cloud key.
+No more attempts against these tokens. Original400and new400receipts preserved
+in the same253ledger; new RESULT-QA-LOGIN.json is a failure, not six green checks.
+Redacted result: `qa-fixtures/session256/RESULT.json`.
+
+Catalogue **0/6used**, password submissions0, no model/image/Lovable/spend or
+web/main/backend/app change. Focused253typecheck/lint PASS before execution;
+no unrelated green suite repeated.124/source899bdf1and all catalogue/sensory/
+200identity/TestFlight gates unchanged. Actual authentication recovery is now
+the necessary human clarification, not catalogue implementation evidence.
+
+Own iosdfcdd765released after read-only export. Writer2032efa7renewed only for
+failure/checkpoint/commit then released. No GUI, account writes, foreign lease
+or process touched. Human-run255login remains unexecuted, not the next required
+step until the owner actually has access to the account.
