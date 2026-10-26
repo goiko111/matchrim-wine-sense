@@ -1,5 +1,10 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-26, Hosted Secret Reported Saved / Six Free Reads Authorized / QA Auth400
+
+- Owner explicitly reports Cloud MATCHRIM_GOIKO_KEY saved and grants6new free authenticated catalogue reads, no extra spend/web. New253bounded probe reserves attempts before network, stops errors/no retries, no Keychain/model/image/Lovable/backend/main/web/phone/rating/TestFlight action. Session132QA expired21Oct23:56:35UTC; one same-project Authrefresh400, no catalogue calls. Six allowance remains **0/6used**, not exhausted/validated. [Exact execution and next gate](docs/MATCHRIM_HOSTED_253_2026-10-26.md), preserved private-artifact ledger `qa-artifacts/master253-20261026/hosted-six-r1`.
+- Private-access-file preflight did not complete; only ownNodes66327/67882terminatedexit143, no password returned/submitted. Exact flags confirm mode0600/271byte iCloud `dataless` placeholder. CUAinventory timeout30s/kernelreset, then targeted Brave read verifies correct project Secrets table contains MATCHRIM_GOIKO_KEY(created26Oct), no value revealed/changed. No GUIaction. Prepared one-time same-account `--resume-qa-login` preserves original400and SAME6ledger, refuses placeholder/prior login/catalogue reservations; not executed. Need private file downloaded in Finder, then valid QA session, not new account/admin/anonymous bypass. Eight focused offline groups/TypeScript/lintPASSare not livecatalogue/sensory/200identity proof. Candidate124source899bdf1unchanged; GoalBLOCKED/monitorPAUSED unchanged.
+
 ## Current Gate: 2026-10-26,Actual Photos Picker Cancellation Normal/MAX PASS
 
 - New252coverage closes a real gap distinct from QAFile injection: native gallery source menu -> actual Photos picker -> Cancel -> local scanner -> retry, two final cycles each in normalr40/MAXr42on exact own124container. Five final captures personally inspected; no photo selected/injected/OCR/upload/account/phone. [Bound receipt](qa-fixtures/native252/RESULT.json), [history and five-block audit](docs/MATCHRIM_GALLERY_252_2026-10-26.md). Compiled124source899bdf1unchanged, tests only.
