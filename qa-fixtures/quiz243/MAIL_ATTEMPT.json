@@ -1,0 +1,16 @@
+{
+  "recordedUTC": "2026-10-26T00:11:58.003Z",
+  "state": "PRE_SEND_BODY_RECIPIENT_VERIFIED_NOT_SENT_CONFIRMED",
+  "from": "goiko@winerim.com",
+  "to": "moa-winerim-b93a8ts9@agentmail.to",
+  "subject": "Re: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026",
+  "replyToKnownIncoming": "25Oct16:14Madrid",
+  "bodyFile": "docs/MATCHRIM_DEVELOPMENT_REVIEW_243_2026-10-26.txt",
+  "bodySHA256": "6351b394df9b0b2fedf9f884b4dcd7104743dc329ee8d4f6a9cf3907ec65e44b",
+  "uiVerifiedAllParagraphs": true,
+  "recipientVerified": true,
+  "noQuotedOldBody": true,
+  "scope": "New material P1 calibrated quiz evidence/documentation request, not routine P0reminder, no implementation/deploy/spend approval.",
+  "sendAttempts": 0,
+  "sentVerified": false
+}

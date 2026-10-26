@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Coordination: 2026-10-26, New243Calibration Review Sent And Verified
+
+- New-material P1mail sent once in existing Matchrim thread fromgoiko@winerim.com to authorizedmoa-winerim-b93a8ts9@agentmail.to. Recipient/from/subject/all paragraphs verified before click; exact new body verified in named account Enviados at26Oct01:12Madrid. Local JSguard reference error occurred before any click; actual sendClicks1. No Message-ID/recipient-delivery/read proof claimed. [Sent receipt](qa-fixtures/quiz243/MAIL_SENT.json).
+- Requests only existing test-weight validation, independent-axis semantics/scales and existing versioned preference contract; explicitly no production rev3approval, implementation/deploy/main/backend/web/newdata/spend permission. New counterexample, not repeated P0status reminder. Account refreshed: latest incoming still25Oct16:14visible, no newer observed/notserverabsenceproof. Empty filter/Inbox/originaltab26restored. No more routine reminder before24h from this send; notify only meaningful reply.
+-124native anonymous taste reopen/footer correction remains prepared, not compiled or approved. Own macfa09f5cc/writer527469ee released after this checkpoint; heavy/ios already released after terminalr33. New full resource queue for clean124prep/compile/normal+MAXnext, no partial upgrade. Goal ACTIVE until04:00Madrid; monitorPAUSED, all catalogue/sensory/real200/permission/TestFlight gates unchanged.
+
 ## Current Gate: 2026-10-26,123Normal PASS / MAX Result Captures Reviewed /124Continuity Prepared
 
 - Goal ACTIVE until04:00Madrid; monitorPAUSED. Clean99d5ee5123typecheck/unsignedcompile and native r31normal20question/result/Home/relaunchPASS. MAXr32partialNext/tab overlap harnessFAIL; r33strict content reaches20/results/5traits/scan capture then FAILon tab link bound. Both preserved FAIL; corrected harness exempts only links fully in actual nav rectangle. Seven MAXresult captures personally reviewed: header/5traits/whole-word commands clear; not fullMAXflow approval. [Bound evidence](qa-fixtures/native245/PREPARED.json).
