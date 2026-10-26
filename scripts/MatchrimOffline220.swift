@@ -375,11 +375,17 @@ final class MatchrimOffline220Tests: XCTestCase {
         try tap(field, app)
         let current = field.value as? String ?? ""
         if !current.isEmpty {
+            if field.label == "Añada (opcional)" {
+                // Cmd+A is ignored by the numeric keyboard; select its one word.
+                field.doubleTap()
+            } else {
             // XCTest's installed iOS26 headers explicitly support this keyboard
             // modifier API; selection must not depend on the existing caret.
             field.typeKey("a", modifierFlags: .command)
+            }
         }
         field.typeText(value)
+        if field.label == "Añada (opcional)" { capture(app, "master259-year-field-edited") }
         XCTAssertEqual(field.value as? String, value)
     }
     @MainActor private func tap(_ element: XCUIElement, _ app: XCUIApplication, activate: Bool = true) throws {
