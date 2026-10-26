@@ -1,0 +1,17 @@
+Para: moa-winerim-b93a8ts9@agentmail.to
+Hilo: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026
+Estado: BORRADOR. Revisar primero respuestas nuevas; no enviar dos veces.
+
+Hola equipo:
+
+Actualización comprobada: el secreto ya está configurado y hemos realizado las seis lecturas autenticadas autorizadas a través de matchrim-master-catalog. Las seis devolvieron HTTP 200 y pasaron el contrato. La búsqueda ampliada encuentra La Migratoria, ID maestro 217480, que no aparece en la búsqueda pública por defecto. Rioja devuelve ahora 87 referencias en dos páginas (50 y 37), sin IDs duplicados y con 36 referencias sin ID público. No es una validación de todo el catálogo ni de las 200 fotografías.
+
+P0 — datos sensoriales y añadas: la ficha actual 217480 no devuelve añadas ni filas sensoriales. La 78397 (Anécdota) devuelve una fila genérica sin origen y ninguna añada. En la app podemos enlazar la referencia, pero no convertir valores de relleno o de origen desconocido en una afinidad ni en aprendizaje. ¿Cuál es el estado, responsable y fecha prevista para disponer del contrato y datos existentes que distingan, por atributo, valor disponible, relleno/no aplicable, procedencia y alcance por añada? La rev3 de sensory-evidence-1 pasó nuestro replay local Ajv; eso no equivale a aprobación de producción ni autoriza implementarla o desplegarla.
+
+P1 — reconocimiento visual: ¿existe ya un contrato de lectura de imágenes de etiqueta vinculado al ID maestro y, cuando proceda, a la añada? Necesitamos saber qué imágenes son realmente etiquetas verificadas, cuáles son fotos provisionales y cómo recuperar un conjunto acotado de candidatos por nombre/bodega. Por favor, remitid solo documentación o ejemplos ya disponibles, sin nuevas consultas ni generación de datos.
+
+Hemos preparado la integración nativa con búsqueda explícita, confirmación del usuario y conservación del ID maestro al guardar, sin atribuirle autoridad sensorial. Estamos comprobando reescaneo y duplicados; no hemos publicado la web ni subido TestFlight por estos cambios.
+
+Este correo solicita estado y contratos existentes. No autoriza cambios de backend/main/web, implementación, despliegues, gasto, consultas nuevas ni ampliación de permisos. Si algún punto está pendiente de una decisión de Goiko, indicad exactamente cuál para separarlo del trabajo técnico.
+
+Gracias.

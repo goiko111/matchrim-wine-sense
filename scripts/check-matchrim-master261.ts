@@ -32,6 +32,13 @@ try {
     assert.equal(groups[0].regionIds[0], 'reviewed-region');
   }
   assert.equal(JSON.stringify(regions), before);
+  for (const patch of [{ name: 'LA MIGRATORIA', producer: 'BODEGAS FRONTONIO' },
+    { name: 'La Mígratoria', producer: 'Frontonio' }, { name: ' La Migratoria ', producer: 'Bodegas  Frontonio' }]) {
+    const variant = { ...unlinked, ...patch };
+    const groups = nativeDuplicateWineGroups261([makeRegion('variant', variant), makeRegion('linked', linked)]);
+    assert.equal(groups.length, 1, 'Case/accent/spacing and known producer wrappers are not a second wine');
+    assert.equal(groups[0].count, 2); assert.equal(groups[0].candidate, linked);
+  }
   const uncertain = [makeRegion('raw-region', unlinked, 'uncertain'), makeRegion('reviewed-region', linked)];
   nativeDuplicateWineGroups261(uncertain);
   assert.equal(uncertain[0].status, 'uncertain');
@@ -49,7 +56,7 @@ try {
   assert.equal(nativeDuplicateWineGroups261(discarded)[0].candidate, unlinked);
   const plain = [makeRegion('raw', unlinked), makeRegion('other', { ...unlinked, id: 'other', confidence: .7 })];
   assert.deepEqual(nativeDuplicateWineGroups261(plain), groupDuplicateWines(plain));
-  console.log(JSON.stringify({ passed: 6, failed: 0, priorGroupingRetainedRed: true,
+  console.log(JSON.stringify({ passed: 7, failed: 0, priorGroupingRetainedRed: true,
     bindingPreservedWithoutTransfer: true, regionStatesUnchanged: true, externalCalls: 0,
     realScenes: 0, scope: 'Synthetic duplicate-region composition with actual retained master detail, not multibottle accuracy' }));
 } finally { globalThis.fetch = oldFetch; }

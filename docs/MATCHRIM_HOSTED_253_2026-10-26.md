@@ -2,6 +2,22 @@
 
 ## Native261 Duplicate-Reference Fix And Resource Checkpoint
 
+262follow-up: a read-only RED showed identical upper-case OCR versus title-case
+linked reference produced2native rows while the legacy grouping produced1.
+The native projection now uses the existing strict canonical matcher in BOTH
+directions for name/producer, exact same vintage and normalized geography. Case,
+accents, spacing and known producer wrappers do not create duplicate rows;
+unknown harvests and qualifiers are not erased. Seven focused groups/TS/lint
+PASS, original6groupreceipt retained and separate normalizationreceipt added.
+Buildbfcdd371cancelled beforeexecution for this proven defect; no stale125build.
+
+Development update262is prepared as a DRAFT only, with genuinely new six-read
+runtime evidence and existing-contract requests, explicitly no implementation/
+deploy/spend/query authorization. Must read fresh reply before sending once.
+Mail requestdc1548ddwas offered then expired unclaimed (epochs1793008304.4583to
+1793008570.2045); it was not foreign-blocked for that whole interval. No GUI/mail
+action or fresh server check occurred. Cached SQLite read had failedDBlocked.
+
 Actual groupDuplicateWines composition with a linked master candidate confidence.8
 and identical raw OCR confidence.99picked the latter, discarding the confirmed
 master reference in list/save. New native-only projection preserves the original

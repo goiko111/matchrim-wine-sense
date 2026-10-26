@@ -1,8 +1,12 @@
 import { getSelectedCandidate, groupDuplicateWines, type ScanRegion, type WineCandidate } from './multiWineScan';
 import { nativeMasterLink259 } from './nativeMasterLink259';
+import { isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
 
+const normalize = (value: string | null) => (value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  .toLowerCase().replace(/\s+/g, ' ').trim();
 const sameBottleIdentity = (left: WineCandidate, right: WineCandidate) =>
-  (['name', 'producer', 'vintage', 'region', 'country'] as const).every(key => left[key] === right[key]);
+  left.vintage === right.vintage && isSafeCanonicalLabelMatch(left, right) && isSafeCanonicalLabelMatch(right, left)
+  && normalize(left.region) === normalize(right.region) && normalize(left.country) === normalize(right.country);
 
 // Preserve an explicitly linked reference over raw OCR confidence, but never
 // transfer its binding to another candidate or change any region's review state.

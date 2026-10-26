@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-26, Native262 Duplicate Case Regression Fixed /125Still Awaiting Heavy Capacity
+
+-Read-onlyREDobservednative261splitting identicalcase-onlyOCRvariantinto2rows(oldsharedgroups1).262usesexistingstrictbidirectionalcanonicalidentitymatcherplusstrictsameharvest/normalizedgeo, preservingcase/accents/spacing/producerwrapperswithoutdroppingqualifiersorborrowingunknownyear. New7group261suite/TS/lintPASS. Historical6groupreceiptretained, [newnormalizationreceipt](qa-fixtures/master261/RESULT-normalization.json). No scene/modelaccuracyclaim.
+-Buildbfcdd371cancelledbeforeexecutionforthisREDfix; noheavy125operationstarted. Ownwriterb93aff27/requesta8076bb3 onlylightdelta/checkpoint, releasebeforenewatomicbuildqueue. ResourcewaitsincludedforeignBarmetrixheavythenotherFIFOtasks; noforeignlease/processchanged. Ownmaildc1548ddwasREADY10:51:44Madridandexpired10:56:10Madridunclaimed. Exactepochs: readyAt1793008304.4583008, expiresAt1793008570.204525, observedexpired1793008589.0850902; no claim/action/freshservercheck. Do not misreportentirewindowasforeignblocked. Newmaterialdevelopmentupdate262preparedonly/DRAFT, notsent, readfreshreplybeforeanysend.
+-GoalACTIVEends10:50:58UTC=11:50:58Madrid(CET), noextraautonomywindow; monitorPAUSED. Paid50/15EURandfree6/6consumedunchanged.0newcatalogue/model/Auth/image/Lovable/Keychain/DBwine/phone/backend/main/web/TestFlight. Native124lastcompiled;125cleanprepare/fulltypecheck/compile/normal+MAXstillpendingresource.
+
 ## Current Gate: 2026-10-26, Native261 Duplicate Reference Preserved /125Build And Native Visual Still Pending
 
 -Freshread foundactual grouping issue: oldsharedgroup picksrawOCRconfidence.99overuserlinkedmaster.8, losescanonicalreference in list/save. Newnative-only261projects existinggroups, prefers originalboundcandidatewithoutcopyingbinding, opensitsregionfirst; mixedvintage/region/countryidentities split withunique keys instead ofborrowing/droppingreference. No regionstatepromotion, discardedexcluded, legacy/webgroupingunchanged.6newgroupsretainoldRED, updatednativewebinverse/UIeight/TS/lintPASS; noimageaccuracyclaim. [Receipt](qa-fixtures/master261/RESULT.json).

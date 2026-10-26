@@ -1,0 +1,14 @@
+{
+  "passedGroups": 7,
+  "failed": 0,
+  "observedBeforeFix": { "caseOnlyVariant": true, "legacyGroups": 1, "nativeGroups": 2, "expectedNativeGroups": 1 },
+  "currentCaseAccentSpacingWrapperGroups": 1,
+  "visibleQualifiersAndUnknownVintagesPreserved": true,
+  "bindingNotTransferred": true,
+  "externalCalls": 0,
+  "realScenes": 0,
+  "typecheck": "PASS",
+  "lint": "PASS",
+  "native125Compile": "PENDING",
+  "nativeVisual": "PENDING"
+}
