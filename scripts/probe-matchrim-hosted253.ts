@@ -60,8 +60,9 @@ export function evaluate253(checks: ReturnType<typeof summarize253>[]) {
 
 async function main() {
   const mode = process.argv.slice(2).join(' ');
-  assert(['--authorized-six', '--resume-qa-login'].includes(mode), 'EXPLICIT_MODE_REQUIRED');
-  const resume = mode === '--resume-qa-login';
+  assert(['--authorized-six', '--resume-qa-login', '--resume-local-session'].includes(mode), 'EXPLICIT_MODE_REQUIRED');
+  const localSession = mode === '--resume-local-session';
+  const resume = mode !== '--authorized-six';
   const guard = () => {
     const leases = JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json', 'utf8')).leases;
     const lease = leases['writer-matchrim-native99'];
@@ -135,7 +136,18 @@ async function main() {
       return { status: response.status, elapsedMs: Math.round(performance.now() - started),
         bytes: length, sha256: sha(bytes), payload };
     };
-    if (resume) {
+    if (localSession) {
+      const sessionFile = '/Users/GOIKO/Library/Application Support/Matchrim QA/session255/PRIVATE-SESSION.json';
+      assert(!fs.lstatSync(sessionFile).isSymbolicLink()
+        && (fs.statSync(sessionFile).mode & 0o777) === 0o600, 'PRIVATE_LOCAL_SESSION_MODE');
+      session = JSON.parse(fs.readFileSync(sessionFile, 'utf8'));
+      validateSession132(session);
+      assert(session.is_anonymous !== true && session.user?.is_anonymous !== true, 'ANONYMOUS_SESSION_HOLD');
+      secrets.push(session.access_token, session.refresh_token);
+      save('LOCAL-SESSION-RESERVED.json', { atUTC: new Date().toISOString(), userIdSHA256: verified.userIdSHA256,
+        source: 'Human-run same-account login255; no refresh/password submission by this probe' });
+      report.localSession255 = true;
+    } else if (resume) {
       const accessFile = '/Users/GOIKO/Documents/Codex/2026-07-26/tarea-recuperada-desde-anclados-nombre-original-8/artifacts/matchrim97-physical-20261020/account/PRIVATE-ACCESS.json';
       const flags = execFileSync('/usr/bin/stat', ['-f', '%Sf', accessFile],
         { encoding: 'utf8', timeout: 3000, stdio: ['ignore', 'pipe', 'pipe'] }).trim().split(',');
@@ -171,7 +183,7 @@ async function main() {
       save('PRIVATE-SESSION.json', session);
     }
     validateSession132(session);
-    assert(session.expires_at * 1000 > Date.now() + 120000, 'SESSION_EXPIRED_HOLD');
+    assert(validateSession132(session).expiresAt * 1000 > Date.now() + 120000, 'SESSION_EXPIRED_HOLD');
     for (const [index, entry] of plan253.entries()) {
       const number = String(index + 1).padStart(2, '0');
       save(number + '-RESERVED.json', { index: index + 1, label: entry.label, body: entry.body, atUTC: new Date().toISOString() });

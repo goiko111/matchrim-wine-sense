@@ -1,5 +1,10 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-26, Session255 Local Recovery Prepared / Human QA Password Entry Required
+
+- User cannot download old private access file. No repeated hydration attempt. Prepared human-run `python3 scripts/login-matchrim-qa255.py`: masked TTY-only password input, one same-account QA Authlogin, no password stored, strict bound identity/issuer/expiry, mode0600session in mode0700Library/Application Support/Matchrim QA/session255(outside iCloud). Not executed; any necessary password recovery/change remains human-only in existing Matchrim UI, no email/reset submitted. [Scope and verified tests](docs/MATCHRIM_SESSION_255_2026-10-26.md).
+- New253`--resume-local-session` preserves SAME6ledger/original400, validates local255session, no password/refresh submission; expiry uses actual JWTexp not optional raw expires_at. Six new synthetic validator groups +8affected253decoder groups/TS/lintPASS, not live Auth/catalogue/affinity. Sixcatalogue allowance still **0/6used**, paid50requests/15EURunchanged.124/source899bdf1unchanged; no web/main/backend/Keychain/GUI/phone/IA/images/Lovable/TestFlight. GoalBLOCKED/monitorPAUSED unchanged; writer8d6849f4onlythis delta thenrelease.
+
 ## Current Gate: 2026-10-26, Hosted254 Exact QA File Still Dataless / Download Requested / Six Reads Untouched
 
 - Owner confirms download, but exact original0600/271bytePRIVATE-ACCESS.jsonstill `compressed,dataless`; no alternate file in its private directory. Public Foundation download request acceptedtrue/noerror, bounded25second flags stilldataless; not successful download. Scoped fileproviderctl/NSURLmetadata diagnostics blocked, only own70837/71287terminatedexit143; all sessions ended. No password/Auth/catalogue request in254,253failed400preserved, same6allowance **0/6used**. [Exact observations and human gate](docs/MATCHRIM_HOSTED_254_2026-10-26.md).
