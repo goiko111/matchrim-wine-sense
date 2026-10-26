@@ -1,13 +1,14 @@
 import { canAdmitNativeCatalogLookup97, type NativeCatalogAdmissionCandidate97 } from './nativeCatalogAdmission97';
 import { hasMissingVisibleQualifier102 } from './nativeWineQualifier102';
 import { isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
-import { hasWinerimGeographyConflict } from './winerimOriginalSheet';
-import { masterSearchParams188, parseMasterPage188, parseMasterDetail188, masterVintageEvidence188,
-  type MasterQuery188, type MasterDetail188 } from './nativeMasterContract188';
+import { canLookupWinerimOriginal, hasWinerimGeographyConflict } from './winerimOriginalSheet';
+import { parseMasterPage188, parseMasterPage216, parseMasterDetail188, masterVintageEvidence188,
+  type MasterDetail188 } from './nativeMasterContract188';
+import { masterSearchParams216, type MasterQuery216 } from './nativeMasterOptIn216';
 
 // Prepared for the authenticated server bridge, not the old proposed102wire
 // contract. The app does not import/activate this adapter until hosted QA passes.
-export type MasterOperation195 = { operation: 'search'; query: MasterQuery188 }
+export type MasterOperation195 = { operation: 'search'; query: MasterQuery216 }
   | { operation: 'detail'; mantalakWineId: number };
 export type MasterInvoke195 = (operation: MasterOperation195, signal: AbortSignal) => Promise<unknown>;
 type AuthenticatedFunctions195 = { invoke: (name: string, options: {
@@ -63,15 +64,18 @@ const sameReference = (input: NativeCatalogAdmissionCandidate97, wine: Pick<Mast
 
 export const lookupMasterReference195 = async (
   input: NativeCatalogAdmissionCandidate97, invoke: MasterInvoke195, signal?: AbortSignal, timeoutMs = 8000,
+  options: { includeUnlisted?: true; humanIdentity?: true; limit?: 10 | 50 } = {},
 ): Promise<MasterReferenceOutcome195> => {
   if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
   try {
-    if (!canAdmitNativeCatalogLookup97(input) || hasMissingVisibleQualifier102(input)) return pending('identity-required');
+    const admitted = options.humanIdentity === true ? canLookupWinerimOriginal(input) : canAdmitNativeCatalogLookup97(input);
+    if (!admitted || hasMissingVisibleQualifier102(input)) return pending('identity-required');
   } catch { return pending('identity-required'); }
   const requested = input.vintage == null ? null : String(input.vintage);
-  const query: MasterQuery188 = { name: input.name.trim(), winery: input.producer!.trim(),
-    ...(requested ? { vintage: requested, vintageMatch: 'prefer' } : {}), limit: 50, page: 1 };
-  if (!masterSearchParams188(query)) return pending('identity-required');
+  const query: MasterQuery216 = { name: input.name.trim(), winery: input.producer!.trim(),
+    ...(options.includeUnlisted === true ? { includeUnlisted: true as const } : {}),
+    ...(requested ? { vintage: requested, vintageMatch: 'prefer' } : {}), limit: options.limit ?? 50, page: 1 };
+  if (!masterSearchParams216(query)) return pending('identity-required');
   const controller = new AbortController(); let stop: () => void = () => undefined;
   const deadline = new Promise<never>((_resolve, reject) => { stop = () => reject(new Error('STOPPED')); });
   const abort = () => { controller.abort(); stop(); };
@@ -86,7 +90,8 @@ export const lookupMasterReference195 = async (
     return result;
   };
   try {
-    const page = parseMasterPage188(await read({ operation: 'search', query }), 1, 50);
+    const parsePage = options.includeUnlisted === true ? parseMasterPage216 : parseMasterPage188;
+    const page = parsePage(await read({ operation: 'search', query }), 1, query.limit!);
     if (!page) return pending('unavailable');
     // An exact-looking row in a partial page does not prove uniqueness.
     if (page.total !== page.count) return pending('incomplete', page.total);

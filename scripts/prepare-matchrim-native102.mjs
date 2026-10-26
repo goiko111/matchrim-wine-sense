@@ -32,7 +32,8 @@ fs.mkdirSync(root, { mode: 0o700 });
 const receipt = { startedUTC: new Date().toISOString(), commit, sourceFingerprints,
   sourceDirty: Boolean(git('status', '--porcelain=v1')), build: candidateBuild, version: '1.0', root,
   noWebPublish: true, noBackendDeployment: true, noTestFlightUpload: true,
-  masterConnectionActive: false, publicGlobalCatalogueActive: true, paidModelStarts: 0, lovableAgentTurns: 0 };
+  masterConnectionActive: false, hostedMasterReferenceActive: true, hostedMasterAutomaticLookups: false,
+  publicGlobalCatalogueActive: true, paidModelStarts: 0, lovableAgentTurns: 0 };
 try {
   const log = fs.openSync(path.join(root, 'typecheck.log'), 'wx', 0o600);
   const result = spawnSync(process.execPath, ['node_modules/typescript/bin/tsc', '-p', 'tsconfig.app.json', '--noEmit'], {

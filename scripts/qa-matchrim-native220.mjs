@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { execFileSync, spawn, spawnSync } from 'node:child_process';
 
 const repo = process.cwd(), out = path.resolve(process.argv[2]);
-const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close', 'rescan', 'discard-visual', 'quiz', 'result-actions', 'gallery-cancel'].includes(mode));
+const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close', 'rescan', 'discard-visual', 'quiz', 'result-actions', 'gallery-cancel', 'master-catalogue'].includes(mode));
 if (mode === 'result-actions') assert(process.argv[6], 'RESULT_ACTIONS_REQUIRES_OWN_PREVIOUS_COMPLETED_QUIZ');
 const sizeMode = process.argv[7] || 'both'; assert(['both', 'normal', 'max'].includes(sizeMode));
 if (mode === 'discard-visual') assert.equal(sizeMode, 'max', 'DISCARD_VISUAL_REQUIRES_ACTUAL_MAX_TEXT');
@@ -32,7 +32,7 @@ const guard = () => {
 };
 const run = args => { guard(); return execFileSync('/usr/bin/xcrun', args, { env, encoding: 'utf8', timeout: 120000 }); };
 const verifySource = () => {
-  assert(prep.passed && compiled.passed && [110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124].includes(prep.build) && compiled.sourceCommit === prep.commit);
+  assert(prep.passed && compiled.passed && [110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125].includes(prep.build) && compiled.sourceCommit === prep.commit);
   for (const [file, hash] of Object.entries(prep.sourceFingerprints)) assert.equal(sha(fs.readFileSync(path.join(repo, file))), hash, file);
   for (const [file, hash] of Object.entries(prep.webResources)) assert.equal(sha(fs.readFileSync(appSource + '/public/' + file)), hash, file);
   assert.equal(sha(fs.readFileSync(appSource + '/App')), compiled.app.executableSHA256);
@@ -40,12 +40,14 @@ const verifySource = () => {
 guard(); verifySource(); fs.mkdirSync(out, { mode: 0o700 });
 const receipt = { startedUTC: new Date().toISOString(), passed: false, sourceCommit: prep.commit, build: prep.build, bundleId, device,
   leases: { heavy: env.MATCHRIM102_HEAVY_LEASE_ID, simulator: env.MATCHRIM104_SIMULATOR_LEASE_ID, desktop: env.MATCHRIM220_DESKTOP_LEASE_ID, writer: env.MATCHRIM102_WRITER_LEASE_ID },
-  scope: `Compiled${prep.build} native app, ${previous ? 'exact own previously isolated anonymous' : 'fresh'} QA container, external network denied by CSP plus early JS guards. ${mode === 'gallery-cancel'
+  scope: `Compiled${prep.build} native app, ${previous ? 'exact own previously isolated anonymous' : 'fresh'} QA container, external network denied by CSP plus early JS guards. ${mode === 'master-catalogue'
+    ? 'Synthetic unsigned offline user, actual native OCR input plus manual identity correction, retained real catalogue payloads intercepted locally, explicit lookup/confirmation and vintage invalidation. No real account or live backend call.' : mode === 'gallery-cancel'
     ? 'Actual native gallery picker opening/cancellation/retry only; no photo selection, File injection, OCR, camera capture, Photos permission acceptance or account.' : mode === 'result-actions'
     ? 'Actual retained anonymous quiz result actions: scan/restaurant destinations, unaccepted privacy, local QR disclosure, restart/reset and relaunch; no share/copy activation, account or OCR.' : mode === 'quiz'
     ? 'Actual anonymous 20-question quiz, local profile/Home and restart retention only; no account, OCR or gallery test in this mode.'
     : 'Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only.'} Not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.`, stages: [],
-  liveAccountsUsed: false, catalogueDataInjected: false, modelCallsPermitted: 0, webPublished: false, uploaded: false };
+  liveAccountsUsed: false, catalogueDataInjected: mode === 'master-catalogue', syntheticAccount: mode === 'master-catalogue',
+  modelCallsPermitted: 0, webPublished: false, uploaded: false };
 let originalSize;
 try {
   const status = Object.values(JSON.parse(run(['simctl', 'list', 'devices', '--json'])).devices).flat().find(value => value.udid === device);
@@ -62,6 +64,19 @@ try {
   const guardSource = fs.readFileSync('scripts/matchrim-offline220.js');
   fs.writeFileSync(app + '/public/qa220-guard.js', guardSource, { flag: 'wx' });
   fs.writeFileSync(app + '/public/index.html', html.replace('<head>', '<head><meta http-equiv="Content-Security-Policy" content="' + csp + '"><script src="/qa220-guard.js"></script>'));
+  if (mode === 'master-catalogue') {
+    const extra = fs.readFileSync('scripts/matchrim-master259-offline.js');
+    fs.writeFileSync(app + '/public/qa259-guard.js', extra, { flag: 'wx' });
+    const guarded = fs.readFileSync(app + '/public/index.html', 'utf8');
+    fs.writeFileSync(app + '/public/index.html', guarded.replace('<script src="/qa220-guard.js"></script>',
+      '<script src="/qa220-guard.js"></script><script src="/qa259-guard.js"></script>'));
+    const ledger = 'qa-artifacts/master253-20261026/hosted-six-r1/';
+    fs.copyFileSync(ledger + '02-BODY.json', app + '/public/qa259-search.json');
+    fs.copyFileSync(ledger + '03-BODY.json', app + '/public/qa259-detail.json');
+    receipt.master259 = { guardSHA256: sha(extra), syntheticUser: '00000000-0000-4000-8000-000000000259',
+      searchSHA256: sha(fs.readFileSync(ledger + '02-BODY.json')), detailSHA256: sha(fs.readFileSync(ledger + '03-BODY.json')),
+      networkCallsAllowed: 0, realAccountUsed: false };
+  }
   const photo = 'qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-061.jpg';
   fs.copyFileSync(photo, app + '/public/qa220-label.jpg');
   receipt.qaOnlyChanges = { bundleId, csp, indexSHA256: sha(fs.readFileSync(app + '/public/index.html')), guardSHA256: sha(guardSource), photo: { file: photo, sha256: sha(fs.readFileSync(photo)) } };
@@ -106,6 +121,8 @@ try {
     else args.push('-skip-testing:Probe97UITests/MatchrimOffline220Tests/testRetainedQuizResultActions');
     if (mode === 'gallery-cancel') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testNativeGalleryPickerCancellation');
     else args.push('-skip-testing:Probe97UITests/MatchrimOffline220Tests/testNativeGalleryPickerCancellation');
+    if (mode === 'master-catalogue') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testNativeMasterCatalogue259');
+    else args.push('-skip-testing:Probe97UITests/MatchrimOffline220Tests/testNativeMasterCatalogue259');
     const fd = fs.openSync(root + '/runtime.log', 'wx', 0o600);
     const child = spawn(env.DEVELOPER_DIR + '/usr/bin/xcodebuild', args, { env, stdio: ['ignore', fd, fd] });
     let stopped = null;

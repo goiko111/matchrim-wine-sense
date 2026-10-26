@@ -1,5 +1,61 @@
 # Hosted253: secret saved by owner, QA authentication still blocked
 
+## Native259 Implementation Delta, Candidate125 Not Yet Compiled
+
+The new human two-hour scope runs until26Oct12:50Europe/Madrid. Native scanner
+primary lookup now uses the existing authenticated Edge invocation for an explicit
+master-reference search. It never embeds the catalogue secret or auto-starts a
+lookup. The existing public recovery is retained as a collapsed alternative or
+anonymous/missing-producer fallback. Web scanner JSX is byte-equivalent after
+removing exactly the new native guarded block and its two imports.
+
+195default behaviour remains unchanged for existing callers. New opt-in adds
+includeUnlisted:true, narrow limit10 and humanIdentity admission only for an
+explicitly corrected manual candidate. The latter does not pretend manually
+entered fields were OCR evidence. Both modes retain strict query, qualifier,
+geography and search/detail identity checks. A partial page does not prove a
+unique match; max2reads, one search and one canonical detail, no retry/pagination.
+
+Native259issues a frozen, candidate-bound reference via WeakSet only after this
+resolver succeeds. A storage/JSON clone, different candidateID/name/producer/year
+or correction cannot reuse it. No default or source-less sensory row receives
+affinity/learning authority. Original requested vintage remains unchanged; a
+canonical wine without publicID never gets an invented public link. A found
+proposal does not mutate the batch until explicit Esta es mi referencia. The
+consumer then distinguishes reference found from missing sensory data and
+unknown vintage instead of saying the wine was not found.
+
+Verified offline deltas:8resolver groups with retained actual258business payloads
+and50distinct synthetic profiles;8actual component-code/controlled-hook groups
+cover no automatic request/confirmation, pending doubleclick, cancellation,
+owner/context/disabled stale responses, unmount, no private error exposure and
+native-only scanner wiring. Affected195eleven groups and228six cancellation cases,
+focused TypeScript/ESLint and Swiftparse PASS. The first new50fixture mistakenly
+contained36unique vectors; its failed assertion is preserved in execution output,
+then a third varying axis fixed uniqueness. The first UIinverse failed on a
+single trailing newline, not product code; the corrected comparison passes.
+
+These are not50users, taste accuracy, new image recognition or native pixel QA.
+New125candidate must be prepared from a clean commit, compiled and tested in
+normal/MAX text. New master-catalogue mode in the existing220runner uses a fresh
+own isolated QAcontainer, a deliberately invalid unsigned synthetic local session,
+actual local AppleVision input plus manual correction and retained catalogue
+responses intercepted locally. CSP/early guards deny all external networking.
+No real account/token, Authserver, model, catalogueGET or winewrite is used. The
+exact name/winery/vintage query shape in259is not newly validated live by the
+earlier six different operations; preserve this distinction after offline QA.
+
+125harness expects zero master operations until explicit search, exactly2local
+intercepts after it, no automatic selection, explicit confirmation, honest
+batch gap, no fake public URL, close/reopen retention and link invalidation on
+harvest edit with no retry. Runtime/visual results pending. Candidate124 remains
+last compiled, all248/252previous native proofs remain scoped to124.
+
+No network quota/gasto expanded. Current6/6free allowance consumed;50paid/15EUR
+unchanged. No backend/main/web publication or TestFlight. Remaining external
+sensory/vintage evidence, full200recognition and actual account-save/distribution
+gates are not closed by this implementation or fixture.
+
 ## Resolution258: Same Six Reads Executed Successfully, 26-Oct08:25UTC
 
 Historical authentication failures below remain failures. After the owner reset

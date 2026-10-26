@@ -30,6 +30,8 @@ import { hasMissingVisibleQualifier102 } from '@/utils/nativeWineQualifier102';
 import { applyGlobalCatalogue103, independentGlobalProducer103, isGlobalWine103, lookupGlobalCatalogue103 } from '@/utils/nativeGlobalCatalogue103';
 import { GlobalWinePicker103, GlobalWineReference103 } from '@/components/wine-import/NativeGlobalCatalogue103';
 import { GlobalWineRecovery104 } from '@/components/wine-import/GlobalWineRecovery104';
+import { NativeMasterLookup259, NativeMasterReference259 } from '@/components/wine-import/NativeMasterLookup259';
+import { nativeMasterLink259 } from '@/utils/nativeMasterLink259';
 import { AiRimContextGuide } from '@/components/AiRimContextGuide';
 import { WineComparisonWorkspace } from '@/components/wine-import/WineComparisonWorkspace';
 import { LabelAnalysisView } from '@/components/wine-import/LabelAnalysisView';
@@ -1541,8 +1543,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   canExplainAffinity={Boolean(nativeConsumer?.canExplainAffinity)} hasProfile={Boolean(scanProfile?.profile)}
                   pendingAffinity={nativeConsumer?.pending}
                   affinity={affinityExplanation} disabled={regionActionsLocked}
-                  catalogueReference={isGlobalWine103(selectedCandidate, selectedCandidate.globalRecord)
-                    ? <GlobalWineReference103 candidate={selectedCandidate} profile={scanProfile?.profile ?? null} /> : null}
+                  catalogueReference={nativeMasterLink259(selectedCandidate)
+                    ? <NativeMasterReference259 candidate={selectedCandidate} />
+                    : isGlobalWine103(selectedCandidate, selectedCandidate.globalRecord)
+                      ? <GlobalWineReference103 candidate={selectedCandidate} profile={scanProfile?.profile ?? null} /> : null}
                   onReturnToBatch={phase === 'ready' ? () => {
                     setNativeResultView('wines');
                     setSelectedRegionId(null);
@@ -1555,6 +1559,19 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     details.scrollIntoView({ block: 'start', behavior: 'instant' });
                   }}
                   lookup={!nativeConsumer?.catalogIdentityLinked ? <div className="min-w-0" data-testid="native-manual-affinity-lookup">
+                    <NativeMasterLookup259 key={manualLookupKey} candidate={selectedCandidate}
+                      contextKey={manualLookupKey} ownerId={user?.id ?? null} disabled={manualLookupContext.locked}
+                      invoke={(operation, signal) => invokeEdgeFunction('matchrim-master-catalog', operation, signal)}
+                      onConfirmed={confirmed => {
+                        if (currentManualLookupKey.current !== manualLookupKey || !nativeMasterLink259(confirmed)) return;
+                        updateRegion(selectedRegion.id, region => {
+                          const candidate = region.candidates.find(value => value.id === selectedCandidate.id);
+                          if (region.status === 'discarded' || region.selectedCandidateId !== selectedCandidate.id || !candidate
+                            || JSON.stringify({ ...manualLookupContext, candidate }) !== manualLookupKey) return region;
+                          return { ...region, status: 'recognized', error: null, fallback: null,
+                            candidates: region.candidates.map(value => value.id === selectedCandidate.id ? confirmed : value) };
+                        });
+                      }} fallback={
                     <GlobalWineRecovery104 key={manualLookupKey} contextKey={manualLookupKey} disabled={manualLookupContext.locked}
                       image={selectedRegion.cropDataUrl}
                       reading={localReading?.regionId === selectedRegion.id ? localReading.value : undefined}
@@ -1571,6 +1588,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                             candidates: region.candidates.map(value => value.id === selectedCandidate.id ? confirmed : value) };
                         });
                       }} />
+                    } />
                   </div> : null}
                   onCorrect={() => {
                     const input = document.getElementById('region-wine-name');

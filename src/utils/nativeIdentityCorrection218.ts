@@ -31,5 +31,5 @@ export const correctNativeIdentity218 = (candidate: WineCandidate, identity: Nat
   // Harvest changes invalidate the same catalogue/sensory authority as a name
   // correction; retain only the explicitly entered new harvest, never old facts.
   return { ...correctWineCandidateIdentity(candidate, { name: next.name, producer: next.producer }),
-    masterRecord: null, vintage: next.vintage };
+    masterRecord: null, masterLink259: null, vintage: next.vintage };
 };

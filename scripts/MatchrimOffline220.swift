@@ -2,6 +2,57 @@ import Foundation
 import XCTest
 
 final class MatchrimOffline220Tests: XCTestCase {
+    @MainActor func testNativeMasterCatalogue259() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")
+        app.terminate(); app.launch(); XCUIDevice.shared.orientation = .portrait
+        defer { capture(app, "master259-end") }
+        let skip = app.buttons["Saltar guía"].firstMatch
+        if skip.waitForExistence(timeout: 2) && skip.isHittable { skip.tap() }
+        XCTAssertTrue(app.buttons["Buscar vino o bodega"].waitForExistence(timeout: 15))
+        try tap(app.links["Escanear"].firstMatch, app)
+        try tap(app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Botellas")).firstMatch, app)
+        let privacy = app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "He leído el aviso de privacidad del escáner")).firstMatch
+        if privacy.waitForExistence(timeout: 3) { try tap(privacy, app); try tap(app.buttons["Entiendo y continuar"].firstMatch, app) }
+        try tap(app.switches["Una etiqueta"].firstMatch, app)
+        try tap(app.buttons["QA220 cargar etiqueta local"].firstMatch, app)
+        let correct = app.buttons["Corregir identificación"].firstMatch
+        XCTAssertTrue(correct.waitForExistence(timeout: 45) || app.buttons["Revisar vinos"].firstMatch.exists)
+        if !correct.exists { try tap(app.buttons["Revisar vinos"].firstMatch, app) }
+        try tap(correct, app)
+        try fill(app.textFields["Vino"].firstMatch, "La Migratoria", app)
+        try fill(app.textFields["Bodega"].firstMatch, "Bodegas Frontonio", app)
+        try fill(app.textFields["Añada (opcional)"].firstMatch, "2023", app)
+        try tap(app.buttons["Aplicar corrección"].firstMatch, app)
+        XCTAssertTrue(app.staticTexts["QA259 consultas locales: 0"].firstMatch.exists, "No automatic master lookup")
+        let search = app.buttons["Buscar este vino en Winerim"].firstMatch
+        try tap(search, app, activate: false)
+        capture(app, "master259-before-explicit-search")
+        try tap(search, app)
+        let choose = app.buttons["Esta es mi referencia"].firstMatch
+        XCTAssertTrue(choose.waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["QA259 consultas locales: 2"].firstMatch.exists)
+        try tap(choose, app, activate: false)
+        capture(app, "master259-proposal-not-yet-confirmed")
+        try tap(choose, app)
+        XCTAssertFalse(choose.exists, "Only explicit choice applies the reference")
+        let title = app.staticTexts["Vino encontrado; faltan datos para compararlo contigo"].firstMatch
+        try tap(title, app, activate: false)
+        capture(app, "master259-linked-no-invented-affinity")
+        XCTAssertFalse(app.links["Ver ficha original Winerim"].firstMatch.exists, "Unlisted canonical ID must not become a fake public URL")
+        try tap(app.buttons["Cerrar"].firstMatch, app)
+        XCTAssertTrue(app.staticTexts["Sin calcular"].firstMatch.waitForExistence(timeout: 8))
+        capture(app, "master259-batch-honest-gap")
+        try tap(app.buttons["Revisar vinos"].firstMatch, app)
+        try tap(app.buttons["Corregir identificación"].firstMatch, app)
+        try fill(app.textFields["Añada (opcional)"].firstMatch, "2024", app)
+        try tap(app.buttons["Aplicar corrección"].firstMatch, app)
+        try tap(app.buttons["Buscar este vino en Winerim"].firstMatch, app, activate: false)
+        XCTAssertFalse(title.exists, "Changing harvest invalidates the linked reference")
+        XCTAssertTrue(app.staticTexts["QA259 consultas locales: 2"].firstMatch.exists, "Correction must not retry lookup")
+        capture(app, "master259-vintage-edit-invalidates-link")
+    }
+
     @MainActor func testNativeGalleryPickerCancellation() throws {
         continueAfterFailure = false
         let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")

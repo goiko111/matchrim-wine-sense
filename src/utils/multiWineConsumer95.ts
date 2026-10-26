@@ -5,6 +5,7 @@ import { isVerifiedWinerimSheetForIdentity, validateWinerimOriginalSensory } fro
 import { isVerifiedNativeMaster102 } from './nativeMasterCatalog102';
 import { exactGlobalVintage103, globalSensory103, isGlobalWine103 } from './nativeGlobalCatalogue103';
 import { isPendingLocalIdentity109 } from './nativeSingleLabel109';
+import { masterAffinityGap259, nativeMasterLink259 } from './nativeMasterLink259';
 
 export type NativeAffinityGap210 = {
   reason: 'identity' | 'catalogue-link' | 'vintage' | 'profile' | 'sensory' | 'score';
@@ -16,6 +17,9 @@ export type NativeAffinityGap210 = {
 
 // Presentation only: OCR confidence and user review never certify a catalog sheet.
 const nativeWineConsumerBase = (candidate: WineCandidate | null, profile: MatchrimProfileLike | null) => {
+  if (nativeMasterLink259(candidate)) return { catalogIdentityLinked: true,
+    identityLabel: 'Referencia del catálogo Winerim', affinityLabel: 'Sin datos suficientes',
+    affinityValue: 'Sin calcular', canExplainAffinity: false, sensoryEvidenceReady: false };
   const global = candidate && isGlobalWine103(candidate, candidate.globalRecord) ? candidate.globalRecord : null;
   if (global && candidate) {
     const exact = exactGlobalVintage103(candidate, global);
@@ -80,7 +84,10 @@ export const nativeWineConsumerResult = (candidate: WineCandidate | null, profil
   const global = candidate && isGlobalWine103(candidate, candidate.globalRecord) ? candidate.globalRecord : null;
   let pending: NativeAffinityGap210 | null = null;
   if (!result.canExplainAffinity) {
-    if (!candidate || isPendingLocalIdentity109(candidate) || !candidate.producer?.trim()) {
+    const master = nativeMasterLink259(candidate);
+    if (master) {
+      pending = masterAffinityGap259(master);
+    } else if (!candidate || isPendingLocalIdentity109(candidate) || !candidate.producer?.trim()) {
       pending = { reason: 'identity', title: 'Primero, identifiquemos el vino', summary: 'Nombre y bodega sin confirmar',
         description: 'Leer la uva o la fecha no basta para saber qué vino tienes. Todavía no hemos confirmado su nombre y bodega.',
         nextStep: 'Compara las propuestas con tu etiqueta o corrige los datos que puedas leer.' };
