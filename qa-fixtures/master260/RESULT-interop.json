@@ -1,0 +1,18 @@
+{
+  "passed": 7,
+  "failed": 0,
+  "externalCalls": 0,
+  "realUsers": 0,
+  "databaseWrites": 0,
+  "matchingPublicIdCorrespondenceForPersonalVerdict": true,
+  "persistedMasterConflictsCheckedAcrossOlderAdapters": true,
+  "unknownVintageStillAbstains": true,
+  "sensoryOrLearningGranted": false,
+  "legacyRescan159ChecksPassed": 16,
+  "ui259GroupsPassed": 8,
+  "typecheck": "PASS",
+  "lint": "PASS",
+  "native125Build": "PENDING",
+  "nativeVisual": "PENDING",
+  "scope": "Offline controlled ID interoperability and actual callback code, not real users or deployed persistence"
+}

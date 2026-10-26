@@ -9,7 +9,7 @@ import { resolveNativeRescanVerdict159, nativeVerdictsSnapshot159 } from '../src
 import { confirmedLabelInsertId } from '../src/utils/labelScanSave';
 import { makeCellarCatalogEvidence, withCellarInitialAffinity, cellarTrainingRows, readCellarSensoryEvidence } from '../src/utils/bodegaAffinity';
 import { isGlobalWine103 } from '../src/utils/nativeGlobalCatalogue103';
-import { nativeMasterAudit102 } from '../src/utils/nativeMasterCatalog102';
+import { nativeMasterAudit102, lookupNativeMaster102, applyNativeMaster102 } from '../src/utils/nativeMasterCatalog102';
 import { makeCellarPublicReference107 } from '../src/utils/cellarPublicReference107';
 import { makeCellarReferenceStyle110 } from '../src/utils/cellarReferenceStyle110';
 import type { WineCandidate } from '../src/utils/multiWineScan';
@@ -109,6 +109,33 @@ try {
     const legacy = { ...row, sensory_attributes: attributes, place_details: {
       bodega_sensory_evidence: makeCellarCatalogEvidence(row, `mantalak:${zorrera.mantalakWineId}`, attributes) } };
     assert.equal(resolveNativeRescanVerdict159(owner, nativeVerdictsSnapshot159(owner, [legacy], 1), candidate), 'love');
+    const samePublic = { ...legacy, place_details: {
+      bodega_sensory_evidence: makeCellarCatalogEvidence(row, `winerim-public-store:${zorrera.representativePublicId}`, attributes) } };
+    assert.equal(resolveNativeRescanVerdict159(owner, nativeVerdictsSnapshot159(owner, [samePublic], 1), candidate), 'love');
+    const wrongPublic = { ...legacy, place_details: {
+      bodega_sensory_evidence: makeCellarCatalogEvidence(row, `winerim-public-store:${zorrera.representativePublicId + 1}`, attributes) } };
+    assert.equal(resolveNativeRescanVerdict159(owner, nativeVerdictsSnapshot159(owner, [wrongPublic], 1), candidate), null);
+  });
+  await test('Present persisted260metadata also constrains older verified master adapters', async () => {
+    const hosted = await make(zorrera, 2015), row = rowFor(actualMapper({ candidate: hosted }));
+    const identity = { namespace: 'mantalak', id: String(zorrera.mantalakWineId), name: hosted.name,
+      producer: hosted.producer, vintage: '2015', region: null, country: null };
+    const legacyInput: WineCandidate = { ...hosted, evidence: [hosted.name, hosted.producer!, '2015'] };
+    let calls = 0;
+    const result = await lookupNativeMaster102(legacyInput,
+      'https://app.winerim.com/api/v1/matchrim/catalogue', undefined, async () => {
+        calls++;
+        return Response.json(calls === 1 ? { contract: 'matchrim-master-catalogue-v1', scope: 'full-master',
+          complete: true, count: 1, matches: [identity] }
+          : { contract: 'matchrim-master-catalogue-v1', scope: 'full-master', wine: { ...identity, sensory: null } });
+      });
+    assert(result.status === 'verified');
+    const legacy = { ...applyNativeMaster102(legacyInput, profile, result.record), masterLink259: null };
+    assert.equal(resolveNativeRescanVerdict159(owner, nativeVerdictsSnapshot159(owner, [row], 1), legacy), 'love');
+    const conflicting = plain(row); conflicting.place_details.winerim_master_reference260.mantalak_wine_id++;
+    for (const invalid of [conflicting, { ...row, place_details: { winerim_master_reference260: { bad: true } } }]) {
+      assert.equal(resolveNativeRescanVerdict159(owner, nativeVerdictsSnapshot159(owner, [invalid], 1), legacy), null);
+    }
   });
   await test('Unknown vintage, foreign owner, conflicting canonical ID, malformed binding and contradictory ratings never leak a verdict', async () => {
     const candidate = await make(zorrera, 2015), row = rowFor(actualMapper({ candidate }));

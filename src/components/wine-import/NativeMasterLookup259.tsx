@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { BookOpen, Check, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { buildAuthRedirectPath } from '@/utils/navigation';
 import type { WineCandidate } from '@/utils/multiWineScan';
 import type { MasterInvoke195 } from '@/utils/nativeMasterReference195';
 import { masterAffinityGap259, nativeMasterLink259, resolveMasterCandidate259 } from '@/utils/nativeMasterLink259';
@@ -67,7 +69,16 @@ export const NativeMasterLookup259 = ({ candidate, contextKey, ownerId, disabled
       }
     }
   };
-  if (!ownerId || !candidate.producer?.trim() || !candidate.name.trim()) return <>{fallback}</>;
+  if (!candidate.producer?.trim() || !candidate.name.trim()) return <>{fallback}</>;
+  if (!ownerId) return <div className="min-w-0 space-y-3" data-testid="native-master-auth259">
+    <p className="text-sm leading-6 text-stone-700">El catálogo ampliado de Winerim requiere una sesión. Tu etiqueta sigue aquí.</p>
+    <Button asChild disabled={disabled} className="h-auto min-h-11 w-full gap-2 whitespace-normal px-3 py-3 text-left">
+      <Link to={buildAuthRedirectPath('/escanear/etiqueta')} aria-disabled={disabled} onClick={event => { if (disabled) event.preventDefault(); }}>
+        <BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" /> Buscar con mi cuenta
+      </Link>
+    </Button>
+    <details className="min-w-0 space-y-2"><summary className="flex min-h-11 cursor-pointer items-center text-sm text-stone-700">Buscar sin iniciar sesión</summary>{fallback}</details>
+  </div>;
   return <div className="min-w-0 space-y-3" data-testid="native-master-lookup259">
     {!proposal && <Button type="button" disabled={disabled || busy} onClick={() => void run()}
       className="h-auto min-h-11 w-full min-w-0 gap-2 whitespace-normal bg-red-950 px-3 py-3 text-left text-white">

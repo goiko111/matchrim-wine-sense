@@ -2,6 +2,24 @@
 
 ## Native260: Review Caught Save And Rescan Gaps Before Compilation
 
+Follow-up before125compile closes two further ID interoperability defects:
+valid sensory traces referencing the hosted detail's exact representative public
+ID can recover a personal verdict without creating sensory/learning authority;
+present260metadata is also validated on older verified master/public adapters,
+rejecting malformed/conflicting IDs. A LibraryID without observed master mapping
+does not inherit that verdict. Seven260groups and affected16rescan159/UI259eight/
+TS/lint PASS. One first legacy-positive fixture failed because it supplied
+grounded fragments to lookup but not the old102apply function; both now receive
+the same controlled input, no production admission weakened. Original six-group
+receipt remains, separate [interopreceipt](../qa-fixtures/master260/RESULT-interop.json).
+
+Anonymous known-identity entry now explains the hosted catalogue requires a
+session, offers a local sign-in redirect back to the scanner, and retains the
+public fallback as a closed alternative. It neither starts login/network itself
+nor calls an unauthenticated master endpoint. Actual native layout still pending.
+Second125buildrequeste1560a44cancelled before execution for this fix; no stale
+candidate compile or repeated successful build. Goal end remains12:50Madrid.
+
 A parallel read-only review of2051562found two actual defects: the scanner save
 mapper did not include the new259masterlink, losing canonical reference metadata;
 the personal verdict resolver recognized only older master/public/Library formats,

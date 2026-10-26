@@ -61,14 +61,22 @@ export const resolveNativeRescanVerdict159 = (
       const savedId = (trace as Record<string, unknown>).canonical_id;
       const expectedId = hosted ? `mantalak-master:${hosted.wine.mantalakWineId}`
         : global ? `winerim-public-store:${global.id}` : master ? `mantalak:${master.id}` : sheet?.id;
-      if (hosted && savedId !== expectedId && savedId !== `mantalak:${hosted.wine.mantalakWineId}`) return false;
+      if (hosted && savedId !== expectedId && savedId !== `mantalak:${hosted.wine.mantalakWineId}`
+        && !(hosted.wine.representativePublicId !== null
+          && savedId === `winerim-public-store:${hosted.wine.representativePublicId}`)) return false;
       if (!hosted && typeof savedId === 'string' && (/^(mantalak|winerim-public-store):/.test(savedId)
         || sheet && !savedId.includes(':')) && savedId !== expectedId) return false;
     }
     const publicReference = readCellarPublicReference107(row);
     const hostedReference = readCellarMasterReference260(row);
-    if (hosted && details && Object.prototype.hasOwnProperty.call(details, 'winerim_master_reference260')
-      && (!hostedReference || hostedReference.mantalak_wine_id !== hosted.wine.mantalakWineId)) return false;
+    if (details && Object.prototype.hasOwnProperty.call(details, 'winerim_master_reference260')) {
+      if (!hostedReference) return false;
+      if (hosted && hostedReference.mantalak_wine_id !== hosted.wine.mantalakWineId) return false;
+      if (master && String(hostedReference.mantalak_wine_id) !== master.id) return false;
+      if (global && hostedReference.representative_public_id !== global.id) return false;
+      // Library IDs have no observed master-ID mapping in this contract.
+      if (sheet && !hosted && !master && !global) return false;
+    }
     if (hosted && details && Object.prototype.hasOwnProperty.call(details, 'winerim_public_catalogue') && !publicReference) return false;
     if (hosted && publicReference && publicReference.id !== hosted.wine.representativePublicId) return false;
     if (global && publicReference && publicReference.id !== global.id) return false;

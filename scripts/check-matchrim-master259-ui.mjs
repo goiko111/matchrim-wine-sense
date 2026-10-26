@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import ts from 'typescript';
 import { execFileSync } from 'node:child_process';
 import { resolveMasterCandidate259, nativeMasterLink259, masterAffinityGap259 } from '../src/utils/nativeMasterLink259.ts';
+import { buildAuthRedirectPath } from '../src/utils/navigation.ts';
 
 const source = fs.readFileSync('src/components/wine-import/NativeMasterLookup259.tsx', 'utf8');
 const root = 'qa-artifacts/master253-20261026/hosted-six-r1';
@@ -37,6 +38,8 @@ const harness = (invoke, patch = {}) => {
     require: name => name === 'react' ? hooks : name === 'react/jsx-runtime' ? { jsx, jsxs: jsx, Fragment: 'Fragment' }
       : name === 'lucide-react' ? Object.fromEntries(['BookOpen', 'Check', 'Loader2', 'X'].map(value => [value, value]))
         : name === '@/components/ui/button' ? { Button: 'Button' }
+          : name === 'react-router-dom' ? { Link: 'Link' }
+            : name === '@/utils/navigation' ? { buildAuthRedirectPath }
           : name === '@/utils/nativeMasterLink259' ? { resolveMasterCandidate259, nativeMasterLink259, masterAffinityGap259 }
             : (() => { throw Error('UNEXPECTED_IMPORT:' + name); })(),
   }, { timeout: 1000 });
@@ -84,6 +87,11 @@ try {
       const t = transport(), h = harness(t.invoke, patch);
       assert(text(h.tree()).includes('PUBLIC_FALLBACK259')); assert.equal(t.calls.length, 0);
       assert(!h.button('Buscar este vino en Winerim'));
+      if (patch.ownerId === null) {
+        const link = h.nodes().find(node => node.type === 'Link'); assert(link);
+        assert.equal(link.props.to, buildAuthRedirectPath('/escanear/etiqueta'));
+        assert(text(h.tree()).includes('requiere una sesión'));
+      }
     }
   });
   await check('Double click while pending starts one lookup; Cancel settles without retry or candidate changes', async () => {
