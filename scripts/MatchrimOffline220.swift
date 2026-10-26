@@ -24,6 +24,7 @@ final class MatchrimOffline220Tests: XCTestCase {
         try fill(app.textFields["Bodega"].firstMatch, "Bodegas Frontonio", app)
         try fill(app.textFields["Añada (opcional)"].firstMatch, "2023", app)
         try tap(app.buttons["Aplicar corrección"].firstMatch, app)
+        capture(app, "master259-corrected-before-lookup")
         XCTAssertTrue(app.staticTexts["QA259 consultas locales: 0"].firstMatch.exists, "No automatic master lookup")
         let search = app.buttons["Buscar este vino en Winerim"].firstMatch
         try tap(search, app, activate: false)
@@ -41,6 +42,7 @@ final class MatchrimOffline220Tests: XCTestCase {
         capture(app, "master259-linked-no-invented-affinity")
         XCTAssertFalse(app.links["Ver ficha original Winerim"].firstMatch.exists, "Unlisted canonical ID must not become a fake public URL")
         try tap(app.buttons["Cerrar"].firstMatch, app)
+        try tap(app.buttons["Vinos (1)"].firstMatch, app)
         XCTAssertTrue(app.staticTexts["Sin calcular"].firstMatch.waitForExistence(timeout: 8))
         capture(app, "master259-batch-honest-gap")
         try tap(app.buttons["Revisar vinos"].firstMatch, app)
@@ -382,7 +384,7 @@ final class MatchrimOffline220Tests: XCTestCase {
         // MAX content can place the correction over 2,000pt below the viewport.
         for _ in 0..<24 {
             let body = app.otherElements.matching(NSPredicate(format: "label BEGINSWITH %@", "Contenido de la región ")).firstMatch
-            let clippedControl = element.elementType == .textField || ["Aplicar corrección", "Descartar cambios", "Corregir identificación"].contains(element.label)
+            let clippedControl = regionBodyControl(element)
             let frame = element.frame
             let fits = !body.exists || !clippedControl || (frame.minY >= body.frame.minY && frame.maxY <= body.frame.maxY)
             if element.isHittable && fits && frame.minY >= 0 && frame.maxY <= contentBottom(app, for: element) { break }
@@ -403,13 +405,17 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertGreaterThanOrEqual(element.frame.minY, 0, "Control is above the viewport")
         XCTAssertLessThanOrEqual(element.frame.maxY, contentBottom(app, for: element) + 1, "Control is covered by the fixed tab bar")
         let body = app.otherElements.matching(NSPredicate(format: "label BEGINSWITH %@", "Contenido de la región ")).firstMatch
-        if body.exists && (element.elementType == .textField || ["Aplicar corrección", "Descartar cambios", "Corregir identificación"].contains(element.label)) {
+        if body.exists && regionBodyControl(element) {
             XCTAssertGreaterThanOrEqual(element.frame.minY, body.frame.minY - 1, "Control above visible sheet content")
             XCTAssertLessThanOrEqual(element.frame.maxY, body.frame.maxY + 1, "Control hidden behind the fixed footer")
         }
         XCTAssertGreaterThanOrEqual(element.frame.height, 43)
         XCTAssertGreaterThanOrEqual(element.frame.width, 43)
         if activate { element.tap() }
+    }
+    @MainActor private func regionBodyControl(_ element: XCUIElement) -> Bool {
+        element.elementType == .textField || ["Aplicar corrección", "Descartar cambios", "Corregir identificación",
+            "Buscar este vino en Winerim", "Esta es mi referencia", "Vino encontrado; faltan datos para compararlo contigo"].contains(element.label)
     }
     @MainActor private func contentBottom(_ app: XCUIApplication, for element: XCUIElement) -> CGFloat {
         let navigation = app.otherElements.matching(NSPredicate(format: "label BEGINSWITH %@", "Navegación principal")).firstMatch

@@ -1,0 +1,28 @@
+{
+  "build": 125,
+  "sourceCommit": "ae8ec225210eb97178dc7aedf0c72ef891c22388",
+  "ownerDecision": "Cerrar primero el QA visual",
+  "uploadAuthorizedWithVisualPending": false,
+  "normalFullFlow": "FAIL_NOT_CLOSED",
+  "maxText": "NOT_RUN",
+  "runs": [
+    { "folder": "qa-artifacts/native218-20261025/native220-r43", "result": "FAIL", "cause": "QA counter excluded by modal AX hiding; no automatic-call conclusion from absence", "ownAppTerminated": true, "contentSizeRestored": true },
+    { "folder": "qa-artifacts/native218-20261025/native220-r44", "result": "FAIL", "cause": "QA search tap behind fixed header; counter remains0, no proposal", "ownAppTerminated": true, "contentSizeRestored": true },
+    { "folder": "qa-artifacts/native218-20261025/native220-r45", "result": "FAIL", "cause": "QA expected list value while Scene tab remained selected", "localOperationsBeforeSearch": 0, "localOperationsAfterSearch": 2, "explicitProposalAndConfirmationReached": true, "ownAppTerminated": true, "contentSizeRestored": true }
+  ],
+  "preparedHarnessDelta": "aria-live counter; enforce region body bounds for master controls; select Vinos(1) after Close",
+  "preparedHarnessFullFlowRerun": "PENDING",
+  "capturesInspected": [
+    { "file": "qa-artifacts/native218-20261025/native220-r45/normal/attachments/02B84715-FB40-4AC7-8572-A0A68C300CAE.png", "sha256": "2b8e663d555eedf6188f12b75f392172530de7906146cfe6d18a86b936c63b48", "scope": "Search target revealed below fixed header before explicit lookup" },
+    { "file": "qa-artifacts/native218-20261025/native220-r45/normal/attachments/173EFA84-B3D2-4856-8E8D-04D6F7173896.png", "sha256": "341baa6a529c098d88d1b44ddbc81bddc7a4c5d23f0846349985878da28b71dd", "scope": "Proposal before user confirmation, controls readable, region as retained source data not independently verified" },
+    { "file": "qa-artifacts/native218-20261025/native220-r45/normal/attachments/4F5FE01D-3BB2-4593-8850-179999B5D4A4.png", "sha256": "08dbff23c0944a9774ea48b0e67f9a0193d49a9c2175165125b9f37b597e7c6b", "scope": "After explicit selection: sensory gap/year uncertainty without fabricated affinity; not full modal layout approval" }
+  ],
+  "externalCatalogueOrModelCalls": 0,
+  "realAccountsUsed": false,
+  "syntheticUnsignedSession": true,
+  "catalogueResponsesInjectedFromRetainedRealPayloads": true,
+  "photoIdentityManuallyCorrected": true,
+  "recognitionAccuracyApproved": false,
+  "webPublished": false,
+  "testFlightUploaded": false
+}

@@ -19,6 +19,9 @@
     let node = document.getElementById('qa259-counter');
     if (!node && document.body) {
       node = document.createElement('span'); node.id = 'qa259-counter';
+      // Radix hides body siblings during a modal; live regions remain in AX.
+      node.setAttribute('aria-live', 'polite');
+      node.setAttribute('aria-atomic', 'true');
       node.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
       document.body.append(node);
     }
