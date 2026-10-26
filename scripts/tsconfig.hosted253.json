@@ -1,5 +1,5 @@
 {
   "extends": "../tsconfig.app.json",
   "compilerOptions": { "types": ["vite/client", "node"], "noEmit": true },
-  "include": ["./probe-matchrim-hosted253.ts", "./check-matchrim-hosted253.ts"]
+  "include": ["./probe-matchrim-hosted253.ts", "./check-matchrim-hosted253.ts", "./check-matchrim-hosted258.ts"]
 }

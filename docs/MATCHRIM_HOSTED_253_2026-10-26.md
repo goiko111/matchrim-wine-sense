@@ -1,5 +1,60 @@
 # Hosted253: secret saved by owner, QA authentication still blocked
 
+## Resolution258: Same Six Reads Executed Successfully, 26-Oct08:25UTC
+
+Historical authentication failures below remain failures. After the owner reset
+their password and completed the masked Terminal255login, its local receipt
+confirmed HTTP200, the original QA identity, fresh expiry and passwordStored:false.
+New explicit --resume-reset-session258 validates that session and the unchanged
+zero-catalogue baseline, without a new agent password/refresh submission. It then
+reserves/executes exactly the SAME six authorized reads. Original RESULT.json and
+RESULT-QA-LOGIN.json still contain the two400failures; the new result is separate
+RESULT-RESET-SESSION.json. No quota reset, seventh request or retry.
+
+| # | Expected | Actual26Oct | Result |
+|---|---|---|---|
+|1|Listed default search remains scoped, not global absence|HTTP200, Migratoria0results, valid empty page;1430ms|PASS scope/transport|
+|2|Explicit opt-in includes canonical unlisted wine|HTTP200, La Migratoria / Bodegas Frontonio /217480, null publicID/storeURL;306ms|PASS opt-in|
+|3|Canonical217480detail with honest missing data|HTTP200,0vintages,0sensoryrows;202ms|PASS schema, affinityHOLD|
+|4|Listed canonical78397control|HTTP200, Anécdota / Altotinto,0vintages,1generic sensoryrow/sourceNULL;149ms|PASS schema, affinityHOLD|
+|5|First opt-in Rioja page, declared metrics|HTTP200,total87,count50,pageCount2,19public-null rows;217ms|PASS partial page|
+|6|Second page closes this search without duplication|HTTP200,total87,count37,17public-null;172ms;87distinct across both|PASS search pagination|
+
+Bridge opt-in/access is now independently observed working through the hosted
+function and ordinary QA JWT. The deployed source SHA/version was not queried in
+this six-read allowance, so do not infer its exact deployment commit. This is
+one complete Rioja search response, not an exported/full-master snapshot or proof
+that every catalogue wine is searchable. Historical supplied216captures had81
+rows/30public-null; preserved unchanged, current results87/36are a new capture.
+All six observed latencies sum2476ms; these are transport timings, not scanner
+OCR/vision latency or a production load/performance benchmark.
+
+Bound redacted receipt: qa-fixtures/hosted258/RESULT.json. Original local business
+responses/reservations/receipts remain under the existing253ledger. Wire SHA256
+is the hash measured before JSON parsing; BODY.json is a serialized capture, not
+claimed byte-identical to the wire. No token/key/password in the redacted receipt.
+
+New scripts/check-matchrim-hosted258.ts replays only those retained actual
+responses with external fetch disabled. Five focused groups PASS: actual results
+and summaries, scoped empty vs opt-in canonical reference,87/36pagination,
+missing/source-less sensory evidence excluded from score/learning, no reuse of the
+consumed allowance and immutable local captures. Focused TypeScript/lint PASS.
+No unrelated green suite, heavy render or native build repeated.
+
+The actual data still cannot justify affinity:217480has no sensory row;78397has
+one generic row with unknown origin and indistinguishable defaults. Both lack
+declared vintages; neither attests2023. Existing native evidence transformation
+correctly returns affinityAttributes:null, learningEligible:false. The prepared
+195adapter remains inactive/listed-only; this turn does not activate it, change
+product, grant photo identity, complete200recognitions or approve TestFlight.
+
+Latest allowance now **6/6used**. Paid50requests/15EUR unchanged. No AI/images,
+Lovablecredits, wine writes, Keychain, backend/main/web publication, phone,
+ratings or TestFlight. Candidate124/source899bdf1unchanged. Own writer
+ec6740a7-eec3-48b3-adae-1eeeac064f38/requestdf407de2, no desktop/heavy/simulator.
+Remaining gates: safe native integration, genuine sensory/vintage evidence and
+real photo-recognition/account/distribution validation, without inventing data.
+
 ## New Authorization And Actual Execution
 
 The owner reports MATCHRIM_GOIKO_KEY saved in Lovable Cloud and explicitly
