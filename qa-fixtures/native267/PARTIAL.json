@@ -1,0 +1,24 @@
+{
+  "build": 125,
+  "sourceCommit": "10076dda2cfc3eeb6a97f4a30443098b7fadec90",
+  "normal": "PASS_NATIVE220_R48_UNCHANGED",
+  "max": "FAIL_NOT_CLOSED",
+  "preservedRuns": [
+    { "folder": "qa-artifacts/native218-20261025/native220-r49", "result": "FAIL", "reason": "240second test timeout; main-page reveal scrolled the wrong direction for an above-viewport target", "proposalAndListReached": true, "ownAppTerminated": true, "contentSizeRestored": true },
+    { "folder": "qa-artifacts/native218-20261025/native220-r50", "result": "FAIL", "reason": "Actual numeric replacement assertion:2023didnotbecome2024; doubletap left caret instead of selection", "durationSeconds": 266.23151302337646, "finishedUTC": "2026-10-26T15:02:59.463Z", "ownAppTerminated": true, "contentSizeRestored": true }
+  ],
+  "capturesPersonallyInspected": [
+    "qa-artifacts/native218-20261025/native220-r49/max/attachments/C75BBFA1-6876-4D17-BA2A-5F89B7B57A13.png",
+    "qa-artifacts/native218-20261025/native220-r49/max/attachments/F7FE4974-4823-4AFB-81EC-CA1B629F278D.png",
+    "qa-artifacts/native218-20261025/native220-r49/max/attachments/C3C62611-4305-4AA4-83AC-6A94451FCDBD.png",
+    "qa-artifacts/native218-20261025/native220-r50/max/attachments/B5A0029B-12AF-4CB2-88A7-A538B0D63984.png"
+  ],
+  "preparedButNotRuntimeVerified": ["Trailingedge caret and real Delete keys; assert empty before typing2024", "MAX large-row affinity-tail screenshot"],
+  "maxTestAllowanceSeconds": 360,
+  "maxOuterWallSeconds": 480,
+  "externalCalls": 0,
+  "realAccountsOrPhoneUsed": false,
+  "webOrBackendPublished": false,
+  "testFlightUploaded": false,
+  "newSourceReleaseArchive": "PENDING"
+}

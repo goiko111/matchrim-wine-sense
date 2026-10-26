@@ -48,6 +48,10 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertTrue(row.label.contains("Sin calcular"), "Reader must hear the visible affinity state")
         XCTAssertTrue(row.label.contains("Referencia del catálogo Winerim"), "Reader must hear the linked identity state")
         capture(app, "master259-batch-honest-gap")
+        if row.frame.height > app.frame.height {
+            for _ in 0..<3 { swipeContent(app) }
+            capture(app, "master259-large-row-affinity-tail")
+        }
         try tap(app.buttons["Revisar vinos"].firstMatch, app)
         try tap(app.buttons["Corregir identificación"].firstMatch, app)
         try fill(app.textFields["Añada (opcional)"].firstMatch, "2024", app)
@@ -376,8 +380,11 @@ final class MatchrimOffline220Tests: XCTestCase {
         let current = field.value as? String ?? ""
         if !current.isEmpty {
             if field.label == "Añada (opcional)" {
-                // Cmd+A is ignored by the numeric keyboard; select its one word.
-                field.doubleTap()
+                // Numeric selection differs at MAX size. Place the caret at
+                // the trailing edge and clear with actual keyboard deletions.
+                field.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+                field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: current.count))
+                XCTAssertEqual(field.value as? String, "", "Existing year must actually clear before replacement")
             } else {
             // XCTest's installed iOS26 headers explicitly support this keyboard
             // modifier API; selection must not depend on the existing caret.
@@ -408,7 +415,7 @@ final class MatchrimOffline220Tests: XCTestCase {
                 let to = body.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: start + (downward ? fraction : -fraction)))
                 from.press(forDuration: 0.01, thenDragTo: to, withVelocity: .slow, thenHoldForDuration: 0.2)
             }
-            else { swipeContent(app) }
+            else { swipeContent(app, downward: frame.minY < max(64, app.frame.minY)) }
         }
         XCTAssertTrue(element.isHittable, element.debugDescription)
         XCTAssertGreaterThanOrEqual(element.frame.minY, 0, "Control is above the viewport")
@@ -435,11 +442,11 @@ final class MatchrimOffline220Tests: XCTestCase {
         }
         return app.frame.maxY
     }
-    @MainActor private func swipeContent(_ app: XCUIApplication) {
+    @MainActor private func swipeContent(_ app: XCUIApplication, downward: Bool = false) {
         // AX main can include offscreen content. Anchor to the actual viewport,
         // otherwise MAX pages can turn a content drag into a system-edge gesture.
-        let from = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.65))
-        let to = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25))
+        let from = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: downward ? 0.35 : 0.65))
+        let to = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: downward ? 0.75 : 0.25))
         from.press(forDuration: 0.01, thenDragTo: to, withVelocity: .slow, thenHoldForDuration: 0.2)
     }
     @MainActor private func capture(_ app: XCUIApplication, _ name: String) {

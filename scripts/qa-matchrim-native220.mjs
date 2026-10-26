@@ -97,7 +97,8 @@ try {
   const template = 'qa-artifacts/native99-20261021/native-audit-project';
   fs.cpSync(template + '/Probe97.xcodeproj', project + '/Probe97.xcodeproj', { recursive: true });
   const plan = JSON.parse(fs.readFileSync(template + '/Probe97.xctestplan'));
-  const testSeconds = mode === 'quiz' ? 360 : 240;
+  const masterMax = mode === 'master-catalogue' && sizeMode === 'max';
+  const testSeconds = mode === 'quiz' || masterMax ? 360 : 240;
   plan.defaultOptions.defaultTestExecutionTimeAllowance = testSeconds; plan.defaultOptions.maximumTestExecutionTimeAllowance = testSeconds;
   fs.writeFileSync(project + '/Probe97.xctestplan', JSON.stringify(plan, null, 2) + '\n');
   const probe = fs.readFileSync('scripts/MatchrimOffline220.swift', 'utf8').replaceAll('wine.matchrim.qa110offline220v1', bundleId);
@@ -127,7 +128,7 @@ try {
     const child = spawn(env.DEVELOPER_DIR + '/usr/bin/xcodebuild', args, { env, stdio: ['ignore', fd, fd] });
     let stopped = null;
     const stop = reason => { if (stopped) return; stopped = reason; child.kill('SIGINT'); setTimeout(() => { if (child.exitCode === null && child.signalCode === null) child.kill('SIGKILL'); }, 10000).unref(); };
-    const timer = setTimeout(() => stop('WALL_LIMIT'), mode === 'quiz' ? 480000 : 360000);
+    const timer = setTimeout(() => stop('WALL_LIMIT'), mode === 'quiz' || masterMax ? 480000 : 360000);
     const watch = setInterval(() => { try { guard(); } catch (error) { stop(String(error)); } }, 3000);
     try { stage.result = await new Promise(resolve => { child.once('error', error => resolve({ error: String(error) })); child.once('close', (code, signal) => resolve({ code, signal })); }); }
     finally { clearTimeout(timer); clearInterval(watch); fs.closeSync(fd); }
