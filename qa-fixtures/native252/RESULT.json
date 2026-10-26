@@ -1,0 +1,99 @@
+{
+  "recordedUTC": "2026-10-26T02:57:48.420Z",
+  "passed": true,
+  "scope": "Actual iOS Photos picker open/cancel/retry on own compiled124 anonymous QA container, normal/MAX. Two cycles per final run; no image selected, File injection, OCR, upload, camera capture or account. Not image selection/recognition200, real iPhone or full app approval.",
+  "build": 124,
+  "compiledProductCommit": "899bdf165f4a43385d96dad2d61f12a4ecf493ea",
+  "runs": [
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r38/RESULT.json",
+      "sha256": "209a17b5a72d0876e11803f0c0955ced634db3b5d6412a095d0a2a579891e630",
+      "run": 38,
+      "passed": false,
+      "size": "normal",
+      "seconds": 45.59
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r39/RESULT.json",
+      "sha256": "92c5ac9bbc0348e16f5d6fa1c4095ef0ac54a7da25b78e88fae1a1319bb7e894",
+      "run": 39,
+      "passed": true,
+      "size": "normal",
+      "seconds": 42.79
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r40/RESULT.json",
+      "sha256": "dec63ee0e1f341886539e1523780f5825053bea2c5c10c9153daaf642e1804cc",
+      "run": 40,
+      "passed": true,
+      "size": "normal",
+      "seconds": 43.849
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r41/RESULT.json",
+      "sha256": "eb2ab431cacd022f6814541034d590a51ea1710cdd84a510bbf56f2362d18dac",
+      "run": 41,
+      "passed": false,
+      "size": "max",
+      "seconds": 97.051
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r42/RESULT.json",
+      "sha256": "26b6d4aba36694fc11d8c9db323ae9023c0b6c92eab73ba73352335aa26eccf3",
+      "run": 42,
+      "passed": true,
+      "size": "max",
+      "seconds": 46.891
+    }
+  ],
+  "reviewed": {
+    "normal": [
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r40/normal/attachments/10670C8B-7F11-49A2-A086-40387A049CE9.png",
+        "sha256": "c3a5d2c7be5936424d2de514f6f8ad0d28d9b5cffd9d491d691d1c266cdc535e"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r40/normal/attachments/BA3EC429-3E48-4C6B-B5D3-2A715239352B.png",
+        "sha256": "6b43392c95432f3fced64a0738b9fa586fdfa72e793c8f19166704f527429ff7"
+      }
+    ],
+    "max": [
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r42/max/attachments/0C59DFA6-5ED0-457E-8B7A-2A4553EAFD72.png",
+        "sha256": "bdfb9401f9bdcab7a308585c4981690bdf294da2190dafbb9fa89d0e34bd6b15"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r42/max/attachments/0105901F-F3C8-46A6-A323-7BA35019CC1B.png",
+        "sha256": "bdfb9401f9bdcab7a308585c4981690bdf294da2190dafbb9fa89d0e34bd6b15"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r42/max/attachments/503661F5-5A52-4A5D-B291-D56A94DE5FA8.png",
+        "sha256": "f18c37c70f72ddd19e5de79bcf3218573e48f9fc5d318cebf30cfc91a59ec6c6"
+      }
+    ]
+  },
+  "history": {
+    "r38": "FAIL retained: expected Cancel on initial system source menu rather than entering Photo Library.",
+    "r39": "Functional PASS; first screenshot before picker presentation, not visual approval of both cycles.",
+    "r40": "Normal PASS with capture after actual Cancel is hittable; both Photos views inspected.",
+    "r41": "MAX FAIL retained: AX main height1116with minY123put .65gesture at849 behind nav841, consistent with observed app window transform/system-edge gesture.",
+    "r42": "MAX PASS after using actual viewport for drag points; both Photos views and return gallery target inspected."
+  },
+  "visualCaveat": "Red-bordered QA220 local-file injection button belongs to isolated guard, not production and was never activated; inMAXit occludes other scanner text. This review approves Photos picker and reachable gallery target only, not all scanner layout. No prior failure relabelled.",
+  "expectedActual": [
+    {
+      "expected": "Open system source menu and Photos without file injection",
+      "actual": "PASS normal/MAX"
+    },
+    {
+      "expected": "Cancel returns to local-single scanner without analysis; retry opens again",
+      "actual": "PASS two cycles normal/MAX"
+    }
+  ],
+  "productChanged": false,
+  "externalCalls": 0,
+  "selectedPhotos": 0,
+  "realAccounts": false,
+  "webPublished": false,
+  "uploaded": false
+}

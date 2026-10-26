@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-26,Actual Photos Picker Cancellation Normal/MAX PASS
+
+- New252coverage closes a real gap distinct from QAFile injection: native gallery source menu -> actual Photos picker -> Cancel -> local scanner -> retry, two final cycles each in normalr40/MAXr42on exact own124container. Five final captures personally inspected; no photo selected/injected/OCR/upload/account/phone. [Bound receipt](qa-fixtures/native252/RESULT.json), [history and five-block audit](docs/MATCHRIM_GALLERY_252_2026-10-26.md). Compiled124source899bdf1unchanged, tests only.
+- Preserve r38FAILwrongmenuCancel assumption; r39functionalPASSbut firstcapture beforepresentation; r41MAXFAILwith out-of-viewport main-based gesture. Harness now waits for actual picker Cancel before capture and uses viewport-based content drags, r42PASS. Isolated red QAinjection button occludes otherMAXscanner text, not production; visual approval limited to picker/reachable gallery target, not whole scanner. Swiftparse/JS lintPASS, all apps terminated/text size restored.
+- Own heavy29b58938/ios0b24d161/macbd662f73 released after terminalr42; writer983e23d2 freshly renewed only evidence/checkpoint/commit then release. No foreign resources touched. Last exact account refresh02:40UTC latest25Oct16:14Madrid/no newer observed/notserverabsenceproof, no outgoing. No extra budget/key/catalogue/model/Lovable/account/phone/backend/main/web/TestFlight. Goal still not achieved: catalogue/authenticated validation, genuine sensory provenance/calibration, real200identity/account persistence and signing gates remain open. Do not mark complete merely at04:00.
+
 ## Current Gate: 2026-10-26,20Quiz Assets Bound To124 / No New Development Reply Observed
 
 - New249AST audit resolves all20actual question IDs/text/imports and exact JPEG SHA256parity across source/prepared124/compiled124resources, no missing/duplicate mapping; focused lint PASS. All20sourceimages personally opened, clear subject vs preparation/flavour/novice ambiguity documented. This is NOT20native-frame pixel checks or scientific calibration. [Evidence](qa-fixtures/quiz249/ASSETS.json), [20row review](docs/MATCHRIM_QUIZ_IMAGES_249_2026-10-26.md). No asset/weight/profile/product change or new candidate.

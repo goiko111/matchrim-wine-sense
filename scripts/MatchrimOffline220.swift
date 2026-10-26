@@ -2,6 +2,40 @@ import Foundation
 import XCTest
 
 final class MatchrimOffline220Tests: XCTestCase {
+    @MainActor func testNativeGalleryPickerCancellation() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")
+        app.terminate(); app.launch(); XCUIDevice.shared.orientation = .portrait
+        defer { capture(app, "gallery252-end") }
+        let skip = app.buttons["Saltar guía"].firstMatch
+        if skip.waitForExistence(timeout: 2) && skip.isHittable { skip.tap() }
+        XCTAssertTrue(app.buttons["Buscar vino o bodega"].waitForExistence(timeout: 15))
+        try tap(app.links["Escanear"].firstMatch, app)
+        try tap(app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Botellas")).firstMatch, app)
+        let checkbox = app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "He leído el aviso de privacidad del escáner")).firstMatch
+        if checkbox.waitForExistence(timeout: 3) {
+            try tap(checkbox, app); try tap(app.buttons["Entiendo y continuar"].firstMatch, app)
+        }
+        try tap(app.switches["Una etiqueta"].firstMatch, app)
+        for attempt in 1...2 {
+            try tap(app.buttons["Elegir de galería"].firstMatch, app)
+            capture(app, "gallery252-native-source-menu-\(attempt)")
+            let library = app.buttons["Photo Library"].firstMatch
+            XCTAssertTrue(library.waitForExistence(timeout: 8) && library.isHittable)
+            // This is the observed42pt system menu item, not an app touch target.
+            library.tap()
+            let cancel = app.buttons.matching(NSPredicate(format: "label IN %@", ["Cancel", "Cancelar"])).firstMatch
+            XCTAssertTrue(cancel.waitForExistence(timeout: 8), "Inspect real picker AX if the native cancellation label differs")
+            XCTAssertTrue(cancel.isHittable)
+            capture(app, "gallery252-photos-picker-open-\(attempt)")
+            cancel.tap()
+            XCTAssertTrue(app.buttons["Elegir de galería"].firstMatch.waitForExistence(timeout: 8))
+            XCTAssertTrue(app.staticTexts["Fotografía una etiqueta"].firstMatch.exists)
+            XCTAssertFalse(app.buttons["Revisar vinos"].firstMatch.exists, "Cancelling must not create an analysis or result")
+            capture(app, "gallery252-cancelled-no-selection-\(attempt)")
+        }
+    }
+
     @MainActor func testRetainedQuizResultActions() throws {
         continueAfterFailure = false
         let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")
@@ -336,11 +370,10 @@ final class MatchrimOffline220Tests: XCTestCase {
         return app.frame.maxY
     }
     @MainActor private func swipeContent(_ app: XCUIApplication) {
-        let main = app.otherElements["principal"].firstMatch
-        let surface = main.exists && main.frame.height > 100 ? main : app
-        // Keep both endpoints inside content, above the fixed tab bar.
-        let from = surface.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.65))
-        let to = surface.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25))
+        // AX main can include offscreen content. Anchor to the actual viewport,
+        // otherwise MAX pages can turn a content drag into a system-edge gesture.
+        let from = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.65))
+        let to = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.25))
         from.press(forDuration: 0.01, thenDragTo: to, withVelocity: .slow, thenHoldForDuration: 0.2)
     }
     @MainActor private func capture(_ app: XCUIApplication, _ name: String) {
