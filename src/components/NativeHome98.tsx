@@ -91,7 +91,7 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
           <span className="min-w-0 flex-1"><span className="block break-words text-sm font-medium">{item.title}</span>{item.subtitle && <span className="mt-1 block break-words text-xs text-stone-500">{item.subtitle}</span>}</span><ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
         </button>)}</div>
       </section>}
-      <button type="button" className="mt-7 flex min-h-14 w-full items-center justify-between gap-3 border-t border-stone-200 py-4 text-left text-sm font-medium text-stone-600" onClick={() => navigate(hasProfile || readError ? '/profile' : '/matchrim')}>
+      <button type="button" className="mt-7 flex min-h-14 w-full items-center justify-between gap-3 border-t border-stone-200 py-4 text-left text-sm font-medium text-stone-600" onClick={() => navigate(ownerId && (hasProfile || readError) ? '/profile' : '/matchrim')}>
         {hasProfile || readError ? 'Mis gustos' : 'Conocer mis gustos'}<ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
       </button>
     </main>

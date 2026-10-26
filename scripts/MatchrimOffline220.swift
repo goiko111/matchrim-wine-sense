@@ -56,6 +56,9 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertTrue(app.buttons["Buscar vino o bodega"].waitForExistence(timeout: 15))
         XCTAssertTrue(app.buttons["Mis gustos"].firstMatch.waitForExistence(timeout: 10))
         capture(app, "quiz225-home-reopened-local-profile")
+        try tap(app.buttons["Mis gustos"].firstMatch, app)
+        XCTAssertTrue(app.staticTexts["Tu perfil"].firstMatch.waitForExistence(timeout: 10), "Anonymous local tastes must reopen without requiring account sign-in")
+        capture(app, "quiz245-local-tastes-reopened-without-account")
     }
 
     @MainActor private func assertQuizQuestion(_ number: Int, _ app: XCUIApplication) throws {
@@ -254,7 +257,7 @@ final class MatchrimOffline220Tests: XCTestCase {
             let clippedControl = element.elementType == .textField || ["Aplicar corrección", "Descartar cambios", "Corregir identificación"].contains(element.label)
             let frame = element.frame
             let fits = !body.exists || !clippedControl || (frame.minY >= body.frame.minY && frame.maxY <= body.frame.maxY)
-            if element.isHittable && fits { break }
+            if element.isHittable && fits && frame.minY >= 0 && frame.maxY <= contentBottom(app, for: element) { break }
             if body.exists && body.frame.height > 60 {
                 // Vaul skips the scrollable target itself in getScrollParent;
                 // start on its content, not its padding, without a text long-press.
@@ -269,6 +272,8 @@ final class MatchrimOffline220Tests: XCTestCase {
             else { swipeContent(app) }
         }
         XCTAssertTrue(element.isHittable, element.debugDescription)
+        XCTAssertGreaterThanOrEqual(element.frame.minY, 0, "Control is above the viewport")
+        XCTAssertLessThanOrEqual(element.frame.maxY, contentBottom(app, for: element) + 1, "Control is covered by the fixed tab bar")
         let body = app.otherElements.matching(NSPredicate(format: "label BEGINSWITH %@", "Contenido de la región ")).firstMatch
         if body.exists && (element.elementType == .textField || ["Aplicar corrección", "Descartar cambios", "Corregir identificación"].contains(element.label)) {
             XCTAssertGreaterThanOrEqual(element.frame.minY, body.frame.minY - 1, "Control above visible sheet content")
@@ -277,6 +282,15 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertGreaterThanOrEqual(element.frame.height, 43)
         XCTAssertGreaterThanOrEqual(element.frame.width, 43)
         if activate { element.tap() }
+    }
+    @MainActor private func contentBottom(_ app: XCUIApplication, for element: XCUIElement) -> CGFloat {
+        let navigation = app.otherElements.matching(NSPredicate(format: "label BEGINSWITH %@", "Navegación principal")).firstMatch
+        let home = app.links["Inicio"].firstMatch
+        if navigation.exists && home.exists && home.isHittable {
+            if element.elementType == .link && navigation.frame.contains(element.frame) { return app.frame.maxY }
+            return navigation.frame.minY
+        }
+        return app.frame.maxY
     }
     @MainActor private func swipeContent(_ app: XCUIApplication) {
         let main = app.otherElements["principal"].firstMatch

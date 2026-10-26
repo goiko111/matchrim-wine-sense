@@ -168,7 +168,11 @@ html.matchrim-native-platform .matchrim-restaurant-main {
 html.matchrim-native-platform .matchrim-quiz-page {
   background: hsl(var(--background));
   padding-top: calc(1rem + var(--matchrim-safe-top));
-  padding-bottom: calc(8rem + var(--matchrim-safe-bottom));
+  padding-bottom: calc(var(--matchrim-bottom-nav-height, calc(88px + var(--matchrim-safe-bottom))) + 16px);
+}
+
+html.matchrim-native-platform .matchrim-quiz-page > .container:last-child {
+  padding-bottom: 16px;
 }
 
 @media (orientation: landscape) and (max-height: 600px) {

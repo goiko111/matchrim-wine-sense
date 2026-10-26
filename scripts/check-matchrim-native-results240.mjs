@@ -3,6 +3,9 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import { execFileSync } from 'node:child_process';
 import ts from 'typescript';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { Button as ActualButton } from '../src/components/ui/button.tsx';
 import { nativeTasteSummary240 } from '../src/utils/nativeTasteSummary240.ts';
 import { getSafeRedirectPath } from '../src/utils/navigation.ts';
 
@@ -115,6 +118,11 @@ check('MAX preference rows stack and fixed icon/chrome widths leave words their 
   const buttons = nodes.filter(node => node.type === Button);
   assert(buttons.every(node => ['gap-[8px]', 'px-[16px]', 'py-[12px]', '[&_svg]:size-[20px]'].every(token => node.props.className.includes(token))));
   assert(buttons.every(node => node.children.some(child => child?.type === 'span' && child.props.className.includes('[overflow-wrap:normal]'))));
+});
+check('Actual shared Button composition preserves the native descendant size override', () => {
+  const html = renderToStaticMarkup(createElement(ActualButton, { className: '[&_svg]:size-[20px]' }, 'Controlled action'));
+  assert(html.includes('size-[20px]'));
+  assert(!html.includes('size-4'));
 });
 console.log(JSON.stringify({ passed: true, groups: checks.length, checks, syntheticProfiles: 50, externalCalls: 0,
   scope: 'Actual routing/component expressions and pure preference summaries with inert UI/router leaves; not native visual, real-user taste or live catalogue QA.' }));

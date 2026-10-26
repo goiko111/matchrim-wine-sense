@@ -1,0 +1,97 @@
+{
+  "recordedUTC": "2026-10-26T00:09:31.666Z",
+  "runs": {
+    "native220-r31": {
+      "file": "qa-artifacts/native218-20261025/native220-r31/RESULT.json",
+      "sha256": "2c259b6d7ad2c2dd7d8c6b5553a09a9b72fc2d8d68e3b127e44dd79e96d7c979",
+      "passed": true,
+      "build": 123,
+      "sourceCommit": "99d5ee589cda22fe224a5cc8a8d5eedf6c1b8681"
+    },
+    "native220-r32": {
+      "file": "qa-artifacts/native218-20261025/native220-r32/RESULT.json",
+      "sha256": "d181a57bc83b212fef5c3a8595753381e9da786f1cb4d439f8ab9ca04012e6ab",
+      "passed": false,
+      "build": 123,
+      "sourceCommit": "99d5ee589cda22fe224a5cc8a8d5eedf6c1b8681"
+    },
+    "native220-r33": {
+      "file": "qa-artifacts/native218-20261025/native220-r33/RESULT.json",
+      "sha256": "2d6654fd72f4b4dbc5650de9ba00d1fe79a99bfcfa39373a8ca6a9b3b5a1810b",
+      "passed": false,
+      "build": 123,
+      "sourceCommit": "99d5ee589cda22fe224a5cc8a8d5eedf6c1b8681"
+    }
+  },
+  "pictures": [
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r33/max/attachments/A5FEB9F1-5A79-43B3-8BAC-2138FBFF15C7.png",
+      "sha256": "30ab3c6135308c455aa86bc09240de1f33d3802a715b4b0d9df7d797405f1183",
+      "name": "quiz225-results_0_2A44DCB4-4B32-4239-8E32-854008BC77CE.png",
+      "personallyInspected": true
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r33/max/attachments/EFE54C7F-9D5C-4DD6-A58D-5C0ED7928A9F.png",
+      "sha256": "be6d476944376be90ae4ebd9ee22e99691513c920a3c2d1e92f12d6e55fc966c",
+      "name": "quiz242-preference-Fruta_0_6C44BB26-513F-4A14-9D79-25C3C8EE8D50.png",
+      "personallyInspected": true
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r33/max/attachments/888F3051-77D9-4539-8018-F9717CBB3FC0.png",
+      "sha256": "c897cc9666ef7b76fd55915c78719d2ec6fb029d6763360b57545fb15ba8e014",
+      "name": "quiz242-preference-Taninos_0_8836BC53-D6DE-4BCA-A900-05B4F7339489.png",
+      "personallyInspected": true
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r33/max/attachments/400DC2CC-18C7-4538-889D-105B63ACDC47.png",
+      "sha256": "f69356ac8dd4b4be952ddda827e9473b91866fb6cd9a53d40eb00cc0c4bddf76",
+      "name": "quiz242-preference-Dulzor_0_77301A1A-4BC6-4247-8C17-3EC6149051BC.png",
+      "personallyInspected": true
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r33/max/attachments/9A134032-927A-4275-8805-52BBDDF51B20.png",
+      "sha256": "18406ed41989ae319d35d8105c04d9f1a98e4f42b26654c873f58b9ae9c88779",
+      "name": "quiz242-preference-Frescura_0_12BA5BF9-6078-4333-BCB8-D97C387CCCF3.png",
+      "personallyInspected": true
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r33/max/attachments/02CBADC8-F181-4CD3-9F44-A5D7BA057C61.png",
+      "sha256": "18406ed41989ae319d35d8105c04d9f1a98e4f42b26654c873f58b9ae9c88779",
+      "name": "quiz242-preference-Cuerpo_0_DDCAF814-02BE-46D9-B15D-3CABE4DB4B0F.png",
+      "personallyInspected": true
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r33/max/attachments/93D61D41-6182-4820-991C-CA3A7BF02FED.png",
+      "sha256": "405ca5dfdf6bb1318ff65275c159fc8fdb912edec57ba6e4efb263eed788d9dd",
+      "name": "quiz240-results-initial_0_5C61F651-9B2B-4393-9D58-E840E0B939F9.png",
+      "personallyInspected": true
+    }
+  ],
+  "normal123": "r31PASS20questions/result/Home/relaunch; predates actual anonymous result reopen assertion",
+  "max123": "r32FAILpartial Next hidden by tabbar; r33strict content bounds reaches20/result/5traits/scan capture then FAIL because same bound incorrectly applied to tab link. Both remain FAIL overall.",
+  "visual123": "Result header, all5traits and whole-word commands personally inspected; no new result overlap observed. Not full MAX flow approval.",
+  "newProductDefect245": {
+    "red": "Actual NativeHome98 handler sends anonymous stored tastes to account-bound/profile,1of4routingcasesFAIL",
+    "fixPrepared": "Anonymous tastes go to/matchrim; signed-in profile/error routes unchanged",
+    "focused": "4actual handlers+2parsed native-only padding rules PASS; affected225controller10groups/50transitions PASS; result10groups including real shared Button SSR/class merge PASS; lint and Swiftparse PASS",
+    "padding": "Observed duplicate rem bottom padding leaves large MAX empty tail; native-only measured tab-height+16px and16px inner padding prepared, no web mutation"
+  },
+  "pending124": "Clean source commit/preparation/typecheck/compile/native normal+MAX including actual reopened local taste result; no approval yet",
+  "source123": {
+    "file": "qa-artifacts/native218-20261025/candidate123-r1/preparation.json",
+    "sha256": "bb3fa0ec4d5b3033f818a52230e6e892e7aed2845b948e59796f3943374e51b9"
+  },
+  "compile123": {
+    "file": "qa-artifacts/native218-20261025/compile123-r1/RESULT.json",
+    "sha256": "0c8b6ab5aec04ce157fd565fab4161fc3e025f296719427d6ac3aaea4053639d"
+  },
+  "webPublished": false,
+  "backendChanged": false,
+  "mainChanged": false,
+  "newPaidCalls": 0,
+  "newCatalogueReads": 0,
+  "realAccounts": false,
+  "phoneUsed": false,
+  "uploaded": false,
+  "development243": "New material mail draft prepared, not sent in this receipt."
+}
