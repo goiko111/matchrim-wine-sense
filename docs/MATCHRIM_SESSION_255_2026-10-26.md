@@ -82,3 +82,45 @@ Own iosdfcdd765released after read-only export. Writer2032efa7renewed only for
 failure/checkpoint/commit then released. No GUI, account writes, foreign lease
 or process touched. Human-run255login remains unexecuted, not the next required
 step until the owner actually has access to the account.
+
+## Follow-up257/258: recovery emails found in Spam, owner reset completed
+
+Owner clarifies they can access info@winerim.com but recovery mail does not arrive.
+One exact read-only Auth metadata SELECT via the free Lovable database connector
+finds the original bound QA hash, confirmation20Oct12:31UTC, last sign-in20Oct17:07UTC,
+recovery_sent_at26Oct06:41:22UTC and no deletion/current ban reported. No password
+hash, recovery token/link or private session selected. Supabase Auth log query
+denied permission; not retried. Read-only Cloud email settings show sign-in enabled,
+rate1000/hour and link expiry3600seconds; no settings changed. Separate app Emails
+Enable screen is NOT evidence Auth email is disabled. No Lovable chat/credit/deploy.
+
+Under own fresh desktop lease and checked idle, refreshed only the authorized
+info@winerim.com account. Inbox sender filter had no Matchrim/password result, but
+Spam (Mensaje no deseado) contains two actual Password Recovery messages from
+matchrim-wine-sense <no-reply@auth.lovable.cloud>, displayed07:39and07:41Madrid.
+No message/link opened by agent, no credentials read or moved/marked/whitelisted.
+Released desktop before human handoff; no deliverability ticket sent because the
+actual emails were found. Owner subsequently reports password reset completed.
+
+Brave extension read-only UI now shows info@winerim.com signed in on the exact
+Matchrim preview origin. One exact Authkey read through documented page evaluate
+cannot access localStorage (undefined); no session returned, no workaround via
+browser profile, private runtime or DevTools. Did not reload or navigate that tab.
+Existing human-run masked login255 is now usable with the new password; owner
+asked to execute it locally, never send password in chat. At07:46UTC session255
+directory remains empty, so no fresh Auth submission by this agent and no live
+catalogue probe yet. Browser sign-in alone is not exported session evidence.
+
+Added explicit253mode --resume-reset-session258. It preserves both original
+Auth400results and the SAME six-read ledger, requires a successful human255login
+receipt and fresh bound/nonanonymous session, does no password/refresh submission,
+and writes RESET-SESSION-RESERVED plus separate RESULT-RESET-SESSION. It refuses
+any existing password/local/reset resume marker or any01..06catalogue reservation,
+receipt or body; no budget reset/retry. Focused validation: one valid ledger and
+25invalid ledger states PASS, eight affected decoder groups/TypeScript/lint PASS.
+These are offline checks, not live catalogue, sensory, identity or affinity proof.
+
+Six catalogue reads remain0used. Paid50requests/15EUR not changed. No new model,
+image, Lovable credit, wine write, backend/main/web/phone/TestFlight action. Native
+candidate124/source899bdf1 unchanged, GoalBLOCKED and monitorPAUSED unchanged.
+Own writer75e500c5 renewed before runner edits; no foreign resource touched.

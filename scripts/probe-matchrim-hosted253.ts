@@ -58,9 +58,26 @@ export function evaluate253(checks: ReturnType<typeof summarize253>[]) {
     ? 'SIX_TRANSPORT_AND_SCHEMA_CHECKS_COMPLETED_NOT_AFFINITY_APPROVAL' : 'PAGINATION_HOLD' };
 }
 
+export function validateResetResume258(files: Record<string, unknown>) {
+  const original = files['RESULT.json'] as Record<string, unknown> | undefined;
+  const recovered = files['RESULT-QA-LOGIN.json'] as Record<string, unknown> | undefined;
+  assert(original?.catalogueAttempts === 0 && original.sessionRefreshes === 1
+    && original.refreshHTTP === 400 && original.reason === 'AUTH_REFRESH_REJECTED_NO_RETRY', 'RESET_BASELINE_HOLD');
+  assert(recovered?.catalogueAttempts === 0 && recovered.sessionRefreshes === 2
+    && recovered.recoveredRefreshHTTP === 400
+    && recovered.reason === 'RECOVERED_SESSION_REFRESH_REJECTED_NO_RETRY', 'RESET_RECOVERED_BASELINE_HOLD');
+  assert(files['AUTH-RECOVERED-REFRESH-RESERVED.json'] && !files['AUTH-PASSWORD-RESERVED.json']
+    && !files['RESET-SESSION-RESERVED.json'] && !files['RESULT-RESET-SESSION.json']
+    && !files['LOCAL-SESSION-RESERVED.json']
+    && !Object.keys(files).some(name => /^0[1-6]-(?:RESERVED|RECEIPT|BODY)\.json$/.test(name)),
+  'EXISTING_TRANCHE_NO_RESET');
+}
+
 async function main() {
   const mode = process.argv.slice(2).join(' ');
-  assert(['--authorized-six', '--resume-qa-login', '--resume-local-session', '--resume-simulator-session'].includes(mode), 'EXPLICIT_MODE_REQUIRED');
+  assert(['--authorized-six', '--resume-qa-login', '--resume-local-session', '--resume-simulator-session',
+    '--resume-reset-session258'].includes(mode), 'EXPLICIT_MODE_REQUIRED');
+  const resetSession = mode === '--resume-reset-session258';
   const localSession = mode === '--resume-local-session';
   const simulatorSession = mode === '--resume-simulator-session';
   const resume = mode !== '--authorized-six';
@@ -76,7 +93,12 @@ async function main() {
     previous = JSON.parse(fs.readFileSync(path.join(output, 'RESULT.json'), 'utf8'));
     assert(previous.catalogueAttempts === 0 && previous.sessionRefreshes === 1
       && previous.reason === 'AUTH_REFRESH_REJECTED_NO_RETRY', 'RESUME_BASELINE_HOLD');
-    assert(!fs.existsSync(path.join(output, 'AUTH-PASSWORD-RESERVED.json'))
+    if (resetSession) {
+      const names = fs.readdirSync(output);
+      validateResetResume258(Object.fromEntries(names.map(name => [name,
+        ['RESULT.json', 'RESULT-QA-LOGIN.json'].includes(name)
+          ? JSON.parse(fs.readFileSync(path.join(output, name), 'utf8')) : true])));
+    } else assert(!fs.existsSync(path.join(output, 'AUTH-PASSWORD-RESERVED.json'))
       && !fs.existsSync(path.join(output, 'AUTH-RECOVERED-REFRESH-RESERVED.json'))
       && !fs.existsSync(path.join(output, 'RESULT-QA-LOGIN.json'))
       && !plan253.some((_, i) => fs.existsSync(path.join(output, String(i + 1).padStart(2, '0') + '-RESERVED.json'))),
@@ -103,6 +125,8 @@ async function main() {
     additionalEUR: 0, webChanged: false, backendChanged: false, appActivated: false,
     ...(resume ? { sessionRefreshes: 1, previousRefreshHTTP: previous.refreshHTTP,
       passwordLogins: 0, preservedPreflight: 'RESULT.json', reason: 'QA_LOGIN_PREFLIGHT' } : {}),
+    ...(resetSession ? { sessionRefreshes: 2, newSessionRefreshes: 0, newPasswordSubmissions: 0,
+      preservedPreflights: ['RESULT.json', 'RESULT-QA-LOGIN.json'], reason: 'RESET_SESSION_PREFLIGHT' } : {}),
   };
   try {
     process.loadEnvFile('.env');
@@ -138,7 +162,25 @@ async function main() {
       return { status: response.status, elapsedMs: Math.round(performance.now() - started),
         bytes: length, sha256: sha(bytes), payload };
     };
-    if (simulatorSession) {
+    if (resetSession) {
+      const sessionFile = '/Users/GOIKO/Library/Application Support/Matchrim QA/session255/PRIVATE-SESSION.json';
+      assert(!fs.lstatSync(sessionFile).isSymbolicLink()
+        && (fs.statSync(sessionFile).mode & 0o777) === 0o600, 'PRIVATE_LOCAL_SESSION_MODE');
+      session = JSON.parse(fs.readFileSync(sessionFile, 'utf8'));
+      const fresh = validateSession132(session);
+      assert(session.is_anonymous !== true && session.user?.is_anonymous !== true, 'ANONYMOUS_SESSION_HOLD');
+      assert(fresh.expiresAt * 1000 > Date.now() + 120000, 'SESSION_EXPIRED_HOLD');
+      const login = JSON.parse(fs.readFileSync(path.join(path.dirname(sessionFile), 'RESULT.json'), 'utf8'));
+      assert(login.passed === true && login.authSubmissions === 1 && login.authHTTP === 200
+        && login.passwordStored === false && login.userIdSHA256 === fresh.userIdSHA256,
+      'HUMAN_LOGIN_RECEIPT_HOLD');
+      secrets.push(session.access_token, session.refresh_token);
+      save('RESET-SESSION-RESERVED.json', { atUTC: new Date().toISOString(), userIdSHA256: fresh.userIdSHA256,
+        source: 'Human password reset and human-run masked login255; no Auth submission by this probe',
+        sameCatalogueAllowance: true, historicalFailedRefreshes: 2 });
+      report.humanLogin255 = true;
+      report.humanLoginHTTP = login.authHTTP;
+    } else if (simulatorSession) {
       const sessionFile = '/Users/GOIKO/Library/Application Support/Matchrim QA/session256/PRIVATE-SESSION.json';
       assert(!fs.lstatSync(sessionFile).isSymbolicLink()
         && (fs.statSync(sessionFile).mode & 0o777) === 0o600, 'PRIVATE_RECOVERED_SESSION_MODE');
@@ -230,7 +272,8 @@ async function main() {
     report.reason = error instanceof Error && /^[A-Z][A-Z0-9_]+$/.test(error.message)
       ? error.message : 'PRIVATE_EXECUTION_HOLD_DETAILS_WITHHELD';
   } finally {
-    save(resume ? 'RESULT-QA-LOGIN.json' : 'RESULT.json', { ...report, finishedUTC: new Date().toISOString() });
+    save(resetSession ? 'RESULT-RESET-SESSION.json' : resume ? 'RESULT-QA-LOGIN.json' : 'RESULT.json',
+      { ...report, finishedUTC: new Date().toISOString() });
   }
   console.log(JSON.stringify(report));
   process.exitCode = report.passed ? 0 : 1;
