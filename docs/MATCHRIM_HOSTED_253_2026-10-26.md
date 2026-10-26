@@ -1,5 +1,37 @@
 # Hosted253: secret saved by owner, QA authentication still blocked
 
+## Native261 Duplicate-Reference Fix And Resource Checkpoint
+
+Actual groupDuplicateWines composition with a linked master candidate confidence.8
+and identical raw OCR confidence.99picked the latter, discarding the confirmed
+master reference in list/save. New native-only projection preserves the original
+bound candidate and puts its region first for opening detail, without moving
+the binding onto another object or confirming other regions. Different/null
+harvests and differing region/country/name/producer identities split into distinct
+native groups with unique keys when a linked reference is involved. Discarded
+regions remain excluded; recognized-only save still filters states first. Shared
+web grouping is unchanged. Six focused groups retain original RED and verify
+count/key/binding/no-mutation/unknown-vintage separation; affected UIinverse/
+controlled hooks eight, TS/lint PASS. [Receipt](../qa-fixtures/master261/RESULT.json).
+
+Additional QAguard-only VM verification: exactly2local retained fixture fetches,
+0real network calls, deliberately invalid unsigned synthetic user only, aborted
+request does not read fixture, unknown operation400and unknown destination denied.
+Not native/WK rendering or real authentication evidence.
+
+125buildrequesta2ce28facancelled beforeexecution for this proven261fix. New full
+build reservation follows clean source checkpoint. Heavy/desktop resources held
+by another task, not interrupted. Authorized mail-refresh request queued; one
+bounded read-only exact Thunderbird globalindex schema query failedDBlocked.
+No retry, copied database, app closure, mail sent or claim no server reply.
+
+Timing correction: the two-hour Goal began08:50:58UTC. Its endpoint10:50:58UTC is
+**11:50:58Europe/Madrid(CET)** after the DST change, not12:50. Earlier local12:50
+labels were a conversion error; absolute two-hour UTC anchor controls, no window
+extension inferred. Native125compile/visual still pending, lastcompiled124.
+No extra network allowance, model/image/Auth/Keychain/Lovable/winewrite/phone/
+backend/main/web/TestFlight operation.
+
 ## Native260: Review Caught Save And Rescan Gaps Before Compilation
 
 Follow-up before125compile closes two further ID interoperability defects:

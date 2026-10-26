@@ -137,10 +137,17 @@ try {
     const nativeBlock = slice(current), oldNativeBlock = slice(previous);
     assert(nativeBlock.includes('<NativeMasterLookup259'));
     const stripImports = value => value.split('\n').filter(line => !line.includes('NativeMasterLookup259')
-      && !line.includes("from '@/utils/nativeMasterLink259'") && !line.includes("from '@/utils/cellarMasterReference260'"))
+      && !line.includes("from '@/utils/nativeMasterLink259'") && !line.includes("from '@/utils/cellarMasterReference260'")
+      && !line.includes("from '@/utils/nativeMasterDuplicates261'"))
       .join('\n').replace('          const masterReference = isNative ? makeCellarMasterReference260(candidate) : null;\n', '')
       .replace('const details = evidence || publicReference || masterReference ?', 'const details = evidence || publicReference ?')
-      .replace('              ...(masterReference ? { winerim_master_reference260: masterReference } : {}),\n', '');
+      .replace('              ...(masterReference ? { winerim_master_reference260: masterReference } : {}),\n', '')
+      .replace('const duplicateGroups = useMemo(() => isNative ? nativeDuplicateWineGroups261(regions) : groupDuplicateWines(regions), [regions, isNative]);',
+        'const duplicateGroups = useMemo(() => groupDuplicateWines(regions), [regions]);')
+      .replace("const confirmableGroups = useMemo(() => (isNative\n    ? nativeDuplicateWineGroups261(regions.filter(region => region.status === 'recognized')) : getConfirmableWineGroups(regions))\n    .filter(group => !localBatch || !isPendingLocalIdentity109(group.candidate)), [regions, localBatch, isNative]);",
+        'const confirmableGroups = useMemo(() => getConfirmableWineGroups(regions)\n    .filter(group => !localBatch || !isPendingLocalIdentity109(group.candidate)), [regions, localBatch]);')
+      .replace("const groups = batchRef.current?.groups ?? (isNative\n      ? nativeDuplicateWineGroups261(regions.filter(region => region.status === 'recognized')) : getConfirmableWineGroups(regions)).filter((group) => group.candidate.name",
+        'const groups = batchRef.current?.groups ?? getConfirmableWineGroups(regions).filter((group) => group.candidate.name');
     assert(stripImports(current.replace(nativeBlock, oldNativeBlock)).trimEnd() === previous.trimEnd(),
       'Only native guarded primary-view code and its two imports may change');
     assert(nativeBlock.includes("status: 'recognized'"));

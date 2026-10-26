@@ -1,0 +1,16 @@
+{
+  "passedGroups": 6,
+  "failed": 0,
+  "priorGroupingRetainedRed": true,
+  "bindingPreservedWithoutTransfer": true,
+  "mixedBottleIdentitiesSeparated": true,
+  "regionStatesUnchanged": true,
+  "webGroupingUnchanged": true,
+  "externalCalls": 0,
+  "realScenes": 0,
+  "focusedTypecheck": "PASS",
+  "focusedLint": "PASS",
+  "scope": "Synthetic duplicate-region composition with retained master detail, not multibottle recognition accuracy",
+  "native125Compile": "PENDING",
+  "nativeVisual": "PENDING"
+}

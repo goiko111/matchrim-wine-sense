@@ -33,6 +33,7 @@ import { GlobalWineRecovery104 } from '@/components/wine-import/GlobalWineRecove
 import { NativeMasterLookup259, NativeMasterReference259 } from '@/components/wine-import/NativeMasterLookup259';
 import { nativeMasterLink259 } from '@/utils/nativeMasterLink259';
 import { makeCellarMasterReference260 } from '@/utils/cellarMasterReference260';
+import { nativeDuplicateWineGroups261 } from '@/utils/nativeMasterDuplicates261';
 import { AiRimContextGuide } from '@/components/AiRimContextGuide';
 import { WineComparisonWorkspace } from '@/components/wine-import/WineComparisonWorkspace';
 import { LabelAnalysisView } from '@/components/wine-import/LabelAnalysisView';
@@ -308,9 +309,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     ? planAdditionalRegionAnalysis(regions, preparedSizeRef.current.width, preparedSizeRef.current.height)
     : { automatic: [], deferred: [] }, [regions]);
   const nativeCloserPhotoCount = isNative ? regions.filter(region => region.status === 'deferred' && region.deferral?.code === 'resolution').length : 0;
-  const duplicateGroups = useMemo(() => groupDuplicateWines(regions), [regions]);
-  const confirmableGroups = useMemo(() => getConfirmableWineGroups(regions)
-    .filter(group => !localBatch || !isPendingLocalIdentity109(group.candidate)), [regions, localBatch]);
+  const duplicateGroups = useMemo(() => isNative ? nativeDuplicateWineGroups261(regions) : groupDuplicateWines(regions), [regions, isNative]);
+  const confirmableGroups = useMemo(() => (isNative
+    ? nativeDuplicateWineGroups261(regions.filter(region => region.status === 'recognized')) : getConfirmableWineGroups(regions))
+    .filter(group => !localBatch || !isPendingLocalIdentity109(group.candidate)), [regions, localBatch, isNative]);
   const savedCount = saveResults.filter((result) => result?.status === 'saved').length;
   const saveFailure = saveResults.find((result) => result && result.status !== 'saved');
   const overlay = useOverlayViewport(regions.length);
@@ -950,7 +952,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const confirmBatch = async () => {
     if (savingRef.current || confirmed || !saveLifetime.current.active) return;
     if (batchRef.current && batchRef.current.results.filter((result) => result?.status === 'saved').length === batchRef.current.wines.length) return;
-    const groups = batchRef.current?.groups ?? getConfirmableWineGroups(regions).filter((group) => group.candidate.name
+    const groups = batchRef.current?.groups ?? (isNative
+      ? nativeDuplicateWineGroups261(regions.filter(region => region.status === 'recognized')) : getConfirmableWineGroups(regions)).filter((group) => group.candidate.name
       && (!localBatch || !isPendingLocalIdentity109(group.candidate)));
     if (!groups.length) {
       toast.error('No hay referencias confirmables en este lote');
