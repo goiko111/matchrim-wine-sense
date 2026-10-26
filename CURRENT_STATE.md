@@ -1,5 +1,10 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-26, Hosted254 Exact QA File Still Dataless / Download Requested / Six Reads Untouched
+
+- Owner confirms download, but exact original0600/271bytePRIVATE-ACCESS.jsonstill `compressed,dataless`; no alternate file in its private directory. Public Foundation download request acceptedtrue/noerror, bounded25second flags stilldataless; not successful download. Scoped fileproviderctl/NSURLmetadata diagnostics blocked, only own70837/71287terminatedexit143; all sessions ended. No password/Auth/catalogue request in254,253failed400preserved, same6allowance **0/6used**. [Exact observations and human gate](docs/MATCHRIM_HOSTED_254_2026-10-26.md).
+- Actual HIDidle0.109s prevented Finder action despite fullresourceACQUIRED; ownmac a44b9183released without UI, no foreign task interruption. User asked to verify exact file opens locally or give only alternate downloaded copy's path, never credentials. Scoped download helper35sdeadline/AST only, no new product/green suite. Writer22c61cbeonlycheckpoint/commit thenrelease.124/source899bdf1unchanged,0IA/images/Lovable/spend/web/main/backend/phone/TestFlight. GoalBLOCKED/monitorPAUSED unchanged; no live catalogue/sensory/200identity approval.
+
 ## Current Gate: 2026-10-26, Hosted Secret Reported Saved / Six Free Reads Authorized / QA Auth400
 
 - Owner explicitly reports Cloud MATCHRIM_GOIKO_KEY saved and grants6new free authenticated catalogue reads, no extra spend/web. New253bounded probe reserves attempts before network, stops errors/no retries, no Keychain/model/image/Lovable/backend/main/web/phone/rating/TestFlight action. Session132QA expired21Oct23:56:35UTC; one same-project Authrefresh400, no catalogue calls. Six allowance remains **0/6used**, not exhausted/validated. [Exact execution and next gate](docs/MATCHRIM_HOSTED_253_2026-10-26.md), preserved private-artifact ledger `qa-artifacts/master253-20261026/hosted-six-r1`.
