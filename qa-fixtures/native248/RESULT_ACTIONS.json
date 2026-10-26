@@ -1,0 +1,104 @@
+{
+  "recordedUTC": "2026-10-26T01:34:13.828Z",
+  "passed": true,
+  "build": 124,
+  "compiledProductCommit": "899bdf165f4a43385d96dad2d61f12a4ecf493ea",
+  "harnessCommit": "080fbb1",
+  "runs": [
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r36/RESULT.json",
+      "sha256": "87cc36863c2190d09dbd5a9fa7eb0f1fa369ff97382952bf9de3103d207d3893",
+      "container": "wine.matchrim.qa124offline220v34",
+      "reused": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/native218-20261025/native220-r34",
+      "seconds": 56.87
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r37/RESULT.json",
+      "sha256": "e140cb91b2ab616d9b52a354ff3b77ffe9729d9fded5160c40bc8026030b6c2d",
+      "container": "wine.matchrim.qa124offline220v35",
+      "reused": "/Users/GOIKO/2matchrim76-recognition-20261008/qa-artifacts/native218-20261025/native220-r35",
+      "seconds": 152.041
+    }
+  ],
+  "personallyReviewed": {
+    "normal": [
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r36/normal/attachments/07F2A23F-1CDB-44F5-8EB9-E2325015952E.png",
+        "sha256": "9c2e22961cd484bb47cf8383e277c9459700b19a9e881bcb87244f07022f2644"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r36/normal/attachments/A5E66F13-1651-478A-9119-02479A4E75D3.png",
+        "sha256": "233abfe4e518b7a5b92bf21683b254211bd15827f50e1a4602fc9f06b31ca076"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r36/normal/attachments/82442CC3-2A73-440F-AA35-A86C8CDAAE1B.png",
+        "sha256": "140da99f371f4db6faae58f21097725926d7ef3cf72b7b3df93a2cc7bf2f3dbe"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r36/normal/attachments/9E3D2652-D26E-44A4-9945-9389D65CB02A.png",
+        "sha256": "cbbd64911c416c91854517cadf195c3b1109cef349c4f64c89485eb419642866"
+      }
+    ],
+    "max": [
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r37/max/attachments/4702B8D4-4DC1-4CA1-AE72-9F396C1AB3C6.png",
+        "sha256": "830e6d4759340743aa0120c505f604f867b7bd62f242d5040d47e01affb71746"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r37/max/attachments/92EAC66A-9EC3-48E4-B7DD-6B712E2326A1.png",
+        "sha256": "63a609635c94fb2ef7e81e9f492c3f59afb8c553d1d774b8ff9fc88e5dbaa47f"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r37/max/attachments/03234E58-2D06-4750-ACCE-0393F30C2868.png",
+        "sha256": "ea00a3804968f85af2a322d707f6e4eb059ff301908f5429c8fb267de698f339"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r37/max/attachments/487E57EA-278A-4242-B166-41DA4053EE4E.png",
+        "sha256": "ddd1510a6de366e358089d57249bef312be5c09a7c75d9dd092f29bf4bba9327"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r37/max/attachments/094A8544-0D44-4E4F-BF46-FF9CF02DF13E.png",
+        "sha256": "ecd93abcee326c673967d8f025337453976d8d84e46cc8f8527b81ac66cfe657"
+      }
+    ]
+  },
+  "expectedActual": [
+    {
+      "case": "Scan command",
+      "expected": "Etiqueta de vino and unaccepted privacy gate",
+      "actual": "PASS normal/MAX"
+    },
+    {
+      "case": "Meal command",
+      "expected": "En el restaurante and unaccepted privacy gate",
+      "actual": "PASS normal/MAX"
+    },
+    {
+      "case": "Disclosure",
+      "expected": "Code hidden until explicit open; local QR renders without sharing/copying",
+      "actual": "PASS normal/MAX, QR personally visible"
+    },
+    {
+      "case": "Restart",
+      "expected": "Reachable whole-word control; restart to intro, Home loses old result, reset survives relaunch",
+      "actual": "PASS normal/MAX"
+    }
+  ],
+  "scope": "Existing own anonymous quiz containers only. No new quiz answers, real accounts, authenticated persistence, external network, OCR, catalogue, model, copy/share activation or TestFlight.",
+  "visual": "QR fully rendered, restart whole-word and reachable above nav in normal/MAX. MAX remaining tail is bounded below visible restart, not the previous large blank-only viewport.",
+  "sources": [
+    {
+      "file": "scripts/MatchrimOffline220.swift",
+      "sha256": "cfa3b346b6c2e75a26f6279292ed923738f7dd2fc9bbd0bb03b3684f676ca1bc"
+    },
+    {
+      "file": "scripts/qa-matchrim-native220.mjs",
+      "sha256": "f17a261dfb2202b7f4f0ce9809af49d16d2ba395ade5d94d7881462a03b1f267"
+    }
+  ],
+  "externalCalls": 0,
+  "userDataWrites": 0,
+  "ownAnonymousQAProfileReset": true,
+  "webPublished": false,
+  "uploaded": false
+}

@@ -19,6 +19,12 @@ Initial body/tannin quiz coupling remains the separate243calibration issue sent 
 
 `qa-matchrim-native220.mjs` has a focused `result-actions` mode requiring an exact own previously passed actual quiz container. It checks scan/restaurant command destinations without automatically accepting privacy; local passport/QR disclosure without copying/sharing; repeat-test reset and relaunch. Existing all mode skips the new state-dependent test. No profile/data injection, new20question run, image upload or model/catalogue calls. Runtime and personal tail/QR capture review remain pending.
 
+## Result Actions: Verified Delta
+
+The prepared-only statements above remain historical. Actual native220-r36normal andr37MAX now PASS on the exact own passed r34/r35containers; no quiz profile injected or twenty answers repeated. Scan command opens Etiqueta de vino; meal command opens En el restaurante; both show the still-unaccepted privacy notice. Passport/code is hidden before explicit disclosure, QR renders locally without copy/share activation. Repetir el test is reachable, resets to introduction, removes the old anonymous result from Home and remains reset after relaunch. Only own disposable QA containers changed.
+
+Nine new captures personally inspected, including both destinations, normal/MAXQR and restart controls, MAXreset/Home. QR is nonblank, restart label remains whole and above the fixed navigation, and the remaining MAXtail is bounded beneath the visible control rather than the previous blank-only viewport. [Expected/actual, original receipts and capture hashes](../qa-fixtures/native248/RESULT_ACTIONS.json). No new product source or candidate build was required: compiled124remains899bdf1, harness080fbb1. No authenticated save/rating/RLS, real recognition or distribution approval follows.
+
 ## Resource Audit
 
 The previous243mail checkpoint write at00:14:58.015UTC exceeded its owned writer reviewAfter by33.543seconds before release00:14:59. No foreign owner or mutation was observed; it remains a review-window overrun, not a compliant fresh validation. Exact GUI action times were not independently bounded.124used newly acquired/guarded resources, and this writing phase renewed its own writer lease. No foreign lease was expired, stolen or released.
