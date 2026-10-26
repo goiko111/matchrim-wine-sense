@@ -1,0 +1,192 @@
+{
+  "recordedUTC": "2026-10-26T01:40:21.849Z",
+  "passed": true,
+  "build": 124,
+  "sourceCommit": "899bdf165f4a43385d96dad2d61f12a4ecf493ea",
+  "questions": [
+    {
+      "id": 1,
+      "question": "¿Te gusta la manzana verde?",
+      "sourceAsset": "src/assets/quiz/question-5-manzanas-verdes.jpg",
+      "bundledResource": "assets/question-5-manzanas-verdes-Dawgo6fi.jpg",
+      "sha256": "8df18506ceeda33ec5f21444bb71cfa475866a039f81c755baee3904cfcc9942",
+      "bytes": 16452,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 2,
+      "question": "¿Te gusta la cayena?",
+      "sourceAsset": "src/assets/quiz/question-2-cayena.jpg",
+      "bundledResource": "assets/question-2-cayena-BaptgsmZ.jpg",
+      "sha256": "ceab1f2be457be3f96a217c431c976bef3b5af254080118d307b2a28ba6f6fad",
+      "bytes": 124302,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 3,
+      "question": "¿Te gustan las trufas?",
+      "sourceAsset": "src/assets/quiz/question-7-trufas.jpg",
+      "bundledResource": "assets/question-7-trufas-wb9Mws2W.jpg",
+      "sha256": "993194a682dc56d1a83cb8b44a1352f147a043949a4ca9eb0e1daeb1a1fd1ea3",
+      "bytes": 90320,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 4,
+      "question": "¿Te gusta el pimiento rojo asado?",
+      "sourceAsset": "src/assets/quiz/question-4-pimiento-rojo.jpg",
+      "bundledResource": "assets/question-4-pimiento-rojo-DpUlukRl.jpg",
+      "sha256": "6281e467bf71957da7932b8e0879b7a86d5e561bae86fb5746076fa2fd4f84ce",
+      "bytes": 86825,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 5,
+      "question": "¿Te gusta el olor a cuero?",
+      "sourceAsset": "src/assets/quiz/question-5-cuero.jpg",
+      "bundledResource": "assets/question-5-cuero-DVy29yb0.jpg",
+      "sha256": "519d0073a93d686e942c9f13080bfba445b89f569fef658ef92761c3a27b8e5f",
+      "bytes": 176441,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 6,
+      "question": "¿Te gusta el queso azul?",
+      "sourceAsset": "src/assets/quiz/question-6-queso-azul.jpg",
+      "bundledResource": "assets/question-6-queso-azul-B1rPHrw2.jpg",
+      "sha256": "72d0fd3b83c5bcf6de4ec1e2256cd9b19544cace02617928e930def48635db2d",
+      "bytes": 98151,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 7,
+      "question": "¿Te gustan los pepinillos en vinagre?",
+      "sourceAsset": "src/assets/quiz/question-7-pepinillos.jpg",
+      "bundledResource": "assets/question-7-pepinillos-B6BLwLON.jpg",
+      "sha256": "3db7ad07f08e9b29e8512c2d4883c9d0d25de102d1efda2522fc299f1cce40ee",
+      "bytes": 80359,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 8,
+      "question": "¿Te gustan las berenjenas asadas?",
+      "sourceAsset": "src/assets/quiz/question-6-berenjenas.jpg",
+      "bundledResource": "assets/question-6-berenjenas-B_k6J_Vp.jpg",
+      "sha256": "36c7b49c59509dc8f56389154a39e491b18123fdf5627c4db0f0ec4e8cd334df",
+      "bytes": 49074,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 9,
+      "question": "¿Te gustan los dátiles?",
+      "sourceAsset": "src/assets/quiz/question-8-datiles.jpg",
+      "bundledResource": "assets/question-8-datiles-DmGm6K6X.jpg",
+      "sha256": "456e39c522afb16afcbbb18cf669c2ec9105307d66dc4d5b659277ba28a37fb9",
+      "bytes": 37998,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 10,
+      "question": "¿Te gusta el anís estrellado?",
+      "sourceAsset": "src/assets/quiz/question-11-anis.jpg",
+      "bundledResource": "assets/question-11-anis-DbjOcpbt.jpg",
+      "sha256": "4dea1e80258fb2610d807c93fe64f0d895ae95987d016fd2635961030d070cb8",
+      "bytes": 44577,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 11,
+      "question": "¿Te gusta el café sin azúcar?",
+      "sourceAsset": "src/assets/quiz/question-9-espresso.jpg",
+      "bundledResource": "assets/question-9-espresso-1KgKE-hR.jpg",
+      "sha256": "2db5db43b331537ef10ba404a36ab1899d11ce8324b33c4a623fb60a51cf527c",
+      "bytes": 15338,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 12,
+      "question": "¿Te gustan las avellanas tostadas?",
+      "sourceAsset": "src/assets/quiz/question-12-avellanas-tostadas.jpg",
+      "bundledResource": "assets/question-12-avellanas-tostadas-BHAXGwcL.jpg",
+      "sha256": "6f92114a25800dd1ea861cd679221037e8e1f341db91f1ba029f789d421c9869",
+      "bytes": 144646,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 13,
+      "question": "¿Te gusta la vainilla?",
+      "sourceAsset": "src/assets/quiz/question-13-vainilla.jpg",
+      "bundledResource": "assets/question-13-vainilla-BXzYbYLJ.jpg",
+      "sha256": "9f424cd500dedf2fd13e333f680d828481bfbd5ad0e85bf3d29c67074fe509cb",
+      "bytes": 29211,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 14,
+      "question": "¿Te gusta el café con leche y azúcar?",
+      "sourceAsset": "src/assets/quiz/question-14-cafe-con-leche.jpg",
+      "bundledResource": "assets/question-14-cafe-con-leche-CUepAXx1.jpg",
+      "sha256": "28440572b74ddc6f1d7b7d3f6797a3bfe209601a7c59d334ecedb2a6eecfeba3",
+      "bytes": 44153,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 15,
+      "question": "¿Te gusta la hierbabuena?",
+      "sourceAsset": "src/assets/quiz/question-15-hierbabuena.jpg",
+      "bundledResource": "assets/question-15-hierbabuena-CwLF3tyD.jpg",
+      "sha256": "1006004e2e26b949201fe8a3081ab41d94ccf5963740f70786a30555f5995b8f",
+      "bytes": 87471,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 16,
+      "question": "¿Te gusta el mango?",
+      "sourceAsset": "src/assets/quiz/question-16-mango.jpg",
+      "bundledResource": "assets/question-16-mango-ANSh1N5I.jpg",
+      "sha256": "7069d21d53aaa8601536b3d990852fa90c3b6926f03f717a78fdf297849242be",
+      "bytes": 50494,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 17,
+      "question": "¿Te gusta el marisco?",
+      "sourceAsset": "src/assets/quiz/question-17-marisco.jpg",
+      "bundledResource": "assets/question-17-marisco-CAUavwGJ.jpg",
+      "sha256": "f3062805fabcd00bf5ad1a7bd895bdf1fcbabcc2bd9b0785bc6bbfe6168f1515",
+      "bytes": 148177,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 18,
+      "question": "¿Te gustan los encurtidos?",
+      "sourceAsset": "src/assets/quiz/question-18-encurtidos.jpg",
+      "bundledResource": "assets/question-18-encurtidos-DW47zXYl.jpg",
+      "sha256": "22f5b4d8c03b1c42af2a5b217c3d3913e99866bc4240ed09d97d5f1f515daf22",
+      "bytes": 77164,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 19,
+      "question": "¿Te gusta el curry?",
+      "sourceAsset": "src/assets/quiz/question-19-curry.jpg",
+      "bundledResource": "assets/question-19-curry-DTf_3pwD.jpg",
+      "sha256": "fc8e4d0fdc01ab7399de19e10651434b60c3750c54536d2aff841ab8fc4aae27",
+      "bytes": 69083,
+      "boundToCompiledApp": true
+    },
+    {
+      "id": 20,
+      "question": "¿Te gustan los caramelos de limón?",
+      "sourceAsset": "src/assets/quiz/question-20-caramelos-limon.jpg",
+      "bundledResource": "assets/question-20-caramelos-limon-Br_srOhs.jpg",
+      "sha256": "22ac73e85f58c5e6d31aef7e9b86a85be30c23a7a80df05101760e056d07e5a8",
+      "bytes": 77584,
+      "boundToCompiledApp": true
+    }
+  ],
+  "scope": "Actual TypeScript AST question/import mapping and exact source/prepared/compiled JPEG byte parity for20retained assets. Not twenty native image-frame captures, decoding, human recognition, ingredient/preparation verification or quiz calibration.",
+  "sourceSHA256": "9adf01e4cc82b765508845fec214f48007475dbf3b6d709f76d314eccb9a7485",
+  "externalCalls": 0,
+  "writes": 0
+}

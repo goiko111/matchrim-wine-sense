@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-26,20Quiz Assets Bound To124 / No New Development Reply Observed
+
+- New249AST audit resolves all20actual question IDs/text/imports and exact JPEG SHA256parity across source/prepared124/compiled124resources, no missing/duplicate mapping; focused lint PASS. All20sourceimages personally opened, clear subject vs preparation/flavour/novice ambiguity documented. This is NOT20native-frame pixel checks or scientific calibration. [Evidence](qa-fixtures/quiz249/ASSETS.json), [20row review](docs/MATCHRIM_QUIZ_IMAGES_249_2026-10-26.md). No asset/weight/profile/product change or new candidate.
+- New material UXrisk: current like/indifferent/dislike cannot represent unfamiliarity; assigning indifferent to unknown would change taste scores. Kept within already-open243calibration issue, no invented replacement weights or new development approval. No new message/reminder sent.
+-249named-account Thunderbird refresh about01:37UTC afteridle129s/ownmac8b2dafe1ACQUIRED shows latest Matchrim reply still25Oct16:14Madrid, no later observed/not server absence proof. Filter/originaltab26restored, ownmac released. Light writer33720f2a only249evidence/checkpoint/commit then release.124native normal/MAXquiz+actions remain PASS; catalogue/sensory/real200/account/TestFlight gates and budgets unchanged; Goal ACTIVE until04:00Madrid, monitorPAUSED.
+
 ## Current Gate: 2026-10-26,124Result Actions Normal/MAX PASS
 
 -248focused native220-r36normal/r37MAX both PASS on exact own previously completed quiz containers r34/r35, no profile injection or20question repeat. Actual scan/restaurant destinations preserve unaccepted privacy; code remains collapsed until user opens; local QR renders without copy/share; reachable Repetir el test resets own anonymous result and Home/reset survives relaunch. Nine new captures personally inspected, including MAXQR/whole-word restart/bounded tail. [Expected/actual and hashes](qa-fixtures/native248/RESULT_ACTIONS.json). No new product change/recompile required; compiled124source899bdf1, harness080fbb1.
