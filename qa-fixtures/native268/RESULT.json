@@ -1,0 +1,32 @@
+{
+  "build": 125,
+  "sourceCommit": "10076dda2cfc3eeb6a97f4a30443098b7fadec90",
+  "normal": { "result": "PASS", "receipt": "qa-artifacts/native218-20261025/native220-r48/RESULT.json", "receiptSHA256": "dcf495226f55cb599c3e6cfab2658c4dddb6b6f4dc472552b55108fe000cca91" },
+  "maximumText": { "result": "PASS", "receipt": "qa-artifacts/native218-20261025/native220-r51/RESULT.json", "receiptSHA256": "edcfc65d105fa9bdc0b3670a18509304013e67a0d7793bd192eb78e9bf9e9c89", "startedUTC": "2026-10-26T15:47:21.713Z", "finishedUTC": "2026-10-26T15:53:26.740Z", "probeSHA256": "773ad7262dd8f62726930723bd9b258346bfed946406576d371265ff98012a2a" },
+  "releaseArchive": { "result": "PASS", "receipt": "qa-artifacts/native218-20261025/archive125-r2/ARCHIVE-RESULT.json", "receiptSHA256": "00c35260680787bc78f6e5abdc19300feddd94191678bd3b93db0fc62194df04", "signatureVerified": true, "verifiedResources": 165, "finishedUTC": "2026-10-26T15:55:56.878Z" },
+  "actualBoundDistributionGates": "PASS_SOURCE_ARCHIVE_NORMAL_MAX",
+  "newMaxCapturesPersonallyInspected": [
+    "qa-artifacts/native218-20261025/native220-r51/max/attachments/67C40AAB-66D6-44A9-8EE7-7C020EAF9292.png",
+    "qa-artifacts/native218-20261025/native220-r51/max/attachments/82A77AB5-219E-4F32-B079-73D974E6279A.png",
+    "qa-artifacts/native218-20261025/native220-r51/max/attachments/A1B7A057-B856-410F-9A68-7E179CA9205C.png"
+  ],
+  "normalCaptures": "qa-fixtures/native266/NORMAL.json",
+  "expectedActual": [
+    { "case": "No master lookup before explicit search", "expected": 0, "actual": 0 },
+    { "case": "Explicit search and detail only", "expected": 2, "actual": 2 },
+    { "case": "User chooses proposal explicitly", "result": "PASS" },
+    { "case": "Reader hears visible affinity state and identity", "result": "PASS" },
+    { "case": "Actual year field clears and becomes2024", "result": "PASS" },
+    { "case": "Year correction invalidates link without automatic query", "result": "PASS_COUNTER_REMAINS2" },
+    { "case": "Missing sensory data never creates score or fake public URL", "result": "PASS" }
+  ],
+  "limits": ["Focal native catalogue flow, not whole-app E2E", "Retained real payloads, unsigned synthetic account and manual photo identity", "Maximum-size header/content scroll independently", "No new real200recognition, live persistence/RLS or taste-prediction approval"],
+  "externalCatalogueOrModelCalls": 0,
+  "realAccountOrPhoneUsed": false,
+  "extraSpend": 0,
+  "webOrBackendPublished": false,
+  "uploadAuthorization": "AWAITING_EXPLICIT_LIMITED_PRIVATE_BETA_CHOICE_AFTER_VISUAL",
+  "exported": false,
+  "uploaded": false,
+  "testFlightInstallableConfirmed": false
+}

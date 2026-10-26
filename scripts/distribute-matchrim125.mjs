@@ -7,7 +7,7 @@ import { execFileSync, spawn } from 'node:child_process';
 import { validateOptions106, acknowledged106 } from './distribute-matchrim106.mjs';
 
 const owner = '019f9da7-ae96-7c60-a1b4-fafb75b04d6d';
-const source = 'ae8ec225210eb97178dc7aedf0c72ef891c22388';
+const source = '10076dda2cfc3eeb6a97f4a30443098b7fadec90';
 const developer = '/Applications/Xcode-26.0.1.app/Contents/Developer';
 const sha = value => createHash('sha256').update(value).digest('hex');
 export function validatePair125(prep, archive) {
@@ -23,23 +23,38 @@ export function validateAuthorization125(auth) {
     && typeof auth.exactHumanReply === 'string' && auth.exactHumanReply.length > 10,
   'EXPLICIT_LIMITED_BETA_AUTHORIZATION_REQUIRED');
 }
+export function validateVisual125(prep, normal, maximum) {
+  for (const [proof, name, size] of [[normal, 'normal', 'large'], [maximum, 'max', 'accessibility-extra-extra-extra-large']]) {
+    assert(proof.passed && proof.build === 125 && proof.sourceCommit === prep.commit
+      && proof.liveAccountsUsed === false && proof.syntheticAccount === true && proof.catalogueDataInjected === true
+      && proof.ownAppTerminated === true && proof.contentSizeRestored === true && proof.master259?.networkCallsAllowed === 0);
+    assert.equal(proof.stages.length, 1);
+    const stage = proof.stages[0];
+    assert(stage.name === name && stage.size === size && stage.result?.code === 0 && stage.result.signal === null && stage.stopped === null);
+  }
+}
 
 export async function main125(mode = process.argv[2]) {
   assert(['export', 'upload'].includes(mode));
   const repo = process.cwd(), base = path.join(repo, 'qa-artifacts/testflight125-20261026');
-  const prepFile = path.join(repo, 'qa-artifacts/native218-20261025/candidate125-r1/preparation.json');
-  const archiveFile = path.join(repo, 'qa-artifacts/native218-20261025/archive125-r1/ARCHIVE-RESULT.json');
+  const prepFile = path.join(repo, 'qa-artifacts/native218-20261025/candidate125-r2/preparation.json');
+  const archiveFile = path.join(repo, 'qa-artifacts/native218-20261025/archive125-r2/ARCHIVE-RESULT.json');
+  const normalFile = path.join(repo, 'qa-artifacts/native218-20261025/native220-r48/RESULT.json');
+  const maxFile = path.join(repo, 'qa-artifacts/native218-20261025/native220-r51/RESULT.json');
+  const visualBytes = [fs.readFileSync(normalFile), fs.readFileSync(maxFile)];
   const authorizationFile = path.join(base, 'HUMAN-AUTHORIZATION.json');
   const prepBytes = fs.readFileSync(prepFile), archiveBytes = fs.readFileSync(archiveFile), authBytes = fs.readFileSync(authorizationFile);
   const prep = JSON.parse(prepBytes), archive = JSON.parse(archiveBytes), authorization = JSON.parse(authBytes);
   validatePair125(prep, archive); validateAuthorization125(authorization);
+  validateVisual125(prep, ...visualBytes.map(value => JSON.parse(value)));
   const output = path.join(base, mode + '125-r1'); assert(!fs.existsSync(output), 'NO_DUPLICATE_EXPORT_OR_UPLOAD');
   const guard = () => {
     const leases = JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json')).leases;
     for (const [resource, key] of [['heavy-local', 'MATCHRIM102_HEAVY_LEASE_ID'], ['writer-matchrim-native99', 'MATCHRIM102_WRITER_LEASE_ID']])
       assert(leases[resource]?.owner === owner && leases[resource].leaseId === process.env[key] && leases[resource].reviewAfter * 1000 > Date.now(), resource);
     const disk = fs.statfsSync(repo); assert(disk.bavail * disk.bsize >= 5 * 1024 ** 3, 'LOW_DISK_HOLD');
-    for (const [file, bytes] of [[prepFile, prepBytes], [archiveFile, archiveBytes], [authorizationFile, authBytes]])
+    for (const [file, bytes] of [[prepFile, prepBytes], [archiveFile, archiveBytes], [authorizationFile, authBytes],
+      [normalFile, visualBytes[0]], [maxFile, visualBytes[1]]])
       assert.equal(sha(fs.readFileSync(file)), sha(bytes));
   };
   const verify = () => {
@@ -68,6 +83,7 @@ export async function main125(mode = process.argv[2]) {
     '-exportOptionsPlist', optionsFile, '-allowProvisioningUpdates'];
   const receipt = { startedUTC: new Date().toISOString(), mode, sourceCommit: prep.commit, build: 125, version: '1.0', bundleId: 'wine.matchrim.app',
     archive: archive.archive, prepSHA256: sha(prepBytes), archiveReceiptSHA256: sha(archiveBytes), authorizationSHA256: sha(authBytes),
+    nativeFlowVisualProofSHA256: visualBytes.map(sha),
     privateBetaOnly: true, recognitionE2EApproved: false, sensoryCalibrationApproved: false,
     hostedMasterReferenceActive: true, automaticMasterLookups: false, models: 0, uploadsOfUserPhotos: 0,
     webPublished: false, backendDeployed: false, testFlightInstallableConfirmed: false,
