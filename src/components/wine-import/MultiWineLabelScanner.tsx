@@ -32,6 +32,7 @@ import { GlobalWinePicker103, GlobalWineReference103 } from '@/components/wine-i
 import { GlobalWineRecovery104 } from '@/components/wine-import/GlobalWineRecovery104';
 import { NativeMasterLookup259, NativeMasterReference259 } from '@/components/wine-import/NativeMasterLookup259';
 import { nativeMasterLink259 } from '@/utils/nativeMasterLink259';
+import { makeCellarMasterReference260 } from '@/utils/cellarMasterReference260';
 import { AiRimContextGuide } from '@/components/AiRimContextGuide';
 import { WineComparisonWorkspace } from '@/components/wine-import/WineComparisonWorkspace';
 import { LabelAnalysisView } from '@/components/wine-import/LabelAnalysisView';
@@ -968,11 +969,13 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
           const global = isNative && isGlobalWine103(candidate, candidate.globalRecord) ? candidate.globalRecord : null;
           const publicReference = global ? makeCellarPublicReference107(candidate, global) : null;
           const referenceStyle = global ? makeCellarReferenceStyle110(candidate, global, scanProfileRef.current) : null;
-          const details = evidence || publicReference ? withCellarInitialAffinity({ ...identity,
+          const masterReference = isNative ? makeCellarMasterReference260(candidate) : null;
+          const details = evidence || publicReference || masterReference ? withCellarInitialAffinity({ ...identity,
             sensory_attributes: candidate.sensoryAttributes,
             place_details: { ...(evidence ? { bodega_sensory_evidence: evidence } : {}),
               ...(publicReference ? { winerim_public_catalogue: publicReference } : {}),
               ...(referenceStyle ? { matchrim_reference_style110: referenceStyle } : {}),
+              ...(masterReference ? { winerim_master_reference260: masterReference } : {}),
               ...(masterAudit ? { winerim_master_evidence: masterAudit } : {}) } }, scanProfileRef.current, 'saved') : null;
           return {
           nombre: candidate.name,

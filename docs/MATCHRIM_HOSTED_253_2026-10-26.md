@@ -1,5 +1,44 @@
 # Hosted253: secret saved by owner, QA authentication still blocked
 
+## Native260: Review Caught Save And Rescan Gaps Before Compilation
+
+A parallel read-only review of2051562found two actual defects: the scanner save
+mapper did not include the new259masterlink, losing canonical reference metadata;
+the personal verdict resolver recognized only older master/public/Library formats,
+so a known-vintage master rescan could not recover its saved rating.125build
+requestab08d133was cancelled before any compilation to correct these defects.
+
+New cellarMasterReference260 records only canonical ID, catalogue identity,
+declared vintages, nullable real public URL and the bottle identity binding.
+sensory_usable is literalfalse; no tasting vector/affinity/learning authority is
+created. It survives serialization but invalidates identity/region/country/year
+changes. Actual scanner save mapper now includes it under
+winerim_master_reference260. Insert acknowledgement requires the actual echoed
+reference; returning only a rowID or dropping the metadata no longer claims save
+success. Native Bodega displays Ficha de sabor incompleta and explains the gap.
+
+Master rescan now recovers a personal verdict for the same owner/reference and a
+known requested vintage, separately from any computed affinity. Unknown/null
+vintages, conflicting/malformed saved IDs and contradictory duplicate ratings
+abstain. Legacy mantalak:<sameID> evidence remains compatible for verdict lookup,
+not promoted to a new sensory vector.259live links now also bind region/country.
+
+Six260focused groups PASS, including the actual old2051562AST-extracted save
+mapper returningnull(retainedRED) versus the current mapper retaining canonical
+reference, strict echoed save binding, no learning, JSON roundtrip/unsafe URL,
+known-vintage verdict and owner/year/ID conflicts. Legacy/web actual save mapper
+output without new native metadata remains byte-equivalent. Affected53label-save,
+16rescan159,6rescan183and6public-reference107groups PASS; updated259eightgroups,
+UIeight, focused TS/lint PASS. Initial260TScheck caught type-inference issues and
+a fixture Json-to-Sensory mismatch; corrected and rerun, not ignored. No DB/API
+write or live-user/accuracy claim. [Bound260receipt](../qa-fixtures/master260/RESULT.json).
+
+Candidate125compile/nativevisual remain pending from a new clean source commit.
+Shared heavy build resource queued cooperatively; no foreign task interrupted.
+Original6allowance consumed; no new catalogue/model/image/Auth/Lovable/Keychain
+operation, phone use, backend/main/web publication or TestFlight. All genuine
+sensory/provenance/full200and live-persistence gates remain open.
+
 ## Native259 Implementation Delta, Candidate125 Not Yet Compiled
 
 The new human two-hour scope runs until26Oct12:50Europe/Madrid. Native scanner

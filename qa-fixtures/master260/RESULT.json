@@ -1,0 +1,16 @@
+{
+  "passed": 6,
+  "failed": 0,
+  "externalCalls": 0,
+  "realUsers": 0,
+  "databaseWrites": 0,
+  "testedActualSaveCallback": true,
+  "persistedMasterReferenceRequired": true,
+  "sensoryOrLearningGranted": false,
+  "reviewedSource": "2051562 had lost save reference and missed known-vintage personal verdict",
+  "priorMapperRetainedRed": true,
+  "nativeBuild125": "PENDING",
+  "nativeVisual": "PENDING",
+  "webPublication": false,
+  "paidCalls": 0
+}

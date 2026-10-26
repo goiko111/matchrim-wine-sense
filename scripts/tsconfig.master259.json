@@ -1,5 +1,5 @@
 {
   "extends": "../tsconfig.app.json",
   "compilerOptions": { "types": ["vite/client", "node"], "noEmit": true },
-  "include": ["../src/vite-env.d.ts", "../src/components/wine-import/NativeMasterLookup259.tsx", "./check-matchrim-master259.ts"]
+  "include": ["../src/vite-env.d.ts", "../src/components/wine-import/NativeMasterLookup259.tsx", "../src/components/NativeCellarItem98.tsx", "./check-matchrim-master259.ts", "./check-matchrim-master260.ts"]
 }

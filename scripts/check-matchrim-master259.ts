@@ -73,7 +73,7 @@ try {
     const value = result.candidate;
     assert(nativeMasterLink259(confirmWineCandidateIdentity(value)));
     for (const patch of [{ id: 'other-region' }, { name: 'Other wine' }, { producer: 'Other winery' },
-      { vintage: 2024 }, { canonicalId: 'mantalak-master:999' },
+      { vintage: 2024 }, { region: 'Other region' }, { country: 'Other country' }, { canonicalId: 'mantalak-master:999' },
       { masterLink259: structuredClone(value.masterLink259) }]) {
       assert.equal(nativeMasterLink259({ ...value, ...patch }), null);
     }

@@ -129,7 +129,10 @@ try {
     const nativeBlock = slice(current), oldNativeBlock = slice(previous);
     assert(nativeBlock.includes('<NativeMasterLookup259'));
     const stripImports = value => value.split('\n').filter(line => !line.includes('NativeMasterLookup259')
-      && !line.includes("from '@/utils/nativeMasterLink259'")).join('\n');
+      && !line.includes("from '@/utils/nativeMasterLink259'") && !line.includes("from '@/utils/cellarMasterReference260'"))
+      .join('\n').replace('          const masterReference = isNative ? makeCellarMasterReference260(candidate) : null;\n', '')
+      .replace('const details = evidence || publicReference || masterReference ?', 'const details = evidence || publicReference ?')
+      .replace('              ...(masterReference ? { winerim_master_reference260: masterReference } : {}),\n', '');
     assert(stripImports(current.replace(nativeBlock, oldNativeBlock)).trimEnd() === previous.trimEnd(),
       'Only native guarded primary-view code and its two imports may change');
     assert(nativeBlock.includes("status: 'recognized'"));

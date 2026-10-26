@@ -4,6 +4,7 @@ import { masterVintageEvidence188, type MasterDetail188 } from './nativeMasterCo
 
 export type NativeMasterLink259 = Readonly<{
   candidateId: string; name: string; producer: string | null; vintage: number | null;
+  region: string | null; country: string | null;
   wine: MasterDetail188;
 }>;
 const issued = new WeakSet<object>();
@@ -18,6 +19,7 @@ export const nativeMasterLink259 = (candidate: WineCandidate | null): NativeMast
   const link = candidate?.masterLink259;
   return candidate && link && issued.has(link) && link.candidateId === candidate.id
     && link.name === candidate.name && link.producer === candidate.producer && link.vintage === candidate.vintage
+    && link.region === candidate.region && link.country === candidate.country
     && candidate.canonicalId === `mantalak-master:${link.wine.mantalakWineId}` ? link : null;
 };
 
@@ -33,7 +35,7 @@ export const resolveMasterCandidate259 = async (candidate: WineCandidate, invoke
   // Only a successful bounded resolver can issue this link. JSON/storage copies
   // are not trusted; correcting/reanalysing an identity requires a new lookup.
   const link = freeze({ candidateId: candidate.id, name: candidate.name, producer: candidate.producer,
-    vintage: candidate.vintage, wine: structuredClone(result.wine) });
+    vintage: candidate.vintage, region: candidate.region, country: candidate.country, wine: structuredClone(result.wine) });
   issued.add(link);
   return { status: 'reference-ready', candidate: { ...candidate,
     canonicalId: `mantalak-master:${result.wine.mantalakWineId}`, masterLink259: link,

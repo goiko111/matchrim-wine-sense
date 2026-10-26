@@ -6,6 +6,8 @@ import { isVerifiedWinerimSheetForIdentity, hasExactWinerimProducer, hasWinerimG
 import { readCellarPublicReference107 } from './cellarPublicReference107';
 import { readCellarSensoryEvidence } from './bodegaAffinity';
 import { isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
+import { nativeMasterLink259 } from './nativeMasterLink259';
+import { readCellarMasterReference260 } from './cellarMasterReference260';
 
 export type PersonalRating159 = 'love' | 'ok' | 'not_for_me';
 const rowSchema = z.object({ id: z.string().min(1), user_id: z.string().min(1),
@@ -38,12 +40,15 @@ export const resolveNativeRescanVerdict159 = (
   const global = isGlobalWine103(candidate, candidate.globalRecord) ? candidate.globalRecord : null;
   const master = isVerifiedNativeMaster102(candidate, candidate.masterRecord) ? candidate.masterRecord : null;
   const sheet = isVerifiedWinerimSheetForIdentity(candidate, candidate.originalSheet) ? candidate.originalSheet : null;
-  if (!global && !master && !sheet) return null;
+  const hosted = nativeMasterLink259(candidate);
+  if (!global && !master && !sheet && !hosted) return null;
   if (candidate.vintage == null && !global) return null;
   // Unknown bottle years must not inherit the verdict for a dated catalogue row.
   if (global && !exactGlobalVintage103(candidate, global)
     && !(candidate.vintage === null && global.vintage === null)) return null;
-  const identity = global ?? master ?? sheet ?? candidate;
+  if (hosted && !hosted.wine.vintages.includes(String(candidate.vintage))) return null;
+  const identity = hosted ? { name: hosted.wine.name, producer: hosted.wine.winery,
+    vintage: candidate.vintage, region: hosted.wine.region, country: hosted.wine.country } : global ?? master ?? sheet ?? candidate;
   const matches = snapshot.rows.filter(row => {
     if (row.user_id !== ownerId || row.vintage !== candidate.vintage
       || !isSafeCanonicalLabelMatch(row, identity) || !hasExactWinerimProducer(row.producer, identity.producer)) return false;
@@ -54,11 +59,18 @@ export const resolveNativeRescanVerdict159 = (
     if (trace) {
       if (!readCellarSensoryEvidence(row)) return false;
       const savedId = (trace as Record<string, unknown>).canonical_id;
-      const expectedId = global ? `winerim-public-store:${global.id}` : master ? `mantalak:${master.id}` : sheet?.id;
-      if (typeof savedId === 'string' && (/^(mantalak|winerim-public-store):/.test(savedId)
+      const expectedId = hosted ? `mantalak-master:${hosted.wine.mantalakWineId}`
+        : global ? `winerim-public-store:${global.id}` : master ? `mantalak:${master.id}` : sheet?.id;
+      if (hosted && savedId !== expectedId && savedId !== `mantalak:${hosted.wine.mantalakWineId}`) return false;
+      if (!hosted && typeof savedId === 'string' && (/^(mantalak|winerim-public-store):/.test(savedId)
         || sheet && !savedId.includes(':')) && savedId !== expectedId) return false;
     }
     const publicReference = readCellarPublicReference107(row);
+    const hostedReference = readCellarMasterReference260(row);
+    if (hosted && details && Object.prototype.hasOwnProperty.call(details, 'winerim_master_reference260')
+      && (!hostedReference || hostedReference.mantalak_wine_id !== hosted.wine.mantalakWineId)) return false;
+    if (hosted && details && Object.prototype.hasOwnProperty.call(details, 'winerim_public_catalogue') && !publicReference) return false;
+    if (hosted && publicReference && publicReference.id !== hosted.wine.representativePublicId) return false;
     if (global && publicReference && publicReference.id !== global.id) return false;
     // Null is not evidence of NV. Undated public matches need the same saved public ID.
     if (global && candidate.vintage === null && publicReference?.id !== global.id) return false;

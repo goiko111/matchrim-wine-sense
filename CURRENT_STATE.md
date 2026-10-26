@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-26, Native260 Save/Rescan Defects Corrected Before Candidate125
+
+-Independentread-onlyreview of259found2realboundarydefects: newmasterlinknotincludedinsavepayload andnewformatnotacceptedbypersonal-verdictresolver. New260durableidentity-bound reference-only record nowtravels actualsavecallback, echoackrequiresitsreturn, Bodeganativeexplainsincompleteflavourdata anddoesnotinventpublicURL/affinity. Old2051562actualAST-extractedmapper returnsnull(retainedRED); currentmapperpersistscanonical217480withsensory_usable:false. NoDBwrite/network.
+-Newmasterrescan supports sameowner/name/producer/knownyearandcanonicalID, retainsoldmantalak IDsamecanonicalcompatibility; unknownvintages/null/foreignowners/conflictingIDs/malformedbindings/contradictoryratingsabstain. Frozen259linknowalsoinvalidatesregion/countryedits.6new260groups +affected53save/16rescan159/6rescan183/6publicreference107 +updated259eight/UIeight/TS/lintPASS, allsynthetic/offline notliveaccounts. [260receipt](qa-fixtures/master260/RESULT.json).
+-Initial260TScheckcaughtthreeinference/castissuesandtestJsonvsSensorytype; corrected/recheckedPASS, no runtimepasssubstitutedforTS.125buildrequestab08d133cancelledbeforeexecutiontofixsource; no compile125yet. Ownwriter20787c08/requeste2e2ce01 fordelta thenrelease/fullnewbuildqueue. GoalACTIVEuntil12:50Madrid, monitorPAUSED,6/6freeconsumed/50paid15EURunchanged;0web/main/backend/IA/images/Lovable/phone/realaccounts/TestFlight.
+
 ## Current Gate: 2026-10-26, Native259 Hosted Reference Integration Prepared / Candidate125 Build And Visual Pending
 
 -New human2hGoal ACTIVE until12:50Europe/Madrid/10:50UTC; no previousGoal existed on check, monitorPAUSED unchanged. Native scanner primary lookup now offers explicit authenticated master search before existing public fallback, includeUnlisted:true/limit10/max2requests peruseraction. No automatic network/selection/confirmation. Hostedsix258PASS remains6/6consumed; no new API/model/image/Keychain/Lovable calls or accounts/ratings/phone/backend/main/web/TestFlight.
