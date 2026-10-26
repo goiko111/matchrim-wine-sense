@@ -2,6 +2,49 @@ import Foundation
 import XCTest
 
 final class MatchrimOffline220Tests: XCTestCase {
+    @MainActor func testRetainedQuizResultActions() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")
+        app.terminate(); app.launch(); XCUIDevice.shared.orientation = .portrait
+        defer { capture(app, "result248-end") }
+        XCTAssertTrue(app.buttons["Mis gustos"].waitForExistence(timeout: 15), "Use only a retained, actually completed own QA quiz")
+        try tap(app.buttons["Mis gustos"].firstMatch, app)
+        try tap(app.buttons["Escanear un vino"].firstMatch, app)
+        XCTAssertTrue(app.staticTexts["Etiqueta de vino"].firstMatch.waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["Antes de analizar una imagen"].firstMatch.exists, "Opening a command must not acknowledge privacy automatically")
+        capture(app, "result248-scan-destination-privacy-unaccepted")
+        try tap(app.links["Inicio"].firstMatch, app)
+        try tap(app.buttons["Mis gustos"].firstMatch, app)
+        try tap(app.buttons["Elegir vino para mi comida"].firstMatch, app)
+        XCTAssertTrue(app.staticTexts["En el restaurante"].firstMatch.waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["Antes de analizar una imagen"].firstMatch.exists)
+        capture(app, "result248-restaurant-destination-privacy-unaccepted")
+        try tap(app.links["Inicio"].firstMatch, app)
+        try tap(app.buttons["Mis gustos"].firstMatch, app)
+        XCTAssertFalse(app.staticTexts["Tu código Matchrim"].firstMatch.exists, "Passport must remain secondary and collapsed")
+        let disclosure = app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "Mi código y compartir")).firstMatch
+        try tap(disclosure, app)
+        XCTAssertTrue(app.staticTexts["Tu código Matchrim"].firstMatch.waitForExistence(timeout: 8))
+        let qr = app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "Ver mi QR")).firstMatch
+        try tap(qr, app)
+        let image = app.images.matching(NSPredicate(format: "label BEGINSWITH %@", "QR del pasaporte Matchrim ")).firstMatch
+        try tap(image, app, activate: false)
+        capture(app, "result248-local-qr-no-share-or-copy")
+        try tap(app.links["Inicio"].firstMatch, app)
+        try tap(app.buttons["Mis gustos"].firstMatch, app)
+        let restart = app.buttons["Repetir el test"].firstMatch
+        try tap(restart, app, activate: false)
+        capture(app, "result248-restart-control-tail")
+        try tap(restart, app)
+        XCTAssertTrue(app.buttons["Comenzar el test"].firstMatch.waitForExistence(timeout: 10))
+        try tap(app.links["Inicio"].firstMatch, app)
+        XCTAssertTrue(app.buttons["Conocer mis gustos"].firstMatch.waitForExistence(timeout: 10))
+        XCTAssertFalse(app.buttons["Mis gustos"].firstMatch.exists)
+        app.terminate(); app.launch()
+        XCTAssertTrue(app.buttons["Conocer mis gustos"].firstMatch.waitForExistence(timeout: 15))
+        capture(app, "result248-restart-remains-reset-after-relaunch")
+    }
+
     @MainActor func testAnonymousQuizAndHome() throws {
         continueAfterFailure = false
         let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")

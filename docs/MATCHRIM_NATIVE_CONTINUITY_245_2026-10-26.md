@@ -22,3 +22,11 @@ Actual Home handler with anonymous locally saved tastes navigates to `/profile`;
 Four actual routing cases/two parsed CSSrules, affected225ten controller groups/50synthetic owner transitions, result ten groups including actual shared Button server-render/class merge, focused lint and Swift syntax PASS. Not real accounts/RLS, runtime124, scientific taste validation or catalogue approval.124must compile and pass actual normal/MAXnative flows, now tapping Mis gustos after restart and requiring the result, before this local block closes.
 
 Initial quiz-axis limitation243, hosted catalogue secret/authentication/provenance, real200wine identity and signed TestFlight gates remain open. New development243mail draft requests existing calibration documentation only, not implementation, approval or spend; no sent claim here.
+
+## Verified124 Delta
+
+The historical prepared/pending statements above are preserved, not retroactively relabelled. Clean899bdf1 preparation/typecheck/unsignedarm64compile passed. Fresh native220-r34normal andr35MAX passed all20answers, result, Home, relaunch and actual Mis gustos destination without sign-in. Twelve captures personally reviewed: normalquestion20/result/reopenedresult; MAXinitialheading,5traits,scan/mealcommands,reopenedresult and Home. Text wraps by words; selected targets can be revealed fully above the navigation. Offscreen neighboring rows while scrolling are not hidden targets. [Hashed receipts/captures](../qa-fixtures/native245/RESULT.json).
+
+This closes the anonymous reopen and quiz-result visual block only. It does not prove the entire app, authenticated persistence, predictive accuracy, complete catalogue, canonical200labels, signing or TestFlight. A separate focused248test is prepared for actual command destinations, disclosure/localQR and repeat/reset/tail, without repeating20questions or injecting profiles. Tail correction is not yet separately visually approved.
+
+243development mail was subsequently sent once and verified in named-account Sent; see [receipt](../qa-fixtures/quiz243/MAIL_SENT.json). A fresh named-account refresh during124compilation still showed latest Matchrim reply25Oct16:14Madrid, not absolute absence of server mail. No follow-up sent here.

@@ -1,0 +1,57 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "name": "body-soft",
+      "source": "learned",
+      "samples": 6,
+      "profile": {
+        "potente": 4.1,
+        "acidez": 3,
+        "dulce": 3,
+        "tanico": 1.3,
+        "afrutado": 3
+      },
+      "confidence": 35,
+      "initial": 65,
+      "currentBefore": 65,
+      "currentAfter": 80,
+      "delta": 15,
+      "baseReads": 3,
+      "trainingReads": 1,
+      "optOutSource": "quiz",
+      "anonymousReads": 0
+    },
+    {
+      "name": "light-firm",
+      "source": "learned",
+      "samples": 6,
+      "profile": {
+        "potente": 1.3,
+        "acidez": 3,
+        "dulce": 3,
+        "tanico": 4.1,
+        "afrutado": 3
+      },
+      "confidence": 35,
+      "initial": 65,
+      "currentBefore": 65,
+      "currentAfter": 80,
+      "delta": 15,
+      "baseReads": 3,
+      "trainingReads": 1,
+      "optOutSource": "quiz",
+      "anonymousReads": 0
+    }
+  ],
+  "scope": "Actual resolveScanProfile and actual platform wrapper with native Capacitor boundary; actual strict Bodega/learner and affinity view. Controlled in-memory loaders, no authentication, RLS, native UI or persistence proof.",
+  "externalCalls": 0,
+  "recordedUTC": "2026-10-26T01:10:06.814Z",
+  "execution": "Inline composition probe in tool output323e53; portable equivalent scripts/check-matchrim-profile-resolver248.mjs separately passed. No authenticated UI or persistence claim.",
+  "sources": {
+    "src/utils/scanProfile.ts": "c4bde0796c1cac6c2c55dc585d698b734a7b4964d68bf6408d25af12bba18ee5",
+    "src/utils/matchrimLearningPlatform.ts": "74dd63b3a9fb29d00f39a2e58c2f05f724360405e656f2f42067736aed755388",
+    "src/utils/matchrimLearning.ts": "070999f26f18b8ff3958b1d2864d5bf9f3ddb23aaffe7e0c1eee05b5af5d3fee",
+    "src/utils/bodegaAffinity.ts": "d9c31b887e3c449e840a4a173640c9ba8f0cb4166eb0cbc94a2365ca436978b5"
+  }
+}

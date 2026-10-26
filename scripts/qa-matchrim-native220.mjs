@@ -5,7 +5,8 @@ import { createHash } from 'node:crypto';
 import { execFileSync, spawn, spawnSync } from 'node:child_process';
 
 const repo = process.cwd(), out = path.resolve(process.argv[2]);
-const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close', 'rescan', 'discard-visual', 'quiz'].includes(mode));
+const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close', 'rescan', 'discard-visual', 'quiz', 'result-actions'].includes(mode));
+if (mode === 'result-actions') assert(process.argv[6], 'RESULT_ACTIONS_REQUIRES_OWN_PREVIOUS_COMPLETED_QUIZ');
 const sizeMode = process.argv[7] || 'both'; assert(['both', 'normal', 'max'].includes(sizeMode));
 if (mode === 'discard-visual') assert.equal(sizeMode, 'max', 'DISCARD_VISUAL_REQUIRES_ACTUAL_MAX_TEXT');
 assert(path.dirname(out) === path.join(repo, 'qa-artifacts/native218-20261025') && /^native220-r\d+$/.test(path.basename(out)) && !fs.existsSync(out));
@@ -13,6 +14,8 @@ const prep = JSON.parse(fs.readFileSync((process.argv[4] || 'qa-artifacts/native
 const compiled = JSON.parse(fs.readFileSync((process.argv[5] || 'qa-artifacts/native218-20261025/compile110-r1') + '/RESULT.json'));
 const appSource = compiled.app.path, device = 'B18822EF-BFBD-4A6A-89B2-33539BDE4127';
 const previous = process.argv[6] ? JSON.parse(fs.readFileSync(path.resolve(process.argv[6], 'RESULT.json'))) : null;
+if (mode === 'result-actions') assert(previous?.passed && previous.scope.includes('Actual anonymous 20-question quiz'),
+  'RESULT_ACTIONS_REQUIRES_PREVIOUS_PASSED_ACTUAL_QUIZ');
 if (previous) assert(previous.sourceCommit === prep.commit && previous.build === prep.build && (previous.freshContainerInstalled === true || previous.reusedOwnQAContainer)
   && previous.liveAccountsUsed === false && previous.catalogueDataInjected === false && previous.ownAppTerminated === true,
   'ONLY_EXACT_OWN_PREVIOUS_ANONYMOUS_CONTAINER_MAY_BE_REUSED');
@@ -37,7 +40,8 @@ const verifySource = () => {
 guard(); verifySource(); fs.mkdirSync(out, { mode: 0o700 });
 const receipt = { startedUTC: new Date().toISOString(), passed: false, sourceCommit: prep.commit, build: prep.build, bundleId, device,
   leases: { heavy: env.MATCHRIM102_HEAVY_LEASE_ID, simulator: env.MATCHRIM104_SIMULATOR_LEASE_ID, desktop: env.MATCHRIM220_DESKTOP_LEASE_ID, writer: env.MATCHRIM102_WRITER_LEASE_ID },
-  scope: `Compiled${prep.build} native app, ${previous ? 'exact own previously isolated anonymous' : 'fresh'} QA container, external network denied by CSP plus early JS guards. ${mode === 'quiz'
+  scope: `Compiled${prep.build} native app, ${previous ? 'exact own previously isolated anonymous' : 'fresh'} QA container, external network denied by CSP plus early JS guards. ${mode === 'result-actions'
+    ? 'Actual retained anonymous quiz result actions: scan/restaurant destinations, unaccepted privacy, local QR disclosure, restart/reset and relaunch; no share/copy activation, account or OCR.' : mode === 'quiz'
     ? 'Actual anonymous 20-question quiz, local profile/Home and restart retention only; no account, OCR or gallery test in this mode.'
     : 'Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only.'} Not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.`, stages: [],
   liveAccountsUsed: false, catalogueDataInjected: false, modelCallsPermitted: 0, webPublished: false, uploaded: false };
@@ -97,6 +101,8 @@ try {
     if (mode === 'rescan') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testLocalReanalysisRequiresReview');
     if (mode === 'discard-visual') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testMaxDiscardVisualCoverage');
     if (mode === 'quiz') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testAnonymousQuizAndHome');
+    if (mode === 'result-actions') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testRetainedQuizResultActions');
+    else args.push('-skip-testing:Probe97UITests/MatchrimOffline220Tests/testRetainedQuizResultActions');
     const fd = fs.openSync(root + '/runtime.log', 'wx', 0o600);
     const child = spawn(env.DEVELOPER_DIR + '/usr/bin/xcodebuild', args, { env, stdio: ['ignore', fd, fd] });
     let stopped = null;

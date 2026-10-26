@@ -1,0 +1,87 @@
+{
+  "recordedUTC": "2026-10-26T01:10:06.805Z",
+  "build": 124,
+  "source": "899bdf165f4a43385d96dad2d61f12a4ecf493ea",
+  "passed": true,
+  "scope": "Actual anonymous quiz20/result/Home/relaunch/Mis gustos destination, normal and MAX. Not account/RLS, recognition200, predictive calibration, signed archive or TestFlight approval.",
+  "receipts": [
+    {
+      "file": "qa-artifacts/native218-20261025/candidate124-r1/preparation.json",
+      "sha256": "afcd2a87fb9ee68be69f1c50ce8bd1aa337e897a02556020fb5691bc17955b24"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/compile124-r1/RESULT.json",
+      "sha256": "3fd1a00153c0057b26a43fe391aa4dc9c0bea7d150ef2ef37f1b43529b58be7c"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r34/RESULT.json",
+      "sha256": "bbe17000b57d0b31e9db8a8229bbb346d2c23faf15af60f6a61a41ce165c00fb"
+    },
+    {
+      "file": "qa-artifacts/native218-20261025/native220-r35/RESULT.json",
+      "sha256": "e3b7eb3d2a7afc859c97ad7fb2894b7411c0af61e7cbaf2b097c9d5ba1b72e2a"
+    }
+  ],
+  "personalReview": {
+    "normal": [
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r34/normal/attachments/44C7B5ED-FF9E-4414-9FA8-877229E04FAC.png",
+        "sha256": "cc0882ff4da4593d9e4c33ae4fc06a53415a700986f7c5d7a07704cfabf1a9a0"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r34/normal/attachments/7BF02E50-5836-4042-AC99-1E21C079E422.png",
+        "sha256": "b412160af3ea9a06b620bc3b7d0838f34e5faf75b25e42fb4609a32c8a5dbd29"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r34/normal/attachments/9AE765B2-256A-4D56-9AAB-DB19C19A3F28.png",
+        "sha256": "9031fcb5843e6366592a2301df41c3890527932cbc9d937ce565e74e4df533cb"
+      }
+    ],
+    "max": [
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r35/max/attachments/606FBF57-1592-4715-A25F-0AB6944D60E5.png",
+        "sha256": "391a644477c7ddd88c9ae74710df3c39a90813b8b666654d57af76ee99eee3f9"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r35/max/attachments/51E5213D-832A-4A03-BDBB-E8CEB2E7FF57.png",
+        "sha256": "abf2e820925dac8aaf05c39d29eef362e38f3c6620e774577c23db073a4bfc67"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r35/max/attachments/10E95F39-D2C2-493D-B379-4E518F0D0936.png",
+        "sha256": "abf2e820925dac8aaf05c39d29eef362e38f3c6620e774577c23db073a4bfc67"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r35/max/attachments/1ABA1833-7BAA-4CC2-A362-18AE5279FE78.png",
+        "sha256": "7551f1c0750dfa9c853c33f693fee6084b82d1488991c265e82162673c8f9a6f"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r35/max/attachments/EE32CA33-C784-4FF0-8862-182C3D60B65B.png",
+        "sha256": "afe189eef054f8ae31334cce23535f36d8ecb31650e90e9472fa37ea74aa0cd2"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r35/max/attachments/DA9966D3-C892-40FF-9966-CD3DFF61902E.png",
+        "sha256": "7c44097796f8233fd06f9155d241e46bb30af79d6d2a501a4f8148c949b91ff0"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r35/max/attachments/C9AC59C2-31F1-4F26-A29B-8919D001614A.png",
+        "sha256": "4d5bd2647b50060f46e43d7c7a4b4ed002e8fb4f234c605ab965893cf44c7231"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r35/max/attachments/C549EF23-939C-4709-BEEA-780F42537F86.png",
+        "sha256": "391a644477c7ddd88c9ae74710df3c39a90813b8b666654d57af76ee99eee3f9"
+      },
+      {
+        "file": "qa-artifacts/native218-20261025/native220-r35/max/attachments/F1FAC7E9-91D4-425E-A49C-4A740B9B8EC5.png",
+        "sha256": "bd77cc60b98e58ba1b85a66b165c86626693927e31f9a7d6194fb6d711fb7dbd"
+      }
+    ]
+  },
+  "visual": "Heading initially visible; five traits and whole-word scan/meal commands readable when revealed; no target occlusion. Tail/disclosure/action destinations separately pending248.",
+  "previousFailuresPreserved": [
+    "native220-r32",
+    "native220-r33"
+  ],
+  "externalCalls": 0,
+  "uploaded": false,
+  "webChanged": false
+}
