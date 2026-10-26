@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-26, Native125 Compiled / Visual And Sensory Gates Still Open
+
+- Candidate1.0(125) prepared from clean ae8ec225210eb97178dc7aedf0c72ef891c22388. Full app typecheck, Vite native resources and unsigned arm64 iOS Simulator compile PASS; compile10:47:06-10:47:54UTC, executableSHA2567eb37d9e8ea4bc0533377b395c71159a4a07e8870e1cc9767e6970417037c063. Retained preparation/compile artifacts and [bounded receipt](qa-fixtures/native263/RESULT.json). This is not a signed archive, runtime/UI pass, 200-label recognition approval or TestFlight.
+- Native259-262 now includes explicit hosted master lookup, user confirmation, durable reference-only save, strict same-vintage personal verdict rescan and duplicate preservation/normalization. Existing focused regressions remain as recorded; not repeated to fill the resource wait. No new product edits after ae8ec22. Normal/MAX master-catalogue visual mode remains pending; existing124captures are not125evidence.
+- Mail request8c6a382e was claimed with own mac leasea5ee8b30; fresh HID idle0.278s at10:12UTC meant human activity, no GUI action/refresh/send. Own lease released. Later idle observations again showed activity; draft262 remains UNSENT, no claim of fresh server absence or development response. All six free reads consumed, paid50/15EUR unchanged, no new catalogue/model/Auth/image/Lovable/Keychain/DB/phone/web/main/backend/TestFlight actions. Build queue acquired only after prior offers cleared; no foreign lease/process interrupted. Two-hour window ends10:50:58UTC/11:50:58Madrid; monitor remainsPAUSED.
+
 ## Current Gate: 2026-10-26, Native262 Duplicate Case Regression Fixed /125Still Awaiting Heavy Capacity
 
 -Read-onlyREDobservednative261splitting identicalcase-onlyOCRvariantinto2rows(oldsharedgroups1).262usesexistingstrictbidirectionalcanonicalidentitymatcherplusstrictsameharvest/normalizedgeo, preservingcase/accents/spacing/producerwrapperswithoutdroppingqualifiersorborrowingunknownyear. New7group261suite/TS/lintPASS. Historical6groupreceiptretained, [newnormalizationreceipt](qa-fixtures/master261/RESULT-normalization.json). No scene/modelaccuracyclaim.
