@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-27, Quiz276 Runtime-Recovery Scenario Prepared / GUI Activity Hold
+
+- New QA-only recovery mode on compiled126, tooling343031d pushed. Deliberate anonymous partial-answer state, exact unique React-owner/empty-state guard; actual compiled handler must return question1 without saving, allow question2 and retain no partial profile after relaunch. No src/public/ios/product/weights changes. Guardunit8badvariants/ambiguity/dispatch/cycle/0discoverywrites, scopedlint andSwiftparse PASS; NOT native runtime. [Prepared receipt](qa-fixtures/quiz276/PREPARED.json), [exact next54normal/nextMAX commands](docs/MATCHRIM_QUIZ_RECOVERY_276_2026-10-27.md).
+- No276native run/capture started: foreign resources eventually cleared but fresh humanHID remained active0.176/0.268s. Full dce48144 and latermail03ac060b cancelled unclaimed to free queue; firstmail7559lease released after4.321sidle without inputs. Bounded localmailindex extraction inconclusive(known88223sentinel missing), not absence of new server reply. No refreshed mail/send/newcatalogue/model/photo/Keychain calls, extraEUR, phone/accounts/web/backend/main changes or upload.18free reads unused/50paid15EUR unchanged, monitorPAUSED.
+- Native126 compile and275normal/MAXhappyflow PASS remain unchanged. New fault injection is explicit test material, not observed user corruption or general126/200label approval. Original503 unresolved until verified new evidence; no automatic retry/reset. Next step needs safe GUI capacity; no own pending request left artificially holding shared resources.
+
 ## Current Gate: 2026-10-27, Native126 Quiz Normal/MAX PASS / Catalogue503 Follow-Up Sent
 
 - Exact274 follow-up sent ONCE to authorized Moa existingthread. Sender/sole recipient/all9paragraphs checked before and in SentUID5613 at08:18Madrid; body whitespace-normalized equal. Includes503route/time246ms and asks diagnosis/status/owner/date, not deploy/SQL/data-write/spend approval. Outgoing copy verified, not delivery/read. No fresh server refresh or later-reply absence claim. [Mail receipt](qa-fixtures/development275/MAIL_SENT.json).
