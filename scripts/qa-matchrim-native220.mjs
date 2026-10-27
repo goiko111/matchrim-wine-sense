@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { execFileSync, spawn, spawnSync } from 'node:child_process';
 
 const repo = process.cwd(), out = path.resolve(process.argv[2]);
-const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close', 'rescan', 'discard-visual', 'quiz', 'result-actions', 'gallery-cancel', 'master-catalogue'].includes(mode));
+const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close', 'rescan', 'discard-visual', 'quiz', 'quiz-recovery', 'result-actions', 'gallery-cancel', 'master-catalogue'].includes(mode));
 if (mode === 'result-actions') assert(process.argv[6], 'RESULT_ACTIONS_REQUIRES_OWN_PREVIOUS_COMPLETED_QUIZ');
 const sizeMode = process.argv[7] || 'both'; assert(['both', 'normal', 'max'].includes(sizeMode));
 if (mode === 'discard-visual') assert.equal(sizeMode, 'max', 'DISCARD_VISUAL_REQUIRES_ACTUAL_MAX_TEXT');
@@ -44,7 +44,8 @@ const receipt = { startedUTC: new Date().toISOString(), passed: false, sourceCom
     ? 'Synthetic unsigned offline user, actual native OCR input plus manual identity correction, retained real catalogue payloads intercepted locally, explicit lookup/confirmation and vintage invalidation. No real account or live backend call.' : mode === 'gallery-cancel'
     ? 'Actual native gallery picker opening/cancellation/retry only; no photo selection, File injection, OCR, camera capture, Photos permission acceptance or account.' : mode === 'result-actions'
     ? 'Actual retained anonymous quiz result actions: scan/restaurant destinations, unaccepted privacy, local QR disclosure, restart/reset and relaunch; no share/copy activation, account or OCR.' : mode === 'quiz'
-    ? 'Actual anonymous 20-question quiz, local profile/Home and restart retention only; no account, OCR or gallery test in this mode.'
+    ? 'Actual anonymous 20-question quiz, local profile/Home and restart retention only; no account, OCR or gallery test in this mode.' : mode === 'quiz-recovery'
+    ? 'Explicit QA-only React state fault injection in the compiled native quiz: last question with only answer20; actual completion handler must return to question1 without a saved profile. Not a naturally reproduced user corruption or full20question traversal.'
     : 'Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only.'} Not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.`, stages: [],
   liveAccountsUsed: false, catalogueDataInjected: mode === 'master-catalogue', syntheticAccount: mode === 'master-catalogue',
   modelCallsPermitted: 0, webPublished: false, uploaded: false };
@@ -64,6 +65,16 @@ try {
   const guardSource = fs.readFileSync('scripts/matchrim-offline220.js');
   fs.writeFileSync(app + '/public/qa220-guard.js', guardSource, { flag: 'wx' });
   fs.writeFileSync(app + '/public/index.html', html.replace('<head>', '<head><meta http-equiv="Content-Security-Policy" content="' + csp + '"><script src="/qa220-guard.js"></script>'));
+  if (mode === 'quiz-recovery') {
+    assert(!previous && prep.build === 126, 'RECOVERY276_REQUIRES_FRESH126_COPY');
+    const extra = fs.readFileSync('scripts/matchrim-quiz276-offline.js');
+    fs.writeFileSync(app + '/public/qa276-guard.js', extra, { flag: 'wx' });
+    const guarded = fs.readFileSync(app + '/public/index.html', 'utf8');
+    fs.writeFileSync(app + '/public/index.html', guarded.replace('<script src="/qa220-guard.js"></script>',
+      '<script src="/qa220-guard.js"></script><script src="/qa276-guard.js"></script>'));
+    receipt.quizRecovery276 = { guardSHA256: sha(extra), injectedAnswers: { 20: 'si' }, injectedIndex: 19,
+      productHandlersModified: false, naturallyReproducedCorruption: false };
+  }
   if (mode === 'master-catalogue') {
     const extra = fs.readFileSync('scripts/matchrim-master259-offline.js');
     fs.writeFileSync(app + '/public/qa259-guard.js', extra, { flag: 'wx' });
@@ -118,6 +129,8 @@ try {
     if (mode === 'rescan') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testLocalReanalysisRequiresReview');
     if (mode === 'discard-visual') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testMaxDiscardVisualCoverage');
     if (mode === 'quiz') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testAnonymousQuizAndHome');
+    if (mode === 'quiz-recovery') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testIncompleteQuizRecovery276');
+    else args.push('-skip-testing:Probe97UITests/MatchrimOffline220Tests/testIncompleteQuizRecovery276');
     if (mode === 'result-actions') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testRetainedQuizResultActions');
     else args.push('-skip-testing:Probe97UITests/MatchrimOffline220Tests/testRetainedQuizResultActions');
     if (mode === 'gallery-cancel') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testNativeGalleryPickerCancellation');

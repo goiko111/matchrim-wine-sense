@@ -2,6 +2,36 @@ import Foundation
 import XCTest
 
 final class MatchrimOffline220Tests: XCTestCase {
+    @MainActor func testIncompleteQuizRecovery276() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")
+        app.terminate(); app.launch(); XCUIDevice.shared.orientation = .portrait
+        defer { capture(app, "quiz276-end") }
+        let skip = app.buttons["Saltar guía"].firstMatch
+        if skip.waitForExistence(timeout: 2) && skip.isHittable { skip.tap() }
+        XCTAssertTrue(app.buttons["Buscar vino o bodega"].waitForExistence(timeout: 15))
+        try tap(app.buttons["Conocer mis gustos"].firstMatch, app)
+        try tap(app.buttons["Comenzar el test"].firstMatch, app)
+        try assertQuizQuestion(1, app)
+        try tap(app.buttons["QA276 preparar test incompleto"].firstMatch, app)
+        try assertQuizQuestion(20, app)
+        capture(app, "quiz276-injected-partial-before-submit")
+        try tap(app.buttons["Ver mi perfil"].firstMatch, app)
+        try assertQuizQuestion(1, app)
+        XCTAssertFalse(app.staticTexts["Tu perfil"].firstMatch.exists)
+        XCTAssertTrue(app.staticTexts["QA276 sin perfil guardado"].firstMatch.waitForExistence(timeout: 8))
+        capture(app, "quiz276-returned-to-missing-answer")
+        try tap(app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "Me gusta")).firstMatch, app)
+        try tap(app.buttons["Siguiente"].firstMatch, app)
+        try assertQuizQuestion(2, app)
+        capture(app, "quiz276-recovery-can-continue")
+        app.terminate(); app.launch()
+        XCTAssertTrue(app.buttons["Buscar vino o bodega"].waitForExistence(timeout: 15))
+        XCTAssertTrue(app.buttons["Conocer mis gustos"].firstMatch.waitForExistence(timeout: 8))
+        XCTAssertFalse(app.buttons["Mis gustos"].firstMatch.exists)
+        capture(app, "quiz276-no-partial-profile-after-relaunch")
+    }
+
     @MainActor func testNativeMasterCatalogue259() throws {
         continueAfterFailure = false
         let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")
