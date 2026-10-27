@@ -1,0 +1,5462 @@
+{
+  "sourceFile": "qa-artifacts/night105-20261021/native112-corpus200-r23/REPORT.json",
+  "sourceSHA256": "9cf8268d45356e89286b6a54bce24444540ad0b42b9eca691e8e73081d9d87b2",
+  "scope": "OFFLINE RETAINED SNAPSHOT AUDIT, not new recognition or build125 accuracy",
+  "retainedObservedUTC": "2026-10-25T22:07:40.556Z",
+  "newExternalRequests": 0,
+  "summary": {
+    "scenes": 200,
+    "retainedOCRWithText": 196,
+    "retainedCompletedEvaluations": 181,
+    "incompleteScenesWithUnscoredProposals": 4,
+    "gates": {
+      "top1-name-proxy-only": 46,
+      "no-proposal-in-retained-complete-query": 119,
+      "catalogue-query-incomplete": 19,
+      "insufficient-local-reading-or-query": 7,
+      "expected-name-not-in-top3": 7,
+      "expected-name-below-top1": 2
+    },
+    "top1NameProxy": 46,
+    "top3NameProxy": 48,
+    "canonicalIdentityPrecision": null,
+    "canonicalIdentityRecall": null,
+    "build125LiveRecognitionMeasured": false,
+    "sensoryCoverageOf200": "NOT_MEASURED"
+  },
+  "rows": [
+    {
+      "imageId": "img-001",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Terre d'Aigle Quarts de Chaume Grand Cru",
+        "producer": "Domaine Aguilas"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "TERRE D'AIGLE",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "Quarts de Chaume",
+          "status": "complete",
+          "rows": 5
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-002",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "L'Or Caché de Bouzy",
+        "producer": "Baron Dauvergne"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "BARON DAUVERGNE",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "DAUVERGNE",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-003",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Valdebebas Soleá Vendimia Seleccionada",
+        "producer": "Bodegas de Occidente"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "SOLEÁ",
+          "status": "partial",
+          "rows": 20
+        },
+        {
+          "query": "VALDEBEBAS",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-004",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Eremus Reserva Ecológico",
+        "producer": "Paramo Arroyo"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "EREMUS",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Ribera del Duero",
+          "status": "complete",
+          "rows": 46
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-005",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Beramendi Blanco",
+        "producer": "Bodegas Beramendi"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "etamendi",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "NAVARRA",
+          "status": "complete",
+          "rows": 14
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-006",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Canta Muda El Pino",
+        "producer": "Briones Abad"
+      },
+      "indicatedVintage": 2011,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "MUDA",
+          "status": "complete",
+          "rows": 15
+        },
+        {
+          "query": "Ribera dei Duero",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-007",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Puerta Palma Blanco",
+        "producer": "Bodegas Orán"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "PUERTA PALMA",
+          "status": "complete",
+          "rows": 13
+        },
+        {
+          "query": "BIBENA DEL GUAIANA",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-008",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Beramendi Roble Merlot",
+        "producer": "Bodegas Beramendi"
+      },
+      "indicatedVintage": 2021,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Beramendi",
+          "status": "complete",
+          "rows": 2
+        },
+        {
+          "query": "PROXUCT OF DAN",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-009",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Vermut Vega de Tera",
+        "producer": "Vega de tera"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Vermoutn",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-010",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Teresa Brut",
+        "producer": "Finca Valonga"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "VALONGA",
+          "status": "complete",
+          "rows": 3
+        },
+        {
+          "query": "TERESA",
+          "status": "complete",
+          "rows": 6
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-011",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Claraluna",
+        "producer": "Finca Valonga"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "VALONGA",
+          "status": "complete",
+          "rows": 3
+        },
+        {
+          "query": "Claraluna",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-012",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Finca Valonga Entre Lías",
+        "producer": "Finca Valonga"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "VALONGA",
+          "status": "complete",
+          "rows": 3
+        },
+        {
+          "query": "Entre Lías",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-013",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Bagante Mencía",
+        "producer": "Bodega La Serrana"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "BAGANTE",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "BIERZO",
+          "status": "partial",
+          "rows": 20
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-014",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Estel Rosado Eco",
+        "producer": "3.10 Celler"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ESTEL",
+          "status": "complete",
+          "rows": 71
+        },
+        {
+          "query": "VI DE LA TERRA DE MALLORCA",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-015",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Contintilla Ancestral",
+        "producer": "Bodegas Campestral"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "CAMPESTRAL",
+          "status": "complete",
+          "rows": 4
+        },
+        {
+          "query": "CONTINTILLA",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-016",
+      "gate": "insufficient-local-reading-or-query",
+      "expectedForEvaluationOnly": {
+        "name": "Arrels Cava Brut Nature Reserva",
+        "producer": "Montau de Sadurní"
+      },
+      "indicatedVintage": null,
+      "reason": "NO_USEFUL_LOCAL_TEXT",
+      "usefulOCRTextPresent": false,
+      "queries": [],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-017",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "La Migratoria",
+        "producer": "Bodegas Frontonio"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "MIGRATORIA",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "FRONTONIO",
+          "status": "partial",
+          "rows": 20
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-018",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Las Varas",
+        "producer": "Alto de Pioz"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "DE PIOZ",
+          "status": "complete",
+          "rows": 9
+        },
+        {
+          "query": "Sas Varas)",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 2,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-019",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Brice Allouchery 1er Cru \"Pinots Noirs\"",
+        "producer": "Brice Allouchery"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "PiNOTS",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "NoinS",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-020",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Pinot Blanc",
+        "producer": "De Lozey"
+      },
+      "indicatedVintage": 2000,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "DELOZEY",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-021",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "La Roture",
+        "producer": "Beauregard"
+      },
+      "indicatedVintage": 2023,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "LA ROTURE",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "BEAUREGARD",
+          "status": "complete",
+          "rows": 29
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-022",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Syrah",
+        "producer": "Christophe Abbet"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "9 Christophe Abbet",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "beea Sul",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-023",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Rully 1er Cru Les Rabourcés",
+        "producer": "Château de Davenay"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "PICARD",
+          "status": "complete",
+          "rows": 7
+        },
+        {
+          "query": "DAVENAY",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-024",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Single Parcel Chacayes",
+        "producer": "Finca Flichman"
+      },
+      "indicatedVintage": 1910,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "FLICHMAN",
+          "status": "complete",
+          "rows": 32
+        },
+        {
+          "query": "CHACAYES",
+          "status": "complete",
+          "rows": 23
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-025",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Don Miguel Vineyard Godello",
+        "producer": "Marimar Estate"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ESTATE • MARIM",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "MARIMAR ESTATE",
+          "status": "complete",
+          "rows": 66
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-026",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Morgon Côte du Py",
+        "producer": "Chauvet Frères"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Morgen",
+          "status": "complete",
+          "rows": 31
+        },
+        {
+          "query": "Appellation d'Origine Prolégis",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-027",
+      "gate": "expected-name-not-in-top3",
+      "expectedForEvaluationOnly": {
+        "name": "Soranì Fiano",
+        "producer": "Tommasi"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "MASSERIA",
+          "status": "complete",
+          "rows": 34
+        },
+        {
+          "query": "SURANI",
+          "status": "complete",
+          "rows": 6
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-028",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "3404 Barrica",
+        "producer": "Bodega Pirineos"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ODEGA PIRINOS",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "SOMONTANO",
+          "status": "complete",
+          "rows": 2
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-029",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Les Bulles de Laffitte Carcasset",
+        "producer": "Château Laffitte-Carcasset"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "LES BULLES DE",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "LAFFITTE CARCASSET",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-030",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Château Laffitte-Carcasset",
+        "producer": "Château Laffitte-Carcasset"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "RONARRA",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "LAFFITTE CARCASSET",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-031",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Le Chardonnay de Laffitte Carcasset",
+        "producer": "Château Laffitte-Carcasset"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "LAFFITTE CARCASSET",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-032",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Lugana I Pianeti",
+        "producer": "Tommasi"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "TOMMASI",
+          "status": "complete",
+          "rows": 67
+        },
+        {
+          "query": "LUGANA",
+          "status": "complete",
+          "rows": 64
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-033",
+      "gate": "expected-name-not-in-top3",
+      "expectedForEvaluationOnly": {
+        "name": "Fagus",
+        "producer": "Bodegas Aragonesas"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "LACONESA",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Fagus",
+          "status": "complete",
+          "rows": 20
+        }
+      ],
+      "proposalCount": 2,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-034",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Casajús Blanco Fermentado en Barrica",
+        "producer": "Casajus"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "CASAJES",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "CASAJUS",
+          "status": "complete",
+          "rows": 5
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-035",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Dans Mes Pensées Brut Nature",
+        "producer": "Fabien Bergeronneau"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "LABIEN",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "BERGERONNEAU",
+          "status": "complete",
+          "rows": 6
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-036",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Tatxam",
+        "producer": "Estol Verd Celler"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "tatxam",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-037",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Novakula Boğazkere",
+        "producer": "Heraki"
+      },
+      "indicatedVintage": 2020,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "NOVAKULA",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Boğazkere",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-038",
+      "gate": "insufficient-local-reading-or-query",
+      "expectedForEvaluationOnly": {
+        "name": "502 Wild Ferment",
+        "producer": "502 Vineyards"
+      },
+      "indicatedVintage": null,
+      "reason": "NO_IDENTITY_BEARING_QUERY",
+      "usefulOCRTextPresent": true,
+      "queries": [],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-039",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Narince",
+        "producer": "502 Vineyards"
+      },
+      "indicatedVintage": 2024,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "quinientosdos",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "NARINCE",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-040",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Atelier Kalecik Karası Blanc de Noir",
+        "producer": "Vinkara Winery"
+      },
+      "indicatedVintage": 2023,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "VİNKARA ATELIER",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "VİNKARA",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-041",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Kriya Trebbiano",
+        "producer": "Vigna Madre"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "KRIYA",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "D'ABRUZZO",
+          "status": "partial",
+          "rows": 20
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-042",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Becco Reale",
+        "producer": "Vigna Madre"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "VICNAMADRE",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Becco",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-043",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Meridiano 12 Zibibbo",
+        "producer": "Tenuta Gorghi Tondi"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "GORCHI TONDE",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "MERIDIANO",
+          "status": "complete",
+          "rows": 9
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-044",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Jean Leon 3055 Chardonnay",
+        "producer": "Jean Leon"
+      },
+      "indicatedVintage": 1903,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "JEANIEON",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "TSICE",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-045",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Protos 12 Meses en Barrica Selección del Sumiller",
+        "producer": "Protos"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "illet",
+          "status": "partial",
+          "rows": 20
+        },
+        {
+          "query": "Selecsi",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-046",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Château Cheval Brun Saint-Émilion Grand Cru",
+        "producer": "Château Cheval Brun"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "TEIULE AL",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "hoval Bun",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-047",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "El Lagar Azul Tinajas",
+        "producer": "Bodegas Rodríguez y Sanzo"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "RODRIGUEZ & SANTO",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "TINAJAS",
+          "status": "complete",
+          "rows": 13
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-048",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Mon Village Blanc de Blancs Grand Cru Extra Brut",
+        "producer": "Girard Bonnet"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "GIRARD - BONNET",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Yoe Village",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-049",
+      "gate": "expected-name-below-top1",
+      "expectedForEvaluationOnly": {
+        "name": "Prophet's Rock Cuvée Aux Antipodes Blanc",
+        "producer": "Prophet's Rock"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "PROPHET'S ROCK",
+          "status": "complete",
+          "rows": 3
+        },
+        {
+          "query": "Cuvée Aux Antipodes",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 2,
+      "top1NameProxy": false,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-050",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Melon à Queue Rouge Vieilles Vignes",
+        "producer": "Philippe Chatillon"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "sacior civin",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "eChatillon Do",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-051",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Chablis Premier Cru Les Fourneaux Vieilles Vignes",
+        "producer": "Charly Nicolle"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "CHARLY",
+          "status": "complete",
+          "rows": 16
+        },
+        {
+          "query": "NICOLLE",
+          "status": "complete",
+          "rows": 8
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-052",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Free Mousse",
+        "producer": "Manoir de la Tête Rouge"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "G Reynouard",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Tete Rouge",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-053",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Pfeifer Gelber Muskateller Vulkanland Steiermark",
+        "producer": "Weingut Pfeifer"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ELUPTION MINZER",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "ELUPTION",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-054",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Conde de Haro Blanc de Blancs Millésimé",
+        "producer": "Muga"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "CONDE DE HARO",
+          "status": "complete",
+          "rows": 18
+        },
+        {
+          "query": "MILLESIM",
+          "status": "partial",
+          "rows": 20
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-055",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "B. Martin Brut Réserve",
+        "producer": "A. Bergère"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "B. MARTIN",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-056",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Perelada Festival Brut",
+        "producer": "Perelada"
+      },
+      "indicatedVintage": 1923,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "¡ PERELADA",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "FESTIVAL",
+          "status": "complete",
+          "rows": 3
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-057",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Dorium Selección de la Familia",
+        "producer": "Bodega Thesaurus"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "FLUMEN",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "DORIVN",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-058",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Añares Blanco",
+        "producer": "Bodegas Olarra"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "AÑARES",
+          "status": "complete",
+          "rows": 12
+        },
+        {
+          "query": "RONEGAS Y VIÁCOOS",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-059",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Camino del Puerto Verdejo",
+        "producer": "Hermanos Lurton"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "CAMINO DEL",
+          "status": "complete",
+          "rows": 48
+        },
+        {
+          "query": "PUERTO",
+          "status": "complete",
+          "rows": 51
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-060",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Amarone della Valpolicella Classico Riserva",
+        "producer": "Bertani"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "BERTANI",
+          "status": "partial",
+          "rows": 20
+        },
+        {
+          "query": "AMARONE",
+          "status": "partial",
+          "rows": 20
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-061",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Biógrafo del Vino",
+        "producer": "Dominio del Bienamado"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "BIOGRAFO",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "punta le Loro-",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-062",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Riesling Kabinett Feinherb Dr. Von Bassermann-Jordan",
+        "producer": "Dr. Von Bassermann-Jordan"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Rassermann-Cordar",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "KARINETT",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-063",
+      "gate": "insufficient-local-reading-or-query",
+      "expectedForEvaluationOnly": {
+        "name": "Grüner Veltliner Smaragd Obere Steilterrassen",
+        "producer": "Weingut Atzberg"
+      },
+      "indicatedVintage": null,
+      "reason": "NO_USEFUL_LOCAL_TEXT",
+      "usefulOCRTextPresent": false,
+      "queries": [],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-064",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Partida Sarral",
+        "producer": "Andreu i coma"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "PARTIDA",
+          "status": "complete",
+          "rows": 51
+        },
+        {
+          "query": "SARRAL",
+          "status": "complete",
+          "rows": 16
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-065",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Finca Vasqueira Castes Tinta",
+        "producer": "Adega D'Vagar"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "D'LIGAR",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "VASQUEIRA",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-066",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Baeauregard Côtes du Couchois",
+        "producer": "Domaine du Beauregard"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "LES GRANDES PLANTES",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "BEAUREGARD",
+          "status": "complete",
+          "rows": 29
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-067",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Vaupré Pouilly-Fussé 1er Cru En Servy",
+        "producer": "Domaine Vaupre"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "VAUPRÉ",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "POUILLY-FUISSE",
+          "status": "partial",
+          "rows": 20
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-068",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Kirmann Riesling Vieilles Vignes",
+        "producer": "Domaine Kirmann"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ALSACE",
+          "status": "complete",
+          "rows": 78
+        },
+        {
+          "query": "KIRMANN",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-069",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Guilleminot Tradition",
+        "producer": "Guillemot-Michel"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "GUILLEMINOT",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "TRADITION",
+          "status": "partial",
+          "rows": 20
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-070",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Saint -Sauveur Blanc de Blancs",
+        "producer": "Saint-Sauveur"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "BLANG DE BLANCS",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "SAINT-SAUVEUR",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-071",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Amis de Beauregard Blanc de Noirs",
+        "producer": "Amis de Beauregard"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "AKES DE",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Besungaro",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-072",
+      "gate": "insufficient-local-reading-or-query",
+      "expectedForEvaluationOnly": {
+        "name": "Monsheimer Daniel Schmitt",
+        "producer": "Bianka and Daniel Schmitt"
+      },
+      "indicatedVintage": null,
+      "reason": "NO_USEFUL_LOCAL_TEXT",
+      "usefulOCRTextPresent": false,
+      "queries": [],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-073",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Partida Corbera",
+        "producer": "Andreu i coma"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "PARTIDA CORBERA",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "PARTIDA",
+          "status": "complete",
+          "rows": 51
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-074",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Salvajes de Gredos Manazas Segundo",
+        "producer": "Salvajes de Gredos"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "MANAZAS SEGUNDO",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "MANAZAS",
+          "status": "complete",
+          "rows": 5
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-075",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Galizeus Godello",
+        "producer": "Vicente Gandía"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ABOUT'S",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "GALIZEUS",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-076",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Josef Mayr Lagrein Rosé",
+        "producer": "Josef Mayr"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ERBHOF",
+          "status": "complete",
+          "rows": 3
+        },
+        {
+          "query": "UNTERGANZNER",
+          "status": "complete",
+          "rows": 3
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-077",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Josef Mayr Lagrein",
+        "producer": "Josef Mayr"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ARS VIN",
+          "status": "complete",
+          "rows": 11
+        },
+        {
+          "query": "ERBHOF",
+          "status": "complete",
+          "rows": 3
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-078",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Tirolensis Ars Vini Brut Rosé",
+        "producer": "Tirolensis Ars"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "AROLENSIS AROVINI",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "VINO SPUMANTE DI QUALITA",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-079",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Josef Mayr Lagrein Riserva",
+        "producer": "Josef Mayr"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "WEINGUT - ERBHOP",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "UNTERGANZNER",
+          "status": "complete",
+          "rows": 3
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-080",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Minutolo Spumante Millesimato",
+        "producer": "Cignomoro"
+      },
+      "indicatedVintage": 2023,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "rinuto lo",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Valle di Utra",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-081",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Espantaburros",
+        "producer": "César Fernández Díaz"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ESPANTABURROS",
+          "status": "complete",
+          "rows": 5
+        },
+        {
+          "query": "VINO DE PUEBLO",
+          "status": "complete",
+          "rows": 46
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-082",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Mark Haisma A Bogan in Bogandy",
+        "producer": "Mark Haisma"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "a Bogan in Bogandy",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-083",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Mark Haisma Macon-Mancey",
+        "producer": "Mark Haisma"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Mark Haisma",
+          "status": "complete",
+          "rows": 35
+        },
+        {
+          "query": "SOKTE, VINPIE, SLEVÉ ET MIS EN BOUTEILLE PAR MARK HASAR",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-084",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Barbera d'Asti",
+        "producer": "Braida"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "20V002K(-17x",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Braida",
+          "status": "complete",
+          "rows": 30
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-085",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Goru El Blanco",
+        "producer": "Ego Bodegas"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "EGOBO DEGA",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "GORU",
+          "status": "complete",
+          "rows": 14
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-086",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Château La Croix du Casse",
+        "producer": "Château La Croix du Casse"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "LA CROI",
+          "status": "complete",
+          "rows": 79
+        },
+        {
+          "query": "LA CROIX DU CASSE",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-087",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Château Caronne Ste. Gemme",
+        "producer": "Château Caronne Ste. Gemme"
+      },
+      "indicatedVintage": 2019,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "NONY",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "CRONNE S'CGEMINE",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-088",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Bourgogne Hautes-Côtes de Nuits Blanc Cuvée Prestige Le Prieuré",
+        "producer": "Mongeard Mugneret"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "MONGEARD -",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "ITE NOBLES",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-089",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Côtes de Provence Sainte-Victoire Rosé",
+        "producer": "Château Henri Bonnaud"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "hấteau HENRI BONNAUD",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "BONNAUD",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-090",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "30 Vecchie Vigne Bianco di Alessano",
+        "producer": "Cignomoro"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "CIGNOMOR",
+          "status": "complete",
+          "rows": 4
+        },
+        {
+          "query": "all vine",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-091",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Lorodue Ellosdos",
+        "producer": "Cignomoro"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "CIGNOMORO",
+          "status": "complete",
+          "rows": 4
+        },
+        {
+          "query": "LORODUE",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-092",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Marie Josephine Passito",
+        "producer": "Erbhof Unterganzner"
+      },
+      "indicatedVintage": 2024,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "TIROLENSIS",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "ERBHOF",
+          "status": "complete",
+          "rows": 3
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-093",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Platt & Pignat",
+        "producer": "Erbhof Unterganzner"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ERBHOF",
+          "status": "complete",
+          "rows": 3
+        },
+        {
+          "query": "UNTERGANZNER",
+          "status": "complete",
+          "rows": 3
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-094",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Biegler Zierfandler",
+        "producer": "Weingut Biegler"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "BIEGE",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "BIEGLER",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-095",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Wiener Chardonnay",
+        "producer": "Wieninger"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "WIENINGER",
+          "status": "complete",
+          "rows": 5
+        },
+        {
+          "query": "WIENER",
+          "status": "complete",
+          "rows": 6
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-096",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Sauvignon Blanc",
+        "producer": "Gross"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "NGUT",
+          "status": "partial",
+          "rows": 20
+        },
+        {
+          "query": "GROSS",
+          "status": "partial",
+          "rows": 20
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-097",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Nussberg Wiener Gemischter Satz DAC",
+        "producer": "Hajszan Neumann"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "HAJSZAN NEUMANN",
+          "status": "complete",
+          "rows": 2
+        },
+        {
+          "query": "HAJSZAN",
+          "status": "complete",
+          "rows": 2
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-098",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Weißburgunder Selection",
+        "producer": "Taubenschuss"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "TAUBENSCHUSS",
+          "status": "complete",
+          "rows": 6
+        },
+        {
+          "query": "WEISSBURGUNDER",
+          "status": "complete",
+          "rows": 21
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-099",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Sauvignon Blanc Reserve -S-",
+        "producer": "Taubenschuss"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "TAUBENSCHUSS",
+          "status": "complete",
+          "rows": 6
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-100",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Brut Rosé Reserve",
+        "producer": "Loimer"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "LOIMER",
+          "status": "complete",
+          "rows": 12
+        },
+        {
+          "query": "SEKT",
+          "status": "complete",
+          "rows": 27
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-101",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Grüner Veltliner",
+        "producer": "Taubenschuss"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "TAUBENSCHUSS",
+          "status": "complete",
+          "rows": 6
+        },
+        {
+          "query": "Ried Neidhardens",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-102",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Riesling Ried Steigelberg",
+        "producer": "Taubenschuss"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "weinvierle",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "TAUBENSCHUSS",
+          "status": "complete",
+          "rows": 6
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-103",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Riesling",
+        "producer": "Salomon Undhof"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "3ST-",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "SALOMON",
+          "status": "complete",
+          "rows": 7
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-104",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Rogheto",
+        "producer": "Piancornello"
+      },
+      "indicatedVintage": 2022,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "PIANCORNELLO",
+          "status": "complete",
+          "rows": 2
+        },
+        {
+          "query": "ROGHETO",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-105",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Blanc de Blancs Extra Brut Große Reserve",
+        "producer": "Taubenschuss"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "TAUBENSCHUSS",
+          "status": "complete",
+          "rows": 6
+        },
+        {
+          "query": "Blane de Blancso",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-106",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Château Boutisse",
+        "producer": "Château Boutisse"
+      },
+      "indicatedVintage": 2018,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "BOUTISSE",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "TEAU BOUTISSE",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-107",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Pannobile",
+        "producer": "Nittnaus"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ANITA NITTNAUS HANS",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "PANNOBILE",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-108",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Privatissimo Cabernet Solo",
+        "producer": "Schlumberger"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Privatissimo",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "SCHLUMBERGER",
+          "status": "complete",
+          "rows": 10
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-109",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Zweigelt",
+        "producer": "Nestor"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "NESTOR",
+          "status": "complete",
+          "rows": 2
+        },
+        {
+          "query": "ZWEIGELT",
+          "status": "complete",
+          "rows": 8
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-110",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Schlumberger Rosé Brut Klassik",
+        "producer": "Schlumberger"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Schlumberger",
+          "status": "complete",
+          "rows": 10
+        },
+        {
+          "query": "AUSTRIAN",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-111",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Blanc de Blancs «Les Clos-Barbaries»",
+        "producer": "Maxime Ponson"
+      },
+      "indicatedVintage": 2022,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "PONSON",
+          "status": "complete",
+          "rows": 32
+        },
+        {
+          "query": "Blane de Blanco",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-112",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Riscos de Famara Afrutado",
+        "producer": "Vega de Yuco"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "AFRUTADO",
+          "status": "complete",
+          "rows": 52
+        },
+        {
+          "query": "RISCOS DE",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-113",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Domaine des Ouches Grande Réserve",
+        "producer": "Domaine des Ouches"
+      },
+      "indicatedVintage": 1996,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "OUCHES",
+          "status": "complete",
+          "rows": 61
+        },
+        {
+          "query": "Bourquel",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-114",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Hellenthal",
+        "producer": "Ceritas"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "old shop klack",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Ceritas",
+          "status": "complete",
+          "rows": 11
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-115",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Ceritas Peter Martin Ray Vineyard Cabernet Sauvignon",
+        "producer": "Ceritas"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Ceritas",
+          "status": "complete",
+          "rows": 11
+        },
+        {
+          "query": "Paden Marken Ray Vineant",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-116",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Chassagne-Montrachet 1er Cru Les Caillerets",
+        "producer": "Domaine Ramonet"
+      },
+      "indicatedVintage": 2023,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "RAMONET",
+          "status": "complete",
+          "rows": 62
+        },
+        {
+          "query": "NET NOEL ET",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-117",
+      "gate": "insufficient-local-reading-or-query",
+      "expectedForEvaluationOnly": {
+        "name": "Clos du Val Riverbend Vineyard Sauvignon Blanc",
+        "producer": "Clos du Val"
+      },
+      "indicatedVintage": null,
+      "reason": "NO_IDENTITY_BEARING_QUERY",
+      "usefulOCRTextPresent": true,
+      "queries": [],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-118",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Campillo Reserva Especial",
+        "producer": "Campillo"
+      },
+      "indicatedVintage": 1995,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Campillo",
+          "status": "partial",
+          "rows": 20
+        },
+        {
+          "query": "OUNA",
+          "status": "complete",
+          "rows": 9
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-119",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Chassagne-Montrachet 1er Cru Morgeot Rouge",
+        "producer": "Jean-Claude Ramonet"
+      },
+      "indicatedVintage": 2018,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Morgeot",
+          "status": "complete",
+          "rows": 73
+        },
+        {
+          "query": "RAMONET",
+          "status": "complete",
+          "rows": 62
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-120",
+      "gate": "insufficient-local-reading-or-query",
+      "expectedForEvaluationOnly": {
+        "name": "Clos du Val Yettalil",
+        "producer": "Clos du Val"
+      },
+      "indicatedVintage": 2021,
+      "reason": "NO_IDENTITY_BEARING_QUERY",
+      "usefulOCRTextPresent": true,
+      "queries": [],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-121",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Puligny-Montrachet",
+        "producer": "Pierre Girardin"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "PULIGNY-MONTRACHET",
+          "status": "partial",
+          "rows": 20
+        },
+        {
+          "query": "PIERRE GIRARDIN",
+          "status": "partial",
+          "rows": 20
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-122",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Vosne-Romanée 1er Cru Les Beaumonts",
+        "producer": "Pierre Girardin"
+      },
+      "indicatedVintage": 2020,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "VOSNE-ROMANÉE PREMIER CRU",
+          "status": "complete",
+          "rows": 26
+        },
+        {
+          "query": "LES BEAUMONTS",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-123",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Abrecaminos Godello",
+        "producer": "Felipe Mayo Alonso"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "abrecaminos godelo",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "abrecaminos",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-124",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Virtuose",
+        "producer": "Marcel Moineaux"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Chungogne er Villages",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "CHAMPKANS",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-125",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Madman Red Blend",
+        "producer": "Fulcrum Wines"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "MADMAN",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "CALIFORNIA RED BLEND",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-126",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Palena Merlot",
+        "producer": "Valdivieso"
+      },
+      "indicatedVintage": 2018,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Wise of CafE",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-127",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Finca Rotondo Reserva Cabernet Sauvignon",
+        "producer": "Finca Rotondo"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Retondo",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "SPOEIN DE FORI",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-128",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Finca Rotondo Reserva Malbec",
+        "producer": "Finca Rotondo"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ROTONDO",
+          "status": "complete",
+          "rows": 3
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-129",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Domaine de la Croix Touraine",
+        "producer": "Domaine de la Croix"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "CROIX BOUQEEE",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "DOMAINE DE LA CROIX BOUQEEE",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-130",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Finca Rotondo Chardonnay",
+        "producer": "Finca Rotondo"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ROTONDO",
+          "status": "complete",
+          "rows": 3
+        },
+        {
+          "query": "ICA - PERÚ",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-131",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Ana Beirut Cabernet Sauvignon",
+        "producer": "Ana Beirut"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "#BEIRUT",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Saurignor",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-132",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Solebianco Pinot Grigio",
+        "producer": "Zucca"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "SOLEBIANCO",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "BY ZUCCA",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-133",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Botón de Gallo Rosado",
+        "producer": "Dominio del Blanco"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Botón de Gallo",
+          "status": "complete",
+          "rows": 6
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-134",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Grand Fossil Sancerre",
+        "producer": "Grand Fossil"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Grand Fossil",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "Proprictée de Femille en Sancere",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-135",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Marquis de Sade Châteauneuf-du-Pape",
+        "producer": "Marquis de Sade"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ne Nation",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "MARQUIS de SADE",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-136",
+      "gate": "expected-name-not-in-top3",
+      "expectedForEvaluationOnly": {
+        "name": "Teófilo Reyes Roble",
+        "producer": "Zuazo Gaston"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "TEOFILO REYES",
+          "status": "complete",
+          "rows": 36
+        },
+        {
+          "query": "RIBERA DEL DUERO",
+          "status": "complete",
+          "rows": 46
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-137",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Kaikén Indómito Malbec",
+        "producer": "Kaiken"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "KAIKEN",
+          "status": "complete",
+          "rows": 24
+        },
+        {
+          "query": "INDOMITO",
+          "status": "complete",
+          "rows": 5
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-138",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Éclat Botrytis Sémillon",
+        "producer": "Valdivieso"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ALDIVIESO",
+          "status": "complete",
+          "rows": 14
+        },
+        {
+          "query": "ÉCLAT",
+          "status": "complete",
+          "rows": 22
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-139",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "En Osmose",
+        "producer": "Bonnard"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "COUSTHEUR BONNARD",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "EN OSMOSE",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-140",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Vega Saúco El Beybi Roble",
+        "producer": "Vega Saúco"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "EGA SAUCO",
+          "status": "complete",
+          "rows": 5
+        },
+        {
+          "query": "VEGA SAUCO",
+          "status": "complete",
+          "rows": 5
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-141",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Talentus Grande Escolha Branco",
+        "producer": "Seara d'Ordens"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "QUINTA SEARA d ORDENS",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "TALENTVS",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-142",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Terrenus Reserva Branco",
+        "producer": "Rui Reguinga"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "TERRENUS",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Vinhas Velhas",
+          "status": "complete",
+          "rows": 56
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-143",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Régoa Iria",
+        "producer": "Régoa"
+      },
+      "indicatedVintage": 2008,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "BA RÉG",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "ÉGOA IR",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-144",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Tempo Alvarinho",
+        "producer": "Anselmo Mendes"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ANSELMO MENDES",
+          "status": "complete",
+          "rows": 35
+        },
+        {
+          "query": "COMO CRIAR UM YINHO DA CASTA ALVARINHO",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-145",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Don Nilo Godello",
+        "producer": "Adega Tear"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "D.Nilo",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "RIBEIRA SACRA",
+          "status": "complete",
+          "rows": 6
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-146",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "La Grange de Piaugier",
+        "producer": "Piaugier"
+      },
+      "indicatedVintage": 2017,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "PIAUCTI",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "La Grange de Plaugier",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-147",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Síbaris",
+        "producer": "Bodegas y Viñedos Sanz Moneo"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "SÍBARIS",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-148",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Emina Albariño",
+        "producer": "Bodega Emina"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "RIAS BAIXAS",
+          "status": "complete",
+          "rows": 16
+        },
+        {
+          "query": "DENCMINACION DE GINGES",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-149",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Harvest",
+        "producer": "Blandy's"
+      },
+      "indicatedVintage": 2017,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "LANDYS",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "MADEIRA",
+          "status": "complete",
+          "rows": 75
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-150",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Naira Garnacha Blanca",
+        "producer": "Medrano Irazu"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "MEDIANO",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "Vaira",
+          "status": "complete",
+          "rows": 24
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-151",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Meursault Les Grands Charrons",
+        "producer": "Pierre Girardin"
+      },
+      "indicatedVintage": 2022,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "MEURSAULT",
+          "status": "partial",
+          "rows": 20
+        },
+        {
+          "query": "LES GRANDS CHARRONS",
+          "status": "complete",
+          "rows": 10
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-152",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "La Terapia",
+        "producer": "Vináticos"
+      },
+      "indicatedVintage": 2024,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Sante terapia",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "de grupo, que no",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-153",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Geheimrat J Riesling Sekt Brut",
+        "producer": "Wegeler"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "GEH BIMRAT J",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "RHEINGAU BIESLING",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-154",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Navaciegos",
+        "producer": "Chato Gañán"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Curó Gua",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Navaciegos",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-155",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "La Terapia",
+        "producer": "Vináticos"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "TERA",
+          "status": "partial",
+          "rows": 20
+        },
+        {
+          "query": "MA DE DUERO",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-156",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "ADN Negre",
+        "producer": "Celler Arrelats"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "DO TERRA ALTA",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-157",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Brivio Brut",
+        "producer": "Gialdi"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ruro",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-158",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Irene Rodríguez Haut-Médoc",
+        "producer": "Hortanza"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Irene Rodrigucz",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "HAUT MEDOC",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-159",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Lilás",
+        "producer": "Xacobe R. Vázquez"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "LILÁS",
+          "status": "complete",
+          "rows": 2
+        },
+        {
+          "query": "brance con peles",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-160",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Rully Premier Cru Molesme",
+        "producer": "Jean-Baptiste Ponsot"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "JEAN-BAPTISTE PONSOT",
+          "status": "complete",
+          "rows": 3
+        },
+        {
+          "query": "RULLY TER",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-161",
+      "gate": "expected-name-not-in-top3",
+      "expectedForEvaluationOnly": {
+        "name": "Véhicule Rosé",
+        "producer": "Vehicule ets Catusse"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "véhicule",
+          "status": "complete",
+          "rows": 3
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-162",
+      "gate": "insufficient-local-reading-or-query",
+      "expectedForEvaluationOnly": {
+        "name": "Bulles de Comptoir Face B S'interdire de S'interdire",
+        "producer": "Charles Dufour"
+      },
+      "indicatedVintage": null,
+      "reason": "NO_USEFUL_LOCAL_TEXT",
+      "usefulOCRTextPresent": false,
+      "queries": [],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-163",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Sierra Cantabria",
+        "producer": "Sierra Cantabria"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "SIERRA CANTABRIA",
+          "status": "partial",
+          "rows": 20
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-164",
+      "gate": "expected-name-below-top1",
+      "expectedForEvaluationOnly": {
+        "name": "A Telleira Parcelas",
+        "producer": "Campante"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "A Telkira",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "A Telleira",
+          "status": "complete",
+          "rows": 50
+        }
+      ],
+      "proposalCount": 2,
+      "top1NameProxy": false,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-165",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "La Celia Reserva Malbec-Cabernet Franc",
+        "producer": "Finca La Celia"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "LACELIA",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "LA CELIA",
+          "status": "complete",
+          "rows": 16
+        }
+      ],
+      "proposalCount": 2,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-166",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Incomum Rosé",
+        "producer": "Quinta da Rabiana"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "incomum",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-167",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Mariana",
+        "producer": "Herdade do Rocim"
+      },
+      "indicatedVintage": 2021,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "MARIANA",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Larians",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-168",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Les Originaux",
+        "producer": "Clement et Florian Berthier"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "VOUVRAY",
+          "status": "complete",
+          "rows": 21
+        },
+        {
+          "query": "CLÉMENT & FLORIAN",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-169",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Cuvée Dissenay Pinot Noir",
+        "producer": "Les Producteurs Réunis"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "CUVÉE DISSENAY",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "Pinct Noir",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-170",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Inspiration Pinot Noir Rosé trocken",
+        "producer": "Künstler"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Künstler",
+          "status": "complete",
+          "rows": 38
+        },
+        {
+          "query": "inspiration",
+          "status": "complete",
+          "rows": 27
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-171",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Más Que 2",
+        "producer": "Bodegas La Val"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "BER REIRIS",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "SAGRANAR",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-172",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Pequeños Lotes Bonarda",
+        "producer": "La Florita"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "EL PERAL",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "TUPUNGATO",
+          "status": "complete",
+          "rows": 8
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-173",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "La Craie Pouilly-Fumé",
+        "producer": "La Craie"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "TILEY",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "La Craie",
+          "status": "complete",
+          "rows": 9
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-174",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Primitivo di Manduria DOC",
+        "producer": "Tombacco"
+      },
+      "indicatedVintage": 1919,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "RINOMATA CANTINA",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "TOMDACCO",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-175",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "The Investor",
+        "producer": "Stags' Leap"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Stags Leap",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "The Investor",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-176",
+      "gate": "expected-name-not-in-top3",
+      "expectedForEvaluationOnly": {
+        "name": "Orígenes Garnacha Blanca",
+        "producer": "Dehesa de Luna"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ORÍGENES",
+          "status": "complete",
+          "rows": 22
+        },
+        {
+          "query": "DEHESA DE LUNA",
+          "status": "complete",
+          "rows": 14
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-177",
+      "gate": "expected-name-not-in-top3",
+      "expectedForEvaluationOnly": {
+        "name": "Foral Alvarinho",
+        "producer": "Quinta do Regueiro"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "FORAL",
+          "status": "complete",
+          "rows": 2
+        },
+        {
+          "query": "D MELGAÇO",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-178",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Scarlett Zinfandel",
+        "producer": "Scarlett"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "SE Scarlett",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "ZINFINDEL",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-179",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "La Florita Cabernet Franc",
+        "producer": "La Florita"
+      },
+      "indicatedVintage": 2023,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "EL RERAL",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "TUPUNGATO",
+          "status": "complete",
+          "rows": 8
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-180",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Foral de Melgaço Old Vines Alvarinho",
+        "producer": "Foral de Melgaço"
+      },
+      "indicatedVintage": 2019,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "FORAL",
+          "status": "complete",
+          "rows": 2
+        },
+        {
+          "query": "D MELGAÇO",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-181",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Obliqua Carménère",
+        "producer": "Ventisquero"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "OBLIQUA",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "APALTA VINEYARP",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-182",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Ghost Block Cabernet Sauvignon",
+        "producer": "Ghost Block"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "GHOST BLOCK",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "OAKVILLE - NAPA VALLEY",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-183",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Escudo Rojo Baronesa P.",
+        "producer": "Baron Philippe de Rothschild"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "RON PHILI",
+          "status": "complete",
+          "rows": 12
+        },
+        {
+          "query": "Baronesa P.",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-184",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Muscadet La Cuvée Lucien",
+        "producer": "Bernard Maillard"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "LA CUVÉE LUCIEN",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "Remara",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-185",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Castello di Solicchiata Barone Spitalieri",
+        "producer": "Castello di Solicchiata"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "PRIMI PREMI ALL'ESPOSIZIONE",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "CASTELLO SOLICCHIATA",
+          "status": "complete",
+          "rows": 1
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-186",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Albillo Mayor",
+        "producer": "Dominio de Greda"
+      },
+      "indicatedVintage": 2025,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "VITICULTOR DANI MAESTRE CARAZO",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Dominio Gue",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-187",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Luminance",
+        "producer": "Franck Pascal"
+      },
+      "indicatedVintage": 2019,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "uminance",
+          "status": "complete",
+          "rows": 1
+        },
+        {
+          "query": "FRANCK",
+          "status": "complete",
+          "rows": 35
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-188",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Domenico Russo Magliolo",
+        "producer": "Domenico Russo"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "Magliola",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-189",
+      "gate": "top1-name-proxy-only",
+      "expectedForEvaluationOnly": {
+        "name": "Finca Tresolmos Sauvignon Blanc",
+        "producer": "Garciarevalo"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "TRESOLMOS",
+          "status": "complete",
+          "rows": 25
+        },
+        {
+          "query": "RUEDA",
+          "status": "complete",
+          "rows": 37
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": true,
+      "top3NameProxy": true,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-190",
+      "gate": "expected-name-not-in-top3",
+      "expectedForEvaluationOnly": {
+        "name": "Inicial Brut Nature",
+        "producer": "Raventós Basagoiti"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "INICIAL",
+          "status": "complete",
+          "rows": 8
+        },
+        {
+          "query": "RAVENTÓS • BASAGOITI",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-191",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Borgogno Rivata Barolo La Morra",
+        "producer": "Borgogno Rivata"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "MBEIS A",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "BORGOGNO RIVATA",
+          "status": "complete",
+          "rows": 4
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-192",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Colle Massari Melacce",
+        "producer": "Colle Massari"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "MONTECE",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "¡CASTELLO",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-193",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Bossanova Montepulciano d'Abruzzo",
+        "producer": "Bossanova"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "BOSSANOVA",
+          "status": "complete",
+          "rows": 2
+        },
+        {
+          "query": "MONTEPULCIANO",
+          "status": "incomplete",
+          "rows": 19
+        }
+      ],
+      "proposalCount": 1,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-194",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Castello di Brolio Chianti Classico Riserva",
+        "producer": "Ricasoli"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "BROLIO",
+          "status": "complete",
+          "rows": 16
+        },
+        {
+          "query": "Chiante Chasin",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-195",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Zero Point Five Sauvignon Blanc",
+        "producer": "Leitz"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ZERO PONT FIVE",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "ZERO",
+          "status": "partial",
+          "rows": 20
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-196",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Colleita Nº 11",
+        "producer": "Cume do Avia"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "COLLEITA I0*",
+          "status": "complete",
+          "rows": 0
+        },
+        {
+          "query": "Cate coa codo calletro vado",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-197",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Vistamar Eje Costa Gran Reserva Sauvignon Blanc",
+        "producer": "Vistamar"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "VISTAMAR",
+          "status": "complete",
+          "rows": 16
+        },
+        {
+          "query": "EJE COSTA GRAN RESERVA",
+          "status": "complete",
+          "rows": 0
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-198",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Da Luca Pinot Grigio",
+        "producer": "Da Luca"
+      },
+      "indicatedVintage": null,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "LUCA",
+          "status": "partial",
+          "rows": 20
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-199",
+      "gate": "no-proposal-in-retained-complete-query",
+      "expectedForEvaluationOnly": {
+        "name": "Tanguero Malbec",
+        "producer": "Finca Flichman"
+      },
+      "indicatedVintage": null,
+      "reason": null,
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "TANGUERO",
+          "status": "complete",
+          "rows": 2
+        },
+        {
+          "query": "FLICHMAN",
+          "status": "complete",
+          "rows": 32
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    },
+    {
+      "imageId": "img-200",
+      "gate": "catalogue-query-incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Scattola Selección",
+        "producer": "Altotinto"
+      },
+      "indicatedVintage": 2021,
+      "reason": "INCOMPLETE_QUERY_RESULTS",
+      "usefulOCRTextPresent": true,
+      "queries": [
+        {
+          "query": "ALTOTINTO",
+          "status": "incomplete",
+          "rows": 39
+        },
+        {
+          "query": "SELECCIÓN",
+          "status": "partial",
+          "rows": 20
+        }
+      ],
+      "proposalCount": 0,
+      "top1NameProxy": false,
+      "top3NameProxy": false,
+      "canonicalPhotoIdentityValidated": false,
+      "sensoryEvidenceValidated": false
+    }
+  ]
+}
