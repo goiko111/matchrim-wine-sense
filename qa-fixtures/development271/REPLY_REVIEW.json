@@ -1,0 +1,23 @@
+{
+  "scope": "New authorized-thread response read in Thunderbird, not independently validated backend facts",
+  "from": "moa-winerim-b93a8ts9@agentmail.to",
+  "to": "goiko@winerim.com",
+  "incomingUID": 88106,
+  "displayedDate": "26/10/26, 7:02",
+  "subject": "Re: Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026",
+  "claims": [
+    "Read-only review of origin/main/history/docs/backend, not the Codex branch or its243document",
+    "No documented origin/version/calibration or real preference validation of current quiz weights",
+    "Commit9475e1e message says user supplied questions and tool assigned weights; this is a historical-message attribution, not verified human calibration",
+    "Quiz axes are relative proportions of summed responses rescaled0-5, not defined absolute tasting measures",
+    "No known versioned user-preference or direct tasting-anchor contract",
+    "Backend sensory scale0 means not applicable, not low; finer operational axis anchors unavailable",
+    "sensory-evidence-1 describes wine attributes only and remains under review/unapproved",
+    "Product owner Matchrim is responsible for creating/calibrating preferences, not an existing Winerim contract"
+  ],
+  "apiDataQueried": false,
+  "weightsChanged": false,
+  "calibrationProven": false,
+  "productionApprovalInferred": false,
+  "newAction": "Single status/existing-data request sent and verified as SentUID5611"
+}

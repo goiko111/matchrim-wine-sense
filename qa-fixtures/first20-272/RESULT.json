@@ -1,0 +1,740 @@
+{
+  "scope": "First20 current native logic on retained readings, plus separate manual-reference lifecycle fixture. NOT live image/catalogue/save E2E.",
+  "sourceFile": "qa-artifacts/night105-20261021/native112-corpus200-r23/REPORT.json",
+  "sourceSHA256": "9cf8268d45356e89286b6a54bce24444540ad0b42b9eca691e8e73081d9d87b2",
+  "scenesChecked": 20,
+  "currentLocalCandidates": 19,
+  "syntheticProfiles": [
+    {
+      "potente": 1,
+      "acidez": 5,
+      "dulce": 1,
+      "tanico": 1,
+      "afrutado": 3
+    },
+    {
+      "potente": 5,
+      "acidez": 3,
+      "dulce": 1,
+      "tanico": 5,
+      "afrutado": 4
+    },
+    {
+      "potente": 2,
+      "acidez": 2,
+      "dulce": 5,
+      "tanico": 1,
+      "afrutado": 5
+    }
+  ],
+  "consumerProfileChecks": 60,
+  "newOCRCalls": 0,
+  "externalRequests": 0,
+  "forbiddenNetworkAttempts": 0,
+  "databaseWrites": 0,
+  "fullRealChainsApproved": 0,
+  "build125Changed": false,
+  "manualReferenceBranch": {
+    "status": "PASS",
+    "fixtureOperations": 2,
+    "retainedCanonicalId": 217480,
+    "sourceVintage": null,
+    "declaredVintages": [],
+    "sensoryRows": 0,
+    "automaticallyRecognizedPhoto": false,
+    "serializedReferencePreserved": true,
+    "missingMetadataRejected": true,
+    "profileTrainingRows": 0,
+    "unknownVintagePersonalVerdictTransferred": false,
+    "correctedVintageInvalidatesReference": true,
+    "fullScannerSaveCallbackTested": false,
+    "actualServerPersistenceTested": false
+  },
+  "rows": [
+    {
+      "imageId": "img-001",
+      "imageSHA256": "a6e1e36b8c3f5220a6174320af42e788826103d5fb09d7b25bb0bc1bbc194409",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [
+        "Terre d'Aigle Quarts de Chaume Grand Cru"
+      ],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Terre d'Aigle Quarts de Chaume Grand Cru",
+        "producer": "Domaine Aguilas"
+      }
+    },
+    {
+      "imageId": "img-002",
+      "imageSHA256": "cd696b1dafad1a94a9f1cf4441a18d8e987f39f79f2ade7aa8dcde004bbd3bd8",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "L'Or Caché de Bouzy",
+        "producer": "Baron Dauvergne"
+      }
+    },
+    {
+      "imageId": "img-003",
+      "imageSHA256": "25a0d933f681c79d3b4a8ea8904c491ec4fddc72dc127511775f332959c82d2d",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Valdebebas Soleá Vendimia Seleccionada",
+        "producer": "Bodegas de Occidente"
+      }
+    },
+    {
+      "imageId": "img-004",
+      "imageSHA256": "90ec97a3b8ed0d08b8cb932f974cf6796086ef33bb20dc24fcda2c820f21015e",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Eremus Reserva Ecológico",
+        "producer": "Paramo Arroyo"
+      }
+    },
+    {
+      "imageId": "img-005",
+      "imageSHA256": "97794a37ecfa93408fe5cfe58fe5d406288c371df917e33acb7cf126d6229b62",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Beramendi Blanco",
+        "producer": "Bodegas Beramendi"
+      }
+    },
+    {
+      "imageId": "img-006",
+      "imageSHA256": "dd684c2098bdeadeb6e26009a4675094663d9a7f9b14435ca2168326ed342def",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": 2011,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Canta Muda El Pino",
+        "producer": "Briones Abad"
+      }
+    },
+    {
+      "imageId": "img-007",
+      "imageSHA256": "fadd8f72fb929443785ead659e11929a46e116f9b9291cf019eca6f4338b6085",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Puerta Palma Blanco",
+        "producer": "Bodegas Orán"
+      }
+    },
+    {
+      "imageId": "img-008",
+      "imageSHA256": "cb186ea0639e75dbf8940cfbef75eddf993317ff9fd483235831a96a8aeb8f2d",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": 2021,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Beramendi Roble Merlot",
+        "producer": "Bodegas Beramendi"
+      }
+    },
+    {
+      "imageId": "img-009",
+      "imageSHA256": "cfbe64b5b9cc7d6eea0d188b269962db7c0b6cfa947f96c8cb45337d1b1d8999",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Vermut Vega de Tera",
+        "producer": "Vega de tera"
+      }
+    },
+    {
+      "imageId": "img-010",
+      "imageSHA256": "a8435836e17d1e0abc1d44ed878be10dcf0b198782b35bb823fe510fe4dd6d6a",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Teresa Brut",
+        "producer": "Finca Valonga"
+      }
+    },
+    {
+      "imageId": "img-011",
+      "imageSHA256": "26cd24c2cceb50b86189f2f2dc039b4cd55bfff6620722aec613aa2eb60a7895",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Claraluna",
+        "producer": "Finca Valonga"
+      }
+    },
+    {
+      "imageId": "img-012",
+      "imageSHA256": "82c76618effb7e7626f8a1974a945a165c331f8e58c310b97e0e5d146f47c6d8",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Finca Valonga Entre Lías",
+        "producer": "Finca Valonga"
+      }
+    },
+    {
+      "imageId": "img-013",
+      "imageSHA256": "c5db30d286753425db4e3679fcb94af26ba72e2c444fea592955af178c0fd828",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "Bagante Mencía",
+        "producer": "Bodega La Serrana"
+      }
+    },
+    {
+      "imageId": "img-014",
+      "imageSHA256": "a9060a9c0e0dab44e59777f9fc1c72d864c1f7e87c03c86927fbb644ee9ed9b4",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Estel Rosado Eco",
+        "producer": "3.10 Celler"
+      }
+    },
+    {
+      "imageId": "img-015",
+      "imageSHA256": "046ab1fa37281b036e072e6461cffe958c63ab9170a5c81d4acedbc0cf883ddd",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Contintilla Ancestral",
+        "producer": "Bodegas Campestral"
+      }
+    },
+    {
+      "imageId": "img-016",
+      "imageSHA256": "13c08726fa2fd57472c6b524898889e50d46de7297e338725f2bb7ec44150829",
+      "currentLocalCandidateCreated": false,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "abstained",
+      "expectedForEvaluationOnly": {
+        "name": "Arrels Cava Brut Nature Reserva",
+        "producer": "Montau de Sadurní"
+      }
+    },
+    {
+      "imageId": "img-017",
+      "imageSHA256": "dc540c845d91e4aaeea698e44baae4caed767da0f373512984513c04522e8ef5",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "incomplete",
+      "expectedForEvaluationOnly": {
+        "name": "La Migratoria",
+        "producer": "Bodegas Frontonio"
+      }
+    },
+    {
+      "imageId": "img-018",
+      "imageSHA256": "cb736b7eab65f1d7d994431b0351d700f7f63243702d4fd176da8c08436396ad",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [
+        "Las Varas",
+        "Alto de Pioz"
+      ],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Las Varas",
+        "producer": "Alto de Pioz"
+      }
+    },
+    {
+      "imageId": "img-019",
+      "imageSHA256": "821e0553b49d4d95b5d43b7c6a631ac8b3d4f91afa16cfd3606e0b67323ba08a",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": null,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Brice Allouchery 1er Cru \"Pinots Noirs\"",
+        "producer": "Brice Allouchery"
+      }
+    },
+    {
+      "imageId": "img-020",
+      "imageSHA256": "07aa78ddcb664ed46677b5746df2b13b4cfd97fd889374707223f5172fe4e719",
+      "currentLocalCandidateCreated": true,
+      "indicatedVintage": 2000,
+      "rawOCRReused": true,
+      "newOCRPerformed": false,
+      "consumerChecks": [
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        },
+        {
+          "affinity": null,
+          "reason": "identity",
+          "nextStep": "Compara las propuestas con tu etiqueta o corrige los datos que puedas leer."
+        }
+      ],
+      "liveMasterLookupPerformed": false,
+      "liveSavePerformed": false,
+      "fullRealChainApproved": false,
+      "historicalProposalNames": [],
+      "historicalQueryStatus": "complete",
+      "expectedForEvaluationOnly": {
+        "name": "Pinot Blanc",
+        "producer": "De Lozey"
+      }
+    }
+  ]
+}

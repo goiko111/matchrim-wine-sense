@@ -1,0 +1,17 @@
+Hola equipo:
+
+Gracias por la respuesta del 26-oct 07:02. Queda registrado que no existe validacion documentada de los pesos ni contrato de preferencias; no atribuiremos esos pesos a Winerim ni cambiaremos perfiles sin validacion.
+
+Actualizacion: el puente alojado ya respondio 6/6 lecturas HTTP 200. includeUnlisted encuentra La Migratoria, ID 217480; Rioja devuelve 87 IDs distintos en dos paginas. La 125 esta aceptada por Apple como beta limitada, no como reconocimiento/afinidad de 200 etiquetas aprobado.
+
+P0 - datos y anadas: 217480 no devuelve anadas ni filas sensoriales; 78397 Anecdota devuelve una fila generica con source:null y ninguna anada. Necesitamos el estado, responsable y fecha prevista de los datos/contratos YA existentes que permitan distinguir por atributo valor real, relleno, ausencia y no aplicable, procedencia y alcance por anada. Si rev3 sigue sin implementar o requiere decision del propietario, indicad exactamente la accion minima y su coste; este correo no la autoriza.
+
+P0 - primeras 20 etiquetas: estamos recorriendo img-001 a img-020 del corpus Mantalak, sin elegir solo los aciertos. Hay tres busquedas incompletas (Solea/Valdebebas, Bagante/Bierzo, Migratoria/Frontonio), 14 casos sin propuesta, un OCR insuficiente y dos coincidencias textuales iniciales. Son etapas distintas y no una tasa de identidad.
+
+Necesitamos documentacion o capturas ya conservadas sobre filtros name+winery, paginacion/completitud, IDs y anadas. No pedimos consultas nuevas ni repetir el puente ya resuelto.
+
+P1 - etiquetas: confirmad si sigue sin existir busqueda visual y facilitad el contrato existente de photo y su origen/revision/anada, o confirmad los campos ausentes. La comparacion visual futura debe partir de candidatos acotados, sin inventar identidad ni descargar un catalogo entero.
+
+Por favor, separad lo entregable con material existente de lo que requiere autorizacion; para cada pendiente, estado, responsable y fecha o dependencia concreta. No autoriza implementar, generar datos, consultar GET/SQL nuevos, desplegar, cambiar main/backend/web, gastar creditos ni modificar pesos. Los limites siguen intactos.
+
+Gracias.
