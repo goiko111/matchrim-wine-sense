@@ -34,3 +34,9 @@ Source correction to development's historical description: the actual formula no
 1. Prepared one new actionable development follow-up for503 and exact sensory/default/vintage semantics; not sent while human desktop activity prevents safe UI control. Prior271 was answered, so no duplicate status reminder was sent.
 2. Native273 product change needs a clean candidate126-or-later, compile and focused simulator test of incomplete-to-missing-question and normal completion before distribution.125 remains the unchanged installed beta, not this fix.
 3. Resume unused free reads only after addressing/reconciling the503; do not reset or automatically retry the frozen run. No new paid OCR/model/photo/Lovable work.50requests/15EUR unchanged; no real accounts/ratings/phone actions, web/main/backend mutation or TestFlight this turn.
+
+## Resource Checkpoint
+
+Product/test/read evidence committed9462723; candidate126 compile/visual tooling admits only that explicit next number in74d9d7b. Both pushed to the existing branch, not main. No candidate preparation/compile actually started: atomic heavy+writer request eb422a61 stayed WAITING behind a prior foreign heavy offer and was cancelled before stopping. Disk was11485012KiB available (>5GiB), so this is not a disk failure. No foreign lease/process was interrupted.
+
+Follow-up274's mac-desktop request adc76686 acquired c8001748, but fresh HID idle0.039979375s prevented any UI action/refresh/send. Own desktop was immediately released. The earlier Keychain-only read had its own acquired desktop/writer set, HID idle10.17s and no matching foreign GUI runner; no input or OS permission click was needed. Do not claim the new follow-up has been sent. Monitor remains PAUSED; no Goal or artificial reminder was created. Next continuation must revalidate resources/inactivity and use a fresh126artifact path rather than invent a completed build or retry the503.
