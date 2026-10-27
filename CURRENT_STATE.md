@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-27, Development277 Answers503 / Reported Maintenance Recovery Not Yet Re-Measured
+
+- New verified cached reply UID88229 at08:34:25Madrid directly answers275's503follow-up. Exact16567byteMIME/from/to/Message-ID verified; no attachments, GUI/server refresh or later-mail absence claim. Development attributes06:28:41UTC503 to planned release834 maintenance06:26:57–06:30:12UTC(07:26:57–07:30:12Madrid),195s, nginx503/Retry-After from existing deploy log; reports recovery since06:30:12UTC. Not our independent HTTP200/recovery proof; original503receipt preserved. [Reply receipt](qa-fixtures/development277/REPLY.json), [scope and next bounded reads](docs/MATCHRIM_DEVELOPMENT_REPLY_277_2026-10-27.md).
+- Sensoryrev3still proposal pendingownerdecision; no committed per-axis/default/source/vintage scope/date. No new visual label contract/index beyond one representative photo without vintage/origin/review. Development accepts per-axis-own-maximum quiz formula correction; weights/profiles unchanged. No implementation/deploy/data-write permission inferred.
+- New evidence permits planning remaining18already-authorized free detail reads against original1consumed ledger, not reset/retry19or addedbudget. Thisturn0newcatalogue/model/photo/Keychaincalls/addedEUR; no web/backend/main/TestFlight or realaccounts/phone changes. Existing125installed/126compiled+275happyflowPASS/276runtimepending unchanged. Cache regex correction includes[-UIDrecords, recovers known88223sentinel; exactnewMIME validatesreply, not generalparser/fullmailaudit. MonitorPAUSED.
+
 ## Current Gate: 2026-10-27, Quiz276 Runtime-Recovery Scenario Prepared / GUI Activity Hold
 
 - New QA-only recovery mode on compiled126, tooling343031d pushed. Deliberate anonymous partial-answer state, exact unique React-owner/empty-state guard; actual compiled handler must return question1 without saving, allow question2 and retain no partial profile after relaunch. No src/public/ios/product/weights changes. Guardunit8badvariants/ambiguity/dispatch/cycle/0discoverywrites, scopedlint andSwiftparse PASS; NOT native runtime. [Prepared receipt](qa-fixtures/quiz276/PREPARED.json), [exact next54normal/nextMAX commands](docs/MATCHRIM_QUIZ_RECOVERY_276_2026-10-27.md).
