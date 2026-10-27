@@ -1,0 +1,25 @@
+ENVIADO UNA VEZ / VERIFICADO EN ENVIADOS: 27-oct-2026, 11:17 Europe/Madrid, Sent UID5615.
+Destinatario exclusivo: moa-winerim-b93a8ts9@agentmail.to
+Respuesta en el hilo Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026.
+
+Hola equipo:
+
+Queremos desbloquear la afinidad de Matchrim. Necesitamos una propuesta ejecutable, separada en dos bloques:
+
+1. Exponer correctamente los datos existentes
+Para cada vino y añada: atributos sensoriales, procedencia disponible, datos ausentes, valores por defecto y «no aplicable». Confirmad qué resuelve exactamente sensory-evidence-1 rev3 y qué limitaciones seguirían existiendo después de implementarlo.
+
+2. Completar o verificar los datos que faltan
+Proponed cómo conseguir fichas utilizables para los primeros 20 vinos y después para las 200 etiquetas aportadas. No queremos rellenar atributos automáticamente y presentarlos como comprobados: deben diferenciarse datos documentados, inferencias y valores desconocidos.
+
+Para cada bloque, indicad:
+- Entregables y criterios de aceptación.
+- Responsable, esfuerzo, coste y fecha prevista.
+- Cambios de API, código y datos necesarios.
+- Qué autorización concreta necesitáis.
+
+El objetivo es poder identificar el vino y su añada, calcular afinidad cuando haya evidencia suficiente y explicar claramente cualquier limitación. No deben sustituirse cosechas ni confundirse confianza de generación y probabilidad de gusto.
+
+Este correo solicita la propuesta y su estimación; todavía no autoriza despliegues, escrituras, generación de datos ni gasto. No debe modificarse ni publicarse la web.
+
+Gracias.

@@ -1,5 +1,10 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-27, Development278 Sensory Proposal Request Sent And Verified
+
+- Human authorized the exact two-block proposal request and freed the Mac. Replied ONCE to UID88229 in the existing Matchrim thread, from goiko@winerim.com solely to authorized Moa. Compose and Sent sender/recipient/all body paragraphs verified; Sent UID5615 at11:17Madrid. Requests deliverables/acceptance, owner/effort/cost/date, API/code/data changes and exact permission needed for existing sensory evidence and usable first20/then200 fiches. No implementation/deploy/generation/write/spend/web permission. [Sent receipt](qa-fixtures/development278/MAIL_SENT.json), [exact text](docs/MATCHRIM_DEVELOPMENT_REQUEST_278_2026-10-27.txt). Outgoing copy verified, not recipient delivery/read; no post-send reply claim.
+- Original goiko@gugocreative.com Inbox restored and own desktop lease released immediately after verification. No new catalogue/model/photo/Keychain calls, account/data changes, addedEUR or web/backend/main/TestFlight actions. Existing126 compile/275normal+MAX happyflowPASS/276runtimepending and sensory/catalogue gates unchanged. Original503 preserved; development reports recovery, not independently remeasured.18authorized free detail reads remain unused;50paidrequests/15EUR unchanged. Monitor staysPAUSED.
+
 ## Current Gate: 2026-10-27, Development277 Answers503 / Reported Maintenance Recovery Not Yet Re-Measured
 
 - New verified cached reply UID88229 at08:34:25Madrid directly answers275's503follow-up. Exact16567byteMIME/from/to/Message-ID verified; no attachments, GUI/server refresh or later-mail absence claim. Development attributes06:28:41UTC503 to planned release834 maintenance06:26:57–06:30:12UTC(07:26:57–07:30:12Madrid),195s, nginx503/Retry-After from existing deploy log; reports recovery since06:30:12UTC. Not our independent HTTP200/recovery proof; original503receipt preserved. [Reply receipt](qa-fixtures/development277/REPLY.json), [scope and next bounded reads](docs/MATCHRIM_DEVELOPMENT_REPLY_277_2026-10-27.md).
