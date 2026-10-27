@@ -1,0 +1,17 @@
+{
+  "build": 125,
+  "checkedDate": "2026-10-27",
+  "appleUploadAcknowledgedPreviously": true,
+  "uploadReceipt": "qa-fixtures/native269/RESULT.json",
+  "testFlightInstallableConfirmed": false,
+  "testerGroupAssignmentConfirmed": false,
+  "browser": "Brave",
+  "observedExistingTab": "693673279",
+  "observedURL": "https://appstoreconnect.apple.com/login",
+  "panelContentRead": false,
+  "bindingError": "Timed out after 10000ms waiting for CDP command Emulation.setFocusEmulationEnabled",
+  "globalInputActions": 0,
+  "uploadRetried": false,
+  "appleProcessingFailed": null,
+  "nextGate": "Read authorized App Store Connect TestFlight panel with a functioning session/browser connection, or verify installed125 on an explicitly available owner iPhone."
+}
