@@ -1,0 +1,53 @@
+{
+  "status": "NATIVE126_MAX_RECOVERY_PASS_VISUALLY_REVIEWED",
+  "build": 126,
+  "sourceCommit": "2b0bde73c3d11d9a5bc8f37a39910f4c15c71d3b",
+  "sourceFingerprintsVerified": 425,
+  "webResourcesVerified": 165,
+  "nativeExecutableVerified": true,
+  "productChanged": false,
+  "device": "B18822EF-BFBD-4A6A-89B2-33539BDE4127",
+  "model": "iPhone 16 Pro Max, iOS Simulator 26.0.1",
+  "actualContentSize": "accessibility-extra-extra-extra-large",
+  "runs": [
+    {"directory": "qa-artifacts/native218-20261025/native220-r55", "passed": true, "receiptSHA256": "97ee63043e412c3991436241aacb3718172a1cd94207b1d1fe9c46d22dbf7c7c", "passedTests": 1, "failedTests": 0},
+    {"directory": "qa-artifacts/native218-20261025/native220-r56", "passed": true, "receiptSHA256": "774126317bbc80245c3facc9295cdc0a9cff64927c76e669de36468a0afb9473", "passedTests": 1, "failedTests": 0}
+  ],
+  "qaOnlyDeltaBetweenRuns": "Capture reachable Next before activation and Home Conocer mis gustos after relaunch; no assertion removed or product handler changed",
+  "swiftSourceSHA256": "9527e5f7a50848d1676a87556de35cccc3c97c8b2d827fbebc32f19c6d992741",
+  "nativeRunnerSHA256": "b8c91c0345fde32b04bcc508fccbdf4b5e5e12dffa51018d57841ab3a9f428d2",
+  "moduleCacheHelperSHA256": "1a6a554cc520d1da8cad0a48fc63b3cd2f1f57f3a8439fe950ed6e17d6456138",
+  "moduleCacheDelta": "Existing foreign cache-only harness edits reviewed and scoped cache regression passed; edits preserved, not committed here",
+  "expectedActual": [
+    {"expected": "Do not save incomplete20-question result", "actual": "Actual compiled handler returned question1 and QA clean-storage sentinel", "result": "PASS"},
+    {"expected": "Recovery remains interactive at actual MAX", "actual": "Real Me gusta selection and Next activation advanced to question2", "result": "PASS"},
+    {"expected": "Next reachable above fixed navigation", "actual": "AX frame x49 y593 w342 h78, tabbar begins y841; inspected full caption and spacing", "result": "PASS"},
+    {"expected": "No partial profile retained after relaunch", "actual": "Conocer mis gustos exists and Mis gustos absent after terminate/launch", "result": "PASS"},
+    {"expected": "Home control reachable above fixed navigation", "actual": "AX frame x16 y601 w408 h224, tabbar begins y841; inspected caption and arrow", "result": "PASS"}
+  ],
+  "capturesDirectory": "qa-artifacts/native218-20261025/native220-r56/max/attachments",
+  "captures": [
+    {"file": "5E64D98E-6D96-4B75-AEAA-0327905DEA00.png", "meaning": "Injected question20", "sha256": "a91bc60e4fbf5eb28ff2fa01dd53678224c6731f37772fc7b101d7151f08b305"},
+    {"file": "78A5EEBC-AA54-4DC4-AD26-2DD97828305E.png", "meaning": "Returned to first missing question", "sha256": "34f4399f118181ad3b3dfb8bdf413237447ca075404838a8caeebf1a15373dbe"},
+    {"file": "58C55ADC-4257-4E2A-AAB0-DBD9FC67BB53.png", "meaning": "Next visible before activation", "sha256": "bdb82f3cc7ea8d3525ae7c118fb61629fb5706c0064d08d94b952ab613630e23"},
+    {"file": "1DCA5CB4-3A47-4613-8834-33D681A49AAD.png", "meaning": "Question2 after actual continuation", "sha256": "963e8b26773d95ff26b9fdc40ccf6b593ebffbef84f418ba45bde92e3869b296"},
+    {"file": "817C94F8-1804-4375-9FB8-22A7233896C2.png", "meaning": "Home no partial profile control visible", "sha256": "1b7cc44dffdc82b4468c9b31a7a87dbf9241ee7bbaeabb2f1b1e4fae500f3f19"},
+    {"file": "57ED326F-D28B-4EFF-96BE-5090FC0CAA00.png", "meaning": "Final state", "sha256": "1b7cc44dffdc82b4468c9b31a7a87dbf9241ee7bbaeabb2f1b1e4fae500f3f19"}
+  ],
+  "allSixR56CapturesPersonallyInspected": true,
+  "diagnosticOverlayIsQAOnly": true,
+  "ownAppsTerminated": true,
+  "actualContentSizeRestoredAfterBothRuns": true,
+  "heavySimulatorDesktopReleased": true,
+  "originalR54FailurePreserved": true,
+  "normalScope": "Retained manual280 PASS; no new automated normal run",
+  "full20QuestionFlowScope": "Retained275 normal/MAX happy-flow PASS; not repeated here",
+  "naturalCorruptionReproduced": false,
+  "voiceOverAuditPassed": false,
+  "recognition200Approved": false,
+  "wholeAppApproved": false,
+  "catalogueModelImageAuthKeychainCalls": 0,
+  "addedEUR": 0,
+  "webOrMainOrBackendChanged": false,
+  "uploaded": false
+}

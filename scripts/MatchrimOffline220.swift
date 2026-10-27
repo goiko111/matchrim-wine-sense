@@ -32,6 +32,8 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertGreaterThanOrEqual(recoveredAnswer.frame.minY, 0)
         XCTAssertLessThanOrEqual(recoveredAnswer.frame.maxY, app.frame.height)
         recoveredAnswer.tap()
+        try tap(app.buttons["Siguiente"].firstMatch, app, activate: false)
+        capture(app, "quiz276-recovered-answer-next-visible")
         try tap(app.buttons["Siguiente"].firstMatch, app)
         try assertQuizQuestion(2, app)
         capture(app, "quiz276-recovery-can-continue")
@@ -39,6 +41,7 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertTrue(app.buttons["Buscar vino o bodega"].waitForExistence(timeout: 15))
         XCTAssertTrue(app.buttons["Conocer mis gustos"].firstMatch.waitForExistence(timeout: 8))
         XCTAssertFalse(app.buttons["Mis gustos"].firstMatch.exists)
+        try tap(app.buttons["Conocer mis gustos"].firstMatch, app, activate: false)
         capture(app, "quiz276-no-partial-profile-after-relaunch")
     }
 

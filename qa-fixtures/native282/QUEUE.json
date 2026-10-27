@@ -1,0 +1,26 @@
+{
+  "status": "REPAIRED_AND_ATOMIC_RESOURCE_SET_ACQUIRED",
+  "humanAuthorization": "Resolve queue blockage without interrupting other tasks; finish native126 MAX QA; no web or additional spending",
+  "helper": "/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/resource_guard.py",
+  "helperSHA256": "40bfee6712d73de3b25d516a0c784a4f9b9be7c719c95d3cecbac9467cc5f361",
+  "testFileSHA256": "aade2d9f5b44481cd1a7e4d2539a8d296609d256677615bb04ca7ee26f530509",
+  "change": "Count only PENDING statuses against MAX_REQUESTS=256; retain all closed, held and claimed audit entries and existing leases",
+  "isolatedTests": {
+    "red": "Three new regression tests failed before helper correction: one assertion failure and two missing-request errors caused by full historical queue",
+    "green": "python3 -B -m unittest test_resource_guard: 28 tests PASS in 0.063s",
+    "newCoverage": ["Closed history retained and idempotent without exhausting pending capacity", "Claimed history preserves active lease, capacity bound and FIFO", "Held/expired history retained without reactivation"]
+  },
+  "historyCountBefore": 256,
+  "historyCountAfterEnqueue": 257,
+  "requestId": "3068f88f-adf0-4335-b084-d97d6f7a7a62",
+  "atomicClaimStatus": "ACQUIRED",
+  "resources": ["heavy-local", "ios-simulator", "mac-desktop", "writer-matchrim-native99"],
+  "claimUTC": "2026-10-27T14:35:52.302Z",
+  "foreignProcessStopped": false,
+  "foreignReservationCancelledOrStolen": false,
+  "manualLeasesJsonEdit": false,
+  "historyDeleted": false,
+  "catalogueModelImageAuthKeychainCalls": 0,
+  "addedEUR": 0,
+  "webOrMainOrBackendChanged": false
+}
