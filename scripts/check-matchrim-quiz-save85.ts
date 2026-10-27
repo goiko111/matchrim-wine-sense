@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import ts from 'typescript';
+import { firstMissingNativeAnswer273, isNativeQuizAnswer273 } from '../src/utils/nativeQuizCompletion273';
 
 const quizSource = readFileSync('src/data/quizData.ts', 'utf8');
 const quizAst = ts.createSourceFile('quizData.ts', quizSource, ts.ScriptTarget.Latest, true);
@@ -28,7 +29,7 @@ const body = ts.transpileModule('const ' + (declaration as ts.VariableDeclaratio
   { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText;
 const inputs = ['isNative', 'nativeSubmissionPending', 'questions', 'currentQuestionIndex', 'answers', 'setAnswers',
   'setCurrentQuestionIndex', 'setQuizResult', 'setCurrentStep', 'calculateProfile', 'user', 'saveQuizResult',
-  'localStorage', 'setNativeSaveStatus', 'saveLifetime'];
+  'localStorage', 'setNativeSaveStatus', 'saveLifetime', 'firstMissingNativeAnswer273', 'isNativeQuizAnswer273'];
 function harness(native = true, authenticated = true) {
   const statuses: string[] = [];
   const calls: object[] = [];
@@ -42,7 +43,8 @@ function harness(native = true, authenticated = true) {
     Object.fromEntries(questions.slice(0, -1).map((q: { id: number }) => [q.id, 'indiferente'])), () => {}, () => {}, () => {}, () => {},
     calculateProfile, authenticated ? { id: 'synthetic-owner' } : null,
     (result: object, answers: object) => { calls.push({ result, answers }); return promise; },
-    { setItem: (key: string, value: string) => local.set(key, value) }, (status: string) => statuses.push(status), lifetime);
+    { setItem: (key: string, value: string) => local.set(key, value) }, (status: string) => statuses.push(status), lifetime,
+    firstMissingNativeAnswer273, isNativeQuizAnswer273);
   return { answer, statuses, calls, local, resolve, reject, lifetime };
 }
 const flush = () => new Promise(resolve => setTimeout(resolve, 0));

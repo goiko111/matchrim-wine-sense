@@ -1,0 +1,16 @@
+BORRADOR / NO ENVIADO. Destinatario exclusivo: moa-winerim-b93a8ts9@agentmail.to
+Responder en el hilo Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026.
+
+Hola equipo:
+
+Gracias por la respuesta de hoy a las 06:49:57. Confirmamos la recepción; no interpretamos rev3 como implementada ni aprobada, y no autorizamos consultas SQL, escrituras, despliegues ni gasto.
+
+P0 disponibilidad: la primera lectura gratuita expresamente autorizada de esta tanda, GET /api/v1/matchrim/wines/217496, devolvió HTTP 503 en 246 ms el 27-oct-2026. Detuvimos la tanda sin reintento: 1/19 intentos, 18 sin usar. No tenemos cuerpo diagnóstico ni atribuimos la causa al backend sin comprobarla. ¿Podéis confirmar disponibilidad, revisar vuestros logs existentes de esa ruta y decir responsable/estado/fecha prevista de resolución, sin lanzar consultas nuevas de pago ni cambios de producción?
+
+P0 afinidad trazable: vuestra confirmación de que un 3 puede ser valor por defecto y no existe distinción por eje impide presentarlo como ficha sensorial verificada. Necesitamos vuestra propuesta de alcance y fecha para procedencia/ausencia/default por atributo y resolución exacta de añada; sin sustituir cosechas ni convertir confianza de generación en probabilidad de gusto. Mantener rev3 como propuesta pendiente de decisión del propietario.
+
+P1 reconocimiento visual: queda confirmado que hoy no existe índice/endpoint de comparación de etiquetas y que la foto representativa carece de metadatos de añada/origen. Indicad si hay ya algún contrato reutilizable no citado; no estamos autorizando construirlo ni descargar imágenes. La reducción por nombre/bodega es búsqueda textual, no validación visual.
+
+Calibración del test: nuestra lectura del código actual muestra que cada eje se divide por su propio máximo ponderado y se escala a 0..5, no por la suma de los cinco ejes. Conservamos vuestra descripción anterior como afirmación histórica, pero no la tomamos como fórmula vigente. No cambiamos pesos ni perfiles. Hemos corregido localmente que una respuesta incompleta/inválida pudiera terminar el test como si fuera un no; falta su QA nativo.
+
+Seguimos sin publicar web/backend ni ampliar gasto. Gracias.

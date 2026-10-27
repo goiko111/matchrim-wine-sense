@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-27, New Development Reply / First20 HTTP503 / Native Quiz273 Integrity Fix
+
+- Actual cached reply UID88223 at06:49:57Madrid answers271 (In-Reply-To12b58530...). Exact bounded MIME parsed/sender+recipient+ID verified; no fresh server refresh or absence-of-later-mail claim. Confirms per-axis real/default ambiguity, generic-vintage limits, rev3 unimplemented/unapproved and no visual label index. No new implementation/deploy/SQL/data-write/spend permission. [Reply receipt](qa-fixtures/development273/REPLY.json).
+- Human approved19additional free detail reads. One actual GET217496 returned503/246ms, stopped without retry;0new validated details,18unused. Existing217480 retained separately has0sensory rows. Not a photo-recognition or all-catalogue outage result; cause unknown. No model/photo/Lovable/account/catalogue writes or addedEUR. [Read receipt](qa-fixtures/first20-274/RESULT.json). Prepared274follow-up remains UNSENT due fresh human activity;271already answered.
+- Native-only273 fixes incomplete/invalid quiz submission before score/results/save: routes first missing answer, blocks invalid answer/index. Old partial RED retained;16invalid handlers/20missing positions/3unchanged valid vectors,85eightgroups, expanded focusedTS and scopedlint PASS(3existing hook warnings,0errors). Exact legacy web projection unchanged; no scoring weights/profiles changed. Formula is independently normalized peraxis, not across allfiveaxes; original243calibration limitation remains. [Details](docs/MATCHRIM_FIRST20_QUIZ_274_2026-10-27.md).
+- New product273 is NOT in installed125 and still needs clean126+compile/focused native visual QA.125availability remains confirmed by prior271, no repeat upload. No claim of real200E2E, predictive calibration or finished app.50paidrequests/15EUR unchanged; monitorPAUSED. Preserve live503/raw evidence and unused18allowance; no automatic run reset/retry.
+
 ## Current Gate: 2026-10-27,125 Internal Installation Confirmed / Development271 Sent / First20 Offline272
 
 - Human completed Apple login. Authenticated AppStoreConnect/native Brave reads show1.0(125), Testers Matchrim internal group2testers, and actual owner row Instalada1.0(125),27Oct,iPhone16ProMax/iOS26.6. Other tester remains106. Internal delivery now CONFIRMED, not new functional/public-beta approval. No group/invite/review/WhatToTest edits or reupload. Updated Developer license notice observed, never accepted byagent. [Availability receipt](qa-fixtures/development271/TESTFLIGHT125.json).

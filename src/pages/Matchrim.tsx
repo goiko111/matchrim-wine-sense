@@ -16,6 +16,7 @@ import MobileBottomNav from '@/components/MobileBottomNav';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuizResults } from '@/hooks/useQuizResults';
 import { buildAuthRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
+import { firstMissingNativeAnswer273, isNativeQuizAnswer273 } from '@/utils/nativeQuizCompletion273';
 
 const NativeMatchrimLoading = () => (
   <div className="matchrim-native-page-top min-h-screen bg-white px-4 text-slate-700" style={{ paddingBottom: 'calc(7rem + env(safe-area-inset-bottom, 0px))' }}>
@@ -132,6 +133,7 @@ const MatchrimSession = () => {
 
   const advanceAnswer = (value: string) => {
     if (isNative && nativeSubmissionPending.current) return;
+    if (isNative && (!questions[currentQuestionIndex] || !isNativeQuizAnswer273(value))) return;
     const questionId = questions[currentQuestionIndex].id;
     const newAnswers = { ...answers, [questionId]: value };
     setAnswers(newAnswers);
@@ -139,6 +141,10 @@ const MatchrimSession = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
+      if (isNative) {
+        const missing = firstMissingNativeAnswer273(newAnswers, questions.map(question => question.id));
+        if (missing !== -1) { setCurrentQuestionIndex(missing); return; }
+      }
       if (isNative) nativeSubmissionPending.current = true;
       // Quiz completed, calculate results
       const result = calculateProfile(newAnswers);
@@ -168,6 +174,7 @@ const MatchrimSession = () => {
 
   const handleAnswer = (value: string) => {
     if (!isNative) { advanceAnswer(value); return; }
+    if (!questions[currentQuestionIndex] || !isNativeQuizAnswer273(value)) return;
     setAnswers(current => ({ ...current, [questions[currentQuestionIndex].id]: value }));
   };
 
