@@ -1,0 +1,41 @@
+{
+  "status": "PARTIAL_PRODUCT_RECOVERY_OBSERVED_HARNESS_FAILED",
+  "build": 126,
+  "sourceCommit": "2b0bde73c3d11d9a5bc8f37a39910f4c15c71d3b",
+  "run": "qa-artifacts/native218-20261025/native220-r54",
+  "runReceiptSHA256": "83050bf196001088a86347ce6fc8a1b902d12c3baaa812fd02bfe4d5e123df39",
+  "nativeRuntimePassed": false,
+  "injection": "Deliberate QA-only last-question state with only answer20, not natural corruption",
+  "observed": {
+    "returnedToQuestion1AfterActualSubmit": true,
+    "noProfileSavedAtThatPoint": true,
+    "furtherAnswerAndRelaunchTested": false
+  },
+  "failure": {
+    "type": "Harness target-size assertion on inner radio",
+    "expectedMinimumPt": 43,
+    "innerRadioHeightPt": 16,
+    "enclosingRowHeightPt": 56,
+    "originalFailurePreserved": true
+  },
+  "capturesPersonallyInspected": [
+    {"file": "qa-artifacts/native218-20261025/native220-r54/normal/attachments/BD212C45-A1FD-43BC-97DF-C05DEFF43ED4.png", "sha256": "63c6f65f1239a81f94d5f467e3d3bcaba2b6c50803ac4e181b2fa31687afc57c"},
+    {"file": "qa-artifacts/native218-20261025/native220-r54/normal/attachments/6023FB27-740E-43BA-861C-8CAC57C9E49C.png", "sha256": "3bd62254bff4de96bb94159b943378a5eb03ce7c0df0cb221c2eee0bcc94c961"}
+  ],
+  "harnessCorrection": {
+    "file": "scripts/MatchrimOffline220.swift",
+    "sha256": "a8e3e5ab9f7852a37df234692f013837060e557fc0fd2187fd6bb789d9f1e205",
+    "change": "Activate visible answer label with bounded scroll, not generic44pt assertion on inner radio",
+    "swiftParsePassed": true,
+    "normalRerunStarted": false,
+    "maxRerunStarted": false,
+    "runtimeValidated": false
+  },
+  "pending": "Fresh r55normal then fresh nextMAX, safe full leases and human inactivity; prior r54 stays FAIL",
+  "freshHumanIdleSecondsBeforeRerun": [2.409655333, 0.025925541],
+  "productChanged": false,
+  "prior275HappyFlowNormalMaxPassUnchanged": true,
+  "realAccountsOrPhoneUsed": false,
+  "networkCallsFromNativeRun": 0,
+  "uploaded": false
+}

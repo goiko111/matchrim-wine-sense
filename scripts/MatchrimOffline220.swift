@@ -21,7 +21,17 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertFalse(app.staticTexts["Tu perfil"].firstMatch.exists)
         XCTAssertTrue(app.staticTexts["QA276 sin perfil guardado"].firstMatch.waitForExistence(timeout: 8))
         capture(app, "quiz276-returned-to-missing-answer")
-        try tap(app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "Me gusta")).firstMatch, app)
+        // WebKit exposes the inner radio at16pt; activate its visible label, as in the full quiz flow.
+        let recoveredAnswer = app.staticTexts["Me gusta"].firstMatch
+        XCTAssertTrue(recoveredAnswer.waitForExistence(timeout: 8))
+        for _ in 0..<8 {
+            if recoveredAnswer.isHittable && recoveredAnswer.frame.minY >= 0 && recoveredAnswer.frame.maxY <= app.frame.height { break }
+            swipeContent(app)
+        }
+        XCTAssertTrue(recoveredAnswer.isHittable)
+        XCTAssertGreaterThanOrEqual(recoveredAnswer.frame.minY, 0)
+        XCTAssertLessThanOrEqual(recoveredAnswer.frame.maxY, app.frame.height)
+        recoveredAnswer.tap()
         try tap(app.buttons["Siguiente"].firstMatch, app)
         try assertQuizQuestion(2, app)
         capture(app, "quiz276-recovery-can-continue")

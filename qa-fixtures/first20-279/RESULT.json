@@ -1,0 +1,1473 @@
+{
+  "scope": "First20 detail availability plus retained OCR vintage hints; NOT live scanner or account-save E2E",
+  "rows": [
+    {
+      "imageId": "img-001",
+      "canonicalId": 217496,
+      "name": "Terre d'Aigle Quarts de Chaume Grand Cru",
+      "nameSource": "Expected manifest only, not a successful API detail",
+      "status": "original-503-not-retried",
+      "httpStatus": 503,
+      "sensoryRows": null,
+      "declaredVintages": null,
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false
+    },
+    {
+      "imageId": "img-002",
+      "canonicalId": 217495,
+      "name": "L'Or Caché de Bouzy",
+      "winery": "Baron Dauvergne",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "cd696b1dafad1a94a9f1cf4441a18d8e987f39f79f2ade7aa8dcde004bbd3bd8",
+      "observedVintageHint": null,
+      "declaredVintages": [],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "generic",
+      "sensoryRows": 1,
+      "sensoryRowSummaries": [
+        {
+          "vintage": null,
+          "sourceRecorded": false,
+          "axes": {
+            "power": 3,
+            "acidity": 4,
+            "sweetness": 1,
+            "tannin": 0,
+            "fruity": 3
+          },
+          "ambiguousDefaultAxes": [
+            "power",
+            "fruity"
+          ]
+        }
+      ],
+      "selectedSensory": {
+        "scope": "generic",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": 3,
+            "status": "default-indistinguishable",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": 4,
+            "status": "origin-unrecorded",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": 1,
+            "status": "origin-unrecorded",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": 0,
+            "status": "not-applicable",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": 3,
+            "status": "default-indistinguishable",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-003",
+      "canonicalId": 217494,
+      "name": "Valdebebas Soleá Vendimia Seleccionada",
+      "winery": "Bodegas de Occidente",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "25a0d933f681c79d3b4a8ea8904c491ec4fddc72dc127511775f332959c82d2d",
+      "observedVintageHint": null,
+      "declaredVintages": [],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-004",
+      "canonicalId": 217492,
+      "name": "Eremus Reserva Ecológico",
+      "winery": "Paramo Arroyo",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "90ec97a3b8ed0d08b8cb932f974cf6796086ef33bb20dc24fcda2c820f21015e",
+      "observedVintageHint": null,
+      "declaredVintages": [],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-005",
+      "canonicalId": 217493,
+      "name": "Beramendi Blanco",
+      "winery": "Bodegas Beramendi",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "97794a37ecfa93408fe5cfe58fe5d406288c371df917e33acb7cf126d6229b62",
+      "observedVintageHint": null,
+      "declaredVintages": [],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-006",
+      "canonicalId": 217491,
+      "name": "Canta Muda El Pino",
+      "winery": "Briones Abad",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "dd684c2098bdeadeb6e26009a4675094663d9a7f9b14435ca2168326ed342def",
+      "observedVintageHint": "2011",
+      "declaredVintages": [],
+      "vintageHintStatus": "unrecorded",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": "2011",
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-007",
+      "canonicalId": 217489,
+      "name": "Puerta Palma Blanco",
+      "winery": "Bodegas Orán",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "fadd8f72fb929443785ead659e11929a46e116f9b9291cf019eca6f4338b6085",
+      "observedVintageHint": null,
+      "declaredVintages": [],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-008",
+      "canonicalId": 217490,
+      "name": "Beramendi Roble Merlot",
+      "winery": "Bodegas Beramendi",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "cb186ea0639e75dbf8940cfbef75eddf993317ff9fd483235831a96a8aeb8f2d",
+      "observedVintageHint": "2021",
+      "declaredVintages": [],
+      "vintageHintStatus": "unrecorded",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": "2021",
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-009",
+      "canonicalId": 217487,
+      "name": "Vermut Vega de Tera",
+      "winery": "Vega de tera",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "cfbe64b5b9cc7d6eea0d188b269962db7c0b6cfa947f96c8cb45337d1b1d8999",
+      "observedVintageHint": null,
+      "declaredVintages": [],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-010",
+      "canonicalId": 217488,
+      "name": "Teresa Brut",
+      "winery": "Finca Valonga",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "a8435836e17d1e0abc1d44ed878be10dcf0b198782b35bb823fe510fe4dd6d6a",
+      "observedVintageHint": null,
+      "declaredVintages": [],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-011",
+      "canonicalId": 217486,
+      "name": "Claraluna",
+      "winery": "Finca Valonga",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "26cd24c2cceb50b86189f2f2dc039b4cd55bfff6620722aec613aa2eb60a7895",
+      "observedVintageHint": null,
+      "declaredVintages": [],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-012",
+      "canonicalId": 217485,
+      "name": "Finca Valonga Entre Lías",
+      "winery": "Finca Valonga",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "82c76618effb7e7626f8a1974a945a165c331f8e58c310b97e0e5d146f47c6d8",
+      "observedVintageHint": null,
+      "declaredVintages": [],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-013",
+      "canonicalId": 217482,
+      "name": "Bagante Mencía",
+      "winery": "Bodega La Serrana",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "c5db30d286753425db4e3679fcb94af26ba72e2c444fea592955af178c0fd828",
+      "observedVintageHint": null,
+      "declaredVintages": [],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-014",
+      "canonicalId": 217483,
+      "name": "Estel Rosado Eco",
+      "winery": "3.10 Celler",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "a9060a9c0e0dab44e59777f9fc1c72d864c1f7e87c03c86927fbb644ee9ed9b4",
+      "observedVintageHint": null,
+      "declaredVintages": [],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-015",
+      "canonicalId": 217484,
+      "name": "Contintilla Ancestral",
+      "winery": "Bodegas Campestral",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "046ab1fa37281b036e072e6461cffe958c63ab9170a5c81d4acedbc0cf883ddd",
+      "observedVintageHint": null,
+      "declaredVintages": [],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-016",
+      "canonicalId": 217481,
+      "name": "Arrels Cava Brut Nature Reserva",
+      "winery": "Montau de Sadurní",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "13c08726fa2fd57472c6b524898889e50d46de7297e338725f2bb7ec44150829",
+      "observedVintageHint": null,
+      "declaredVintages": [],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-017",
+      "canonicalId": 217480,
+      "name": "La Migratoria",
+      "winery": "Bodegas Frontonio",
+      "status": "retained-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "dc540c845d91e4aaeea698e44baae4caed767da0f373512984513c04522e8ef5",
+      "observedVintageHint": null,
+      "declaredVintages": [],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 0,
+      "sensoryRowSummaries": [],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-018",
+      "canonicalId": 217479,
+      "name": "Las Varas",
+      "winery": "Alto de Pioz",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "cb736b7eab65f1d7d994431b0351d700f7f63243702d4fd176da8c08436396ad",
+      "observedVintageHint": null,
+      "declaredVintages": [
+        "2024"
+      ],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 1,
+      "sensoryRowSummaries": [
+        {
+          "vintage": "2024",
+          "sourceRecorded": false,
+          "axes": {
+            "power": 4,
+            "acidity": 4,
+            "sweetness": 1,
+            "tannin": 0,
+            "fruity": 3
+          },
+          "ambiguousDefaultAxes": [
+            "fruity"
+          ]
+        }
+      ],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-019",
+      "canonicalId": 217478,
+      "name": "Brice Allouchery 1er Cru \"Pinots Noirs\"",
+      "winery": "Brice Allouchery",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "821e0553b49d4d95b5d43b7c6a631ac8b3d4f91afa16cfd3606e0b67323ba08a",
+      "observedVintageHint": null,
+      "declaredVintages": [
+        "2024"
+      ],
+      "vintageHintStatus": "unspecified",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 1,
+      "sensoryRowSummaries": [
+        {
+          "vintage": "2024",
+          "sourceRecorded": false,
+          "axes": {
+            "power": 3,
+            "acidity": 4,
+            "sweetness": 1,
+            "tannin": 1,
+            "fruity": 4
+          },
+          "ambiguousDefaultAxes": [
+            "power"
+          ]
+        }
+      ],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": null,
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    },
+    {
+      "imageId": "img-020",
+      "canonicalId": 217477,
+      "name": "Pinot Blanc",
+      "winery": "De Lozey",
+      "status": "new-detail-200",
+      "httpStatus": 200,
+      "exactManifestNameProducerEqual": true,
+      "imageSHA256": "07aa78ddcb664ed46677b5746df2b13b4cfd97fd889374707223f5172fe4e719",
+      "observedVintageHint": "2000",
+      "declaredVintages": [
+        "2020"
+      ],
+      "vintageHintStatus": "other-vintages-only",
+      "selectedSensoryScope": "missing",
+      "sensoryRows": 1,
+      "sensoryRowSummaries": [
+        {
+          "vintage": "2020",
+          "sourceRecorded": false,
+          "axes": {
+            "power": 3,
+            "acidity": 4,
+            "sweetness": 1,
+            "tannin": 0,
+            "fruity": 4
+          },
+          "ambiguousDefaultAxes": [
+            "power"
+          ]
+        }
+      ],
+      "selectedSensory": {
+        "scope": "missing",
+        "requestedVintage": "2000",
+        "sourceVintage": null,
+        "axes": [
+          {
+            "axis": "power",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "acidity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "sweetness",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "tannin",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          },
+          {
+            "axis": "fruity",
+            "value": null,
+            "status": "missing",
+            "usableForAffinity": false,
+            "usableForLearning": false
+          }
+        ],
+        "perAxisProvenanceAvailable": false
+      },
+      "imageIdentityConfirmed": false,
+      "affinityGranted": false,
+      "profileLearningGranted": false,
+      "lookupBy": "Supplied canonical ID, not the OCR candidate or a live search"
+    }
+  ],
+  "sources": [
+    {
+      "file": "qa-fixtures/first20-272/RESULT.json",
+      "sha256": "d7014f7094e66f40c9e05bad761908dd494bd89c6bbfecb82e441f6a9d8f2008"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r1/01-RECEIPT.json",
+      "sha256": "16e1981ee31e197b6cd28d1cb658cd4235ab424a3ec1800115071c41d7cb3934"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/RESULT.json",
+      "sha256": "25a2944feb09e12657e36ea4ee346023a7396ce6c48192c1eb28f0edda938986"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/02-RECEIPT.json",
+      "sha256": "897db4d1ac8e8b6d204df1cafcc7dac72caab7b95a273c8c6a0355ac25e8510b"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/02-BODY.json",
+      "sha256": "0f4cd4ee5442d003ad3ccb3e82a3c6ea97d8604914c74fd165527b05e57f439a"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/03-RECEIPT.json",
+      "sha256": "02668b6bbbb3116701a91a30751696ffba638ee9db1a4e8bec180c433d8f9d6d"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/03-BODY.json",
+      "sha256": "2029267af11c224a24b57e980d58a5f5b1463dabbbabfc035c4d8a3b64bd3292"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/04-RECEIPT.json",
+      "sha256": "ae2924349aee2862fb64f815fdfaf79ee3af608540a65e6766cfde5537b8455d"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/04-BODY.json",
+      "sha256": "11e3602c3bb07222e88e41c5c476ec251ef9c95614b147ed3ac09366303bd7ed"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/05-RECEIPT.json",
+      "sha256": "09b6b4f466a60e0cdd24350278eaf3eb56a1491aedee3cd0af86645f46c0986f"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/05-BODY.json",
+      "sha256": "fafbf1bc7aaf63467e944d621ad8d5c60a9e902686ce917def47dabab56c499a"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/06-RECEIPT.json",
+      "sha256": "612c06f9fba3b00a4bc67f40ccb7a6f895477b1e8e8f62842af2bbc405e1d7d3"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/06-BODY.json",
+      "sha256": "828ccff947fc884ee2e3e771b9bb904f3ae316109229ad7ad2f8f896d74c5d20"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/07-RECEIPT.json",
+      "sha256": "d9e5302b2b60e56f789a886625e405ff2e04b0f446c6d84620c42f737f418be2"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/07-BODY.json",
+      "sha256": "9c6b28846d5d3cd1d7a9b29db1f17a1eb25caec4f0da6b79c423c5c2793715eb"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/08-RECEIPT.json",
+      "sha256": "3b364cbf8206bad0c46a66afcb8d6000bfd788b6398507885e9a6992b4c4c203"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/08-BODY.json",
+      "sha256": "48b3e6f36f2f0301a07678e6fd4ab29567c29e14ceb5be805672373e761264c6"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/09-RECEIPT.json",
+      "sha256": "e99dbcb52b94f5feeb476e0bbc398aeb5a2b5317ef553f0c5c1fc156f035e4a3"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/09-BODY.json",
+      "sha256": "d15c338f5015381cfa7a408b900dab5b6d96d2dd8fe45d7252c738c39502adcb"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/10-RECEIPT.json",
+      "sha256": "84fbae33d9181978fca6b9ef48011ad3ab2adafc25a8d4cb5d3a0413c107ba44"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/10-BODY.json",
+      "sha256": "e57a6141ba11766b2f95edf46d475f2f2379d0738196b97261765f360dc113e7"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/11-RECEIPT.json",
+      "sha256": "6f76085505795a29f52f350a95bc0e04a6a09a93e47c133b3eaa3f416305011a"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/11-BODY.json",
+      "sha256": "a7b8a9ea5f742b23e9b2addfd7e2f657364fad80745985a77c4c73ae4e13fcb5"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/12-RECEIPT.json",
+      "sha256": "6ca48d0d8ca69de26374f4bfee753b6f47485d26b77941da41cea245dfb6eb0e"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/12-BODY.json",
+      "sha256": "d07e4d84260424ee81884e7a04b4f5016f077eb9ba85f0f643489a483aa1a21a"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/13-RECEIPT.json",
+      "sha256": "c76daca75d0f1a4eb5cafc5b1cf7a06b06b2347684792e7ca3c5bdb7ad044df7"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/13-BODY.json",
+      "sha256": "97f5f498aa173566f6e6272039d71bbbaabfe32cd34f63c2f790ba4f1f0d187f"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/14-RECEIPT.json",
+      "sha256": "c03d3e25f069495c0487e2f91e72409cb98c87e691cc9580560fa79331135d68"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/14-BODY.json",
+      "sha256": "0fc91092f3e49bcba9b7674591e3c21842a17bc35ddcff1c44e807346a89e8d3"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/15-RECEIPT.json",
+      "sha256": "0805f4ef1b6c98a52a82d393c2949476e67c95b146f6b72cd97bc803fff3c680"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/15-BODY.json",
+      "sha256": "4c8f93882240f2ca8cccf7d8ff9d28f2a1d3f22b79a8b51b7907c581394b7ba7"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/16-RECEIPT.json",
+      "sha256": "699b9f06083ad21ba65bf39b14e57af24afa90c53408bf2942c4783a31772c86"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/16-BODY.json",
+      "sha256": "c35acb5941a7e11a76176a74419f6df9669afd89f6e17cf04ac4c751424f7c63"
+    },
+    {
+      "file": "qa-fixtures/hosted258/RESULT.json",
+      "sha256": "3f909dd0515eb63400e073d22df69b61fe459f885877ab9456a737f4efe62ac5"
+    },
+    {
+      "file": "qa-artifacts/master253-20261026/hosted-six-r1/03-BODY.json",
+      "sha256": "19a2517b877a2873aa69635f8255803350ee9fd0b89301aedd4f7a6b4fabf413"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/17-RECEIPT.json",
+      "sha256": "d090ea08479e981a583195d9e710ec9c8a85d9c53fca8d9c7d55cc5f06ce4bd1"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/17-BODY.json",
+      "sha256": "1fc31a15131bb3ac2593cc877b0f1ee02ed81f63da17ad164cca52c8acf38750"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/18-RECEIPT.json",
+      "sha256": "9075f16000cc8ceb1f98436c9d82603e88269a57b9f5cb6ae61cc8e9534bf273"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/18-BODY.json",
+      "sha256": "f8f1f43e030aef9be9205efdc6abce1bfdb3e3a32ddf2001080faf4600ec72a8"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/19-RECEIPT.json",
+      "sha256": "6fd4c6ee2151bd1298e1cf24e2acefcede4aaa2311095aedeba4a0684f03701a"
+    },
+    {
+      "file": "qa-artifacts/first20-274-20261027/live-r2/19-BODY.json",
+      "sha256": "e9ca151f93703aa58480cd013200845958bd1fdb33bb5cbdaf50ed6420c33a0e"
+    }
+  ],
+  "metrics": {
+    "scenes": 20,
+    "newReads": 18,
+    "allNewHTTP200": true,
+    "originalTrancheAttempts": 19,
+    "originalTrancheMaximum": 19,
+    "unusedAllowance": 0,
+    "canonicalDetailsAvailable": 19,
+    "detailsWithoutSensoryRows": 15,
+    "detailsWithSensoryRows": 4,
+    "detailsWithRecordedSource": 0,
+    "detailsWithDeclaredVintages": 3,
+    "newReadLatencyMs": {
+      "min": 64,
+      "median": 72,
+      "p95NearestRank": 291,
+      "max": 291,
+      "total": 1897
+    },
+    "realPhotoIdentitiesConfirmed": 0,
+    "realEndToEndChainsApproved": 0,
+    "affinityGranted": 0,
+    "additionalModelImageCalls": 0,
+    "writes": 0,
+    "additionalEUR": 0
+  }
+}
