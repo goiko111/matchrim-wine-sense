@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-27, Native126 Quiz Normal/MAX PASS / Catalogue503 Follow-Up Sent
+
+- Exact274 follow-up sent ONCE to authorized Moa existingthread. Sender/sole recipient/all9paragraphs checked before and in SentUID5613 at08:18Madrid; body whitespace-normalized equal. Includes503route/time246ms and asks diagnosis/status/owner/date, not deploy/SQL/data-write/spend approval. Outgoing copy verified, not delivery/read. No fresh server refresh or later-reply absence claim. [Mail receipt](qa-fixtures/development275/MAIL_SENT.json).
+- Clean candidate1.0(126), source2b0bde73c3d11d9a5bc8f37a39910f4c15c71d3b: fullappTS/Vite/unsignedarm64compile PASS,165resources bound. Native quiznormalr52 and actualMAXr53 PASS:20questions, preference result, reachable actions, Home and anonymous local retention/reopening.3normal+7MAXcaptures personally inspected; MAXrequires substantial scroll, not all controls simultaneous. Prior273actual-handler regression covers incomplete/invalid state, not corrupt-state injection in these native runs. No weight/predictive calibration change. [Bound receipt](qa-fixtures/native275/RESULT.json), [scope/captures/limits](docs/MATCHRIM_NATIVE126_275_2026-10-27.md).
+- Originalcatalogue503still unresolved;18free reads unused,0newcatalogue/model/photo/Keychaincalls or addedEUR thisturn. No realaccounts/ratings/phone/web/main/backend writes.125still installed,126not signed/archived/uploaded. Real200identity/sensoryvintage/calibration/accountpersistence gates remain open; narrow quizQA is not wholeapp approval. Heavy/ios/mac released afterterminalMAX; writer onlycheckpointthenrelease. MonitorPAUSED, no newGoal or automation.
+
 ## Current Gate: 2026-10-27, New Development Reply / First20 HTTP503 / Native Quiz273 Integrity Fix
 
 - Actual cached reply UID88223 at06:49:57Madrid answers271 (In-Reply-To12b58530...). Exact bounded MIME parsed/sender+recipient+ID verified; no fresh server refresh or absence-of-later-mail claim. Confirms per-axis real/default ambiguity, generic-vintage limits, rev3 unimplemented/unapproved and no visual label index. No new implementation/deploy/SQL/data-write/spend permission. [Reply receipt](qa-fixtures/development273/REPLY.json).

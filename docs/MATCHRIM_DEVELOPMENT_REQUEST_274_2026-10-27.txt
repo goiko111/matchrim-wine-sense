@@ -1,11 +1,11 @@
-BORRADOR / NO ENVIADO. Destinatario exclusivo: moa-winerim-b93a8ts9@agentmail.to
+ENVIADO 27-oct-2026 08:18 Europe/Madrid. Destinatario exclusivo: moa-winerim-b93a8ts9@agentmail.to. Copia Sent UID5613 verificada; no reenviar.
 Responder en el hilo Matchrim | Bloqueos de catálogo, añadas y ficha sensorial | 23-oct-2026.
 
 Hola equipo:
 
 Gracias por la respuesta de hoy a las 06:49:57. Confirmamos la recepción; no interpretamos rev3 como implementada ni aprobada, y no autorizamos consultas SQL, escrituras, despliegues ni gasto.
 
-P0 disponibilidad: la primera lectura gratuita expresamente autorizada de esta tanda, GET /api/v1/matchrim/wines/217496, devolvió HTTP 503 en 246 ms el 27-oct-2026. Detuvimos la tanda sin reintento: 1/19 intentos, 18 sin usar. No tenemos cuerpo diagnóstico ni atribuimos la causa al backend sin comprobarla. ¿Podéis confirmar disponibilidad, revisar vuestros logs existentes de esa ruta y decir responsable/estado/fecha prevista de resolución, sin lanzar consultas nuevas de pago ni cambios de producción?
+P0 disponibilidad: la primera lectura gratuita expresamente autorizada de esta tanda, GET /api/v1/matchrim/wines/217496, devolvió HTTP 503 en 246 ms el 27-oct-2026, a las 06:28:41 UTC (07:28:41 Europe/Madrid). Detuvimos la tanda sin reintento: 1/19 intentos, 18 sin usar. No tenemos cuerpo diagnóstico ni atribuimos la causa al backend sin comprobarla. ¿Podéis confirmar disponibilidad, revisar vuestros logs existentes de esa ruta y decir responsable/estado/fecha prevista de resolución, sin lanzar consultas nuevas de pago ni cambios de producción?
 
 P0 afinidad trazable: vuestra confirmación de que un 3 puede ser valor por defecto y no existe distinción por eje impide presentarlo como ficha sensorial verificada. Necesitamos vuestra propuesta de alcance y fecha para procedencia/ausencia/default por atributo y resolución exacta de añada; sin sustituir cosechas ni convertir confianza de generación en probabilidad de gusto. Mantener rev3 como propuesta pendiente de decisión del propietario.
 

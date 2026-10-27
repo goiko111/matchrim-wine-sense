@@ -1,0 +1,43 @@
+{
+  "candidate": "1.0 (126)",
+  "sourceCommit": "2b0bde73c3d11d9a5bc8f37a39910f4c15c71d3b",
+  "sourceDirtyAtPreparation": false,
+  "fullAppTypecheck": "PASS",
+  "nativeViteBundle": "PASS",
+  "unsignedArm64SimulatorCompile": "PASS",
+  "nativeQuizNormal": "PASS",
+  "nativeQuizMaximumText": "PASS",
+  "scope": "Two isolated anonymous 20-question quiz traversals, result actions reachable, Home/local tastes retained across relaunch; not full-app live backend/recognition/predictive calibration QA",
+  "normalStartedUTC": "2026-10-27T07:25:59.813Z",
+  "normalFinishedUTC": "2026-10-27T07:28:08.940Z",
+  "maxStartedUTC": "2026-10-27T07:28:46.916Z",
+  "maxFinishedUTC": "2026-10-27T07:33:32.991Z",
+  "receipts": [
+    {"file": "qa-artifacts/native218-20261025/candidate126-r1/preparation.json", "sha256": "11f0b343820f1c3767f1b74e7d3361159f5d27707911070a533b9e0b4b6bc7e4"},
+    {"file": "qa-artifacts/native218-20261025/compile126-r1/RESULT.json", "sha256": "eba8274e8951cec0bea91d29bc7f23e992a58b7001e65775ee871d3af5fd5fa8"},
+    {"file": "qa-artifacts/native218-20261025/native220-r52/RESULT.json", "sha256": "4471cf9078f15691c7b5444e4d6855be72711f363bbb03bf3af6888be0d8629f"},
+    {"file": "qa-artifacts/native218-20261025/native220-r53/RESULT.json", "sha256": "001568523f0933eb183d4c6a420baf8bdca00874650f2e327ac648354e6d8df7"}
+  ],
+  "normalContainer": "wine.matchrim.qa126offline220v52",
+  "maximumTextContainer": "wine.matchrim.qa126offline220v53",
+  "personallyInspectedFrames": {
+    "normal": ["D525BF5B-5985-4035-8308-275FF811D2D6.png", "058548CE-38A0-462C-94AB-8985E68E046C.png", "4FB89204-B40F-45BE-8972-22E804E36ADD.png"],
+    "maximumText": ["7F1220C9-AD70-4167-AF67-87CE09DBEF6C.png", "AA2511B1-4379-4742-9546-F16FF5160A1C.png", "1659C415-388B-4FE8-83B0-9AA780104FB8.png", "52697CF4-151B-4D43-AC1F-BB1D931FFE6A.png", "C5FDBF52-23C0-4A1A-823D-5B3D03224405.png", "53A64D70-32D2-4034-A39F-FF2FDC7263AB.png", "A860D729-6071-4832-B82B-0B542C91DC5E.png"]
+  },
+  "allControlsSimultaneouslyVisibleAtMax": false,
+  "maxRequiresSubstantialScrolling": true,
+  "noPermanentOverlapObservedInInspectedFrames": true,
+  "ownAppsTerminated": true,
+  "contentSizesRestored": true,
+  "partialInvalidInputCoverage": "Prior273 actual-handler controlled regression, not corrupted native state injected into this visual run",
+  "serverRecommendationsAvailable": false,
+  "serverRecommendationGapExpectedBecauseNetworkDenied": true,
+  "realAccountsOrRatingsWritten": false,
+  "newCatalogueOrModelOrPhotoCalls": 0,
+  "additionalEUR": 0,
+  "webPublished": false,
+  "backendChanged": false,
+  "signedArchive": "NOT_RUN",
+  "testFlight": "NOT_UPLOADED",
+  "remainingGates": ["HTTP503 diagnosis", "unused18detailReadsNotResumed", "real200labelRecognition", "perAxisSensoryProvenanceAndVintage", "independentPredictiveCalibration", "accountPersistenceNotTestedByAnonymousRun"]
+}
