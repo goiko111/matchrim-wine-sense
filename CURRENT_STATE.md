@@ -1,5 +1,11 @@
 # Matchrim current state
 
+## Current Gate: 2026-10-27, Native269 Private125 Upload Accepted / Apple Processing
+
+- Human explicitly requested `sube a testflight la 125` after corrected normal/MAX QA and remaining200/sensory limits were disclosed. Recorded limited-private-beta authorization, not public release or full recognition approval. Export125-r1 and ONE upload125-r1 PASS using signed125-r2/source10076dda2cfc3eeb6a97f4a30443098b7fadec90. Apple acknowledged at05:28:24UTC: Uploaded package is processing, Upload succeeded, EXPORT SUCCEEDED; exit0/no signal. Build125 is consumed: no automatic resubmission. [Distribution receipt](qa-fixtures/native269/RESULT.json), [release record](docs/MATCHRIM_TESTFLIGHT_125_2026-10-27.md).
+- Independent exportedIPA signature/version/bundle/team/get-task-allow=false and165resource verification PASS. Version1.0(125), wine.matchrim.app; IPA SHA2568f9d01ade31a4c71cd48426f2e3dc81aa00e89cb67e2d9743d5a92ffc0642f39. Native268 normal/MAX receipts unchanged; no unnecessary rerun/rebuild. Apple receipt proves acceptance/processing, NOT current TestFlight installability or group assignment. No console tester/review/release changes made.
+- Private beta retains unapproved real200-label recognition, incomplete sensory evidence and fixture-driven focal QA rather than whole-app live account/physical E2E. No web/main/backend publication, model/photo/catalogue/Auth/Lovable calls or added spend. Existing50requests/15EUR unchanged, monitorPAUSED. Foreign work respected; own full heavy/writer acquired atomically after queue, heavy released immediately after terminal upload, writer only final checkpoint then release. Apple future April2027 minimumiOS15 warning is nonblocking; accepted artifact remains unchanged.
+
 ## Current Gate: 2026-10-26, Native268 Catalogue Flow Normal/MAX PASS / Updated125 Signed / Upload Decision Pending
 
 - Native125-r2/source10076dda2cfc3eeb6a97f4a30443098b7fadec90: normalr48 and MAXr51 fullflows PASS. MAX actually clears2023 with keyboard Delete, types/applies2024, invalidates the reference and keeps the local operation counter at2 (0before explicit search). No auto lookup/confirmation or fabricated affinity/URL. Native row AX now announces identity, indicated year, affinity/gap and separate personal verdict. [Final bounded receipt](qa-fixtures/native268/RESULT.json).
