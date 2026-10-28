@@ -1,5 +1,28 @@
 # Matchrim decisions log
 
+## 2026-10-28: unidentified labels become one-tap candidates; 129 supersedes 128
+
+The strict 104 proposals required every distinctive word read exactly, which a
+phone OCR rarely gives (38-45% top-1 on closed catalogues). Candidates286 ranks
+the rows the public search returns by how much of each identity was read
+(rare words weigh more, one/two-letter misreads and merged words tolerated) and
+demotes, never hides, rows that contradict visible colour, appellation or
+qualifier. A tap is always required: with real catalogue distractors the
+single-proposal precision is 95%, not 99%, so no automatic confirmation. A pick
+goes to the Winerim master reference first (0-5 taste values for that harvest),
+else the verified public sheet. OCR crops under 1200 px are enlarged 2x with
+Lanczos. Build 128 is never uploaded; 129 contains all of 128 plus this and the
+accented quality notices, and is uploaded only with the owner's explicit
+limited-beta authorization. The full-catalogue query plan (phase 3, 200-400
+public searches) and real iPhone photos remain unmeasured.
+
+Native QA of 129 changed two things. A master reference that scores now stays
+visible beneath the affinity (harvest of the taste values, original sheet), as
+the public reference already did (60243c2). The planned MAX header change is
+reverted (3456e6c): nativeLabelSheet102.css bounds that header on purpose so
+enlarged form controls keep room, and lifting only its clip painted the title
+over the content. The second title line at MAX still scrolls inside the header.
+
 ## 2026-10-15: QA89 Fixes Require Evidence, Not Synthetic Approval
 
 User asks to resolve pending points. Implement bounded per-region continuation,

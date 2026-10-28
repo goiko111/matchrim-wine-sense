@@ -1,6 +1,14 @@
 # Matchrim current state
 
-## Current Gate: 2026-10-28, Candidate128 Committed, Not Built (Claude)
+## Current Gate: 2026-10-28/29, Candidate129 Built, Native QA PASS, Not Uploaded (Claude)
+
+- Owner (28-oct night): take 129 (all of 128 plus one-tap candidate recognition, OCR 2x, accented notices) through build and QA; do not upload 128; 129 is uploaded at ~04:00 only with the owner's explicit OK. [Report](docs/MATCHRIM_CANDIDATES_286_2026-10-28.md).
+- Final source `3456e6c` (local commits, not pushed), clean detached worktree `/Users/GOIKO/2matchrim-candidate129-20261028` (node_modules symlink, `qa-artifacts/native99-20261021` symlink and `ios/App/Pods` copied from main, all gitignored). candidate129-r5 typecheck PASS, compile129-r4 PASS, signed Release archive archive129-r2 (see report for its result). Native QA, own simulator, synthetic offline user, 0 network calls: vintage283 normal r68 / MAX r69, master259 normal r70 / MAX r71, all PASS; screenshots inspected.
+- Native QA found two product issues, both handled: (1) with 128 a master reference scores, so the primary view showed the affinity and dropped the reference block (taste-value harvest, original sheet); now shown beneath the affinity like the public reference (`60243c2`, r63 FAIL retained). (2) The 129 MAX header change let a two-line title paint over the content because `nativeLabelSheet102.css` bounds that header on purpose; reverted (`3456e6c`), back to 127 behaviour (first line visible, rest scrolls in the header). r65 retained as a harness FAIL: `renew` without `--seconds` grants 600 s and the heavy lease lapsed mid-run.
+- Candidates286 offline measures: closed catalogues top-1 84-90% (strict 104: 38-40%); replay of 388 real recorded searches top-1 85.9%, single proposal shown 52.6% with 95.1% precision, so a tap is always required. Not measured: the new query plan on the full catalogue (phase 3, 200-400 public searches, needs OK), real iPhone photos; the candidate flow itself has no native QA (it needs the network), only the component harness 7/7.
+- Not uploaded: no export, no TestFlight, no HUMAN-AUTHORIZATION.json. 128 is never uploaded. 0 catalogue/model/image/Auth/Keychain calls, 0 EUR, no web/main/backend changes. Other lane's dirty module-cache files untouched.
+
+## Previous Gate: 2026-10-28, Candidate128 Committed, Not Built (Claude)
 
 - Owner (28-oct, ~13:30): implement the surprise rule for 128 in both directions, use the 0-5 attributes the Winerim API returns, test with the plazablanca-clone carta, keep testing until 16:00. Commits `41e886e`, `f41b11e`, `39bfbbe`, `c470dff`, local only, not pushed.
 - Learning: native scans now use `native-v3` (client only). A "not for me" moves the profile only if the start profile predicted the wine to please; an unexpected love/ok pulls harder. Web legacy-v1 and the server native-v2 copy (chat, food pairing) unchanged. Sim285, 100 synthetic users x 4 seeds: week-12 profile error 0.72-0.77 (v2: 0.98-1.05), 83-91 improve, 0 worsen (`qa-fixtures/users285/`).

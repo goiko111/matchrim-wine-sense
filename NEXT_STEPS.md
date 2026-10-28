@@ -1,5 +1,12 @@
 # Matchrim next steps
 
+## Current Delta: 2026-10-29, Candidate129 Ready for an Owner Decision
+
+1. Upload 129 to TestFlight only after the owner's explicit limited-beta OK in chat: write `qa-artifacts/testflight129-20261029/HUMAN-AUTHORIZATION.json` quoting their exact reply and the known limitations, then `node scripts/distribute-matchrim129.mjs export`, inspect, and `upload` once (heavy-local + writer leases). RELEASE.json already points at candidate129-r5, archive129-r2 and r68-r71. Never upload 128.
+2. After upload: confirm Apple processing and install on the iPhone 16 Pro Max (it still has 125; 127 processing never confirmed), then try real bottle photos through the candidate flow (phase 4).
+3. Phase 3 needs the owner's OK: 200-400 free public searches to measure the new query plan on the full 183,509-wine catalogue (first page only beyond 80 rows).
+4. Open owner decisions: vermut (`fortificado` refused by design), MAX header (keep the compact bounded header or redesign it so name and year always show), push of the local commits, Oeni confirmation. Development reminder not before 29-oct 10:45, at most one per 24 h.
+
 ## Current Delta: 2026-10-21, Native Visual98
 
 1. Preserve clean ec13656/candidate98-r1 and portrait evidence. Home, wine detail and Mis vinos are implemented, not another conceptual redesign. TestFlight95 does not contain them. No more horizontal QA requested.
