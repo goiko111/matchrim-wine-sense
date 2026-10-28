@@ -197,11 +197,11 @@ export const prepareImageForAnalysis = async (
 
   const { brightness, contrast, sharpness } = inspectPixels(context, width, height);
   const warnings: string[] = [];
-  if (Math.min(image.naturalWidth, image.naturalHeight) < 700) warnings.push('Resolucion limitada para leer texto pequeno.');
-  if (brightness !== null && brightness < 48) warnings.push('La foto esta oscura; algunas etiquetas pueden quedar dudosas.');
+  if (Math.min(image.naturalWidth, image.naturalHeight) < 700) warnings.push('Resolución limitada para leer texto pequeño.');
+  if (brightness !== null && brightness < 48) warnings.push('La foto está oscura; algunas etiquetas pueden quedar dudosas.');
   if (brightness !== null && brightness > 225) warnings.push('Hay mucha luz; revisa reflejos y zonas quemadas.');
-  if (contrast !== null && contrast < 22) warnings.push('El contraste es bajo; acerca la camara si el texto es pequeno.');
-  if (sharpness !== null && sharpness < 12) warnings.push('La imagen esta desenfocada para leer texto pequeno.');
+  if (contrast !== null && contrast < 22) warnings.push('El contraste es bajo; acerca la cámara si el texto es pequeño.');
+  if (sharpness !== null && sharpness < 12) warnings.push('La imagen está desenfocada para leer texto pequeño.');
   const lowTextSignal = Math.min(image.naturalWidth, image.naturalHeight) < 600
     && sharpness !== null
     && sharpness < 12;

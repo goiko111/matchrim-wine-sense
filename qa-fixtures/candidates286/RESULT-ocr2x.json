@@ -1,0 +1,655 @@
+{
+ "scope": "Offline: retained Apple Vision OCR, app code, search EMULATED over each closed catalogue (query inside wine name). Not the full Winerim catalogue, not real phone photos.",
+ "pbOcr": "qa-artifacts/plazablanca285-20261028/ocr-vocab-x2",
+ "pkgOcr": "qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/ocr-x2-286",
+ "carta": {
+  "label": "plazablanca-clone carta",
+  "catalogue": 135,
+  "images": 135,
+  "ocrEmpty": 1,
+  "rankingOnly": {
+   "top1": 83.7,
+   "top3": 93.3,
+   "oneShown": 48.9,
+   "onePrecision": 100
+  },
+  "pipeline": {
+   "searchesPerImage": 3.5,
+   "truthInSearchRows": 92.6,
+   "top1": 84.4,
+   "top3": 91.1,
+   "inListOf20": 91.9,
+   "oneShown": 45.2,
+   "onePrecision": 100,
+   "needsManualSearch": 8.1
+  },
+  "todayStrict104": {
+   "anyProposal": 39.3,
+   "top1": 38.5
+  },
+  "misses": [
+   {
+    "id": 373408,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "HARD ONNAY",
+     "CHÍNCHILLA",
+     "chinchilla",
+     "chinch",
+     "chilla"
+    ],
+    "top": [],
+    "ocr": "HARD ONNAY / CHÍNCHILLA / Свос"
+   },
+   {
+    "id": 373435,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "SIDE LA",
+     "ENDESA",
+     "endesa",
+     "paspi",
+     "side"
+    ],
+    "top": [],
+    "ocr": "SIDE LA / ENDESA / EL PASPI"
+   },
+   {
+    "id": 373476,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "spalatia alce inada",
+     "Frontez",
+     "frontez",
+     "bersanges",
+     "casin",
+     "front",
+     "ontez"
+    ],
+    "top": [],
+    "ocr": "spalatia alce inada / Frontez / Bersanges casin / RISALE / NIALE DE FRANG, CATAS PUNTEI"
+   },
+   {
+    "id": 373496,
+    "rank": null,
+    "inRows": true,
+    "searched": [
+     "VALVERÁN"
+    ],
+    "top": [],
+    "ocr": "VALVERÁN"
+   },
+   {
+    "id": 373406,
+    "rank": 4,
+    "inRows": true,
+    "searched": [
+     "RORE CLOUET",
+     "clouet",
+     "rore"
+    ],
+    "top": [
+     "373407 André Clouet Rosé Nº3",
+     "373520 Andre Clouet Silver Brut Nature Grand Cru",
+     "373405 André Clouet Grand Cru Grande Réserve Brut"
+    ],
+    "ocr": "RORE CLOUET"
+   },
+   {
+    "id": 373523,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "QUINTA DOS PISOS",
+     "CARCAYELOS",
+     "carcayelos",
+     "pisos",
+     "denomiracao",
+     "carcay",
+     "ayelos"
+    ],
+    "top": [],
+    "ocr": "QUINTA DOS PISOS / МІННО ВЕНЕЯОГО / CARCAYELOS / DENOMIRAÇÃO DE ORIGEM CONTROLADA / TÃO DOMINGOS DE FANA - CASCAIS / HOM ARD'S FOLLY"
+   },
+   {
+    "id": 373407,
+    "rank": 3,
+    "inRows": true,
+    "searched": [
+     "ANDRÉ CLOUET"
+    ],
+    "top": [
+     "373405 André Clouet Grand Cru Grande Réserve Brut",
+     "373520 Andre Clouet Silver Brut Nature Grand Cru",
+     "373407 André Clouet Rosé Nº3"
+    ],
+    "ocr": "CHAMPAGNE / ANDRÉ CLOUET / BRUT"
+   },
+   {
+    "id": 373428,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "VIÑEDOS ORGÁNICOS",
+     "RUEDA",
+     "organicos",
+     "organi",
+     "anicos"
+    ],
+    "top": [],
+    "ocr": "PI TA / VIÑEDOS ORGÁNICOS / VERDEJO / RUEDA / DENOMINACIÓN DE ORIGEN"
+   },
+   {
+    "id": 373458,
+    "rank": null,
+    "inRows": false,
+    "searched": [],
+    "top": [],
+    "ocr": "4): 1o:"
+   },
+   {
+    "id": 373462,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "Bonn",
+     "Domaine Bonn",
+     "bourgogne",
+     "beaune",
+     "hautes"
+    ],
+    "top": [
+     "373514 Domaine Parigot Bourgogne Hautes-Côtes de Beaune 'Clos de La Perrière'",
+     "373462 Hautes-Côtes de Beaune 'Sur Evelle'",
+     "373494 Château de Charodon Bourgogne Côte d'Or 2022"
+    ],
+    "ocr": "Domaine Bonn / irdot / BOURGOGNE / HAUTES CÔTES DE BEAUNE / RAIVELLE"
+   },
+   {
+    "id": 373502,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "VILLAN",
+     "UNE - BOUZE",
+     "raprietaire",
+     "bougeron",
+     "baugeyn",
+     "rapriet",
+     "ietaire"
+    ],
+    "top": [],
+    "ocr": "UNE - BOUZE / DUZERON • BOUZERON• N / DOMAINE DE VILLAN / 2022 / rapriétaire récoltant à Bougeron, en Baugeyn"
+   },
+   {
+    "id": 373465,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "APPEL",
+     "LATIO",
+     "premier",
+     "appel",
+     "prot"
+    ],
+    "top": [
+     "373499 Troplong Mondot Saint-Émilion Grand Cru (Premier Grand Cru Classé) 2018"
+    ],
+    "ocr": "APPEL / LATIO / N01X01-3X01Y / N- PREMIER CRU / DORE / PROT / ÉGÉ"
+   },
+   {
+    "id": 373508,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "VINA SOLARCE",
+     "SOLARCE",
+     "vina"
+    ],
+    "top": [
+     "373441 Viña Ardanza Reserva",
+     "373508 Solarce Blanco",
+     "380246 Ossian Viñas Viejas"
+    ],
+    "ocr": "VINA / SOLARCE / 00053 1 20,04 / Rioja"
+   },
+   {
+    "id": 373530,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "HSCIENPATLA QUINTERIA",
+     "hscienpatla",
+     "quinteria",
+     "hscienp",
+     "enpatla"
+    ],
+    "top": [
+     "373529 Hacienda La Quintería Tintilla de Rota",
+     "373530 Hacienda La Quintería Blanc de Noir"
+    ],
+    "ocr": "HSCIENPATLA QUINTERIA"
+   },
+   {
+    "id": 373536,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "ZERO",
+     "LE NATUREL"
+    ],
+    "top": [
+     "373537 Le Naturel Zero Zero",
+     "373536 Le Naturel Zero Zero Blanco"
+    ],
+    "ocr": "ZERO / ZERO / LE NATUREL"
+   },
+   {
+    "id": 379803,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "BELONDRADE",
+     "Apelsein",
+     "apelsein",
+     "apels",
+     "lsein"
+    ],
+    "top": [
+     "373426 Belondrade y Lurton 2024",
+     "379803 Quinta Apolonia"
+    ],
+    "ocr": "BELONDRADE / Apelsein"
+   },
+   {
+    "id": 373527,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "A ALTO",
+     "VERO"
+    ],
+    "top": [
+     "373450 Aalto",
+     "373527 Aalto PS",
+     "373504 Fillaboa Selección Finca Monte Alto"
+    ],
+    "ocr": "A ALTO / S / МИНЕКА / VERO"
+   },
+   {
+    "id": 373535,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "PERS",
+     "DRKe",
+     "pers",
+     "isilo",
+     "drke"
+    ],
+    "top": [],
+    "ocr": "PERS / DRKe / ISILO / TEMPRANILLO / FIBERA DEL, DUCRO / toms 2 6 e / *0 1"
+   },
+   {
+    "id": 373543,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "Delarento",
+     "Domaine Delarento",
+     "delarento",
+     "chavignd",
+     "sancerre",
+     "delare",
+     "arento"
+    ],
+    "top": [
+     "373505 Sancerre Chavignol Blanc",
+     "373543 Chavignol Sancerre Rouge"
+    ],
+    "ocr": "Domaine Delarento / SANCERRE / Chavignd / K DORANT"
+   },
+   {
+    "id": 373544,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "TOMAS POSTIC",
+     "CRIBARA PON DUERN",
+     "cribara",
+     "duern",
+     "postigo",
+     "criba",
+     "ibara"
+    ],
+    "top": [
+     "373449 Tomás Postigo 3º Año 2023",
+     "373544 Tomás Postigo 5º Año",
+     "373451 Tomás Postigo 3º Año Magnum"
+    ],
+    "ocr": "TOMAS POSTIC / CRIBARA PON DUERN / TOMÁS POSTIGO / SSANO / 715%12"
+   },
+   {
+    "id": 373549,
+    "reason": "ocr-empty"
+   }
+  ]
+ },
+ "package200": {
+  "label": "200-label package",
+  "catalogue": 200,
+  "images": 200,
+  "ocrEmpty": 1,
+  "rankingOnly": {
+   "top1": 90,
+   "top3": 94.5,
+   "oneShown": 69,
+   "onePrecision": 99.3
+  },
+  "pipeline": {
+   "searchesPerImage": 3.4,
+   "truthInSearchRows": 92.5,
+   "top1": 90,
+   "top3": 92,
+   "inListOf20": 92.5,
+   "oneShown": 66.5,
+   "onePrecision": 99.2,
+   "needsManualSearch": 7.5
+  },
+  "todayStrict104": {
+   "anyProposal": 40.5,
+   "top1": 40
+  },
+  "misses": [
+   {
+    "id": 9,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "Vermouth",
+     "vermouth",
+     "vermo",
+     "mouth"
+    ],
+    "top": [],
+    "ocr": "Vil / Vermouth / Premium"
+   },
+   {
+    "id": 21,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "LA ROTURE",
+     "BEAUREGARD",
+     "beaune",
+     "hautes",
+     "cotes"
+    ],
+    "top": [
+     "66 Baeauregard Côtes du Couchois",
+     "21 La Roture",
+     "71 Amis de Beauregard Blanc de Noirs"
+    ],
+    "ocr": "DOMAINE DU / BEAUREGARD / BOURGOGNE / HAUTES CÔTES DE BEAUNE / 2023 / 'LA ROTURE' / VIN DE BOURGOGNE / MIS EN BOUTEILLE À LA PROPRIÉTÉ"
+   },
+   {
+    "id": 29,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "LES BULLES DE",
+     "LAFFITTE CARCASSET"
+    ],
+    "top": [
+     "31 Le Chardonnay de Laffitte Carcasset",
+     "29 Les Bulles de Laffitte Carcasset",
+     "30 Château Laffitte-Carcasset"
+    ],
+    "ocr": "LES BULLES DE / LAFFITTE CARCASSET / BLANC DE CHARDONNAY"
+   },
+   {
+    "id": 38,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "geraitento do",
+     "geraitento",
+     "gerait",
+     "itento"
+    ],
+    "top": [],
+    "ocr": "502 / geraitento do / VINEYARDS"
+   },
+   {
+    "id": 63,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "Grünce Weltlir",
+     "Oses Serranen",
+     "serranen",
+     "weltlir",
+     "grunce",
+     "serra",
+     "ranen"
+    ],
+    "top": [],
+    "ocr": "Grünce Weltlir / Oses Serranen"
+   },
+   {
+    "id": 72,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "Manilanet",
+     "Risting",
+     "risting",
+     "manilanet",
+     "risti",
+     "sting"
+    ],
+    "top": [],
+    "ocr": "Manilanet / Risting"
+   },
+   {
+    "id": 77,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "ERBHOF",
+     "UNTERGANZNER",
+     "sudtiroler",
+     "cointhorlata",
+     "intircanzner",
+     "sudtir",
+     "iroler"
+    ],
+    "top": [
+     "93 Platt & Pignat",
+     "92 Marie Josephine Passito"
+    ],
+    "ocr": "ARS / VIN / ERBHOF / 15 / 68 / UNTERGANZNER / SÜDTIROLER / NNE NURAES DE TIRSDANE COINTHORLATA • ERALITATIA\" / LAGKEIN / MLRSBRE, LAR / TERT"
+   },
+   {
+    "id": 84,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "20CG",
+     "20V002KL412xL",
+     "controlate",
+     "ativach",
+     "gens",
+     "contro",
+     "rolate"
+    ],
+    "top": [],
+    "ocr": "20CG / ADDD08909 / 20V002KL412xL / Bra, 108 / ativach gens controlate / cantila / #- PRODOTTO IN ITALIA - PRODUCT OF ITALY - 7500)"
+   },
+   {
+    "id": 87,
+    "rank": 6,
+    "inRows": true,
+    "searched": [
+     "NONY",
+     "CHÂTE AU",
+     "boutbelle",
+     "medoc",
+     "haut",
+     "boutbe",
+     "tbelle"
+    ],
+    "top": [
+     "158 Irene Rodríguez Haut-Médoc",
+     "46 Château Cheval Brun Saint-Émilion Grand Cru",
+     "106 Château Boutisse"
+    ],
+    "ocr": "TN3 / CHATE / CHÂTE AU / 2019 / Famille NONY / • HAUT-MÉDOC• / GRAND VIN DE BORDEAUX / HIS EN BOUTBELLE AU CHATEAU"
+   },
+   {
+    "id": 117,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "STATE",
+     "SALIVIANON NI",
+     "salivianon",
+     "salivi",
+     "vianon"
+    ],
+    "top": [
+     "25 Don Miguel Vineyard Godello"
+    ],
+    "ocr": "STATE / SALIVIANON NI"
+   },
+   {
+    "id": 120,
+    "rank": null,
+    "inRows": false,
+    "searched": [],
+    "top": [],
+    "ocr": "2021"
+   },
+   {
+    "id": 126,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "Wise of Chile",
+     "central",
+     "valley",
+     "chile",
+     "centr",
+     "ntral"
+    ],
+    "top": [],
+    "ocr": "MERLOT / D.0. CENTRAL VALLEY |2018 / Wise of Chile"
+   },
+   {
+    "id": 148,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "RÍAS BAIXAS",
+     "DENOMINACIÓN DE UNGIN",
+     "baixas",
+     "ungin",
+     "rias"
+    ],
+    "top": [],
+    "ocr": "EM/N / EM/NA / ALBARIÑO / RÍAS BAIXAS / DENOMINACIÓN DE UNGIN"
+   },
+   {
+    "id": 150,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "MEDIANO",
+     "Naiia",
+     "naiia",
+     "carmacha",
+     "seedrano",
+     "carma",
+     "macha"
+    ],
+    "top": [],
+    "ocr": "MEDIANO / Naiia / SEEDRANO IROZE / CARMACHA BLANCA"
+   },
+   {
+    "id": 155,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "0 leid",
+     "procka de tagta",
+     "bera",
+     "alvert",
+     "dectes"
+    ],
+    "top": [],
+    "ocr": "IA / 0 leid / Я po doc в / procka de tagta / dectes caron / impas: / 3084 PiA / ni intaie / Alvert / BERA DEL DUERO"
+   },
+   {
+    "id": 156,
+    "rank": null,
+    "inRows": false,
+    "searched": [],
+    "top": [],
+    "ocr": "PD"
+   },
+   {
+    "id": 162,
+    "reason": "ocr-empty"
+   },
+   {
+    "id": 175,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "Slags Loup",
+     "The mieston",
+     "slags",
+     "loup",
+     "mieston",
+     "miest",
+     "eston"
+    ],
+    "top": [],
+    "ocr": "Slags Loup / The mieston / NAPA VALLEY - RED WINE / FIRST VINTAGE 1893"
+   },
+   {
+    "id": 177,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "FORAL",
+     "D MELGAÇO"
+    ],
+    "top": [
+     "180 Foral de Melgaço Old Vines Alvarinho",
+     "177 Foral Alvarinho"
+    ],
+    "ocr": "ALVARINHO / FORAL / D MELGAÇO / OLD VINES / MONÇÃO I MELGAÇO / a calls Antiques whispy a / sher to upon all wa"
+   },
+   {
+    "id": 188,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "Magliol",
+     "se Jont",
+     "primitivo",
+     "jont"
+    ],
+    "top": [
+     "174 Primitivo di Manduria DOC",
+     "188 Domenico Russo Magliolo"
+    ],
+    "ocr": "Magliol / RI / se Jont / PRIMITIVO"
+   }
+  ]
+ }
+}

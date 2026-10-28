@@ -1,0 +1,746 @@
+{
+ "scope": "Offline: retained Apple Vision OCR, app code, search EMULATED over each closed catalogue (query inside wine name). Not the full Winerim catalogue, not real phone photos.",
+ "pbOcr": "qa-artifacts/plazablanca285-20261028/ocr-vocab-x1",
+ "pkgOcr": "qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/raw",
+ "carta": {
+  "label": "plazablanca-clone carta",
+  "catalogue": 135,
+  "images": 135,
+  "ocrEmpty": 7,
+  "rankingOnly": {
+   "top1": 78.5,
+   "top3": 89.6,
+   "oneShown": 37.8,
+   "onePrecision": 100
+  },
+  "pipeline": {
+   "searchesPerImage": 3.2,
+   "truthInSearchRows": 88.1,
+   "top1": 79.3,
+   "top3": 86.7,
+   "inListOf20": 87.4,
+   "oneShown": 33.3,
+   "onePrecision": 100,
+   "needsManualSearch": 12.6
+  },
+  "todayStrict104": {
+   "anyProposal": 28.9,
+   "top1": 28.1
+  },
+  "misses": [
+   {
+    "id": 373408,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "Cloc",
+     "cloc"
+    ],
+    "top": [],
+    "ocr": "Cloc / -fm"
+   },
+   {
+    "id": 373435,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "INDESA",
+     "EL PASA",
+     "indesa",
+     "pasa"
+    ],
+    "top": [],
+    "ocr": "INDESA / EL PASA"
+   },
+   {
+    "id": 373468,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "I-MANT: DEU",
+     "LANT: DE LA RI",
+     "lant",
+     "anila",
+     "nluca"
+    ],
+    "top": [],
+    "ocr": "I-MANT: DEU / LANT: DE LA RI / SA.NLÚCA / NA A ANILA FINA"
+   },
+   {
+    "id": 373498,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "Ott*",
+     "HATE."
+    ],
+    "top": [
+     "373480 Fief de la Haye Saint-Estèphe 2019",
+     "373498 Château de Selle Rosé (Coeur de Grain)"
+    ],
+    "ocr": "Ott* / HATE."
+   },
+   {
+    "id": 373470,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "El Maestro Sierra"
+    ],
+    "top": [
+     "373467 Maestro Sierra Fino",
+     "373470 Maestro Sierra Oloroso 15 Años",
+     "373511 Amontillado Superior 12 Años"
+    ],
+    "ocr": "El Maestro Sierra"
+   },
+   {
+    "id": 373476,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "spelutm abri inillo",
+     "Erorhez",
+     "erorhez",
+     "getutag",
+     "ineie",
+     "erorh",
+     "orhez"
+    ],
+    "top": [],
+    "ocr": "spelutm abri inillo / Erorhez / de posouamnis / LANEnTAEt / ineie Getutag lfe Taue / TOCUST NL 11/ 8/10 / КИР дЕ PRANE, CHIAS PUNCE"
+   },
+   {
+    "id": 373496,
+    "rank": null,
+    "inRows": true,
+    "searched": [
+     "VALVERÄN",
+     "Dag\""
+    ],
+    "top": [],
+    "ocr": "VALVERÄN / Dag\""
+   },
+   {
+    "id": 373511,
+    "rank": 4,
+    "inRows": true,
+    "searched": [
+     "Plainest ro Sierr",
+     "tootillado",
+     "tootillado",
+     "plainest",
+     "sierr",
+     "tootil",
+     "illado"
+    ],
+    "top": [
+     "373467 Maestro Sierra Fino",
+     "373548 XF Sierra Cantabria",
+     "373470 Maestro Sierra Oloroso 15 Años"
+    ],
+    "ocr": "Plainest ro Sierr / tootillado"
+   },
+   {
+    "id": 373406,
+    "reason": "ocr-empty"
+   },
+   {
+    "id": 373415,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "A DE RALTEN",
+     "BKAHCO",
+     "ralten",
+     "crua",
+     "bkahco"
+    ],
+    "top": [],
+    "ocr": "A DE RALTEN / BKAHCO / SYA.CRUA"
+   },
+   {
+    "id": 373441,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "VINTA ARIDATA",
+     "ESDESAS FORBASAS EN 188E",
+     "aridata",
+     "vinta",
+     "forbasas",
+     "arida",
+     "idata"
+    ],
+    "top": [],
+    "ocr": "VINTA ARIDATA / RESERVA / RIOJA / ESDESAS FORBASAS EN 188E"
+   },
+   {
+    "id": 373520,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "ANDRÉ CLOUET"
+    ],
+    "top": [
+     "373407 André Clouet Rosé Nº3",
+     "373520 Andre Clouet Silver Brut Nature Grand Cru",
+     "373405 André Clouet Grand Cru Grande Réserve Brut"
+    ],
+    "ocr": "ANDRÉ CLOUET"
+   },
+   {
+    "id": 373458,
+    "reason": "ocr-empty"
+   },
+   {
+    "id": 373462,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "BOURGOGNE",
+     "HAUTES CÔTES DE BEAUNE"
+    ],
+    "top": [
+     "373514 Domaine Parigot Bourgogne Hautes-Côtes de Beaune 'Clos de La Perrière'",
+     "373462 Hautes-Côtes de Beaune 'Sur Evelle'",
+     "373494 Château de Charodon Bourgogne Côte d'Or 2022"
+    ],
+    "ocr": "BOURGOGNE / HAUTES CÔTES DE BEAUNE"
+   },
+   {
+    "id": 373503,
+    "reason": "ocr-empty"
+   },
+   {
+    "id": 373465,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "premier"
+    ],
+    "top": [
+     "373499 Troplong Mondot Saint-Émilion Grand Cru (Premier Grand Cru Classé) 2018"
+    ],
+    "ocr": "N-- PREMIER CRU / 10170)-30011 134"
+   },
+   {
+    "id": 373485,
+    "reason": "ocr-empty"
+   },
+   {
+    "id": 373487,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "viticesros",
+     "viticesros",
+     "vitice",
+     "cesros"
+    ],
+    "top": [],
+    "ocr": "JAG / viticesros"
+   },
+   {
+    "id": 373530,
+    "reason": "ocr-empty"
+   },
+   {
+    "id": 373536,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "ZERO",
+     "LE NATUREL"
+    ],
+    "top": [
+     "373537 Le Naturel Zero Zero",
+     "373536 Le Naturel Zero Zero Blanco"
+    ],
+    "ocr": "ZERO / ZERO / LE NATUREL"
+   },
+   {
+    "id": 379803,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "BELONDRADE",
+     "Asilount",
+     "asilount",
+     "asilo",
+     "lount"
+    ],
+    "top": [
+     "373426 Belondrade y Lurton 2024",
+     "379803 Quinta Apolonia"
+    ],
+    "ocr": "BELONDRADE / Asilount"
+   },
+   {
+    "id": 373501,
+    "reason": "ocr-empty"
+   },
+   {
+    "id": 373527,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "AALTO 2H",
+     "aalto"
+    ],
+    "top": [
+     "373450 Aalto",
+     "373527 Aalto PS"
+    ],
+    "ocr": "AALTO 2H"
+   },
+   {
+    "id": 373535,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "TERE",
+     "tere"
+    ],
+    "top": [],
+    "ocr": "TERE"
+   },
+   {
+    "id": 373539,
+    "rank": 3,
+    "inRows": true,
+    "searched": [
+     "Chât cau",
+     "in Grave Tigar",
+     "grave",
+     "tigar",
+     "chat"
+    ],
+    "top": [
+     "373466 Château Berliquet Saint-Émilion Grand Cru (Grand Cru Classé) 2021",
+     "373499 Troplong Mondot Saint-Émilion Grand Cru (Premier Grand Cru Classé) 2018",
+     "373539 Château La Grave Figeac 2015"
+    ],
+    "ocr": "Chât cau / in Grave Tigar / 2009 / SAINT-EMILION GRAND CRU / MIS EN BOUTEILLE AU CHATEAU / 30 B / J2. IT S. CLAUZEL, PROPRIÉTAIRES"
+   },
+   {
+    "id": 373543,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "Domaino Delaporto",
+     "SANCERRE",
+     "delaporto",
+     "domaino",
+     "chavignol",
+     "delapo",
+     "aporto"
+    ],
+    "top": [
+     "373505 Sancerre Chavignol Blanc",
+     "373543 Chavignol Sancerre Rouge"
+    ],
+    "ocr": "D / Domaino Delaporto / SANCERRE / \"Chavignol"
+   },
+   {
+    "id": 373544,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "OMES POSTICA",
+     "TOMAS POSTIGO",
+     "ssano",
+     "postica",
+     "omes",
+     "posti",
+     "stica"
+    ],
+    "top": [
+     "373449 Tomás Postigo 3º Año 2023",
+     "373544 Tomás Postigo 5º Año",
+     "373451 Tomás Postigo 3º Año Magnum"
+    ],
+    "ocr": "OMES POSTICA / TOMAS POSTIGO / SSANO / 15512 / 1801le"
+   },
+   {
+    "id": 373549,
+    "reason": "ocr-empty"
+   }
+  ]
+ },
+ "package200": {
+  "label": "200-label package",
+  "catalogue": 200,
+  "images": 200,
+  "ocrEmpty": 2,
+  "rankingOnly": {
+   "top1": 90,
+   "top3": 94,
+   "oneShown": 63.5,
+   "onePrecision": 99.2
+  },
+  "pipeline": {
+   "searchesPerImage": 3.4,
+   "truthInSearchRows": 91.5,
+   "top1": 87.5,
+   "top3": 90.5,
+   "inListOf20": 90.5,
+   "oneShown": 61.5,
+   "onePrecision": 99.2,
+   "needsManualSearch": 9.5
+  },
+  "todayStrict104": {
+   "anyProposal": 38.5,
+   "top1": 38
+  },
+  "misses": [
+   {
+    "id": 5,
+    "rank": null,
+    "inRows": true,
+    "searched": [
+     "rumendi",
+     "rumendi",
+     "rumen",
+     "mendi"
+    ],
+    "top": [],
+    "ocr": "rumendi / VAL"
+   },
+   {
+    "id": 9,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "ermouth",
+     "ermouth",
+     "ermou",
+     "mouth"
+    ],
+    "top": [],
+    "ocr": "10.-T o) / ermouth / Premium"
+   },
+   {
+    "id": 21,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "LA ROTURE",
+     "BEAUREGARD",
+     "propriete",
+     "beaune",
+     "hautes",
+     "propri",
+     "priete"
+    ],
+    "top": [
+     "66 Baeauregard Côtes du Couchois",
+     "21 La Roture",
+     "71 Amis de Beauregard Blanc de Noirs"
+    ],
+    "ocr": "DOMAINE DU / BEAUREGARD / BOURGOGNE / HAUTES CÔTES DE BEAUNE / 2023 / 'LA ROTURE' / VIN DE BOURGOGNE / MIS EN BOUTEILLE À LA PROPRIÉTÉ"
+   },
+   {
+    "id": 29,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "LES BULLES DE",
+     "LAFFITTE CARCASSET"
+    ],
+    "top": [
+     "31 Le Chardonnay de Laffitte Carcasset",
+     "29 Les Bulles de Laffitte Carcasset",
+     "30 Château Laffitte-Carcasset"
+    ],
+    "ocr": "LES BULLES DE / LAFFITTE CARCASSET / BLANC DE CHARDONNAY"
+   },
+   {
+    "id": 38,
+    "rank": null,
+    "inRows": false,
+    "searched": [],
+    "top": [],
+    "ocr": "502 / VINEYARDS"
+   },
+   {
+    "id": 42,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "VIGNAMADKE",
+     "Deal",
+     "montepulciano",
+     "vignamadke",
+     "dabruzzo",
+     "vignam",
+     "amadke"
+    ],
+    "top": [
+     "193 Bossanova Montepulciano d'Abruzzo"
+    ],
+    "ocr": "VIGNAMADKE / Deal / MONTEPULCIANO / DABRUZZO"
+   },
+   {
+    "id": 44,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "JEANIEON",
+     "SINGE",
+     "jeanieon",
+     "chardonkay",
+     "singe",
+     "jeani",
+     "nieon"
+    ],
+    "top": [],
+    "ocr": "JEANIEON / SINGE 1963 / EAN LON / 3П55 / CHARDONKAY"
+   },
+   {
+    "id": 63,
+    "reason": "ocr-empty"
+   },
+   {
+    "id": 72,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "Mansbenel",
+     "Ruesling",
+     "mansbenel",
+     "ruesling",
+     "mansbe",
+     "sbenel"
+    ],
+    "top": [],
+    "ocr": "Mansbenel / Ruesling"
+   },
+   {
+    "id": 79,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "SONGUT - ERBHOR",
+     "UNTERGANZNER",
+     "erbhor",
+     "songut",
+     "sudtiroler",
+     "sudtir",
+     "iroler"
+    ],
+    "top": [
+     "93 Platt & Pignat",
+     "92 Marie Josephine Passito"
+    ],
+    "ocr": "B / 028764 / SONGUT - ERBHOR / 15 / UNTERGANZNER / SÜDTIROLER / LASS - CON / LAGREIN / RISERVA / JOSEPHUS MAYR / НИКЕ UNTERCANONEE E КАКОМ В"
+   },
+   {
+    "id": 84,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "Bra, id8",
+     "herton controllute",
+     "mroduct",
+     "controllute",
+     "herton",
+     "mrodu",
+     "oduct"
+    ],
+    "top": [],
+    "ocr": "ADD D08925 / Bra, id8 / Вво 1. Алії / herton controllute / chantila / - PRODOTTO IN ITALIA MRODUCT OF ITALY - 751"
+   },
+   {
+    "id": 87,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "TRONNES GERMA",
+     "• HAUT-MÉDOC •",
+     "tronnes",
+     "germa",
+     "paterro",
+     "tronn",
+     "onnes"
+    ],
+    "top": [
+     "158 Irene Rodríguez Haut-Médoc"
+    ],
+    "ocr": "CHATE / CHÂTEAU / TRONNES GERMA / 2019 / • HAUT-MÉDOC • / GRAND VIN DE BORDEAUX / MIS EN BOUTEILLE AU PATERRO"
+   },
+   {
+    "id": 117,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "STATE"
+    ],
+    "top": [
+     "25 Don Miguel Vineyard Godello"
+    ],
+    "ocr": "STATE / SAUVIGNON NI"
+   },
+   {
+    "id": 120,
+    "rank": null,
+    "inRows": false,
+    "searched": [],
+    "top": [],
+    "ocr": "2021"
+   },
+   {
+    "id": 126,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "Wise of Chite",
+     "central",
+     "valley",
+     "chite",
+     "centr",
+     "ntral"
+    ],
+    "top": [],
+    "ocr": "MERLOT / DO CENTRAL VALLEY |2018 / Wise of Chite"
+   },
+   {
+    "id": 148,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "RÍAS BAIXAS",
+     "DENOMINACIÓN DE ONGIS",
+     "baixas",
+     "rias",
+     "ongis"
+    ],
+    "top": [],
+    "ocr": "EM/N / EM/NA / ALBARIÑO / RÍAS BAIXAS / DENOMINACIÓN DE ONGIS"
+   },
+   {
+    "id": 150,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "Niwistner",
+     "Vaira",
+     "vaira",
+     "niwistner",
+     "niwist",
+     "istner"
+    ],
+    "top": [],
+    "ocr": "Niwistner / Vaira"
+   },
+   {
+    "id": 155,
+    "rank": null,
+    "inRows": true,
+    "searched": [
+     "TERA",
+     "ESA DEL PUERO",
+     "puero"
+    ],
+    "top": [],
+    "ocr": "LA / TERA / ESA DEL PUERO"
+   },
+   {
+    "id": 156,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "DO TERRA ALTA",
+     "terra",
+     "alta"
+    ],
+    "top": [],
+    "ocr": "°D / DO TERRA ALTA"
+   },
+   {
+    "id": 162,
+    "reason": "ocr-empty"
+   },
+   {
+    "id": 171,
+    "rank": null,
+    "inRows": false,
+    "searched": [
+     "MBABRSE",
+     "TREDLUE RA",
+     "cinladedo",
+     "mbabrse",
+     "tredlue",
+     "cinlad",
+     "ladedo"
+    ],
+    "top": [],
+    "ocr": "MBABRSE / TREDLUE RA, / LEE RETED / Cinladedo Tne / MarEi uin / MÁS QUE / 2"
+   },
+   {
+    "id": 177,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "FORAL",
+     "D MELGAÇO"
+    ],
+    "top": [
+     "180 Foral de Melgaço Old Vines Alvarinho",
+     "177 Foral Alvarinho"
+    ],
+    "ocr": "ALVARINHO / FORAL / D MELGAÇO / OLD VINES / MONÇÃO E MELGAÇO / • de de. / ar tempe / n pedidas por de des"
+   },
+   {
+    "id": 187,
+    "rank": 3,
+    "inRows": true,
+    "searched": [
+     "FRANCK PASCAL",
+     "blancs"
+    ],
+    "top": [
+     "105 Blanc de Blancs Extra Brut Große Reserve",
+     "48 Mon Village Blanc de Blancs Grand Cru Extra Brut",
+     "187 Luminance"
+    ],
+    "ocr": "EXTRA-BRUT / BLANC DE BLANCS / FRANCK PASCAL"
+   },
+   {
+    "id": 188,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "Magliol",
+     "Ere Joniche Thrant",
+     "primitivo",
+     "joniche",
+     "thrant",
+     "jonic",
+     "niche"
+    ],
+    "top": [
+     "174 Primitivo di Manduria DOC",
+     "188 Domenico Russo Magliolo"
+    ],
+    "ocr": "Magliol / Ere Joniche Thrant / PRIMITIVO"
+   },
+   {
+    "id": 200,
+    "rank": 2,
+    "inRows": true,
+    "searched": [
+     "ALTOTINTO",
+     "SELECCIÓN",
+     "meses"
+    ],
+    "top": [
+     "45 Protos 12 Meses en Barrica Selección del Sumiller",
+     "200 Scattola Selección",
+     "57 Dorium Selección de la Familia"
+    ],
+    "ocr": "ALTOTINTO / A / T / SELECCIÓN / 9 meses en barrica / 2021"
+   }
+  ]
+ }
+}
