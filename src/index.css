@@ -120,13 +120,6 @@ html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-
 
 html.matchrim-native-platform .matchrim-scan-region-sheet h2 {
   letter-spacing: 0;
-  line-height: 1.2;
-}
-
-/* MAX text: the header grows with a two-line title; the whole panel scrolls instead (286). */
-html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-layout > :first-child {
-  max-height: none;
-  overflow: visible;
 }
 
 html.matchrim-native-platform .matchrim-scan-stage button {
