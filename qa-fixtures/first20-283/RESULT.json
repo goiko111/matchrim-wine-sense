@@ -1,0 +1,300 @@
+{
+  "scope": "Offline first20 catalogue/vintage/sensory UI-state reconciliation from retained bodies; NOT OCR, photo recognition, live lookup or taste accuracy",
+  "matrix": [
+    {
+      "imageId": "img-001",
+      "canonicalId": 217496,
+      "actual": "not-evaluated: original 503 retained, no retry"
+    },
+    {
+      "imageId": "img-002",
+      "canonicalId": 217495,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/02-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [],
+      "sensoryRows": [
+        "generic"
+      ],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "generic",
+      "summary": "Datos de sabor sin respaldo suficiente",
+      "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-003",
+      "canonicalId": 217494,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/03-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [],
+      "sensoryRows": [],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "missing",
+      "summary": "Ficha sin datos de sabor",
+      "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-004",
+      "canonicalId": 217492,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/04-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [],
+      "sensoryRows": [],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "missing",
+      "summary": "Ficha sin datos de sabor",
+      "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-005",
+      "canonicalId": 217493,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/05-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [],
+      "sensoryRows": [],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "missing",
+      "summary": "Ficha sin datos de sabor",
+      "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-006",
+      "canonicalId": 217491,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/06-BODY.json",
+      "bottleVintage": "2011",
+      "declaredVintages": [],
+      "sensoryRows": [],
+      "vintageStatus": "unrecorded",
+      "sensoryScope": "missing",
+      "summary": "Ficha sin datos de sabor",
+      "nextStep": "La ficha no indica añadas, así que no confirma tu cosecha de 2011. Puedes conservar la referencia; confirmar el nombre no aporta datos de sabor respaldados.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-007",
+      "canonicalId": 217489,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/07-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [],
+      "sensoryRows": [],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "missing",
+      "summary": "Ficha sin datos de sabor",
+      "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-008",
+      "canonicalId": 217490,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/08-BODY.json",
+      "bottleVintage": "2021",
+      "declaredVintages": [],
+      "sensoryRows": [],
+      "vintageStatus": "unrecorded",
+      "sensoryScope": "missing",
+      "summary": "Ficha sin datos de sabor",
+      "nextStep": "La ficha no indica añadas, así que no confirma tu cosecha de 2021. Puedes conservar la referencia; confirmar el nombre no aporta datos de sabor respaldados.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-009",
+      "canonicalId": 217487,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/09-BODY.json",
+      "declaredVintages": [],
+      "sensoryRows": 0,
+      "vintageStatus": "unspecified",
+      "actual": "not-searched: non-wine category rule (vermut) in wineCategory.ts; product decision pending"
+    },
+    {
+      "imageId": "img-010",
+      "canonicalId": 217488,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/10-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [],
+      "sensoryRows": [],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "missing",
+      "summary": "Ficha sin datos de sabor",
+      "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-011",
+      "canonicalId": 217486,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/11-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [],
+      "sensoryRows": [],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "missing",
+      "summary": "Ficha sin datos de sabor",
+      "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-012",
+      "canonicalId": 217485,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/12-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [],
+      "sensoryRows": [],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "missing",
+      "summary": "Ficha sin datos de sabor",
+      "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-013",
+      "canonicalId": 217482,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/13-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [],
+      "sensoryRows": [],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "missing",
+      "summary": "Ficha sin datos de sabor",
+      "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-014",
+      "canonicalId": 217483,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/14-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [],
+      "sensoryRows": [],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "missing",
+      "summary": "Ficha sin datos de sabor",
+      "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-015",
+      "canonicalId": 217484,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/15-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [],
+      "sensoryRows": [],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "missing",
+      "summary": "Ficha sin datos de sabor",
+      "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-016",
+      "canonicalId": 217481,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/16-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [],
+      "sensoryRows": [],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "missing",
+      "summary": "Ficha sin datos de sabor",
+      "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-017",
+      "canonicalId": 217480,
+      "file": "qa-artifacts/master253-20261026/hosted-six-r1/03-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [],
+      "sensoryRows": [],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "missing",
+      "summary": "Ficha sin datos de sabor",
+      "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-018",
+      "canonicalId": 217479,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/17-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [
+        "2024"
+      ],
+      "sensoryRows": [
+        "2024"
+      ],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "missing",
+      "summary": "Datos de sabor solo de 2024",
+      "nextStep": "Indica la añada de tu botella en «Ficha e identificación» y vuelve a buscar: esta ficha recoge la añada 2024. No usaremos datos de una cosecha como si fueran de otra.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-019",
+      "canonicalId": 217478,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/18-BODY.json",
+      "bottleVintage": null,
+      "declaredVintages": [
+        "2024"
+      ],
+      "sensoryRows": [
+        "2024"
+      ],
+      "vintageStatus": "unspecified",
+      "sensoryScope": "missing",
+      "summary": "Datos de sabor solo de 2024",
+      "nextStep": "Indica la añada de tu botella en «Ficha e identificación» y vuelve a buscar: esta ficha recoge la añada 2024. No usaremos datos de una cosecha como si fueran de otra.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-020",
+      "canonicalId": 217477,
+      "file": "qa-artifacts/first20-274-20261027/live-r2/19-BODY.json",
+      "bottleVintage": "2000",
+      "declaredVintages": [
+        "2020"
+      ],
+      "sensoryRows": [
+        "2020"
+      ],
+      "vintageStatus": "other-vintages-only",
+      "sensoryScope": "missing",
+      "summary": "Datos de sabor solo de 2020",
+      "nextStep": "Esta ficha solo recoge la añada 2020 y tu botella figura como de 2000. Si la añada no es correcta, corrígela en «Ficha e identificación» y vuelve a buscar; no usaremos datos de otra cosecha como si fueran de 2000.",
+      "affinity": "Sin calcular",
+      "imageIdentityConfirmed": false
+    },
+    {
+      "imageId": "img-020",
+      "variant": "human corrected 2000 -> 2020",
+      "vintageStatus": "known",
+      "sensoryScope": "exact",
+      "summary": "Datos de sabor sin respaldo suficiente",
+      "affinity": "not granted"
+    }
+  ],
+  "metrics": {
+    "groups": 6,
+    "retainedDetails": 19,
+    "externalCalls": 0,
+    "affinityGranted": 0,
+    "imageIdentitiesConfirmed": 0
+  }
+}

@@ -44,16 +44,38 @@ export const resolveMasterCandidate259 = async (candidate: WineCandidate, invoke
     affinityReason: 'Referencia encontrada en Winerim; faltan datos sensoriales utilizables para calcular tu afinidad.' } };
 };
 
+const years259 = (values: readonly string[]) => {
+  const sorted = [...new Set(values)].sort(), shown = sorted.slice(0, 3), rest = sorted.length - shown.length;
+  return rest > 0 ? `${shown.join(', ')} y ${rest} más`
+    : shown.length > 1 ? `${shown.slice(0, -1).join(', ')} y ${shown[shown.length - 1]}` : shown[0] ?? '';
+};
+const vintages259 = (values: readonly string[]) => `${values.length > 1 ? 'las añadas' : 'la añada'} ${years259(values)}`;
+
 export const masterAffinityGap259 = (link: NativeMasterLink259) => {
-  const evidence = masterVintageEvidence188(link.wine, link.vintage == null ? null : String(link.vintage));
-  const missing = evidence.scope === 'missing';
-  const year = link.vintage == null ? 'La cosecha de tu botella' : `Tu cosecha de ${link.vintage}`;
+  const requested = link.vintage == null ? null : String(link.vintage);
+  const evidence = masterVintageEvidence188(link.wine, requested);
+  // Year-specific rows are not "no data", but none applies to this bottle's
+  // stated or missing cosecha and they are never borrowed for another one.
+  const rowYears = link.wine.tastingAttributes.attributesByVintage.flatMap(row => row.vintage === null ? [] : [row.vintage]);
+  const otherYears = evidence.scope === 'missing' && rowYears.length > 0;
+  const unbacked = 'no permite distinguir cuáles tienen una fuente y cuáles son valores de relleno. No los usamos para puntuar ni aprender tus gustos.';
   return { reason: 'sensory' as const, title: 'Vino encontrado; faltan datos para compararlo contigo',
-    summary: missing ? 'Ficha sin datos de sabor' : 'Datos de sabor sin respaldo suficiente',
-    description: missing
-      ? 'Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios para calcular tu afinidad.'
-      : 'Winerim tiene esta referencia y algunos valores de sabor, pero no permite distinguir cuáles tienen una fuente y cuáles son valores de relleno. No los usamos para puntuar ni aprender tus gustos.',
+    summary: otherYears ? `Datos de sabor solo de ${years259(rowYears)}`
+      : evidence.scope === 'missing' ? 'Ficha sin datos de sabor' : 'Datos de sabor sin respaldo suficiente',
+    description: otherYears
+      ? `Winerim tiene valores de sabor de esta referencia solo para ${vintages259(rowYears)}. No los aplicamos a otra cosecha ni a una sin indicar; además, la ficha ${unbacked}`
+      : evidence.scope === 'missing'
+        ? 'Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios para calcular tu afinidad.'
+        : evidence.scope === 'exact'
+          ? `Winerim tiene esta referencia y valores de sabor para tu añada de ${requested}, pero ${unbacked}`
+          : `Winerim tiene esta referencia y algunos valores de sabor generales, no de una añada concreta, pero ${unbacked}`,
     nextStep: evidence.status === 'known'
       ? 'La añada figura en el catálogo. Falta completar y respaldar su ficha sensorial; confirmar el nombre no resuelve ese dato.'
-      : `${year} tampoco está verificada en esta ficha. Puedes conservar la referencia; no tomaremos datos de otra añada como si fueran los tuyos.` };
+      : evidence.status === 'other-vintages-only'
+        ? `Esta ficha solo recoge ${vintages259(link.wine.vintages)} y tu botella figura como de ${requested}. Si la añada no es correcta, corrígela en «Ficha e identificación» y vuelve a buscar; no usaremos datos de otra cosecha como si fueran de ${requested}.`
+        : evidence.status === 'unrecorded'
+          ? `La ficha no indica añadas, así que no confirma tu cosecha de ${requested}. Puedes conservar la referencia; confirmar el nombre no aporta datos de sabor respaldados.`
+          : link.wine.vintages.length
+            ? `Indica la añada de tu botella en «Ficha e identificación» y vuelve a buscar: esta ficha recoge ${vintages259(link.wine.vintages)}. No usaremos datos de una cosecha como si fueran de otra.`
+            : 'Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.' };
 };

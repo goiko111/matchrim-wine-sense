@@ -1,0 +1,320 @@
+[
+ {
+  "img": "img-002",
+  "hint": null,
+  "years": [],
+  "rows": [
+   "generic"
+  ],
+  "before": {
+   "summary": "Datos de sabor sin respaldo suficiente",
+   "description": "Winerim tiene esta referencia y algunos valores de sabor, pero no permite distinguir cuále",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Datos de sabor sin respaldo suficiente",
+   "description": "Winerim tiene esta referencia y algunos valores de sabor generales, no de una añada concreta, pero no permite distinguir",
+   "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha l"
+  }
+ },
+ {
+  "img": "img-003",
+  "hint": null,
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha l"
+  }
+ },
+ {
+  "img": "img-004",
+  "hint": null,
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha l"
+  }
+ },
+ {
+  "img": "img-005",
+  "hint": null,
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha l"
+  }
+ },
+ {
+  "img": "img-006",
+  "hint": "2011",
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "Tu cosecha de 2011 tampoco está verificada en esta ficha. Puedes conservar la referencia; "
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "La ficha no indica añadas, así que no confirma tu cosecha de 2011. Puedes conservar la referencia; confirmar el nombre no aporta datos de sa"
+  }
+ },
+ {
+  "img": "img-007",
+  "hint": null,
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha l"
+  }
+ },
+ {
+  "img": "img-008",
+  "hint": "2021",
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "Tu cosecha de 2021 tampoco está verificada en esta ficha. Puedes conservar la referencia; "
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "La ficha no indica añadas, así que no confirma tu cosecha de 2021. Puedes conservar la referencia; confirmar el nombre no aporta datos de sa"
+  }
+ },
+ {
+  "img": "img-009",
+  "hint": null,
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha l"
+  }
+ },
+ {
+  "img": "img-010",
+  "hint": null,
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha l"
+  }
+ },
+ {
+  "img": "img-011",
+  "hint": null,
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha l"
+  }
+ },
+ {
+  "img": "img-012",
+  "hint": null,
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha l"
+  }
+ },
+ {
+  "img": "img-013",
+  "hint": null,
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha l"
+  }
+ },
+ {
+  "img": "img-014",
+  "hint": null,
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha l"
+  }
+ },
+ {
+  "img": "img-015",
+  "hint": null,
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha l"
+  }
+ },
+ {
+  "img": "img-016",
+  "hint": null,
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha l"
+  }
+ },
+ {
+  "img": "img-017",
+  "hint": null,
+  "years": [],
+  "rows": [],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios p",
+   "nextStep": "Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha l"
+  }
+ },
+ {
+  "img": "img-018",
+  "hint": null,
+  "years": [
+   "2024"
+  ],
+  "rows": [
+   "2024"
+  ],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Datos de sabor solo de 2024",
+   "description": "Winerim tiene valores de sabor de esta referencia solo para la añada 2024. No los aplicamos a otra cosecha ni a una sin ",
+   "nextStep": "Indica la añada de tu botella en «Ficha e identificación» y vuelve a buscar: esta ficha recoge la añada 2024. No usaremos datos de una cosec"
+  }
+ },
+ {
+  "img": "img-019",
+  "hint": null,
+  "years": [
+   "2024"
+  ],
+  "rows": [
+   "2024"
+  ],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "La cosecha de tu botella tampoco está verificada en esta ficha. Puedes conservar la refere"
+  },
+  "after": {
+   "summary": "Datos de sabor solo de 2024",
+   "description": "Winerim tiene valores de sabor de esta referencia solo para la añada 2024. No los aplicamos a otra cosecha ni a una sin ",
+   "nextStep": "Indica la añada de tu botella en «Ficha e identificación» y vuelve a buscar: esta ficha recoge la añada 2024. No usaremos datos de una cosec"
+  }
+ },
+ {
+  "img": "img-020",
+  "hint": "2000",
+  "years": [
+   "2020"
+  ],
+  "rows": [
+   "2020"
+  ],
+  "before": {
+   "summary": "Ficha sin datos de sabor",
+   "description": "Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzo",
+   "nextStep": "Tu cosecha de 2000 tampoco está verificada en esta ficha. Puedes conservar la referencia; "
+  },
+  "after": {
+   "summary": "Datos de sabor solo de 2020",
+   "description": "Winerim tiene valores de sabor de esta referencia solo para la añada 2020. No los aplicamos a otra cosecha ni a una sin ",
+   "nextStep": "Esta ficha solo recoge la añada 2020 y tu botella figura como de 2000. Si la añada no es correcta, corrígela en «Ficha e identificación» y v"
+  }
+ }
+]
