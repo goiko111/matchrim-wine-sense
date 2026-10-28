@@ -13,6 +13,7 @@ import * as classifier from '../src/lib/winerimClassifier';
 import { calculateLearnedMatchrimProfile, type TrainableWine } from '../src/utils/matchrimLearning';
 import { cellarTrainingRows, makeCellarCatalogEvidence } from '../src/utils/bodegaAffinity';
 import { resolveScanProfile } from '../src/utils/scanProfile';
+import { Capacitor } from '@capacitor/core';
 import * as profile95 from '../supabase/functions/_shared/matchrim-profile95';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -207,7 +208,8 @@ await check('Real platform wrapper in actual Profile effects distinguishes nativ
   const highWine = { ...verified, sensory_attributes: high,
     place_details: { bodega_sensory_evidence: makeCellarCatalogEvidence(identity, 950096, high) } };
   for (const [native, rating, expected, confidence] of [
-    [true, 'love', 2.2, 8], [true, 'ok', 1.3, 2], [false, 'ok', 2.2, 8],
+    // Native v3 (285): this wine is predicted at 25, so an unexpected LOVE weighs 1.5 and OK .5.
+    [true, 'love', 2.8, 13], [true, 'ok', 1.6, 4], [false, 'ok', 2.2, 8],
   ] as const) {
     const subject = actor(source, native, base, [{ ...highWine, rating }]);
     subject.render(); await subject.trainingEffect();
@@ -240,7 +242,9 @@ await check('All 50 active native vectors match the real scan resolver using the
     const initial = { ...profile };
     const subject = actor(source, true, profile, [verified]); subject.render(); await subject.trainingEffect();
     const { observed, tree } = subject.render();
-    const scan = await resolveScanProfile(owner.id, null, { base: async () => profile, training: async () => cellarTrainingRows([verified], true) }, new AbortController().signal);
+    const nativePlatform = Capacitor.isNativePlatform; Capacitor.isNativePlatform = () => true;
+    const scan = await resolveScanProfile(owner.id, null, { base: async () => profile, training: async () => cellarTrainingRows([verified], true) }, new AbortController().signal)
+      .finally(() => { Capacitor.isNativePlatform = nativePlatform; });
     assert.deepEqual(vector(observed.activeDisplayProfile), vector(scan.profile!));
     assert.deepEqual(vector(observed.wineQueryProfile), vector(scan.profile!));
     assert.equal(observed.learnedProfile.samples, 1);
@@ -251,8 +255,10 @@ await check('All 50 active native vectors match the real scan resolver using the
 });
 await check('Independent positive/negative learning direction, no base mutation and no classifier leakage into recommendations', async () => {
   const base = Object.freeze({ potente: 1.25, acidez: 1.25, dulce: 1.25, tanico: 1.25, afrutado: 1.25 });
-  const high = { scale: 'winerim-0-5' as const, potencia: 4.75, acidez: 4.75, dulzura: 4.75, taninos: 4.75, afrutado: 4.75 };
-  for (const rating of ['love', 'not_for_me'] as const) {
+  // Native v3 (285): a rejection moves the profile only when the wine was expected to please, so the
+  // negative case uses a wine close to the base (predicted 84) instead of a distant one.
+  for (const [rating, value] of [['love', 4.75], ['not_for_me', 1.75]] as const) {
+    const high = { scale: 'winerim-0-5' as const, potencia: value, acidez: value, dulzura: value, taninos: value, afrutado: value };
     const row = { ...verified, rating, sensory_attributes: high, place_details: { bodega_sensory_evidence: makeCellarCatalogEvidence(identity, 950096, high) } };
     const subject = actor(source, true, base, [row]); subject.render(); await subject.trainingEffect(); const { observed } = subject.render();
     for (const key of axes) assert.ok(rating === 'love' ? observed.activeDisplayProfile[key] > base[key] : observed.activeDisplayProfile[key] < base[key]);

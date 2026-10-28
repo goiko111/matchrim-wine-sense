@@ -80,11 +80,11 @@ check('recency remains the original half-life and weighting, without re-normaliz
 
 const originalNative = Capacitor.isNativePlatform;
 try {
-  check('one platform selector: web exact legacy, native explicit v2', () => {
+  check('one platform selector: web exact legacy, native explicit v3 (surprise, 285)', () => {
     Capacitor.isNativePlatform = () => false;
     assert.deepEqual(platform(vector(1), [row('ok')]), pure(vector(1), [row('ok')]));
     Capacitor.isNativePlatform = () => true;
-    assert.deepEqual(platform(vector(1), [row('ok')]), pure(vector(1), [row('ok')], native));
+    assert.deepEqual(platform(vector(1), [row('ok')]), pure(vector(1), [row('ok')], { evidenceStrength: 'native-v3' }));
   });
 
   Capacitor.isNativePlatform = () => true;
@@ -94,8 +94,9 @@ try {
   const ownerB = await resolveScanProfile('synthetic-B', vector(5), {
     base: async () => vector(2), training: async () => [],
   }, new AbortController().signal);
-  check('scan resolver recalculates v2 from each owner loader, never from previous derived profile', () => {
-    assert.deepEqual(ownerA.profile, vector(1.3));
+  check('scan resolver recalculates v3 from each owner loader, never from previous derived profile', () => {
+    // An unexpected OK (predicted 25) weighs .5 under v3 instead of .25: 1 + 4 * .5 * .3.
+    assert.deepEqual(ownerA.profile, vector(1.6));
     assert.deepEqual(ownerB.profile, vector(2));
     assert.equal(ownerB.samples, 0);
   });

@@ -2,6 +2,7 @@ import type { MatchrimProfileLike } from './matchrimPassport';
 import { calibrateMatchrimAffinityScore } from './matchrimAffinityCalibration';
 import { optionalScanNumber } from '../../supabase/functions/_shared/matchrim-scan-values';
 import { selectMatchrimTrainingEvidence } from '../../supabase/functions/_shared/matchrim-training-evidence';
+import { calculateLocalMatchrimAffinity } from './wineAffinityExplanation';
 
 export { calibrateMatchrimAffinityScore } from './matchrimAffinityCalibration';
 
@@ -53,7 +54,7 @@ export interface MatchrimLearningAudit {
 }
 
 export interface MatchrimLearningOptions {
-  evidenceStrength?: 'legacy-v1' | 'native-v2';
+  evidenceStrength?: 'legacy-v1' | 'native-v2' | 'native-v3';
   detectPreferenceShift?: boolean;
   driftThreshold?: number;
   calibrateAffinity?: boolean;
@@ -115,6 +116,23 @@ const ratingWeight = (rating: Rating) => {
   return 0;
 };
 
+// native-v3: a rating teaches in proportion to how much it surprises the starting profile.
+// A "not for me" the profile already expected moves nothing; a love for a wine it expected
+// the user to dislike pulls harder than a confirmation. Thresholds are on the shown 0-100 scale.
+const surpriseRatingWeight = (rating: Rating, base: MatchrimProfileLike, attrs: SensoryAttributes) => {
+  const values = ATTRS.map(([, sourceKey]) => normalizeSensoryValue(attrs[sourceKey], attrs.scale));
+  if (values.some(value => value === null)) return 0;
+  const [power, acidity, sweetness, tannin, fruity] = values as number[];
+  const predicted = calculateLocalMatchrimAffinity(base,
+    { scale: 'winerim-0-5', power, acidity, sweetness, tannin, fruity }, 'scan-local-rms-0to5-v3');
+  if (predicted === null) return 0;
+  const unexpectedLike = clamp((75 - predicted) / 25, 0, 1);
+  if (rating === 'love') return 1 + 0.5 * unexpectedLike;
+  if (rating === 'ok') return 0.25 + 0.25 * unexpectedLike;
+  if (rating === 'not_for_me') return -0.8 * clamp((predicted - 65) / 25, 0, 1);
+  return 0;
+};
+
 const evidenceTimestamp = (wine: TrainableWine) => {
   const value = wine.updated_at || wine.created_at;
   if (!value) return null;
@@ -173,7 +191,8 @@ export const calculateLearnedMatchrimProfile = (
   wines: TrainableWine[],
   options: MatchrimLearningOptions = {},
 ): LearnedMatchrimProfile => {
-  const strengthAware = options.evidenceStrength === 'native-v2';
+  const strengthAware = options.evidenceStrength === 'native-v2' || options.evidenceStrength === 'native-v3';
+  const surpriseAware = options.evidenceStrength === 'native-v3';
   const deltas: Record<keyof MatchrimProfileLike, number> = {
     potente: 0,
     acidez: 0,
@@ -206,8 +225,10 @@ export const calculateLearnedMatchrimProfile = (
   let datedSamples = 0;
 
   validWines.forEach((wine) => {
-    const weight = ratingWeight(wine.rating ?? null);
     const attrs = wine.sensory_attributes!;
+    const weight = surpriseAware
+      ? surpriseRatingWeight(wine.rating ?? null, baseProfile, attrs)
+      : ratingWeight(wine.rating ?? null);
     const timestamp = evidenceTimestamp(wine);
     const ageDays = timestamp !== null && newestTimestamp !== null
       ? Math.max(0, (newestTimestamp - timestamp) / 86_400_000)
