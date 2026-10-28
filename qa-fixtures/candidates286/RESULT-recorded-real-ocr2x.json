@@ -1,0 +1,154 @@
+{
+ "scope": "Offline replay of 388 recorded live public-search responses (2026-10-21) for the 200-label package; ranking among real distractors only.",
+ "ocr": "qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/ocr-x2-286",
+ "images": 200,
+ "meanRowsPerImage": 13.6,
+ "truthReturnedByRecordedQueries": 78,
+ "amongThose": {
+  "strict104Any": 51.3,
+  "strict104Top1": 44.9,
+  "candidates286Top1": 85.9,
+  "candidates286Top3": 89.7,
+  "oneShown": 52.6,
+  "onePrecision": 95.1
+ },
+ "misses": [
+  {
+   "imageId": "img-021",
+   "expected": {
+    "name": "La Roture",
+    "producer": "Beauregard"
+   },
+   "rank": 3,
+   "top": [
+    "Au Bout du Monde Bourgogne Hautes Côtes de Beaune | Pierre-Yves Colin-Morey | 2023",
+    "Amis de Beauregard Blanc de Noirs | Amis de Beauregard | null",
+    "La Roture | Beauregard | 2023"
+   ]
+  },
+  {
+   "imageId": "img-033",
+   "expected": {
+    "name": "Fagus",
+    "producer": "Bodegas Aragonesas"
+   },
+   "rank": 4,
+   "top": [
+    "Fagus de Coto de Hayas | Coto de Hayas | null",
+    "Fagus | Coto de Hayas | null",
+    "Fagus de Coto de Hayas Magnum 2021 | Coto de Hayas | 2021"
+   ]
+  },
+  {
+   "imageId": "img-058",
+   "expected": {
+    "name": "Añares Blanco",
+    "producer": "Bodegas Olarra"
+   },
+   "rank": 6,
+   "top": [
+    "Chañares Estates Cabernet Franc | Viña Cobos | 2019",
+    "Cobos Chañares Estate Malbec | Viña Cobos | null",
+    "Añares Crianza | Bodegas Olarra | null"
+   ]
+  },
+  {
+   "imageId": "img-060",
+   "expected": {
+    "name": "Amarone della Valpolicella Classico Riserva",
+    "producer": "Bertani"
+   },
+   "rank": 8,
+   "top": [
+    "Dal Forno Amarone Della Valpolicella 2013 | Dal Forno Romano | 2013",
+    "Bertani Amarone della Valpolicella Classico | Bertani | null",
+    "Bertani Amarone della Valpolicella Valpantena | Bertani | null"
+   ]
+  },
+  {
+   "imageId": "img-133",
+   "expected": {
+    "name": "Botón de Gallo Rosado",
+    "producer": "Dominio del Blanco"
+   },
+   "rank": 2,
+   "top": [
+    "Botón De Gallo Barrica | Dominio del Blanco | null",
+    "Botón de Gallo Rosado | Dominio del Blanco | null"
+   ]
+  },
+  {
+   "imageId": "img-155",
+   "expected": {
+    "name": "La Terapia",
+    "producer": "Vináticos"
+   },
+   "rank": null,
+   "top": []
+  },
+  {
+   "imageId": "img-168",
+   "expected": {
+    "name": "Les Originaux",
+    "producer": "Clement et Florian Berthier"
+   },
+   "rank": 7,
+   "top": [
+    "Clement & Florian Berthier Pouilly-Fumé | Clement & Florian Berthier | null",
+    "Berthier Terre de Caillote | Clement et Florian Berthier | 2022",
+    "Vignobles Berthier Sancerre Blanc | Clement et Florian Berthier | null"
+   ]
+  },
+  {
+   "imageId": "img-171",
+   "expected": {
+    "name": "Más Que 2",
+    "producer": "Bodegas La Val"
+   },
+   "rank": 4,
+   "top": [
+    "Más Que Vinos La Meseta | Más Que Vinos | null",
+    "La Malvar | Más Que Vinos | null",
+    "La Plazuela | Más Que Vinos | null"
+   ]
+  },
+  {
+   "imageId": "img-177",
+   "expected": {
+    "name": "Foral Alvarinho",
+    "producer": "Quinta do Regueiro"
+   },
+   "rank": 2,
+   "top": [
+    "Foral de Melgaço Old Vines Alvarinho | Foral de Melgaço | null",
+    "Foral Alvarinho | Quinta do Regueiro | null"
+   ]
+  },
+  {
+   "imageId": "img-187",
+   "expected": {
+    "name": "Luminance",
+    "producer": "Franck Pascal"
+   },
+   "rank": 4,
+   "top": [
+    "Franck Pascal Champagne Harmonie Blanc de Noirs Extra Brut 2012 | Franck Pascal | 2012",
+    "Franck Pascal Champagne Pacifiance Brut Nature | Franck Pascal | null",
+    "Franck Pascal Champagne Liberance | Franck Pascal | null"
+   ]
+  },
+  {
+   "imageId": "img-196",
+   "expected": {
+    "name": "Colleita Nº 11",
+    "producer": "Cume do Avia"
+   },
+   "rank": 4,
+   "top": [
+    "Cume do Avia Colleita Nº 10 Tinto | Cume do Avia | null",
+    "Cume do Avia Arraiano | Cume do Avia | null",
+    "Colleita no. 11 Blanco 2025 | Cume do Avia | 2025"
+   ]
+  }
+ ]
+}
