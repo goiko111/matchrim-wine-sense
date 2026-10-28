@@ -160,7 +160,14 @@ try {
       .replace("const confirmableGroups = useMemo(() => (isNative\n    ? nativeDuplicateWineGroups261(regions.filter(region => region.status === 'recognized')) : getConfirmableWineGroups(regions))\n    .filter(group => !localBatch || !isPendingLocalIdentity109(group.candidate)), [regions, localBatch, isNative]);",
         'const confirmableGroups = useMemo(() => getConfirmableWineGroups(regions)\n    .filter(group => !localBatch || !isPendingLocalIdentity109(group.candidate)), [regions, localBatch]);')
       .replace("const groups = batchRef.current?.groups ?? (isNative\n      ? nativeDuplicateWineGroups261(regions.filter(region => region.status === 'recognized')) : getConfirmableWineGroups(regions)).filter((group) => group.candidate.name",
-        'const groups = batchRef.current?.groups ?? getConfirmableWineGroups(regions).filter((group) => group.candidate.name');
+        'const groups = batchRef.current?.groups ?? getConfirmableWineGroups(regions).filter((group) => group.candidate.name')
+      // 129: a master reference stays visible beneath the affinity, as the public reference already did.
+      .replace('{isNative && selectedCandidate && nativeConsumer?.canExplainAffinity && (nativeMasterLink259(selectedCandidate)\n'
+        + '                  ? <NativeMasterReference259 candidate={selectedCandidate} />\n'
+        + '                  : isGlobalWine103(selectedCandidate, selectedCandidate.globalRecord)\n'
+        + '                    && <GlobalWineReference103 candidate={selectedCandidate} profile={scanProfile?.profile ?? null} />)}',
+      '{isNative && selectedCandidate && nativeConsumer?.canExplainAffinity && isGlobalWine103(selectedCandidate, selectedCandidate.globalRecord)\n'
+        + '                  && <GlobalWineReference103 candidate={selectedCandidate} profile={scanProfile?.profile ?? null} />}');
     assert(stripImports(current.replace(nativeBlock, oldNativeBlock)).trimEnd() === previous.trimEnd(),
       'Only native guarded primary-view code and its two imports may change');
     assert(nativeBlock.includes("status: 'recognized'"));

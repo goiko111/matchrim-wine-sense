@@ -164,9 +164,12 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertTrue(app.staticTexts["QA283 consultas locales: 4"].firstMatch.exists)
         try tap(choose, app)
         // 285: Winerim's own 2020 values now score against the injected synthetic quiz profile.
+        // 129: the reference and its harvest stay visible beneath the affinity; a one-line title is text, not a control.
+        let affinity = app.otherElements.matching(NSPredicate(format: "label BEGINSWITH %@", "Afinidad orientativa:")).firstMatch
         let found = app.staticTexts["Vino encontrado en Winerim"].firstMatch
         let exact = app.staticTexts.matching(NSPredicate(format: "label == %@", "Datos de sabor de Winerim para la añada 2020: cuerpo, acidez, dulzor, tanino y fruta en una escala de 0 a 5.")).firstMatch
-        try tap(found, app, activate: false)
+        XCTAssertTrue(affinity.waitForExistence(timeout: 10), "Winerim's 2020 values score")
+        XCTAssertTrue(found.waitForExistence(timeout: 5), "The Winerim reference stays visible beneath the affinity")
         XCTAssertTrue(exact.exists, "Human-corrected 2020 reads the exact Winerim row")
         XCTAssertFalse(title.exists, "No missing-data gap once the exact row applies")
         capture(app, "vintage283-2020-exact-winerim")

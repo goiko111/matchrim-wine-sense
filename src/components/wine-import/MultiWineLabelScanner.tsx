@@ -1625,8 +1625,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     input?.scrollIntoView({ block: 'nearest', behavior: 'instant' });
                     input?.focus({ preventScroll: true });
                   }} />}
-                {isNative && selectedCandidate && nativeConsumer?.canExplainAffinity && isGlobalWine103(selectedCandidate, selectedCandidate.globalRecord)
-                  && <GlobalWineReference103 candidate={selectedCandidate} profile={scanProfile?.profile ?? null} />}
+                {isNative && selectedCandidate && nativeConsumer?.canExplainAffinity && (nativeMasterLink259(selectedCandidate)
+                  ? <NativeMasterReference259 candidate={selectedCandidate} />
+                  : isGlobalWine103(selectedCandidate, selectedCandidate.globalRecord)
+                    && <GlobalWineReference103 candidate={selectedCandidate} profile={scanProfile?.profile ?? null} />)}
                 {isNative && selectedCandidate && nativeMasterAudit102(selectedCandidate) && <p className="text-sm leading-6 text-stone-700" role="note">
                   {selectedCandidate.affinityReason}
                 </p>}
