@@ -36,6 +36,9 @@ export const createHandler = (apiUrl: string, searchKey: string, fetchImpl: type
 
       const upstream = new URL(`${apiUrl.replace(/\/$/, '')}/api/v1/matchrim/wines/search`);
       upstream.searchParams.set('q', query.slice(0, 100));
+      // The app lets people save any catalogue wine, not only the ones a restaurant lists; those come
+      // back without public id (id / representativePublicId / webUrl null) but with mantalakWineId.
+      upstream.searchParams.set('includeUnlisted', '1');
       const vintage = String(input.vintage ?? '').trim();
       if (/^\d{4}$/.test(vintage)) upstream.searchParams.set('vintage', vintage);
       const limit = Math.round(Number(input.limit));

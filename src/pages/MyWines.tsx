@@ -14,6 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { WineSearchBar } from "@/components/wine-import/WineSearchBar";
 import { PurchaseInfoSelector } from "@/components/wine-import/PurchaseInfoSelector";
 import { supabase } from "@/integrations/supabase/client";
+import { searchManualWine, type CatalogSearchResult, type ManualWineSuggestion } from '@/lib/manualWineSearch';
 import type { Json } from "@/integrations/supabase/types";
 import { buildAuthRedirectPath } from "@/utils/navigation";
 import { trackAppEvent } from "@/lib/analytics";
@@ -111,64 +112,7 @@ interface ExtractedWineData {
   is_favorite?: boolean;
 }
 
-interface WineSuggestion {
-  id?: string;
-  // Set when the suggestion comes from the Winerim catalogue (one entry per wine).
-  winerim_wine_id?: number;
-  winerim_mantalak_wine_id?: number;
-  winerim_vintages?: number[];
-  winerim_slugname?: string | null;
-  image_url?: string | null;
-  sensory_attributes?: Json | null;
-  name: string;
-  producer: string | null;
-  vintage?: number | null;
-  region: string | null;
-  country?: string | null;
-  grape_varieties: string[] | null;
-  alcohol_content?: number | null;
-  tasting_notes?: string | null;
-  tipo?: string | null;
-  estilo?: string | null;
-}
-
-interface CatalogSearchResult {
-  id: number;
-  mantalakWineId: number;
-  name: string;
-  winery: string | null;
-  type: string | null;
-  country: string | null;
-  region: string | null;
-  grapes: string[];
-  vintages: number[];
-  tastingAttributes: { power: number; acidity: number; sweetness: number; tannin: number; fruity: number } | null;
-  photo: string | null;
-  slugname: string | null;
-}
-
-const toWineSuggestion = (wine: CatalogSearchResult): WineSuggestion => ({
-  name: wine.name,
-  producer: wine.winery,
-  region: wine.region,
-  country: wine.country,
-  grape_varieties: wine.grapes.length ? wine.grapes : null,
-  tipo: wine.type,
-  winerim_wine_id: wine.id,
-  winerim_mantalak_wine_id: wine.mantalakWineId,
-  winerim_vintages: wine.vintages,
-  winerim_slugname: wine.slugname,
-  image_url: wine.photo,
-  sensory_attributes: wine.tastingAttributes
-    ? {
-        potencia: wine.tastingAttributes.power,
-        acidez: wine.tastingAttributes.acidity,
-        dulzura: wine.tastingAttributes.sweetness,
-        taninos: wine.tastingAttributes.tannin,
-        afrutado: wine.tastingAttributes.fruity,
-      }
-    : null,
-});
+type WineSuggestion = ManualWineSuggestion;
 
 type ManualWineLookupStatus = 'idle' | 'loading' | 'done' | 'error';
 type WineStatus = 'collection' | 'wishlist' | 'tasted';
@@ -257,6 +201,7 @@ const MyWines = () => {
   const [statusFilter, setStatusFilter] = useState<WineSection>(initialSection);
   const [manualWineSuggestions, setManualWineSuggestions] = useState<WineSuggestion[]>([]);
   const [manualWineLookupStatus, setManualWineLookupStatus] = useState<ManualWineLookupStatus>('idle');
+  const [manualWineLookupSource, setManualWineLookupSource] = useState<'catalog' | 'unverified' | 'none'>('none');
   const [manualWineNameConfirmed, setManualWineNameConfirmed] = useState(false);
   const [manualWineSelectedFromResults, setManualWineSelectedFromResults] = useState(false);
   // The Winerim catalogue wine the user picked. It identifies the WINE; the vintage stays
@@ -297,7 +242,7 @@ const MyWines = () => {
     (manualWineLookupStatus === 'done' || manualWineLookupStatus === 'error') &&
     manualWineSuggestions.length === 0 &&
     !manualWineNameConfirmed &&
-    !manualWineSelectedFromResults;
+    !(manualWineSelectedFromResults && manualWineCatalogue);
   const manualWineLookupPending = showAddDialog && manualWineName.length >= 3 && manualWineLookupStatus === 'loading';
   const canContinueManualWine =
     manualWineName.length >= 2 &&
@@ -362,21 +307,37 @@ const MyWines = () => {
 
     const timeout = window.setTimeout(async () => {
       try {
-        const { data, error } = await supabase.functions.invoke('catalog-search', {
-          body: { query, vintage: formData.vintage.trim() || undefined, limit: 6 },
-        });
+        const outcome = await searchManualWine(
+          {
+            searchCatalog: async (text, vintage) => {
+              const { data, error } = await supabase.functions.invoke('catalog-search', {
+                body: { query: text, vintage: vintage || undefined, limit: 6 },
+              });
+              if (error) throw error;
+              return (data?.results || []) as CatalogSearchResult[];
+            },
+            searchFallback: async (text) => {
+              const { data, error } = await supabase.functions.invoke('search-wines', {
+                body: { query: text, limit: 6 },
+              });
+              if (error) throw error;
+              return data?.wines || [];
+            },
+          },
+          query,
+          formData.vintage.trim(),
+        );
 
         if (cancelled) return;
-        if (error) throw error;
 
-        setManualWineSuggestions(
-          ((data?.results || []) as CatalogSearchResult[]).filter((wine) => wine?.name).map(toWineSuggestion),
-        );
-        setManualWineLookupStatus('done');
+        setManualWineSuggestions(outcome.suggestions);
+        setManualWineLookupSource(outcome.source);
+        setManualWineLookupStatus(outcome.source === 'none' && outcome.catalogFailed ? 'error' : 'done');
       } catch (error) {
         if (cancelled) return;
         console.error('Error validating manual wine name:', error);
         setManualWineSuggestions([]);
+        setManualWineLookupSource('none');
         setManualWineLookupStatus('error');
       }
     }, 450);
@@ -385,7 +346,7 @@ const MyWines = () => {
       cancelled = true;
       window.clearTimeout(timeout);
     };
-  }, [formData.name, showAddDialog]);
+  }, [formData.name, formData.vintage, showAddDialog]);
 
   const applyFilters = () => {
     let filtered = [...wines];
@@ -524,6 +485,7 @@ const MyWines = () => {
     setManualWineNameConfirmed(false);
     setManualWineSelectedFromResults(false);
     setManualWineCatalogue(null);
+    setManualWineLookupSource('none');
   };
 
   const handleManualSuggestionSelect = (wine: WineSuggestion) => {
@@ -538,8 +500,8 @@ const MyWines = () => {
       alcohol_content: wine.alcohol_content != null ? String(wine.alcohol_content) : current.alcohol_content,
       tasting_notes: wine.tasting_notes || current.tasting_notes,
     }));
-    setManualWineCatalogue(wine.winerim_wine_id ? wine : null);
-    setManualWineNameConfirmed(true);
+    setManualWineCatalogue(wine.verified ? wine : null);
+    setManualWineNameConfirmed(wine.verified);
     setManualWineSelectedFromResults(true);
     setManualWineSuggestions([]);
     setManualWineLookupStatus('done');
@@ -580,9 +542,11 @@ const MyWines = () => {
         ? 'wishlist'
         : statusFilter;
       const sensoryAttributes = normalizeSensoryAttributesTo5(extractedData?.sensory_attributes || manualWineCatalogue?.sensory_attributes || null);
-      const manualSource = manualWineSelectedFromResults
+      const manualSource = manualWineCatalogue
         ? 'winerim_catalog'
-        : manualWineNameConfirmed
+        : manualWineSelectedFromResults
+          ? 'unverified_suggestion'
+          : manualWineNameConfirmed
           ? 'manual_user_verified'
           : 'manual';
       const wineData = {
@@ -619,7 +583,9 @@ const MyWines = () => {
               name_verified_by_user: manualWineNameConfirmed,
               ...(manualWineCatalogue
                 ? {
-                    winerim_wine_id: manualWineCatalogue.winerim_wine_id,
+                    ...(manualWineCatalogue.winerim_wine_id
+                      ? { winerim_wine_id: manualWineCatalogue.winerim_wine_id }
+                      : {}),
                     winerim_mantalak_wine_id: manualWineCatalogue.winerim_mantalak_wine_id,
                     winerim_slugname: manualWineCatalogue.winerim_slugname ?? null,
                   }
@@ -1829,16 +1795,44 @@ const MyWines = () => {
                           <Loader2 className="h-4 w-4 animate-spin" />
                           Buscando coincidencias...
                         </div>
-                      ) : manualWineSelectedFromResults ? (
+                      ) : manualWineSelectedFromResults && manualWineCatalogue ? (
                         <div className="flex items-center gap-2 text-sm text-green-700">
                           <CheckCircle className="h-4 w-4" />
-                          Validado desde resultados
+                          Validado con el catálogo de Winerim
+                        </div>
+                      ) : manualWineSelectedFromResults ? (
+                        <div className="space-y-3">
+                          <div className="flex items-start gap-2 text-sm">
+                            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
+                            <div>
+                              <p className="font-medium">Sugerencia no verificada</p>
+                              <p className="text-muted-foreground">
+                                No está en el catálogo de Winerim. Revisa nombre, bodega y añada antes de guardarlo.
+                              </p>
+                            </div>
+                          </div>
+                          <Button
+                            type="button"
+                            variant={manualWineNameConfirmed ? "secondary" : "outline"}
+                            size="sm"
+                            className="gap-2"
+                            onClick={() => setManualWineNameConfirmed(true)}
+                          >
+                            <CheckCircle className="h-4 w-4" />
+                            {manualWineNameConfirmed ? 'Nombre confirmado' : 'He revisado el nombre'}
+                          </Button>
                         </div>
                       ) : manualWineSuggestions.length > 0 ? (
                         <div className="space-y-2">
                           <div className="flex items-center gap-2 text-sm font-medium">
-                            <Search className="h-4 w-4 text-primary" />
-                            Coincidencias encontradas
+                            {manualWineLookupSource === 'unverified' ? (
+                              <AlertCircle className="h-4 w-4 text-amber-600" />
+                            ) : (
+                              <Search className="h-4 w-4 text-primary" />
+                            )}
+                            {manualWineLookupSource === 'unverified'
+                              ? 'No está en el catálogo de Winerim. Sugerencias sin verificar:'
+                              : 'Coincidencias encontradas'}
                           </div>
                           <div className="grid gap-2">
                             {manualWineSuggestions.map((wine, index) => (
@@ -1858,9 +1852,14 @@ const MyWines = () => {
                                       {wine.vintage && <Badge variant="outline">{wine.vintage}</Badge>}
                                       {wine.region && <Badge variant="outline">{wine.region}</Badge>}
                                       {wine.tipo && <Badge variant="secondary">{wine.tipo}</Badge>}
+                                      {!wine.verified && <Badge variant="outline" className="border-amber-500 text-amber-700">No verificado</Badge>}
                                     </div>
                                   </div>
-                                  <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
+                                  {wine.verified ? (
+                                    <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
+                                  ) : (
+                                    <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
+                                  )}
                                 </div>
                               </button>
                             ))}
@@ -1904,7 +1903,7 @@ const MyWines = () => {
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="producer">Bodega/Productor</Label>
                     <Input
@@ -1926,7 +1925,7 @@ const MyWines = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="region">Región</Label>
                     <Input
@@ -1947,7 +1946,7 @@ const MyWines = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="grapes">Uvas (separadas por comas)</Label>
                     <Input
@@ -2008,7 +2007,7 @@ const MyWines = () => {
                 )}
               </div>
 
-              <div className="flex justify-end gap-2 pt-4">
+              <div className="flex flex-col justify-end gap-2 pt-4 sm:flex-row">
                 <Button
                   type="button"
                   variant="outline"
@@ -2021,7 +2020,7 @@ const MyWines = () => {
                 </Button>
                 
                 {/* Status Selection Buttons */}
-                <div className="flex gap-2">
+                <div className="flex flex-col gap-2 sm:flex-row">
                   <Button
                     type="button"
                     variant="outline"
