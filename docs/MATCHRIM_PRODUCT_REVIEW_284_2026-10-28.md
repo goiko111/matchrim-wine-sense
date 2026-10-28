@@ -107,7 +107,7 @@ Ordenado por impacto. Junto a cada punto se indica en qué se apoya: la simulaci
 | Contrato rev3 de desarrollo validado con nuestro Ajv (`f45b373`) | 43/43 |
 | Simulación de 100 usuarios con las 200 etiquetas | Hecha (esta revisión) |
 | Defecto del aprendizaje y regla corregida | Probada en simulación; **pendiente de implementar** en el producto |
-| Candidato 127 y TestFlight | En curso (cola de compilación) |
+| Candidato 127: pruebas de simulador (escenarios 259 y 283, normal y MAX) y subida única a TestFlight | Subido y aceptado por Apple (28-oct 12:14); procesamiento pendiente de confirmar |
 
 ## Qué no hemos hecho y por qué
 
