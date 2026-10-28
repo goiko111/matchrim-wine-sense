@@ -1,0 +1,26 @@
+{
+  "status": "NEW_REPLY_VERIFIED_NOT_APPROVED",
+  "from": "moa-winerim-b93a8ts9@agentmail.to",
+  "to": ["goiko@winerim.com"],
+  "dateUTC": "2026-10-28T09:47:36Z",
+  "dateMadrid": "2026-10-28T10:47:36+01:00",
+  "messageId": "010001a181e86ecc-2674340d-b43d-4a85-9c8f-848ab934…@email.amazonses.com",
+  "inReplyTo": "d21f3a13-7b48-4647-9c3e-061b8fc7b5ec@winerim.com",
+  "source": "Local Thunderbird INBOX cache, read-only; attachments extracted as data",
+  "completeMimeBytes": 131307,
+  "completeMimeSHA256": "6924dd3d7537432da1bb9ac903b8c12356247b8f192461aff98982de6bfb9e26",
+  "revision": "rev3-2026-10-28",
+  "attachmentsStoredAt": "qa-fixtures/master284/ (validate.py kept as validate.py.txt, never executed)",
+  "attachmentHashesMatchEmailAndSHA256SUMS": true,
+  "ownAjvReplay": "scripts/check-matchrim-sensory284.mjs: 43/43 (39 supplied: 8 valid, 20 schema negatives, 8 cross negatives, 3 positives; plus 4 own)",
+  "developerClaims": {
+    "countGap": "114.318 vs 114.319 is a real one-row gap in their communicated figures; cause unknown without a new read (hypothesis: NULL/non-numeric vintage text)",
+    "error503For217496": "During their maintenance window; not retried by them",
+    "sourceNull": "Means origin not recorded; not quality or verification",
+    "phaseA": "Proposal only: documented original value separated from 0-5 conversion; 'documentado' never inherited; no conversion rule exists today, so any conversion would be 'inferido'; identity+vintage must match; contradictions kept, axis unknown; absent sources unknown",
+    "costEstimateUSDPerWine": {"searchCredits": 0.011, "aiDossier": 0.0064, "attributeGeneration": 0.0017, "retries": "not estimated", "ceiling": "not verifiable"}
+  },
+  "implementationOrDeployOrSpendApprovalGranted": false,
+  "newCatalogueModelImageKeychainCalls": 0,
+  "addedSpendEUR": 0
+}
