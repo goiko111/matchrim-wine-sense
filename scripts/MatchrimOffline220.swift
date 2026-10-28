@@ -136,8 +136,9 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertTrue(app.staticTexts["QA283 consultas locales: 2"].firstMatch.exists)
         try tap(choose, app)
         let title = app.staticTexts["Vino encontrado; faltan datos para compararlo contigo"].firstMatch
-        let rowsOnly = app.staticTexts["Winerim tiene valores de sabor de esta referencia solo para la añada 2020. No los aplicamos a otra cosecha ni a una sin indicar; además, la ficha no permite distinguir cuáles tienen una fuente y cuáles son valores de relleno. No los usamos para puntuar ni aprender tus gustos."].firstMatch
-        let otherVintage = app.staticTexts["Esta ficha solo recoge la añada 2020 y tu botella figura como de 2000. Si la añada no es correcta, corrígela en «Ficha e identificación» y vuelve a buscar; no usaremos datos de otra cosecha como si fueran de 2000."].firstMatch
+        // Copy longer than128 characters cannot be an XCUITest subscript; match the exact label instead.
+        let rowsOnly = app.staticTexts.matching(NSPredicate(format: "label == %@", "Winerim tiene valores de sabor de esta referencia solo para la añada 2020. No los aplicamos a otra cosecha ni a una sin indicar; además, la ficha no permite distinguir cuáles tienen una fuente y cuáles son valores de relleno. No los usamos para puntuar ni aprender tus gustos.")).firstMatch
+        let otherVintage = app.staticTexts.matching(NSPredicate(format: "label == %@", "Esta ficha solo recoge la añada 2020 y tu botella figura como de 2000. Si la añada no es correcta, corrígela en «Ficha e identificación» y vuelve a buscar; no usaremos datos de otra cosecha como si fueran de 2000.")).firstMatch
         try tap(title, app, activate: false)
         XCTAssertTrue(rowsOnly.exists, "Year-only rows are not described as missing data")
         XCTAssertTrue(otherVintage.exists, "The bottle year is kept and correction is offered")
@@ -162,10 +163,10 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertTrue(choose.waitForExistence(timeout: 10))
         XCTAssertTrue(app.staticTexts["QA283 consultas locales: 4"].firstMatch.exists)
         try tap(choose, app)
-        let exact = app.staticTexts["Winerim tiene esta referencia y valores de sabor para tu añada de 2020, pero no permite distinguir cuáles tienen una fuente y cuáles son valores de relleno. No los usamos para puntuar ni aprender tus gustos."].firstMatch
+        let exact = app.staticTexts.matching(NSPredicate(format: "label == %@", "Winerim tiene esta referencia y valores de sabor para tu añada de 2020, pero no permite distinguir cuáles tienen una fuente y cuáles son valores de relleno. No los usamos para puntuar ni aprender tus gustos.")).firstMatch
         try tap(title, app, activate: false)
         XCTAssertTrue(exact.exists, "Human-corrected2020 reads the exact row, still without affinity")
-        XCTAssertTrue(app.staticTexts["La añada figura en el catálogo. Falta completar y respaldar su ficha sensorial; confirmar el nombre no resuelve ese dato."].firstMatch.exists)
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label == %@", "La añada figura en el catálogo. Falta completar y respaldar su ficha sensorial; confirmar el nombre no resuelve ese dato.")).firstMatch.exists)
         capture(app, "vintage283-2020-exact-unbacked")
         reveal(exact, app); capture(app, "vintage283-2020-description")
         try tap(app.buttons["Cerrar"].firstMatch, app)
