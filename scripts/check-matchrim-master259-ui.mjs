@@ -148,7 +148,8 @@ try {
       value.indexOf('                {isNative && selectedCandidate && nativeConsumer?.canExplainAffinity'));
     const nativeBlock = slice(current), oldNativeBlock = slice(previous);
     assert(nativeBlock.includes('<NativeMasterLookup259'));
-    const stripImports = value => value.split('\n').filter(line => !line.includes('NativeMasterLookup259')
+    // 286: the candidate recovery import is the only other reviewed scanner amendment; its JSX is inside the native block.
+    const stripImports = value => value.split('\n').filter(line => !line.includes('NativeMasterLookup259') && !line.includes('CandidateRecovery286')
       && !line.includes("from '@/utils/nativeMasterLink259'") && !line.includes("from '@/utils/cellarMasterReference260'")
       && !line.includes("from '@/utils/nativeMasterDuplicates261'"))
       .join('\n').replace('          const masterReference = isNative ? makeCellarMasterReference260(candidate) : null;\n', '')

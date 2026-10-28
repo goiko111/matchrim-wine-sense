@@ -1,6 +1,7 @@
 import Foundation
 import Capacitor
 import CoreGraphics
+import CoreImage
 import ImageIO
 import Vision
 
@@ -20,6 +21,9 @@ public final class MatchrimOCRPlugin106: CAPPlugin, CAPBridgedPlugin {
     private static let maxThumbnailDimension = 2_400
     private static let maxLines = 100
     private static let maxLineUTF16Units = 1_000
+    // Small label crops (one bottle of a group photo, a packshot) read better at twice the size (286).
+    private static let enlargeBelowDimension = 1_200
+    private static let enlargeContext = CIContext(options: [.useSoftwareRenderer: true, .cacheIntermediates: false])
 
     private enum Failure: String, Error {
         case invalidRequestID = "INVALID_REQUEST_ID"
@@ -205,7 +209,7 @@ public final class MatchrimOCRPlugin106: CAPPlugin, CAPBridgedPlugin {
     private func run(_ job: Job, image: String) {
         do {
             try checkpoint(job)
-            let thumbnail = try decode(image, for: job)
+            let thumbnail = Self.enlargedForText(try decode(image, for: job))
             try checkpoint(job)
             let request = try makeRequest()
             try attach(request, to: job)
@@ -308,6 +312,21 @@ public final class MatchrimOCRPlugin106: CAPPlugin, CAPBridgedPlugin {
               thumbnail.width <= Self.maxThumbnailDimension,
               thumbnail.height <= Self.maxThumbnailDimension else { throw Failure.dimensionLimit }
         return thumbnail
+    }
+
+    private static func enlargedForText(_ image: CGImage) -> CGImage {
+        let longest = max(image.width, image.height)
+        guard longest > 0, longest < enlargeBelowDimension else { return image }
+        let scale = min(2.0, Double(maxThumbnailDimension) / Double(longest))
+        let input = CIImage(cgImage: image)
+        let flat = CIImage(color: CIColor(red: 1, green: 1, blue: 1)).cropped(to: input.extent)
+        let output = input.composited(over: flat).applyingFilter("CILanczosScaleTransform",
+            parameters: [kCIInputScaleKey: scale, kCIInputAspectRatioKey: 1.0])
+        let extent = CGRect(x: 0, y: 0, width: (Double(image.width) * scale).rounded(.down), height: (Double(image.height) * scale).rounded(.down))
+        guard extent.width >= 1, extent.height >= 1,
+              let enlarged = enlargeContext.createCGImage(output, from: extent),
+              enlarged.width <= maxThumbnailDimension, enlarged.height <= maxThumbnailDimension else { return image }
+        return enlarged
     }
 
     private func makeRequest() throws -> VNRecognizeTextRequest {

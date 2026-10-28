@@ -31,6 +31,7 @@ import { applyGlobalCatalogue103, independentGlobalProducer103, isGlobalWine103,
 import { GlobalWinePicker103, GlobalWineReference103 } from '@/components/wine-import/NativeGlobalCatalogue103';
 import { GlobalWineRecovery104 } from '@/components/wine-import/GlobalWineRecovery104';
 import { NativeMasterLookup259, NativeMasterReference259 } from '@/components/wine-import/NativeMasterLookup259';
+import { CandidateRecovery286 } from '@/components/wine-import/CandidateRecovery286';
 import { nativeMasterLink259 } from '@/utils/nativeMasterLink259';
 import { makeCellarMasterReference260 } from '@/utils/cellarMasterReference260';
 import { nativeDuplicateWineGroups261 } from '@/utils/nativeMasterDuplicates261';
@@ -1583,8 +1584,23 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                           return { ...region, status: 'recognized', error: null, fallback: null,
                             candidates: region.candidates.map(value => value.id === selectedCandidate.id ? confirmed : value) };
                         });
-                      }} fallback={
-                    <GlobalWineRecovery104 key={manualLookupKey} contextKey={manualLookupKey} disabled={manualLookupContext.locked}
+                      }} fallback={localBatch && selectedCandidate.source !== 'manual' && isPendingLocalIdentity109(selectedCandidate)
+                    ? <CandidateRecovery286 key={manualLookupKey} contextKey={manualLookupKey} disabled={manualLookupContext.locked}
+                      reading={localReading?.regionId === selectedRegion.id ? localReading.value : undefined}
+                      profile={manualLookupContext.profile} candidate={selectedCandidate} ownerId={user?.id ?? null}
+                      invoke={(operation, signal) => invokeEdgeFunction('matchrim-master-catalog', operation, signal)}
+                      onConfirmed={confirmed => {
+                        if (currentManualLookupKey.current !== manualLookupKey) return;
+                        updateRegion(selectedRegion.id, region => {
+                          const candidate = region.candidates.find(value => value.id === selectedCandidate.id);
+                          if (region.status === 'discarded' || region.selectedCandidateId !== selectedCandidate.id || !candidate
+                            || JSON.stringify({ ...manualLookupContext, candidate }) !== manualLookupKey
+                            || !(nativeMasterLink259(confirmed) || isGlobalWine103(confirmed, confirmed.globalRecord))) return region;
+                          return { ...region, status: 'recognized', error: null, fallback: null,
+                            candidates: region.candidates.map(value => value.id === selectedCandidate.id ? confirmed : value) };
+                        });
+                      }} />
+                    : <GlobalWineRecovery104 key={manualLookupKey} contextKey={manualLookupKey} disabled={manualLookupContext.locked}
                       image={selectedRegion.cropDataUrl}
                       reading={localReading?.regionId === selectedRegion.id ? localReading.value : undefined}
                       autoSearch={localBatch && selectedCandidate.source !== 'manual' && isPendingLocalIdentity109(selectedCandidate)}
