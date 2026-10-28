@@ -1,0 +1,17 @@
+Hola equipo:
+
+Gracias por la propuesta de las 11:57 y las correcciones. La recibimos para revisión; este correo no aprueba implementación, despliegue, lecturas nuevas, generación, escrituras ni gasto.
+
+1. Hemos recibido un solo adjunto, CONTRATO-API.md. Sus 11 ejemplos JSON son iguales a los del contrato anterior. El cuerpo anuncia que se retiran suspected_default y R2 de rev3, pero no vienen el esquema, la validación cruzada, los ejemplos ni los negativos corregidos. Por favor, enviad esos ficheros existentes con una revisión inequívoca y hashes, manteniendo X8 y el rango de confidence. Los 46 casos que validamos antes pertenecen a la revisión anterior y no prueban esta nueva.
+
+2. Los recuentos comunicados no suman: 77.421 filas con añada + 36.897 genéricas = 114.318, frente al total comunicado de 114.319. Aclaradlo con el material ya conservado, sin lanzar lecturas nuevas. Tomamos vuestras cifras como una afirmación vuestra, no como una medición nuestra.
+
+3. Hemos consumido las 18 lecturas gratuitas que quedaban autorizadas, sin repetir el primer 503. Las 18 respondieron 200 y coinciden por ID/nombre/bodega con el manifiesto. Sumando La Migratoria ya conservada, tenemos ficha para 19/20: 15 sin filas sensoriales y 4 con filas, todas sin source registrado; 3 declaran añadas. Esto es disponibilidad por IDs aportados, no identificación fotográfica ni cadena E2E aprobada. El caso 217496 sigue con su 503 histórico sin reintento. Corregimos la interpretación: un 3 concreto no demuestra relleno y source:null no acredita calidad ni verificación.
+
+4. Para la futura fase A, separad el dato documentado original (por ejemplo g/L o meses con URL/fecha) de su conversión a una escala 0-5. La conversión necesita una regla explícita o debe figurar como inferencia, no heredar automáticamente la clase «documentado». Incluid el criterio de identidad/añada y el tratamiento de contradicciones y fuentes ausentes.
+
+5. La estimación monetaria no es un presupuesto autorizado. Dejad separado el coste de IA, los créditos de búsqueda y cualquier reintento; si falta su conversión o no hay techo verificable, indicadlo. No se amplía el gasto actual ni se autoriza la fase A o el catálogo global.
+
+Por ahora necesitamos los ficheros corregidos y estas aclaraciones sobre material existente. No publicar ni modificar la web. Ninguna aprobación de producción se deriva de esta revisión.
+
+Gracias.
