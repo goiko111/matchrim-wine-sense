@@ -1,0 +1,13 @@
+{
+  "build": 127,
+  "sourceCommit": "f51375e032bd0efcf1674f9518ba0bac00202fb1",
+  "privateBetaOnly": true,
+  "humanExplicitUpload": true,
+  "knownLimitationsAccepted": true,
+  "exactHumanReply": "Vale, continúa desarrollo y sube un test flight a contestado también desarrollo, ¿vale? Al mail.",
+  "humanRequestDate": "2026-10-28",
+  "acceptanceBasis": "Owner explicitly requested a TestFlight upload; the limitations below were disclosed in chat before the upload and the owner did not object (same basis as 125).",
+  "productChangeFrom126": "src/utils/nativeMasterLink259.ts only: vintage/sensory gap copy (year-only rows no longer shown as 'no data'; no 'tampoco... otra añada' when no other vintage is involved). No affinity, learning or provenance granted.",
+  "limits": ["No web/main/backend publication", "No additional paid calls or budget", "No claim that upload receipt proves installability", "Internal/private TestFlight only; no external review submission"],
+  "knownLimitations": ["200-label live recognition not approved; lookup admitted for 56/200 labels in the offline check", "Real catalogue references carry no usable sensory data, so affinity stays 'Sin calcular' for real wines", "Native learning rule flaw found in simulation; not changed in 127", "Focal fixture-driven native catalogue QA is not whole-app live E2E approval", "MAX header clipping and unaccented 'Resolucion ... pequeno' notice observed; pre-existing"]
+}

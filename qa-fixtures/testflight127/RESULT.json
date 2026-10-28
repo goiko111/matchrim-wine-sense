@@ -1,0 +1,137 @@
+{
+  "status": "UPLOADED_APPLE_ACK_PROCESSING",
+  "build": 127,
+  "version": "1.0",
+  "bundleId": "wine.matchrim.app",
+  "runnerOwner": "claude-ed58a3cc-3582-48ae-9e29-8583bf9f8edd",
+  "sourceCommit": "f51375e032bd0efcf1674f9518ba0bac00202fb1",
+  "sourceDirty": false,
+  "productChangeFrom126": [
+    "src/utils/nativeMasterLink259.ts"
+  ],
+  "preparedFrom": "clean detached worktree /Users/GOIKO/2matchrim-candidate127-20261028 (product sources byte-identical to this checkout)",
+  "preparation": {
+    "typecheck": "PASS",
+    "sourceFingerprints": 425,
+    "webResources": 165,
+    "sha256": "a661fd97ac311af69509d106667daeee069a11bb83c8298a08bc5d95dc9ad224"
+  },
+  "compile": {
+    "passed": true,
+    "executableSHA256": "7eb37d9e8ea4bc0533377b395c71159a4a07e8870e1cc9767e6970417037c063",
+    "startedUTC": "2026-10-28T10:38:47.296Z",
+    "finishedUTC": "2026-10-28T10:39:39.598Z"
+  },
+  "archive": {
+    "passed": true,
+    "signatureVerified": true,
+    "verifiedResources": 165
+  },
+  "nativeQA": {
+    "r57": {
+      "passed": false,
+      "scenario": "vintage283",
+      "size": "normal",
+      "bundleId": "wine.matchrim.qa127offline220v57",
+      "networkCallsAllowed": 0,
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "probeSHA256": "8f3c493c77f08fb485eb08a44409e69e66842442f29fe7c2653cf9cbbe47fc29",
+      "error": "AssertionError [ERR_ASSERTION]: NATIVE220_FAILED:normal\n    at file:///Users/GOIKO/2matchrim76-recognition-20261008/scri"
+    },
+    "r58": {
+      "passed": true,
+      "scenario": "vintage283",
+      "size": "normal",
+      "bundleId": "wine.matchrim.qa127offline220v58",
+      "networkCallsAllowed": 0,
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "probeSHA256": "ca18e3f2fb113d5b24c031bf222fc429b36c3130f26dc57b164276f6ae1f12e8",
+      "error": null
+    },
+    "r59": {
+      "passed": false,
+      "scenario": "vintage283",
+      "size": "max",
+      "bundleId": "wine.matchrim.qa127offline220v59",
+      "networkCallsAllowed": 0,
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "probeSHA256": "e129d262de383976ad199a9e010d718f31bb5a1daf4fd94d1048f984cfd45d88",
+      "error": "AssertionError [ERR_ASSERTION]: NATIVE220_FAILED:max\n    at file:///Users/GOIKO/2matchrim76-recognition-20261008/scripts"
+    },
+    "r60": {
+      "passed": true,
+      "scenario": "vintage283",
+      "size": "max",
+      "bundleId": "wine.matchrim.qa127offline220v60",
+      "networkCallsAllowed": 0,
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "probeSHA256": "6b319e5cfacf6fc59f41067ecea7919cedea690e9f3b20e5913aef9c7fedb016",
+      "error": null
+    },
+    "r61": {
+      "passed": true,
+      "scenario": "master259",
+      "size": "normal",
+      "bundleId": "wine.matchrim.qa127offline220v61",
+      "networkCallsAllowed": 0,
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "probeSHA256": "f683ba4cb1b06711770029cc75d442feea089ae109aacbc253d01104809f43cf",
+      "error": null
+    },
+    "r62": {
+      "passed": true,
+      "scenario": "master259",
+      "size": "max",
+      "bundleId": "wine.matchrim.qa127offline220v62",
+      "networkCallsAllowed": 0,
+      "ownAppTerminated": true,
+      "contentSizeRestored": true,
+      "probeSHA256": "96b8e9526d8191797fad55b2a87d16097bea6746b02a0c4e28fdc10e702c1688",
+      "error": null
+    }
+  },
+  "retainedFailures": {
+    "r57": "Harness: XCUITest rejects identifiers over 128 characters (fixed b6bf548)",
+    "r59": "Harness: 6-minute allowance at MAX (raised to 600s for this flow, 79b3875)"
+  },
+  "screenshotsInspected": [
+    "r58 normal: 2000 rows-only-2020 and 2020 exact-unbacked",
+    "r59/r60 MAX: rows-only and next-step paragraphs readable",
+    "r61 normal: La Migratoria 2023 unrecorded copy, no affinity",
+    "r60 MAX batch screen"
+  ],
+  "observedPreExisting": [
+    "MAX region header clips the second line of the wine title",
+    "Notice copy without accents: \"Resolucion limitada para leer texto pequeno\"",
+    "\"Ver ficha original Winerim\" opens the 2020 page while the bottle reads 2000"
+  ],
+  "export": {
+    "passed": true,
+    "ipaSHA256": "cbabf7972de6d59dbebd98aafbfb38edb06ac4f7d1102bdda9324c0df60fa69c",
+    "ipaBytes": 8468653,
+    "signatureVerified": true,
+    "debugEntitlement": false
+  },
+  "upload": {
+    "passed": true,
+    "appleUploadAcknowledged": true,
+    "startedUTC": "2026-10-28T11:13:04.391Z",
+    "finishedUTC": "2026-10-28T11:14:16.232Z",
+    "uploadClicks": 1
+  },
+  "authorizationSHA256": "074ff32921bf4c9aceb559cc6d92c786e7cc1cf2e6ce75f9ed7281c5f0709134",
+  "releaseManifestSHA256": "7ff4b176db2f30d1b1f403ccfe7b4583a0f85c547b221c53abf8369d7f62255d",
+  "testFlightProcessingConfirmed": false,
+  "testFlightInstallableConfirmed": false,
+  "privateBetaOnly": true,
+  "externalReviewSubmitted": false,
+  "webPublished": false,
+  "backendDeployed": false,
+  "paidModelCalls": 0,
+  "catalogueReads": 0
+}

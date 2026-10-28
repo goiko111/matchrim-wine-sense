@@ -1,0 +1,9 @@
+{
+  "prep": "qa-artifacts/native218-20261025/candidate127-r1/preparation.json",
+  "archive": "qa-artifacts/native218-20261025/archive127-r1/ARCHIVE-RESULT.json",
+  "visual": {
+    "master259": { "normal": "qa-artifacts/native218-20261025/native220-r61/RESULT.json", "max": "qa-artifacts/native218-20261025/native220-r62/RESULT.json" },
+    "vintage283": { "normal": "qa-artifacts/native218-20261025/native220-r58/RESULT.json", "max": "qa-artifacts/native218-20261025/native220-r60/RESULT.json" }
+  },
+  "retainedFailures": ["native220-r57 (harness: XCUITest 128-character identifier limit)", "native220-r59 (harness: 6-minute allowance at MAX)"]
+}
