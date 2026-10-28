@@ -28,8 +28,17 @@
     }
     if (node) node.textContent = 'QA283 consultas locales: ' + calls;
   };
+  // 285: the synthetic owner's quiz profile and an empty cellar, served locally (GET only),
+  // so the scanner can score Winerim's 2020 row. Every other request still meets the guard.
+  const quiz = [{ potente: 3, acidez: 4, dulce: 1, tanico: 1, afrutado: 4 }];
   window.fetch = async (input, options) => {
     const url = new URL(typeof input === 'string' || input instanceof URL ? String(input) : input.url, location.href);
+    const method = (options?.method ?? 'GET').toUpperCase();
+    if (method === 'GET' && url.origin + url.pathname === project + '/rest/v1/quiz_results'
+      && url.searchParams.get('user_id') === 'eq.' + id) return new Response(JSON.stringify(quiz), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    if (method === 'GET' && url.origin + url.pathname === project + '/rest/v1/user_wines'
+      && url.searchParams.get('user_id') === 'eq.' + id && url.searchParams.get('use_for_profile_training') === 'eq.true')
+      return new Response('[]', { status: 200, headers: { 'Content-Type': 'application/json' } });
     if (url.href !== project + '/functions/v1/matchrim-master-catalog') return fetch(input, options);
     if (options?.signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
     calls++; status();

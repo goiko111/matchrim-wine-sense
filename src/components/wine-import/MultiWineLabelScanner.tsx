@@ -1572,6 +1572,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   lookup={!nativeConsumer?.catalogIdentityLinked ? <div className="min-w-0" data-testid="native-manual-affinity-lookup">
                     <NativeMasterLookup259 key={manualLookupKey} candidate={selectedCandidate}
                       contextKey={manualLookupKey} ownerId={user?.id ?? null} disabled={manualLookupContext.locked}
+                      profile={manualLookupContext.profile}
                       invoke={(operation, signal) => invokeEdgeFunction('matchrim-master-catalog', operation, signal)}
                       onConfirmed={confirmed => {
                         if (currentManualLookupKey.current !== manualLookupKey || !nativeMasterLink259(confirmed)) return;

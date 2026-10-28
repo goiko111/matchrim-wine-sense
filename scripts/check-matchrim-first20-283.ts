@@ -3,7 +3,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import { parseMasterDetail188, masterVintageEvidence188, type MasterDetail188 } from '../src/utils/nativeMasterContract188';
 import { describeMasterSensory195, type MasterInvoke195 } from '../src/utils/nativeMasterReference195';
-import { resolveMasterCandidate259, nativeMasterLink259, masterAffinityGap259 } from '../src/utils/nativeMasterLink259';
+import { resolveMasterCandidate259, nativeMasterLink259, masterAffinityGap259, masterSensory259, masterSensorySummary259 } from '../src/utils/nativeMasterLink259';
 import { nativeDuplicateWineGroups261 } from '../src/utils/nativeMasterDuplicates261';
 import { nativeWineConsumerResult } from '../src/utils/multiWineConsumer95';
 import { correctNativeIdentity218 } from '../src/utils/nativeIdentityCorrection218';
@@ -76,7 +76,7 @@ try {
       const requested = row.observedVintageHint ?? null, evidence = masterVintageEvidence188(wine, requested);
       assert.equal(evidence.status, row.vintageHintStatus); assert.equal(evidence.scope, row.selectedSensoryScope);
       const input = candidate(row), h = transport(wine, body);
-      const result = await resolveMasterCandidate259(input, h.invoke);
+      const result = await resolveMasterCandidate259(input, h.invoke, undefined, 8000, profile);
       if (isNonWineIdentity(row.name)) {
         // The catalogue lists a vermouth; the app deliberately excludes it before any read.
         assert.equal(result.status, 'identity-required'); assert.equal(h.calls(), 0);
@@ -89,18 +89,29 @@ try {
       assert.equal(h.calls(), 2);
       // The OCR hint stays the bottle vintage; the catalogue years never overwrite it.
       assert.equal(result.candidate.vintage, input.vintage);
-      assert.equal(result.candidate.affinity, null); assert.equal(result.candidate.sensoryAttributes, null);
       const link = nativeMasterLink259(result.candidate); assert(link);
-      const gap = masterAffinityGap259(link), sensory = describeMasterSensory195(wine, requested);
-      assert(sensory.axes.every(axis => !axis.usableForAffinity && !axis.usableForLearning));
-      const consumer = nativeWineConsumerResult(result.candidate, profile);
-      assert.equal(consumer.catalogIdentityLinked, true); assert.equal(consumer.canExplainAffinity, false);
+      const consumer = nativeWineConsumerResult(result.candidate, profile), sensory = masterSensory259(link);
+      assert.equal(consumer.catalogIdentityLinked, true);
+      const rowYears = wine.tastingAttributes.attributesByVintage.flatMap(value => value.vintage ? [value.vintage] : []);
+      // 285: Winerim's own row for this harvest (or its general row) scores; another harvest's row never does.
+      assert.equal(Boolean(sensory), evidence.scope !== 'missing');
+      if (sensory) {
+        assert.deepEqual(result.candidate.sensoryAttributes, sensory.attributes);
+        assert.equal(typeof result.candidate.affinity, 'number'); assert.equal(consumer.canExplainAffinity, true);
+        assert.equal(consumer.affinityValue, `≈${result.candidate.affinity}/100`); assert.equal(consumer.pending, null);
+        matrix.push({ imageId: row.imageId, canonicalId: row.canonicalId, file, bottleVintage: requested,
+          declaredVintages: wine.vintages, sensoryRows: rowYears.length ? rowYears : ['generic'], vintageStatus: evidence.status,
+          sensoryScope: evidence.scope, summary: masterSensorySummary259(link)!.description, affinity: consumer.affinityValue, imageIdentityConfirmed: false });
+        continue;
+      }
+      assert.equal(result.candidate.affinity, null); assert.equal(result.candidate.sensoryAttributes, null);
+      const gap = masterAffinityGap259(link);
+      assert.equal(consumer.canExplainAffinity, false);
       assert(!/\d/.test(consumer.affinityValue)); assert.equal(consumer.pending?.reason, 'sensory');
       assert.deepEqual(consumer.pending, gap);
-      const rowYears = wine.tastingAttributes.attributesByVintage.flatMap(value => value.vintage ? [value.vintage] : []);
       if (wine.tastingAttributes.attributesByVintage.length) assert(!gap.description.includes('no incluye'), `${row.imageId} denies existing rows`);
       else assert(gap.description.includes('no incluye'));
-      if (evidence.scope === 'missing' && rowYears.length) {
+      if (rowYears.length) {
         for (const year of rowYears) { assert(gap.description.includes(year)); assert(gap.summary.includes(year)); }
         assert(gap.description.includes('No los aplicamos a otra cosecha'));
       }
@@ -109,32 +120,31 @@ try {
         assert(gap.nextStep.includes('Ficha e identificación'));
       }
       if (evidence.status === 'unspecified' && wine.vintages.length) assert(gap.nextStep.startsWith('Indica la añada'));
-      for (const text of [gap.summary, gap.description, gap.nextStep]) assert(!/tampoco|verificad/i.test(text), `${row.imageId}: ${text}`);
+      for (const text of [gap.summary, gap.description, gap.nextStep]) assert(!/tampoco|verificad|relleno/i.test(text), `${row.imageId}: ${text}`);
       matrix.push({ imageId: row.imageId, canonicalId: row.canonicalId, file, bottleVintage: requested,
         declaredVintages: wine.vintages, sensoryRows: rowYears.length ? rowYears : wine.tastingAttributes.attributesByVintage.length ? ['generic'] : [],
         vintageStatus: evidence.status, sensoryScope: evidence.scope, summary: gap.summary, nextStep: gap.nextStep,
         affinity: consumer.affinityValue, imageIdentityConfirmed: false });
     }
   });
-  await test('020: a human correction to 2020 rebinds to the exact row, still without inventing affinity', async () => {
+  await test('020: a human correction to 2020 rebinds to the exact row and scores with Winerim 2020 values (285)', async () => {
     const row = ledger.rows.find(value => value.imageId === 'img-020')!, { body } = bodies.get(row.canonicalId)!;
     const wine = parseMasterDetail188(body, row.canonicalId)!;
-    const first = await resolveMasterCandidate259(candidate(row), transport(wine, body).invoke);
+    const first = await resolveMasterCandidate259(candidate(row), transport(wine, body).invoke, undefined, 8000, profile);
     assert(first.status === 'reference-ready'); assert.equal(first.candidate.vintage, 2000);
+    assert.equal(first.candidate.affinity, null, '2020 values are never applied to a 2000 bottle');
     const corrected = correctNativeIdentity218(first.candidate, { name: row.name, producer: row.winery!, vintage: 2020 });
     assert(corrected); assert.equal(nativeMasterLink259(corrected), null); assert.equal(corrected.canonicalId, null);
-    const rebound = await resolveMasterCandidate259(corrected, transport(wine, body).invoke);
+    const rebound = await resolveMasterCandidate259(corrected, transport(wine, body).invoke, undefined, 8000, profile);
     assert(rebound.status === 'reference-ready'); const link = nativeMasterLink259(rebound.candidate); assert(link);
-    const evidence = masterVintageEvidence188(link.wine, '2020'), gap = masterAffinityGap259(link);
+    const evidence = masterVintageEvidence188(link.wine, '2020');
     assert.equal(evidence.status, 'known'); assert.equal(evidence.scope, 'exact');
-    assert.equal(gap.summary, 'Datos de sabor sin respaldo suficiente'); assert(gap.description.includes('tu añada de 2020'));
-    assert(gap.description.includes('valores de relleno'));
-    const statuses = describeMasterSensory195(link.wine, '2020').axes.map(axis => [axis.axis, axis.status]);
-    assert.deepEqual(statuses, [['power', 'default-indistinguishable'], ['acidity', 'origin-unrecorded'],
-      ['sweetness', 'origin-unrecorded'], ['tannin', 'not-applicable'], ['fruity', 'origin-unrecorded']]);
-    assert.equal(nativeWineConsumerResult(rebound.candidate, profile).canExplainAffinity, false);
+    assert.deepEqual(rebound.candidate.sensoryAttributes, { scale: 'winerim-0-5', potencia: 3, acidez: 4, dulzura: 1, taninos: 0, afrutado: 4 });
+    const shown = nativeWineConsumerResult(rebound.candidate, profile);
+    assert.equal(shown.canExplainAffinity, true); assert.equal(shown.affinityValue, `≈${rebound.candidate.affinity}/100`);
+    assert(masterSensorySummary259(link)!.description.includes('añada 2020'));
     matrix.push({ imageId: 'img-020', variant: 'human corrected 2000 -> 2020', vintageStatus: evidence.status,
-      sensoryScope: evidence.scope, summary: gap.summary, affinity: 'not granted' });
+      sensoryScope: evidence.scope, affinity: shown.affinityValue });
   });
   await test('018/019 under another stated cosecha stay other-vintages-only and never borrow 2024', async () => {
     for (const imageId of ['img-018', 'img-019']) {
@@ -149,7 +159,7 @@ try {
       assert(gap.nextStep.includes('la añada 2024') && gap.nextStep.includes('de 2023'));
     }
   });
-  await test('Synthetic year lists and recorded AI origin keep wording bounded and still grant nothing', () => {
+  await test('Synthetic year lists keep wording bounded; a general row is used, another harvest never is', () => {
     const { body } = bodies.get(217477)!, wine = parseMasterDetail188(body, 217477)!;
     const years = ['2016', '2017', '2018', '2019', '2020'];
     const rows = years.map(vintage => ({ ...wine.tastingAttributes.attributesByVintage[0], vintage,
@@ -168,8 +178,12 @@ try {
     const generic = masterAffinityGap259({ candidateId: 'synthetic', name: wine.name, producer: wine.winery, vintage: 1999,
       region: null, country: null, wine: { ...wine, vintages: [], tastingAttributes: { ...wine.tastingAttributes, dependsOnVintage: false,
         attributesByVintage: [{ ...wine.tastingAttributes.attributesByVintage[0], vintage: null }] } } });
-    assert(generic.description.includes('generales, no de una añada concreta'));
-    assert(generic.nextStep.startsWith('La ficha no indica añadas') && generic.nextStep.includes('1999'));
+    void generic;
+    const genericLink = { candidateId: 'synthetic', name: wine.name, producer: wine.winery, vintage: 1999,
+      region: null, country: null, wine: { ...wine, vintages: [], tastingAttributes: { ...wine.tastingAttributes, dependsOnVintage: false,
+        attributesByVintage: [{ ...wine.tastingAttributes.attributesByVintage[0], vintage: null }] } } };
+    assert.equal(masterSensory259(genericLink)?.scope, 'generic');
+    assert(masterSensorySummary259(genericLink)!.description.includes('generales de Winerim'));
   });
   await test('Two bottles of 020 read as 2000 and corrected 2020 are not merged into one wine', async () => {
     const row = ledger.rows.find(value => value.imageId === 'img-020')!, { body } = bodies.get(row.canonicalId)!;
@@ -188,6 +202,7 @@ try {
   });
   const out = process.argv.indexOf('--out');
   if (out > 0) fs.writeFileSync(process.argv[out + 1], JSON.stringify({ scope: 'Offline first20 catalogue/vintage/sensory UI-state reconciliation from retained bodies; NOT OCR, photo recognition, live lookup or taste accuracy',
-    matrix, metrics: { groups, retainedDetails: bodies.size, externalCalls: 0, affinityGranted: 0, imageIdentitiesConfirmed: 0 } }, null, 2) + '\n');
-  console.log(JSON.stringify({ passed: groups, failed: 0, retainedDetails: bodies.size, externalCalls: 0, affinityGranted: 0 }));
+    matrix, metrics: { groups, retainedDetails: bodies.size, externalCalls: 0, affinityGranted: matrix.filter(row => typeof row.affinity === 'string' && row.affinity.startsWith('≈')).length, imageIdentitiesConfirmed: 0 } }, null, 2) + '\n');
+  console.log(JSON.stringify({ passed: groups, failed: 0, retainedDetails: bodies.size, externalCalls: 0,
+    affinityGranted: matrix.filter(row => typeof row.affinity === 'string' && row.affinity.startsWith('≈')).length }));
 } finally { globalThis.fetch = oldFetch; }

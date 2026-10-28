@@ -5,12 +5,14 @@ import { Link } from 'react-router-dom';
 import { buildAuthRedirectPath } from '@/utils/navigation';
 import type { WineCandidate } from '@/utils/multiWineScan';
 import type { MasterInvoke195 } from '@/utils/nativeMasterReference195';
-import { masterAffinityGap259, nativeMasterLink259, resolveMasterCandidate259 } from '@/utils/nativeMasterLink259';
+import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
+import { masterAffinityGap259, masterSensorySummary259, nativeMasterLink259, resolveMasterCandidate259 } from '@/utils/nativeMasterLink259';
 
 export const NativeMasterReference259 = ({ candidate }: { candidate: WineCandidate }) => {
   const link = nativeMasterLink259(candidate);
   if (!link) return null;
-  const gap = masterAffinityGap259(link);
+  const summary = masterSensorySummary259(link), gap = summary ? null : masterAffinityGap259(link);
+  const shown = summary ?? gap!;
   return <section aria-label="Referencia del catálogo Winerim" data-testid="native-master-reference259"
     className="min-w-0 space-y-3 border-y border-stone-200 py-3 [overflow-wrap:anywhere]">
     <div className="min-w-0 space-y-1">
@@ -18,9 +20,9 @@ export const NativeMasterReference259 = ({ candidate }: { candidate: WineCandida
       <p className="text-sm leading-6 text-stone-700">{link.wine.winery}</p>
       {link.wine.region && <p className="text-sm text-stone-600">{link.wine.region}</p>}
     </div>
-    <p className="font-semibold text-slate-950">{gap.title}</p>
-    <p className="text-sm leading-6 text-stone-700">{gap.description}</p>
-    <p className="text-sm leading-6 text-stone-700">{gap.nextStep}</p>
+    <p className="font-semibold text-slate-950">{shown.title}</p>
+    <p className="text-sm leading-6 text-stone-700">{shown.description}</p>
+    {gap && <p className="text-sm leading-6 text-stone-700">{gap.nextStep}</p>}
     {link.wine.webUrl && <Button asChild variant="outline" className="h-auto min-h-11 max-w-full gap-2 whitespace-normal px-3 py-3 text-left">
       <a href={link.wine.webUrl} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer">
         <BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" /> Ver ficha original Winerim
@@ -30,9 +32,10 @@ export const NativeMasterReference259 = ({ candidate }: { candidate: WineCandida
 };
 
 type Props = { candidate: WineCandidate; contextKey: string; ownerId: string | null; disabled: boolean;
-  invoke: MasterInvoke195; onConfirmed: (candidate: WineCandidate) => void; fallback: ReactNode };
+  invoke: MasterInvoke195; onConfirmed: (candidate: WineCandidate) => void; fallback: ReactNode;
+  profile?: MatchrimProfileLike | null };
 
-export const NativeMasterLookup259 = ({ candidate, contextKey, ownerId, disabled, invoke, onConfirmed, fallback }: Props) => {
+export const NativeMasterLookup259 = ({ candidate, contextKey, ownerId, disabled, invoke, onConfirmed, fallback, profile = null }: Props) => {
   const [proposal, setProposal] = useState<WineCandidate | null>(null);
   const [message, setMessage] = useState('');
   const [busy, setBusy] = useState(false);
@@ -51,7 +54,7 @@ export const NativeMasterLookup259 = ({ candidate, contextKey, ownerId, disabled
       && current.current.contextKey === contextKey && current.current.ownerId === ownerId && !current.current.disabled;
     setBusy(true); setProposal(null); setMessage('Buscando la referencia en Winerim…');
     try {
-      const result = await resolveMasterCandidate259(candidate, invoke, controller.signal);
+      const result = await resolveMasterCandidate259(candidate, invoke, controller.signal, 8000, profile);
       if (!active()) return;
       if (result.status === 'reference-ready') { setProposal(result.candidate); setMessage(''); }
       else setMessage(result.status === 'identity-required'

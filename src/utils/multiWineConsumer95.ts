@@ -5,7 +5,7 @@ import { isVerifiedWinerimSheetForIdentity, validateWinerimOriginalSensory } fro
 import { isVerifiedNativeMaster102 } from './nativeMasterCatalog102';
 import { exactGlobalVintage103, globalSensory103, isGlobalWine103 } from './nativeGlobalCatalogue103';
 import { isPendingLocalIdentity109 } from './nativeSingleLabel109';
-import { masterAffinityGap259, nativeMasterLink259 } from './nativeMasterLink259';
+import { masterAffinityGap259, masterSensory259, nativeMasterLink259 } from './nativeMasterLink259';
 
 export type NativeAffinityGap210 = {
   reason: 'identity' | 'catalogue-link' | 'vintage' | 'profile' | 'sensory' | 'score';
@@ -17,9 +17,21 @@ export type NativeAffinityGap210 = {
 
 // Presentation only: OCR confidence and user review never certify a catalog sheet.
 const nativeWineConsumerBase = (candidate: WineCandidate | null, profile: MatchrimProfileLike | null) => {
-  if (nativeMasterLink259(candidate)) return { catalogIdentityLinked: true,
-    identityLabel: 'Referencia del catálogo Winerim', affinityLabel: 'Sin datos suficientes',
-    affinityValue: 'Sin calcular', canExplainAffinity: false, sensoryEvidenceReady: false };
+  const link = nativeMasterLink259(candidate);
+  if (link && candidate) {
+    const sensory = masterSensory259(link);
+    const actual = normalizeWineAttributesForInsight(candidate.sensoryAttributes);
+    const expected = sensory ? normalizeWineAttributesForInsight(sensory.attributes) : null;
+    const same = Boolean(actual && expected && candidate.sensoryAttributes?.scale === 'winerim-0-5'
+      && candidate.sensorySource === 'catalog' && candidate.canonicalId === `mantalak-master:${link.wine.mantalakWineId}`
+      && Object.entries(expected).every(([key, value]) => actual[key as keyof typeof actual] === value));
+    const score = same ? calculateLocalMatchrimAffinity(profile, sensory!.attributes) : null;
+    const explain = score !== null && candidate.affinity === score;
+    return { catalogIdentityLinked: true, identityLabel: 'Referencia del catálogo Winerim',
+      affinityLabel: explain ? 'Afinidad orientativa' : same ? 'Afinidad pendiente' : 'Sin datos suficientes',
+      affinityValue: explain ? `≈${Math.round(score!)}/100` : same ? 'Pendiente' : 'Sin calcular',
+      canExplainAffinity: explain, sensoryEvidenceReady: same };
+  }
   const global = candidate && isGlobalWine103(candidate, candidate.globalRecord) ? candidate.globalRecord : null;
   if (global && candidate) {
     const exact = exactGlobalVintage103(candidate, global);
@@ -85,7 +97,7 @@ export const nativeWineConsumerResult = (candidate: WineCandidate | null, profil
   let pending: NativeAffinityGap210 | null = null;
   if (!result.canExplainAffinity) {
     const master = nativeMasterLink259(candidate);
-    if (master) {
+    if (master && !result.sensoryEvidenceReady) {
       pending = masterAffinityGap259(master);
     } else if (!candidate || isPendingLocalIdentity109(candidate) || !candidate.producer?.trim()) {
       pending = { reason: 'identity', title: 'Primero, identifiquemos el vino', summary: 'Nombre y bodega sin confirmar',

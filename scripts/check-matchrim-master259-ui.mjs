@@ -3,7 +3,7 @@ import vm from 'node:vm';
 import assert from 'node:assert/strict';
 import ts from 'typescript';
 import { execFileSync } from 'node:child_process';
-import { resolveMasterCandidate259, nativeMasterLink259, masterAffinityGap259 } from '../src/utils/nativeMasterLink259.ts';
+import { resolveMasterCandidate259, nativeMasterLink259, masterAffinityGap259, masterSensorySummary259 } from '../src/utils/nativeMasterLink259.ts';
 import { buildAuthRedirectPath } from '../src/utils/navigation.ts';
 
 const source = fs.readFileSync('src/components/wine-import/NativeMasterLookup259.tsx', 'utf8');
@@ -40,7 +40,7 @@ const harness = (invoke, patch = {}) => {
         : name === '@/components/ui/button' ? { Button: 'Button' }
           : name === 'react-router-dom' ? { Link: 'Link' }
             : name === '@/utils/navigation' ? { buildAuthRedirectPath }
-          : name === '@/utils/nativeMasterLink259' ? { resolveMasterCandidate259, nativeMasterLink259, masterAffinityGap259 }
+          : name === '@/utils/nativeMasterLink259' ? { resolveMasterCandidate259, nativeMasterLink259, masterAffinityGap259, masterSensorySummary259 }
             : (() => { throw Error('UNEXPECTED_IMPORT:' + name); })(),
   }, { timeout: 1000 });
   const h = {

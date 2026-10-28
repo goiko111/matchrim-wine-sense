@@ -1,6 +1,8 @@
 import type { WineCandidate } from './multiWineScan';
+import type { MatchrimProfileLike } from './matchrimPassport';
 import { lookupMasterReference195, type MasterInvoke195, type MasterReferenceOutcome195 } from './nativeMasterReference195';
 import { masterVintageEvidence188, type MasterDetail188 } from './nativeMasterContract188';
+import { calculateLocalMatchrimAffinity } from './wineAffinityExplanation';
 
 export type NativeMasterLink259 = Readonly<{
   candidateId: string; name: string; producer: string | null; vintage: number | null;
@@ -23,8 +25,21 @@ export const nativeMasterLink259 = (candidate: WineCandidate | null): NativeMast
     && candidate.canonicalId === `mantalak-master:${link.wine.mantalakWineId}` ? link : null;
 };
 
+// Winerim's own 0-5 taste values (285, owner decision): the row for the bottle's
+// harvest, or the general row of a reference that does not depend on vintage.
+// A row of another harvest is never borrowed.
+export const masterSensory259 = (link: Pick<NativeMasterLink259, 'vintage' | 'wine'>) => {
+  const evidence = masterVintageEvidence188(link.wine, link.vintage == null ? null : String(link.vintage));
+  const row = evidence.sensory;
+  if (evidence.scope === 'missing' || !row) return null;
+  return { scope: evidence.scope, vintage: row.vintage, attributes: { scale: 'winerim-0-5' as const,
+    potencia: row.power, acidez: row.acidity, dulzura: row.sweetness, taninos: row.tannin, afrutado: row.fruity } };
+};
+const sensoryNote259 = (sensory: NonNullable<ReturnType<typeof masterSensory259>>) => sensory.scope === 'exact'
+  ? `Datos de sabor de Winerim para la añada ${sensory.vintage}` : 'Datos de sabor generales de Winerim para esta referencia';
+
 export const resolveMasterCandidate259 = async (candidate: WineCandidate, invoke: MasterInvoke195,
-  signal?: AbortSignal, timeoutMs = 8000): Promise<{
+  signal?: AbortSignal, timeoutMs = 8000, profile: MatchrimProfileLike | null = null): Promise<{
     status: 'reference-ready'; candidate: WineCandidate;
   } | Exclude<MasterReferenceOutcome195, { status: 'reference-match' }>> => {
   const result = await lookupMasterReference195(candidate, invoke, signal, timeoutMs, {
@@ -37,11 +52,19 @@ export const resolveMasterCandidate259 = async (candidate: WineCandidate, invoke
   const link = freeze({ candidateId: candidate.id, name: candidate.name, producer: candidate.producer,
     vintage: candidate.vintage, region: candidate.region, country: candidate.country, wine: structuredClone(result.wine) });
   issued.add(link);
+  const sensory = masterSensory259(link);
+  const affinity = sensory ? calculateLocalMatchrimAffinity(profile, sensory.attributes) : null;
   return { status: 'reference-ready', candidate: { ...candidate,
     canonicalId: `mantalak-master:${result.wine.mantalakWineId}`, masterLink259: link,
-    masterRecord: null, globalRecord: null, originalSheet: null, sensoryAttributes: null,
-    sensorySource: 'catalog', affinity: null, affinityConfidence: null,
-    affinityReason: 'Referencia encontrada en Winerim; faltan datos sensoriales utilizables para calcular tu afinidad.' } };
+    masterRecord: null, globalRecord: null, originalSheet: null, sensoryAttributes: sensory?.attributes ?? null,
+    sensorySource: 'catalog', affinity, affinityConfidence: null,
+    affinityReason: !sensory ? 'Referencia encontrada en Winerim; su ficha no tiene datos de sabor para esta añada.'
+      : affinity === null ? `${sensoryNote259(sensory)}. Completa tu perfil para calcular tu afinidad.`
+        : `Afinidad orientativa con tu perfil. ${sensoryNote259(sensory)} (escala 0–5).` } };
+};
+export const masterSensorySummary259 = (link: NativeMasterLink259) => {
+  const sensory = masterSensory259(link);
+  return sensory ? { title: 'Vino encontrado en Winerim', description: `${sensoryNote259(sensory)}: cuerpo, acidez, dulzor, tanino y fruta en una escala de 0 a 5.` } : null;
 };
 
 const years259 = (values: readonly string[]) => {
@@ -58,24 +81,18 @@ export const masterAffinityGap259 = (link: NativeMasterLink259) => {
   // stated or missing cosecha and they are never borrowed for another one.
   const rowYears = link.wine.tastingAttributes.attributesByVintage.flatMap(row => row.vintage === null ? [] : [row.vintage]);
   const otherYears = evidence.scope === 'missing' && rowYears.length > 0;
-  const unbacked = 'no permite distinguir cuáles tienen una fuente y cuáles son valores de relleno. No los usamos para puntuar ni aprender tus gustos.';
   return { reason: 'sensory' as const, title: 'Vino encontrado; faltan datos para compararlo contigo',
-    summary: otherYears ? `Datos de sabor solo de ${years259(rowYears)}`
-      : evidence.scope === 'missing' ? 'Ficha sin datos de sabor' : 'Datos de sabor sin respaldo suficiente',
+    summary: otherYears ? `Datos de sabor solo de ${years259(rowYears)}` : 'Ficha sin datos de sabor',
     description: otherYears
-      ? `Winerim tiene valores de sabor de esta referencia solo para ${vintages259(rowYears)}. No los aplicamos a otra cosecha ni a una sin indicar; además, la ficha ${unbacked}`
-      : evidence.scope === 'missing'
-        ? 'Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios para calcular tu afinidad.'
-        : evidence.scope === 'exact'
-          ? `Winerim tiene esta referencia y valores de sabor para tu añada de ${requested}, pero ${unbacked}`
-          : `Winerim tiene esta referencia y algunos valores de sabor generales, no de una añada concreta, pero ${unbacked}`,
+      ? `Winerim tiene valores de sabor de esta referencia solo para ${vintages259(rowYears)}. No los aplicamos a otra cosecha ni a una sin indicar.`
+      : 'Winerim tiene esta referencia, pero su ficha no incluye los datos de cuerpo, acidez, dulzor, tanino y fruta necesarios para calcular tu afinidad.',
     nextStep: evidence.status === 'known'
-      ? 'La añada figura en el catálogo. Falta completar y respaldar su ficha sensorial; confirmar el nombre no resuelve ese dato.'
+      ? 'La añada figura en el catálogo, pero su ficha sensorial está incompleta; confirmar el nombre no resuelve ese dato.'
       : evidence.status === 'other-vintages-only'
         ? `Esta ficha solo recoge ${vintages259(link.wine.vintages)} y tu botella figura como de ${requested}. Si la añada no es correcta, corrígela en «Ficha e identificación» y vuelve a buscar; no usaremos datos de otra cosecha como si fueran de ${requested}.`
         : evidence.status === 'unrecorded'
-          ? `La ficha no indica añadas, así que no confirma tu cosecha de ${requested}. Puedes conservar la referencia; confirmar el nombre no aporta datos de sabor respaldados.`
+          ? `La ficha no indica añadas, así que no confirma tu cosecha de ${requested}. Puedes conservar la referencia; tu afinidad quedará pendiente hasta que la ficha tenga datos de sabor.`
           : link.wine.vintages.length
             ? `Indica la añada de tu botella en «Ficha e identificación» y vuelve a buscar: esta ficha recoge ${vintages259(link.wine.vintages)}. No usaremos datos de una cosecha como si fueran de otra.`
-            : 'Puedes conservar la referencia. Confirmar el nombre no aporta datos de sabor respaldados: tu afinidad seguirá pendiente hasta que la ficha los tenga con su origen.' };
+            : 'Puedes conservar la referencia. Tu afinidad quedará pendiente hasta que Winerim complete su ficha de sabor.' };
 };

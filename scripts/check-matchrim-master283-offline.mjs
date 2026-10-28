@@ -53,10 +53,22 @@ await test('Other URLs fall through to the network-denial guard and a cancelled 
   await assert.rejects(context.fetch(catalog, { body: '{}', signal: controller.signal }), /Cancelled/);
   assert.equal(nodes.get('qa283-counter').textContent, 'QA283 consultas locales: 7');
 });
+await test('Only the synthetic owner quiz and training reads are served locally (285); writes and other owners fall through', async () => {
+  const rest = 'https://cbjynrbvrhcmpaojmqdp.supabase.co/rest/v1/';
+  const owner = 'user_id=eq.00000000-0000-4000-8000-000000000283';
+  assert.deepEqual(await (await context.fetch(rest + 'quiz_results?select=potente&' + owner + '&order=created_at.desc&limit=1')).json(),
+    [{ potente: 3, acidez: 4, dulce: 1, tanico: 1, afrutado: 4 }]);
+  assert.deepEqual(await (await context.fetch(rest + 'user_wines?select=id&' + owner + '&use_for_profile_training=eq.true')).json(), []);
+  const before = reached.length;
+  for (const [path, options] of [[rest + 'quiz_results?' + owner, { method: 'POST', body: '{}' }],
+    [rest + 'quiz_results?user_id=eq.someone-else', undefined], [rest + 'user_wines?' + owner, undefined]]) await context.fetch(path, options);
+  assert.equal(reached.length, before + 3, 'Writes, other owners and untrained reads reach the guard');
+  assert.equal(nodes.get('qa283-counter').textContent, 'QA283 consultas locales: 7', 'REST reads are not catalogue lookups');
+});
 await test('The synthetic session cannot authenticate to a real service', () => {
   const session = JSON.parse(storage.get('sb-cbjynrbvrhcmpaojmqdp-auth-token'));
   assert.equal(session.user.id, '00000000-0000-4000-8000-000000000283');
   assert(session.access_token.endsWith('.QA_OFFLINE_INVALID_SIGNATURE') && session.user.email.endsWith('@example.invalid'));
 });
-assert.equal(groups, 4);
-console.log(`Matchrim master283 offline guard: ${groups}/4 PASS (VM replay, not a native flow)`);
+assert.equal(groups, 5);
+console.log(`Matchrim master283 offline guard: ${groups}/5 PASS (VM replay, not a native flow)`);

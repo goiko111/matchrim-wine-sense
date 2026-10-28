@@ -88,7 +88,7 @@ try {
     for (const patch of [{ name: 'Other' }, { producer: 'Other' }, { vintage: 2024 }, { region: 'Other' }, { country: 'Other' }]) {
       assert.equal(readCellarMasterReference260({ ...row, ...patch }), null);
     }
-    for (const patch of [{ public_url: 'https://evil.example/label' }, { sensory_usable: true },
+    for (const patch of [{ public_url: 'https://evil.example/label' }, { sensory_usable: 'yes' },
       { known_vintages: ['2023', '2023'] }, { mantalak_wine_id: -1 },
       { public_url: 'https://web.winerim.com/matchrim/store/999/x', representative_public_id: 1 }]) {
       const changed = plain(row);
@@ -97,11 +97,15 @@ try {
     }
     assert.equal(confirmsCellarMasterReference260({}, { name: 'Legacy no reference' }), true);
   });
-  await test('Same-owner known-vintage master reference recovers personal verdict without a sensory score', async () => {
+  await test('Same-owner known-vintage master reference recovers personal verdict and, since 285, saves Winerim values that train', async () => {
     const candidate = await make(zorrera, 2015), wine = actualMapper({ candidate }), row = rowFor(wine);
     const saved = nativeVerdictsSnapshot159(owner, [row], 1);
     assert.equal(resolveNativeRescanVerdict159(owner, saved, candidate), 'love');
-    assert.equal(candidate.affinity, null); assert.equal(candidate.sensoryAttributes, null);
+    assert.equal(candidate.affinity, null);
+    assert.equal(candidate.sensoryAttributes?.scale, 'winerim-0-5');
+    assert.equal(readCellarMasterReference260(row)?.sensory_usable, true);
+    assert(readCellarSensoryEvidence(row, true), 'the saved row carries bound catalogue evidence');
+    assert.equal(cellarTrainingRows([{ ...row, use_for_profile_training: true }], true).length, 1);
     for (const rating of ['ok', 'not_for_me'] as const) {
       assert.equal(resolveNativeRescanVerdict159(owner, nativeVerdictsSnapshot159(owner, [{ ...row, rating }], 1), candidate), rating);
     }
@@ -162,5 +166,5 @@ try {
     assert.deepEqual(plain(mapper(source, false)({ candidate })), plain(mapper(old, false)({ candidate })));
   });
   console.log(JSON.stringify({ passed: groups, failed: 0, externalCalls: 0, realUsers: 0, databaseWrites: 0,
-    testedActualSaveCallback: true, persistedMasterReferenceRequired: true, sensoryOrLearningGranted: false }));
+    testedActualSaveCallback: true, persistedMasterReferenceRequired: true, sensoryAndLearningFromWinerimRows: true }));
 } finally { globalThis.fetch = previousFetch; }

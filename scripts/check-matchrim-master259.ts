@@ -96,13 +96,23 @@ try {
     }
     assert.equal(seen.size, 50);
   });
-  await test('Current generic source-less record explains provenance instead of claiming the wine was not found', async () => {
+  await test('A general Winerim taste row scores and explains affinity (285); a stale or missing profile is not reused', async () => {
     const input = candidate({ name: generic.name, producer: generic.winery, evidence: [generic.name, generic.winery, '2023'] });
     const search = { ...unlisted, results: [{ ...generic, id: generic.representativePublicId, tastingAttributes: {} }] };
-    const result = await resolveMasterCandidate259(input, harness(search, generic).invoke); assert(result.status === 'reference-ready');
+    const profile = { potente: 3, acidez: 3, dulce: 3, tanico: 2, afrutado: 4 };
+    const result = await resolveMasterCandidate259(input, harness(search, generic).invoke, undefined, 8000, profile);
+    assert(result.status === 'reference-ready');
+    assert.deepEqual(result.candidate.sensoryAttributes, { scale: 'winerim-0-5', potencia: 3, acidez: 3, dulzura: 3, taninos: 2, afrutado: 4 });
+    assert.equal(result.candidate.affinity, 93); assert.match(result.candidate.affinityReason ?? '', /generales de Winerim/);
+    const shown = nativeWineConsumerResult(result.candidate, profile);
+    assert.equal(shown.canExplainAffinity, true); assert.equal(shown.affinityValue, '≈93/100'); assert.equal(shown.pending, null);
+    const stale = nativeWineConsumerResult(result.candidate, { ...profile, potente: 0 });
+    assert.equal(stale.canExplainAffinity, false); assert.equal(stale.pending?.reason, 'score');
+    const bare = await resolveMasterCandidate259(input, harness(search, generic).invoke); assert(bare.status === 'reference-ready');
+    assert.equal(bare.candidate.affinity, null);
+    assert.equal(nativeWineConsumerResult(bare.candidate, null).pending?.reason, 'profile');
     const link = nativeMasterLink259(result.candidate); assert(link);
-    const gap = masterAffinityGap259(link); assert(gap.description.includes('valores de relleno'));
-    assert(!gap.description.includes('no exista')); assert.equal(result.candidate.affinity, null);
+    assert(!masterAffinityGap259(link).description.includes('relleno'));
   });
   await test('Abort in detail resolution and unresolved timeout cannot issue late references or retry', async () => {
     const controller = new AbortController(); let calls = 0;
@@ -116,5 +126,5 @@ try {
   });
   console.log(JSON.stringify({ passed: groups, failed: 0, externalCalls: 0, syntheticProfiles: 50,
     scope: 'Native resolver and consumer with retained live payloads; not new recognition or taste accuracy',
-    photoIdentitiesAutomaticallyConfirmed: 0, affinityGranted: false }));
+    photoIdentitiesAutomaticallyConfirmed: 0, affinityGrantedFromWinerimRows: true }));
 } finally { globalThis.fetch = oldFetch; }

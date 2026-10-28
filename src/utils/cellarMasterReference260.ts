@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { Json } from '@/integrations/supabase/types';
 import type { CellarAffinityWine } from './bodegaAffinity';
 import type { WineCandidate } from './multiWineScan';
-import { nativeMasterLink259 } from './nativeMasterLink259';
+import { masterSensory259, nativeMasterLink259 } from './nativeMasterLink259';
 
 const label = z.string().trim().min(1).max(240);
 const year = z.number().int().min(1900).max(2099);
@@ -13,7 +13,7 @@ const schema = z.object({ version: z.literal(1), namespace: z.literal('mantalak-
   catalogue_name: label, catalogue_winery: label,
   known_vintages: z.array(z.string().regex(/^(19|20)\d{2}$/)).max(200),
   representative_public_id: z.number().int().positive().safe().nullable(),
-  public_url: z.string().max(2048).nullable(), sensory_usable: z.literal(false),
+  public_url: z.string().max(2048).nullable(), sensory_usable: z.boolean(),
   bottle_identity: identity }).strict().refine(row => {
   if (new Set(row.known_vintages).size !== row.known_vintages.length) return false;
   if (row.public_url === null) return true;
@@ -33,14 +33,17 @@ const normalize = (value: string | null) => (value ?? '').normalize('NFD').repla
 const signature = (wine: CellarAffinityWine) => JSON.stringify(Object.values(binding(wine))
   .map(value => typeof value === 'number' ? value : normalize(typeof value === 'string' ? value : null)));
 
-// Durable reference only: this is never a sensory-evidence/learning record.
+// Durable reference. Since 285 it notes whether Winerim's taste values for this
+// bottle were attached; the learning record itself is bodega_sensory_evidence.
 export const makeCellarMasterReference260 = (candidate: WineCandidate): Json | null => {
   const link = nativeMasterLink259(candidate);
   if (!link) return null;
+  const sensory = masterSensory259(link);
   const parsed = schema.safeParse({ version: 1, namespace: 'mantalak-master', mantalak_wine_id: link.wine.mantalakWineId,
     catalogue_name: link.wine.name, catalogue_winery: link.wine.winery,
     known_vintages: link.wine.vintages, representative_public_id: link.wine.representativePublicId,
-    public_url: link.wine.webUrl, sensory_usable: false, bottle_identity: binding(candidate) });
+    public_url: link.wine.webUrl, sensory_usable: Boolean(sensory && candidate.sensorySource === 'catalog'
+      && JSON.stringify(candidate.sensoryAttributes) === JSON.stringify(sensory.attributes)), bottle_identity: binding(candidate) });
   return parsed.success ? parsed.data : null;
 };
 export const readCellarMasterReference260 = (wine: CellarAffinityWine) => {
