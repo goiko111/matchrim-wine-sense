@@ -5,7 +5,8 @@ import { CODEX_RUNNER_OWNER, assertOwnLeases, runnerOwner } from './matchrim-run
 const claude = 'claude-ed58a3cc-3582-48ae-9e29-8583bf9f8edd', now = 1_000_000;
 const lease = (owner, leaseId, seconds = 60) => ({ owner, leaseId, acquiredAt: now / 1000, reviewAfter: now / 1000 + seconds });
 const required = [['heavy-local', 'HEAVY'], ['writer-matchrim-native99', 'WRITER']];
-const runners = ['scripts/prepare-matchrim-native102.mjs', 'scripts/qa-matchrim-compile218.mjs', 'scripts/qa-matchrim-native220.mjs'];
+const runners = ['scripts/prepare-matchrim-native102.mjs', 'scripts/qa-matchrim-compile218.mjs', 'scripts/qa-matchrim-native220.mjs',
+  'scripts/archive-matchrim-native102.mjs'];
 let groups = 0;
 const test = (name, work) => { work(); groups++; console.log('PASS ' + name); };
 
@@ -38,13 +39,13 @@ test('Claude leases do not satisfy a Codex run, and Codex leases do not satisfy 
   assert.throws(() => assertOwnLeases(ofCodex, required, { ...ids, MATCHRIM_RUNNER_OWNER: claude }, now), /heavy-local/);
   assert.equal(assertOwnLeases(ofCodex, required, ids, now), CODEX_RUNNER_OWNER);
 });
-test('The three runners use the shared guard, record their owner and keep disk/freshness/source checks', () => {
+test('The four runners use the shared guard, record their owner and keep disk/freshness/source checks', () => {
   for (const file of runners) {
     const source = fs.readFileSync(file, 'utf8');
     assert(source.includes("from './matchrim-runner-owner.mjs'") && source.includes('runnerOwner()') && source.includes('assertOwnLeases(leases, ['), file);
     assert(!source.includes(CODEX_RUNNER_OWNER), file + ' must not hardcode an owner');
     assert(source.includes('runnerOwner: owner'), file + ' must record the owner in its receipt');
-    assert(source.includes('5 * 1024 ** 3') && source.includes("'heavy-local', 'MATCHRIM102_HEAVY_LEASE_ID'")
+    assert(/5 \* 1024 \*\* 3/.test(source) && source.includes("'heavy-local', 'MATCHRIM102_HEAVY_LEASE_ID'")
       && source.includes("'writer-matchrim-native99', 'MATCHRIM102_WRITER_LEASE_ID'"), file);
   }
   const prepare = fs.readFileSync(runners[0], 'utf8'), compile = fs.readFileSync(runners[1], 'utf8'), native = fs.readFileSync(runners[2], 'utf8');

@@ -3,19 +3,16 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { spawn, execFileSync } from 'node:child_process';
+import { assertOwnLeases, runnerOwner } from './matchrim-runner-owner.mjs';
 
 const repo = process.cwd();
 const prep = JSON.parse(fs.readFileSync(path.resolve(process.argv[2], 'preparation.json')));
 const output = path.resolve(process.argv[3]);
 const developer = '/Applications/Xcode-26.0.1.app/Contents/Developer';
-const sha = value => createHash('sha256').update(value).digest('hex');
+const sha = value => createHash('sha256').update(value).digest('hex'), owner = runnerOwner();
 const guard = () => {
   const leases = JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json')).leases;
-  for (const [resource, key] of [['heavy-local', 'MATCHRIM102_HEAVY_LEASE_ID'], ['writer-matchrim-native99', 'MATCHRIM102_WRITER_LEASE_ID']]) {
-    const lease = leases[resource];
-    assert(lease?.owner === '019f9da7-ae96-7c60-a1b4-fafb75b04d6d' && lease.leaseId === process.env[key]
-      && lease.reviewAfter * 1000 > Date.now(), resource);
-  }
+  assertOwnLeases(leases, [['heavy-local', 'MATCHRIM102_HEAVY_LEASE_ID'], ['writer-matchrim-native99', 'MATCHRIM102_WRITER_LEASE_ID']]);
 };
 const verify = () => {
   for (const [file, hash] of Object.entries(prep.sourceFingerprints)) assert.equal(sha(fs.readFileSync(path.join(repo, file))), hash, file);
@@ -37,7 +34,7 @@ const args = ['archive', '-quiet', '-workspace', path.join(prep.production, 'ios
   '-derivedDataPath', path.join(output, 'derived'), '-archivePath', archive,
   '-resultBundlePath', path.join(output, 'archive.xcresult'), '-disableAutomaticPackageResolution', '-skipPackageUpdates', '-jobs', '1',
   `CURRENT_PROJECT_VERSION=${prep.build}`, 'DEVELOPMENT_TEAM=8X3XTD6XYX', 'CODE_SIGN_STYLE=Automatic'];
-const receipt = { startedUTC: new Date().toISOString(), sourceCommit: prep.commit, build: prep.build,
+const receipt = { startedUTC: new Date().toISOString(), runnerOwner: owner, sourceCommit: prep.commit, build: prep.build,
   version: '1.0', bundleId: cap.appId, command: [path.join(developer, 'usr/bin/xcodebuild'), ...args],
   uploaded: false, exported: false, webPublished: false, backendDeployed: false, modelStarts: 0,
   masterConnectionActive: prep.masterConnectionActive, recognitionE2EApproved: false };
