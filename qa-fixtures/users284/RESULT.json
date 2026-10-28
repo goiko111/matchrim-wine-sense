@@ -1,0 +1,213 @@
+{
+  "scope": "Offline deterministic simulation. Real: 200 label images, their Apple Vision OCR, 19 retained catalogue details and the app functions called. Synthetic: users, quiz answers, ratings and every arm-B sensory value. No account, network, model, catalogue read or write; not a taste-accuracy claim.",
+  "seed": "0x284c0de",
+  "inputs": {
+    "comparisonSHA256": "8a4b189db94d82c0fa01c377218d68255d7142dd664ec8a807946eb19eaf9396",
+    "first20SHA256": "0479b403d09e21b66e0b449b4beb23190dc506c44e8291b85a61b3e37da3fc90",
+    "quizDataSHA256": "9adf01e4cc82b765508845fec214f48007475dbf3b6d709f76d314eccb9a7485"
+  },
+  "appFunctions": [
+    "calculateProfile",
+    "canAdmitNativeCatalogLookup97",
+    "isNonWineIdentity",
+    "describeMasterSensory195",
+    "calculateLocalMatchrimAffinity(scan-local-rms-0to5-v3)",
+    "makeCellarCatalogEvidence",
+    "cellarTrainingRows(strict)",
+    "calculateLearnedMatchrimProfile(native-v2)",
+    "selectUnseenWineRecommendations"
+  ],
+  "labels": {
+    "total": 200,
+    "nonWine": 1,
+    "ocrNonEmpty": 198,
+    "lookupAdmittedWithPerfectIdentity": 56,
+    "retainedDetails": 19,
+    "retainedWithAnyAxisUsableForAffinity": 0
+  },
+  "armA_today": {
+    "scanned": 3636,
+    "nonWine": 22,
+    "admitted": 1019,
+    "retainedReference": 315,
+    "affinityShown": 0,
+    "trainingRows": 0,
+    "note": "Per scan with the real catalogue path: references never carry usable sensory axes, so no affinity is shown and ratings never train."
+  },
+  "armB_engineWithCompleteData": {
+    "users": 100,
+    "weeks": 12,
+    "wines": 199,
+    "meanRatingsPerUser": 21.6,
+    "quizProfileError": 0.913,
+    "profileError": {
+      "week0": 0.913,
+      "week1": 0.915,
+      "week2": 0.919,
+      "week4": 0.935,
+      "week8": 0.959,
+      "week12": 0.961
+    },
+    "rankCorrelation": {
+      "week0": 0.812,
+      "week1": 0.819,
+      "week2": 0.821,
+      "week4": 0.826,
+      "week8": 0.826,
+      "week12": 0.827
+    },
+    "top3LoveRate": {
+      "week0": 0.657,
+      "week1": 0.687,
+      "week2": 0.67,
+      "week4": 0.66,
+      "week8": 0.63,
+      "week12": 0.66
+    },
+    "quizOnlyTop3LoveRateWeek12": 0.643,
+    "randomTop3LoveRateWeek12": 0.165,
+    "oracleTop3LoveRateWeek12": 0.903,
+    "meanAbsScoreGap": {
+      "week0": 7.7,
+      "week1": 7.9,
+      "week2": 8,
+      "week4": 8.5,
+      "week8": 9,
+      "week12": 9.1
+    },
+    "usersProfileImproved": 29,
+    "usersProfileWorsened": 44,
+    "byArchetype": {
+      "tintos-potentes": {
+        "users": 13,
+        "quizError": 1.039,
+        "profileErrorWeek0": 1.039,
+        "profileErrorWeek12": 1.252,
+        "top3LoveWeek0": 0.692,
+        "top3LoveWeek12": 0.744,
+        "randomTop3Love": 0.084,
+        "rankCorrelationWeek0": 0.878,
+        "rankCorrelationWeek12": 0.885
+      },
+      "blancos-frescos": {
+        "users": 13,
+        "quizError": 0.865,
+        "profileErrorWeek0": 0.865,
+        "profileErrorWeek12": 0.758,
+        "top3LoveWeek0": 0.846,
+        "top3LoveWeek12": 0.846,
+        "randomTop3Love": 0.385,
+        "rankCorrelationWeek0": 0.834,
+        "rankCorrelationWeek12": 0.84
+      },
+      "golosos": {
+        "users": 13,
+        "quizError": 0.828,
+        "profileErrorWeek0": 0.828,
+        "profileErrorWeek12": 0.949,
+        "top3LoveWeek0": 0.641,
+        "top3LoveWeek12": 0.744,
+        "randomTop3Love": 0.044,
+        "rankCorrelationWeek0": 0.886,
+        "rankCorrelationWeek12": 0.89
+      },
+      "equilibrados": {
+        "users": 13,
+        "quizError": 0.675,
+        "profileErrorWeek0": 0.675,
+        "profileErrorWeek12": 0.705,
+        "top3LoveWeek0": 0.692,
+        "top3LoveWeek12": 0.641,
+        "randomTop3Love": 0.103,
+        "rankCorrelationWeek0": 0.846,
+        "rankCorrelationWeek12": 0.861
+      },
+      "burbujas": {
+        "users": 12,
+        "quizError": 0.848,
+        "profileErrorWeek0": 0.848,
+        "profileErrorWeek12": 0.757,
+        "top3LoveWeek0": 0.889,
+        "top3LoveWeek12": 0.889,
+        "randomTop3Love": 0.311,
+        "rankCorrelationWeek0": 0.875,
+        "rankCorrelationWeek12": 0.907
+      },
+      "evita-tanino": {
+        "users": 12,
+        "quizError": 1.04,
+        "profileErrorWeek0": 1.04,
+        "profileErrorWeek12": 1.022,
+        "top3LoveWeek0": 0.528,
+        "top3LoveWeek12": 0.444,
+        "randomTop3Love": 0.269,
+        "rankCorrelationWeek0": 0.629,
+        "rankCorrelationWeek12": 0.652
+      },
+      "solo-cuerpo-importa": {
+        "users": 12,
+        "quizError": 0.869,
+        "profileErrorWeek0": 0.869,
+        "profileErrorWeek12": 1.055,
+        "top3LoveWeek0": 0.833,
+        "top3LoveWeek12": 0.806,
+        "randomTop3Love": 0.102,
+        "rankCorrelationWeek0": 0.772,
+        "rankCorrelationWeek12": 0.821
+      },
+      "curioso-aleatorio": {
+        "users": 12,
+        "quizError": 1.161,
+        "profileErrorWeek0": 1.161,
+        "profileErrorWeek12": 1.206,
+        "top3LoveWeek0": 0.111,
+        "top3LoveWeek12": 0.139,
+        "randomTop3Love": 0.029,
+        "rankCorrelationWeek0": 0.761,
+        "rankCorrelationWeek12": 0.748
+      }
+    },
+    "candidateRulesNotAppCode": {
+      "surprise": {
+        "profileError": {
+          "week0": 0.913,
+          "week1": 0.83,
+          "week2": 0.804,
+          "week4": 0.765,
+          "week8": 0.735,
+          "week12": 0.739
+        },
+        "top3LoveRate": {
+          "week0": 0.657,
+          "week1": 0.687,
+          "week2": 0.69,
+          "week4": 0.663,
+          "week8": 0.697,
+          "week12": 0.683
+        },
+        "usersImproved": 89,
+        "usersWorsened": 0
+      },
+      "attraction": {
+        "profileError": {
+          "week0": 0.913,
+          "week1": 0.83,
+          "week2": 0.803,
+          "week4": 0.765,
+          "week8": 0.734,
+          "week12": 0.74
+        },
+        "top3LoveRate": {
+          "week0": 0.657,
+          "week1": 0.687,
+          "week2": 0.687,
+          "week4": 0.66,
+          "week8": 0.697,
+          "week12": 0.667
+        },
+        "usersImproved": 88,
+        "usersWorsened": 0
+      }
+    }
+  }
+}

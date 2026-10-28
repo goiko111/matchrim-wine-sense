@@ -1,0 +1,101 @@
+{
+  "command": "npx tsx scripts/simulate-matchrim-users284.ts --seed=<n> --out=<dir>",
+  "seeds": {
+    "0x284c0de": {
+      "app": {
+        "profileErrorWeek0": 0.913,
+        "profileErrorWeek12": 0.961,
+        "top3Week0": 0.657,
+        "top3Week12": 0.66,
+        "improved": 29,
+        "worsened": 44
+      },
+      "surprise": {
+        "profileErrorWeek12": 0.739,
+        "top3Week12": 0.683,
+        "improved": 89,
+        "worsened": 0
+      },
+      "attraction": {
+        "profileErrorWeek12": 0.74,
+        "top3Week12": 0.667,
+        "improved": 88,
+        "worsened": 0
+      },
+      "randomTop3": 0.165,
+      "oracleTop3": 0.903
+    },
+    "11": {
+      "app": {
+        "profileErrorWeek0": 1.006,
+        "profileErrorWeek12": 1.042,
+        "top3Week0": 0.537,
+        "top3Week12": 0.543,
+        "improved": 35,
+        "worsened": 42
+      },
+      "surprise": {
+        "profileErrorWeek12": 0.832,
+        "top3Week12": 0.603,
+        "improved": 84,
+        "worsened": 1
+      },
+      "attraction": {
+        "profileErrorWeek12": 0.833,
+        "top3Week12": 0.607,
+        "improved": 83,
+        "worsened": 2
+      },
+      "randomTop3": 0.141,
+      "oracleTop3": 0.88
+    },
+    "222": {
+      "app": {
+        "profileErrorWeek0": 1.001,
+        "profileErrorWeek12": 1.027,
+        "top3Week0": 0.59,
+        "top3Week12": 0.56,
+        "improved": 35,
+        "worsened": 37
+      },
+      "surprise": {
+        "profileErrorWeek12": 0.799,
+        "top3Week12": 0.623,
+        "improved": 86,
+        "worsened": 1
+      },
+      "attraction": {
+        "profileErrorWeek12": 0.799,
+        "top3Week12": 0.623,
+        "improved": 87,
+        "worsened": 1
+      },
+      "randomTop3": 0.14,
+      "oracleTop3": 0.883
+    },
+    "3333": {
+      "app": {
+        "profileErrorWeek0": 0.985,
+        "profileErrorWeek12": 1.042,
+        "top3Week0": 0.573,
+        "top3Week12": 0.567,
+        "improved": 29,
+        "worsened": 42
+      },
+      "surprise": {
+        "profileErrorWeek12": 0.816,
+        "top3Week12": 0.61,
+        "improved": 84,
+        "worsened": 0
+      },
+      "attraction": {
+        "profileErrorWeek12": 0.817,
+        "top3Week12": 0.61,
+        "improved": 83,
+        "worsened": 0
+      },
+      "randomTop3": 0.144,
+      "oracleTop3": 0.9
+    }
+  }
+}
