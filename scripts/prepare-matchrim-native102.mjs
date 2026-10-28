@@ -5,20 +5,18 @@ import { createHash } from 'node:crypto';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { build } from 'vite';
 import react from '@vitejs/plugin-react-swc';
+import { assertOwnLeases, runnerOwner } from './matchrim-runner-owner.mjs';
 
 const repo = process.cwd();
 const root = path.resolve(process.argv[2] || 'qa-artifacts/native102-20261021/final-r1');
 const candidateBuild = Number(process.argv[3] || '101');
 assert(Number.isSafeInteger(candidateBuild) && candidateBuild > 100, 'Uploaded100 is frozen; use a new candidate number');
-const owner = '019f9da7-ae96-7c60-a1b4-fafb75b04d6d';
+const owner = runnerOwner();
 const sha = value => createHash('sha256').update(value).digest('hex');
 const git = (...args) => execFileSync('git', args, { encoding: 'utf8' }).trim();
 const guard = () => {
   const leases = JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json')).leases;
-  for (const [resource, key] of [['heavy-local', 'MATCHRIM102_HEAVY_LEASE_ID'], ['writer-matchrim-native99', 'MATCHRIM102_WRITER_LEASE_ID']]) {
-    const lease = leases[resource];
-    assert(lease?.owner === owner && lease.leaseId === process.env[key] && lease.reviewAfter * 1000 > Date.now(), resource);
-  }
+  assertOwnLeases(leases, [['heavy-local', 'MATCHRIM102_HEAVY_LEASE_ID'], ['writer-matchrim-native99', 'MATCHRIM102_WRITER_LEASE_ID']]);
   const disk = fs.statfsSync(path.dirname(root));
   assert(disk.bavail * disk.bsize >= 5 * 1024 ** 3, 'LOW_DISK_HOLD');
 };
@@ -29,7 +27,7 @@ const files = git('ls-files', '--cached', '--others', '--exclude-standard', '--'
 const fingerprints = () => Object.fromEntries(files.map(file => [file, sha(fs.readFileSync(file))]));
 const sourceFingerprints = fingerprints();
 fs.mkdirSync(root, { mode: 0o700 });
-const receipt = { startedUTC: new Date().toISOString(), commit, sourceFingerprints,
+const receipt = { startedUTC: new Date().toISOString(), runnerOwner: owner, commit, sourceFingerprints,
   sourceDirty: Boolean(git('status', '--porcelain=v1')), build: candidateBuild, version: '1.0', root,
   noWebPublish: true, noBackendDeployment: true, noTestFlightUpload: true,
   masterConnectionActive: false, hostedMasterReferenceActive: true, hostedMasterAutomaticLookups: false,

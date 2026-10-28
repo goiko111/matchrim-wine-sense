@@ -4,21 +4,19 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { execFileSync, spawn } from 'node:child_process';
+import { assertOwnLeases, runnerOwner } from './matchrim-runner-owner.mjs';
 
 const repo = process.cwd(), prep = JSON.parse(fs.readFileSync(path.resolve(process.argv[2], 'preparation.json')));
 const out = path.resolve(process.argv[3]), developer = '/Applications/Xcode-26.0.1.app/Contents/Developer';
-assert(path.dirname(out) === path.join(repo, 'qa-artifacts/native218-20261025') && /^compile(?:110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126)-r\d+$/.test(path.basename(out)) && !fs.existsSync(out));
-const sha = value => createHash('sha256').update(value).digest('hex');
+assert(path.dirname(out) === path.join(repo, 'qa-artifacts/native218-20261025') && /^compile(?:110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126|127)-r\d+$/.test(path.basename(out)) && !fs.existsSync(out));
+const sha = value => createHash('sha256').update(value).digest('hex'), owner = runnerOwner();
 const guard = () => {
   const leases = JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json')).leases;
-  for (const [resource, key] of [['heavy-local', 'MATCHRIM102_HEAVY_LEASE_ID'], ['writer-matchrim-native99', 'MATCHRIM102_WRITER_LEASE_ID']]) {
-    const lease = leases[resource];
-    assert(lease?.owner === '019f9da7-ae96-7c60-a1b4-fafb75b04d6d' && lease.leaseId === process.env[key] && lease.reviewAfter * 1000 > Date.now(), resource);
-  }
+  assertOwnLeases(leases, [['heavy-local', 'MATCHRIM102_HEAVY_LEASE_ID'], ['writer-matchrim-native99', 'MATCHRIM102_WRITER_LEASE_ID']]);
   const disk = fs.statfsSync(repo); assert(Number(disk.bavail) * Number(disk.bsize) >= 5 * 1024 ** 3, 'LOW_DISK_HOLD');
 };
 const verify = app => {
-  assert(prep.passed && [110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126].includes(prep.build) && !prep.sourceDirty && prep.typecheck === 'PASS');
+  assert(prep.passed && [110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127].includes(prep.build) && !prep.sourceDirty && prep.typecheck === 'PASS');
   for (const [file, expected] of Object.entries(prep.sourceFingerprints)) assert.equal(sha(fs.readFileSync(path.join(repo, file))), expected, file);
   if (app) {
     for (const [file, expected] of Object.entries(prep.webResources)) assert.equal(sha(fs.readFileSync(path.join(app, 'public', file))), expected, file);
@@ -31,7 +29,7 @@ const args = ['build', '-quiet', '-workspace', path.join(prep.production, 'ios/A
   '-derivedDataPath', out + '/derived', '-resultBundlePath', out + '/result.xcresult',
   '-disableAutomaticPackageResolution', '-skipPackageUpdates', '-jobs', '1', 'ARCHS=arm64', 'ONLY_ACTIVE_ARCH=YES',
   'CODE_SIGNING_ALLOWED=NO', `CURRENT_PROJECT_VERSION=${prep.build}`];
-const receipt = { startedUTC: new Date().toISOString(), passed: false, sourceCommit: prep.commit, sourceDirty: prep.sourceDirty,
+const receipt = { startedUTC: new Date().toISOString(), passed: false, runnerOwner: owner, sourceCommit: prep.commit, sourceDirty: prep.sourceDirty,
   build: prep.build, args, leases: { heavy: process.env.MATCHRIM102_HEAVY_LEASE_ID, writer: process.env.MATCHRIM102_WRITER_LEASE_ID },
   scope: 'Unsigned arm64 iOS Simulator compile only; no boot/install/launch, UIKit, recognition, catalogue validation, signing, export or TestFlight.',
   app: null, stopped: null, result: null, finishedUTC: null };

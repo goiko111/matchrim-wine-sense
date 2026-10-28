@@ -3,6 +3,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { execFileSync, spawn, spawnSync } from 'node:child_process';
+import { assertOwnLeases, runnerOwner } from './matchrim-runner-owner.mjs';
 
 const repo = process.cwd(), out = path.resolve(process.argv[2]);
 const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close', 'rescan', 'discard-visual', 'quiz', 'quiz-recovery', 'result-actions', 'gallery-cancel', 'master-catalogue'].includes(mode));
@@ -19,27 +20,25 @@ if (mode === 'result-actions') assert(previous?.passed && previous.scope.include
 if (previous) assert(previous.sourceCommit === prep.commit && previous.build === prep.build && (previous.freshContainerInstalled === true || previous.reusedOwnQAContainer)
   && previous.liveAccountsUsed === false && previous.catalogueDataInjected === false && previous.ownAppTerminated === true,
   'ONLY_EXACT_OWN_PREVIOUS_ANONYMOUS_CONTAINER_MAY_BE_REUSED');
-const bundleId = previous?.bundleId || `wine.matchrim.qa${prep.build}offline220v` + path.basename(out).match(/r(\d+)$/)[1], owner = '019f9da7-ae96-7c60-a1b4-fafb75b04d6d';
+const bundleId = previous?.bundleId || `wine.matchrim.qa${prep.build}offline220v` + path.basename(out).match(/r(\d+)$/)[1], owner = runnerOwner();
 const env = { ...process.env, DEVELOPER_DIR: '/Applications/Xcode-26.0.1.app/Contents/Developer' };
 const sha = value => createHash('sha256').update(value).digest('hex');
 const guard = () => {
   const leases = JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json')).leases;
-  for (const [resource, key] of [['heavy-local', 'MATCHRIM102_HEAVY_LEASE_ID'], ['ios-simulator', 'MATCHRIM104_SIMULATOR_LEASE_ID'],
-    ['mac-desktop', 'MATCHRIM220_DESKTOP_LEASE_ID'], ['writer-matchrim-native99', 'MATCHRIM102_WRITER_LEASE_ID']]) {
-    const lease = leases[resource]; assert(lease?.owner === owner && lease.leaseId === env[key] && lease.reviewAfter * 1000 > Date.now(), resource);
-  }
+  assertOwnLeases(leases, [['heavy-local', 'MATCHRIM102_HEAVY_LEASE_ID'], ['ios-simulator', 'MATCHRIM104_SIMULATOR_LEASE_ID'],
+    ['mac-desktop', 'MATCHRIM220_DESKTOP_LEASE_ID'], ['writer-matchrim-native99', 'MATCHRIM102_WRITER_LEASE_ID']], env);
   const disk = fs.statfsSync(repo); assert(Number(disk.bavail) * Number(disk.bsize) >= 5 * 1024 ** 3, 'LOW_DISK_HOLD');
 };
 const run = args => { guard(); return execFileSync('/usr/bin/xcrun', args, { env, encoding: 'utf8', timeout: 120000 }); };
 const verifySource = () => {
-  assert(prep.passed && compiled.passed && [110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126].includes(prep.build) && compiled.sourceCommit === prep.commit);
+  assert(prep.passed && compiled.passed && [110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127].includes(prep.build) && compiled.sourceCommit === prep.commit);
   for (const [file, hash] of Object.entries(prep.sourceFingerprints)) assert.equal(sha(fs.readFileSync(path.join(repo, file))), hash, file);
   for (const [file, hash] of Object.entries(prep.webResources)) assert.equal(sha(fs.readFileSync(appSource + '/public/' + file)), hash, file);
   assert.equal(sha(fs.readFileSync(appSource + '/App')), compiled.app.executableSHA256);
 };
 guard(); verifySource(); fs.mkdirSync(out, { mode: 0o700 });
 const receipt = { startedUTC: new Date().toISOString(), passed: false, sourceCommit: prep.commit, build: prep.build, bundleId, device,
-  leases: { heavy: env.MATCHRIM102_HEAVY_LEASE_ID, simulator: env.MATCHRIM104_SIMULATOR_LEASE_ID, desktop: env.MATCHRIM220_DESKTOP_LEASE_ID, writer: env.MATCHRIM102_WRITER_LEASE_ID },
+  runnerOwner: owner, leases: { heavy: env.MATCHRIM102_HEAVY_LEASE_ID, simulator: env.MATCHRIM104_SIMULATOR_LEASE_ID, desktop: env.MATCHRIM220_DESKTOP_LEASE_ID, writer: env.MATCHRIM102_WRITER_LEASE_ID },
   scope: `Compiled${prep.build} native app, ${previous ? 'exact own previously isolated anonymous' : 'fresh'} QA container, external network denied by CSP plus early JS guards. ${mode === 'master-catalogue'
     ? 'Synthetic unsigned offline user, actual native OCR input plus manual identity correction, retained real catalogue payloads intercepted locally, explicit lookup/confirmation and vintage invalidation. No real account or live backend call.' : mode === 'gallery-cancel'
     ? 'Actual native gallery picker opening/cancellation/retry only; no photo selection, File injection, OCR, camera capture, Photos permission acceptance or account.' : mode === 'result-actions'
