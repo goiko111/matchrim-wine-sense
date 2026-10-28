@@ -6,7 +6,7 @@ import { execFileSync, spawn, spawnSync } from 'node:child_process';
 import { assertOwnLeases, runnerOwner } from './matchrim-runner-owner.mjs';
 
 const repo = process.cwd(), out = path.resolve(process.argv[2]);
-const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close', 'rescan', 'discard-visual', 'quiz', 'quiz-recovery', 'result-actions', 'gallery-cancel', 'master-catalogue'].includes(mode));
+const mode = process.argv[3] || 'all'; assert(['all', 'correction', 'close', 'rescan', 'discard-visual', 'quiz', 'quiz-recovery', 'result-actions', 'gallery-cancel', 'master-catalogue', 'master-vintage'].includes(mode));
 if (mode === 'result-actions') assert(process.argv[6], 'RESULT_ACTIONS_REQUIRES_OWN_PREVIOUS_COMPLETED_QUIZ');
 const sizeMode = process.argv[7] || 'both'; assert(['both', 'normal', 'max'].includes(sizeMode));
 if (mode === 'discard-visual') assert.equal(sizeMode, 'max', 'DISCARD_VISUAL_REQUIRES_ACTUAL_MAX_TEXT');
@@ -39,14 +39,15 @@ const verifySource = () => {
 guard(); verifySource(); fs.mkdirSync(out, { mode: 0o700 });
 const receipt = { startedUTC: new Date().toISOString(), passed: false, sourceCommit: prep.commit, build: prep.build, bundleId, device,
   runnerOwner: owner, leases: { heavy: env.MATCHRIM102_HEAVY_LEASE_ID, simulator: env.MATCHRIM104_SIMULATOR_LEASE_ID, desktop: env.MATCHRIM220_DESKTOP_LEASE_ID, writer: env.MATCHRIM102_WRITER_LEASE_ID },
-  scope: `Compiled${prep.build} native app, ${previous ? 'exact own previously isolated anonymous' : 'fresh'} QA container, external network denied by CSP plus early JS guards. ${mode === 'master-catalogue'
+  scope: `Compiled${prep.build} native app, ${previous ? 'exact own previously isolated anonymous' : 'fresh'} QA container, external network denied by CSP plus early JS guards. ${mode === 'master-vintage'
+    ? 'Synthetic unsigned offline user, actual native OCR input plus manual identity correction to first20 img-020 (label hint 2000, catalogue rows only 2020), retained ledger-checked detail and a search page derived from it, intercepted locally; explicit lookup, human correction to 2020 and a second explicit lookup. No real account or live backend call.' : mode === 'master-catalogue'
     ? 'Synthetic unsigned offline user, actual native OCR input plus manual identity correction, retained real catalogue payloads intercepted locally, explicit lookup/confirmation and vintage invalidation. No real account or live backend call.' : mode === 'gallery-cancel'
     ? 'Actual native gallery picker opening/cancellation/retry only; no photo selection, File injection, OCR, camera capture, Photos permission acceptance or account.' : mode === 'result-actions'
     ? 'Actual retained anonymous quiz result actions: scan/restaurant destinations, unaccepted privacy, local QR disclosure, restart/reset and relaunch; no share/copy activation, account or OCR.' : mode === 'quiz'
     ? 'Actual anonymous 20-question quiz, local profile/Home and restart retention only; no account, OCR or gallery test in this mode.' : mode === 'quiz-recovery'
     ? 'Explicit QA-only React state fault injection in the compiled native quiz: last question with only answer20; actual completion handler must return to question1 without a saved profile. Not a naturally reproduced user corruption or full20question traversal.'
     : 'Actual local AppleVision photo input via explicit QA-only injection, NOT native gallery. Anonymous navigation/correction/in-batch retention/auth-boundary only.'} Not remote save/Bodega persistence, prior linked-fiche invalidation, 200-label recognition or TestFlight approval.`, stages: [],
-  liveAccountsUsed: false, catalogueDataInjected: mode === 'master-catalogue', syntheticAccount: mode === 'master-catalogue',
+  liveAccountsUsed: false, catalogueDataInjected: ['master-catalogue', 'master-vintage'].includes(mode), syntheticAccount: ['master-catalogue', 'master-vintage'].includes(mode),
   modelCallsPermitted: 0, webPublished: false, uploaded: false };
 let originalSize;
 try {
@@ -87,6 +88,21 @@ try {
       searchSHA256: sha(fs.readFileSync(ledger + '02-BODY.json')), detailSHA256: sha(fs.readFileSync(ledger + '03-BODY.json')),
       networkCallsAllowed: 0, realAccountUsed: false };
   }
+  if (mode === 'master-vintage') {
+    const extra = fs.readFileSync('scripts/matchrim-master283-offline.js');
+    fs.writeFileSync(app + '/public/qa283-guard.js', extra, { flag: 'wx' });
+    const guarded = fs.readFileSync(app + '/public/index.html', 'utf8');
+    fs.writeFileSync(app + '/public/index.html', guarded.replace('<script src="/qa220-guard.js"></script>',
+      '<script src="/qa220-guard.js"></script><script src="/qa283-guard.js"></script>'));
+    // Detail hash is the one retained in the first20-279 ledger; the search page is derived from it.
+    const detail = 'qa-artifacts/first20-274-20261027/live-r2/19-BODY.json', search = 'qa-fixtures/native283/qa283-search.json';
+    assert.equal(sha(fs.readFileSync(detail)), 'e9ca151f93703aa58480cd013200845958bd1fdb33bb5cbdaf50ed6420c33a0e', 'RETAINED_020_DETAIL');
+    fs.copyFileSync(search, app + '/public/qa283-search.json');
+    fs.copyFileSync(detail, app + '/public/qa283-detail.json');
+    receipt.vintage283 = { guardSHA256: sha(extra), syntheticUser: '00000000-0000-4000-8000-000000000283', mantalakWineId: 217477,
+      searchSHA256: sha(fs.readFileSync(search)), searchDerivedFromDetail: true, detailSHA256: sha(fs.readFileSync(detail)),
+      networkCallsAllowed: 0, realAccountUsed: false };
+  }
   const photo = 'qa-artifacts/catalogue100-20261021/native-prepared-ocr-r2/prepared/img-061.jpg';
   fs.copyFileSync(photo, app + '/public/qa220-label.jpg');
   receipt.qaOnlyChanges = { bundleId, csp, indexSHA256: sha(fs.readFileSync(app + '/public/index.html')), guardSHA256: sha(guardSource), photo: { file: photo, sha256: sha(fs.readFileSync(photo)) } };
@@ -107,7 +123,7 @@ try {
   const template = 'qa-artifacts/native99-20261021/native-audit-project';
   fs.cpSync(template + '/Probe97.xcodeproj', project + '/Probe97.xcodeproj', { recursive: true });
   const plan = JSON.parse(fs.readFileSync(template + '/Probe97.xctestplan'));
-  const masterMax = mode === 'master-catalogue' && sizeMode === 'max';
+  const masterMax = ['master-catalogue', 'master-vintage'].includes(mode) && sizeMode === 'max';
   const testSeconds = mode === 'quiz' || masterMax ? 360 : 240;
   plan.defaultOptions.defaultTestExecutionTimeAllowance = testSeconds; plan.defaultOptions.maximumTestExecutionTimeAllowance = testSeconds;
   fs.writeFileSync(project + '/Probe97.xctestplan', JSON.stringify(plan, null, 2) + '\n');
@@ -136,6 +152,8 @@ try {
     else args.push('-skip-testing:Probe97UITests/MatchrimOffline220Tests/testNativeGalleryPickerCancellation');
     if (mode === 'master-catalogue') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testNativeMasterCatalogue259');
     else args.push('-skip-testing:Probe97UITests/MatchrimOffline220Tests/testNativeMasterCatalogue259');
+    if (mode === 'master-vintage') args.push('-only-testing:Probe97UITests/MatchrimOffline220Tests/testNativeMasterVintageRows283');
+    else args.push('-skip-testing:Probe97UITests/MatchrimOffline220Tests/testNativeMasterVintageRows283');
     const fd = fs.openSync(root + '/runtime.log', 'wx', 0o600);
     const child = spawn(env.DEVELOPER_DIR + '/usr/bin/xcodebuild', args, { env, stdio: ['ignore', fd, fd] });
     let stopped = null;

@@ -105,6 +105,76 @@ final class MatchrimOffline220Tests: XCTestCase {
         capture(app, "master259-vintage-edit-invalidates-link")
     }
 
+    @MainActor func testNativeMasterVintageRows283() throws {
+        continueAfterFailure = false
+        let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")
+        app.terminate(); app.launch(); XCUIDevice.shared.orientation = .portrait
+        defer { capture(app, "vintage283-end") }
+        let skip = app.buttons["Saltar guía"].firstMatch
+        if skip.waitForExistence(timeout: 2) && skip.isHittable { skip.tap() }
+        XCTAssertTrue(app.buttons["Buscar vino o bodega"].waitForExistence(timeout: 15))
+        try tap(app.links["Escanear"].firstMatch, app)
+        try tap(app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Botellas")).firstMatch, app)
+        let privacy = app.descendants(matching: .any).matching(NSPredicate(format: "label == %@", "He leído el aviso de privacidad del escáner")).firstMatch
+        if privacy.waitForExistence(timeout: 3) { try tap(privacy, app); try tap(app.buttons["Entiendo y continuar"].firstMatch, app) }
+        try tap(app.switches["Una etiqueta"].firstMatch, app)
+        try tap(app.buttons["QA220 cargar etiqueta local"].firstMatch, app)
+        let correct = app.buttons["Corregir identificación"].firstMatch
+        XCTAssertTrue(correct.waitForExistence(timeout: 45) || app.buttons["Revisar vinos"].firstMatch.exists)
+        if !correct.exists { try tap(app.buttons["Revisar vinos"].firstMatch, app) }
+        try tap(correct, app)
+        // First20 img-020: the label hint reads2000; the catalogue only has2020 rows.
+        try fill(app.textFields["Vino"].firstMatch, "Pinot Blanc", app)
+        try fill(app.textFields["Bodega"].firstMatch, "De Lozey", app)
+        try fill(app.textFields["Añada (opcional)"].firstMatch, "2000", app)
+        try tap(app.buttons["Aplicar corrección"].firstMatch, app)
+        XCTAssertTrue(app.staticTexts["QA283 consultas locales: 0"].firstMatch.exists, "No automatic master lookup")
+        let search = app.buttons["Buscar este vino en Winerim"].firstMatch
+        try tap(search, app)
+        let choose = app.buttons["Esta es mi referencia"].firstMatch
+        XCTAssertTrue(choose.waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["QA283 consultas locales: 2"].firstMatch.exists)
+        try tap(choose, app)
+        let title = app.staticTexts["Vino encontrado; faltan datos para compararlo contigo"].firstMatch
+        let rowsOnly = app.staticTexts["Winerim tiene valores de sabor de esta referencia solo para la añada 2020. No los aplicamos a otra cosecha ni a una sin indicar; además, la ficha no permite distinguir cuáles tienen una fuente y cuáles son valores de relleno. No los usamos para puntuar ni aprender tus gustos."].firstMatch
+        let otherVintage = app.staticTexts["Esta ficha solo recoge la añada 2020 y tu botella figura como de 2000. Si la añada no es correcta, corrígela en «Ficha e identificación» y vuelve a buscar; no usaremos datos de otra cosecha como si fueran de 2000."].firstMatch
+        try tap(title, app, activate: false)
+        XCTAssertTrue(rowsOnly.exists, "Year-only rows are not described as missing data")
+        XCTAssertTrue(otherVintage.exists, "The bottle year is kept and correction is offered")
+        XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "no incluye los datos")).firstMatch.exists)
+        XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "tampoco")).firstMatch.exists)
+        capture(app, "vintage283-2000-rows-only-2020")
+        reveal(otherVintage, app); capture(app, "vintage283-2000-next-step")
+        try tap(app.buttons["Cerrar"].firstMatch, app)
+        try tap(app.buttons["Vinos (1)"].firstMatch, app)
+        let row = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Abrir detalle de Pinot Blanc")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 8))
+        XCTAssertTrue(row.label.contains("Añada indicada: 2000") && row.label.contains("Sin calcular") && row.label.contains("Datos de sabor solo de 2020"), row.label)
+        capture(app, "vintage283-batch-row-2000")
+        try tap(app.buttons["Revisar vinos"].firstMatch, app)
+        try tap(app.buttons["Corregir identificación"].firstMatch, app)
+        try fill(app.textFields["Añada (opcional)"].firstMatch, "2020", app)
+        try tap(app.buttons["Aplicar corrección"].firstMatch, app)
+        try tap(search, app, activate: false)
+        XCTAssertFalse(title.exists, "A corrected harvest needs a new explicit lookup")
+        XCTAssertTrue(app.staticTexts["QA283 consultas locales: 2"].firstMatch.exists, "Correction must not retry lookup")
+        try tap(search, app)
+        XCTAssertTrue(choose.waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts["QA283 consultas locales: 4"].firstMatch.exists)
+        try tap(choose, app)
+        let exact = app.staticTexts["Winerim tiene esta referencia y valores de sabor para tu añada de 2020, pero no permite distinguir cuáles tienen una fuente y cuáles son valores de relleno. No los usamos para puntuar ni aprender tus gustos."].firstMatch
+        try tap(title, app, activate: false)
+        XCTAssertTrue(exact.exists, "Human-corrected2020 reads the exact row, still without affinity")
+        XCTAssertTrue(app.staticTexts["La añada figura en el catálogo. Falta completar y respaldar su ficha sensorial; confirmar el nombre no resuelve ese dato."].firstMatch.exists)
+        capture(app, "vintage283-2020-exact-unbacked")
+        reveal(exact, app); capture(app, "vintage283-2020-description")
+        try tap(app.buttons["Cerrar"].firstMatch, app)
+        try tap(app.buttons["Vinos (1)"].firstMatch, app)
+        XCTAssertTrue(row.waitForExistence(timeout: 8))
+        XCTAssertTrue(row.label.contains("Sin calcular") && row.label.contains("Datos de sabor sin respaldo suficiente"), row.label)
+        capture(app, "vintage283-batch-row-2020")
+    }
+
     @MainActor func testNativeGalleryPickerCancellation() throws {
         continueAfterFailure = false
         let app = XCUIApplication(bundleIdentifier: "wine.matchrim.qa110offline220v1")
@@ -484,6 +554,19 @@ final class MatchrimOffline220Tests: XCTestCase {
             return navigation.frame.minY
         }
         return app.frame.maxY
+    }
+    @MainActor private func reveal(_ element: XCUIElement, _ app: XCUIApplication) {
+        // Long MAX paragraphs may exceed the sheet; bring their first line into view for the capture.
+        let body = app.otherElements.matching(NSPredicate(format: "label BEGINSWITH %@", "Contenido de la región ")).firstMatch
+        for _ in 0..<12 {
+            let top = body.exists ? body.frame.minY : 0, bottom = body.exists ? body.frame.maxY : app.frame.height
+            if element.frame.minY >= top && element.frame.minY + 60 <= bottom { return }
+            let downward = element.frame.minY < top
+            let origin = body.exists && body.frame.height > 60 ? body : app
+            let from = origin.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: downward ? 0.3 : 0.7))
+            let to = origin.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: downward ? 0.6 : 0.4))
+            from.press(forDuration: 0.01, thenDragTo: to, withVelocity: .slow, thenHoldForDuration: 0.2)
+        }
     }
     @MainActor private func swipeContent(_ app: XCUIApplication, downward: Bool = false) {
         // AX main can include offscreen content. Anchor to the actual viewport,

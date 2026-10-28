@@ -1,0 +1,29 @@
+{
+  "results": [
+    {
+      "mantalakWineId": 217477,
+      "name": "Pinot Blanc",
+      "winery": "De Lozey",
+      "type": "espumoso",
+      "country": "FR",
+      "region": "Champagne",
+      "grapes": [
+        "Pinot Blanc"
+      ],
+      "vintages": [
+        2020
+      ],
+      "photo": "https://app.winerim.com/images/wines/6ace47aebfc759.27041494_pending-photo-20109-c14f0d20a2276b3c.png",
+      "slugname": "Pinot-Blanc-De-Lozey-FR",
+      "webUrl": "https://web.winerim.com/matchrim/store/377668/Pinot-Blanc-De-Lozey-FR_2020",
+      "id": 377668,
+      "representativePublicId": 377668,
+      "tastingAttributes": {}
+    }
+  ],
+  "count": 1,
+  "total": 1,
+  "page": 1,
+  "limit": 10,
+  "pageCount": 1
+}
