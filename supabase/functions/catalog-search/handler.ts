@@ -7,7 +7,8 @@ const json = (status: number, body: unknown) =>
   });
 
 // The gateway already verified the JWT (verify_jwt = true in config.toml); we only
-// read who it belongs to, so the backend can rate-limit per user and not per edge IP.
+// read who it belongs to. The project anon key is also a valid JWT but has no user `sub`:
+// it must not be able to use the catalogue secret, and quotas are per user.
 const userIdFromJwt = (req: Request): string | null => {
   const token = req.headers.get('Authorization')?.replace(/^Bearer\s+/i, '');
   if (!token) return null;
@@ -31,6 +32,9 @@ export const createHandler = (apiUrl: string, searchKey: string, fetchImpl: type
       const body = await req.json().catch(() => null);
       const input = body && typeof body === 'object' ? (body as Record<string, unknown>) : {};
 
+      const userId = userIdFromJwt(req);
+      if (!userId) return json(401, { error: 'A signed-in user is required' });
+
       const query = String(input.query ?? '').trim();
       if (query.length < 2) return json(200, { results: [], count: 0 });
 
@@ -45,8 +49,7 @@ export const createHandler = (apiUrl: string, searchKey: string, fetchImpl: type
       if (Number.isFinite(limit) && limit > 0) upstream.searchParams.set('limit', String(Math.min(limit, 20)));
 
       const headers: Record<string, string> = { Accept: 'application/json', 'X-Matchrim-Key': searchKey };
-      const userId = userIdFromJwt(req);
-      if (userId) headers['X-Matchrim-User'] = userId;
+      headers['X-Matchrim-User'] = userId;
 
       const upstreamRes = await fetchImpl(upstream.toString(), { method: 'GET', headers });
       const bodyText = await upstreamRes.text();

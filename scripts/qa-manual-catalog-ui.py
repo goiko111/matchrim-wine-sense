@@ -99,7 +99,7 @@ class ManualCatalogUi(unittest.TestCase):
                 self.catalog_calls.append(body)
                 if body["query"] == "upstreamfail":
                     route.fulfill(status=503, headers=headers, json={"error": "local QA upstream failure"})
-                elif body["query"] in {"zzznomatch", "geminionly", "Vino Inventado QA"}:
+                elif body["query"] in {"zzznomatch", "geminionly"}:
                     route.fulfill(status=200, headers=headers, json={"results": [], "count": 0})
                 elif body["query"] == "unlistedonly":
                     route.fulfill(status=200, headers=headers, json={"results": [UNLISTED_WINE], "count": 1, "limit": 6})
@@ -221,7 +221,7 @@ class ManualCatalogUi(unittest.TestCase):
         self.capture(page, "03-empty")
         name.fill("upstreamfail")
         # Catalogue down: only the unverified fallback is offered, marked as such.
-        expect(dialog.get_by_text("No está en el catálogo de Winerim. Sugerencias sin verificar:", exact=True)).to_be_visible()
+        expect(dialog.get_by_text("No he podido consultar el catálogo de Winerim. Sugerencias sin verificar:", exact=True)).to_be_visible()
         expect(dialog.get_by_text("No verificado", exact=True)).to_be_visible()
         self.capture(page, "04-upstream-failure")
 
@@ -251,6 +251,9 @@ class ManualCatalogUi(unittest.TestCase):
         expect(dialog.get_by_text("Sugerencias sin verificar:", exact=False)).to_be_visible()
         dialog.get_by_role("button", name=re.compile("Vino Inventado QA")).click()
         expect(dialog.get_by_text("Sugerencia no verificada", exact=True)).to_be_visible()
+        # The re-search of the picked name now finds catalogue wines (mock): the pick must stay blocked anyway.
+        page.wait_for_timeout(1200)
+        self.assertTrue(any(c["query"] == "Vino Inventado QA" for c in self.catalog_calls))
         expect(dialog.get_by_role("button", name="Mi Bodega", exact=True)).to_be_disabled()  # until the user confirms the name
         dialog.get_by_role("button", name="He revisado el nombre", exact=True).click()
         dialog.get_by_role("button", name="Mi Bodega", exact=True).click()

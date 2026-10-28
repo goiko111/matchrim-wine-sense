@@ -62,3 +62,13 @@ Deno.test('word order is the backend\'s business: the query goes through as type
   await handle(post({ query: 'enea prado' }));
   assertEquals(new URL(calls[0].url).searchParams.get('q'), 'enea prado');
 });
+
+Deno.test('a token without a user (the project anon key) never reaches the backend', async () => {
+  const { calls, handle } = setup();
+  const anonKey = `x.${btoa(JSON.stringify({ role: 'anon' }))}.y`;
+  for (const auth of [`Bearer ${anonKey}`, '', 'Bearer not-a-jwt']) {
+    const res = await handle(post({ query: 'muga' }, auth));
+    assertEquals(res.status, 401);
+  }
+  assertEquals(calls.length, 0);
+});

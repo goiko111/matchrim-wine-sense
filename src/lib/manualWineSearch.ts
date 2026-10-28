@@ -89,6 +89,8 @@ export type ManualWineSearchOutcome = {
 export interface ManualWineSearchDeps {
   searchCatalog: (query: string, vintage: string | undefined) => Promise<CatalogSearchResult[]>;
   searchFallback: (query: string) => Promise<RawFallbackWine[]>;
+  // The caller moved on: do not spend the legacy (LLM) lookup on an answer nobody will read.
+  isCancelled?: () => boolean;
 }
 
 /**
@@ -109,6 +111,8 @@ export const searchManualWine = async (
   } catch {
     catalogFailed = true;
   }
+
+  if (deps.isCancelled?.()) return { suggestions: [], source: 'none', catalogFailed };
 
   try {
     const proposals = (await deps.searchFallback(query)).filter((wine) => wine?.name).map(toUnverifiedSuggestion);

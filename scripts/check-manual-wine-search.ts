@@ -51,4 +51,10 @@ assert.deepEqual([broken.source, broken.catalogFailed], ['none', true]);
 const junk = await searchManualWine(deps(async () => [wine({ mantalakWineId: 0 }), wine({ name: '' })], async () => []), 'q');
 assert.equal(junk.source, 'none');
 
+// Cancelled while the catalogue was answering: the legacy lookup is not even started.
+fallbackCalls = 0;
+const cancelled = await searchManualWine({ ...deps(async () => []), isCancelled: () => true }, 'muga');
+assert.equal(cancelled.source, 'none');
+assert.equal(fallbackCalls, 0);
+
 console.log('Manual wine search checks passed');

@@ -201,6 +201,7 @@ const MyWines = () => {
   const [statusFilter, setStatusFilter] = useState<WineSection>(initialSection);
   const [manualWineSuggestions, setManualWineSuggestions] = useState<WineSuggestion[]>([]);
   const [manualWineLookupStatus, setManualWineLookupStatus] = useState<ManualWineLookupStatus>('idle');
+  const [manualWineCatalogFailed, setManualWineCatalogFailed] = useState(false);
   const [manualWineLookupSource, setManualWineLookupSource] = useState<'catalog' | 'unverified' | 'none'>('none');
   const [manualWineNameConfirmed, setManualWineNameConfirmed] = useState(false);
   const [manualWineSelectedFromResults, setManualWineSelectedFromResults] = useState(false);
@@ -243,11 +244,15 @@ const MyWines = () => {
     manualWineSuggestions.length === 0 &&
     !manualWineNameConfirmed &&
     !(manualWineSelectedFromResults && manualWineCatalogue);
+  // An unverified pick stays blocked until confirmed, whatever a later re-search shows.
+  const manualWineUnverifiedPickPending =
+    showAddDialog && manualWineSelectedFromResults && !manualWineCatalogue && !manualWineNameConfirmed;
   const manualWineLookupPending = showAddDialog && manualWineName.length >= 3 && manualWineLookupStatus === 'loading';
   const canContinueManualWine =
     manualWineName.length >= 2 &&
     !manualWineLookupPending &&
-    !manualWineLookupNeedsConfirmation;
+    !manualWineLookupNeedsConfirmation &&
+    !manualWineUnverifiedPickPending;
   const purchaseDialogMode: WineStatus = statusFilter === 'favorites' || statusFilter === 'rejected'
     ? 'wishlist'
     : statusFilter;
@@ -316,6 +321,7 @@ const MyWines = () => {
               if (error) throw error;
               return (data?.results || []) as CatalogSearchResult[];
             },
+            isCancelled: () => cancelled,
             searchFallback: async (text) => {
               const { data, error } = await supabase.functions.invoke('search-wines', {
                 body: { query: text, limit: 6 },
@@ -332,6 +338,7 @@ const MyWines = () => {
 
         setManualWineSuggestions(outcome.suggestions);
         setManualWineLookupSource(outcome.source);
+        setManualWineCatalogFailed(outcome.catalogFailed);
         setManualWineLookupStatus(outcome.source === 'none' && outcome.catalogFailed ? 'error' : 'done');
       } catch (error) {
         if (cancelled) return;
@@ -511,7 +518,7 @@ const MyWines = () => {
     if (!canContinueManualWine) {
       if (manualWineLookupPending) {
         toast.info("Espera un momento: estoy verificando el nombre del vino");
-      } else if (manualWineLookupNeedsConfirmation) {
+      } else if (manualWineLookupNeedsConfirmation || manualWineUnverifiedPickPending) {
         toast.error("Confirma que has revisado el nombre del vino antes de continuar");
       } else {
         toast.error("Escribe el nombre del vino");
@@ -1831,7 +1838,9 @@ const MyWines = () => {
                               <Search className="h-4 w-4 text-primary" />
                             )}
                             {manualWineLookupSource === 'unverified'
-                              ? 'No está en el catálogo de Winerim. Sugerencias sin verificar:'
+                              ? (manualWineCatalogFailed
+                                ? 'No he podido consultar el catálogo de Winerim. Sugerencias sin verificar:'
+                                : 'No está en el catálogo de Winerim. Sugerencias sin verificar:')
                               : 'Coincidencias encontradas'}
                           </div>
                           <div className="grid gap-2">
