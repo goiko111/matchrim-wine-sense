@@ -1,0 +1,445 @@
+{
+ "pbOcr": "qa-artifacts/plazablanca285-20261028/ocr-vocab-x2",
+ "scope": "Offline closed-set text ranking from retained Apple Vision OCR; no network, model or catalogue read. Not a global-catalogue or real-photo measurement.",
+ "inputsSHA256": {
+  "comparison": "8a4b189db94d82c0fa01c377218d68255d7142dd664ec8a807946eb19eaf9396"
+ },
+ "plazablanca": {
+  "label": "plazablanca-clone carta",
+  "catalogue": 135,
+  "images": 135,
+  "ocrEmpty": 1,
+  "top1": 83.7,
+  "top3": 94.1,
+  "top5": 94.1,
+  "autoConfirmed": 51.1,
+  "autoPrecision": 100,
+  "misses": [
+   {
+    "id": 373408,
+    "rank": 9,
+    "top": [
+     373400,
+     373401,
+     373402
+    ],
+    "ocr": "HARD ONNAY / CHÍNCHILLA / Свос"
+   },
+   {
+    "id": 373434,
+    "rank": 2,
+    "top": [
+     373471,
+     373434,
+     373547
+    ],
+    "ocr": "Pago El Espino / LOS ACATARES"
+   },
+   {
+    "id": 373484,
+    "rank": 2,
+    "top": [
+     373494,
+     373484,
+     373478
+    ],
+    "ocr": "Mienne / aliena / Cibonne / Tentationa / CÔTES DE PROVENCE / ME IN ROUTERLE AU CHÂTEAU CIRCANE N / PrOdUCT OF FRANCE"
+   },
+   {
+    "id": 373435,
+    "rank": 33,
+    "top": [
+     373400,
+     373401,
+     373402
+    ],
+    "ocr": "SIDE LA / ENDESA / EL PASPI"
+   },
+   {
+    "id": 373476,
+    "rank": 70,
+    "top": [
+     373400,
+     373401,
+     373402
+    ],
+    "ocr": "spalatia alce inada / Frontez / Bersanges casin / RISALE / NIALE DE FRANG, CATAS PUNTEI"
+   },
+   {
+    "id": 373405,
+    "rank": 2,
+    "top": [
+     373520,
+     373405,
+     373407
+    ],
+    "ocr": "CHAMPONG / ANDRÉ CLOUET / BRUT"
+   },
+   {
+    "id": 373406,
+    "rank": 8,
+    "top": [
+     373407,
+     373520,
+     373405
+    ],
+    "ocr": "RORE CLOUET"
+   },
+   {
+    "id": 373407,
+    "rank": 3,
+    "top": [
+     373520,
+     373405,
+     373407
+    ],
+    "ocr": "CHAMPAGNE / ANDRÉ CLOUET / BRUT"
+   },
+   {
+    "id": 373454,
+    "rank": 2,
+    "top": [
+     373403,
+     373454,
+     373505
+    ],
+    "ocr": "(é) / RAVENTOS i BLANC / de Vii"
+   },
+   {
+    "id": 373418,
+    "rank": 2,
+    "top": [
+     373439,
+     373418,
+     373442
+    ],
+    "ocr": "REMELLURI / Blanco / LABASTIDA DE ALAVA - RIOJA"
+   },
+   {
+    "id": 373462,
+    "rank": 2,
+    "top": [
+     373514,
+     373462,
+     373494
+    ],
+    "ocr": "Domaine Bonn / irdot / BOURGOGNE / HAUTES CÔTES DE BEAUNE / RAIVELLE"
+   },
+   {
+    "id": 373463,
+    "rank": 6,
+    "top": [
+     373405,
+     373520,
+     373466
+    ],
+    "ocr": "POMMARD 1R CRU / LES POUTURES / MILLATION POMMARD IN CAN PROTESCE / GRAND YN 66 80018665"
+   },
+   {
+    "id": 373465,
+    "rank": 65,
+    "top": [
+     373499,
+     373407,
+     373415
+    ],
+    "ocr": "APPEL / LATIO / N01X01-3X01Y / N- PREMIER CRU / DORE / PROT / ÉGÉ"
+   },
+   {
+    "id": 373508,
+    "rank": 2,
+    "top": [
+     373441,
+     373508,
+     373496
+    ],
+    "ocr": "VINA / SOLARCE / 00053 1 20,04 / Rioja"
+   },
+   {
+    "id": 373512,
+    "rank": 2,
+    "top": [
+     373523,
+     373512,
+     373415
+    ],
+    "ocr": "HOWARD'S FOLLY / SONHADOR / BRANCO 2023"
+   },
+   {
+    "id": 373536,
+    "rank": 2,
+    "top": [
+     373537,
+     373536,
+     373400
+    ],
+    "ocr": "ZERO / ZERO / LE NATUREL"
+   },
+   {
+    "id": 379803,
+    "rank": 2,
+    "top": [
+     373426,
+     379803,
+     373400
+    ],
+    "ocr": "BELONDRADE / Apelsein"
+   },
+   {
+    "id": 373527,
+    "rank": 3,
+    "top": [
+     373450,
+     373523,
+     373527
+    ],
+    "ocr": "A ALTO / S / МИНЕКА / VERO"
+   },
+   {
+    "id": 373535,
+    "rank": 120,
+    "top": [
+     373449,
+     373544,
+     373451
+    ],
+    "ocr": "PERS / DRKe / ISILO / TEMPRANILLO / FIBERA DEL, DUCRO / toms 2 6 e / *0 1"
+   },
+   {
+    "id": 373543,
+    "rank": 2,
+    "top": [
+     373505,
+     373543,
+     373495
+    ],
+    "ocr": "Domaine Delarento / SANCERRE / Chavignd / K DORANT"
+   },
+   {
+    "id": 373544,
+    "rank": 2,
+    "top": [
+     373449,
+     373544,
+     373451
+    ],
+    "ocr": "TOMAS POSTIC / CRIBARA PON DUERN / TOMÁS POSTIGO / SSANO / 715%12"
+   },
+   {
+    "id": 373549,
+    "reason": "ocr-empty"
+   }
+  ]
+ },
+ "package200": {
+  "label": "200-label package",
+  "catalogue": 200,
+  "images": 200,
+  "ocrEmpty": 2,
+  "top1": 89.5,
+  "top3": 94,
+  "top5": 94.5,
+  "autoConfirmed": 64.5,
+  "autoPrecision": 99.2,
+  "misses": [
+   {
+    "id": "img-005",
+    "rank": 8,
+    "top": [
+     "img-120",
+     "img-117",
+     "img-171"
+    ],
+    "ocr": "rumendi / VAL"
+   },
+   {
+    "id": "img-009",
+    "rank": 10,
+    "top": [
+     "img-014",
+     "img-001",
+     "img-002"
+    ],
+    "ocr": "10.-T o) / ermouth / Premium"
+   },
+   {
+    "id": "img-011",
+    "rank": 2,
+    "top": [
+     "img-012",
+     "img-011",
+     "img-010"
+    ],
+    "ocr": "YING / ALONGA / FINCA / VALONGA / Claraluna / VALLE DEL CINCA / INDICACIÓN GEOGRAFICA PROTEGIDA / PRODUCT OF SPAIN"
+   },
+   {
+    "id": "img-017",
+    "rank": 2,
+    "top": [
+     "img-049",
+     "img-017",
+     "img-028"
+    ],
+    "ocr": "MIGRAT / ORLA / BODEGA / FRONTONIO / Roc a 0347 700"
+   },
+   {
+    "id": "img-021",
+    "rank": 4,
+    "top": [
+     "img-071",
+     "img-066",
+     "img-088"
+    ],
+    "ocr": "DOMAINE DU / BEAUREGARD / BOURGOGNE / HAUTES CÔTES DE BEAUNE / 2023 / 'LA ROTURE' / VIN DE BOURGOGNE / MIS EN BOUTEILLE "
+   },
+   {
+    "id": "img-042",
+    "rank": 3,
+    "top": [
+     "img-193",
+     "img-041",
+     "img-042"
+    ],
+    "ocr": "VIGNAMADKE / Deal / MONTEPULCIANO / DABRUZZO"
+   },
+   {
+    "id": "img-063",
+    "reason": "ocr-empty"
+   },
+   {
+    "id": "img-072",
+    "rank": 75,
+    "top": [
+     "img-103",
+     "img-102",
+     "img-068"
+    ],
+    "ocr": "Mansbenel / Ruesling"
+   },
+   {
+    "id": "img-084",
+    "rank": 84,
+    "top": [
+     "img-082",
+     "img-001",
+     "img-002"
+    ],
+    "ocr": "ADD D08925 / Bra, id8 / Вво 1. Алії / herton controllute / chantila / - PRODOTTO IN ITALIA MRODUCT OF ITALY - 751"
+   },
+   {
+    "id": "img-087",
+    "rank": 8,
+    "top": [
+     "img-158",
+     "img-046",
+     "img-071"
+    ],
+    "ocr": "CHATE / CHÂTEAU / TRONNES GERMA / 2019 / • HAUT-MÉDOC • / GRAND VIN DE BORDEAUX / MIS EN BOUTEILLE AU PATERRO"
+   },
+   {
+    "id": "img-106",
+    "rank": 2,
+    "top": [
+     "img-046",
+     "img-106",
+     "img-070"
+    ],
+    "ocr": "TEAU BOUTISSE / MIS EN BOUTEILLE AU CHÂTEAU / CHÂTEAU BOUTISSE / SAINT-ÉMILION GRAND CRU / 2018"
+   },
+   {
+    "id": "img-117",
+    "rank": 8,
+    "top": [
+     "img-096",
+     "img-099",
+     "img-189"
+    ],
+    "ocr": "STATE / SAUVIGNON NI"
+   },
+   {
+    "id": "img-120",
+    "rank": 120,
+    "top": [
+     "img-001",
+     "img-002",
+     "img-003"
+    ],
+    "ocr": "2021"
+   },
+   {
+    "id": "img-152",
+    "rank": 3,
+    "top": [
+     "img-009",
+     "img-135",
+     "img-152"
+    ],
+    "ocr": "IA / Sante terapia / 42.41000.0r2100 / precisa de magnos / estrados ni de / TERA 6. o / doctas caiedras / humilde, copas"
+   },
+   {
+    "id": "img-155",
+    "rank": 155,
+    "top": [
+     "img-009",
+     "img-135",
+     "img-059"
+    ],
+    "ocr": "LA / TERA / ESA DEL PUERO"
+   },
+   {
+    "id": "img-156",
+    "rank": 156,
+    "top": [
+     "img-009",
+     "img-001",
+     "img-018"
+    ],
+    "ocr": "°D / DO TERRA ALTA"
+   },
+   {
+    "id": "img-162",
+    "reason": "ocr-empty"
+   },
+   {
+    "id": "img-177",
+    "rank": 2,
+    "top": [
+     "img-180",
+     "img-177",
+     "img-144"
+    ],
+    "ocr": "ALVARINHO / FORAL / D MELGAÇO / OLD VINES / MONÇÃO E MELGAÇO / • de de. / ar tempe / n pedidas por de des"
+   },
+   {
+    "id": "img-187",
+    "rank": 3,
+    "top": [
+     "img-105",
+     "img-048",
+     "img-187"
+    ],
+    "ocr": "EXTRA-BRUT / BLANC DE BLANCS / FRANCK PASCAL"
+   },
+   {
+    "id": "img-188",
+    "rank": 2,
+    "top": [
+     "img-174",
+     "img-188",
+     "img-001"
+    ],
+    "ocr": "Magliol / Ere Joniche Thrant / PRIMITIVO"
+   },
+   {
+    "id": "img-200",
+    "rank": 2,
+    "top": [
+     "img-045",
+     "img-200",
+     "img-098"
+    ],
+    "ocr": "ALTOTINTO / A / T / SELECCIÓN / 9 meses en barrica / 2021"
+   }
+  ]
+ }
+}
