@@ -15,6 +15,11 @@ let prior;
 // whole-file bound only restores the older strength96 caller-freeze oracle.
 export function restoreProfile185(file, source) {
   if (file !== profile || hash(source) === 'f6952757103df0817f101e9e744e860773be0c2375735b0a73f99b977da51e03') return source;
+  // 130: the native-only pilot feedback link (checked in check-matchrim-pilot-feedback130.ts) is the one reviewed addition.
+  if (source.includes('PilotFeedback130')) {
+    source = once(source, "import { PilotFeedback130 } from '@/components/PilotFeedback130';\n", '');
+    source = once(source, "        {isNative && <div className=\"mt-3\"><PilotFeedback130 label=\"Enviar un comentario de la beta\" context={{ where: 'perfil' }} /></div>}\n", '');
+  }
   assert.equal(hash(source), '7994891a17da3b80e7c232f6228079f7be8519bcf2ff6bcdd19f5b7da413533f',
     'Only reviewed native Profile history/owner/accessibility changes');
   prior ??= execFileSync('git', ['show', '8a92183:' + profile], { encoding: 'utf8', timeout: 10000 });

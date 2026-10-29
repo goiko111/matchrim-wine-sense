@@ -57,6 +57,8 @@ function host({ calls = [], confirm = async () => ({ wine: { id: 'store' } }), m
     if (name.endsWith('/wineImage98')) return { safeWineImageUrl98: value => value };
     if (name.endsWith('/wineYearRole105')) return { wineYearRoles105 };
     if (name.endsWith('/localOCRFragments108')) return { suggestLocalOCRFragments108 };
+    // 130: the pilot feedback link is a plain mailto anchor; checked in check-matchrim-pilot-feedback130.ts.
+    if (name.endsWith('/PilotFeedback130')) return { PilotFeedback130: 'pilot-feedback130' };
     throw Error('UNEXPECTED_IMPORT:' + name);
   } });
   const render = () => { cursor = 0; return exports.CandidateRecovery286(props); };

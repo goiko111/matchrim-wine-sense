@@ -13,6 +13,7 @@ import { resolveMasterCandidate259 } from '@/utils/nativeMasterLink259';
 import { safeWineImageUrl98 } from '@/utils/wineImage98';
 import { wineYearRoles105 } from '@/utils/wineYearRole105';
 import { suggestLocalOCRFragments108 } from '@/utils/localOCRFragments108';
+import { PilotFeedback130 } from '@/components/PilotFeedback130';
 
 type Props = {
   candidate: WineCandidate; contextKey: string; profile: MatchrimProfileLike | null; disabled: boolean;
@@ -158,5 +159,8 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
     </form>
     {!busy && decision?.mode === 'none' && <Button type="button" variant="outline" disabled={disabled} onClick={() => void find()}
       className="h-auto min-h-11 w-full gap-2 whitespace-normal py-3"><BookOpen aria-hidden="true" className="h-4 w-4 shrink-0" /> Reintentar con el texto leído</Button>}
+    {!busy && decision && <PilotFeedback130 label={shown.length ? '¿Ninguno es tu vino? Avísanos' : 'Avísanos de este fallo'}
+      context={{ where: 'candidatos', read: reading?.lines.map(line => line.text) ?? candidate.evidence,
+        shown: [...shown, ...more].slice(0, 5).map(value => `${value.name} (${value.row.winery})`), searched: typed }} />}
   </section>;
 };

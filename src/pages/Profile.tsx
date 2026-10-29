@@ -28,6 +28,7 @@ import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
 import { fetchWinesByAttributes, type WinerimWineWithMatch } from '@/services/winerimApi';
 import { aggregateGrapes, aggregateRegions } from '@/utils/winerimDataAggregation';
 import { STYLE_RANGES, WINE_STYLE_CATALOG, suggestWineStylesForProfile, type PublicWineStyle } from '@/lib/winerimClassifier';
+import { PilotFeedback130 } from '@/components/PilotFeedback130';
 
 const RegionMap = React.lazy(() => import('@/components/RegionMap'));
 
@@ -831,6 +832,7 @@ const Profile = () => {
         {!isNative && <p className="text-gray-600">
           Gestiona tu información y visualiza tu perfil sensorial Winerim
         </p>}
+        {isNative && <div className="mt-3"><PilotFeedback130 label="Enviar un comentario de la beta" context={{ where: 'perfil' }} /></div>}
       </div>
 
       <Tabs defaultValue="profile" className="w-full">
