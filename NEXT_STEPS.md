@@ -2,7 +2,7 @@
 
 ## Current Delta: 2026-10-29, Candidate130 Ready for Pilots
 
-1. Upload 130 only with the owner's explicit OK: write `qa-artifacts/testflight130-20261029/HUMAN-AUTHORIZATION.json` quoting the reply, then `node scripts/distribute-matchrim130.mjs export`, inspect, `upload` once (heavy-local + writer leases).
+1. 130 uploaded 29-oct 09:23 UTC (Apple acknowledged). Confirm processing/install on the owner's iPhone, then add pilots to the internal group.
 2. Pilots: owner adds them as internal testers following docs/MATCHRIM_PILOTOS_130.md and sends the welcome message.
 3. Needs OK: more public searches to measure the other 109 carta wines and the 102 free-licence photos, and a simulator run with network.
 4. Product follow-ups from the measurement: stylised labels (manual search), producer-only reads (right wine under "Ver más"), duplicated catalogue rows (data).

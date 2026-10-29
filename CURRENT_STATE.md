@@ -1,6 +1,10 @@
 # Matchrim current state
 
-## Current Gate: 2026-10-29, Candidate130 Built for Pilots, Not Uploaded (Claude)
+## Current Gate: 2026-10-29, Build130 Uploaded to TestFlight for Pilots (Claude)
+
+- Owner reply: "Sí, sube la 130" (quoted in qa-artifacts/testflight130-20261029/HUMAN-AUTHORIZATION.json). export130-r1 PASS (IPA 8,477,246 bytes, signature verified, no debug entitlement, 166 web resources), upload130-r1 PASS 09:23 UTC, Apple acknowledged. Processing and install not yet confirmed. Internal pilots only; no push, web or backend change.
+
+## Previous Gate: 2026-10-29, Candidate130 Built for Pilots (Claude)
 
 - Goal: 130 ready for internal pilots. Source `c6c084a` (129 + pilot feedback mailto in the candidate flow and native Perfil + pilot kit), local commits only. candidate130-r1 typecheck PASS, compile130-r1 PASS, native QA vintage283 normal r72 / MAX r73, master259 normal r74 / MAX r75 all PASS (screenshots: same behaviour as 129, MAX header first line only), archive130-r1 signed. `qa-artifacts/testflight130-20261029/RELEASE.json` dry-validates with `scripts/distribute-matchrim130.mjs`. Not exported or uploaded: needs the owner's explicit OK.
 - compile218/native220 admit builds up to 129 and carry another lane's uncommitted module-cache work, so 130 used committed copies `scripts/qa-matchrim-compile130.mjs` / `qa-matchrim-native130.mjs` with 130 admitted.

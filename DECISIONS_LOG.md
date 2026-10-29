@@ -1,5 +1,11 @@
 # Matchrim decisions log
 
+## 2026-10-29: build 130 uploaded for internal pilots
+
+The owner replied "Sí, sube la 130" after the measurement and its unverified
+parts were listed. Export and upload ran once from archive130-r1 (c6c084a);
+Apple acknowledged. Processing and installability are separate facts.
+
 ## 2026-10-29: 130 for pilots ships the measured flow unchanged
 
 The live carta measurement found no ranking defect worth changing: when the
