@@ -4,7 +4,7 @@
 
 - Owner reply in chat (29-oct): "Sí, sube la 129", after the nine known limitations were listed. `qa-artifacts/testflight129-20261029/HUMAN-AUTHORIZATION.json` quotes it. Private beta only.
 - export129-r1 PASS: App.ipa 8,475,374 bytes, SHA-256 `8664f74c...27faa`, signature verified, no debug entitlement, 165 web resources verified. upload129-r1 PASS (04:16 UTC), Apple acknowledged ("Uploaded App"). Apple warns that from April 2027 the deployment target must be iOS 15.0 (now 14.0).
-- Not confirmed: Apple processing and install on the iPhone (same for 127). No push, no web/main/backend change, 0 EUR. 128 never uploaded.
+- 29-oct: owner confirms 129 installed on the iPhone from TestFlight (processing and installability confirmed; 127 no longer relevant). No push, no web/main/backend change, 0 EUR. 128 never uploaded.
 
 ## Previous Gate: 2026-10-28/29, Candidate129 Built, Native QA PASS (Claude)
 
