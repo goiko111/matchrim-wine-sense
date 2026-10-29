@@ -29,6 +29,19 @@ Las builds caducan a los 90 días. Para dar de baja a un piloto, quítalo del gr
 - **Botón «Avísanos».** En la pantalla de candidatos («¿Ninguno es tu vino? Avísanos») y en Perfil («Enviar un comentario de la beta»). Abre tu correo con un mensaje ya preparado para hola@winerim.com, que incluye el texto leído en la etiqueta y los candidatos mostrados. Puedes editarlo antes de enviarlo. La app no envía nada por su cuenta ni adjunta fotos.
 - Si la app se cierra de golpe, TestFlight te ofrece enviar el informe del cierre.
 
+## Mensaje de bienvenida (para copiar y enviar)
+
+> ¡Hola! Gracias por probar Matchrim antes que nadie.
+>
+> Matchrim lee la etiqueta de un vino con la cámara y te dice si encaja con tus gustos.
+>
+> 1. Te llegará un correo de Apple para unirte al equipo y otro de TestFlight. Instala TestFlight desde la App Store y, desde ahí, Matchrim.
+> 2. Regístrate y haz el test de perfil (2 minutos).
+> 3. Escanea botellas reales: en casa, en una tienda o en un restaurante. Si la app duda, te propondrá varios vinos; toca el tuyo.
+> 4. Cuando algo falle o no te convenza, haz una captura de pantalla y elige «Compartir comentarios de la beta», o usa el botón «Avísanos» de la app. Cuéntanos qué botella era.
+>
+> Es una beta: habrá vinos que todavía no reconozca o sin datos de sabor. Precisamente eso es lo que queremos aprender contigo. ¡Gracias!
+
 ## Lo que todavía no hace bien (para no sorprenderse)
 
 - Cuando no reconoce la etiqueta de primeras, propone candidatos y siempre pide un toque.
