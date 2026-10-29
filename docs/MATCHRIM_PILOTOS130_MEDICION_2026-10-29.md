@@ -45,3 +45,15 @@ En esta medición no hay ningún fallo de ranking que justifique tocar el códig
 - **Sin sesión**, la ficha pública no da afinidad, porque sus datos de sabor están apartados desde 4486fd0.
 - **El resto de la carta (109 vinos) y las 102 fotos reales con licencia libre** se leyeron, pero no se buscaron: el presupuesto de 300 búsquedas se acabó. Hace falta un OK para más búsquedas.
 - **La QA en el simulador con red** consumiría más búsquedas públicas y también necesita ese OK.
+
+## Experimento para la 131: segunda lectura realzada (29-oct, sin red)
+
+Se repitió la lectura de las 405 imágenes de la carta con la imagen realzada: exposición y contraste automáticos de Core Image, sombras levantadas, gris y +35 % de contraste (`ocr-enhance.swift`, `compare-enh.mts`). La tabla cuenta cuántas veces el vino correcto sale el primero al ordenar los 135 vinos de la carta:
+
+| Versión | Lectura actual | Solo realzada | Ambas juntas |
+|---|---|---|---|
+| Original | 111 | 109 | 112 |
+| Mesa (a) | 109 | 96 | 109 |
+| Poca luz (b) | 98 (12 vacías) | 93 | 100 (9 vacías) |
+
+**Resultado negativo:** realzar empeora por sí solo, y sumarlo a la lectura normal gana como mucho 2 vinos a cambio de leer cada foto dos veces. No va a la 131. En la versión con poca luz la etiqueta ocupa muy poco de la foto. Lo siguiente que conviene probar es recortar la etiqueta y ampliarla antes de leer.

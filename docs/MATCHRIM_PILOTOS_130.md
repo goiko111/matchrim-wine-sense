@@ -9,6 +9,18 @@ Los pilotos entran como **probadores internos**: hasta 100 personas y sin revisi
 3. App Store Connect → Matchrim → **TestFlight** → **Pruebas internas** → grupo (por ejemplo «Pilotos») → «+» y elige a la persona. Si el grupo tiene activada la distribución automática, recibe cada build nueva sin hacer nada más.
 4. El piloto recibe un correo de TestFlight, instala **TestFlight** desde la App Store y después Matchrim.
 
+### Alta lista para pegar
+
+- **Nombre del grupo interno:** `Pilotos Matchrim` (TestFlight → Pruebas internas → «+»). Activa la distribución automática para que cada build nueva llegue sola, y añade la 130 al grupo.
+- **Rol de cada piloto en Usuarios y acceso:** Marketing, con acceso solo a Matchrim.
+- **Lista de pilotos** (rellénala y pásamela si quieres que la deje en el registro; no se envía nada a nadie):
+
+| Nombre | Apellidos | Correo (su Apple ID) | Perfil (cliente / sumiller / amigo…) | Invitado | Instalado |
+|---|---|---|---|---|---|
+| | | | | ☐ | ☐ |
+| | | | | ☐ | ☐ |
+| | | | | ☐ | ☐ |
+
 Las builds caducan a los 90 días. Para dar de baja a un piloto, quítalo del grupo o de Usuarios y acceso.
 
 ## Para el piloto: qué probar (15 minutos)
