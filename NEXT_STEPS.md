@@ -1,6 +1,13 @@
 # Matchrim next steps
 
-## Current Delta: 2026-10-29, Build129 Uploaded
+## Current Delta: 2026-10-29, Candidate130 Ready for Pilots
+
+1. Upload 130 only with the owner's explicit OK: write `qa-artifacts/testflight130-20261029/HUMAN-AUTHORIZATION.json` quoting the reply, then `node scripts/distribute-matchrim130.mjs export`, inspect, `upload` once (heavy-local + writer leases).
+2. Pilots: owner adds them as internal testers following docs/MATCHRIM_PILOTOS_130.md and sends the welcome message.
+3. Needs OK: more public searches to measure the other 109 carta wines and the 102 free-licence photos, and a simulator run with network.
+4. Product follow-ups from the measurement: stylised labels (manual search), producer-only reads (right wine under "Ver más"), duplicated catalogue rows (data).
+
+## Previous Delta: 2026-10-29, Build129 Uploaded
 
 1. 129 is installed on the owner's iPhone. Next: real bottle photos through the candidate flow (phase 4), with owner feedback per bottle.
 2. Phase 3 needs the owner's OK: 200-400 free public searches to measure the new query plan on the full 183,509-wine catalogue.

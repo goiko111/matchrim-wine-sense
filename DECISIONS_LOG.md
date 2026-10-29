@@ -1,5 +1,14 @@
 # Matchrim decisions log
 
+## 2026-10-29: 130 for pilots ships the measured flow unchanged
+
+The live carta measurement found no ranking defect worth changing: when the
+name is read the right wine comes first and the single proposal never named
+another wine. Failures are stylised-label reads, producer-only reads and
+duplicated catalogue rows. 130 therefore adds only the pilot feedback mailto
+(the app sends nothing itself) to 129. Feedback goes to hola@winerim.com unless
+the owner chooses another address.
+
 ## 2026-10-29: build 129 uploaded as a private beta
 
 The owner replied "Sí, sube la 129" after the nine known limitations were listed.

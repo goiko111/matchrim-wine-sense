@@ -1,6 +1,13 @@
 # Matchrim current state
 
-## Current Gate: 2026-10-29, Build129 Uploaded to TestFlight (Claude)
+## Current Gate: 2026-10-29, Candidate130 Built for Pilots, Not Uploaded (Claude)
+
+- Goal: 130 ready for internal pilots. Source `c6c084a` (129 + pilot feedback mailto in the candidate flow and native Perfil + pilot kit), local commits only. candidate130-r1 typecheck PASS, compile130-r1 PASS, native QA vintage283 normal r72 / MAX r73, master259 normal r74 / MAX r75 all PASS (screenshots: same behaviour as 129, MAX header first line only), archive130-r1 signed. `qa-artifacts/testflight130-20261029/RELEASE.json` dry-validates with `scripts/distribute-matchrim130.mjs`. Not exported or uploaded: needs the owner's explicit OK.
+- compile218/native220 admit builds up to 129 and carry another lane's uncommitted module-cache work, so 130 used committed copies `scripts/qa-matchrim-compile130.mjs` / `qa-matchrim-native130.mjs` with 130 admitted.
+- Live measurement (report docs/MATCHRIM_PILOTOS130_MEDICION_2026-10-29.md): 292 public searches, 76 images of 26 plazablanca wines (Winerim image + two phone-like versions): right wine first 62%, top3 75%, among candidates 84%; single proposal never another wine; 63/64 found rows carry Winerim taste values and score. Not verified: signed-in master reference (needs an account), the other 109 carta wines and the 102 free-licence photos (budget spent), simulator QA with network.
+- Coordinator: the owner removed the global FIFO (29-oct); OCR ran through resource_run.py (document lane); build chain used the legacy leases the scripts require.
+
+## Previous Gate: 2026-10-29, Build129 Uploaded to TestFlight (Claude)
 
 - Owner reply in chat (29-oct): "Sí, sube la 129", after the nine known limitations were listed. `qa-artifacts/testflight129-20261029/HUMAN-AUTHORIZATION.json` quotes it. Private beta only.
 - export129-r1 PASS: App.ipa 8,475,374 bytes, SHA-256 `8664f74c...27faa`, signature verified, no debug entitlement, 165 web resources verified. upload129-r1 PASS (04:16 UTC), Apple acknowledged ("Uploaded App"). Apple warns that from April 2027 the deployment target must be iOS 15.0 (now 14.0).
