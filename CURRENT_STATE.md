@@ -1,12 +1,18 @@
 # Matchrim current state
 
-## Current Gate: 2026-10-28/29, Candidate129 Built, Native QA PASS, Not Uploaded (Claude)
+## Current Gate: 2026-10-29, Build129 Uploaded to TestFlight (Claude)
+
+- Owner reply in chat (29-oct): "Sí, sube la 129", after the nine known limitations were listed. `qa-artifacts/testflight129-20261029/HUMAN-AUTHORIZATION.json` quotes it. Private beta only.
+- export129-r1 PASS: App.ipa 8,475,374 bytes, SHA-256 `8664f74c...27faa`, signature verified, no debug entitlement, 165 web resources verified. upload129-r1 PASS (04:16 UTC), Apple acknowledged ("Uploaded App"). Apple warns that from April 2027 the deployment target must be iOS 15.0 (now 14.0).
+- Not confirmed: Apple processing and install on the iPhone (same for 127). No push, no web/main/backend change, 0 EUR. 128 never uploaded.
+
+## Previous Gate: 2026-10-28/29, Candidate129 Built, Native QA PASS (Claude)
 
 - Owner (28-oct night): take 129 (all of 128 plus one-tap candidate recognition, OCR 2x, accented notices) through build and QA; do not upload 128; 129 is uploaded at ~04:00 only with the owner's explicit OK. [Report](docs/MATCHRIM_CANDIDATES_286_2026-10-28.md).
 - Final source `3456e6c` (local commits, not pushed), clean detached worktree `/Users/GOIKO/2matchrim-candidate129-20261028` (node_modules symlink, `qa-artifacts/native99-20261021` symlink and `ios/App/Pods` copied from main, all gitignored). candidate129-r5 typecheck PASS, compile129-r4 PASS, signed Release archive archive129-r2 (see report for its result). Native QA, own simulator, synthetic offline user, 0 network calls: vintage283 normal r68 / MAX r69, master259 normal r70 / MAX r71, all PASS; screenshots inspected.
 - Native QA found two product issues, both handled: (1) with 128 a master reference scores, so the primary view showed the affinity and dropped the reference block (taste-value harvest, original sheet); now shown beneath the affinity like the public reference (`60243c2`, r63 FAIL retained). (2) The 129 MAX header change let a two-line title paint over the content because `nativeLabelSheet102.css` bounds that header on purpose; reverted (`3456e6c`), back to 127 behaviour (first line visible, rest scrolls in the header). r65 retained as a harness FAIL: `renew` without `--seconds` grants 600 s and the heavy lease lapsed mid-run.
 - Candidates286 offline measures: closed catalogues top-1 84-90% (strict 104: 38-40%); replay of 388 real recorded searches top-1 85.9%, single proposal shown 52.6% with 95.1% precision, so a tap is always required. Not measured: the new query plan on the full catalogue (phase 3, 200-400 public searches, needs OK), real iPhone photos; the candidate flow itself has no native QA (it needs the network), only the component harness 7/7.
-- Not uploaded: no export, no TestFlight, no HUMAN-AUTHORIZATION.json. 128 is never uploaded. 0 catalogue/model/image/Auth/Keychain calls, 0 EUR, no web/main/backend changes. Other lane's dirty module-cache files untouched.
+- At this gate not uploaded (uploaded on 29-oct, see above). 128 is never uploaded. 0 catalogue/model/image/Auth/Keychain calls, 0 EUR, no web/main/backend changes. Other lane's dirty module-cache files untouched.
 
 ## Previous Gate: 2026-10-28, Candidate128 Committed, Not Built (Claude)
 

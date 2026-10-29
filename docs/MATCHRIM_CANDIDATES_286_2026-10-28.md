@@ -173,3 +173,7 @@ Limitaciones conocidas para esa decisión:
 8. En MAX, la cabecera solo muestra la primera línea del título; el resto se desplaza dentro de ella.
 9. Nadie ha confirmado todavía que la 127 se procesara en TestFlight ni que se pueda instalar.
 
+
+## Subida a TestFlight (29-oct)
+
+Goiko respondió «Sí, sube la 129» tras ver las nueve limitaciones. export129-r1 PASS (IPA 8,475,374 bytes, firma verificada, sin entitlement de depuración) y upload129-r1 PASS a las 04:16 UTC con acuse de Apple. Falta confirmar que Apple la procese y que se instale en el iPhone. Aviso de Apple: desde abril de 2027 el mínimo será iOS 15.0 (ahora 14.0).

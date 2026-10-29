@@ -1,11 +1,11 @@
 # Matchrim next steps
 
-## Current Delta: 2026-10-29, Candidate129 Ready for an Owner Decision
+## Current Delta: 2026-10-29, Build129 Uploaded
 
-1. Upload 129 to TestFlight only after the owner's explicit limited-beta OK in chat: write `qa-artifacts/testflight129-20261029/HUMAN-AUTHORIZATION.json` quoting their exact reply and the known limitations, then `node scripts/distribute-matchrim129.mjs export`, inspect, and `upload` once (heavy-local + writer leases). RELEASE.json already points at candidate129-r5, archive129-r2 and r68-r71. Never upload 128.
-2. After upload: confirm Apple processing and install on the iPhone 16 Pro Max (it still has 125; 127 processing never confirmed), then try real bottle photos through the candidate flow (phase 4).
-3. Phase 3 needs the owner's OK: 200-400 free public searches to measure the new query plan on the full 183,509-wine catalogue (first page only beyond 80 rows).
-4. Open owner decisions: vermut (`fortificado` refused by design), MAX header (keep the compact bounded header or redesign it so name and year always show), push of the local commits, Oeni confirmation. Development reminder not before 29-oct 10:45, at most one per 24 h.
+1. Confirm Apple processing of 129 and install on the iPhone 16 Pro Max (127 processing also unconfirmed), then try real bottle photos through the candidate flow (phase 4).
+2. Phase 3 needs the owner's OK: 200-400 free public searches to measure the new query plan on the full 183,509-wine catalogue.
+3. Open owner decisions: vermut (`fortificado` refused by design), MAX header redesign, push of the local commits, Oeni confirmation. Development reminder not before 29-oct 10:45, at most one per 24 h.
+4. Before April 2027: raise the iOS deployment target from 14.0 to 15.0 (Apple warning on upload129-r1).
 
 ## Current Delta: 2026-10-21, Native Visual98
 

@@ -1,5 +1,11 @@
 # Matchrim decisions log
 
+## 2026-10-29: build 129 uploaded as a private beta
+
+The owner replied "Sí, sube la 129" after the nine known limitations were listed.
+Export and upload ran once from archive129-r2 (3456e6c); Apple acknowledged the
+upload. Processing and installability are separate, unconfirmed facts.
+
 ## 2026-10-28: unidentified labels become one-tap candidates; 129 supersedes 128
 
 The strict 104 proposals required every distinctive word read exactly, which a
