@@ -23,6 +23,10 @@ public final class MatchrimOCRPlugin106: CAPPlugin, CAPBridgedPlugin {
     private static let maxLineUTF16Units = 1_000
     // Small label crops (one bottle of a group photo, a packshot) read better at twice the size (286).
     private static let enlargeBelowDimension = 1_200
+    // A label far away or in low light covers a small part of the photo; its text is read again from
+    // an enlarged crop (131: plazablanca carta, low-light 98 -> 104 right first, others unchanged or better).
+    private static let cropBelowTextArea: CGFloat = 0.10
+    private static let maxCropScale = 3.0
     private static let enlargeContext = CIContext(options: [.useSoftwareRenderer: true, .cacheIntermediates: false])
 
     private enum Failure: String, Error {
@@ -220,13 +224,28 @@ public final class MatchrimOCRPlugin106: CAPPlugin, CAPBridgedPlugin {
                 throw Failure.recognitionFailed
             }
             try checkpoint(job)
-            var lines: [[String: Any]] = []
-            for observation in (request.results ?? []).prefix(Self.maxLines) {
+            var observed = (request.results ?? []).map { ($0, CGRect(x: 0, y: 0, width: 1, height: 1)) }
+            if let crop = Self.textCrop(observed.map { $0.0.boundingBox }, in: thumbnail) {
                 try checkpoint(job)
+                let second = try makeRequest()
+                try attach(second, to: job)
+                do {
+                    try VNImageRequestHandler(cgImage: crop.image, orientation: .up, options: [:]).perform([second])
+                    observed += (second.results ?? []).map { ($0, crop.region) }
+                } catch {
+                    // The first reading stands on its own; the crop only adds text.
+                }
+                try checkpoint(job)
+            }
+            var lines: [[String: Any]] = [], seen = Set<String>()
+            for (observation, region) in observed where lines.count < Self.maxLines {
+                try checkpoint(job)
+                let rectangle = observation.boundingBox
                 guard let candidate = observation.topCandidates(1).first,
-                      let box = Self.topLeftBox(observation.boundingBox) else { continue }
+                      let box = Self.topLeftBox(CGRect(x: region.minX + rectangle.minX * region.width, y: region.minY + rectangle.minY * region.height,
+                                                        width: rectangle.width * region.width, height: rectangle.height * region.height)) else { continue }
                 let text = Self.boundedText(candidate.string)
-                guard !text.isEmpty else { continue }
+                guard !text.isEmpty, seen.insert(text).inserted else { continue }
                 let confidence = candidate.confidence.isFinite ? min(1, max(0, candidate.confidence)) : 0
                 lines.append(["text": text, "confidence": Double(confidence), "box": box])
             }
@@ -327,6 +346,32 @@ public final class MatchrimOCRPlugin106: CAPPlugin, CAPBridgedPlugin {
               let enlarged = enlargeContext.createCGImage(output, from: extent),
               enlarged.width <= maxThumbnailDimension, enlarged.height <= maxThumbnailDimension else { return image }
         return enlarged
+    }
+
+    // Union of the text found, with a 15% (+2%) margin, cropped and enlarged up to 3x within the 2,400 px bound.
+    // Returns the crop and its normalized bottom-left region in the thumbnail, or nil when the text is not small.
+    private static func textCrop(_ found: [CGRect], in image: CGImage) -> (image: CGImage, region: CGRect)? {
+        guard var union = found.first(where: { $0.width > 0 && $0.height > 0 && $0.minX.isFinite && $0.maxY.isFinite }) else { return nil }
+        for rectangle in found where rectangle.width > 0 && rectangle.height > 0 && rectangle.minX.isFinite && rectangle.maxY.isFinite {
+            union = union.union(rectangle)
+        }
+        guard union.width * union.height < cropBelowTextArea else { return nil }
+        let mx = union.width * 0.15 + 0.02, my = union.height * 0.15 + 0.02
+        let minX = max(0, union.minX - mx), minY = max(0, union.minY - my)
+        let region = CGRect(x: minX, y: minY, width: min(1, union.maxX + mx) - minX, height: min(1, union.maxY + my) - minY)
+        let width = CGFloat(image.width), height = CGFloat(image.height)
+        let pixels = CGRect(x: region.minX * width, y: (1 - region.maxY) * height, width: region.width * width, height: region.height * height).integral
+        guard pixels.width >= 16, pixels.height >= 16, let cropped = image.cropping(to: pixels) else { return nil }
+        let scale = min(maxCropScale, Double(maxThumbnailDimension) / Double(max(cropped.width, cropped.height)))
+        // Vision boxes on the crop are normalized to the pixels actually cropped.
+        let actual = CGRect(x: pixels.minX / width, y: 1 - pixels.maxY / height, width: pixels.width / width, height: pixels.height / height)
+        guard scale > 1.05 else { return (cropped, actual) }
+        let input = CIImage(cgImage: cropped)
+        let output = input.applyingFilter("CILanczosScaleTransform", parameters: [kCIInputScaleKey: scale, kCIInputAspectRatioKey: 1.0])
+        let extent = CGRect(x: 0, y: 0, width: (Double(cropped.width) * scale).rounded(.down), height: (Double(cropped.height) * scale).rounded(.down))
+        guard extent.width <= CGFloat(maxThumbnailDimension), extent.height <= CGFloat(maxThumbnailDimension),
+              let enlarged = enlargeContext.createCGImage(output, from: extent) else { return (cropped, actual) }
+        return (enlarged, actual)
     }
 
     private func makeRequest() throws -> VNRecognizeTextRequest {

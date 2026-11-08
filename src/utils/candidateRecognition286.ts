@@ -116,7 +116,10 @@ export const candidateDecision286 = (ranked: readonly Candidate286[]): Candidate
   const [first, second] = ranked, lead = first.score - (second?.score ?? 0);
   if (first.coverage >= 0.6 && first.nameCoverage >= 0.5 && lead >= 2.5 && !first.conflicts.length && !first.vintageConflict)
     return { mode: 'one', first, more: ranked.slice(1, 20) };
-  return { mode: 'choose', shown: ranked.slice(0, 3), more: ranked.slice(3, 20) };
+  // 131: when the first three share a producer, only the producer was really read; show six so the
+  // right wine is not hidden under "Ver más" (Mestres, André Clouet, Sierra Cantabria in the carta).
+  const shownCount = ranked.length > 3 && new Set(ranked.slice(0, 3).map(value => distinct(value.row.winery).join(' '))).size === 1 ? 6 : 3;
+  return { mode: 'choose', shown: ranked.slice(0, shownCount), more: ranked.slice(shownCount, 20) };
 };
 
 type Line286 = { text: string; box?: { height: number } };
