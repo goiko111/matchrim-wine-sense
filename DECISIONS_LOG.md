@@ -1,5 +1,15 @@
 # Matchrim decisions log
 
+## 2026-11-08: 131 reads small labels twice; branch pushed
+
+With the owner's OK to all: the native reading adds a second pass on an
+enlarged crop only when the text found is small (<10% of the photo); measured
+gains on low-light/table versions with the original unchanged. Six candidates
+replace three when the first three share a producer. iOS 15 minimum. 131
+uploaded; the working branch was pushed (main untouched). A test account was
+not created: account creation is not allowed; the owner tests from his profile.
+
+
 ## 2026-10-29: build 130 uploaded for internal pilots
 
 The owner replied "Sí, sube la 130" after the measurement and its unverified

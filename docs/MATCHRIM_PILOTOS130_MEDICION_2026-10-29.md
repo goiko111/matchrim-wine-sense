@@ -57,3 +57,47 @@ Se repitió la lectura de las 405 imágenes de la carta con la imagen realzada: 
 | Poca luz (b) | 98 (12 vacías) | 93 | 100 (9 vacías) |
 
 **Resultado negativo:** realzar empeora por sí solo, y sumarlo a la lectura normal gana como mucho 2 vinos a cambio de leer cada foto dos veces. No va a la 131. En la versión con poca luz la etiqueta ocupa muy poco de la foto. Lo siguiente que conviene probar es recortar la etiqueta y ampliarla antes de leer.
+
+## Ampliación y 131 (8-nov)
+
+**Más búsquedas (OK de Goiko):** 984 peticiones en total, todas gratuitas y con caché, sin repetir ninguna.
+
+**Carta (RESULT-carta-r2.json):** 233 imágenes de 80 vinos.
+
+| | Imágenes | % |
+|---|---|---|
+| Vino correcto en 1.ª posición | 136 de 233 | 58 % |
+| Entre los 3 primeros | 173 de 233 | 74 % |
+| Entre los candidatos | 202 de 233 | 87 % |
+| Con datos de sabor y afinidad, de las 202 encontradas | 198 de 202 | 98 % |
+
+- **Propuesta única:** 44 veces. Solo 1 fue de verdad otro vino: André Clouet Silver, con poca luz, propuso Rosé Nº3. Las otras 4 diferencias son el mismo vino con otro nombre en el catálogo (Tentations; Bollinger Rosé Brut frente a Cuvée Rosé).
+- **Sin medir:** 157 imágenes, porque se acabó el presupuesto.
+
+**Fotos reales con licencia libre (RESULT-real-r1.json):** 32 de 102 fotos, también limitadas por el presupuesto.
+
+| | Fotos | % |
+|---|---|---|
+| Vino correcto en 1.ª posición | 14 de 32 | 44 % |
+| Entre los 3 primeros | 19 de 32 | 59 % |
+| Entre los candidatos | 23 de 32 | 72 % |
+| Con datos de sabor y afinidad, de las 23 encontradas | 23 de 23 | 100 % |
+
+- **Propuesta única:** 9 veces, con 2 errores reales:
+  - Faustino V propuso Faustino VII: los números romanos no pesan en el orden.
+  - Olivé Batllori Brut Nature propuso Bellmunt i Oliver.
+- **Real de Asúa** es correcto: el catálogo lo pone con su propia bodega, no con CVNE.
+- **Sin candidatos o con el vino ausente:** muchos son jereces y vinos que no aparecen en el buscador con ese nombre (Harveys Palo Cortado, Ederra).
+
+**131 (subida el 8-nov):**
+- **Segunda lectura sobre la etiqueta recortada y ampliada** cuando el texto ocupa menos del 10 % de la foto. Medido sin red en la carta, contando los vinos que salen los primeros:
+
+| Versión | Antes | Con recorte |
+|---|---|---|
+| Poca luz | 98 | 104 |
+| Mesa | 109 | 111 |
+| Original | 111 | 111 |
+
+  En el simulador, con la lectura nativa sobre 10 fotos con poca luz: 6 pasan a ser las primeras, 2 se quedan igual y 2 bajan un puesto.
+- **Seis candidatos** cuando los tres primeros son de la misma bodega.
+- **Mínimo iOS 15.**

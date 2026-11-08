@@ -1,5 +1,12 @@
 # Matchrim next steps
 
+## Current Delta: 2026-11-08, Build131 Uploaded
+
+1. Owner tests real labels from his own profile on 131 (signed-in master reference path); collect per-bottle results.
+2. Follow-ups found: Roman numerals ignored in ranking (Faustino V -> VII); stylised labels; catalogue duplicates (data); 157 carta images and 70 real photos still unmeasured.
+3. Pilots: add internal testers per docs/MATCHRIM_PILOTOS_130.md (131 replaces 130 in the group).
+
+
 ## Current Delta: 2026-10-29, Candidate130 Ready for Pilots
 
 1. 130 uploaded 29-oct 09:23 UTC (Apple acknowledged). Confirm processing/install on the owner's iPhone, then add pilots to the internal group.

@@ -1,5 +1,13 @@
 # Matchrim current state
 
+## Current Gate: 2026-11-08, Build131 Uploaded to TestFlight, Branch Pushed (Claude)
+
+- Owner: "avanza con todo OK a todo, luego probamos con etiquetas reales desde mi perfil". 131 = 130 + native OCR second read on an enlarged crop when text covers <10% of the photo + six candidates when the first three share a producer + iOS 15 minimum (c2af79b; runners/publisher 9264f42). candidate131-r1 typecheck PASS, compile131-r1 PASS, native QA r76-r79 PASS (MAX header clip unchanged), archive131-r1 signed (MinimumOSVersion 15.0). export131-r1 PASS (8,486,423 bytes), upload131-r1 PASS, Apple acknowledged. Processing/install not confirmed.
+- Branch codex/matchrim82-cloud-integration-20261013 pushed (e056e66..9264f42, 40 commits, fast-forward; main untouched). The other lane's dirty module-cache files were not committed.
+- Measurement (984 free public searches total): carta 233 images / 80 wines: first 58%, top3 74%, among candidates 87%, taste values 98%; real free-licence photos 32/102: first 44%, top3 59%, found 72%. Report docs/MATCHRIM_PILOTOS130_MEDICION_2026-10-29.md.
+- No test account created (not allowed); owner will test real labels from his own profile.
+
+
 ## Current Gate: 2026-10-29, Build130 Uploaded to TestFlight for Pilots (Claude)
 
 - Owner reply: "Sí, sube la 130" (quoted in qa-artifacts/testflight130-20261029/HUMAN-AUTHORIZATION.json). export130-r1 PASS (IPA 8,477,246 bytes, signature verified, no debug entitlement, 166 web resources), upload130-r1 PASS 09:23 UTC, Apple acknowledged. Processing and install not yet confirmed. Internal pilots only; no push, web or backend change.
