@@ -18,6 +18,9 @@ const { questions, calculateProfile } = quizModule.exports;
 const file = 'src/pages/Matchrim.tsx', current = fs.readFileSync(file, 'utf8');
 const previous = execFileSync('git', ['show', `8787e81:${file}`], { encoding: 'utf8' });
 const inverse = current
+  // Reviewed 132 amendment: native quiz results are read relative to general liking.
+  .replace("import { calibrateQuizProfile132 } from '@/utils/quizCalibration132';\n", '')
+  .replace('const result = isNative ? calibrateQuizProfile132(newAnswers, questions) : calculateProfile(newAnswers);', 'const result = calculateProfile(newAnswers);')
   .replace("import { firstMissingNativeAnswer273, isNativeQuizAnswer273 } from '@/utils/nativeQuizCompletion273';\n", '')
   .replace('    if (isNative && (!questions[currentQuestionIndex] || !isNativeQuizAnswer273(value))) return;\n', '')
   .replace('      if (isNative) {\n        const missing = firstMissingNativeAnswer273(newAnswers, questions.map(question => question.id));\n        if (missing !== -1) { setCurrentQuestionIndex(missing); return; }\n      }\n', '')
@@ -43,6 +46,7 @@ const run = (source, options) => {
     setCurrentQuestionIndex: index => calls.push(['question', index]),
     setCurrentStep: step => calls.push(['step', step]), setQuizResult: result => calls.push(['result', result]),
     calculateProfile: answers => { calls.push(['calculate']); return calculateProfile(answers); },
+    calibrateQuizProfile132: answers => { calls.push(['calculate']); return calculateProfile(answers); },
     user, saveQuizResult: () => { calls.push(['save']); return Promise.resolve('SYNTHETIC-ID273'); },
     setNativeSaveStatus: status => calls.push(['status', status]),
     saveLifetime: { current: { active: true, generation: 0 } },

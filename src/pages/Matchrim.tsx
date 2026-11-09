@@ -17,6 +17,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useQuizResults } from '@/hooks/useQuizResults';
 import { buildAuthRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
 import { firstMissingNativeAnswer273, isNativeQuizAnswer273 } from '@/utils/nativeQuizCompletion273';
+import { calibrateQuizProfile132 } from '@/utils/quizCalibration132';
 
 const NativeMatchrimLoading = () => (
   <div className="matchrim-native-page-top min-h-screen bg-white px-4 text-slate-700" style={{ paddingBottom: 'calc(7rem + env(safe-area-inset-bottom, 0px))' }}>
@@ -147,7 +148,7 @@ const MatchrimSession = () => {
       }
       if (isNative) nativeSubmissionPending.current = true;
       // Quiz completed, calculate results
-      const result = calculateProfile(newAnswers);
+      const result = isNative ? calibrateQuizProfile132(newAnswers, questions) : calculateProfile(newAnswers);
       setQuizResult(result);
       setCurrentStep('results');
 
