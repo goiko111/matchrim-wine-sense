@@ -92,7 +92,9 @@ export const rankCandidates286 = (evidence: readonly string[], rows: readonly Pu
     const vintageConflict = Boolean(vintage && row.vintage != null && String(vintage) !== String(row.vintage));
     const sameVintage = Boolean(vintage && row.vintage != null && String(vintage) === String(row.vintage));
     return { row, name: label, coverage, nameCoverage: nameTotal ? nameFound / nameTotal : 0, conflicts, vintageConflict,
-      score: found + 4 * coverage - 1.5 * conflicts.length + (sameVintage ? 0.5 : 0) };
+      // 132: words of the identity the label did not show count against the row, so a longer name
+      // that merely shares the read words (Bellmunt i Oliver for Olivé Batllori) no longer leads.
+      score: found - 0.25 * (total - found) + 4 * coverage - 1.5 * conflicts.length + (sameVintage ? 0.5 : 0) };
   }).filter(candidate => candidate.coverage > 0);
   // One entry per wine: the bottle's harvest if listed, else the reference
   // without harvest, else the most recent one (choosing it shows the change).

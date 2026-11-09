@@ -16,7 +16,7 @@ export const calculateLearnedMatchrimProfile = (
   options: Omit<MatchrimLearningOptions, 'evidenceStrength'> = {},
 ) => calculatePureLearnedMatchrimProfile(base, wines, {
   ...options,
-  // Native scans learn by surprise (v3). The server learner, used by chat and food pairing,
-  // still applies native-v2 until its shared copy is updated.
-  evidenceStrength: Capacitor.isNativePlatform() ? 'native-v3' : 'legacy-v1',
+  // Native scans fit the profile to the ratings (v4, 132). The server learner, used by chat and
+  // food pairing, still applies native-v2 until its shared copy is updated.
+  evidenceStrength: Capacitor.isNativePlatform() ? 'native-v4' : 'legacy-v1',
 });

@@ -73,7 +73,7 @@ test('Web (legacy-v1) and server-parity (native-v2) learners are untouched by v3
   assert.deepEqual(run(redLover, rows, 'native-v2').profile, { potente: 5, acidez: 2.7, dulce: 0, tanico: 4.6, afrutado: 3 });
   assert.deepEqual(run(redLover, rows, 'legacy-v1').profile, run(redLover, rows, 'legacy-v1').profile);
   const platform = fs.readFileSync('src/utils/matchrimLearningPlatform.ts', 'utf8');
-  assert.match(platform, /isNativePlatform\(\) \? 'native-v3' : 'legacy-v1'/);
+  assert.match(platform, /isNativePlatform\(\) \? 'native-v4' : 'legacy-v1'/);
 });
 test('Unscored or incomplete rows still teach nothing', () => {
   const broken = wine('broken', crispWhite, 'love');
