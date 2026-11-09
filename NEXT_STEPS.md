@@ -1,5 +1,12 @@
 # Matchrim next steps
 
+## Current Delta: 2026-11-09, Candidates 134/135 (afternoon QA)
+
+1. 135 contains 134; upload needs the owner's explicit OK (qa-artifacts/testflight135-20261109/RELEASE.json ready, no HUMAN-AUTHORIZATION yet).
+2. On a real iPhone after install: rate a wine with its sheet open (sheet stays), "Me he bebido una botella", delete-wine dialog in Spanish, Reanalizar failure keeps Confirmar, sign out with airplane mode, aiRIM chat survives leaving the screen.
+3. Follow-ups not done: signed-out scan lost on "Buscar con mi cuenta" (copy now says so; restoring the scan needs state persistence); password-reset link opens Safari (no Universal Link / appUrlOpen; ResetPassword has no native branch); catalogue search is accent/word-order sensitive server-side (search-wines-v75 ilike on raw columns; backend); vintage lost when merging duplicate bottles (identity signature includes vintage), DB-rejected batch item retried forever, phone required but never stored (product decision), own photos/restaurant files stay on device after sign-out, aiRIM server memory and server learner v2 (backend).
+4. Push of the 132-135 commits needs the owner's OK.
+
 ## Current Delta: 2026-11-09, Candidate133
 
 1. 133 uploaded and acknowledged by Apple; once installable, check on a real iPhone: Hacer foto opens the camera, menus in Spanish, a newly saved scan shows its own photo in the cellar, and catalogue photos appear beyond the first four rows.

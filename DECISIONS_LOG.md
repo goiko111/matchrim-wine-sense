@@ -1,5 +1,16 @@
 # Matchrim decisions log
 
+## 2026-11-09: 134/135 afternoon audit fixes
+
+Five read-only audits plus a full check sweep found no regression but ~45 user-facing defects;
+the verified ones were fixed natively (web paths unchanged or behaviour-identical). A full-page
+spinner on every cellar reload was replaced by keeping the list mounted after the first load of a
+section. Quiz halves now round down so even answers read medium. The learner pushes away from the
+scale centre when a non-love rating sits exactly on the profile. Duplicate-bottle vintage merging was
+left alone because cellar evidence signatures bind the vintage. window.confirm is replaced on iOS by
+a native Spanish alert because Capacitor hard-codes English buttons. Historical byte-freeze checks
+that fail on these intended edits are superseded by tarde134/batch135, not edited.
+
 ## 2026-11-09: 132 learner v4, relative quiz, unread-word ranking
 
 A 6283-wine simulation showed the shipped v3 learner losing accuracy after ~20

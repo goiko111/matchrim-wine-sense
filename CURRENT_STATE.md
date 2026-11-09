@@ -1,5 +1,14 @@
 # Matchrim current state
 
+## Current Gate: 2026-11-09, Candidates 134/135 Built (Claude, afternoon QA)
+
+- Owner: "Necesito hacer pruebas en profundidad de la app. Puedes estar tu toda la tarde mejorando la app sin necesidad de que yo este?" Report docs/MATCHRIM_134_TARDE_QA_2026-11-09.md.
+- Method: full offline check sweep (302 scripts: 204 pass; the 97 failing before any change are historical byte-freeze/argument-required/superseded checks; 11 network-capable skipped), five independent read-only audits (cellar, profile/quiz, scan, restaurant/home/account, auth/search), simulator harness with a synthetic signed-in user over an emulated PostgREST (no network; ~/ClaudeCode/matchrim-tarde-20261109/harness).
+- 134 (2e14a9c, runners 87adc82): cellar reload no longer closes the open sheet / scrolls to top, filtered empty state, "Me he bebido una botella", own photo deleted with the wine, purchase-sheet X keeps the form, VoiceOver row label and aria-pressed; scan re-read failure/cancel keeps the batch saveable, confirmed local identity protected, shelf photo not saved as own photo, camera double tap and stuck BUSY; equal quiz answers read "Intermedio", zero-distance "No va" teaches, 0 inside ranges, quiz saved before recommendations, quiz exit confirmation; registration Spanish errors/6-char/back; offline sign-out local fallback; restaurant stale selection/reset/prices/commas; signed-out pick survives sign-in; accents. Check tarde134 10/10.
+- 135 (f037ef8, 1ff491a; runners 87abfc8): Spanish native confirm dialogs (MatchrimOCR confirm; Capacitor hard-codes "Cancel"/"Ok"), iOS section names in shared screens, aiRIM chat kept per session, object-URL gallery decoding, local purchase date, Spanish sign-in/recovery errors, no Back bounce to /auth, redirect kept through password recovery, catalogue "Cargar más" retry after failure/cancel, "Añadir a mano" from an empty search, dated bottle represents duplicates, honest copy for signed-out master lookup. Check batch135 10/10. Publisher scripts/distribute-matchrim135.mjs (not run).
+- Build results: candidate134-r1 prepare/compile PASS, native QA r93-r96 PASS, archive134-r1 signed (uploaded:false). candidate135-r1 (87abfc8) prepare/compile PASS, native QA r97-r100 PASS, archive135-r1 signed (uploaded:false); qa-artifacts/testflight135-20261109/RELEASE.json validates with distribute-matchrim135 (visual/archive), no HUMAN-AUTHORIZATION. Second check pass: same historical freeze failures plus account-label151 (Auth.tsx hash freeze) and menu88 (blocks reading iCloud-evicted 'dataless' fixtures in ~/Documents; code under test unchanged).
+- Nothing uploaded or pushed; web and backend untouched.
+
 ## Current Gate: 2026-11-09, Candidate133 Built (Claude)
 
 - Pilot report (Jess, via owner): "Hacer foto" showed an English Photo Library / Take Photo / Choose File menu; "No salen las fotos" in the cellar.
