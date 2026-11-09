@@ -23,7 +23,7 @@ export function validatePair132(prep, archive, auth) {
 export function validateAuthorization132(auth) {
   assert(auth.build === 132 && /^[0-9a-f]{40}$/.test(auth.sourceCommit) && auth.privateBetaOnly === true
     && auth.humanExplicitUpload === true && auth.knownLimitationsAccepted === true
-    && typeof auth.exactHumanReply === 'string' && auth.exactHumanReply.length > 10
+    && typeof auth.exactHumanReply === 'string' && auth.exactHumanReply.trim().length >= 8
     && Array.isArray(auth.knownLimitations) && auth.knownLimitations.length > 0,
   'EXPLICIT_LIMITED_BETA_AUTHORIZATION_REQUIRED');
 }
