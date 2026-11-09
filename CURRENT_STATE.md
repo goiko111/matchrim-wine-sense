@@ -1,5 +1,12 @@
 # Matchrim current state
 
+## Current Gate: 2026-11-09, Candidate132 Built (Claude)
+
+- Owner: "ponerte a probar y corregir a fondo durante 2 horas ... evolución de tu perfil en base a votos". Report docs/MATCHRIM_132_PERFIL_Y_RANKING_2026-11-09.md.
+- 132 = 131 + native learner v4 (fits the profile to the ratings; v3 drifted back after ~20 ratings) + native quiz read relative to general liking (typical respondents were 60 % sweet/fortified/dessert in their top 20) + ranking counts unread identity words (real photos first 14 -> 19 of 32). Commits 54700e1, d0e9871, 95ac3ba (local, not pushed).
+- Faustino V -> VII was not a defect: the Commons photo is a Faustino VII bottle.
+- candidate132-r1 prepare+typecheck PASS (95ac3ba), compile132-r1 PASS. Native QA r80 stopped by LOW_DISK_HOLD (Mac free space fell from 13 GiB to <2 GiB, not from this build: ~0.4 GB). QA r80-r83 and archive pending; leases released. Not uploaded.
+
 ## Current Gate: 2026-11-08, Build131 Uploaded to TestFlight, Branch Pushed (Claude)
 
 - Owner: "avanza con todo OK a todo, luego probamos con etiquetas reales desde mi perfil". 131 = 130 + native OCR second read on an enlarged crop when text covers <10% of the photo + six candidates when the first three share a producer + iOS 15 minimum (c2af79b; runners/publisher 9264f42). candidate131-r1 typecheck PASS, compile131-r1 PASS, native QA r76-r79 PASS (MAX header clip unchanged), archive131-r1 signed (MinimumOSVersion 15.0). export131-r1 PASS (8,486,423 bytes), upload131-r1 PASS, Apple acknowledged. Processing/install not confirmed.

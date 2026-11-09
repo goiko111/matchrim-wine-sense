@@ -1,5 +1,13 @@
 # Matchrim next steps
 
+## Current Delta: 2026-11-09, Candidate132
+
+1. Upload 132 only with the owner's explicit OK (publisher scripts/distribute-matchrim132.mjs; RELEASE.json written after QA).
+2. Owner and pilots who took the quiz before 132 should repeat it (stored answers do not exist; old profiles stay raw).
+3. Owner tests real labels and ratings from his profile; check that Perfil "Perfil activo" moves with ratings.
+4. Server learner (aiRIM chat, food pairing) is still native-v2: port v4 to supabase/functions/_shared when backend work is allowed.
+5. Push of 54700e1..95ac3ba needs the owner's OK.
+
 ## Current Delta: 2026-11-08, Build131 Uploaded
 
 1. Owner tests real labels from his own profile on 131 (signed-in master reference path); collect per-bottle results.

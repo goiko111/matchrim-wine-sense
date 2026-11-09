@@ -1,5 +1,14 @@
 # Matchrim decisions log
 
+## 2026-11-09: 132 learner v4, relative quiz, unread-word ranking
+
+A 6283-wine simulation showed the shipped v3 learner losing accuracy after ~20
+ratings while its confidence rose; v4 fits the profile to the distance each
+rating implies and keeps improving. The quiz read general food liking as wine
+sweetness and power; native now reads each axis relative to the person's own
+liking (web unchanged, integers as stored). Ranking subtracts a quarter of the
+weight of identity words not read. All measured offline; no account created.
+
 ## 2026-11-08: 131 reads small labels twice; branch pushed
 
 With the owner's OK to all: the native reading adds a second pass on an
