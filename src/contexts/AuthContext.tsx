@@ -1,4 +1,5 @@
 
+import { authErrorText135 } from '@/utils/authErrorText135';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -146,6 +147,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           errorMessage = 'Credenciales incorrectas. Verifica tu email y contraseña.';
         } else if (error.message.includes('Email not confirmed')) {
           errorMessage = 'Debes confirmar tu email antes de iniciar sesión. Revisa tu bandeja de entrada.';
+        } else if (Capacitor.isNativePlatform()) {
+          errorMessage = authErrorText135(error.message, 'No se ha podido iniciar sesión. Inténtalo de nuevo.');
         }
         
         toast({
@@ -214,11 +217,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         redirectTo: buildPasswordResetRedirect(),
       });
       if (error) {
-        toast({ title: 'Error', description: error.message, variant: 'destructive' });
+        toast({ title: 'Error', description: Capacitor.isNativePlatform() ? authErrorText135(error.message, 'No se ha podido enviar el enlace. Inténtalo de nuevo.') : error.message, variant: 'destructive' });
       }
       return { error };
     } catch (error: any) {
-      toast({ title: 'Error', description: error?.message ?? 'Unexpected', variant: 'destructive' });
+      toast({ title: 'Error', description: Capacitor.isNativePlatform() ? authErrorText135(error?.message, 'No se ha podido enviar el enlace. Inténtalo de nuevo.') : error?.message ?? 'Unexpected', variant: 'destructive' });
       return { error };
     }
   };

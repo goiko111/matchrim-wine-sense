@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { authErrorText135 } from '@/utils/authErrorText135';
+import { getSafeRedirectPath } from '@/utils/navigation';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +17,9 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const { t } = useI18n();
   const isNative = Capacitor.isNativePlatform();
+  // 135: the sign-in destination travels through password recovery and back (replace, no loop).
+  const [searchParams] = useSearchParams();
+  const authPath = isNative && searchParams.get('redirect') ? `/auth?redirect=${encodeURIComponent(getSafeRedirectPath(searchParams.get('redirect')))}` : '/auth';
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
@@ -32,7 +37,7 @@ const ForgotPassword = () => {
     });
     setLoading(false);
     if (error) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+      toast({ title: 'Error', description: isNative ? authErrorText135(error.message, 'No se ha podido enviar el enlace. Inténtalo de nuevo.') : error.message, variant: 'destructive' });
       return;
     }
     setSent(true);
@@ -42,7 +47,7 @@ const ForgotPassword = () => {
     <div className={isNative ? 'matchrim-app-shell min-h-screen px-[calc(16px+var(--matchrim-safe-left))] pb-[calc(24px+var(--matchrim-safe-bottom))] pt-[calc(16px+var(--matchrim-safe-top))]' : 'min-h-screen bg-gradient-to-br from-red-50 to-red-100 flex items-center justify-center p-4'}>
       <div className={isNative ? 'mx-auto w-full min-w-0 max-w-md' : 'w-full max-w-md'}>
         <div className={isNative ? 'mb-4 flex min-w-0 flex-wrap justify-between gap-[8px]' : 'flex justify-between mb-2'}>
-          <Button variant="ghost" size="sm" onClick={() => navigate('/auth')} className={isNative ? 'h-auto min-h-[44px] min-w-[44px] gap-1 whitespace-normal px-[12px] py-[8px] text-red-900' : 'gap-1 text-red-900'}>
+          <Button variant="ghost" size="sm" onClick={() => navigate(authPath, isNative ? { replace: true } : undefined)} className={isNative ? 'h-auto min-h-[44px] min-w-[44px] gap-1 whitespace-normal px-[12px] py-[8px] text-red-900' : 'gap-1 text-red-900'}>
             <ArrowLeft className="h-4 w-4" />
             {t('common.back')}
           </Button>
@@ -57,7 +62,7 @@ const ForgotPassword = () => {
             {sent ? (
               <div className="space-y-4 text-center">
                 <p className="text-sm text-gray-700">{t('recover.sent')}</p>
-                <Link to="/auth" className={isNative ? 'inline-flex min-h-[44px] min-w-[44px] max-w-full items-center justify-center py-[10px] text-sm text-red-800 underline' : 'text-sm text-red-800 underline'}>
+                <Link to={authPath} replace={isNative} className={isNative ? 'inline-flex min-h-[44px] min-w-[44px] max-w-full items-center justify-center py-[10px] text-sm text-red-800 underline' : 'text-sm text-red-800 underline'}>
                   {t('recover.backToLogin')}
                 </Link>
               </div>

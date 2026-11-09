@@ -45,7 +45,8 @@ const Auth = () => {
     const { error } = await signIn(loginForm.email, loginForm.password);
     
     if (!error) {
-      navigate(redirectPath);
+      // 135: replace, so Back from the destination does not land on /auth and bounce forward again.
+      navigate(redirectPath, isNative ? { replace: true } : undefined);
     }
     
     setIsLoading(false);
@@ -141,7 +142,7 @@ const Auth = () => {
                     {isLoading ? t('auth.signingIn') : t('auth.signIn')}
                   </Button>
                   <div className="text-center">
-                    <Link to="/forgot-password" className={isNative ? 'inline-flex min-h-[44px] min-w-[44px] max-w-full items-center justify-center py-[10px] text-sm text-red-800 hover:underline' : 'text-xs text-red-800 hover:underline'}>
+                    <Link to={isNative && searchParams.get('redirect') ? `/forgot-password?redirect=${encodeURIComponent(redirectPath)}` : '/forgot-password'} replace={isNative} className={isNative ? 'inline-flex min-h-[44px] min-w-[44px] max-w-full items-center justify-center py-[10px] text-sm text-red-800 hover:underline' : 'text-xs text-red-800 hover:underline'}>
                       {t('auth.forgotPassword')}
                     </Link>
                   </div>

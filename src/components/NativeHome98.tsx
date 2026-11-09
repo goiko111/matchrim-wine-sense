@@ -99,7 +99,11 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
       <Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" /><Dialog.Content className="fixed inset-0 z-50 mx-auto flex w-full max-w-xl flex-col bg-white px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]">
         <div className="mb-4 flex shrink-0 items-center justify-between gap-3"><Dialog.Title className="text-lg font-semibold">Buscar vino</Dialog.Title><Dialog.Close className="flex h-11 w-11 items-center justify-center" aria-label="Cerrar búsqueda"><X className="h-5 w-5" /></Dialog.Close></div>
         <Dialog.Description className="sr-only">Busca una referencia del catálogo y revisa los datos antes de guardarla.</Dialog.Description>
-        <div className="min-h-0 overflow-y-auto"><NativeWineSearch97 onSelectWine={wine => {
+        <div className="min-h-0 overflow-y-auto"><NativeWineSearch97 onManualEntry={name => {
+          setSearchOpen(false);
+          if (!ownerId) stashSignedOutWineDraft134({ name });
+          navigate(ownerId ? '/my-wines/add' : buildAuthRedirectPath('/my-wines/add'), ownerId ? { state: createNativeWineDraft98({ name }, ownerId) } : undefined);
+        }} onSelectWine={wine => {
           setSearchOpen(false);
           if (!ownerId) stashSignedOutWineDraft134(wine);
           navigate(ownerId ? '/my-wines/add' : buildAuthRedirectPath('/my-wines/add'), ownerId ? { state: createNativeWineDraft98(wine, ownerId) } : undefined);

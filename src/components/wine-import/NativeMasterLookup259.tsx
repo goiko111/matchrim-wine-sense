@@ -74,7 +74,7 @@ export const NativeMasterLookup259 = ({ candidate, contextKey, ownerId, disabled
   };
   if (!candidate.producer?.trim() || !candidate.name.trim()) return <>{fallback}</>;
   if (!ownerId) return <div className="min-w-0 space-y-3" data-testid="native-master-auth259">
-    <p className="text-sm leading-6 text-stone-700">El catálogo ampliado de Winerim requiere una sesión. Tu etiqueta sigue aquí.</p>
+    <p className="text-sm leading-6 text-stone-700">El catálogo ampliado de Winerim requiere una sesión. Después de entrar tendrás que volver a hacer la foto.</p>
     <Button asChild disabled={disabled} className="h-auto min-h-11 w-full gap-2 whitespace-normal px-3 py-3 text-left">
       <Link to={buildAuthRedirectPath('/escanear/etiqueta')} aria-disabled={disabled} onClick={event => { if (disabled) event.preventDefault(); }}>
         <BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" /> Buscar con mi cuenta

@@ -19,6 +19,8 @@ export interface NativeWine {
 
 interface NativeWineSearch97Props {
   onSelectWine: (wine: NativeWine) => void;
+  /** 135: a search with no result offered no way forward; the caller may open the manual form with the typed name. */
+  onManualEntry?: (name: string) => void;
 }
 
 type SearchState = {
@@ -54,7 +56,7 @@ const catalogRows = (response: unknown): NativeWine[] => {
   return result;
 };
 
-export const NativeWineSearch97 = ({ onSelectWine }: NativeWineSearch97Props) => {
+export const NativeWineSearch97 = ({ onSelectWine, onManualEntry }: NativeWineSearch97Props) => {
   const { user, loading: authLoading } = useAuth();
   const owner = user ? `user:${user.id}` : 'anonymous';
   const [query, setQuery] = useState('');
@@ -126,6 +128,9 @@ export const NativeWineSearch97 = ({ onSelectWine }: NativeWineSearch97Props) =>
         </Button>
       </div>}
       {visible?.phase === 'ready' && visible.wines.length === 0 && <p role="status" className="break-words text-sm text-muted-foreground">No se encontraron vinos.</p>}
+      {visible?.phase === 'ready' && onManualEntry && visible.query.length >= 2 && <Button type="button" variant="outline" className="h-auto min-h-[44px] w-full max-w-full whitespace-normal" onClick={() => onManualEntry(visible.query)}>
+        {visible.wines.length === 0 ? `Añadir «${visible.query}» a mano` : '¿No está en la lista? Añadirlo a mano'}
+      </Button>}
       {visible?.phase === 'ready' && visible.wines.length > 0 && <ul aria-label="Resultados de vinos" className="min-w-0 divide-y divide-border">
         {visible.wines.map(wine => <li key={wine.id} className="min-w-0">
           <button type="button" onClick={() => select(wine)} className="block min-h-[44px] w-full min-w-0 break-words px-[4px] py-[12px] text-left [overflow-wrap:anywhere] hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring">

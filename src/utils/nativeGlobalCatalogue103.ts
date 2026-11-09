@@ -282,7 +282,12 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
         return { status: malformed ? 'incomplete' : more ? 'partial' : 'complete',
           rows: rows.filter(row => !isNonWineIdentity(row.name, row.type)), next, count: parsed.data.count, limited };
       });
-    } catch { if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError'); return empty('unavailable'); }
+    } catch {
+      // 135: a failed or cancelled page request gives the single-use cursor back, so "Cargar más" can be retried.
+      if (cursor && previous) cursors.set(cursor, previous);
+      if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
+      return empty('unavailable');
+    }
   };
   const searchProposals = (query: string, signal?: AbortSignal) => search(query, signal, true, true);
   return { search, searchProposals, browseProposals, lookup, confirmSelection };

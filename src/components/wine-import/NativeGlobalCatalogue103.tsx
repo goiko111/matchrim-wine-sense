@@ -137,6 +137,7 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
       || current.current.vintage !== vintage || current.current.page !== page
       || (selected && !visible.rows.includes(selected)) || (more && (!next || selected))) return;
     const abort = new AbortController(); controller.current = abort; setBusy(true); setNotice('');
+    const priorNext = more ? next : null;
     if (more) setNext(null);
     const scope = { contextKey, query };
     const active = () => controller.current === abort && !abort.signal.aborted && !current.current.disabled
@@ -148,7 +149,7 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
       if (!selected) {
         const result = more ? await catalogue.browseProposals(query, next, abort.signal)
           : await catalogue.searchProposals(query, abort.signal); if (!active()) return;
-        setNext('next' in result ? result.next : null);
+        setNext('next' in result ? result.next ?? (result.status === 'unavailable' ? priorNext : null) : null);
         if ('count' in result && result.count !== null) setPublicCount(result.count);
         else if (!more) setPublicCount(null);
         if (more) {
@@ -169,7 +170,10 @@ export const GlobalWinePicker103 = ({ candidate, contextKey, disabled, profile, 
         if ('wine' in result) current.current.onConfirmed(applyGlobalCatalogue103(manual, profile, result.wine, true));
         else setNotice('La ficha no se ha podido verificar. No se ha cambiado tu vino.');
       }
-    } catch { if (active()) setNotice('No se ha podido consultar Winerim.'); }
+    } catch {
+      if (priorNext && current.current.query === scope.query && current.current.contextKey === scope.contextKey) setNext(priorNext);
+      if (active()) setNotice('No se ha podido consultar Winerim.');
+    }
     finally { if (controller.current === abort) { controller.current = null; setBusy(false); } }
   };
   if (!open) return <Button type="button" variant="outline" disabled={disabled} onClick={() => setOpen(true)} className="h-auto min-h-11 w-full gap-2 whitespace-normal py-3"><Search aria-hidden="true" className="h-4 w-4 shrink-0" /> Buscar otra referencia en Winerim</Button>;
