@@ -4,7 +4,7 @@
 
 - Pilot report (Jess, via owner): "Hacer foto" showed an English Photo Library / Take Photo / Choose File menu; "No salen las fotos" in the cellar.
 - 133 = 132 + native camera for every "Hacer foto" (MatchrimOCR takePhoto, upright JPEG, nothing uploaded; file input fallback without camera) + app declared in Spanish (CFBundleDevelopmentRegion es) + cellar photos: own bottle crop kept as an on-device thumbnail (IndexedDB) and catalogue photo looked up for every row near the screen (was first four), once per identity. Commits fbdd6f8, 8879971 (local).
-- candidate133-r1 prepare PASS, compile133-r1 PASS, native QA r89-r92 PASS, archive133-r1 PASS (signed, uploaded:false). Camera and own photos not exercised on a real device (simulator has no camera). RELEASE.json and scripts/distribute-matchrim133.mjs ready; upload only with owner OK.
+- candidate133-r1 prepare PASS, compile133-r1 PASS, native QA r89-r92 PASS, archive133-r1 PASS (signed, uploaded:false). Camera and own photos not exercised on a real device (simulator has no camera). Owner OK "Sí, sube la 133": export133-r1 PASS and upload133-r1 PASS, appleUploadAcknowledged true; installability in TestFlight not yet confirmed.
 
 ## Previous Gate: 2026-11-09, Candidate132 Built (Claude)
 

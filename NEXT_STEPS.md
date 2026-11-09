@@ -1,6 +1,11 @@
 # Matchrim next steps
 
-## Current Delta: 2026-11-09, Candidate132
+## Current Delta: 2026-11-09, Candidate133
+
+1. 133 uploaded and acknowledged by Apple; once installable, check on a real iPhone: Hacer foto opens the camera, menus in Spanish, a newly saved scan shows its own photo in the cellar, and catalogue photos appear beyond the first four rows.
+2. Push of the 132/133 commits needs the owner's OK.
+
+## Previous Delta: 2026-11-09, Candidate132
 
 1. 132 uploaded and acknowledged by Apple (2026-11-09); confirm it appears installable in TestFlight once processing ends.
 2. Owner and pilots who took the quiz before 132 should repeat it (stored answers do not exist; old profiles stay raw).
