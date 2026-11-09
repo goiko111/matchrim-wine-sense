@@ -1,4 +1,5 @@
 import { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { confirm135 } from '@/utils/nativeConfirm135';
 import { Capacitor } from '@capacitor/core';
 import { CellarWineAffinity } from '@/components/CellarWineAffinity';
 import { NativeCellarToolbar98 } from '@/components/NativeCellarToolbar98';
@@ -1234,7 +1235,7 @@ const MyWinesForOwner = () => {
   const handleDeleteWine = async (id: string) => {
     const action = beginWineAction(id);
     if (!action) return;
-    if (!confirm("¿Estás seguro de eliminar este vino?")) {
+    if (!(await confirm135("¿Estás seguro de eliminar este vino?", { ok: 'Eliminar', destructive: true }))) {
       action.finish();
       return;
     }
@@ -2046,9 +2047,9 @@ const MyWinesForOwner = () => {
                           <div className="flex flex-wrap gap-1.5 text-sm">
                             {statusFilter === 'favorites' && (
                               <Badge className="bg-red-50 text-red-900 hover:bg-red-50">
-                                {wine.status === 'collection' && 'Mi Bodega'}
-                                {wine.status === 'wishlist' && 'Quiero Probar'}
-                                {wine.status === 'tasted' && 'Ya Probado'}
+                                {wine.status === 'collection' && (isNative ? 'En bodega' : 'Mi Bodega')}
+                                {wine.status === 'wishlist' && (isNative ? 'Por probar' : 'Quiero Probar')}
+                                {wine.status === 'tasted' && (isNative ? 'Probado' : 'Ya Probado')}
                               </Badge>
                             )}
                             {statusFilter === 'rejected' && (

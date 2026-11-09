@@ -13,7 +13,8 @@ public final class MatchrimOCRPlugin106: CAPPlugin, CAPBridgedPlugin {
     public let pluginMethods: [CAPPluginMethod] = [
         CAPPluginMethod(name: "recognize", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "cancel", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "takePhoto", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "takePhoto", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "confirm", returnType: CAPPluginReturnPromise)
     ]
 
     private static let maxEncodedBytes = 18 * 1024 * 1024
@@ -491,5 +492,25 @@ extension MatchrimOCRPlugin106: UIImagePickerControllerDelegate, UINavigationCon
         format.opaque = true
         let upright = UIGraphicsImageRenderer(size: size, format: format).image { _ in image.draw(in: CGRect(origin: .zero, size: size)) }
         return upright.jpegData(compressionQuality: 0.88)
+    }
+}
+
+// 135: window.confirm in the iOS WebView shows Capacitor's fixed English "Cancel" / "Ok" buttons.
+// This alert carries the app's own Spanish labels. Nothing leaves the device.
+extension MatchrimOCRPlugin106 {
+    @objc func confirm(_ call: CAPPluginCall) {
+        let message = String((call.getString("message") ?? "").prefix(600))
+        let ok = String((call.getString("ok") ?? "Aceptar").prefix(40))
+        let cancel = String((call.getString("cancel") ?? "Cancelar").prefix(40))
+        let destructive = call.getBool("destructive") ?? false
+        DispatchQueue.main.async {
+            guard let presenter = self.bridge?.viewController else { call.reject("No screen to show the dialog.", "UNAVAILABLE"); return }
+            var top: UIViewController = presenter
+            while let next = top.presentedViewController { top = next }
+            let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: cancel, style: .cancel) { _ in call.resolve(["value": false]) })
+            alert.addAction(UIAlertAction(title: ok, style: destructive ? .destructive : .default) { _ in call.resolve(["value": true]) })
+            top.present(alert, animated: true)
+        }
     }
 }

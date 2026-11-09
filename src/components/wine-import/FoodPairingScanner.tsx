@@ -364,8 +364,8 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
       });
       toast.success(
         favorite
-          ? `${recommendation.nombre} guardado en Quiero Probar y Favoritos`
-          : `${recommendation.nombre} guardado en Quiero Probar`
+          ? `${recommendation.nombre} guardado en ${isNative ? 'Por probar' : 'Quiero Probar'} y Favoritos`
+          : `${recommendation.nombre} guardado en ${isNative ? 'Por probar' : 'Quiero Probar'}`
       );
     } catch (error) {
       if (!mountedRef.current) return;
@@ -692,7 +692,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
                           ) : (
                             <BookmarkPlus className="h-4 w-4" />
                           )}
-                          {isSaved ? "En Quiero Probar" : "Guardar en Quiero Probar"}
+                          {isSaved ? (isNative ? "En Por probar" : "En Quiero Probar") : (isNative ? "Guardar en Por probar" : "Guardar en Quiero Probar")}
                         </Button>
                         <Button
                           type="button"

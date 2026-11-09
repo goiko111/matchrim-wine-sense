@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from 'react';
+import { confirm135 } from '@/utils/nativeConfirm135';
 import { Capacitor } from '@capacitor/core';
 import {
   AlertTriangle,
@@ -1487,7 +1488,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                       </span>
                       {batchLocked && savedIndex >= 0 && (
                         <span className="mt-1 block text-xs font-medium text-slate-700">
-                          {saveResult?.status === 'saved' ? 'Guardado en Quiero Probar'
+                          {saveResult?.status === 'saved' ? (isNative ? 'Guardado en Por probar' : 'Guardado en Quiero Probar')
                             : saveResult?.status === 'rejected' ? 'No guardado: rechazo'
                               : saveResult ? 'Guardado sin confirmar' : 'Pendiente de guardar'}
                         </span>
@@ -1525,7 +1526,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                 <div className="space-y-3" aria-busy={saving}>
                 {batchLocked && (
                   <p role="status" className="text-sm leading-6 text-slate-700">
-                    {savedCount} de {batchRef.current?.wines.length ?? 0} referencias guardadas en Quiero Probar.
+                    {savedCount} de {batchRef.current?.wines.length ?? 0} referencias guardadas en {isNative ? 'Por probar' : 'Quiero Probar'}.
                   </p>
                 )}
                 {saveFailure && !saving && (
@@ -1779,8 +1780,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   <Button type="button" variant="outline" title="Siguiente" className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" disabled={regions.findIndex((region) => region.id === selectedRegion.id) >= regions.length - 1} onClick={() => moveSelection(1)}>
                     <span className={isNative ? 'sr-only' : undefined}>Siguiente</span><ChevronRight className="h-4 w-4" />
                   </Button>
-                  <Button type="button" variant="outline" title="Reanalizar" disabled={regionActionsLocked || (localBatch && selectedRegion.status === 'recognized')} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" onClick={isNative ? () => {
-                    if (localBatch || window.confirm('Se enviará de nuevo el recorte al servicio de lectura con IA. ¿Quieres continuar?')) void reanalyzeSelected();
+                  <Button type="button" variant="outline" title="Reanalizar" disabled={regionActionsLocked || (localBatch && selectedRegion.status === 'recognized')} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" onClick={isNative ? async () => {
+                    if (localBatch || await confirm135('Se enviará de nuevo el recorte al servicio de lectura con IA. ¿Quieres continuar?', { ok: 'Continuar' })) void reanalyzeSelected();
                   } : () => void reanalyzeSelected()}>
                     <RefreshCw className="h-4 w-4" /><span className={isNative ? 'sr-only' : undefined}>Reanalizar</span>
                   </Button>

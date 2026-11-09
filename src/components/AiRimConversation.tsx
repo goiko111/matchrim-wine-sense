@@ -22,6 +22,25 @@ type ConversationMessage = {
   text: string;
 };
 
+// 135 (iOS): leaving aiRIM (scan, tabs, back) unmounted the chat and lost it. The conversation is
+// kept for this app session in sessionStorage, per owner, at most 40 messages.
+const AIRIM_WELCOME: ConversationMessage = {
+  id: 'welcome',
+  role: 'assistant',
+  text: 'Cuéntame qué vino, plato, carta u ocasión tienes delante. Te daré una decisión concreta y señalaré lo que no pueda saber.',
+};
+const airimStoreKey135 = (ownerId: string | null | undefined) => `matchrim.airim_messages135:${ownerId ?? 'anonymous'}`;
+const readAiRimMessages135 = (ownerId: string | null | undefined): ConversationMessage[] => {
+  try {
+    const parsed = JSON.parse(sessionStorage.getItem(airimStoreKey135(ownerId)) || 'null');
+    const valid = Array.isArray(parsed) ? parsed.filter((item): item is ConversationMessage => Boolean(item) && typeof item.id === 'string'
+      && (item.role === 'assistant' || item.role === 'user') && typeof item.text === 'string' && item.text.length <= 8000) : [];
+    // A question left without its answer (the screen closed mid-request) is not restored as pending.
+    while (valid.length > 1 && valid[valid.length - 1].role === 'user') valid.pop();
+    return valid.length && valid[0].id === 'welcome' ? valid : [AIRIM_WELCOME];
+  } catch { return [AIRIM_WELCOME]; }
+};
+
 interface AiRimConversationProps {
   onBack: () => void;
   initialQuestion?: string;
@@ -48,19 +67,17 @@ const AiRimConversation = ({ onBack, initialQuestion = '', onSelectFunction }: A
     requestController.current?.abort();
     if (isNative) requestController.current = null;
   }, [user?.id, isNative]);
-  const [messages, setMessages] = useState<ConversationMessage[]>([
-    {
-      id: 'welcome',
-      role: 'assistant',
-      text: 'Cuéntame qué vino, plato, carta u ocasión tienes delante. Te daré una decisión concreta y señalaré lo que no pueda saber.',
-    },
-  ]);
+  const [messages, setMessages] = useState<ConversationMessage[]>(() => isNative ? readAiRimMessages135(ownerId) : [AIRIM_WELCOME]);
+  useEffect(() => {
+    if (!isNative || contextOwner.current !== user?.id) return;
+    try { sessionStorage.setItem(airimStoreKey135(ownerId), JSON.stringify(messages.slice(0, 1).concat(messages.slice(1).slice(-39)))); } catch { /* best effort */ }
+  }, [messages, isNative, ownerId, user?.id]);
 
   useEffect(() => {
     if (contextOwner.current !== user?.id) {
       requestController.current?.abort();
       requestController.current = null;
-      setMessages((current) => current.filter(message => message.id === 'welcome'));
+      setMessages((current) => isNative ? readAiRimMessages135(ownerId) : current.filter(message => message.id === 'welcome'));
       setInput('');
       setIsLoading(false);
       if (isNative) { setNativeRequestContext(null); pendingNativeMessage.current = null; }

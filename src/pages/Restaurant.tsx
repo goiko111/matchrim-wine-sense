@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ChangeEvent } from 'react';
+import { confirm135 } from '@/utils/nativeConfirm135';
 import { formatScanPrice } from '@/utils/scanMoney';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Camera, Check, ChefHat, ChevronDown, ExternalLink, FilePlus2, Link2, Loader2, Pencil, RefreshCw, ScanLine, Trash2, Wine, X } from 'lucide-react';
@@ -188,7 +189,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
     const snapshot = stateRef.current;
     const docs = new Map(snapshot.documents.map(doc => [doc.id, doc]));
     const pages = snapshot.pages.filter(page => page.enabled && docs.get(page.documentId)?.kind === kind && page.status !== 'read');
-    if (pages.length > 4 && !window.confirm(`Vas a enviar ${pages.length} páginas a la IA, una a una. Puedes cancelar y continuar después. ¿Analizar todas las seleccionadas?`)) { finish(controller); return; }
+    if (pages.length > 4 && !(await confirm135(`Vas a enviar ${pages.length} páginas a la IA, una a una. Puedes cancelar y continuar después. ¿Analizar todas las seleccionadas?`, { ok: 'Analizar' }))) { finish(controller); return; }
     try {
       for (const [index, page] of pages.entries()) {
         check(controller);
@@ -242,7 +243,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
         ...(budget ? { budget: { amount: Number(budget.replace(',', '.')), currency, service } } : {}),
       });
     } catch (failure) { setError(message(failure)); return; }
-    if (batches.length > 1 && !window.confirm(`La carta requiere ${batches.length} bloques de IA. Se analizarán todos, uno a uno. ¿Continuar?`)) return;
+    if (batches.length > 1 && !(await confirm135(`La carta requiere ${batches.length} bloques de IA. Se analizarán todos, uno a uno. ¿Continuar?`, { ok: 'Continuar' }))) return;
     const controller = start('Contrastando combinaciones'); if (!controller) return;
     const revision = stateRef.current.revision;
     mutate(current => ({ ...current, pairs: [], pairWarnings: [] }));
@@ -316,8 +317,8 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
       <div className="min-w-0 flex-1"><label htmlFor="restaurant-name" className="text-xs font-semibold text-slate-500">Restaurante</label>
         <Input id="restaurant-name" placeholder="Nombre opcional" value={state.restaurant} maxLength={200} disabled={Boolean(busy)}
           onChange={event => mutate(current => ({ ...current, restaurant: event.target.value }))} className="mt-1 h-auto min-h-11" /></div>
-      <Button variant="ghost" className={actionClass} disabled={Boolean(busy)} onClick={() => {
-        if (!window.confirm('¿Eliminar las cartas, fotos y resultados de esta sesión en este dispositivo?')) return;
+      <Button variant="ghost" className={actionClass} disabled={Boolean(busy)} onClick={async () => {
+        if (!(await confirm135('¿Eliminar las cartas, fotos y resultados de esta sesión en este dispositivo?', { ok: 'Eliminar', destructive: true }))) return;
         mutate(() => createRestaurantSession91()); setSelectedFood(''); setSelectedWine(''); setSheet(null); setLinks([]);
         // 134: a new restaurant starts without the previous budget, filters or error.
         setBudget(''); setCurrency('EUR'); setService('any'); setManualWine(''); setUrl(''); setError(''); setSheetRow(''); setEditing(null);

@@ -164,9 +164,18 @@ export const prepareImageForAnalysis = async (
       throw new ImagePreparationError('file_size_limit');
     }
   }
-  const originalDataUrl = await fileToDataUrl(file, signal);
-  throwIfAborted(signal);
-  const image = await loadImage(originalDataUrl, signal);
+  // 135 (iOS): a 12-48 MP gallery photo was copied into a base64 string before decoding; an object URL
+  // lets the WebView decode the file directly. The web keeps the data URL path.
+  const objectUrl = options?.compositeOnWhite === true && typeof URL !== 'undefined' && typeof URL.createObjectURL === 'function'
+    ? URL.createObjectURL(file) : null;
+  let image: HTMLImageElement;
+  try {
+    const source = objectUrl ?? await fileToDataUrl(file, signal);
+    throwIfAborted(signal);
+    image = await loadImage(source, signal);
+  } finally {
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+  }
   throwIfAborted(signal);
   if (options?.maxImagePixels !== undefined) {
     const { naturalWidth, naturalHeight } = image;

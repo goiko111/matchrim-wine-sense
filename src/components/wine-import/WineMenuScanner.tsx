@@ -1348,10 +1348,10 @@ const WineMenuScannerSession = ({
       });
       toast.success(
         payload.is_favorite && payload.status !== 'tasted'
-          ? `${wine.nombre} guardado en Quiero Probar y Favoritos`
+          ? `${wine.nombre} guardado en ${isNative ? 'Por probar' : 'Quiero Probar'} y Favoritos`
           : payload.status === 'wishlist'
-          ? `${wine.nombre} guardado en Quiero Probar`
-          : `${wine.nombre} guardado en Ya Probados. Puntúalo para afinar tu Matchrim`
+          ? `${wine.nombre} guardado en ${isNative ? 'Por probar' : 'Quiero Probar'}`
+          : `${wine.nombre} guardado en ${isNative ? 'Probados' : 'Ya Probados'}. Puntúalo para afinar tu Matchrim`
       );
     } catch (error) {
       if (!isCurrent()) return;
@@ -2409,7 +2409,7 @@ const WineMenuScannerSession = ({
 		                      ) : (
 		                        <BookmarkPlus className="h-4 w-4" />
 		                      )}
-		                      {savedWineKeys.has(wishlistSaveKey) ? 'Guardado' : 'Quiero Probar'}
+		                      {savedWineKeys.has(wishlistSaveKey) ? 'Guardado' : isNative ? 'Por probar' : 'Quiero Probar'}
 		                    </Button>
 			                    <Button
 			                      onClick={() => saveWineAsTasted(wine, index)}

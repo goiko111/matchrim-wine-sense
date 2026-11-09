@@ -28,7 +28,8 @@ export const PurchaseInfoSelector = ({ mode, onConfirm, onCancel }: PurchaseInfo
   const [locationType, setLocationType] = useState<string>('');
   const [placeName, setPlaceName] = useState("");
   const [price, setPrice] = useState("");
-  const [purchaseDate, setPurchaseDate] = useState(new Date().toISOString().split('T')[0]);
+  // 135: the default date was the UTC day, so in Spain after midnight it proposed yesterday.
+  const [purchaseDate, setPurchaseDate] = useState(() => { const now = new Date(); return new Date(now.getTime() - now.getTimezoneOffset() * 60_000).toISOString().split('T')[0]; });
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [nearbyPlaces, setNearbyPlaces] = useState<any[]>([]);
