@@ -1,6 +1,12 @@
 # Matchrim current state
 
-## Current Gate: 2026-11-09, Candidate132 Built (Claude)
+## Current Gate: 2026-11-09, Candidate133 Built (Claude)
+
+- Pilot report (Jess, via owner): "Hacer foto" showed an English Photo Library / Take Photo / Choose File menu; "No salen las fotos" in the cellar.
+- 133 = 132 + native camera for every "Hacer foto" (MatchrimOCR takePhoto, upright JPEG, nothing uploaded; file input fallback without camera) + app declared in Spanish (CFBundleDevelopmentRegion es) + cellar photos: own bottle crop kept as an on-device thumbnail (IndexedDB) and catalogue photo looked up for every row near the screen (was first four), once per identity. Commits fbdd6f8, 8879971 (local).
+- candidate133-r1 prepare PASS, compile133-r1 PASS, native QA r89-r92 PASS, archive133-r1 PASS (signed, uploaded:false). Camera and own photos not exercised on a real device (simulator has no camera). RELEASE.json and scripts/distribute-matchrim133.mjs ready; upload only with owner OK.
+
+## Previous Gate: 2026-11-09, Candidate132 Built (Claude)
 
 - Owner: "ponerte a probar y corregir a fondo durante 2 horas ... evolución de tu perfil en base a votos". Report docs/MATCHRIM_132_PERFIL_Y_RANKING_2026-11-09.md.
 - 132 = 131 + native learner v4 (fits the profile to the ratings; v3 drifted back after ~20 ratings) + native quiz read relative to general liking (typical respondents were 60 % sweet/fortified/dessert in their top 20) + ranking counts unread identity words (real photos first 14 -> 19 of 32). Commits 54700e1, d0e9871, 95ac3ba (local, not pushed).
