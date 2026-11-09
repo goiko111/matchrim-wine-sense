@@ -79,12 +79,8 @@ export const useRegistrationData = () => {
       );
 
       if (signUpError) {
+        // 134: signUp already showed the Spanish message; a second toast replaced it with the raw English one.
         console.error('SignUp error:', signUpError);
-        toast({
-          title: "Error en el registro",
-          description: signUpError.message,
-          variant: "destructive"
-        });
         return { success: false };
       }
 

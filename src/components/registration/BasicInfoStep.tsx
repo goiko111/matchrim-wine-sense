@@ -94,7 +94,8 @@ const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ data, onUpdate, onNext })
     if (isValid) onNext();
   };
 
-  const isValid = !!(data.firstName && data.lastName && data.email && data.password && phoneLocal);
+  // 134: the 6-character minimum was only reported two steps later, by the server.
+  const isValid = !!(data.firstName && data.lastName && data.email && data.password && data.password.length >= 6 && phoneLocal);
 
   return (
     <form onSubmit={handleSubmit} className={isNative ? 'min-w-0 space-y-6 [&_input]:min-w-0' : 'space-y-6'}>
@@ -139,7 +140,9 @@ const BasicInfoStep: React.FC<BasicInfoStepProps> = ({ data, onUpdate, onNext })
           onChange={(e) => onUpdate({ password: e.target.value })}
           required
           minLength={6}
+          aria-describedby="password-hint"
         />
+        <p id="password-hint" className={`mt-1 text-xs ${data.password && data.password.length < 6 ? 'text-red-700' : 'text-muted-foreground'}`}>Mínimo 6 caracteres.</p>
       </div>
 
       <div>

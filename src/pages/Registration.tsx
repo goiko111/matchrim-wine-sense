@@ -112,6 +112,8 @@ const Registration = () => {
             variant="ghost"
             size="sm"
             onClick={() => {
+              // 134: on steps 2-3 "Volver" left the flow and lost everything typed.
+              if (isNative && currentStep > 1) { handlePrevious(); return; }
               if (window.history.length > 1) {
                 navigate(-1);
               } else {
@@ -139,18 +141,18 @@ const Registration = () => {
             <CardHeader className={isNative ? 'min-w-0 p-0 pb-[16px] [overflow-wrap:anywhere]' : undefined}>
               <CardTitle className="text-center text-red-900">Revisa tu email</CardTitle>
               <CardDescription className="text-center">
-                Hemos creado tu cuenta y enviado un enlace de confirmacion a {emailConfirmationAddress}.
+                Hemos creado tu cuenta y enviado un enlace de confirmación a {emailConfirmationAddress}.
               </CardDescription>
             </CardHeader>
             <CardContent className={isNative ? 'min-w-0 space-y-4 p-0 text-center' : 'space-y-4 text-center'}>
               <p className="text-sm leading-6 text-gray-600">
-                Abre el enlace desde tu bandeja de entrada o spam. Despues podras iniciar sesion y continuar hacia tu zona personal.
+                Abre el enlace desde tu bandeja de entrada o spam. Después podrás iniciar sesión y continuar hacia tu zona personal.
               </p>
               <Button
                 onClick={() => navigate(buildAuthRedirectPath(redirectPath))}
                 className={isNative ? 'h-auto min-h-[44px] w-full min-w-0 whitespace-normal bg-red-700 px-[12px] py-[10px] hover:bg-red-800' : 'w-full bg-red-700 hover:bg-red-800'}
               >
-                Ir a iniciar sesion
+                Ir a iniciar sesión
               </Button>
               <Button
                 onClick={() => navigate('/')}

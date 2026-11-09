@@ -27,8 +27,9 @@ export const calibrateQuizProfile132 = (answers: Answers, questions: readonly Qu
     const value = axis === 'dulce'
       ? relative <= -0.3 ? 0 : relative <= 0.1 ? 1 : 1 + (relative - 0.1) * 10
       : CENTER[axis] + relative * SPAN[axis];
-    // Stored as integers 0-5 (quiz_results columns are INTEGER).
-    result[axis] = Math.round(Math.max(0, Math.min(5, value)));
+    // Stored as integers 0-5 (quiz_results columns are INTEGER). 134: halves round down, so
+    // liking everything equally (centre 3.5) reads "Intermedio", not "Con cuerpo / Viva / Intensa".
+    result[axis] = Math.ceil(Math.max(0, Math.min(5, value)) - 0.5);
   }
   return result;
 };

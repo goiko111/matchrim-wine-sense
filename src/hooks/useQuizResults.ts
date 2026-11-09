@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
 import { getDiverseWineRecommendations, UserProfile } from '@/utils/wineRecommendations';
 import { generateWineStyles } from '@/utils/profileUtils';
+import { Capacitor } from '@capacitor/core';
 
 export const useQuizResults = () => {
   const [isSaving, setIsSaving] = useState(false);
@@ -38,7 +39,11 @@ export const useQuizResults = () => {
       // Get recommended styles for the user profile
       const recommendedStyles = generateWineStyles(result);
       
-      const recommendations = await getDiverseWineRecommendations(userProfile, 12, recommendedStyles);
+      // 134 (iOS): the profile was saved only after paging through the whole wines table, and a
+      // failed recommendation insert reported a saved profile as not saved. The profile goes first;
+      // the stored recommendations are best effort.
+      const native = Capacitor.isNativePlatform();
+      const recommendations = native ? [] : await getDiverseWineRecommendations(userProfile, 12, recommendedStyles);
 
       // Save quiz result
       const { data: quizResultData, error: quizError } = await supabase
@@ -56,6 +61,13 @@ export const useQuizResults = () => {
         .single();
 
       if (quizError) throw quizError;
+      if (native) {
+        try {
+          recommendations.push(...await getDiverseWineRecommendations(userProfile, 12, recommendedStyles));
+        } catch (recommendationError) {
+          console.error('Quiz saved; recommendations not stored:', recommendationError);
+        }
+      }
 
       // Save wine recommendations from database
       const recommendationsToInsert = recommendations.map((rec) => {
@@ -181,7 +193,8 @@ export const useQuizResults = () => {
           .from('wine_recommendations')
           .insert(recommendationsToInsert);
 
-        if (recommendationsError) throw recommendationsError;
+        if (recommendationsError && native) console.error('Quiz saved; recommendations not stored:', recommendationsError);
+        else if (recommendationsError) throw recommendationsError;
       }
 
       toast({

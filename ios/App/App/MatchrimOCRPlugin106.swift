@@ -449,7 +449,16 @@ extension MatchrimOCRPlugin106: UIImagePickerControllerDelegate, UINavigationCon
             picker.cameraCaptureMode = .photo
             picker.delegate = self
             picker.modalPresentationStyle = .fullScreen
-            presenter.present(picker, animated: true)
+            // 134: present on the topmost controller; if presentation still fails, free the slot
+            // so the camera is not reported BUSY until the app restarts.
+            var top: UIViewController = presenter
+            while let next = top.presentedViewController { top = next }
+            top.present(picker, animated: true)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                guard picker.presentingViewController == nil, Self.pendingCameraCall === call else { return }
+                Self.pendingCameraCall = nil
+                call.reject("The camera could not be shown.", "CAMERA_UNAVAILABLE")
+            }
         }
     }
 

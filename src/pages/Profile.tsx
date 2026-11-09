@@ -197,7 +197,7 @@ const StyleRangePreview = ({
           const rawRange = ranges[attribute.key];
           const [min, max] = toDisplayRange(rawRange);
           const value = profile ? Number(profile[attribute.profileKey]) : null;
-          const valueIsInside = value !== null && Number.isFinite(value) && value >= min && value <= max;
+          const valueIsInside = value !== null && Number.isFinite(value) && value >= rawRange[0] && value <= max; // 134: a 0 (dry, no tannin) is inside a range that starts at 0
           const left = ((min - 1) / 5) * 100;
           const width = ((max - min + 1) / 5) * 100;
 
@@ -1237,7 +1237,7 @@ const Profile = () => {
                 ) : (
                   <Card>
                     <CardContent className="py-6 text-sm text-gray-600">
-                      Todavia no hay vinos Winerim disponibles para este perfil.
+                      Todavía no hay vinos Winerim disponibles para este perfil.
                     </CardContent>
                   </Card>
                 )}
@@ -1319,14 +1319,16 @@ const Profile = () => {
                             })}
                           </p>
                         </div>
-                        <Button
+                        {/* 134: on iOS this silently swapped the active profile while the tab stayed on Historial;
+                            each entry already shows its five values below. */}
+                        {!isNative && <Button
                           variant="outline"
                           size="sm"
                           onClick={() => setCurrentProfile(result)}
                           className="text-red-700 border-red-700 hover:bg-red-50"
                         >
                           Ver Detalles
-                        </Button>
+                        </Button>}
                       </div>
                       <div className="mt-2 grid grid-cols-5 gap-2 text-xs">
                         <div className="text-center">

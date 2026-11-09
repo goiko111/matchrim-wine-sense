@@ -141,6 +141,7 @@ const FIT_PRIOR = 0.7;
 const FIT_LOVE = 0.3;
 const FIT_OK_BAND = [0.8, 1.9] as const;
 const FIT_NOT_FOR_ME = 2.1;
+const FIT_CENTER = [3.5, 3.5, 1, 2, 3.5];
 const fitProfileToRatings = (
   baseProfile: MatchrimProfileLike,
   evidence: { values: number[]; rating: Rating; weight: number }[],
@@ -151,7 +152,14 @@ const fitProfileToRatings = (
   for (let iteration = 0; iteration < 400; iteration += 1) {
     const gradient = point.map((value, index) => 2 * FIT_PRIOR * (value - base[index]) / 5);
     evidence.forEach(({ values, rating, weight }) => {
-      const diff = point.map((value, index) => value - values[index]);
+      let diff = point.map((value, index) => value - values[index]);
+      // 134: a wine exactly on the profile gave a zero gradient, so "No va" or "Bien" on the
+      // closest match taught nothing. Push away along a fixed direction from the wine scale centre.
+      if (rating !== 'love' && diff.every(value => Math.abs(value) < 1e-3)) {
+        const away = point.map((value, index) => value - FIT_CENTER[index]);
+        diff = (away.some(value => Math.abs(value) > 1e-3) ? away : FIT_CENTER.map(() => 1))
+          .map(value => value * 1e-3);
+      }
       const distance = Math.sqrt(diff.reduce((sum, value) => sum + value * value, 0) / 5) || 1e-6;
       const residual = rating === 'love' ? distance - FIT_LOVE
         : rating === 'ok' ? (distance < FIT_OK_BAND[0] ? distance - FIT_OK_BAND[0] : distance > FIT_OK_BAND[1] ? distance - FIT_OK_BAND[1] : 0)

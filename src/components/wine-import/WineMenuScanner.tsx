@@ -512,7 +512,7 @@ const WineMenuScannerSession = ({
     const best = scored[0] ?? null;
     const secondaries = scored.slice(1, 3);
     const safeAlternative = scored[1] ?? null;
-    const maxPrice = menuCurrency ? parseNullableNumber(scanMaxPrice) : null;
+    const maxPrice = menuCurrency ? parseNullableNumber(scanMaxPrice.replace(',', '.')) : null;
     const value = scored
       .map((entry) => ({ ...entry, price: menuPriceRows.find((row) => row.index === entry.index)?.price ?? null }))
       .filter((entry): entry is typeof entry & { price: number } => Boolean(
@@ -542,7 +542,7 @@ const WineMenuScannerSession = ({
   }, [scannedWines, menuCurrency, listPriceFormat, menuPriceRows, scanMaxPrice, isNative, scanProfile?.profile]);
 
   const visibleScannedWines = useMemo(() => {
-    const maxPrice = menuCurrency ? parseNullableNumber(scanMaxPrice) : null;
+    const maxPrice = menuCurrency ? parseNullableNumber(scanMaxPrice.replace(',', '.')) : null;
 
     return menuPriceRows
       .filter(({ price, currency }) => maxPrice === null || (currency === menuCurrency && price !== null && price <= maxPrice))
@@ -669,7 +669,13 @@ const WineMenuScannerSession = ({
     setScannedWines([]);
     setScanFeedback(null);
     setFileType(isPDF ? 'pdf' : 'image');
-    if (isNative) { setRecoveryLayout('auto'); setRecoveryColumnSplit(50); }
+    if (isNative) {
+      setRecoveryLayout('auto'); setRecoveryColumnSplit(50);
+      // 134: filters and row state from the previous menu hid rows of the new one.
+      setScanSortMode('compatibility'); setScanTypeFilter('all'); setScanRegionFilter('all'); setScanServiceFilter('all');
+      setScanMinScore('all'); setScanMinConfidence('all'); setScanMaxPrice('');
+      setEditingWineIndex(null); setExpandedWineActionsIndex(null); setHighlightedWineIndex(null); setImageZoom(1);
+    }
     trackAppEvent("wine_menu_scan_started", {
       userId: user?.id,
       metadata: {

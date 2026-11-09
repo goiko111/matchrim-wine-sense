@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Capacitor } from '@capacitor/core';
 import { Link, useNavigate } from 'react-router-dom';
 import { AlertTriangle, ArrowLeft, CheckCircle, Loader2, Trash2 } from 'lucide-react';
 import Header from '@/components/Header';
@@ -95,7 +96,8 @@ const AccountDeletion = () => {
     <div className="min-h-screen bg-stone-50">
       <Header />
 
-      <main className="mx-auto max-w-3xl px-4 py-10">
+      {/* 134: on iOS the status bar covered the top and the tab bar the last card. */}
+      <main className={Capacitor.isNativePlatform() ? 'mx-auto max-w-3xl px-4 pb-[calc(8rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]' : 'mx-auto max-w-3xl px-4 py-10'}>
         <Button asChild variant="ghost" className="mb-6 gap-2 text-red-900">
           <Link to="/">
             <ArrowLeft className="h-4 w-4" />
@@ -128,7 +130,7 @@ const AccountDeletion = () => {
                   Iniciar sesión
                 </Button>
                 <p className="text-sm leading-6 text-muted-foreground">
-                  Tambien puedes escribir desde el email de tu cuenta a{' '}
+                  También puedes escribir desde el email de tu cuenta a{' '}
                   <a href="mailto:hola@winerim.com" className="font-medium text-red-800 hover:underline">
                     hola@winerim.com
                   </a>
@@ -148,7 +150,7 @@ const AccountDeletion = () => {
                   <CheckCircle className="h-4 w-4 text-green-700" />
                   <AlertTitle>Solicitud creada</AlertTitle>
                   <AlertDescription>
-                    Tu solicitud esta en estado <strong>{existingRequest.status}</strong>. La revisaremos y
+                    Tu solicitud está <strong>{({ requested: 'recibida', processing: 'en curso', completed: 'completada', rejected: 'rechazada', cancelled: 'cancelada' } as Record<string, string>)[existingRequest.status] ?? existingRequest.status}</strong>. La revisaremos y
                     completaremos en un plazo razonable. Referencia: {existingRequest.id}.
                   </AlertDescription>
                 </Alert>
@@ -167,7 +169,7 @@ const AccountDeletion = () => {
                       <AlertTitle>Antes de continuar</AlertTitle>
                       <AlertDescription>
                         La eliminación puede borrar tu perfil Matchrim, vinos guardados, puntuaciones,
-                        historial de restaurantes y datos de cuenta. Algunos registros tecnicos o legales
+                        historial de restaurantes y datos de cuenta. Algunos registros técnicos o legales
                         pueden conservarse durante el tiempo necesario.
                       </AlertDescription>
                     </Alert>
@@ -215,7 +217,7 @@ const AccountDeletion = () => {
             </CardHeader>
             <CardContent>
               <p className="text-sm leading-6 text-muted-foreground">
-                Puedes consultar que datos tratamos en la{' '}
+                Puedes consultar qué datos tratamos en la{' '}
                 <Link to="/privacy" className="font-medium text-red-800 hover:underline">
                   política de privacidad
                 </Link>

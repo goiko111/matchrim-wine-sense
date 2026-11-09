@@ -55,7 +55,7 @@ export const GlobalWineRecovery104 = ({ candidate, contextKey, profile, disabled
       let queryLines: Parameters<typeof globalRecoveryQueries104>[4];
       const useLocalReading = onDevice || Boolean(latestReading.current.value && candidate.source !== 'manual');
       if (useLocalReading) {
-        if (onDevice && (!image || !localOCRAvailable106())) { setNotice('La lectura local no esta disponible en esta version.'); return; }
+        if (onDevice && (!image || !localOCRAvailable106())) { setNotice('La lectura local no está disponible en esta versión.'); return; }
         if (onDevice) setNotice('Leyendo el recorte en este iPhone. La foto no se envia.');
         const text = onDevice ? await readLocalWineText106(image!, controller.signal) : latestReading.current.value!; if (!active()) return;
         if (onDevice) latestReading.current.value = text;
@@ -69,7 +69,7 @@ export const GlobalWineRecovery104 = ({ candidate, contextKey, profile, disabled
         const possible = completeYears ? years.roles.filter(role => role.role === 'vintage' || role.role === 'unclassified') : [];
         vintage = candidate.source === 'manual' && candidate.vintage !== null ? candidate.vintage
           : possible.length === 1 ? possible[0].year : null;
-        if (!evidence.length) { setProposals([]); setNotice('No se lee texto en este recorte. Prueba una foto mas cercana.'); return; }
+        if (!evidence.length) { setProposals([]); setNotice('No se lee texto en este recorte. Prueba una foto más cercana.'); return; }
       }
       setProposalVintage(vintage);
       if (!useLocalReading && (candidate.source === 'manual' || (canAdmitNativeCatalogLookup97(candidate) && independentGlobalProducer103(candidate)))) {

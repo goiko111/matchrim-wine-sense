@@ -11,11 +11,14 @@ const native = registerPlugin<NativeCameraTransport133>('MatchrimOCR');
 const nativeCameraAvailable133 = () => Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios' && Capacitor.isPluginAvailable('MatchrimOCR');
 const MAX_DATA_URL = 24 * 1024 * 1024;
 
-export type NativeCameraOutcome133 = { status: 'captured'; file: File } | { status: 'cancelled' } | { status: 'unavailable' };
+export type NativeCameraOutcome133 = { status: 'captured'; file: File } | { status: 'cancelled' } | { status: 'busy' } | { status: 'unavailable' };
 
 export const createNativeCamera133 = (transport: NativeCameraTransport133) => async (): Promise<NativeCameraOutcome133> => {
   let raw: unknown;
-  try { raw = await transport.takePhoto(); } catch { return { status: 'unavailable' }; }
+  // 134: a second tap while the camera is open is rejected BUSY; that is not a reason to open the file menu.
+  try { raw = await transport.takePhoto(); } catch (error) {
+    return (error as { code?: unknown } | null)?.code === 'BUSY' ? { status: 'busy' } : { status: 'unavailable' };
+  }
   const result = raw as { status?: unknown; image?: unknown } | null;
   if (result?.status === 'cancelled') return { status: 'cancelled' };
   const image = result?.status === 'captured' ? result.image : null;
@@ -34,10 +37,14 @@ export const deliverFileToInput133 = (input: HTMLInputElement, file: File) => {
   input.dispatchEvent(new Event('change', { bubbles: true }));
 };
 
+let cameraOpen134 = false;
 export const openCamera133 = async (input: HTMLInputElement | null, camera = nativeCameraAvailable133() ? createNativeCamera133(native) : null) => {
   if (!input || input.disabled) return;
   if (!camera) { input.click(); return; }
-  const outcome = await camera();
+  if (cameraOpen134) return;
+  cameraOpen134 = true;
+  let outcome: NativeCameraOutcome133;
+  try { outcome = await camera(); } finally { cameraOpen134 = false; }
   if (outcome.status === 'captured') deliverFileToInput133(input, outcome.file);
   else if (outcome.status === 'unavailable') input.click();
 };

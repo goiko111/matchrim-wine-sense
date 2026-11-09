@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { buildPasswordResetRedirect, buildSignupRedirect } from '@/utils/authRedirect';
 import { reconcileMatchrimLocalOwner } from '@/utils/matchrimLocalOwner';
+import { Capacitor } from '@capacitor/core';
 
 interface AuthContextType {
   user: User | null;
@@ -77,12 +78,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         let errorMessage = error.message;
         
         // Translate common error messages to Spanish
-        if (error.message.includes('already registered')) {
+        const raw = error.message.toLowerCase();
+        if (raw.includes('already registered')) {
           errorMessage = 'Este email ya está registrado. Intenta iniciar sesión o usa otro email.';
-        } else if (error.message.includes('invalid email')) {
+        } else if (raw.includes('invalid email') || (raw.includes('email') && raw.includes('invalid'))) {
           errorMessage = 'El formato del email no es válido.';
-        } else if (error.message.includes('weak password')) {
+        } else if (raw.includes('weak password') || raw.includes('password should be') || raw.includes('password is too')) {
           errorMessage = 'La contraseña debe tener al menos 6 caracteres.';
+        } else if (raw.includes('rate limit') || raw.includes('too many')) {
+          errorMessage = 'Demasiados intentos. Espera unos minutos y vuelve a probar.';
+        } else if (raw.includes('failed to fetch') || raw.includes('load failed') || raw.includes('network')) {
+          errorMessage = 'No hay conexión. Comprueba la red y vuelve a intentarlo.';
+        } else {
+          errorMessage = 'No se ha podido crear la cuenta. Inténtalo de nuevo.';
         }
         
         toast({
@@ -167,12 +175,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
+      let { error } = await supabase.auth.signOut();
+      // 134: without coverage the global sign-out fails before the session is removed and the
+      // iPhone stayed signed in. The app then closes the session on this device only.
+      if (error && Capacitor.isNativePlatform()) {
+        console.error('Signout error, closing the session on this device:', error);
+        ({ error } = await supabase.auth.signOut({ scope: 'local' }));
+      }
       if (error) {
         console.error('Signout error:', error);
         toast({
           title: "Error al cerrar sesión",
-          description: error.message,
+          description: Capacitor.isNativePlatform() ? "No se ha podido cerrar la sesión. Inténtalo de nuevo." : error.message,
           variant: "destructive"
         });
         return false;

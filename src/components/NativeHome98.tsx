@@ -6,7 +6,7 @@ import MobileBottomNav from '@/components/MobileBottomNav';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { NativeWineSearch97 } from '@/components/wine-import/NativeWineSearch97';
 import { buildNativeRecommendation95 } from '@/utils/nativeRecommendation95';
-import { createNativeWineDraft98 } from '@/utils/nativeWineDraft98';
+import { createNativeWineDraft98, stashSignedOutWineDraft134 } from '@/utils/nativeWineDraft98';
 import { buildAuthRedirectPath } from '@/utils/navigation';
 import type { WinerimWineWithMatch } from '@/services/winerimApi';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
@@ -101,6 +101,7 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
         <Dialog.Description className="sr-only">Busca una referencia del catálogo y revisa los datos antes de guardarla.</Dialog.Description>
         <div className="min-h-0 overflow-y-auto"><NativeWineSearch97 onSelectWine={wine => {
           setSearchOpen(false);
+          if (!ownerId) stashSignedOutWineDraft134(wine);
           navigate(ownerId ? '/my-wines/add' : buildAuthRedirectPath('/my-wines/add'), ownerId ? { state: createNativeWineDraft98(wine, ownerId) } : undefined);
         }} /></div>
       </Dialog.Content></Dialog.Portal>

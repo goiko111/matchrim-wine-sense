@@ -43,12 +43,18 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, child
   const style = view.current === null ? cellarReferenceStyleView110(wine, snapshot) : null;
   const displayScore = view.current ?? style?.current ?? null;
   const rating = wine.rating === 'love' ? 'Te gusta' : wine.rating === 'not_for_me' ? 'No es para ti' : wine.rating === 'ok' ? 'Te pareció correcto' : null;
+  const verdict = rating || (view.current !== null ? `≈${view.current}/100 para ti` : style?.current != null ? `≈${style.current}/100 por estilo` : masterReference ? 'Ficha de sabor incompleta' : 'Afinidad por calcular');
+  const stock = wine.status === 'collection' && wine.quantity != null ? `${wine.quantity} ${wine.quantity === 1 ? 'botella' : 'botellas'}` : null;
+  // 134: the label used to be only "Ver <name>", so VoiceOver skipped vintage, verdict and stock.
+  const rowLabel = `Ver ${[wine.name, wine.producer, wine.vintage, verdict, stock].filter(Boolean).join(', ')}`;
+  // 134: the sheet showed only a catalogue photo; a wine with its own photo opened with none.
+  const sheetPhoto = wine.image_url ? null : ownPhoto || (resolved?.key === identityKey ? resolved.url : null);
   return <>
-    <button ref={rowRef} type="button" className="flex min-h-36 w-full min-w-0 items-center gap-4 border-b border-stone-200 py-4 text-left" aria-label={`Ver ${wine.name}`} onClick={() => setOpen(true)} data-testid="native-cellar-item98">
+    <button ref={rowRef} type="button" className="flex min-h-36 w-full min-w-0 items-center gap-4 border-b border-stone-200 py-4 text-left" aria-label={rowLabel} onClick={() => setOpen(true)} data-testid="native-cellar-item98">
       <NativeWinePhoto98 src={wine.image_url || ownPhoto} ownedCapture name={wine.name} identity={{ name: wine.name, producer: wine.producer, vintage: wine.vintage }} resolveMissing={!ownPhoto && (resolveImage || open || visible)} onResolved={url => setResolved({ key: identityKey, url })} className="h-[112px] w-[80px] border border-stone-200" />
       <span className="min-w-0 flex-1"><span className="block break-words text-base font-semibold leading-6 text-stone-950">{wine.name}</span><span className="mt-1 block break-words text-xs leading-5 text-stone-500">{[wine.producer, wine.vintage].filter(Boolean).join(' · ')}</span>
-        <span className={`mt-2 flex items-center gap-1 text-sm font-semibold ${wine.rating === 'not_for_me' ? 'text-stone-700' : wine.rating === 'love' || (displayScore ?? -1) >= 70 ? 'text-emerald-800' : 'text-stone-600'}`}>{wine.rating === 'love' && <ThumbsUp className="h-4 w-4" aria-hidden="true" />}{wine.rating === 'not_for_me' && <ThumbsDown className="h-4 w-4" aria-hidden="true" />}{rating || (view.current !== null ? `≈${view.current}/100 para ti` : style?.current != null ? `≈${style.current}/100 por estilo` : masterReference ? 'Ficha de sabor incompleta' : 'Afinidad por calcular')}</span>
-        {wine.status === 'collection' && wine.quantity != null && <span className="mt-1 block text-xs text-stone-500">{wine.quantity} {wine.quantity === 1 ? 'botella' : 'botellas'}</span>}
+        <span className={`mt-2 flex items-center gap-1 text-sm font-semibold ${wine.rating === 'not_for_me' ? 'text-stone-700' : wine.rating === 'love' || (displayScore ?? -1) >= 70 ? 'text-emerald-800' : 'text-stone-600'}`}>{wine.rating === 'love' && <ThumbsUp className="h-4 w-4" aria-hidden="true" />}{wine.rating === 'not_for_me' && <ThumbsDown className="h-4 w-4" aria-hidden="true" />}{verdict}</span>
+        {stock && <span className="mt-1 block text-xs text-stone-500">{stock}</span>}
       </span><ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
     </button>
     <Dialog.Root open={open} onOpenChange={setOpen}><Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" /><Dialog.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[94dvh] w-full max-w-xl flex-col overflow-hidden rounded-t-lg bg-white text-stone-950">
@@ -68,7 +74,7 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, child
           </a>
           {reference.catalogue_vintage === null && <p className="text-xs leading-5 text-stone-600">Referencia sin añada. No confirma los datos sensoriales de tu botella.</p>}
         </div>}
-        {!wine.image_url && resolved?.key === identityKey && <NativeWinePhoto98 src={resolved.url} name={wine.name} className="mx-auto mt-[12px] h-[144px] w-[88px]" />}
+        {sheetPhoto && <NativeWinePhoto98 src={sheetPhoto} name={wine.name} className="mx-auto mt-[12px] h-[144px] w-[88px]" />}
         {children}
       </div>
     </Dialog.Content></Dialog.Portal></Dialog.Root>

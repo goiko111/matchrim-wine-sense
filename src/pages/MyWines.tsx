@@ -3,7 +3,8 @@ import { Capacitor } from '@capacitor/core';
 import { CellarWineAffinity } from '@/components/CellarWineAffinity';
 import { NativeCellarToolbar98 } from '@/components/NativeCellarToolbar98';
 import { NativeCellarItem98 } from '@/components/NativeCellarItem98';
-import { readNativeWineDraft98 } from '@/utils/nativeWineDraft98';
+import { deleteOwnWinePhoto133 } from '@/utils/ownWinePhoto133';
+import { readNativeWineDraft98, takeSignedOutWineDraft134 } from '@/utils/nativeWineDraft98';
 import { safeWineImageUrl98 } from '@/utils/wineImage98';
 import { cellarAffinityView, makeCellarCatalogEvidence, readCellarInitialAffinity, readCellarSensoryEvidence, withCellarInitialAffinity } from '@/utils/bodegaAffinity';
 import { cellarDisplayAffinity110, isHighCellarAffinity110 } from '@/utils/cellarReferenceStyle110';
@@ -261,6 +262,9 @@ const MyWinesForOwner = () => {
   const [learningWines, setLearningWines] = useState<LearningWine[]>([]);
   const [cellarProfile, setCellarProfile] = useState<ScanProfileSnapshot | null>(null);
   const cellarProfileController = useRef<AbortController | null>(null);
+  // 134: reloads after rating/favourite/save keep the list and the previous profile on screen.
+  const cellarProfileOwner = useRef<string | null>(null);
+  const loadedSection134 = useRef<string | null>(null);
   const [filteredWines, setFilteredWines] = useState<UserWine[]>([]);
   const [loading, setLoading] = useState(true);
   const [wineLoadFailed, setWineLoadFailed] = useState(false);
@@ -493,11 +497,11 @@ const MyWinesForOwner = () => {
     cellarProfileController.current?.abort();
     const controller = new AbortController();
     cellarProfileController.current = controller;
-    setCellarProfile(null);
+    if (cellarProfileOwner.current !== ownerId) setCellarProfile(null);
     try {
       const snapshot = await loadMatchrimScanProfile(ownerId, controller.signal);
       if (!controller.signal.aborted && ownerLifetime.current.active && currentOwner.current === ownerId
-        && cellarProfileController.current === controller) setCellarProfile(snapshot);
+        && cellarProfileController.current === controller) { cellarProfileOwner.current = ownerId; setCellarProfile(snapshot); }
     } catch (error) {
       if (!controller.signal.aborted) console.error('Error loading cellar profile:', error);
     }
@@ -574,6 +578,7 @@ const MyWinesForOwner = () => {
       if (!isCurrent()) return;
       if (error) throw error;
       setWines(((data as UserWine[]) || []).map(normalizeUserWine));
+      loadedSection134.current = `${ownerId}:${statusFilter}`;
       void loadSectionCounts();
     } catch (error) {
       if (!isCurrent()) return;
@@ -1035,6 +1040,31 @@ const MyWinesForOwner = () => {
     }
   };
 
+  // 134: on iOS a bottle in "En bodega" could never be used up; it stayed "N botellas" forever.
+  // One tap takes one bottle; the last one moves the wine to Probados (rating stays the person's call).
+  const handleDrinkBottle134 = async (wine: UserWine) => {
+    if (!isNative || wine.status !== 'collection') return;
+    const action = beginWineAction(wine.id);
+    if (!action) return;
+    try {
+      const remaining = Math.max(0, (wine.quantity ?? 1) - 1);
+      const update = remaining > 0 ? { quantity: remaining } : { quantity: 0, status: 'tasted' as const };
+      const { data, error } = await supabase.from('user_wines').update(update).eq('id', wine.id)
+        .eq('user_id', action.ownerId).select('id, quantity, status').single();
+      if (!action.isCurrent()) return;
+      if (error) throw error;
+      if (!confirmsWineMutation(data, wine.id, update)) throw new Error('Bottle update not confirmed');
+      toast.success(remaining > 0 ? `Quedan ${remaining} ${remaining === 1 ? 'botella' : 'botellas'}` : 'Última botella: el vino pasa a Probados');
+      loadWines();
+    } catch (error) {
+      if (!action.isCurrent()) return;
+      console.error('Error updating bottles:', error);
+      toast.error('No se pudo confirmar el cambio de botellas');
+    } finally {
+      action.finish();
+    }
+  };
+
   const handleToggleProfileTraining = async (wineId: string, nextValue: boolean) => {
     if (!ownerLifetime.current.active) return;
     const wine = wines.find((item) => item.id === wineId);
@@ -1150,7 +1180,7 @@ const MyWinesForOwner = () => {
         : wine?.status === 'collection' && !wine.rating
         ? `Vino puntuado${wine.quantity && wine.quantity > 1 ? ` (quedan ${wine.quantity - 1} botellas)` : ' y movido a Ya Probados'}`
         : rating && wine.status === 'wishlist'
-          ? 'Vino movido a Ya Probados'
+          ? (isNative ? 'Vino movido a Probados' : 'Vino movido a Ya Probados')
           : "Valoración guardada";
       
       toast.success(rating && !hasSensoryAttributes
@@ -1218,6 +1248,7 @@ const MyWinesForOwner = () => {
       if (!confirmsWineMutation(data, id)) throw new Error('Wine deletion not confirmed');
 
 	      toast.success("Vino eliminado");
+	      if (isNative) void deleteOwnWinePhoto133(id);
 	      loadWines();
 	      loadLearningWines();
 	    } catch (error) {
@@ -1254,7 +1285,7 @@ const MyWinesForOwner = () => {
   useEffect(() => {
     if (!isAddWineRoute || showAddDialog || showPurchaseDialog) return;
     resetForm();
-    const draft = isNative ? readNativeWineDraft98(location.state, user?.id) : null;
+    const draft = isNative ? readNativeWineDraft98(location.state, user?.id) ?? takeSignedOutWineDraft134(user?.id) : null;
     if (draft) {
       setFormData(current => ({ ...current, name: draft.name, producer: draft.producer || '', vintage: draft.vintage?.toString() || '' }));
       setManualWineNameConfirmed(true);
@@ -1463,7 +1494,7 @@ const MyWinesForOwner = () => {
     );
   }
 
-  if (loading) {
+  if (loading && !(isNative && loadedSection134.current === `${user?.id}:${statusFilter}`)) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20">
         <AppNav />
@@ -1832,6 +1863,13 @@ const MyWinesForOwner = () => {
                     <p className="text-sm text-slate-600">Tus datos no se han borrado. Comprueba la conexión y vuelve a intentarlo.</p>
                     <Button variant="outline" className="min-h-11" onClick={() => void loadWines()}>Reintentar</Button>
                   </div>
+                ) : isNative && filteredWines.length === 0 && wines.length > 0 && filterType !== 'all' ? (
+                  // 134: an active filter with no matches is not an empty cellar.
+                  <div role="status" className="space-y-3 border-y border-slate-200 py-6">
+                    <h2 className="font-semibold text-slate-950">Ningún vino de esta sección tiene alta afinidad</h2>
+                    <p className="text-sm text-slate-600">La afinidad alta empieza en 70/100 y solo se calcula con datos de sabor de Winerim.</p>
+                    <Button variant="outline" className="min-h-11" onClick={() => setFilterType('all')}>Ver todos</Button>
+                  </div>
                 ) : filteredWines.length === 0 ? (
                   <Card>
                     <CardContent className="flex flex-col items-center px-5 py-12 text-center">
@@ -1857,7 +1895,7 @@ const MyWinesForOwner = () => {
                         {statusFilter === 'collection' && 'Escanea una etiqueta, busca un vino o añádelo manualmente para recordar qué tienes en casa.'}
                         {statusFilter === 'wishlist' && 'Cuando filtres una carta o escanees un restaurante sin Winerim, podrás guardar candidatos para probarlos después.'}
                         {statusFilter === 'tasted' && 'Los vinos puntuados con atributos sensoriales afinan tus recomendaciones futuras sin cambiar tu código público.'}
-                        {statusFilter === 'favorites' && 'Toca el corazón de cualquier vino en Bodega, Quiero Probar o Ya Probados para verlo en esta sección.'}
+                        {statusFilter === 'favorites' && (isNative ? 'Toca el corazón de cualquier vino en En bodega, Por probar o Probados para verlo en esta sección.' : 'Toca el corazón de cualquier vino en Bodega, Quiero Probar o Ya Probados para verlo en esta sección.')}
                         {statusFilter === 'rejected' && 'Cuando marques “No va”, Matchrim aprende qué estilos, uvas o estructuras alejar de tus recomendaciones.'}
                       </p>
                       <div className="mt-5 flex w-full max-w-sm flex-col gap-2 sm:flex-row sm:justify-center">
@@ -1869,17 +1907,17 @@ const MyWinesForOwner = () => {
                         ) : statusFilter === 'favorites' ? (
                           <Button onClick={() => navigateToWineSection('wishlist')} className="gap-2 bg-red-800 hover:bg-red-900">
                             <Heart className="h-4 w-4" />
-                            Ver Quiero Probar
+                            {isNative ? 'Ver Por probar' : 'Ver Quiero Probar'}
                           </Button>
                         ) : statusFilter === 'tasted' ? (
                           <Button onClick={() => navigateToWineSection('wishlist')} className="gap-2 bg-red-800 hover:bg-red-900">
                             <Heart className="h-4 w-4" />
-                            Ver Quiero Probar
+                            {isNative ? 'Ver Por probar' : 'Ver Quiero Probar'}
                           </Button>
                         ) : statusFilter === 'rejected' ? (
                           <Button onClick={() => navigateToWineSection('tasted')} className="gap-2 bg-red-800 hover:bg-red-900">
                             <Star className="h-4 w-4" />
-                            Ver Ya Probados
+                            {isNative ? 'Ver Probados' : 'Ver Ya Probados'}
                           </Button>
                         ) : (
                           <Button
@@ -2022,7 +2060,7 @@ const MyWinesForOwner = () => {
                             {wine.region && <Badge variant="outline">{wine.region}</Badge>}
                             {wine.country && <Badge variant="outline">{wine.country}</Badge>}
                             {wine.alcohol_content && (
-                              <Badge variant="secondary">{wine.alcohol_content}% ABV</Badge>
+                              <Badge variant="secondary">{wine.alcohol_content}% {isNative ? 'vol.' : 'ABV'}</Badge>
                             )}
                           </div>
 
@@ -2124,6 +2162,12 @@ const MyWinesForOwner = () => {
                             </div>
                           )}
 
+                          {isNative && wine.status === 'collection' && (wine.quantity ?? 1) > 0 && (
+                            <Button variant="outline" className="min-h-11 w-full" disabled={savingWineActions.has(wine.id)} aria-busy={savingWineActions.has(wine.id)} onClick={() => void handleDrinkBottle134(wine)}>
+                              <Wine className="mr-2 h-4 w-4" aria-hidden="true" />Me he bebido una botella
+                            </Button>
+                          )}
+
                           {/* Rating Buttons - move wishlist wines to tasted and train the profile */}
                           {wine.rating && (
                             <Button variant="ghost" className="min-h-11 text-slate-600" disabled={savingWineActions.has(wine.id)} aria-busy={savingWineActions.has(wine.id)} onClick={() => handleRating(wine.id, null)}>
@@ -2137,6 +2181,7 @@ const MyWinesForOwner = () => {
                                 size="sm"
                                 className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
                                 onClick={() => handleRating(wine.id, 'love')}
+                                aria-pressed={wine.rating === 'love'}
                                 disabled={savingWineActions.has(wine.id)}
                                 aria-busy={savingWineActions.has(wine.id)}
                               >
@@ -2148,6 +2193,7 @@ const MyWinesForOwner = () => {
                                 size="sm"
                                 className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
                                 onClick={() => handleRating(wine.id, 'ok')}
+                                aria-pressed={wine.rating === 'ok'}
                                 disabled={savingWineActions.has(wine.id)}
                                 aria-busy={savingWineActions.has(wine.id)}
                               >
@@ -2159,6 +2205,7 @@ const MyWinesForOwner = () => {
                                 size="sm"
                                 className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
                                 onClick={() => handleRating(wine.id, 'not_for_me')}
+                                aria-pressed={wine.rating === 'not_for_me'}
                                 disabled={savingWineActions.has(wine.id)}
                                 aria-busy={savingWineActions.has(wine.id)}
                               >
@@ -2183,7 +2230,12 @@ const MyWinesForOwner = () => {
         </div>
 
         {/* Purchase Info Dialog */}
-        <Dialog open={showPurchaseDialog} onOpenChange={setShowPurchaseDialog}>
+        <Dialog open={showPurchaseDialog} onOpenChange={(open) => {
+          // 134: closing this sheet with X on /my-wines/add reset the form the person had typed;
+          // it now returns to that form with its data.
+          if (!open && isNative && isAddWineRoute) setShowAddDialog(true);
+          setShowPurchaseDialog(open);
+        }}>
           <DialogContent className={isNative
             ? 'matchrim-native-cellar-dialog left-0 top-0 h-[100dvh] max-h-[100dvh] w-screen min-w-0 max-w-none translate-x-0 translate-y-0 grid-cols-[minmax(0,1fr)] overflow-x-hidden overflow-y-auto rounded-none pb-[calc(1.5rem+var(--matchrim-safe-bottom))] pt-[calc(1.5rem+var(--matchrim-safe-top))] [overflow-wrap:anywhere] [&>button:last-child]:fixed [&>button:last-child]:top-[calc(1rem+var(--matchrim-safe-top))] [&>button:last-child]:flex [&>button:last-child]:h-11 [&>button:last-child]:w-11 [&>button:last-child]:items-center [&>button:last-child]:justify-center [&>button:last-child]:bg-background'
             : 'h-[100dvh] max-h-[100dvh] w-screen max-w-none overflow-y-auto rounded-none sm:h-auto sm:max-h-[90vh] sm:max-w-2xl sm:rounded-lg'}>

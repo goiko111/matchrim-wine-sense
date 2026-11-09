@@ -89,7 +89,8 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
     }),
     [selectedIds, wines],
   );
-  const numericBudget = budget.trim() && Number.isFinite(Number(budget)) ? Number(budget) : null;
+  // 134: the Spanish decimal keypad types "25,50"; a comma budget was silently ignored.
+  const numericBudget = budget.trim() && Number.isFinite(Number(budget.trim().replace(',', '.'))) ? Number(budget.trim().replace(',', '.')) : null;
   const priceFormat = wineComparisonPriceFormat(selectedWines, mode === 'service' ? serviceFormat : 'any');
   const priceCurrency = priceFormat ? singlePriceCurrency(selectedWines.map((wine) => ({
     price: wineComparisonPrice(wine, priceFormat), currency: wine.currency,
@@ -102,7 +103,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
     serviceFormat: mode === 'service' ? serviceFormat : 'any',
   }), [mode, numericBudget, priceCurrency, priority, selectedWines, serviceFormat]);
   const decisionLabel = decision.actionability === 'provisional'
-    ? 'Opcion provisional: confirma los datos'
+    ? 'Opción provisional: confirma los datos'
     : priority === 'certainty'
       ? (mode === 'service' ? 'Identidad más segura para servir' : 'Identidad más segura')
       : (mode === 'service' ? 'Elección para servir' : 'Elección para ti');
@@ -237,7 +238,7 @@ export const WineComparisonWorkspace = ({ wines }: WineComparisonWorkspaceProps)
                 {decision.primary.cautions.map((caution) => <li key={caution} className="text-amber-800">• {caution}</li>)}
               </ul>
               {decision.actionability === 'provisional' && (
-                <p className="mt-2 text-sm font-medium text-amber-950">No uses este orden como recomendacion final hasta confirmar identidad, precio o formato pendiente.</p>
+                <p className="mt-2 text-sm font-medium text-amber-950">No uses este orden como recomendación final hasta confirmar identidad, precio o formato pendiente.</p>
               )}
             </div>
           )}

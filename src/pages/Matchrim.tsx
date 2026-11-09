@@ -18,6 +18,7 @@ import { useQuizResults } from '@/hooks/useQuizResults';
 import { buildAuthRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
 import { firstMissingNativeAnswer273, isNativeQuizAnswer273 } from '@/utils/nativeQuizCompletion273';
 import { calibrateQuizProfile132 } from '@/utils/quizCalibration132';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 
 const NativeMatchrimLoading = () => (
   <div className="matchrim-native-page-top min-h-screen bg-white px-4 text-slate-700" style={{ paddingBottom: 'calc(7rem + env(safe-area-inset-bottom, 0px))' }}>
@@ -40,6 +41,7 @@ const MatchrimSession = () => {
   const [quizResult, setQuizResult] = useState(null);
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [isLoadingRecommendations, setIsLoadingRecommendations] = useState(false);
+  const [confirmQuizExit134, setConfirmQuizExit134] = useState(false);
   const isNative = Capacitor.isNativePlatform();
   const nativeRetake = isNative && searchParams.get('retake') === '1';
   const hasStartedQuiz = useRef(false);
@@ -214,7 +216,8 @@ const MatchrimSession = () => {
   useEffect(() => {
     let active = true;
     const fetchRecommendations = async () => {
-      if (!quizResult) return;
+      // 134: the native results screen does not show this list; on iOS it only paged the whole wines table.
+      if (!quizResult || isNative) return;
 
       setIsLoadingRecommendations(true);
       try {
@@ -360,9 +363,25 @@ const MatchrimSession = () => {
             isLast={currentQuestionIndex === questions.length - 1}
             currentQuestionIndex={currentQuestionIndex}
             totalQuestions={questions.length}
-            onBackToStart={handleBackToHome}
+            onBackToStart={() => {
+              // 134: one stray tap on the home icon discarded every answer without asking.
+              if (isNative && Object.keys(answers).length > 0) setConfirmQuizExit134(true);
+              else handleBackToHome();
+            }}
           />
         )}
+        {confirmQuizExit134 && <AlertDialog open onOpenChange={setConfirmQuizExit134}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>¿Salir del test?</AlertDialogTitle>
+              <AlertDialogDescription>Perderás las respuestas de este test. Tu perfil guardado no cambia.</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="min-h-11">Seguir con el test</AlertDialogCancel>
+              <AlertDialogAction className="min-h-11" onClick={handleBackToHome}>Salir</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>}
 
         {currentStep === 'results' && quizResult && (
           <>

@@ -170,7 +170,7 @@ const userFacingScanError = (error: unknown) => {
     return 'No se pudo conectar con el servicio de detección. La foto sigue lista para reintentar.';
   }
   if (error instanceof EdgeFunctionError && error.status === 429) {
-    return 'El servicio esta recibiendo demasiadas solicitudes. Conservamos la foto para reintentarlo en unos segundos.';
+    return 'El servicio está recibiendo demasiadas solicitudes. Conservamos la foto para reintentarlo en unos segundos.';
   }
   if (error instanceof EdgeFunctionError && error.status >= 500) {
     return 'El servicio no pudo terminar la lectura. Conservamos la foto para que puedas reintentar.';
@@ -340,6 +340,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   }), [duplicateGroups, regions]);
   const loading = phase === 'quality' || phase === 'profile' || phase === 'detecting' || phase === 'analyzing';
   const regionActionsLocked = batchLocked || loading;
+  const reanalyzeSnapshot134 = useRef<{ controller: AbortController; region: ScanRegion } | null>(null);
   const manualLookupContext = { owner: user?.id ?? null, regionId: selectedRegionId, candidate: selectedCandidate,
     profile: scanProfile?.profile ?? null, locked: regionActionsLocked || saving || Boolean(batchRef.current) };
   const manualLookupKey = JSON.stringify(manualLookupContext);
@@ -553,7 +554,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
           objectType: 'label', detectionConfidence: 0, quality: { glare: 'medium', occlusion: 'medium', legibility: 'limited' },
           status: candidate ? 'uncertain' : 'unrecognized', candidates: candidate ? [candidate] : [], selectedCandidateId: candidate?.id ?? null,
           duplicateCount: 1, cropDataUrl: prepared.dataUrl, error: null,
-          fallback: candidate ? null : { code: 'insufficient_visible_text', message: 'No se lee suficiente texto. Prueba una foto mas cercana.', suggestedActions: ['Acercar la etiqueta', 'Escribir el nombre'] } };
+          fallback: candidate ? null : { code: 'insufficient_visible_text', message: 'No se lee suficiente texto. Prueba una foto más cercana.', suggestedActions: ['Acercar la etiqueta', 'Escribir el nombre'] } };
         setLocalReading({ regionId, value: reading });
         setRegions([region]);
         setCoverage({ status: 'unknown', detectedObjects: 0, estimatedVisibleObjects: null, confidence: null,
@@ -707,9 +708,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (savingRef.current) return;
     const file = event.target.files?.[0];
+    // 134: clear the input so choosing the same photo again (after a cancel or failure) fires onChange.
+    if (isNative) event.target.value = '';
     if (!file) return;
     if (!file.type.startsWith('image/')) {
-      toast.error('Selecciona una imagen valida');
+      toast.error('Selecciona una imagen válida');
       return;
     }
     trackAppEvent('multi_wine_label_scan_started', {
@@ -720,6 +723,14 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   };
 
   const cancelScan = () => {
+    const reread = reanalyzeSnapshot134.current;
+    if (isNative && reread && abortRef.current === reread.controller) {
+      reread.controller.abort();
+      reanalyzeSnapshot134.current = null;
+      updateRegion(reread.region.id, () => reread.region);
+      setPhase('ready');
+      return;
+    }
     abortRef.current?.abort();
     setRegions((current) => current.map((region) => region.status === 'analyzing'
       ? { ...region, status: 'pending' as const } : region));
@@ -818,6 +829,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     }
     const controller = new AbortController();
     abortRef.current = controller;
+    // 134: a failed or cancelled re-read used to leave phase 'error'/'cancelled', which hides
+    // "Confirmar" for the whole batch. On native the region is restored and the batch stays ready.
+    if (isNative) reanalyzeSnapshot134.current = { controller, region: selectedRegion };
+    setErrorMessage(null);
     setPhase('analyzing');
     setAnalysisProgress(0);
     try {
@@ -838,8 +853,18 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       setPhase('ready');
     } catch (error) {
       if (controller.signal.aborted || (isNative && abortRef.current !== controller)) return;
-      setErrorMessage(localBatch ? 'No se pudo volver a leer la etiqueta en este iPhone. La foto no se ha enviado.' : userFacingScanError(error));
+      const message = localBatch ? 'No se pudo volver a leer la etiqueta en este iPhone. La foto no se ha enviado.' : userFacingScanError(error);
+      if (isNative) {
+        const snapshot = reanalyzeSnapshot134.current?.region;
+        if (snapshot) updateRegion(snapshot.id, () => snapshot);
+        toast.error(message);
+        setPhase('ready');
+        return;
+      }
+      setErrorMessage(message);
       setPhase('error');
+    } finally {
+      if (reanalyzeSnapshot134.current?.controller === controller) reanalyzeSnapshot134.current = null;
     }
   };
 
@@ -1012,7 +1037,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     const outcome = await saveLabelBatch(batch, onExtractComplete, isCurrent, () => setSaveResults([...batch.results]));
     if (isNative) batch.groups.forEach((group, index) => {
       const result = batch.results[index];
-      const crop = regions.find(region => region.id === group.regionIds[0])?.cropDataUrl || (batch.groups.length === 1 ? preview : null);
+      const crop = regions.find(region => region.id === group.regionIds[0])?.cropDataUrl || (localBatch && batch.groups.length === 1 ? preview : null);
       if (result?.status === 'saved') void saveOwnWinePhoto133(result.rowId, crop);
     });
     if (!isCurrent()) return;
@@ -1184,7 +1209,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       <p className="mt-1 leading-5">
         {coverage?.estimatedVisibleObjects
           ? `${coverage.detectedObjects} regiones de unos ${coverage.estimatedVisibleObjects} objetos estimados. No es un inventario confirmado.`
-          : localBatch ? 'Una etiqueta seleccionada para lectura local. No se ha hecho una deteccion multibotella.'
+          : localBatch ? 'Una etiqueta seleccionada para lectura local. No se ha hecho una detección multibotella.'
             : `${regions.length} regiones detectadas. No sabemos cuántas botellas visibles quedaron fuera.`}
       </p>
       {coverage?.notes.length ? (
@@ -1215,7 +1240,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
             <div className="min-w-0 flex-1">
               <h2 className="text-lg font-bold text-slate-950">{isNative && scanMode === 'local-single' ? 'Fotografía una etiqueta' : 'Fotografía las botellas'}</h2>
               <p className="mt-1 max-w-md text-sm leading-5 text-slate-600">
-                {isNative && scanMode === 'local-single' ? 'La foto se queda en este iPhone. La busqueda en Winerim usa solo el texto leido.' : 'Puede haber una o varias. Revisarás cada identidad antes de confirmar.'}
+                {isNative && scanMode === 'local-single' ? 'La foto se queda en este iPhone. La búsqueda en Winerim usa solo el texto leído.' : 'Puede haber una o varias. Revisarás cada identidad antes de confirmar.'}
               </p>
             </div>
           </div>
@@ -1678,8 +1703,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
                     <form className="matchrim-surface space-y-3 rounded-lg p-4" onSubmit={identifySelectedManually}>
                       <div>
-                        <h4 className="text-sm font-semibold text-slate-950">Identificacion manual</h4>
-                        <p className="mt-1 text-xs text-slate-600">Confirma solo lo que conoces. La afinidad quedara pendiente hasta disponer de datos del vino.</p>
+                        <h4 className="text-sm font-semibold text-slate-950">Identificación manual</h4>
+                        <p className="mt-1 text-xs text-slate-600">Confirma solo lo que conoces. La afinidad quedará pendiente hasta disponer de datos del vino.</p>
                       </div>
                       <div className="grid gap-3 sm:grid-cols-2">
                         <label className="text-sm font-medium text-slate-800">
@@ -1754,7 +1779,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   <Button type="button" variant="outline" title="Siguiente" className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" disabled={regions.findIndex((region) => region.id === selectedRegion.id) >= regions.length - 1} onClick={() => moveSelection(1)}>
                     <span className={isNative ? 'sr-only' : undefined}>Siguiente</span><ChevronRight className="h-4 w-4" />
                   </Button>
-                  <Button type="button" variant="outline" title="Reanalizar" disabled={regionActionsLocked} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" onClick={isNative ? () => {
+                  <Button type="button" variant="outline" title="Reanalizar" disabled={regionActionsLocked || (localBatch && selectedRegion.status === 'recognized')} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" onClick={isNative ? () => {
                     if (localBatch || window.confirm('Se enviará de nuevo el recorte al servicio de lectura con IA. ¿Quieres continuar?')) void reanalyzeSelected();
                   } : () => void reanalyzeSelected()}>
                     <RefreshCw className="h-4 w-4" /><span className={isNative ? 'sr-only' : undefined}>Reanalizar</span>

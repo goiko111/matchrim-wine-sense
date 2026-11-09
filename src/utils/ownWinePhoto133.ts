@@ -50,14 +50,22 @@ export const saveOwnWinePhoto133 = async (rowId: string, dataUrl: string | null 
     const thumbnail = await makeOwnThumbnail133(dataUrl);
     if (!thumbnail) return false;
     await run('readwrite', store => store.put({ thumbnail, savedAt: Date.now() }, rowId));
+    // 134: one read of all entries instead of one connection per key.
     const keys = await run('readonly', store => store.getAllKeys());
     if (keys.length > MAX_ENTRIES) {
-      const entries = await Promise.all(keys.map(async key => ({ key, savedAt: ((await run('readonly', store => store.get(key))) as { savedAt?: number } | undefined)?.savedAt ?? 0 })));
+      const values = await run('readonly', store => store.getAll()) as { savedAt?: number }[];
+      const entries = keys.map((key, index) => ({ key, savedAt: values[index]?.savedAt ?? 0 }));
       entries.sort((a, b) => a.savedAt - b.savedAt);
-      await Promise.all(entries.slice(0, keys.length - MAX_ENTRIES).map(entry => run('readwrite', store => store.delete(entry.key))));
+      for (const entry of entries.slice(0, keys.length - MAX_ENTRIES)) await run('readwrite', store => store.delete(entry.key));
     }
     return true;
   } catch { return false; }
+};
+
+// 134: a deleted wine no longer keeps its thumbnail or its place in the 400-photo budget.
+export const deleteOwnWinePhoto133 = async (rowId: string) => {
+  if (!rowId) return;
+  try { await run('readwrite', store => store.delete(rowId)); } catch { /* best effort */ }
 };
 
 export const readOwnWinePhoto133 = async (rowId: string) => {

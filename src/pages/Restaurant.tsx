@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ChangeEvent } from 'react';
+import { formatScanPrice } from '@/utils/scanMoney';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Camera, Check, ChefHat, ChevronDown, ExternalLink, FilePlus2, Link2, Loader2, Pencil, RefreshCw, ScanLine, Trash2, Wine, X } from 'lucide-react';
 import { Capacitor } from '@capacitor/core';
@@ -77,8 +78,8 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
   const [savingDraft, setSavingDraft] = useState(false);
   const [url, setUrl] = useState('');
   const [links, setLinks] = useState<Array<{ url: string; label: string }>>([]);
-  const [selectedFood, setSelectedFood] = useState('');
-  const [selectedWine, setSelectedWine] = useState('');
+  const [selectedFoodState, setSelectedFood] = useState('');
+  const [selectedWineState, setSelectedWine] = useState('');
   const [manualWine, setManualWine] = useState('');
   const [budget, setBudget] = useState('');
   const [service, setService] = useState<'any' | 'glass' | 'bottle'>('any');
@@ -226,6 +227,9 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
   const activeRows = activeRestaurantRows91(state);
   const foods = activeRows.filter(row => row.kind === 'food');
   const wines = activeRows.filter(row => row.kind === 'wine');
+  // 134: a dish or wine that left the menus (discarded, page unticked, re-read) is no longer selected.
+  const selectedFood = foods.some(row => row.id === selectedFoodState) ? selectedFoodState : '';
+  const selectedWine = wines.some(row => row.id === selectedWineState) ? selectedWineState : '';
   const compare = async () => {
     if (!user) { setError('Inicia sesión para combinar las cartas.'); return; }
     if (budget && (!/^\d+(?:[.,]\d{1,2})?$/.test(budget) || Number(budget.replace(',', '.')) <= 0)) {
@@ -299,7 +303,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
   const readingDetails = (row: SourcedRestaurantRow91) => <ul className="space-y-3">{restaurantRowOrigins91(row).map((origin, index) =>
     <li key={`${origin.pageId}:${origin.row.id}:${index}`} className="break-words text-xs text-slate-500">
       <p>{sourceLabel(origin.pageId)}</p><p className="mt-1 whitespace-pre-wrap">{origin.row.sourceText}</p>
-      <p className="mt-1">{origin.row.price != null ? `${origin.row.price} ${origin.row.currency || '(moneda sin confirmar)'}` : 'Precio sin confirmar'} · {origin.row.service === 'glass' ? 'Copa' : origin.row.service === 'bottle' ? 'Botella' : 'Formato sin confirmar'}</p>
+      <p className="mt-1">{origin.row.price != null ? (native && origin.row.currency ? formatScanPrice(origin.row.price, origin.row.currency) : null) ?? `${origin.row.price} ${origin.row.currency || '(moneda sin confirmar)'}` : 'Precio sin confirmar'} · {origin.row.service === 'glass' ? 'Copa' : origin.row.service === 'bottle' ? 'Botella' : 'Formato sin confirmar'}</p>
       {origin.row.description && <p>{origin.row.description}</p>}
       {origin.row.notes?.map((note, noteIndex) => <p key={noteIndex}>{note}</p>)}
     </li>)}</ul>;
@@ -315,6 +319,8 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
       <Button variant="ghost" className={actionClass} disabled={Boolean(busy)} onClick={() => {
         if (!window.confirm('¿Eliminar las cartas, fotos y resultados de esta sesión en este dispositivo?')) return;
         mutate(() => createRestaurantSession91()); setSelectedFood(''); setSelectedWine(''); setSheet(null); setLinks([]);
+        // 134: a new restaurant starts without the previous budget, filters or error.
+        setBudget(''); setCurrency('EUR'); setService('any'); setManualWine(''); setUrl(''); setError(''); setSheetRow(''); setEditing(null);
       }}><Trash2 className="h-4 w-4 shrink-0" />Eliminar sesión</Button>
     </div>
     <p className="my-3 text-xs leading-normal text-slate-500">Borrador solo en este dispositivo. Al analizar, las páginas seleccionadas se envían a Matchrim y a su proveedor de IA.</p>
@@ -368,7 +374,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
             <Button size="icon" variant="ghost" className={iconClass} aria-label={`Corregir ${row.name}`} title="Corregir lectura" disabled={Boolean(busy)} onClick={() => setEditing({ ...row })}><Pencil className="h-4 w-4" /></Button></div>
           <p className="mt-2 break-words text-sm text-slate-600">{row.sourceText}</p>
           {row.pageIds.length > 0 && <details className="mt-2"><summary className="min-h-[44px] cursor-pointer py-[8px] text-sm">Páginas y lecturas de origen</summary>{readingDetails(row)}</details>}
-          <p className="mt-1 text-sm text-slate-500">{row.price != null ? `${row.price} ${row.currency || '(moneda sin confirmar)'}` : 'Precio sin confirmar'} · {row.service === 'glass' ? 'Copa' : row.service === 'bottle' ? 'Botella' : 'Formato sin confirmar'}</p>
+          <p className="mt-1 text-sm text-slate-500">{row.price != null ? (native && row.currency ? formatScanPrice(row.price, row.currency) : null) ?? `${row.price} ${row.currency || '(moneda sin confirmar)'}` : 'Precio sin confirmar'} · {row.service === 'glass' ? 'Copa' : row.service === 'bottle' ? 'Botella' : 'Formato sin confirmar'}</p>
           {row.availability && row.availability !== 'unknown' && <p className="mt-1 text-sm text-amber-800">{row.availability === 'unavailable' ? 'No disponible según la lectura' : row.availability === 'coming_soon' ? 'Próximamente · excluido de combinaciones' : 'Disponibilidad condicionada · confirmar'}</p>}
           <div className="mt-3 flex flex-wrap gap-2"><Button variant="outline" className={actionClass} disabled={Boolean(busy)} onClick={() => { if (row.kind === 'food') { setSelectedFood(row.id); setSelectedWine(''); } else { setSelectedWine(row.id); setSelectedFood(''); } setTab('pairs'); }}>
             {row.kind === 'food' ? <Wine className="h-4 w-4 shrink-0" /> : <ChefHat className="h-4 w-4 shrink-0" />}{row.kind === 'food' ? 'Vinos para este plato' : 'Platos para este vino'}</Button>
