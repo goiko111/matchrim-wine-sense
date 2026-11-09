@@ -104,6 +104,8 @@ import {
 } from '@/utils/multiWineScan';
 import { recordOwnedScanHistory } from '@/utils/scanHistory';
 import { saveLabelBatch, type LabelSaveBatch, type LabelSaveCallback, type LabelSaveResult } from '@/utils/labelScanSave';
+import { openCamera133 } from '@/utils/nativeCamera133';
+import { saveOwnWinePhoto133 } from '@/utils/ownWinePhoto133';
 
 interface MultiWineLabelScannerProps {
   onExtractComplete: LabelSaveCallback;
@@ -1008,6 +1010,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     setSaving(true);
     setBatchLocked(true);
     const outcome = await saveLabelBatch(batch, onExtractComplete, isCurrent, () => setSaveResults([...batch.results]));
+    if (isNative) batch.groups.forEach((group, index) => {
+      const result = batch.results[index];
+      const crop = regions.find(region => region.id === group.regionIds[0])?.cropDataUrl || (batch.groups.length === 1 ? preview : null);
+      if (result?.status === 'saved') void saveOwnWinePhoto133(result.rowId, crop);
+    });
     if (!isCurrent()) return;
     savingRef.current = false;
     setSaving(false);
@@ -1219,7 +1226,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
               className="h-auto min-h-11 gap-2 whitespace-normal py-3" onClick={() => setScanMode('cloud')}><ScanLine aria-hidden="true" className="h-4 w-4 shrink-0" />Varias botellas</Button>
           </div>}
           <div className="scan-upload-actions mt-5 grid gap-2 sm:grid-cols-2">
-            <Button type="button" disabled={loading || saving} className="matchrim-pressable min-h-12 gap-2 bg-red-900 hover:bg-red-800" onClick={() => cameraInputRef.current?.click()}>
+            <Button type="button" disabled={loading || saving} className="matchrim-pressable min-h-12 gap-2 bg-red-900 hover:bg-red-800" onClick={() => void openCamera133(cameraInputRef.current)}>
               <Camera className="h-4 w-4" /> Hacer foto
             </Button>
             <Button type="button" disabled={loading || saving} variant="outline" className="matchrim-pressable min-h-12 gap-2 border-slate-300 bg-white" onClick={() => fileInputRef.current?.click()}>

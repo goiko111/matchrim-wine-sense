@@ -28,6 +28,7 @@ import { AffinityExplanation } from '@/components/AffinityExplanation';
 import { NativeAffinitySummary } from '@/components/NativeAffinitySummary';
 import { buildConsumerAffinity } from '@/utils/consumerAffinity95';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
+import { openCamera133 } from '@/utils/nativeCamera133';
 
 const actionClass = 'h-auto min-h-[44px] min-w-0 flex-wrap whitespace-normal [overflow-wrap:anywhere] gap-[8px] px-[12px] py-[8px]';
 const iconClass = 'h-[44px] w-[44px] min-w-[44px] shrink-0';
@@ -332,7 +333,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
     <TabsContent value={tab} className="mt-0 min-w-0 py-5">
       {tab !== 'pairs' ? <>
         <div className="restaurant91-upload-actions grid grid-cols-2 gap-2">
-          <Button className={`${actionClass} bg-red-900 text-white hover:bg-red-950`} disabled={Boolean(busy)} onClick={() => cameraInput.current?.click()}><Camera className="h-4 w-4 shrink-0" />Hacer foto</Button>
+          <Button className={`${actionClass} bg-red-900 text-white hover:bg-red-950`} disabled={Boolean(busy)} onClick={() => void openCamera133(cameraInput.current)}><Camera className="h-4 w-4 shrink-0" />Hacer foto</Button>
           <Button variant="outline" className={actionClass} disabled={Boolean(busy)} onClick={() => fileInput.current?.click()}><FilePlus2 className="h-4 w-4 shrink-0" />Añadir archivos</Button>
         </div>
         <input ref={fileInput} type="file" multiple accept="image/*,.heic,.heif,application/pdf" onChange={onFiles} className="hidden" aria-label={`Archivos de ${labels[tab].toLowerCase()}`} disabled={Boolean(busy)} />

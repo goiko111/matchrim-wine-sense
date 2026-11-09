@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { BookOpen, ChevronRight, ThumbsDown, ThumbsUp, X } from 'lucide-react';
 import { readCellarPublicReference107 } from '@/utils/cellarPublicReference107';
@@ -7,6 +7,7 @@ import { cellarReferenceStyleView110 } from '@/utils/cellarReferenceStyle110';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { cellarAffinityView, type CellarAffinityWine } from '@/utils/bodegaAffinity';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
+import { useOwnWinePhoto133 } from '@/utils/ownWinePhoto133';
 
 interface Props {
   native: boolean;
@@ -20,6 +21,21 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, child
   const [open, setOpen] = useState(false);
   const [resolved, setResolved] = useState<{ key: string; url: string } | null>(null);
   const identityKey = JSON.stringify([wine.name, wine.producer, wine.vintage]);
+  // 133: the catalogue photo was looked up only for the first four wines; the rest said "Sin foto"
+  // until opened. Now each row looks it up when it comes near the screen, after the own photo.
+  const rowRef = useRef<HTMLButtonElement>(null);
+  const [visible, setVisible] = useState(false);
+  const ownPhoto = useOwnWinePhoto133(wine.id, native && !wine.image_url);
+  useEffect(() => {
+    const node = rowRef.current;
+    if (!native || visible || !node) return;
+    if (typeof IntersectionObserver === 'undefined') { setVisible(true); return; }
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) { setVisible(true); observer.disconnect(); }
+    }, { rootMargin: '300px 0px' });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [native, visible]);
   if (!native) return <>{children}</>;
   const view = cellarAffinityView(wine, snapshot, true);
   const reference = readCellarPublicReference107(wine);
@@ -28,8 +44,8 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, child
   const displayScore = view.current ?? style?.current ?? null;
   const rating = wine.rating === 'love' ? 'Te gusta' : wine.rating === 'not_for_me' ? 'No es para ti' : wine.rating === 'ok' ? 'Te pareció correcto' : null;
   return <>
-    <button type="button" className="flex min-h-36 w-full min-w-0 items-center gap-4 border-b border-stone-200 py-4 text-left" aria-label={`Ver ${wine.name}`} onClick={() => setOpen(true)} data-testid="native-cellar-item98">
-      <NativeWinePhoto98 src={wine.image_url} ownedCapture name={wine.name} identity={{ name: wine.name, producer: wine.producer, vintage: wine.vintage }} resolveMissing={resolveImage || open} onResolved={url => setResolved({ key: identityKey, url })} className="h-[112px] w-[80px] border border-stone-200" />
+    <button ref={rowRef} type="button" className="flex min-h-36 w-full min-w-0 items-center gap-4 border-b border-stone-200 py-4 text-left" aria-label={`Ver ${wine.name}`} onClick={() => setOpen(true)} data-testid="native-cellar-item98">
+      <NativeWinePhoto98 src={wine.image_url || ownPhoto} ownedCapture name={wine.name} identity={{ name: wine.name, producer: wine.producer, vintage: wine.vintage }} resolveMissing={!ownPhoto && (resolveImage || open || visible)} onResolved={url => setResolved({ key: identityKey, url })} className="h-[112px] w-[80px] border border-stone-200" />
       <span className="min-w-0 flex-1"><span className="block break-words text-base font-semibold leading-6 text-stone-950">{wine.name}</span><span className="mt-1 block break-words text-xs leading-5 text-stone-500">{[wine.producer, wine.vintage].filter(Boolean).join(' · ')}</span>
         <span className={`mt-2 flex items-center gap-1 text-sm font-semibold ${wine.rating === 'not_for_me' ? 'text-stone-700' : wine.rating === 'love' || (displayScore ?? -1) >= 70 ? 'text-emerald-800' : 'text-stone-600'}`}>{wine.rating === 'love' && <ThumbsUp className="h-4 w-4" aria-hidden="true" />}{wine.rating === 'not_for_me' && <ThumbsDown className="h-4 w-4" aria-hidden="true" />}{rating || (view.current !== null ? `≈${view.current}/100 para ti` : style?.current != null ? `≈${style.current}/100 por estilo` : masterReference ? 'Ficha de sabor incompleta' : 'Afinidad por calcular')}</span>
         {wine.status === 'collection' && wine.quantity != null && <span className="mt-1 block text-xs text-stone-500">{wine.quantity} {wine.quantity === 1 ? 'botella' : 'botellas'}</span>}

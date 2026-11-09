@@ -13,6 +13,9 @@ interface Props {
   onResolved?: (url: string) => void;
 }
 
+// 133: one catalogue lookup per identity per session; scrolling the cellar back does not repeat it.
+const resolvedPhotos133 = new Map<string, string | null>();
+
 export const NativeWinePhoto98 = ({ src, name, identity, resolveMissing = false, className = '', ownedCapture = false, onResolved }: Props) => {
   const direct = ownedCapture ? safeOwnedWineImage98(src) : safeWineImageUrl98(src);
   const identityKey = JSON.stringify([identity?.name, identity?.producer, identity?.vintage, identity?.region, identity?.country, identity?.inferredFields]);
@@ -26,10 +29,16 @@ export const NativeWinePhoto98 = ({ src, name, identity, resolveMissing = false,
   useEffect(() => {
     const requested = identityRef.current;
     if (direct || !resolveMissing || !requested?.name || !requested.producer) return;
+    if (resolvedPhotos133.has(identityKey)) {
+      const cached = resolvedPhotos133.get(identityKey);
+      if (cached) { setResolved({ key: identityKey, url: cached }); resolvedCallback.current?.(cached); }
+      return;
+    }
     const controller = new AbortController();
     void lookupWinerimOriginalSheet(requested, controller.signal).then(result => {
-      if (controller.signal.aborted || result.status !== 'verified') return;
-      const photo = safeWineImageUrl98(result.sheet.photo);
+      if (controller.signal.aborted) return;
+      const photo = result.status === 'verified' ? safeWineImageUrl98(result.sheet.photo) : null;
+      if (photo || result.status !== 'unavailable') resolvedPhotos133.set(identityKey, photo);
       if (photo) {
         setResolved({ key: identityKey, url: photo });
         resolvedCallback.current?.(photo);

@@ -90,6 +90,7 @@ import {
   type MenuTileResult,
   type MenuScanWine as ScannedWine,
 } from "@/utils/wineMenuScan";
+import { openCamera133 } from '@/utils/nativeCamera133';
 
 type PdfJsLib = typeof import('pdfjs-dist');
 
@@ -1593,7 +1594,7 @@ const WineMenuScannerSession = ({
                   )}
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   <Button
-                    onClick={() => cameraInputRef.current?.click()}
+                    onClick={() => void openCamera133(cameraInputRef.current)}
                     disabled={loading}
 		                    className="matchrim-pressable min-h-12 gap-2 bg-red-900 text-white hover:bg-red-800"
                   >
@@ -1648,7 +1649,7 @@ const WineMenuScannerSession = ({
               onClick={() => {
                 setScanFeedback(null);
                 setPreview(null);
-                cameraInputRef.current?.click();
+                void openCamera133(cameraInputRef.current);
               }}
             >
               <Camera className="h-4 w-4" />

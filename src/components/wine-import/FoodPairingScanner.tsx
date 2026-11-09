@@ -38,6 +38,7 @@ import { invokeEdgeFunction } from '@/utils/invokeEdgeFunction';
 import { scanFoodMenu89 } from '@/utils/foodMenuScan89';
 import { foodRowPolicy90, foodPairingContext90 } from '@/utils/foodRowPolicy90';
 import { readRestaurantCarry, restaurantCarryIsForeign, restaurantCarryState, restaurantScanPath, unsupportedRestaurantClaim } from "@/utils/restaurantPairingContext";
+import { openCamera133 } from '@/utils/nativeCamera133';
 
 type FoodScanMode = "menu" | "dish";
 
@@ -544,7 +545,7 @@ const FoodPairingScannerSession = ({ initialMode = "menu", restaurantName, lockM
                 type="button"
                 className={isNative ? `${nativeFileActionClass} bg-red-900 hover:bg-red-950` : "gap-2 bg-red-900 hover:bg-red-950"}
                 disabled={loading}
-                onClick={() => cameraInputRef.current?.click()}
+                onClick={() => void openCamera133(cameraInputRef.current)}
               >
                 <Camera className="h-4 w-4" />
                 Hacer foto

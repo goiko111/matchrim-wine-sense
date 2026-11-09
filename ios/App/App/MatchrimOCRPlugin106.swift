@@ -3,6 +3,7 @@ import Capacitor
 import CoreGraphics
 import CoreImage
 import ImageIO
+import UIKit
 import Vision
 
 @objc(MatchrimOCRPlugin106)
@@ -11,7 +12,8 @@ public final class MatchrimOCRPlugin106: CAPPlugin, CAPBridgedPlugin {
     public let jsName = "MatchrimOCR"
     public let pluginMethods: [CAPPluginMethod] = [
         CAPPluginMethod(name: "recognize", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "cancel", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "cancel", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "takePhoto", returnType: CAPPluginReturnPromise)
     ]
 
     private static let maxEncodedBytes = 18 * 1024 * 1024
@@ -425,5 +427,60 @@ public final class MatchrimOCRPlugin106: CAPPlugin, CAPBridgedPlugin {
         let bottom = min(1, max(0, 1 - Double(rectangle.minY)))
         guard right > x, bottom > y else { return nil }
         return ["x": x, "y": y, "width": right - x, "height": bottom - y]
+    }
+}
+
+// 133: the web file input ignores capture="environment" inside the app's web view and shows a
+// Photo Library / Take Photo / Choose File menu; "Hacer foto" opens the camera directly instead.
+// The photo stays on the device: it is returned to the page as a JPEG data URL, nothing is uploaded.
+extension MatchrimOCRPlugin106: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    private static var pendingCameraCall: CAPPluginCall?
+    private static let maxCameraDimension: CGFloat = 3_000
+
+    @objc func takePhoto(_ call: CAPPluginCall) {
+        DispatchQueue.main.async {
+            guard UIImagePickerController.isSourceTypeAvailable(.camera), let presenter = self.bridge?.viewController else {
+                call.reject("The camera is unavailable on this device.", "CAMERA_UNAVAILABLE"); return
+            }
+            guard Self.pendingCameraCall == nil else { call.reject("The camera is already open.", "BUSY"); return }
+            Self.pendingCameraCall = call
+            let picker = UIImagePickerController()
+            picker.sourceType = .camera
+            picker.cameraCaptureMode = .photo
+            picker.delegate = self
+            picker.modalPresentationStyle = .fullScreen
+            presenter.present(picker, animated: true)
+        }
+    }
+
+    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+        Self.pendingCameraCall?.resolve(["status": "cancelled"])
+        Self.pendingCameraCall = nil
+    }
+
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        let image = info[.originalImage] as? UIImage
+        picker.dismiss(animated: true)
+        guard let call = Self.pendingCameraCall else { return }
+        Self.pendingCameraCall = nil
+        guard let image = image else { call.reject("The photo could not be read.", "CAMERA_FAILED"); return }
+        DispatchQueue.global(qos: .userInitiated).async {
+            guard let jpeg = Self.cameraJPEG(image) else { call.reject("The photo could not be encoded.", "CAMERA_FAILED"); return }
+            call.resolve(["status": "captured", "image": "data:image/jpeg;base64," + jpeg.base64EncodedString()])
+        }
+    }
+
+    // Drawing applies the EXIF orientation, so the page always receives an upright image.
+    private static func cameraJPEG(_ image: UIImage) -> Data? {
+        let longest = max(image.size.width, image.size.height)
+        guard longest > 0 else { return nil }
+        let scale = min(1, maxCameraDimension / longest)
+        let size = CGSize(width: floor(image.size.width * scale), height: floor(image.size.height * scale))
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        format.opaque = true
+        let upright = UIGraphicsImageRenderer(size: size, format: format).image { _ in image.draw(in: CGRect(origin: .zero, size: size)) }
+        return upright.jpegData(compressionQuality: 0.88)
     }
 }

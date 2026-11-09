@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { recordScanHistory, updateScanHistoryItem } from "@/utils/scanHistory";
 import { buildWinerimWineUrl, findWinerimWineForLabel, type WinerimLabelLookupResult } from "@/services/winerimApi";
 import { resolveMatchrimEdgeFunctionName } from "@/utils/matchrimEdgeRouting";
+import { openCamera133 } from '@/utils/nativeCamera133';
 
 
 interface ExtractedWineData {
@@ -476,7 +477,7 @@ export const WineLabelOCRImport = ({ onExtractComplete }: WineLabelOCRImportProp
             <div className="grid gap-2 sm:grid-cols-2">
               <Button
                 type="button"
-                onClick={() => cameraInputRef.current?.click()}
+                onClick={() => void openCamera133(cameraInputRef.current)}
                 disabled={loading}
                 className="gap-2"
               >
