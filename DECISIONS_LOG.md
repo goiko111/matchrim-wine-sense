@@ -198,3 +198,5 @@ The prepared canonical-identity migration enforces exact normalized name, produc
 Food-menu row splitting and detection-box normalization may be replayed deterministically against recorded real responses. They are reported as local post-processing only. Recognition is certified only after candidate functions run on independent images in authorized staging and every category clears `0.90` precision and recall.
 
 - 2026-11-10: Build 136 (620a2a3, archive136-r4) uploaded to TestFlight after the owner replied "Sí, sube la 136"; HUMAN-AUTHORIZATION quotes it. Private beta only; known limitations listed there.
+
+- 2026-11-10: 137 usability pass on the owner's request ("ponte en la piel de los usuarios… las puedes modificar y luego me dices"). Changed presentation and flow only; registration length, search-to-sheet, tab name and verdict wording left as owner decisions. The native gate probe follows the renamed controls.
