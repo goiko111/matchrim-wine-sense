@@ -21,7 +21,7 @@ Todo lo demás se ha hecho sin red real, sin cuentas reales y sin coste. No se h
 - Cualquier otra llamada externa se bloquea.
 - El código de la app se recompila en 30 s y se prueba sin repetir la build nativa.
 
-**Recorridos.** Son 11, con 81 comprobaciones, y al final pasan todos:
+**Recorridos.** Son 12, con 84 comprobaciones, y al final pasan todos:
 
 | Recorrido | Qué comprueba |
 |---|---|
@@ -35,6 +35,7 @@ Todo lo demás se ha hecho sin red real, sin cuentas reales y sin coste. No se h
 | Test de gusto | Confirmación al salir, guardado, perfil nuevo usado en Inicio |
 | Arranque y sin red | Arranque en frío 1,9 s; sin red no echa al usuario; escanear sigue disponible; se recupera |
 | Restaurante | Cartas de comida y vinos, lectura, combinaciones, presupuesto con coma, «Vinos para este plato», borrar sesión |
+| Escaneo sin sesión | El vino leído espera y abre «Añadir vino» relleno tras entrar |
 | Auditoría de pantallas | 23 rutas a texto máximo y a texto normal: desbordes, botones sin nombre, botones pequeños, inglés y texto roto |
 
 ### 2. Examen del motor de gusto
@@ -180,4 +181,5 @@ Comprobado en el simulador: 3/3.
   - b3c5e6e: runners;
   - 4bb6660: guiones en títulos.
 - La build final es `candidate136-r4`, compilada desde 620a2a3 (arreglos de la revisión, restaurante y escaneo sin sesión).
-- Batería E2E final: 11 recorridos, 81/81. Sobre la app 136 compilada (r1) pasó 71/71.
+- Batería E2E final sobre la app `candidate136-r4` compilada: 12 recorridos, 84/84.
+- QA nativa r109–r112 PASS, archivo firmado. El RELEASE de `qa-artifacts/testflight136-20261110` valida. No se ha subido.

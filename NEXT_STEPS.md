@@ -2,7 +2,7 @@
 
 ## Current Delta: 2026-11-10, Candidate136 (extreme QA)
 
-1. candidate136-r4 native QA r109-r112 then RELEASE qa-artifacts/testflight136-20261110 validates; upload only with the owner's explicit OK (scripts/distribute-matchrim136.mjs).
+1. candidate136-r4 ready (native QA r109-r112 PASS, RELEASE qa-artifacts/testflight136-20261110 validates); upload only with the owner's explicit OK (scripts/distribute-matchrim136.mjs).
 2. Before each build: harness/run-all.sh and audit.mjs on the QA copy (WEB=web-dev for the working tree).
 3. Remaining: restaurant service messages unaccented in supabase/functions/_shared/matchrim-restaurant91.ts (shared with backend); contradictory votes on identical wines still move unrelated axes (confidence 43); legal pages name the app Winerim/Matchrim inconsistently (owner); plus the 135 list below (search accents, Universal Link, phone, own photos).
 4. Push of the 132-136 commits needs the owner's OK.
