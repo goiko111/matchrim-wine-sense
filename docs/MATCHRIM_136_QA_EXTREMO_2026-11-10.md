@@ -61,7 +61,7 @@ Se usaron los 6.283 vinos reales de Winerim y el motor de la app (v4).
 
 ### 3. Repaso de checks del repositorio
 
-- De los 204 checks que pasaban ayer, 188 siguen pasando.
+- De los 204 checks que pasaban ayer, 190 siguen pasando con el código final.
 - Los demás congelan a propósito ficheros que he cambiado:
   - textos sin tilde o en inglés;
   - el número de diálogos de Inicio;
@@ -129,6 +129,15 @@ Se emuló el servicio que lee las cartas y propone parejas, con filas que llevan
 
 **No tocado:** los avisos que vienen del servicio están sin tildes («Respuesta de analisis no valida», «Limite», «pagina», «anada», «descripcion», «pixeles»). Están en `supabase/functions/_shared/matchrim-restaurant91.ts`, compartido con el backend, que no toco.
 
+## Escaneo sin sesión (pendiente de ayer, resuelto)
+
+Antes, si escaneabas sin sesión y pulsabas «Buscar con mi cuenta», al entrar volvías al escáner y había que repetir la foto. Ahora:
+- el vino leído (nombre, bodega y añada) se guarda 30 minutos;
+- al entrar, se abre «Añadir vino» ya relleno;
+- el borrador se usa una sola vez.
+
+Comprobado en el simulador: 3/3.
+
 ## Lo que se comprobó y estaba bien
 
 - Doble toque en «Me he bebido una botella»: gasta solo una.
@@ -146,9 +155,6 @@ Se emuló el servicio que lee las cartas y propone parejas, con filas que llevan
 
 **Universal Link**
 - El enlace para recuperar la contraseña se abre en Safari.
-
-**Escaneo sin sesión**
-- Si escaneas sin sesión y entras desde el escáner, hay que repetir la foto.
 
 **Decisiones tuyas**
 - El teléfono es obligatorio en el registro pero no se guarda.
@@ -173,5 +179,5 @@ Se emuló el servicio que lee las cartas y propone parejas, con filas que llevan
   - 2533bdc: código de la 136 y check;
   - b3c5e6e: runners;
   - 4bb6660: guiones en títulos.
-- La build final es `candidate136-r3`, compilada desde 356ebbf (arreglos de la revisión y del restaurante).
+- La build final es `candidate136-r4`, compilada desde 620a2a3 (arreglos de la revisión, restaurante y escaneo sin sesión).
 - Batería E2E final: 11 recorridos, 81/81. Sobre la app 136 compilada (r1) pasó 71/71.
