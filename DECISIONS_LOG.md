@@ -196,3 +196,5 @@ The prepared canonical-identity migration enforces exact normalized name, produc
 ## 2026-09-29: local replay cannot certify a backend fix
 
 Food-menu row splitting and detection-box normalization may be replayed deterministically against recorded real responses. They are reported as local post-processing only. Recognition is certified only after candidate functions run on independent images in authorized staging and every category clears `0.90` precision and recall.
+
+- 2026-11-10: Build 136 (620a2a3, archive136-r4) uploaded to TestFlight after the owner replied "Sí, sube la 136"; HUMAN-AUTHORIZATION quotes it. Private beta only; known limitations listed there.
