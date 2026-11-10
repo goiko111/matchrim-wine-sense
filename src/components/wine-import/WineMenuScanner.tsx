@@ -999,7 +999,7 @@ const WineMenuScannerSession = ({
 
         if (detectionNoticeRef.current.active && detectionNoticeRef.current.generation === noticeGeneration
           && scanAbortRef.current === controller && !controller.signal.aborted) {
-          detectionNoticeRef.current.id = toast.success(isNative ? `${normalizedWines.length} lecturas para revisar`
+          detectionNoticeRef.current.id = toast.success(isNative ? `${normalizedWines.length} ${normalizedWines.length === 1 ? 'vino leído' : 'vinos leídos'} en la carta`
             : `✨ ${normalizedWines.length} vinos detectados en la carta`);
         }
       } else {
@@ -1584,7 +1584,7 @@ const WineMenuScannerSession = ({
                       Fotografía la carta
 	                  </h2>
 	                  <p className="mt-1 text-sm leading-5 text-slate-600">
-                      También puedes elegir una imagen o PDF. Matchrim conserva secciones, precios y añadas.
+                      Haz una foto a la carta o a la pizarra y ordenamos sus vinos según tus gustos. También vale una imagen o un PDF.
 	                  </p>
                   </div>
                 </div>
@@ -1668,7 +1668,33 @@ const WineMenuScannerSession = ({
       {/* Results Section */}
       {scannedWines.length > 0 && (
         <div ref={resultsRef} className="scroll-mt-24 space-y-4 break-words">
-          {isNative && nativeScanMetrics?.outcome === 'completed' && <p className="text-xs text-slate-500" data-testid="menu-scan-metrics">
+          {/* 137: the answer first; reading details and tools follow. */}
+              {isNative && menuDecision && <section className="min-w-0 space-y-3 border-y border-stone-200 py-4" aria-label="Tu elección en esta carta" data-testid="native-menu-decision">
+                {menuDecision.best ? <>
+                  <p className="text-sm font-semibold text-red-900">El que más encaja contigo de esta carta</p>
+                  <Button variant="ghost" className="h-auto min-h-11 w-full min-w-0 justify-between gap-3 whitespace-normal px-0 text-left" onClick={(event) => openWineDetail(menuDecision.best!.index, event.currentTarget)}>
+                    <span className="min-w-0"><span className="block text-lg font-semibold leading-6 text-stone-950">{menuDecision.best.wine.nombre}</span><span className="mt-1 block text-sm font-normal text-stone-600">{listPriceText(menuDecision.best.wine, menuDecision.best.index)}</span></span>
+                    <span className="shrink-0 text-xl font-bold text-red-900">≈{menuDecision.best.score}<span className="text-sm font-medium text-stone-500">/100</span></span>
+                  </Button>
+                  {(() => {
+                    const result = nativeMenuWineAffinity(menuDecision.best.wine, scanProfile?.profile ?? null);
+                    return result.state === 'ready' && <p className="text-sm leading-6 text-stone-700">{result.matches.slice(0, 2).join(' ') || result.caution || result.title}</p>;
+                  })()}
+                  {[menuDecision.safeAlternative, menuDecision.value].some(entry => entry && entry.index !== menuDecision.best?.index) && <details className="border-t border-stone-200 pt-2">
+                    <summary className="flex min-h-11 cursor-pointer items-center text-sm font-medium">Ver otras buenas opciones</summary>
+                    {[menuDecision.safeAlternative && { entry: menuDecision.safeAlternative, label: 'Otra que encaja contigo' },
+                      menuDecision.value && menuDecision.value.index !== menuDecision.safeAlternative?.index && { entry: menuDecision.value, label: 'Por afinidad y precio' }]
+                      .filter(option => option && option.entry.index !== menuDecision.best?.index)
+                      .map(option => option && <Button key={option.entry.index} variant="ghost" className="h-auto min-h-11 w-full min-w-0 justify-between gap-3 whitespace-normal px-0 text-left" onClick={(event) => openWineDetail(option.entry.index, event.currentTarget)}>
+                        <span className="min-w-0"><span className="block text-xs text-stone-500">{option.label}</span>{option.entry.wine.nombre}</span>
+                        <span className="shrink-0 text-red-900">≈{option.entry.score}/100</span>
+                      </Button>)}
+                  </details>}
+                </> : <p role="status" className="text-sm leading-6 text-stone-700">{hasProfile
+                  ? 'Hemos leído la carta, pero ninguno de estos vinos tiene todavía ficha de Winerim con la que comparar tus gustos.'
+                  : 'Haz el test de paladar (2 minutos) y te diremos cuál de estos vinos encaja más contigo.'}</p>}
+              </section>}
+          {isNative && nativeScanMetrics?.outcome === 'completed' && <p className="sr-only" data-testid="menu-scan-metrics">
             {Math.round(nativeScanMetrics.elapsedMs / 1000)} s · {nativeScanMetrics.requests} {nativeScanMetrics.requests === 1 ? 'solicitud' : 'solicitudes'} de lectura
           </p>}
           {isNative && failedRegionCount > 0 && !loading && <div className="min-w-0 space-y-2 border-l-2 border-amber-500 pl-[12px]">
@@ -1692,13 +1718,13 @@ const WineMenuScannerSession = ({
           <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <h3 className="text-2xl font-bold">
-                {isNative ? 'Lecturas de la carta' : 'Vinos Detectados'} ({scannedWines.length})
+                {isNative ? 'Vinos de la carta' : 'Vinos Detectados'} ({scannedWines.length})
               </h3>
               {isNative && visibleScannedWines.length > 0 && <Button type="button" variant="outline" className="mt-[8px] min-h-[44px] min-w-0 gap-[8px] whitespace-normal px-[12px] py-[8px] text-left" onClick={goToWineList}>
                 <List aria-hidden="true" className="shrink-0" style={{ width: 20, height: 20 }} />Ver vinos ({visibleScannedWines.length})
               </Button>}
               <p className="mt-1 text-sm text-muted-foreground">
-                Revisa nombre, añada y precio antes de guardar. La carta puede tener errores de lectura.
+                La lectura puede tener errores: comprueba nombre, añada y precio con la carta.
               </p>
               {renderProfileRecovery()}
             </div>
@@ -1728,31 +1754,6 @@ const WineMenuScannerSession = ({
 	            </div>
 	          </div>
 
-              {isNative && menuDecision && <section className="min-w-0 space-y-3 border-y border-stone-200 py-4" aria-label="Tu elección en esta carta" data-testid="native-menu-decision">
-                {menuDecision.best ? <>
-                  <p className="text-sm font-medium text-stone-600">Mayor afinidad entre los vinos con ficha</p>
-                  <Button variant="ghost" className="h-auto min-h-11 w-full min-w-0 justify-between gap-3 whitespace-normal px-0 text-left" onClick={(event) => openWineDetail(menuDecision.best!.index, event.currentTarget)}>
-                    <span className="min-w-0 text-base font-semibold text-stone-950">{menuDecision.best.wine.nombre}</span>
-                    <span className="shrink-0 font-bold text-red-900">≈{menuDecision.best.score}/100</span>
-                  </Button>
-                  {(() => {
-                    const result = nativeMenuWineAffinity(menuDecision.best.wine, scanProfile?.profile ?? null);
-                    return result.state === 'ready' && <p className="text-sm text-stone-700">{result.matches[0] ?? result.caution ?? result.title}</p>;
-                  })()}
-                  {[menuDecision.safeAlternative, menuDecision.value].some(entry => entry && entry.index !== menuDecision.best?.index) && <details className="border-t border-stone-200 pt-2">
-                    <summary className="flex min-h-11 cursor-pointer items-center text-sm font-medium">Otras opciones</summary>
-                    {[menuDecision.safeAlternative && { entry: menuDecision.safeAlternative, label: 'También puedes considerar' },
-                      menuDecision.value && menuDecision.value.index !== menuDecision.safeAlternative?.index && { entry: menuDecision.value, label: 'Por afinidad y precio' }]
-                      .filter(option => option && option.entry.index !== menuDecision.best?.index)
-                      .map(option => option && <Button key={option.entry.index} variant="ghost" className="h-auto min-h-11 w-full min-w-0 justify-between gap-3 whitespace-normal px-0 text-left" onClick={(event) => openWineDetail(option.entry.index, event.currentTarget)}>
-                        <span className="min-w-0"><span className="block text-xs text-stone-500">{option.label}</span>{option.entry.wine.nombre}</span>
-                        <span className="shrink-0 text-red-900">≈{option.entry.score}/100</span>
-                      </Button>)}
-                  </details>}
-                </> : <p role="status" className="text-sm leading-6 text-stone-700">{hasProfile
-                  ? 'Todavía faltan fichas sensoriales verificadas para ordenar estos vinos por tus gustos.'
-                  : 'Completa tu test de paladar para comparar los vinos que he podido leer con tus gustos.'}</p>}
-              </section>}
 	          {!isNative && menuDecision && (
 	            <Card className="matchrim-surface overflow-hidden rounded-lg border-red-100 bg-white">
 	              <CardHeader className="border-b border-white/10 matchrim-ink-panel text-white">
@@ -2082,7 +2083,7 @@ const WineMenuScannerSession = ({
                             <span className="block text-[11px] text-slate-500">{catalogWineFromVerifiedSheet({
                               name: wine.nombre, producer: wine.productor, vintage: wine.anada, region: wine.region, country: wine.pais,
                               inferredFields: wine.campos_inferidos,
-                            }, wine.originalSheet) ? 'Ficha original vinculada' : isLiteralWineStyle95(wine) ? 'Estilo de la carta \u00b7 botella sin identificar' : 'Referencia por confirmar'}</span>
+                            }, wine.originalSheet) ? 'Con ficha de Winerim' : isLiteralWineStyle95(wine) ? 'Estilo de la carta \u00b7 botella sin identificar' : 'Sin ficha de Winerim todavía'}</span>
                           </div>
                         </div>
                       ) : (
@@ -2116,7 +2117,7 @@ const WineMenuScannerSession = ({
 		                      <span className="block text-[11px] text-slate-500">{isNative ? catalogWineFromVerifiedSheet({
                             name: wine.nombre, producer: wine.productor, vintage: wine.anada, region: wine.region, country: wine.pais,
                             inferredFields: wine.campos_inferidos,
-                          }, wine.originalSheet) ? 'Ficha original vinculada' : isLiteralWineStyle95(wine) ? 'Estilo de la carta \u00b7 botella sin identificar' : 'Referencia por confirmar'
+                          }, wine.originalSheet) ? 'Con ficha de Winerim' : isLiteralWineStyle95(wine) ? 'Estilo de la carta \u00b7 botella sin identificar' : 'Sin ficha de Winerim todavía'
                             : `Identidad ${getConfidenceBand(wine.confidence)}`}</span>
 		                    </span>
 		                  </button>

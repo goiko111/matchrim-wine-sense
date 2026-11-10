@@ -37,6 +37,8 @@ export function restoreNativeScan99(file, source) {
   if (digest(source) === beforeHash) return source;
   const importAnchor = 'import MobileBottomNav from "@/components/MobileBottomNav";\n';
   const routeGuard = '  if (modeParam && !activeMode) {\n    return <Navigate to="/escanear" replace />;\n  }\n\n';
+  // 137: the saved toast names the native list ("Por probar"); the web text is the historical one.
+  source = source.replaceAll("${isNative ? 'Por probar' : 'Quiero Probar'}", 'Quiero Probar');
   source = once(source, importAnchor + scanImport, importAnchor);
   source = once(source, routeGuard + scanBranch, routeGuard);
   assert.equal(digest(source), beforeHash,

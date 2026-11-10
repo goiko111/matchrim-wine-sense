@@ -97,7 +97,7 @@ function mount(file: string, source: string, native: boolean) {
     const parent = hooks; hooks = child; child.cursor = 0;
     try { return component(props); } finally { hooks = parent; }
   };
-  const icons = ['ArrowRight','Search','ArrowUpRight','BrainCircuit','Camera','ChevronRight','Compass','FileText','History','Layers3','LoaderCircle','ScanLine','Sparkles','UserRound','Wine','X','TrendingUp','ExternalLink'];
+  const icons = ['ArrowRight','ScrollText','Utensils','Search','ArrowUpRight','BrainCircuit','Camera','ChevronRight','Compass','FileText','History','Layers3','LoaderCircle','ScanLine','Sparkles','UserRound','Wine','X','TrendingUp','ExternalLink'];
   const deps: Record<string, unknown> = Object.fromEntries(icons.map(k => [k, k]));
   const dialog = Object.fromEntries(['Root','Portal','Overlay','Content','Title','Close','Description'].map(k => [k, 'Dialog'+k]));
   const sandbox = vm.createContext({ ...deps, React: { createElement: element, Fragment: fragment }, exports: {},

@@ -28,6 +28,8 @@ const actions: ReadonlyArray<[AiRimQuickAction99, string]> = [
   ['pairing-check', 'Comprobar maridaje'], ['special-moments', 'Elegir para una ocasión'],
 ];
 
+const examples137 = ['¿Qué vino pido con un entrecot?', 'Quiero un blanco fresco por menos de 25 €', 'No sé de vino, ¿por dónde empiezo?', '¿Qué llevo a una cena con amigos?'];
+
 // Presentation only. Profile ownership, requests and cancellation stay in the existing controller.
 export const NativeAiRimChat99 = (props: Props) => {
   const messageBody = useRef<HTMLDivElement>(null);
@@ -61,6 +63,12 @@ export const NativeAiRimChat99 = (props: Props) => {
         <Button type="button" variant="ghost" className="min-h-11" onClick={props.onCancel}>Cancelar consulta</Button>
       </div>}
     </section>
+    {/* 137: an empty chat gave no idea what to ask; a tap writes the example so the person can edit or send it. */}
+    {props.messages.every(message => message.id === 'welcome') && !props.input.trim() && <div className="mt-5" data-testid="airim-examples137">
+      <p className="text-sm font-semibold text-stone-800">Prueba a preguntar</p>
+      <div className="mt-2 flex flex-wrap gap-2">{examples137.map(example => <button key={example} type="button" disabled={props.loading}
+        className="matchrim-pressable min-h-11 rounded-full border border-stone-300 bg-white px-4 py-2 text-left text-sm leading-5 text-stone-800" onClick={() => props.onInput(example)}>{example}</button>)}</div>
+    </div>}
     {props.messages.every(message => message.id === 'welcome') && <div className="mt-6 border-y border-stone-200">
       <button type="button" onClick={props.onRestaurant} className="matchrim-pressable flex min-h-16 w-full items-center gap-3 py-3 text-left" aria-label="Comida y vinos del restaurante">
         <FileText className="h-[22px] w-[22px] shrink-0 text-red-900" aria-hidden="true" /><span className="min-w-0 flex-1 font-medium [overflow-wrap:normal]">Elegir con las cartas del restaurante</span><ChevronRight className="h-[20px] w-[20px] shrink-0 text-stone-400" aria-hidden="true" />

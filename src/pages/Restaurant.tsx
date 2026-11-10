@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { confirm135 } from '@/utils/nativeConfirm135';
 import { formatScanPrice } from '@/utils/scanMoney';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Camera, Check, ChefHat, ChevronDown, ExternalLink, FilePlus2, Link2, Loader2, Pencil, RefreshCw, ScanLine, Trash2, Wine, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Camera, Check, ChefHat, ChevronDown, ExternalLink, FilePlus2, Link2, Loader2, Pencil, RefreshCw, ScanLine, Trash2, Wine, X } from 'lucide-react';
 import { Capacitor } from '@capacitor/core';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import { ScanPrivacyGate } from '@/components/ScanPrivacyGate';
@@ -35,6 +35,8 @@ import { openCamera133 } from '@/utils/nativeCamera133';
 const actionClass = 'h-auto min-h-[44px] min-w-0 flex-wrap whitespace-normal [overflow-wrap:anywhere] gap-[8px] px-[12px] py-[8px]';
 const iconClass = 'h-[44px] w-[44px] min-w-[44px] shrink-0';
 const labels = { food: 'Comida', wine: 'Vinos', pairs: 'Combinaciones' } as const;
+// 137: what the person sees; `labels` stays for aria names and progress messages.
+const tabTitles137 = { food: '1 · Platos', wine: '2 · Vinos', pairs: '3 · Maridajes' } as const;
 type Tab = keyof typeof labels;
 const message = (error: unknown) => {
   if (!(error instanceof Error)) return 'No se pudo completar la operación.';
@@ -140,7 +142,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
     stopped(controller.signal);
     if (!mounted.current || request.current !== controller) throw new DOMException('Cancelado', 'AbortError');
   };
-  const addFiles = async (files: File[], kind: MenuKind91) => {
+  const addFiles = async (files: File[], kind: MenuKind91, readAfter = false) => {
     const controller = start('Preparando archivos');
     if (!controller) return;
     const errors: string[] = [];
@@ -157,10 +159,12 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
       setError(errors.join('\n'));
     } catch (failure) { if (!controller.signal.aborted) setError(message(failure)); }
     finally { finish(controller); }
+    // 137: a photo is read straight away; "Leer la carta" was a second tap nobody expected. PDFs keep the page review first.
+    if (readAfter && user && mounted.current && !controller.signal.aborted && !errors.length) void analyze(kind);
   };
   const onFiles = (event: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files ?? []); event.target.value = '';
-    if (files.length && tab !== 'pairs') void addFiles(files, tab);
+    if (files.length && tab !== 'pairs') void addFiles(files, tab, files.every(file => file.type.startsWith('image/')));
   };
   const importUrl = async (link = url) => {
     if (!user) { setError('Inicia sesión para importar enlaces y analizar cartas.'); return; }
@@ -317,23 +321,24 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
   if (!ready) return <p role="status" className="py-8">Recuperando cartas...</p>;
   return <>
     <div className="restaurant91-header flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-4">
-      <div className="min-w-0 flex-1"><label htmlFor="restaurant-name" className="text-xs font-semibold text-slate-500">Restaurante</label>
-        <Input id="restaurant-name" placeholder="Nombre opcional" value={state.restaurant} maxLength={200} disabled={Boolean(busy)}
+      <div className="min-w-0 flex-1"><label htmlFor="restaurant-name" className="text-xs font-semibold text-slate-500">Restaurante (opcional)</label>
+        <Input id="restaurant-name" placeholder="Nombre del restaurante" value={state.restaurant} maxLength={200} disabled={Boolean(busy)}
           onChange={event => mutate(current => ({ ...current, restaurant: event.target.value }))} className="mt-1 h-auto min-h-11" /></div>
       <Button variant="ghost" className={actionClass} disabled={Boolean(busy)} onClick={async () => {
-        if (!(await confirm135('¿Eliminar las cartas, fotos y resultados de esta sesión en este dispositivo?', { ok: 'Eliminar', destructive: true }))) return;
+        if (!(await confirm135('¿Borrar las cartas, fotos y maridajes de este restaurante y empezar de cero?', { ok: 'Borrar', destructive: true }))) return;
         mutate(() => createRestaurantSession91()); setSelectedFood(''); setSelectedWine(''); setSheet(null); setLinks([]);
         // 134: a new restaurant starts without the previous budget, filters or error.
         setBudget(''); setCurrency('EUR'); setService('any'); setManualWine(''); setUrl(''); setError(''); setSheetRow(''); setEditing(null);
-      }}><Trash2 className="h-4 w-4 shrink-0" />Eliminar sesión</Button>
+      }}><Trash2 className="h-4 w-4 shrink-0" />Empezar de cero</Button>
     </div>
-    <p className="my-3 text-xs leading-normal text-slate-500">Borrador solo en este dispositivo. Al analizar, las páginas seleccionadas se envían a Matchrim y a su proveedor de IA.</p>
-    <p role="status" className="my-2 text-xs text-slate-500">{savingDraft ? 'Guardando borrador...' : 'Borrador guardado en este dispositivo.'}</p>
+    <p className="my-3 text-sm leading-6 text-slate-700">Haz una foto a la carta de platos y otra a la de vinos. Te decimos qué vino pedir con cada plato.</p>
+    <p className="my-2 text-xs leading-normal text-slate-500">Las fotos se quedan en este dispositivo; para leerlas se envían a Matchrim y a su proveedor de IA.</p>
+    <p role="status" className="sr-only">{savingDraft ? 'Guardando borrador...' : 'Borrador guardado en este dispositivo.'}</p>
     {storageError && <p role="status" className="my-3 text-sm text-amber-800">{storageError}</p>}
     <Tabs value={tab} onValueChange={value => { setTab(value as Tab); setLinks([]); setUrl(''); setError(''); }}>
     <TabsList aria-label="Cartas y combinaciones" className="grid h-auto grid-cols-3 rounded-none border-b border-slate-200 bg-transparent p-0">
       {(Object.keys(labels) as Tab[]).map(id => <TabsTrigger key={id} value={id} disabled={Boolean(busy)}
-        className="min-h-[48px] min-w-0 flex-col whitespace-normal rounded-none border-b-2 border-transparent px-[4px] py-[12px] text-sm font-semibold text-slate-500 transition-none data-[state=active]:border-red-900 data-[state=active]:bg-transparent data-[state=active]:text-red-900 data-[state=active]:shadow-none"><span className="block min-w-0 max-w-full [overflow-wrap:anywhere]">{labels[id]}</span>{id !== 'pairs' && <span className="block min-w-0 max-w-full text-xs font-normal [overflow-wrap:anywhere]">{id === 'food' ? foods.length : wines.length} lecturas</span>}</TabsTrigger>)}
+        className="min-h-[48px] min-w-0 flex-col whitespace-normal rounded-none border-b-2 border-transparent px-[4px] py-[12px] text-sm font-semibold text-slate-500 transition-none data-[state=active]:border-red-900 data-[state=active]:bg-transparent data-[state=active]:text-red-900 data-[state=active]:shadow-none"><span className="block min-w-0 max-w-full [overflow-wrap:anywhere]">{tabTitles137[id]}</span>{id !== 'pairs' && <span className="block min-w-0 max-w-full text-xs font-normal [overflow-wrap:anywhere]">{id === 'food' ? `${foods.length} ${foods.length === 1 ? 'plato' : 'platos'}` : `${wines.length} ${wines.length === 1 ? 'vino' : 'vinos'}`}</span>}</TabsTrigger>)}
     </TabsList>
     {error && <p role="alert" className="my-4 whitespace-pre-line break-words border-l-2 border-red-700 pl-3 text-sm text-red-800">{error}</p>}
     {busy && <div role="status" aria-live="polite" className="my-4 flex flex-wrap items-center gap-3 border-y border-slate-200 py-3">
@@ -344,45 +349,50 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
       {tab !== 'pairs' ? <>
         <div className="restaurant91-upload-actions grid grid-cols-2 gap-2">
           <Button className={`${actionClass} bg-red-900 text-white hover:bg-red-950`} disabled={Boolean(busy)} onClick={() => void openCamera133(cameraInput.current)}><Camera className="h-4 w-4 shrink-0" />Hacer foto</Button>
-          <Button variant="outline" className={actionClass} disabled={Boolean(busy)} onClick={() => fileInput.current?.click()}><FilePlus2 className="h-4 w-4 shrink-0" />Añadir archivos</Button>
+          <Button variant="outline" className={actionClass} disabled={Boolean(busy)} onClick={() => fileInput.current?.click()}><FilePlus2 className="h-4 w-4 shrink-0" />Foto o PDF guardado</Button>
         </div>
         <input ref={fileInput} type="file" multiple accept="image/*,.heic,.heif,application/pdf" onChange={onFiles} className="hidden" aria-label={`Archivos de ${labels[tab].toLowerCase()}`} disabled={Boolean(busy)} />
         <input ref={cameraInput} type="file" accept="image/*" capture="environment" onChange={onFiles} className="hidden" aria-label={`Foto de ${labels[tab].toLowerCase()}`} disabled={Boolean(busy)} />
         <form className="restaurant91-inline-form mt-4 flex flex-wrap items-end gap-2" onSubmit={event => { event.preventDefault(); void importUrl(); }}>
-          <label className="min-w-0 flex-1 text-sm font-medium">Enlace de la carta<Input type="url" required value={url} onChange={event => setUrl(event.target.value)} placeholder="https://..." maxLength={2048} disabled={Boolean(busy)} className="mt-1 h-auto min-h-11" /></label>
-          <Button type="submit" variant="outline" className={actionClass} disabled={Boolean(busy) || !url.trim()}><Link2 className="h-4 w-4 shrink-0" />Añadir URL</Button>
+          <label className="min-w-0 flex-1 text-sm font-medium">¿La carta está en una web? Pega el enlace<Input type="url" required value={url} onChange={event => setUrl(event.target.value)} placeholder="https://..." maxLength={2048} disabled={Boolean(busy)} className="mt-1 h-auto min-h-11" /></label>
+          <Button type="submit" variant="outline" className={actionClass} disabled={Boolean(busy) || !url.trim()}><Link2 className="h-4 w-4 shrink-0" />Añadir</Button>
         </form>
         {links.length > 0 && <ul className="mt-3 divide-y divide-slate-200">{links.map(link => <li key={link.url}><button type="button" className="min-h-11 w-full break-words py-2 text-left text-sm text-red-900 underline" disabled={Boolean(busy)} onClick={() => void importUrl(link.url)}>{link.label || link.url}</button></li>)}</ul>}
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3"><h2 className="text-base font-semibold">Páginas de {labels[tab].toLowerCase()}</h2>
-          <Button disabled={Boolean(busy) || !state.pages.some(page => page.enabled && page.status !== 'read' && state.documents.find(doc => doc.id === page.documentId)?.kind === tab)} className={`${actionClass} bg-slate-950`} onClick={() => void analyze(tab)}><ScanLine className="h-4 w-4 shrink-0" />Analizar pendientes</Button></div>
-        {!user && <Link to="/auth?redirect=/restaurante" className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-red-900 underline">Iniciar sesión para analizar</Link>}
-        {!state.documents.some(doc => doc.kind === tab) && <p className="py-8 text-sm text-slate-500">Todavía no hay páginas en esta carta.</p>}
+        {state.documents.some(doc => doc.kind === tab) && <div className="mt-6 flex flex-wrap items-center justify-between gap-3"><h2 className="text-base font-semibold">{tab === 'food' ? 'Carta de platos' : 'Carta de vinos'}</h2>
+          {state.pages.some(page => page.enabled && page.status !== 'read' && state.documents.find(doc => doc.id === page.documentId)?.kind === tab) && <Button disabled={Boolean(busy)} className={`${actionClass} bg-slate-950`} onClick={() => void analyze(tab)}><ScanLine className="h-4 w-4 shrink-0" />Leer la carta</Button>}</div>}
+        {!user && <Link to="/auth?redirect=/restaurante" className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-red-900 underline">Entra con tu cuenta para leer la carta</Link>}
+        {!state.documents.some(doc => doc.kind === tab) && <p className="py-8 text-sm text-slate-500">{tab === 'food' ? 'Aún no has añadido la carta de platos.' : 'Aún no has añadido la carta de vinos.'}</p>}
         <ul className="mt-3 divide-y divide-slate-200 border-y border-slate-200">{state.documents.filter(doc => doc.kind === tab).map(doc => <li key={doc.id} className="py-3">
           <div className="flex items-start justify-between gap-2"><div className="min-w-0"><h3 className="break-words text-sm font-semibold">{doc.name}</h3><p className="text-xs text-slate-500">{doc.pageCount} {doc.pageCount === 1 ? 'página' : 'páginas'}</p></div>
             <Button size="icon" variant="ghost" className={iconClass} title="Eliminar archivo" aria-label={`Eliminar ${doc.name}`} disabled={Boolean(busy)} onClick={() => mutate(current => removeRestaurantDocument91(current, doc.id))}><Trash2 className="h-4 w-4" /></Button></div>
-          <details className="mt-2"><summary className="flex min-h-11 cursor-pointer items-center gap-2 text-sm"><ChevronDown className="h-4 w-4" />Revisar páginas</summary>
+          <details className="mt-2"><summary className="flex min-h-11 cursor-pointer items-center gap-2 text-sm"><ChevronDown className="h-4 w-4" />Ver páginas</summary>
             <ul className="space-y-2">{state.pages.filter(page => page.documentId === doc.id).map(page => <li key={page.id} className="flex flex-wrap items-start gap-2 text-sm">
               <label className="flex min-h-11 min-w-0 flex-1 items-center gap-3"><input type="checkbox" checked={page.enabled} disabled={Boolean(busy)} onChange={event => mutate(current => ({ ...current, revision: current.revision + 1, pairs: [], pairWarnings: [], pages: current.pages.map(item => item.id === page.id ? { ...item, enabled: event.target.checked } : item) }))} className="h-5 w-5 shrink-0" />
-                <span>Página {page.number} · {page.status === 'read' ? page.partial ? 'Lectura parcial' : 'Leída · revisar' : page.status === 'reading' ? 'Leyendo' : page.status === 'error' ? 'Error' : 'Pendiente'}</span></label>
+                <span>Página {page.number} · {page.status === 'read' ? page.partial ? 'Leída en parte' : 'Leída' : page.status === 'reading' ? 'Leyendo' : page.status === 'error' ? 'Error' : 'Pendiente'}</span></label>
               {page.status === 'read' && <Button size="icon" variant="ghost" className={iconClass} disabled={Boolean(busy)} aria-label={`Volver a analizar página ${page.number} de ${doc.name}`} title="Volver a analizar" onClick={() => mutate(current => ({ ...current, revision: current.revision + 1, pairs: [], pages: current.pages.map(item => item.id === page.id ? { ...item, status: 'queued' } : item) }))}><RefreshCw className="h-4 w-4" /></Button>}
               <Button variant="ghost" className={actionClass} disabled={Boolean(busy)} onClick={() => void previewPage(doc.id, page.number)}>Ver página {page.number}</Button>
               {page.error && <p className="w-full text-red-800">{page.error}</p>}{page.warnings.map((warning, index) => <p key={index} className="w-full text-xs text-amber-800">{warning}</p>)}
             </li>)}</ul>
           </details>
         </li>)}</ul>
-        <div className="mt-5 border-b border-slate-200 pb-3"><h2 className="text-base font-semibold">Lecturas para revisar</h2>
-          <p className="mt-1 text-sm text-slate-500">{restaurantCoverage91(state, tab).read}/{restaurantCoverage91(state, tab).total} páginas seleccionadas leídas · {restaurantCoverage91(state, tab).omitted} excluidas</p></div>
+        <div className={(tab === 'food' ? foods : wines).length || state.documents.some(doc => doc.kind === tab) ? 'mt-5 border-b border-slate-200 pb-3' : 'hidden'}><h2 className="text-base font-semibold">{tab === 'food' ? 'Platos leídos' : 'Vinos leídos'}</h2>
+          {(tab === 'food' ? foods : wines).length > 0 && <p className="mt-1 text-sm text-slate-500">Si algún nombre está mal leído, corrígelo con el lápiz.</p>}
+          {(restaurantCoverage91(state, tab).read < restaurantCoverage91(state, tab).total || restaurantCoverage91(state, tab).omitted > 0) && <p className="mt-1 text-sm text-slate-500">{restaurantCoverage91(state, tab).read} de {restaurantCoverage91(state, tab).total} páginas leídas{restaurantCoverage91(state, tab).omitted > 0 ? ` · ${restaurantCoverage91(state, tab).omitted} sin incluir` : ''}</p>}</div>
+        {(tab === 'food' ? foods : wines).length > 0 && <Button className={`${actionClass} mt-4 w-full bg-red-900 text-white hover:bg-red-950`} disabled={Boolean(busy)} data-testid="restaurant-next137"
+          onClick={() => { const toPairs = tab === 'wine'; setTab(toPairs ? 'pairs' : 'wine'); setLinks([]); setUrl(''); setError(''); window.scrollTo({ top: 0 });
+            if (toPairs && foods.length && wines.length && !state.pairs.length) void compare(); }}>
+          {tab === 'food' ? (wines.length ? 'Siguiente: revisar los vinos' : 'Siguiente: añadir la carta de vinos') : foods.length ? 'Siguiente: ver los maridajes' : 'Ver maridajes'}<ArrowRight className="h-4 w-4 shrink-0" /></Button>}
         <ul className="divide-y divide-slate-200">{(tab === 'food' ? foods : wines).map(row => <li key={row.id} className="py-4">
           <div className="flex items-start justify-between gap-2"><div className="min-w-0"><h3 className="break-words font-semibold">{row.name}</h3>
-            <p className="mt-1 text-xs text-slate-500">{row.manual ? 'Vino aportado por ti · no confirma que esté en carta' : `${row.pageIds.length} ${row.pageIds.length === 1 ? 'origen' : 'orígenes'} · ${restaurantRowOrigins91(row).length} ${restaurantRowOrigins91(row).length === 1 ? 'lectura' : 'lecturas'} · ${row.reviewed ? 'revisado por ti' : 'lectura de IA sin confirmar'}`}</p></div>
+            <p className="mt-1 text-sm text-slate-600">{[row.price != null ? (native && row.currency ? formatScanPrice(row.price, row.currency) : null) ?? `${row.price} ${row.currency || ''}`.trim() : null, row.service === 'glass' ? 'Copa' : row.service === 'bottle' ? 'Botella' : null].filter(Boolean).join(' · ') || 'Precio no leído'}</p>
+            {(row.manual || row.reviewed) && <p className="mt-1 text-xs text-slate-500">{row.manual ? 'Vino añadido por ti · puede no estar en la carta' : 'Corregido por ti'}</p>}</div>
             <Button size="icon" variant="ghost" className={iconClass} aria-label={`Corregir ${row.name}`} title="Corregir lectura" disabled={Boolean(busy)} onClick={() => setEditing({ ...row })}><Pencil className="h-4 w-4" /></Button></div>
-          <p className="mt-2 break-words text-sm text-slate-600">{row.sourceText}</p>
-          {row.pageIds.length > 0 && <details className="mt-2"><summary className="min-h-[44px] cursor-pointer py-[8px] text-sm">Páginas y lecturas de origen</summary>{readingDetails(row)}</details>}
-          <p className="mt-1 text-sm text-slate-500">{row.price != null ? (native && row.currency ? formatScanPrice(row.price, row.currency) : null) ?? `${row.price} ${row.currency || '(moneda sin confirmar)'}` : 'Precio sin confirmar'} · {row.service === 'glass' ? 'Copa' : row.service === 'bottle' ? 'Botella' : 'Formato sin confirmar'}</p>
-          {row.availability && row.availability !== 'unknown' && <p className="mt-1 text-sm text-amber-800">{row.availability === 'unavailable' ? 'No disponible según la lectura' : row.availability === 'coming_soon' ? 'Próximamente · excluido de combinaciones' : 'Disponibilidad condicionada · confirmar'}</p>}
+          {row.pageIds.length > 0 ? <details className="mt-1"><summary className="min-h-[44px] cursor-pointer py-[8px] text-xs text-slate-500">Ver el texto original de la carta</summary>{readingDetails(row)}</details>
+            : <p className="mt-2 break-words text-xs text-slate-500">{row.sourceText}</p>}
+          {row.availability && row.availability !== 'unknown' && <p className="mt-1 text-sm text-amber-800">{row.availability === 'unavailable' ? 'No disponible según la lectura' : row.availability === 'coming_soon' ? 'Próximamente · no entra en los maridajes' : 'Pregunta si está disponible'}</p>}
           <div className="mt-3 flex flex-wrap gap-2"><Button variant="outline" className={actionClass} disabled={Boolean(busy)} onClick={() => { if (row.kind === 'food') { setSelectedFood(row.id); setSelectedWine(''); } else { setSelectedWine(row.id); setSelectedFood(''); } setTab('pairs'); }}>
             {row.kind === 'food' ? <Wine className="h-4 w-4 shrink-0" /> : <ChefHat className="h-4 w-4 shrink-0" />}{row.kind === 'food' ? 'Vinos para este plato' : 'Platos para este vino'}</Button>
-            {row.kind === 'wine' && <Button variant="ghost" className={actionClass} disabled={Boolean(busy)} onClick={() => void inspectWine(row)}><ExternalLink className="h-4 w-4 shrink-0" />Ficha y afinidad</Button>}</div>
+            {row.kind === 'wine' && <Button variant="ghost" className={actionClass} disabled={Boolean(busy)} onClick={() => void inspectWine(row)}><ExternalLink className="h-4 w-4 shrink-0" />¿Me gustará?</Button>}</div>
           {sheetRow === row.id && sheet && (native ? <>
             <NativeAffinitySummary result={nativeRestaurantAffinity95(row, sheet, profile?.profile ?? null)} />
             {isVerifiedWinerimSheetForIdentity(row, sheet) && <details className="mt-3 min-w-0 text-sm" data-testid="restaurant-original-details">
@@ -392,27 +402,32 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
           </> : <><WinerimOriginalSheet sheet={sheet} />{affinity != null ? <><p className="mt-3 font-semibold">Afinidad contigo: {affinity}%</p><AffinityExplanation wineKey={`restaurant91:${row.id}:${sheet.id}`} attributes={attributes} profile={profile?.profile} score={affinity} sensorySource="catalog" catalogIdentityLinked /></> : <p className="mt-2 text-sm text-slate-500">Afinidad pendiente: faltan perfil o atributos sensoriales verificados.</p>}</>)}
         </li>)}</ul>
       </> : <>
+        <Button className={`${actionClass} w-full bg-red-900 text-white hover:bg-red-950`} disabled={Boolean(busy) || !foods.length || !wines.length} onClick={() => void compare()}><ChefHat className="h-4 w-4 shrink-0" />{selectedFood && !selectedWine ? 'Elegir vinos para este plato' : selectedWine && !selectedFood ? 'Elegir platos para este vino' : 'Ver qué vino va con cada plato'}</Button>
+        <details className="mt-3 border-y border-slate-200" open={Boolean(selectedFood || selectedWine || budget || service !== 'any')} data-testid="restaurant-filters137">
+          <summary className="flex min-h-11 cursor-pointer items-center text-sm font-medium text-slate-700">Afinar: un plato concreto, precio máximo, copa o botella</summary>
+          <div className="pb-4">
         <div className="grid gap-4 sm:grid-cols-2"><label className="min-w-0 text-sm font-semibold">Plato<select aria-label="Plato" value={selectedFood} disabled={Boolean(busy)} onChange={event => { setSelectedFood(event.target.value); invalidateSelection(); }} className="mt-1 min-h-11 w-full min-w-0 rounded-md border border-slate-300 bg-white p-2 text-base"><option value="">Todos los platos</option>{foods.map(row => <option key={row.id} value={row.id}>{row.name}</option>)}</select></label>
           <label className="min-w-0 text-sm font-semibold">Vino<select aria-label="Vino" value={selectedWine} disabled={Boolean(busy)} onChange={event => { setSelectedWine(event.target.value); invalidateSelection(); }} className="mt-1 min-h-11 w-full min-w-0 rounded-md border border-slate-300 bg-white p-2 text-base"><option value="">Todos los vinos</option>{wines.map(row => <option key={row.id} value={row.id}>{row.name}{row.manual ? ' (aportado por ti)' : ''}</option>)}</select></label></div>
         <form className="restaurant91-inline-form mt-4 flex flex-wrap items-end gap-2" onSubmit={event => { event.preventDefault(); addManualWine(); }}><label className="min-w-0 flex-1 text-sm">Quiero tomar otro vino<Input value={manualWine} onChange={event => setManualWine(event.target.value)} placeholder="Ej. Roda I · bodega y añada si las sabes" maxLength={200} disabled={Boolean(busy)} className="mt-1 h-auto min-h-11" /></label><Button type="submit" variant="outline" disabled={Boolean(busy) || !manualWine.trim()} className={actionClass}><Wine className="h-4 w-4 shrink-0" />Añadir vino</Button></form>
-        <div className="restaurant91-budget mt-4 grid grid-cols-2 gap-3"><label className="text-sm">Presupuesto de vino<Input value={budget} onChange={event => { setBudget(event.target.value); invalidateSelection(); }} inputMode="decimal" maxLength={12} placeholder="Sin límite" disabled={Boolean(busy)} className="mt-1 h-auto min-h-11" /></label>
+        <div className="restaurant91-budget mt-4 grid grid-cols-2 gap-3"><label className="text-sm">Precio máximo del vino<Input value={budget} onChange={event => { setBudget(event.target.value); invalidateSelection(); }} inputMode="decimal" maxLength={12} placeholder="Sin límite" disabled={Boolean(busy)} className="mt-1 h-auto min-h-11" /></label>
           <label className="text-sm">Moneda<select aria-label="Moneda" value={currency} onChange={event => { setCurrency(event.target.value); invalidateSelection(); }} disabled={Boolean(busy)} className="mt-1 min-h-11 w-full rounded-md border border-slate-300 bg-white p-2">{['EUR', 'USD', 'GBP', 'CHF', 'MXN', 'JPY'].map(code => <option key={code}>{code}</option>)}</select></label>
-          <label className="text-sm">Servicio<select aria-label="Servicio" value={service} onChange={event => { setService(event.target.value as typeof service); invalidateSelection(); }} disabled={Boolean(busy)} className="mt-1 min-h-11 w-full rounded-md border border-slate-300 bg-white p-2"><option value="any">Sin preferencia</option><option value="glass">Copa</option><option value="bottle">Botella</option></select></label></div>
-        <Button className={`${actionClass} mt-5 w-full bg-red-900 text-white hover:bg-red-950`} disabled={Boolean(busy) || !foods.length || !wines.length} onClick={() => void compare()}><ChefHat className="h-4 w-4 shrink-0" />{selectedFood && !selectedWine ? 'Elegir vinos para este plato' : selectedWine && !selectedFood ? 'Elegir platos para este vino' : 'Combinar las cartas'}</Button>
-        {(!foods.length || !wines.length) && <p className="mt-3 text-sm text-slate-500">Falta {foods.length ? 'añadir vinos' : wines.length ? 'leer la carta de comida' : 'leer las cartas'} para comparar opciones reales.</p>}
+          <label className="text-sm">Copa o botella<select aria-label="Servicio" value={service} onChange={event => { setService(event.target.value as typeof service); invalidateSelection(); }} disabled={Boolean(busy)} className="mt-1 min-h-11 w-full rounded-md border border-slate-300 bg-white p-2"><option value="any">Sin preferencia</option><option value="glass">Copa</option><option value="bottle">Botella</option></select></label></div>
+          </div>
+        </details>
+        {(!foods.length || !wines.length) && <p className="mt-3 text-sm text-slate-500">{foods.length ? 'Falta la carta de vinos: añádela en el paso 2.' : wines.length ? 'Falta la carta de platos: añádela en el paso 1.' : 'Primero añade la carta de platos (paso 1) y la de vinos (paso 2).'}</p>}
         {(restaurantCoverage91(state, 'food').partial || restaurantCoverage91(state, 'wine').partial) && <p className="mt-4 border-l-2 border-amber-500 pl-3 text-sm text-amber-900">Las cartas tienen páginas pendientes o lecturas parciales. Las combinaciones solo cubren lo leído, no toda la oferta.</p>}
-        <p className="mt-4 text-sm text-slate-500">Maridajes orientativos por IA, no puntuaciones personales ni disponibilidad confirmada. Consulta ingredientes, alergias, precio y servicio con el restaurante.</p>
+        <p className="mt-4 text-sm text-slate-500">Maridajes orientativos hechos con IA: dicen qué va bien con el plato, no si el vino te gustará a ti (para eso, toca «¿Me gustará este vino?»). Confirma alergias, precio y disponibilidad con el restaurante.</p>
         {state.pairWarnings.map((warning, index) => <p key={index} className="mt-2 text-sm text-amber-800">{warning}</p>)}
         <ol ref={pairsList} tabIndex={-1} aria-label="Combinaciones" className="mt-5 divide-y divide-slate-200 border-t border-slate-200 focus:outline-none">{state.pairs.map((pair, index) => {
           const food = foods.find(row => row.id === pair.foodId), wine = wines.find(row => row.id === pair.wineId);
           if (!food || !wine) return null;
-          return <li key={`${pair.foodId}-${pair.wineId}`} className="py-5"><p className="text-xs font-semibold text-red-900">{index + 1} · {pair.band === 'strong' ? 'Buen encaje orientativo' : pair.band === 'possible' ? 'Opción posible' : 'Faltan datos'}</p><h2 className="mt-2 break-words text-lg font-semibold">{food.name}</h2><p className="mt-1 break-words font-medium text-slate-700">{wine.name}{wine.vintage ? ` · ${wine.vintage}` : ''}</p>
-            <p className="mt-2 text-xs text-slate-500">{wine.manual ? 'Vino aportado por ti, no verificado en carta' : 'Vino leído en esta carta'} · {food.reviewed ? 'Plato revisado por ti' : 'Lectura del plato sin confirmar'}</p>
-            <h3 className="mt-4 text-sm font-semibold">Por qué puede encajar</h3><ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">{pair.positives.map((text, i) => <li key={i}>{text}</li>)}</ul>
-            {pair.frictions.length > 0 && <><h3 className="mt-3 text-sm font-semibold">Posibles fricciones</h3><ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">{pair.frictions.map((text, i) => <li key={i}>{text}</li>)}</ul></>}
+          return <li key={`${pair.foodId}-${pair.wineId}`} className="py-5"><p className="text-xs font-semibold text-red-900">{index + 1} · {pair.band === 'strong' ? 'Muy buena pareja' : pair.band === 'possible' ? 'Puede funcionar' : 'Faltan datos para valorarlo'}</p><h2 className="mt-2 break-words text-lg font-semibold">{food.name}</h2><p className="mt-1 break-words font-medium text-slate-700">{wine.name}{wine.vintage ? ` · ${wine.vintage}` : ''}</p>
+            {wine.manual && <p className="mt-2 text-xs text-slate-500">Vino añadido por ti; puede no estar en la carta.</p>}
+            <h3 className="mt-4 text-sm font-semibold">Por qué van bien juntos</h3><ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">{pair.positives.map((text, i) => <li key={i}>{text}</li>)}</ul>
+            {pair.frictions.length > 0 && <><h3 className="mt-3 text-sm font-semibold">A tener en cuenta</h3><ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">{pair.frictions.map((text, i) => <li key={i}>{text}</li>)}</ul></>}
             {pair.missing.length > 0 && <p className="mt-3 text-sm text-amber-800">Falta confirmar: {pair.missing.join(' · ')}</p>}
-            <details className="mt-3"><summary className="min-h-11 cursor-pointer py-2 text-sm font-semibold">Lecturas de origen</summary><p className="mb-2 text-sm font-semibold">Comida</p>{readingDetails(food)}<p className="mb-2 mt-3 text-sm font-semibold">Vino</p>{wine.manual ? <p className="break-words text-sm text-slate-600">{wine.sourceText}</p> : readingDetails(wine)}</details>
-            <Button variant="outline" className={`${actionClass} mt-3`} disabled={Boolean(busy)} onClick={() => { setTab('wine'); void inspectWine(wine); }}><ExternalLink className="h-4 w-4 shrink-0" />Ver ficha y afinidad del vino</Button>
+            <details className="mt-3"><summary className="min-h-11 cursor-pointer py-2 text-xs text-slate-500">Ver el texto original de la carta</summary><p className="mb-2 text-sm font-semibold">Comida</p>{readingDetails(food)}<p className="mb-2 mt-3 text-sm font-semibold">Vino</p>{wine.manual ? <p className="break-words text-sm text-slate-600">{wine.sourceText}</p> : readingDetails(wine)}</details>
+            <Button variant="outline" className={`${actionClass} mt-3`} disabled={Boolean(busy)} onClick={() => { setTab('wine'); void inspectWine(wine); }}><ExternalLink className="h-4 w-4 shrink-0" />¿Me gustará este vino?</Button>
           </li>;
         })}</ol>
       </>}

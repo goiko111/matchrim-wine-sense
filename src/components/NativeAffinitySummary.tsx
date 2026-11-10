@@ -26,7 +26,7 @@ export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: 
         </div>
         {!personalTitle && <p className="shrink-0 text-xl font-semibold tabular-nums text-red-900" aria-label={`Afinidad orientativa: ${result.score} de 100`}>
           <span aria-hidden="true">≈{result.score}<span className="text-sm font-medium text-stone-500">/100</span></span>
-          <span className="block text-xs font-normal text-stone-500" aria-hidden="true">Por estilo</span>
+          <span className="block text-xs font-normal text-stone-500" aria-hidden="true">de afinidad</span>
         </p>}
       </div>
       <div className="space-y-2 text-sm leading-6 text-stone-700">

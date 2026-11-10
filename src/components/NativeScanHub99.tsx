@@ -58,19 +58,19 @@ export const NativeScanHub99 = ({ ownerId, options, onSelectMode, onOpenRestaura
     </header>
 
     <div className="divide-y divide-stone-200 border-y border-stone-200" data-testid="native-scan-primary99">
-      {bottles && <Entry title="Botellas" subtitle={`${bottles.title} · Una o varias`}
+      {bottles && <Entry title="Botellas" subtitle="¿Me gustará? Una botella o una vitrina entera"
         label={`${bottles.title} · Botellas · Una o varias`} icon={bottles.icon} tone="bg-red-50 text-red-900"
         onClick={() => onSelectMode(bottles.id)} />}
-      {wineMenu && <Entry title={wineMenu.title} subtitle="Carta impresa o pizarra" icon={wineMenu.icon}
+      {wineMenu && <Entry title={wineMenu.title} subtitle="¿Cuál pido? Foto de la carta o de la pizarra" icon={wineMenu.icon}
         tone="bg-emerald-50 text-emerald-800" onClick={() => onSelectMode(wineMenu.id)} />}
-      <Entry title="Comida y vino" subtitle="Cartas completas, fotos, PDF y enlaces"
+      <Entry title="Comida y vino" subtitle="¿Qué vino va con mi plato? Carta de platos y de vinos"
         label="Comida y vinos del restaurante · Comida y vino" icon={Utensils} tone="bg-stone-100 text-stone-700"
         onClick={onOpenRestaurant} />
     </div>
 
     <details className="group mt-[12px] border-b border-stone-200" data-testid="native-scan-more99">
       <summary aria-label="Más" className="matchrim-pressable flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-[12px] py-[12px] text-sm font-semibold text-stone-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-900 [&::-webkit-details-marker]:hidden">
-        <span aria-hidden="true" className="min-w-0">Más</span>
+        <span aria-hidden="true" className="min-w-0">Más formas de escanear</span>
         <ChevronDown className="h-[20px] w-[20px] shrink-0 group-open:rotate-180" aria-hidden="true" focusable="false" />
       </summary>
       <div className="divide-y divide-stone-200">

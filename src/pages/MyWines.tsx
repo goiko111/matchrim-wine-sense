@@ -2182,6 +2182,9 @@ const MyWinesForOwner = () => {
                               Quitar valoración
                             </Button>
                           )}
+                          {isNative && !wine.rating && (wine.status === 'tasted' || wine.status === 'collection' || wine.status === 'wishlist') && (
+                            <p className="pt-2 text-sm font-semibold text-slate-900">¿Lo has probado? Dinos qué te pareció<span className="mt-1 block text-xs font-normal leading-5 text-slate-600">Cada valoración afina lo que te recomendamos.</span></p>
+                          )}
                           {(wine.status === 'tasted' || wine.status === 'collection' || wine.status === 'wishlist') && (
                             <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,6.5rem),1fr))] gap-2 pt-2">
                               <Button

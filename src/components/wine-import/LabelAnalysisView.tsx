@@ -21,13 +21,15 @@ interface LabelAnalysisViewProps {
   onFindSheet: () => void;
   onCorrect: () => void;
   onReturnToBatch?: () => void;
+  /** 137: with a single bottle the button saves it; there is no batch to go back to. */
+  returnLabel?: string;
   children?: ReactNode;
 }
 
 // Presentation only: the scanner retains identity, lookup and affinity authority.
 export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, identity, identityLabel,
   catalogIdentityLinked, canExplainAffinity, hasProfile, pendingAffinity, affinity, catalogueReference, lookup, disabled,
-  onFindSheet, onCorrect, onReturnToBatch, children = null }: LabelAnalysisViewProps) => {
+  onFindSheet, onCorrect, onReturnToBatch, returnLabel = 'Volver al lote para guardar', children = null }: LabelAnalysisViewProps) => {
   if (!isNativePlatform) return <>{children}</>;
 
   return <section className="min-w-0 space-y-4 py-3" aria-label="Vino seleccionado" data-testid="native-wine-primary">
@@ -62,7 +64,7 @@ export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, ident
 
     {canExplainAffinity && onReturnToBatch && <Button type="button" disabled={disabled} onClick={onReturnToBatch}
       className="h-auto min-h-11 w-full min-w-0 gap-2 whitespace-normal bg-red-950 px-3 py-3 text-left text-white hover:bg-red-900">
-      <Check aria-hidden="true" className="h-5 w-5 shrink-0" /><span className="min-w-0 [overflow-wrap:anywhere]">Volver al lote para guardar</span>
+      <Check aria-hidden="true" className="h-5 w-5 shrink-0" /><span className="min-w-0 [overflow-wrap:anywhere]">{returnLabel}</span>
     </Button>}
 
     <div className="flex min-w-0 flex-wrap gap-2">

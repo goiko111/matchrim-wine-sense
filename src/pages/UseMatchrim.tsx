@@ -503,13 +503,16 @@ const UseMatchrim = () => {
 
         <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="space-y-6">
-            <MatchrimPassport
-              profile={codeProfile || profile}
-              codeOverride={matchrimCode}
-              compact
-              showUseAction={false}
-              showRestaurantAction={false}
-            />
+            {/* 137: the native passport is drawn without its card; on this dark page its text was unreadable. */}
+            <div className="[html.matchrim-native-platform_&]:rounded-lg [html.matchrim-native-platform_&]:bg-white [html.matchrim-native-platform_&]:p-4">
+              <MatchrimPassport
+                profile={codeProfile || profile}
+                codeOverride={matchrimCode}
+                compact
+                showUseAction={false}
+                showRestaurantAction={false}
+              />
+            </div>
 
             {learnedProfileInfo && (
               <Alert className="border-green-200 bg-green-50">

@@ -134,8 +134,8 @@ const Scan = () => {
       });
       toast.success(
         wine.is_favorite
-          ? `${wine.nombre} guardado en Quiero Probar y Favoritos`
-          : `${wine.nombre} guardado en Quiero Probar`
+          ? `${wine.nombre} guardado en ${isNative ? 'Por probar' : 'Quiero Probar'} y Favoritos`
+          : `${wine.nombre} guardado en ${isNative ? 'Por probar' : 'Quiero Probar'}`
       );
       return { status: "saved", rowId, ownerId: user.id };
     } catch {

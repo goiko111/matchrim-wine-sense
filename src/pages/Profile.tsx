@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { nativeTasteSummary240 } from '@/utils/nativeTasteSummary240';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -565,6 +566,7 @@ const Profile = () => {
     { attribute: "Afrutado", baseValue: currentDisplayProfile.afrutado, activeValue: activeDisplayProfile.afrutado },
   ] : [];
 
+  const tasteWords137 = activeDisplayProfile ? nativeTasteSummary240(activeDisplayProfile) : null;
   const hasLearnedProfile = Boolean(learnedProfile && learnedProfile.samples > 0);
   const hasLearnedAdjustments = hasLearnedProfile && chartData.some((item) => item.baseValue !== item.activeValue);
   const confidenceCopy = learnedProfile
@@ -891,6 +893,8 @@ const Profile = () => {
                 <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2">
                   <span className="text-2xl">📊</span> Tu perfil sensorial
                 </h3>
+                {/* 137: the bars alone did not tell a newcomer what they like; say it in one sentence first. */}
+                {isNative && tasteWords137 && <p className="mt-3 text-base leading-7 text-stone-800" data-testid="profile-taste-words137">En pocas palabras: te gustan los vinos {tasteWords137.rows[0].phrase}, con {tasteWords137.rows[1].phrase} y {tasteWords137.rows[4].phrase}.</p>}
                 {hasLearnedProfile && (
                   <div className="mt-3 flex flex-wrap gap-2">
                     <Badge variant="outline" className="border-stone-300 text-stone-700">

@@ -81,9 +81,9 @@ const nativeWineConsumerBase = (candidate: WineCandidate | null, profile: Matchr
     && calculated !== null && candidate.affinity === calculated);
   return {
     catalogIdentityLinked: linked,
-    identityLabel: linked ? 'Ficha original vinculada'
+    identityLabel: linked ? 'Con ficha de Winerim'
       : candidate?.source === 'manual' ? 'Identidad indicada por ti'
-        : candidate ? 'Referencia propuesta' : 'Identificación pendiente',
+        : candidate ? 'Nombre leído en la etiqueta' : 'Aún sin identificar',
     affinityLabel: canExplainAffinity ? 'Afinidad orientativa' : 'Afinidad pendiente',
     affinityValue: canExplainAffinity ? `≈${Math.round(candidate!.affinity!)}/100` : 'Pendiente',
     canExplainAffinity,
@@ -109,14 +109,14 @@ export const nativeWineConsumerResult = (candidate: WineCandidate | null, profil
           : 'Tenemos una referencia de Winerim, pero no hemos confirmado la cosecha de tu botella.',
         nextStep: 'Comprueba la añada. Una comparación de estilo general no confirma los datos de esa cosecha.' };
     } else if (!result.catalogIdentityLinked) {
-      pending = { reason: 'catalogue-link', title: 'Falta enlazar la ficha de este vino', summary: 'Ficha de sabor aún sin enlazar',
-        description: 'Tenemos un nombre propuesto, pero aún no una ficha verificada con la que calcular tu afinidad. Esto no significa que el vino no esté en Winerim.',
-        nextStep: 'Busca la referencia y comprueba que el nombre, la bodega y la añada coinciden.' };
+      pending = { reason: 'catalogue-link', title: 'Aún no tenemos la ficha de este vino', summary: 'Sin ficha de Winerim todavía',
+        description: 'Hemos leído el nombre en la etiqueta, pero todavía no lo hemos unido a su ficha de Winerim, y sin ella no podemos calcular cuánto encaja contigo. No significa que no te vaya a gustar.',
+        nextStep: 'Búscalo en Winerim y elige el que coincida en nombre, bodega y añada.' };
     } else if (!profile || (['potente', 'acidez', 'dulce', 'tanico', 'afrutado'] as const)
       .some(key => typeof profile[key] !== 'number' || !Number.isFinite(profile[key]) || profile[key] < 0)) {
       pending = { reason: 'profile', title: 'Nos falta conocer tus gustos', summary: 'Test de paladar incompleto',
-        description: 'La ficha del vino está enlazada, pero tu perfil todavía no contiene todas las preferencias necesarias.',
-        nextStep: 'Completa tu test de paladar para compararlo con este vino.' };
+        description: 'Tenemos la ficha de este vino, pero aún no conocemos tus gustos.',
+        nextStep: 'Haz el test de paladar (2 minutos) y te diremos cuánto encaja contigo.' };
     } else if (!result.sensoryEvidenceReady) {
       pending = { reason: 'sensory', title: 'Vino encontrado; faltan datos de sabor fiables', summary: 'Datos sensoriales insuficientes',
         description: 'El vino está enlazado con Winerim. Lo que falta es una ficha sensorial suficiente y respaldada para compararlo con tus gustos.',

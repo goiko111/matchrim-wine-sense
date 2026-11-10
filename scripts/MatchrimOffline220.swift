@@ -60,8 +60,8 @@ final class MatchrimOffline220Tests: XCTestCase {
         try tap(app.switches["Una etiqueta"].firstMatch, app)
         try tap(app.buttons["QA220 cargar etiqueta local"].firstMatch, app)
         let correct = app.buttons["Corregir identificación"].firstMatch
-        XCTAssertTrue(correct.waitForExistence(timeout: 45) || app.buttons["Revisar vinos"].firstMatch.exists)
-        if !correct.exists { try tap(app.buttons["Revisar vinos"].firstMatch, app) }
+        XCTAssertTrue(correct.waitForExistence(timeout: 45) || app.buttons["Ver si me gustará"].firstMatch.exists)
+        if !correct.exists { try tap(app.buttons["Ver si me gustará"].firstMatch, app) }
         try tap(correct, app)
         try fill(app.textFields["Vino"].firstMatch, "La Migratoria", app)
         try fill(app.textFields["Bodega"].firstMatch, "Bodegas Frontonio", app)
@@ -95,7 +95,7 @@ final class MatchrimOffline220Tests: XCTestCase {
             for _ in 0..<3 { swipeContent(app) }
             capture(app, "master259-large-row-affinity-tail")
         }
-        try tap(app.buttons["Revisar vinos"].firstMatch, app)
+        try tap(app.buttons["Ver si me gustará"].firstMatch, app)
         try tap(app.buttons["Corregir identificación"].firstMatch, app)
         try fill(app.textFields["Añada (opcional)"].firstMatch, "2024", app)
         try tap(app.buttons["Aplicar corrección"].firstMatch, app)
@@ -120,8 +120,8 @@ final class MatchrimOffline220Tests: XCTestCase {
         try tap(app.switches["Una etiqueta"].firstMatch, app)
         try tap(app.buttons["QA220 cargar etiqueta local"].firstMatch, app)
         let correct = app.buttons["Corregir identificación"].firstMatch
-        XCTAssertTrue(correct.waitForExistence(timeout: 45) || app.buttons["Revisar vinos"].firstMatch.exists)
-        if !correct.exists { try tap(app.buttons["Revisar vinos"].firstMatch, app) }
+        XCTAssertTrue(correct.waitForExistence(timeout: 45) || app.buttons["Ver si me gustará"].firstMatch.exists)
+        if !correct.exists { try tap(app.buttons["Ver si me gustará"].firstMatch, app) }
         try tap(correct, app)
         // First20 img-020: the label hint reads2000; the catalogue only has2020 rows.
         try fill(app.textFields["Vino"].firstMatch, "Pinot Blanc", app)
@@ -152,7 +152,7 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertTrue(row.waitForExistence(timeout: 8))
         XCTAssertTrue(row.label.contains("Añada indicada: 2000") && row.label.contains("Sin calcular") && row.label.contains("Datos de sabor solo de 2020"), row.label)
         capture(app, "vintage283-batch-row-2000")
-        try tap(app.buttons["Revisar vinos"].firstMatch, app)
+        try tap(app.buttons["Ver si me gustará"].firstMatch, app)
         try tap(app.buttons["Corregir identificación"].firstMatch, app)
         try fill(app.textFields["Añada (opcional)"].firstMatch, "2020", app)
         try tap(app.buttons["Aplicar corrección"].firstMatch, app)
@@ -210,7 +210,7 @@ final class MatchrimOffline220Tests: XCTestCase {
             cancel.tap()
             XCTAssertTrue(app.buttons["Elegir de galería"].firstMatch.waitForExistence(timeout: 8))
             XCTAssertTrue(app.staticTexts["Fotografía una etiqueta"].firstMatch.exists)
-            XCTAssertFalse(app.buttons["Revisar vinos"].firstMatch.exists, "Cancelling must not create an analysis or result")
+            XCTAssertFalse(app.buttons["Ver si me gustará"].firstMatch.exists, "Cancelling must not create an analysis or result")
             capture(app, "gallery252-cancelled-no-selection-\(attempt)")
         }
     }
@@ -391,10 +391,10 @@ final class MatchrimOffline220Tests: XCTestCase {
         try tap(app.buttons["Reanalizar"].firstMatch, app)
         XCTAssertTrue(app.buttons["Corregir identificación"].firstMatch.waitForExistence(timeout: 45))
         XCTAssertFalse(manual.exists, "New local OCR must not retain an old manual identity")
-        XCTAssertTrue(app.staticTexts["Referencia propuesta"].firstMatch.exists)
+        XCTAssertTrue(app.staticTexts["Nombre leído en la etiqueta"].firstMatch.exists)
         capture(app, "rescan-after-uncertain-no-invented-affinity")
         try tap(app.buttons["Cerrar"].firstMatch, app)
-        XCTAssertFalse(app.buttons["Confirmar 1 referencia"].firstMatch.exists, "Reanalysis must not automatically reconfirm the old reference")
+        XCTAssertFalse(app.buttons["Guardar este vino en Por probar"].firstMatch.exists, "Reanalysis must not automatically reconfirm the old reference")
         capture(app, "rescan-still-requires-review")
     }
 
@@ -415,7 +415,7 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertTrue(correct.waitForExistence(timeout: 45))
         capture(app, "close-control-before")
         try tap(app.buttons["Cerrar"].firstMatch, app)
-        XCTAssertTrue(app.buttons["Revisar vinos"].firstMatch.waitForExistence(timeout: 8))
+        XCTAssertTrue(app.buttons["Ver si me gustará"].firstMatch.waitForExistence(timeout: 8))
         try tap(app.buttons["Volver a tipos de escaneo"].firstMatch, app)
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Botellas")).firstMatch.waitForExistence(timeout: 8))
         capture(app, "close-return-hub")
@@ -460,7 +460,7 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Fotografía una etiqueta"].waitForExistence(timeout: 5))
         capture(app, "02-local-mode-resident-injection-not-gallery")
         try tap(app.buttons["QA220 cargar etiqueta local"].firstMatch, app)
-        let review = app.buttons["Revisar vinos"].firstMatch
+        let review = app.buttons["Ver si me gustará"].firstMatch
         let correct = app.buttons["Corregir identificación"].firstMatch
         XCTAssertTrue(correct.waitForExistence(timeout: 45) || review.exists, "Actual offline native OCR must finish; no model or catalogue fallback")
         capture(app, "03-native-ocr-result-catalogue-blocked")
@@ -485,11 +485,11 @@ final class MatchrimOffline220Tests: XCTestCase {
         XCTAssertFalse(app.staticTexts["Cambios sin aplicar"].exists)
         capture(app, "06-manual-correction-no-invented-score")
         try tap(app.buttons["Cerrar"].firstMatch, app)
-        try tap(app.buttons["Revisar vinos"].firstMatch, app)
+        try tap(app.buttons["Ver si me gustará"].firstMatch, app)
         XCTAssertTrue(app.otherElements.matching(NSPredicate(format: "label == %@", "Control QA220 · 2023")).firstMatch.waitForExistence(timeout: 8), "Correction must survive closing/reopening the current batch")
         capture(app, "07-correction-retained-current-batch")
         try tap(app.buttons["Cerrar"].firstMatch, app)
-        try tap(app.buttons["Confirmar 1 referencia"].firstMatch, app)
+        try tap(app.buttons["Guardar este vino en Por probar"].firstMatch, app)
         XCTAssertTrue(app.secureTextFields["Contraseña"].firstMatch.waitForExistence(timeout: 10), "Anonymous save must require authentication, never claim a remote save")
         capture(app, "08-save-auth-boundary-no-credentials")
     }

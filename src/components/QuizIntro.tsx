@@ -13,7 +13,8 @@ const QuizIntro: React.FC<QuizIntroProps> = ({ onStart, returnTo }) => {
     <section className="mx-auto flex w-full max-w-2xl flex-col px-4 py-6">
       <img src="/lovable-uploads/b9329c73-68b0-4f4a-96a2-c96545694186.png" alt="Winerim" className="h-16 w-16 object-contain" />
       <h1 className="mt-5 text-2xl font-bold text-slate-950">Test de paladar</h1>
-      <p className="mt-2 text-sm text-slate-500">20 preferencias · Perfil inicial orientativo</p>
+      <p className="mt-3 text-base leading-6 text-slate-700">No hace falta saber de vino. Te preguntamos por 20 sabores que ya conoces (una manzana verde, el café, el picante) y con tus respuestas calculamos qué vinos te pueden gustar.</p>
+      <p className="mt-2 text-sm text-slate-500">Unos 2 minutos · Es un punto de partida: se afina con los vinos que valores.</p>
       <Button type="button" onClick={onStart} className="mt-7 min-h-12 bg-red-900">Comenzar el test</Button>
     </section>
   );
