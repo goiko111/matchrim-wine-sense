@@ -1,5 +1,13 @@
 # Matchrim current state
 
+## Current Gate: 2026-11-10, Candidate136 (Claude, extreme QA)
+
+- Owner: "quiero saber en que podemos trabajar las proximas 4 horas sin parar y que sea realmente un avance en todo esto y sobre todo quiero un examen de QA y de funcionamiento y de correccion extremo". Report docs/MATCHRIM_136_QA_EXTREMO_2026-11-10.md.
+- New reusable E2E battery: the compiled simulator app driven from inside via ios_webkit_debug_proxy (Target-domain client, polled async eval), fake PostgREST + emulated matchrim-recommendations / search-wines-v75 over 885 real pool wines, forced read/write failures, 30 s web-only rebuild (~/ClaudeCode/matchrim-tarde-20261109/harness: run-all.sh, audit.mjs). 10 journeys / 65 checks all pass; 23-route audit at max and normal text.
+- Learner exam (6283 real wines, native-v4): invariants hold (valid, order-free, love never lowers / not_for_me never raises that wine, corners reachable, garbage ignored, 1000 rows 38 ms). Dislike-only evidence drifted (error 0.71->1.00 at 40, confidence 96): pull capped at 3 votes and confidence <=40 (now 0.76 / rho 0.875 > quiz 0.857); mixed/normal unchanged.
+- 136 (2533bdc, runners b3c5e6e): verified-sheet affinity save, cellar counts hidden on load failure, Home "Ver todos" opens the full list (was /usar-matchrim; native keeps 20), offline search offers manual add, registration legal links open an in-app sheet (target=_blank did nothing on iOS), batch save continues past an explicit rejection, aiRIM unsent draft kept, Cerrar (was Close), accents in Privacy/Terms, Sesión iniciada, purchase title wrap, wine-styles links swapped/reloading, 44pt tabs. Check qa136 7/7. Repo sweep: 188/204 of yesterday's passing checks pass; the rest freeze intentionally changed files (accents/Close/dialog count/old batch rule).
+- Not pushed; web and backend untouched; no real device.
+
 ## Current Gate: 2026-11-09, Candidates 134/135 Built (Claude, afternoon QA)
 
 - Owner: "Necesito hacer pruebas en profundidad de la app. Puedes estar tu toda la tarde mejorando la app sin necesidad de que yo este?" Report docs/MATCHRIM_134_TARDE_QA_2026-11-09.md.

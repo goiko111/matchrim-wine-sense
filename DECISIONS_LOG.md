@@ -1,5 +1,15 @@
 # Matchrim decisions log
 
+## 2026-11-10: 136 extreme QA, E2E battery, dislike-only learning
+
+QA moved from flaky simulator taps to driving the WebView through the WebKit inspector with an
+in-app fake backend, so every journey is repeatable and the web bundle can be retested in 30 s.
+Dislike-only evidence no longer drives the v4 fit beyond three votes' worth and reports at most
+40% confidence (simulation on 6283 real wines). An explicit insert rejection commits nothing, so
+the batch continues past it; uncertain outcomes still stop. Legal links in registration open an
+in-app sheet on iOS; the web keeps target=_blank. Own photos stay on device after sign-out
+(deleting them would lose the only copy); left to the owner.
+
 ## 2026-11-09: 134/135 afternoon audit fixes
 
 Five read-only audits plus a full check sweep found no regression but ~45 user-facing defects;

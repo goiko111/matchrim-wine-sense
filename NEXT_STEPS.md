@@ -1,10 +1,17 @@
 # Matchrim next steps
 
+## Current Delta: 2026-11-10, Candidate136 (extreme QA)
+
+1. Finish candidate136 native QA r101-r104 (needs mac-desktop) then RELEASE qa-artifacts/testflight136-20261110 validates; upload only with the owner's explicit OK (scripts/distribute-matchrim136.mjs).
+2. Before each build: harness/run-all.sh and audit.mjs on the QA copy (WEB=web-dev for the working tree).
+3. Remaining: restaurant menu flow outside the E2E battery; contradictory votes on identical wines still move unrelated axes (confidence 43); legal pages name the app Winerim/Matchrim inconsistently (owner); plus the 135 list below (search accents, Universal Link, signed-out scan, phone, own photos).
+4. Push of the 132-136 commits needs the owner's OK.
+
 ## Current Delta: 2026-11-09, Candidates 134/135 (afternoon QA)
 
 1. 135 (contains 134) uploaded to TestFlight on 2026-11-10 with the owner's OK ("Sí, sube la 135"); Apple acknowledged; confirm it becomes installable.
 2. On a real iPhone after install: rate a wine with its sheet open (sheet stays), "Me he bebido una botella", delete-wine dialog in Spanish, Reanalizar failure keeps Confirmar, sign out with airplane mode, aiRIM chat survives leaving the screen.
-3. Follow-ups not done: signed-out scan lost on "Buscar con mi cuenta" (copy now says so; restoring the scan needs state persistence); password-reset link opens Safari (no Universal Link / appUrlOpen; ResetPassword has no native branch); catalogue search is accent/word-order sensitive server-side (search-wines-v75 ilike on raw columns; backend); vintage lost when merging duplicate bottles (identity signature includes vintage), DB-rejected batch item retried forever, phone required but never stored (product decision), own photos/restaurant files stay on device after sign-out, aiRIM server memory and server learner v2 (backend).
+3. Follow-ups not done: signed-out scan lost on "Buscar con mi cuenta" (copy now says so; restoring the scan needs state persistence); password-reset link opens Safari (no Universal Link / appUrlOpen; ResetPassword has no native branch); catalogue search is accent/word-order sensitive server-side (search-wines-v75 ilike on raw columns; backend); vintage lost when merging duplicate bottles (identity signature includes vintage), phone required but never stored (product decision), own photos/restaurant files stay on device after sign-out, aiRIM server memory and server learner v2 (backend).
 4. Push of the 132-135 commits needs the owner's OK.
 
 ## Current Delta: 2026-11-09, Candidate133
