@@ -104,6 +104,8 @@ function mount(file: string, source: string, native: boolean) {
     useState: (initial: unknown) => { const { slots } = hooks, i = hooks.cursor++;
       if (!(i in slots)) slots[i] = typeof initial === 'function' ? initial() : initial;
       return [slots[i], (v: unknown) => { slots[i] = typeof v === 'function' ? v(slots[i]) : v; }]; },
+    // 136: NativeHome98 keeps a ref to "Ver todos" for focus return.
+    useRef: (initial: unknown) => { const { slots } = hooks, i = hooks.cursor++; if (!(i in slots)) slots[i] = { current: initial }; return slots[i]; },
     useLayoutEffect: (effect: () => void, next: unknown[]) => { const { slots } = hooks, i = hooks.cursor++;
       const old = slots[i] as unknown[] | undefined;
       if (!old || old.length !== next.length || old.some((v, n) => !Object.is(v, next[n]))) { slots[i] = next; effects.push(effect); } },
