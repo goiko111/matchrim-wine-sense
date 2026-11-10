@@ -98,6 +98,7 @@ Se usaron los 6.283 vinos reales de Winerim y el motor de la app (v4).
 - A texto máximo, el título «¿Dónde lo compraste?» se partía a mitad de palabra y quedaba tapado por la X.
 - En Estilos de vino, «Hacer Test Matchrim» llevaba a aiRIM y «Explorar aiRIM» al test; además recargaban toda la app y se salían de la pantalla.
 - Las pestañas de «Usar Matchrim» y «Estilos» medían 32 px de alto; ahora miden 44 px, el mínimo de Apple.
+- A texto máximo, las palabras largas de los títulos se cortaban sin guion («restau…», «Elim…»). Ahora los títulos se parten por sílabas en castellano («res-taurante», «Eli-minar»). Botones y pestañas siguen partiendo por palabras enteras.
 
 ## Lo que se comprobó y estaba bien
 
@@ -126,7 +127,8 @@ Se usaron los 6.283 vinos reales de Winerim y el motor de la app (v4).
 - Términos usa «la app Winerim» y «Volver a Winerim», y Privacidad «Volver a Matchrim». Unificar el nombre de la app cambia texto legal.
 
 **Votos contradictorios**
-- Muchos votos opuestos sobre vinos idénticos todavía mueven el perfil en ejes que no tienen nada que ver. Es raro en la práctica, y la confianza ya baja al 43 %.
+- Muchos votos opuestos sobre vinos idénticos todavía mueven el perfil en ejes que no tienen nada que ver.
+- Probé a neutralizar los pares opuestos: arregla el caso extremo, pero con usuarios realistas no cambia nada medible (0,956 frente a 0,955). Lo dejé fuera de la 136.
 
 **Restaurante**
 - Escanear una carta no está en la batería E2E, porque usa dos servicios con protocolo propio.
@@ -140,4 +142,7 @@ Se usaron los 6.283 vinos reales de Winerim y el motor de la app (v4).
 - Examen del motor: `~/ClaudeCode/matchrim-tarde-20261109/engine/` (`exam.mts`, `neg.mts`).
 - Commits locales, sin push:
   - 2533bdc: código de la 136 y check;
-  - b3c5e6e: runners.
+  - b3c5e6e: runners;
+  - 4bb6660: guiones en títulos.
+- La build es `candidate136-r2`, compilada desde 4bb6660.
+- La batería E2E se pasó también sobre la app 136 compilada de verdad: 71/71.
