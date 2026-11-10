@@ -21,7 +21,7 @@ Todo lo demás se ha hecho sin red real, sin cuentas reales y sin coste. No se h
 - Cualquier otra llamada externa se bloquea.
 - El código de la app se recompila en 30 s y se prueba sin repetir la build nativa.
 
-**Recorridos.** Son 10, con 65 comprobaciones, y al final pasan todos:
+**Recorridos.** Son 11, con 81 comprobaciones, y al final pasan todos:
 
 | Recorrido | Qué comprueba |
 |---|---|
@@ -34,6 +34,7 @@ Todo lo demás se ha hecho sin red real, sin cuentas reales y sin coste. No se h
 | aiRIM sin servidor | Aviso claro; la pregunta no se pierde al cambiar de pestaña |
 | Test de gusto | Confirmación al salir, guardado, perfil nuevo usado en Inicio |
 | Arranque y sin red | Arranque en frío 1,9 s; sin red no echa al usuario; escanear sigue disponible; se recupera |
+| Restaurante | Cartas de comida y vinos, lectura, combinaciones, presupuesto con coma, «Vinos para este plato», borrar sesión |
 | Auditoría de pantallas | 23 rutas a texto máximo y a texto normal: desbordes, botones sin nombre, botones pequeños, inglés y texto roto |
 
 ### 2. Examen del motor de gusto
@@ -100,6 +101,34 @@ Se usaron los 6.283 vinos reales de Winerim y el motor de la app (v4).
 - Las pestañas de «Usar Matchrim» y «Estilos» medían 32 px de alto; ahora miden 44 px, el mínimo de Apple.
 - A texto máximo, las palabras largas de los títulos se cortaban sin guion («restau…», «Elim…»). Ahora los títulos se parten por sílabas en castellano («res-taurante», «Eli-minar»). Botones y pestañas siguen partiendo por palabras enteras.
 
+## Revisión independiente del diff
+
+Antes de la build final, una revisión independiente (solo lectura, sin conocer mis conclusiones) revisó todos los cambios de la 136. Encontró cuatro fallos reales en mi trabajo y una mejora de diseño. Todos están corregidos en la r3:
+
+- **Importante.** Dentro de la hoja de Términos, el enlace «política de privacidad» salía del registro y se perdía el formulario. Ahora cambia la hoja a Privacidad sin salir. En la hoja, «eliminar cuenta» es texto, porque aún no hay cuenta.
+- **aiRIM.** Al resolverse la sesión se borraba el borrador del usuario que entraba. Ahora se recupera.
+- **Bodega.** «Favoritos · 0» seguía saliendo cuando fallaba la carga.
+- **Accesibilidad.** Al cerrar una ficha abierta desde «Ver todos», el foco de VoiceOver se perdía. Ahora vuelve a «Ver todos».
+- **Motor de gusto.** El límite de los «No va» desaparecía de golpe con un solo «Me encanta».
+  - Ahora cada voto positivo libera peso poco a poco: el empuje total de los «No va» vale 3 votos más 2 por cada positivo.
+  - Con 1 «Me encanta» y 39 «No va», el error baja de 0,85 a 0,65 y el orden sube de 0,885 a 0,902.
+  - Los casos normales quedan igual.
+
+## Restaurante (añadido a la batería)
+
+Se emuló el servicio que lee las cartas y propone parejas, con filas que llevan su texto de origen, como en el servicio real. El recorrido completo pasa 9/9:
+
+- borrar la sesión anterior, con confirmación en castellano;
+- subir la carta de comida y la de vinos;
+- leer las dos;
+- combinar;
+- presupuesto con coma (35,5 € deja fuera los de 42 € y 36 € y mantiene el de 31,50 €);
+- «Vinos para este plato».
+
+**Arreglado:** a texto grande, tras «Combinar las cartas» los resultados quedaban fuera de la pantalla y parecía que no pasaba nada. Ahora la vista baja hasta ellos.
+
+**No tocado:** los avisos que vienen del servicio están sin tildes («Respuesta de analisis no valida», «Limite», «pagina», «anada», «descripcion», «pixeles»). Están en `supabase/functions/_shared/matchrim-restaurant91.ts`, compartido con el backend, que no toco.
+
 ## Lo que se comprobó y estaba bien
 
 - Doble toque en «Me he bebido una botella»: gasta solo una.
@@ -131,7 +160,7 @@ Se usaron los 6.283 vinos reales de Winerim y el motor de la app (v4).
 - Probé a neutralizar los pares opuestos: arregla el caso extremo, pero con usuarios realistas no cambia nada medible (0,956 frente a 0,955). Lo dejé fuera de la 136.
 
 **Restaurante**
-- Escanear una carta no está en la batería E2E, porque usa dos servicios con protocolo propio.
+- Los textos del servicio están sin tildes (backend).
 
 **iPhone real**
 - No se ha probado en un iPhone real: ni la cámara, ni las fotos propias, ni la recuperación de contraseña.
@@ -144,5 +173,5 @@ Se usaron los 6.283 vinos reales de Winerim y el motor de la app (v4).
   - 2533bdc: código de la 136 y check;
   - b3c5e6e: runners;
   - 4bb6660: guiones en títulos.
-- La build es `candidate136-r2`, compilada desde 4bb6660.
-- La batería E2E se pasó también sobre la app 136 compilada de verdad: 71/71.
+- La build final es `candidate136-r3`, compilada desde 356ebbf (arreglos de la revisión y del restaurante).
+- Batería E2E final: 11 recorridos, 81/81. Sobre la app 136 compilada (r1) pasó 71/71.
