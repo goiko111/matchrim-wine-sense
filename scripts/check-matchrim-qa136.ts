@@ -91,6 +91,9 @@ await test('Spanish and accessibility polish', () => {
   assert.match(styles, /<Link\s+to="\/inteligencia-liquida"[\s\S]{0,300}?Explorar aiRIM/);
   assert.match(read('src/components/wine-import/PurchaseInfoSelector.tsx'), /CardTitle className="flex flex-col items-start gap-2 pr-12 \[overflow-wrap:break-word\]/);
   assert.match(read('src/pages/UseMatchrim.tsx'), /TabsTrigger value="scanner" className="min-h-11/);
+  const css = read('src/index.css');
+  assert.match(css, /matchrim-accessibility-text :is\(h1, h2, h3\) \{\n  -webkit-hyphens: auto;\n  hyphens: auto;/, 'titles hyphenate at large text');
+  assert.doesNotMatch(css, /matchrim-accessibility-text :is\([^)]*button[^)]*\) \{\n  -webkit-hyphens/, 'buttons keep whole words');
 });
 
 console.log(`Matchrim QA 136: ${groups}/7 PASS`);

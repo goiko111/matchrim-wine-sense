@@ -31,6 +31,16 @@ html.matchrim-native-platform.matchrim-accessibility-text [data-matchrim-button]
   white-space: normal;
 }
 
+/* 136: at the largest text sizes long title words were cut mid-word without a hyphen ("restau", "Elim").
+   Spanish hyphenation (lang="es") splits them at syllables before overflow-wrap has to. Titles only:
+   WebKit hyphenates greedily, so buttons and tabs keep wrapping whole words. */
+html.matchrim-native-platform.matchrim-accessibility-text :is(h1, h2, h3) {
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  -webkit-hyphenate-limit-before: 3;
+  -webkit-hyphenate-limit-after: 3;
+}
+
 html.matchrim-native-platform .App {
   overflow-wrap: anywhere;
 }
