@@ -1,3 +1,4 @@
+import { LegalLink136 } from '@/components/registration/LegalLink136';
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
@@ -130,7 +131,7 @@ const FinalStep: React.FC<FinalStepProps> = ({ data, onUpdate, onComplete, onPre
               onCheckedChange={(checked) => onUpdate({ termsAccepted: checked as boolean })}
             />
             <Label htmlFor="terms" className={isNative ? 'block min-h-[44px] w-full min-w-0 cursor-pointer py-[10px] pl-[40px] pr-[12px] text-sm leading-relaxed' : 'text-sm leading-relaxed'}>
-              Acepto los <a href="/terms" target="_blank" rel="noreferrer" className={isNative ? 'inline-flex min-h-[44px] min-w-[44px] max-w-full items-center text-red-700 hover:underline' : 'text-red-700 hover:underline'}>términos y condiciones</a> de uso de la plataforma
+              Acepto los <LegalLink136 doc="terms" className={isNative ? 'inline-flex min-h-[44px] min-w-[44px] max-w-full items-center text-red-700 hover:underline' : 'text-red-700 hover:underline'}>términos y condiciones</LegalLink136> de uso de la plataforma
             </Label>
           </div>
 
@@ -142,7 +143,7 @@ const FinalStep: React.FC<FinalStepProps> = ({ data, onUpdate, onComplete, onPre
               onCheckedChange={(checked) => onUpdate({ privacyAccepted: checked as boolean })}
             />
             <Label htmlFor="privacy" className={isNative ? 'block min-h-[44px] w-full min-w-0 cursor-pointer py-[10px] pl-[40px] pr-[12px] text-sm leading-relaxed' : 'text-sm leading-relaxed'}>
-              Acepto la <a href="/privacy" target="_blank" rel="noreferrer" className={isNative ? 'inline-flex min-h-[44px] min-w-[44px] max-w-full items-center text-red-700 hover:underline' : 'text-red-700 hover:underline'}>política de privacidad</a> y el tratamiento de mis datos personales
+              Acepto la <LegalLink136 doc="privacy" className={isNative ? 'inline-flex min-h-[44px] min-w-[44px] max-w-full items-center text-red-700 hover:underline' : 'text-red-700 hover:underline'}>política de privacidad</LegalLink136> y el tratamiento de mis datos personales
             </Label>
           </div>
         </div>

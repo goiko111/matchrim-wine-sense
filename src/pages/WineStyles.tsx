@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import AppNav from '@/components/AppNav';
 import { useAuth } from '@/contexts/AuthContext';
@@ -62,17 +63,17 @@ const WineStyles = () => {
         <div className="max-w-7xl mx-auto">
           <Tabs defaultValue="styles" className="w-full">
             <div className="flex justify-center mb-8">
-              <TabsList className="grid grid-cols-2 bg-white shadow-elegant rounded-2xl p-2">
+              <TabsList className="grid h-auto grid-cols-2 bg-white shadow-elegant rounded-2xl p-2">
                 <TabsTrigger 
                   value="styles" 
-                  className="flex items-center gap-2 rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  className="flex min-h-11 items-center gap-2 whitespace-normal rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                 >
                   <Palette className="h-4 w-4" />
                   Estilos de Vino
                 </TabsTrigger>
                 <TabsTrigger 
                   value="calculator" 
-                  className="flex items-center gap-2 rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  className="flex min-h-11 items-center gap-2 whitespace-normal rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                 >
                   <Calculator className="h-4 w-4" />
                   Calculadora Sensorial
@@ -174,19 +175,20 @@ const WineStyles = () => {
                   Realiza nuestro test Matchrim y obtén tu perfil sensorial único, 
                   diseñado para encontrar los vinos que realmente conectan contigo.
                 </p>
+                {/* 136: the two destinations were swapped and plain <a> reloaded the whole app; both overflowed at large text. */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a 
-                    href="/inteligencia-liquida" 
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-2xl font-semibold shadow-lg transform hover:scale-105 transition-smooth"
+                  <Link
+                    to="/matchrim"
+                    className="min-w-0 max-w-full whitespace-normal text-center bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-4 rounded-2xl font-semibold shadow-lg transform hover:scale-105 transition-smooth"
                   >
                     Hacer Test Matchrim
-                  </a>
-                  <a 
-                    href="/matchrim" 
-                    className="border border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-4 rounded-2xl font-semibold transition-smooth"
+                  </Link>
+                  <Link
+                    to="/inteligencia-liquida"
+                    className="min-w-0 max-w-full whitespace-normal text-center border border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-4 rounded-2xl font-semibold transition-smooth"
                   >
                     Explorar aiRIM
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

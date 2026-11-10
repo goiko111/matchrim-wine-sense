@@ -128,7 +128,8 @@ export const NativeWineSearch97 = ({ onSelectWine, onManualEntry }: NativeWineSe
         </Button>
       </div>}
       {visible?.phase === 'ready' && visible.wines.length === 0 && <p role="status" className="break-words text-sm text-muted-foreground">No se encontraron vinos.</p>}
-      {visible?.phase === 'ready' && onManualEntry && visible.query.length >= 2 && <Button type="button" variant="outline" className="h-auto min-h-[44px] w-full max-w-full whitespace-normal" onClick={() => onManualEntry(visible.query)}>
+      {/* 136: offline (error) also offers the manual form; a failed search was a dead end. */}
+      {(visible?.phase === 'ready' || visible?.phase === 'error') && onManualEntry && visible.query.length >= 2 && <Button type="button" variant="outline" className="h-auto min-h-[44px] w-full max-w-full whitespace-normal" onClick={() => onManualEntry(visible.query)}>
         {visible.wines.length === 0 ? `Añadir «${visible.query}» a mano` : '¿No está en la lista? Añadirlo a mano'}
       </Button>}
       {visible?.phase === 'ready' && visible.wines.length > 0 && <ul aria-label="Resultados de vinos" className="min-w-0 divide-y divide-border">

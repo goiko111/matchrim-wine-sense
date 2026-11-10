@@ -218,7 +218,8 @@ function homeDetailDialog(tree: unknown) {
 function chooseHomeWine(tree: unknown, score: number | null = 93) {
   assert.equal(flatten(tree).filter(n => n.props['data-testid'] === 'native-home98').length, 1, 'actual NativeHome98 rendered');
   const choices = flatten(tree).filter(n => String(n.props['aria-label']).startsWith('Ver por qué'));
-  assert.equal(choices.length, 1); const choose = choices[0];
+  // 136: the closed "Ver todos" list renders the same row in this static mount; the first is Home's.
+  assert.equal(choices.length, 2); const choose = choices[0];
   assert.equal(onlyNode(choose, 'NativeWinePhoto98').props.src, boundWine.photo);
   assert.equal(onlyNode(choose, 'NativeWinePhoto98').props.name, boundWine.name);
   assert.match(String(choose.props['aria-label']), score === null ? /Afinidad pendiente/ : new RegExp(`${score} de 100`));
@@ -229,7 +230,8 @@ check('actual NativeHome98 selection opens internal detail and owner/profile cha
   const m = mount(files[1], readFileSync(new URL(files[1], root), 'utf8'), true);
   const props = { hasQuizResults: true, matchrimCode: 'test', recommendations: [boundWine], activeProfile: profile };
   m.render(props); m.flush(); let tree = m.render(props);
-  assert.equal(flatten(tree).filter(n => n.type === 'DialogRoot').length, 2);
+  // 136: search, the "Ver todos" list and the detail.
+  assert.equal(flatten(tree).filter(n => n.type === 'DialogRoot').length, 3);
   assert.equal(homeDetailDialog(tree).props.open, false);
   assert.equal(flatten(tree).filter(n => n.type === 'NativeAffinitySummary').length, 0);
   chooseHomeWine(tree); tree = m.render(props);

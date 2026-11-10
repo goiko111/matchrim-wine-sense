@@ -318,7 +318,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     ? nativeDuplicateWineGroups261(regions.filter(region => region.status === 'recognized')) : getConfirmableWineGroups(regions))
     .filter(group => !localBatch || !isPendingLocalIdentity109(group.candidate)), [regions, localBatch, isNative]);
   const savedCount = saveResults.filter((result) => result?.status === 'saved').length;
-  const saveFailure = saveResults.find((result) => result && result.status !== 'saved');
+  // 136: an uncertain save outranks a rejection; the rejection message claims the rest was saved.
+  const saveFailure = saveResults.find((result) => result && result.status !== 'saved' && result.status !== 'rejected')
+    ?? saveResults.find((result) => result?.status === 'rejected');
   const overlay = useOverlayViewport(regions.length);
   const regionPinClusters = useMemo(() => clusterScreenOverlayPins(
     regions
@@ -1532,7 +1534,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                 {saveFailure && !saving && (
                   <div role="alert" className="border-l-4 border-amber-600 bg-amber-50 p-3 text-sm leading-6 text-amber-950">
                     {saveFailure.status === 'rejected'
-                      ? 'Lote sin confirmar: una referencia fue rechazada. Puedes reintentar las pendientes; las ya guardadas no se repetirán.'
+                      ? `${saveResults.filter(result => result?.status === 'rejected').length === 1 ? 'Una referencia no se pudo guardar' : 'Algunas referencias no se pudieron guardar'}: sus datos no son válidos. El resto del lote se ha guardado; puedes reintentar las pendientes sin repetir las guardadas.`
                       : 'No podemos confirmar el guardado de una referencia. Puede haberse guardado. Revisa tu Bodega antes de volver a escanear; no repetiremos esta inserción.'}
                   </div>
                 )}

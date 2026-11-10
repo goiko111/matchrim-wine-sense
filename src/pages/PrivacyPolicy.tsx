@@ -10,22 +10,22 @@ const sections = [
     title: 'Datos que tratamos',
     items: [
       'Datos de cuenta: email, nombre y preferencias indicadas durante el registro.',
-      'Perfil Matchrim: respuestas del test sensorial, codigo generado y atributos de gusto.',
+      'Perfil Matchrim: respuestas del test sensorial, código generado y atributos de gusto.',
       'Mis vinos: vinos guardados, puntuaciones, notas, afinidad y lugar de consumo cuando lo indiques.',
-      'Uso en restaurantes: restaurante indicado, codigo Matchrim usado y senales de demanda para Winerim.',
-      'Imagenes seleccionadas: etiquetas, botellas, expositores, cartas, pizarras, menus o platos que eliges analizar.',
-      'Resultados del analisis: regiones detectadas, texto OCR, candidatos, correcciones, confianza y afinidad.',
-      'Datos tecnicos necesarios para operar el servicio, seguridad, diagnostico y prevencion de abuso.',
+      'Uso en restaurantes: restaurante indicado, código Matchrim usado y señales de demanda para Winerim.',
+      'Imágenes seleccionadas: etiquetas, botellas, expositores, cartas, pizarras, menús o platos que eliges analizar.',
+      'Resultados del análisis: regiones detectadas, texto OCR, candidatos, correcciones, confianza y afinidad.',
+      'Datos técnicos necesarios para operar el servicio, seguridad, diagnóstico y prevención de abuso.',
     ],
   },
   {
-    title: 'Para que usamos los datos',
+    title: 'Para qué usamos los datos',
     items: [
       'Crear y mantener tu cuenta.',
       'Generar tu perfil sensorial y recomendar vinos compatibles.',
-      'Filtrar cartas Winerim con tu codigo Matchrim.',
-      'Detectar e identificar vinos por regiones y analizar cartas, pizarras, menus y platos.',
-      'Mejorar tu perfil en funcion de los vinos que guardas y puntuas.',
+      'Filtrar cartas Winerim con tu código Matchrim.',
+      'Detectar e identificar vinos por regiones y analizar cartas, pizarras, menús y platos.',
+      'Mejorar tu perfil en función de los vinos que guardas y puntúas.',
       'Detectar demanda de Winerim en restaurantes indicados por usuarios.',
       'Mantener la seguridad, disponibilidad y calidad del servicio.',
     ],
@@ -33,70 +33,71 @@ const sections = [
   {
     title: 'Servicios y encargados',
     items: [
-      'Supabase se usa para autenticacion, base de datos, almacenamiento operativo y funciones edge.',
-      'Las funciones de vision usan actualmente Lovable AI Gateway y modelos Google Gemini para detectar regiones, leer texto y proponer candidatos. El proveedor o modelo puede cambiar y esta politica se actualizara antes de usar uno nuevo en produccion.',
-      'Las imagenes y recortes necesarios se transmiten cifrados a esos servicios cuando pulsas analizar.',
+      'Supabase se usa para autenticación, base de datos, almacenamiento operativo y funciones edge.',
+      'Las funciones de visión usan actualmente Lovable AI Gateway y modelos Google Gemini para detectar regiones, leer texto y proponer candidatos. El proveedor o modelo puede cambiar y esta política se actualizará antes de usar uno nuevo en producción.',
+      'Las imágenes y recortes necesarios se transmiten cifrados a esos servicios cuando pulsas analizar.',
       'No vendemos tus datos personales a terceros.',
-      'No usamos tus datos para publicidad comportamental ni tracking publicitario salvo que se indique y se solicite consentimiento especifico.',
+      'No usamos tus datos para publicidad comportamental ni tracking publicitario salvo que se indique y se solicite consentimiento específico.',
     ],
   },
   {
-    title: 'Conservacion',
+    title: 'Conservación',
     items: [
       'Conservamos los datos de cuenta y perfil mientras mantengas la cuenta activa.',
-      'Los vinos guardados y puntuaciones permanecen en tu cuenta hasta que los elimines o solicites la eliminacion.',
-      'Matchrim no guarda por defecto la imagen original en tu cuenta. Se mantiene en memoria durante el analisis y puede permanecer localmente mientras reintentas o revisas el resultado.',
-      'Los vinos y correcciones que confirmes si pueden guardarse en tu cuenta e historial hasta que los elimines.',
-      'La retencion maxima aplicable en los proveedores de IA debe quedar validada y publicada antes de abrir el reconocimiento visual a usuarios externos.',
-      'Podemos conservar registros tecnicos durante el tiempo necesario para seguridad, soporte y cumplimiento legal.',
+      'Los vinos guardados y puntuaciones permanecen en tu cuenta hasta que los elimines o solicites la eliminación.',
+      'Matchrim no guarda por defecto la imagen original en tu cuenta. Se mantiene en memoria durante el análisis y puede permanecer localmente mientras reintentas o revisas el resultado.',
+      'Los vinos y correcciones que confirmes sí pueden guardarse en tu cuenta e historial hasta que los elimines.',
+      'La retención máxima aplicable en los proveedores de IA debe quedar validada y publicada antes de abrir el reconocimiento visual a usuarios externos.',
+      'Podemos conservar registros técnicos durante el tiempo necesario para seguridad, soporte y cumplimiento legal.',
     ],
   },
   {
-    title: 'Camara, fotos y control',
+    title: 'Cámara, fotos y control',
     items: [
-      'La app solicita camara solo al hacer una foto y fototeca solo al elegir una imagen. No recorre tu biblioteca completa.',
+      'La app solicita cámara solo al hacer una foto y fototeca solo al elegir una imagen. No recorre tu biblioteca completa.',
       'Puedes revocar esos permisos en Ajustes de iOS. Sin permiso puedes seguir usando las partes de Matchrim que no requieren imagen.',
-      'Evita incluir personas, documentos, matriculas, direcciones u otros datos sensibles en el encuadre.',
+      'Evita incluir personas, documentos, matrículas, direcciones u otros datos sensibles en el encuadre.',
       'Una identidad dudosa se muestra como candidata y puede corregirse o descartarse; Matchrim no debe convertir incertidumbre en una identidad confirmada.',
     ],
   },
   {
     title: 'Tus derechos',
     items: [
-      'Puedes solicitar acceso, rectificacion, eliminacion, oposicion o limitacion del tratamiento.',
-      'Puedes pedir la eliminacion de tu cuenta y datos asociados.',
+      'Puedes solicitar acceso, rectificación, eliminación, oposición o limitación del tratamiento.',
+      'Puedes pedir la eliminación de tu cuenta y datos asociados.',
       'Puedes retirar consentimientos cuando el tratamiento dependa de consentimiento.',
       'Para ejercer derechos, escribe a hola@winerim.com desde el email asociado a tu cuenta.',
     ],
   },
 ];
 
-const PrivacyPolicy = () => {
+// 136: `embedded` renders only the policy (no header/back link) inside the registration sheet.
+const PrivacyPolicy = ({ embedded = false }: { embedded?: boolean } = {}) => {
   const isNative = Capacitor.isNativePlatform();
   const displayedSections = isNative ? nativePrivacySections97(sections) : sections;
   return (
-  <div className="min-h-screen bg-stone-50">
-    <Header />
+  <div className={embedded ? 'bg-stone-50' : 'min-h-screen bg-stone-50'}>
+    {!embedded && <Header />}
 
-    <main className={isNative ? 'mx-auto max-w-4xl pl-[calc(1rem+var(--matchrim-safe-left))] pr-[calc(1rem+var(--matchrim-safe-right))] pb-[calc(8rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]' : 'mx-auto max-w-4xl px-4 py-10'}>
-      <Button asChild variant="ghost" className="mb-6 gap-2 text-red-900">
+    <main className={embedded ? 'mx-auto max-w-4xl pb-6' : isNative ? 'mx-auto max-w-4xl pl-[calc(1rem+var(--matchrim-safe-left))] pr-[calc(1rem+var(--matchrim-safe-right))] pb-[calc(8rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]' : 'mx-auto max-w-4xl px-4 py-10'}>
+      {!embedded && <Button asChild variant="ghost" className="mb-6 gap-2 text-red-900">
         <Link to="/">
           <ArrowLeft className="h-4 w-4" />
           Volver a Matchrim
         </Link>
-      </Button>
+      </Button>}
 
       <section className="rounded-lg bg-red-950 px-6 py-8 text-white shadow-elegant">
         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-md bg-white text-red-950">
           <ShieldCheck className="h-6 w-6" />
         </div>
         <p className="text-sm font-semibold uppercase tracking-wide text-white/60">
-          {isNative ? 'Ultima actualizacion: 21 de octubre de 2026' : 'Ultima actualizacion: 26 de agosto de 2026'}
+          {isNative ? 'Última actualización: 21 de octubre de 2026' : 'Última actualización: 26 de agosto de 2026'}
         </p>
-        <h1 className="mt-3 text-3xl font-bold">Politica de privacidad</h1>
+        <h1 className="mt-3 text-3xl font-bold">Política de privacidad</h1>
         <p className="mt-4 max-w-3xl text-sm leading-6 text-white/80">
-          Esta politica explica como Matchrim, operado por Winerim, trata los datos necesarios para
-          crear tu perfil sensorial, analizar imagenes de vino y guardar tus decisiones.
+          Esta política explica cómo Matchrim, operado por Winerim, trata los datos necesarios para
+          crear tu perfil sensorial, analizar imágenes de vino y guardar tus decisiones.
         </p>
       </section>
 
@@ -133,14 +134,14 @@ const PrivacyPolicy = () => {
             Contacto
           </h2>
           <p className="mt-3 text-sm leading-6 text-slate-600">
-            Para privacidad, soporte o eliminacion de cuenta: {' '}
+            Para privacidad, soporte o eliminación de cuenta: {' '}
             <a href="mailto:hola@winerim.com" className="font-medium text-red-800 hover:underline">
               hola@winerim.com
             </a>
             .
           </p>
           <p className="mt-3 text-sm leading-6 text-slate-600">
-            Tambien puedes iniciar una solicitud desde{' '}
+            También puedes iniciar una solicitud desde{' '}
             <Link to="/account/delete" className="font-medium text-red-800 hover:underline">
               eliminar cuenta
             </Link>

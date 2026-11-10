@@ -30,6 +30,11 @@ const AIRIM_WELCOME: ConversationMessage = {
   text: 'Cuéntame qué vino, plato, carta u ocasión tienes delante. Te daré una decisión concreta y señalaré lo que no pueda saber.',
 };
 const airimStoreKey135 = (ownerId: string | null | undefined) => `matchrim.airim_messages135:${ownerId ?? 'anonymous'}`;
+// 136: the toast says "Tu pregunta no se ha perdido", but leaving the tab emptied the box. The unsent draft is kept too.
+const airimDraftKey136 = (ownerId: string | null | undefined) => `matchrim.airim_draft136:${ownerId ?? 'anonymous'}`;
+const readAiRimDraft136 = (ownerId: string | null | undefined) => {
+  try { return sessionStorage.getItem(airimDraftKey136(ownerId)) ?? ''; } catch { return ''; }
+};
 const readAiRimMessages135 = (ownerId: string | null | undefined): ConversationMessage[] => {
   try {
     const parsed = JSON.parse(sessionStorage.getItem(airimStoreKey135(ownerId)) || 'null');
@@ -54,7 +59,7 @@ const AiRimConversation = ({ onBack, initialQuestion = '', onSelectFunction }: A
   const ownerId = user?.id ?? null;
   const currentOwner = useRef(ownerId);
   currentOwner.current = ownerId;
-  const [input, setInput] = useState(initialQuestion);
+  const [input, setInput] = useState(() => initialQuestion || (isNative ? readAiRimDraft136(ownerId) : ''));
   const [isLoading, setIsLoading] = useState(false);
   const [profileContext, setProfileContext] = useState<string | null>(null);
   const [learningSamples, setLearningSamples] = useState(0);
@@ -68,6 +73,10 @@ const AiRimConversation = ({ onBack, initialQuestion = '', onSelectFunction }: A
     if (isNative) requestController.current = null;
   }, [user?.id, isNative]);
   const [messages, setMessages] = useState<ConversationMessage[]>(() => isNative ? readAiRimMessages135(ownerId) : [AIRIM_WELCOME]);
+  useEffect(() => {
+    if (!isNative || contextOwner.current !== user?.id) return;
+    try { if (input.trim()) sessionStorage.setItem(airimDraftKey136(ownerId), input); else sessionStorage.removeItem(airimDraftKey136(ownerId)); } catch { /* best effort */ }
+  }, [input, isNative, ownerId, user?.id]);
   useEffect(() => {
     if (!isNative || contextOwner.current !== user?.id) return;
     try { sessionStorage.setItem(airimStoreKey135(ownerId), JSON.stringify(messages.slice(0, 1).concat(messages.slice(1).slice(-39)))); } catch { /* best effort */ }

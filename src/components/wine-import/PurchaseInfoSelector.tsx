@@ -146,8 +146,10 @@ export const PurchaseInfoSelector = ({ mode, onConfirm, onCancel }: PurchaseInfo
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Icon className="h-5 w-5" />
+        {/* 136: at the largest text size the title broke mid-word ("¿Dónd/e lo") beside the icon and under the
+            fixed close button; the icon now sits above, words wrap whole and the first line clears the X. */}
+        <CardTitle className="flex flex-col items-start gap-2 pr-12 [overflow-wrap:break-word] [word-break:normal] min-[480px]:flex-row min-[480px]:items-center">
+          <Icon className="h-5 w-5 shrink-0" aria-hidden="true" />
           {getTitle()}
         </CardTitle>
         <CardDescription>{getDescription()}</CardDescription>

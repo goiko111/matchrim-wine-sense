@@ -24,7 +24,8 @@ const notified: string[] = [];
 for (const status of ['rejected', 'ambiguous', 'auth-required'] as const) {
   const value = batch(); let calls = 0;
   check(status, await saveLabelBatch(value, async () => { calls++; return { status }; }, current, () => notified.push(status)), 'incomplete');
-  check(status+' stops next group', calls, 1);
+  // 136: an explicit rejection commits nothing, so the next bottles still save; uncertain outcomes stop.
+  check(status+(status === 'rejected' ? ' continues to next group' : ' stops next group'), calls, status === 'rejected' ? 2 : 1);
 }
 const rejectedCallback = batch();
 check('callback rejects', await saveLabelBatch(rejectedCallback, async () => { throw new Error('network'); }, current, () => {}), 'incomplete');

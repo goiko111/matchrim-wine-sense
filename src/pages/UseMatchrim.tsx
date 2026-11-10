@@ -568,12 +568,12 @@ const UseMatchrim = () => {
               </div>
 
               <Tabs value={activeTab} onValueChange={handleActiveTabChange} className="space-y-5">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="winerim" className="gap-2">
+                <TabsList className="grid h-auto w-full grid-cols-2">
+                  <TabsTrigger value="winerim" className="min-h-11 gap-2 whitespace-normal">
                     <Sparkles className="h-4 w-4" />
                     Carta Winerim
                   </TabsTrigger>
-                  <TabsTrigger value="scanner" className="gap-2">
+                  <TabsTrigger value="scanner" className="min-h-11 gap-2 whitespace-normal">
                     <ScanLine className="h-4 w-4" />
                     Escanear carta
                   </TabsTrigger>

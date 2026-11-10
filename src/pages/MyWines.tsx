@@ -982,8 +982,14 @@ const MyWinesForOwner = () => {
     const action = beginWineAction(wine.id);
     if (!action) return;
     try {
+      // 136: a bottle whose sheet is already verified shows its affinity; saving it must not search the
+      // catalogue again (a miss, e.g. no producer, said "afinidad pendiente" next to the score on screen).
+      const savedDetails = wine.place_details && typeof wine.place_details === 'object' && !Array.isArray(wine.place_details)
+        ? wine.place_details as Record<string, Json> : null;
+      const verified = isNative && savedDetails?.bodega_sensory_evidence ? readCellarSensoryEvidence(wine, true) : null;
+      // The lookup still runs for a verified bottle (it may add the catalogue photo); a miss no longer blocks it.
       const match = await findWinerimWineForLabel({ name: wine.name, producer: wine.producer,
-        vintage: wine.vintage, region: wine.region });
+        vintage: wine.vintage, region: wine.region }).catch(error => { if (!verified) throw error; return null; });
       if (!action.isCurrent()) return;
       let catalog = match?.wine;
       if (!Capacitor.isNativePlatform() && !catalog?.tastingAttributes) catalog = await findOriginalWinerimWineForLabel({
@@ -994,10 +1000,11 @@ const MyWinesForOwner = () => {
         vintage: wine.vintage, region: wine.region, country: wine.country, grapes: wine.grape_varieties ?? [],
         alcohol: wine.alcohol_content, source: 'inference', confidence: 1, evidence: [],
         uncertaintyReasons: [], inferredFields: [], sensoryAttributes: null }, null, catalog);
-      const attributes = grounded.sensorySource === 'catalog'
+      const attributes = verified ?? (grounded.sensorySource === 'catalog'
         ? isNative ? grounded.sensoryAttributes : normalizeSensoryAttributesTo5(grounded.sensoryAttributes)
-        : null;
-      const evidence = catalog?.id && attributes ? makeCellarCatalogEvidence(wine, catalog.id, attributes) : null;
+        : null);
+      const evidence = verified ? savedDetails?.bodega_sensory_evidence ?? null
+        : catalog?.id && attributes ? makeCellarCatalogEvidence(wine, catalog.id, attributes) : null;
       if (!evidence || !attributes) {
         toast.info('Vino guardado. No encontramos una ficha sensorial completa y verificable; afinidad pendiente.');
         return;
@@ -1519,7 +1526,7 @@ const MyWinesForOwner = () => {
         </div>}
 
         <div className="space-y-6">
-          {isNative && <NativeCellarToolbar98 section={statusFilter} counts={sectionCounts}
+          {isNative && <NativeCellarToolbar98 section={statusFilter} counts={sectionCounts} countsUnknown={wineLoadFailed}
             onSectionChange={section => { navigateToWineSection(section); setFilterType('all'); }}
             onScanLabel={() => navigate('/escanear/etiqueta')}
             onScanMenu={() => navigate('/escanear/carta-vinos')}

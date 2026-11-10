@@ -188,7 +188,7 @@ const Index = () => {
     })
       .then((wines) => {
         if (controller.signal.aborted) return;
-        const selection = selectUnseenWineRecommendations(wines, savedWines);
+        const selection = selectUnseenWineRecommendations(wines, savedWines, Capacitor.isNativePlatform() ? 20 : 3);
         setRecommendations(selection.recommendations);
         setRecommendationsExhausted(selection.exhausted);
       })

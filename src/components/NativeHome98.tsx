@@ -31,6 +31,24 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
   recommendations, profile, recent, onSelect, detail, readError, onRetry }: Props) => {
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [allOpen, setAllOpen] = useState(false);
+  // 136: one row renderer for Home and the full list ("Ver todos" used to jump to the restaurant screen).
+  const renderWine = (wine: WinerimWineWithMatch, fromList = false) => {
+    const { result } = buildNativeRecommendation95(wine, profile);
+    return <button key={String(wine.id)} type="button" className="grid min-h-44 w-full min-w-0 grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-4 py-4 text-left [html.matchrim-accessibility-text_&]:grid-cols-1" onClick={event => { if (fromList) setAllOpen(false); onSelect(wine, fromList ? undefined : event?.currentTarget); }}
+      aria-label={`Ver por qué ${wine.name}${result.state === 'ready' ? `. Afinidad orientativa ${result.score} de 100` : '. Afinidad pendiente'}`}>
+      <NativeWinePhoto98 src={wine.photo} name={wine.name} className="h-36 w-[5.5rem] border border-stone-200" />
+      <span className="block min-w-0">
+        <span className="block break-words text-base font-semibold leading-6">{wine.name}</span>
+        <span className="mt-1 block break-words text-xs leading-5 text-stone-500">{[wine.winery, wine.vintage].filter(Boolean).join(' · ')}</span>
+        <span className={`mt-2 block text-sm font-semibold ${result.state === 'ready' && result.score >= 65 ? 'text-emerald-800' : 'text-stone-700'}`}>{result.state === 'ready' ? result.title : 'Afinidad por calcular'}</span>
+        <span className="mt-1 block text-sm leading-6 text-stone-700">{result.state === 'ready'
+          ? result.matches[0] ?? result.caution ?? 'El encaje depende del conjunto de sus rasgos.'
+          : result.reason === 'profile' ? 'Falta conocer tus gustos.' : 'Revisa qué datos faltan en su ficha.'}</span>
+        {result.state === 'ready' && <span className="mt-2 block text-xs font-medium text-stone-500">≈{result.score}/100 por estilo</span>}
+      </span>
+    </button>;
+  };
   return <div className="matchrim-app-shell matchrim-native-home-shell min-h-screen bg-[#fafafa] text-stone-950" data-testid="native-home98">
     <main className="matchrim-native-home-main matchrim-native-safe-x mx-auto w-full max-w-xl pb-[calc(7rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]">
       <header className="mb-5 flex min-h-11 items-center justify-between gap-3">
@@ -47,7 +65,7 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
       <section aria-labelledby="home-wines98-title">
         <div className="mb-3 flex items-center justify-between gap-3">
           <h2 id="home-wines98-title" className="text-xl font-semibold">{hasProfile ? 'Para tu paladar' : 'Tu próximo vino'}</h2>
-          {hasProfile && recommendations.length > 0 && <button type="button" className="min-h-11 text-sm font-semibold text-red-900" onClick={() => navigate('/usar-matchrim')}>Ver todos</button>}
+          {hasProfile && recommendations.length > 3 && <button type="button" className="min-h-11 text-sm font-semibold text-red-900" onClick={() => setAllOpen(true)}>Ver todos</button>}
         </div>
         {loading ? <div role="status" className="space-y-4" aria-label="Cargando vinos">
           {[0, 1].map(key => <div key={key} className="flex gap-4"><div className="h-36 w-24 shrink-0 rounded-md bg-stone-100 motion-safe:animate-pulse" /><div className="flex-1 space-y-3 py-4"><div className="h-4 w-3/4 rounded bg-stone-100" /><div className="h-4 w-1/2 rounded bg-stone-100" /></div></div>)}
@@ -60,22 +78,7 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
             <RefreshCw className="h-4 w-4 shrink-0" aria-hidden="true" />Reintentar carga
           </button>
         </div> : recommendations.length ? <div className="divide-y divide-stone-200" data-testid="native-home-wines98">
-          {recommendations.slice(0, 4).map(wine => {
-            const { result } = buildNativeRecommendation95(wine, profile);
-            return <button key={String(wine.id)} type="button" className="grid min-h-44 w-full min-w-0 grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-4 py-4 text-left [html.matchrim-accessibility-text_&]:grid-cols-1" onClick={event => onSelect(wine, event?.currentTarget)}
-              aria-label={`Ver por qué ${wine.name}${result.state === 'ready' ? `. Afinidad orientativa ${result.score} de 100` : '. Afinidad pendiente'}`}>
-              <NativeWinePhoto98 src={wine.photo} name={wine.name} className="h-36 w-[5.5rem] border border-stone-200" />
-              <span className="block min-w-0">
-                <span className="block break-words text-base font-semibold leading-6">{wine.name}</span>
-                <span className="mt-1 block break-words text-xs leading-5 text-stone-500">{[wine.winery, wine.vintage].filter(Boolean).join(' · ')}</span>
-                <span className={`mt-2 block text-sm font-semibold ${result.state === 'ready' && result.score >= 65 ? 'text-emerald-800' : 'text-stone-700'}`}>{result.state === 'ready' ? result.title : 'Afinidad por calcular'}</span>
-                <span className="mt-1 block text-sm leading-6 text-stone-700">{result.state === 'ready'
-                  ? result.matches[0] ?? result.caution ?? 'El encaje depende del conjunto de sus rasgos.'
-                  : result.reason === 'profile' ? 'Falta conocer tus gustos.' : 'Revisa qué datos faltan en su ficha.'}</span>
-                {result.state === 'ready' && <span className="mt-2 block text-xs font-medium text-stone-500">≈{result.score}/100 por estilo</span>}
-              </span>
-            </button>;
-          })}
+          {recommendations.slice(0, 3).map(wine => renderWine(wine))}
         </div> : <div className="border-y border-stone-200 py-6">
           <p className="text-base leading-7 text-stone-700">{unavailable ? 'No hemos podido cargar tus recomendaciones.' : exhausted ? 'Ya tienes estos vinos en tu colección.' : 'Empieza por una botella que tengas delante.'}</p>
           <button type="button" className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-red-900 px-4 py-3 font-semibold text-white" onClick={() => navigate(exhausted ? '/my-wines' : '/escanear/etiqueta')}>
@@ -95,6 +98,13 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
         {hasProfile || readError ? 'Mis gustos' : 'Conocer mis gustos'}<ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
       </button>
     </main>
+    <Dialog.Root open={allOpen} onOpenChange={setAllOpen}>
+      <Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" /><Dialog.Content className="fixed inset-0 z-50 mx-auto flex w-full max-w-xl flex-col bg-white px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]">
+        <div className="mb-2 flex shrink-0 items-center justify-between gap-3"><Dialog.Title className="text-lg font-semibold">Para tu paladar</Dialog.Title><Dialog.Close className="flex h-11 w-11 items-center justify-center" aria-label="Cerrar lista"><X className="h-5 w-5" /></Dialog.Close></div>
+        <Dialog.Description className="text-sm text-stone-600">{`${recommendations.length} vinos del catálogo Winerim que aún no tienes, ordenados por afinidad.`}</Dialog.Description>
+        <div className="min-h-0 flex-1 divide-y divide-stone-200 overflow-y-auto" data-testid="native-home-all136">{recommendations.map(wine => renderWine(wine, true))}</div>
+      </Dialog.Content></Dialog.Portal>
+    </Dialog.Root>
     <Dialog.Root open={searchOpen} onOpenChange={setSearchOpen}>
       <Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" /><Dialog.Content className="fixed inset-0 z-50 mx-auto flex w-full max-w-xl flex-col bg-white px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]">
         <div className="mb-4 flex shrink-0 items-center justify-between gap-3"><Dialog.Title className="text-lg font-semibold">Buscar vino</Dialog.Title><Dialog.Close className="flex h-11 w-11 items-center justify-center" aria-label="Cerrar búsqueda"><X className="h-5 w-5" /></Dialog.Close></div>

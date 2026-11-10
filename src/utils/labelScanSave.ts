@@ -73,6 +73,9 @@ export const saveLabelBatch = async (
   isCurrent: () => boolean,
   onResult: () => void,
 ): Promise<'confirmed' | 'incomplete' | 'obsolete'> => {
+  // 136: an explicit rejection (invalid data, never committed) no longer stops the batch: the bottles
+  // after it used to stay unsaved behind a reference that fails the same way on every retry.
+  let rejected = false;
   for (let index = 0; index < batch.wines.length; index += 1) {
     if (!isCurrent()) return 'obsolete';
     const previous = batch.results[index];
@@ -95,7 +98,8 @@ export const saveLabelBatch = async (
     }
     batch.results[index] = result;
     onResult();
+    if (result.status === 'rejected') { rejected = true; continue; }
     if (result.status !== 'saved') return 'incomplete';
   }
-  return batch.wines.length ? 'confirmed' : 'incomplete';
+  return batch.wines.length && !rejected ? 'confirmed' : 'incomplete';
 };
