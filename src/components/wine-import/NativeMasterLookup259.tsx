@@ -3,6 +3,7 @@ import { BookOpen, Check, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { buildAuthRedirectPath } from '@/utils/navigation';
+import { stashSignedOutWineDraft134 } from '@/utils/nativeWineDraft98';
 import type { WineCandidate } from '@/utils/multiWineScan';
 import type { MasterInvoke195 } from '@/utils/nativeMasterReference195';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
@@ -74,9 +75,14 @@ export const NativeMasterLookup259 = ({ candidate, contextKey, ownerId, disabled
   };
   if (!candidate.producer?.trim() || !candidate.name.trim()) return <>{fallback}</>;
   if (!ownerId) return <div className="min-w-0 space-y-3" data-testid="native-master-auth259">
-    <p className="text-sm leading-6 text-stone-700">El catálogo ampliado de Winerim requiere una sesión. Después de entrar tendrás que volver a hacer la foto.</p>
+    {/* 136: signing in from here lost the scan (the person had to photograph the bottle again). The read
+        identity now waits as the signed-out draft and opens in "Añadir vino" after signing in. */}
+    <p className="text-sm leading-6 text-stone-700">El catálogo ampliado de Winerim requiere una sesión. Al entrar seguirás con este vino en «Añadir vino», sin repetir la foto.</p>
     <Button asChild disabled={disabled} className="h-auto min-h-11 w-full gap-2 whitespace-normal px-3 py-3 text-left">
-      <Link to={buildAuthRedirectPath('/escanear/etiqueta')} aria-disabled={disabled} onClick={event => { if (disabled) event.preventDefault(); }}>
+      <Link to={buildAuthRedirectPath('/my-wines/add')} aria-disabled={disabled} onClick={event => {
+        if (disabled) { event.preventDefault(); return; }
+        stashSignedOutWineDraft134({ name: candidate.name, producer: candidate.producer, vintage: candidate.vintage });
+      }}>
         <BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" /> Buscar con mi cuenta
       </Link>
     </Button>

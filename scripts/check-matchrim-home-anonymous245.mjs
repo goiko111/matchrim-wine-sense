@@ -11,7 +11,7 @@ vm.runInNewContext(ts.transpileModule(source, { compilerOptions: {
   module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX,
   esModuleInterop: true,
 } }).outputText, { module, exports: module.exports, require: id => id === 'react'
-  ? { useState: () => [false, () => {}] } : id === 'react/jsx-runtime' ? { jsx, jsxs: jsx }
+  ? { useState: () => [false, () => {}], useRef: (value) => ({ current: value }) } : id === 'react/jsx-runtime' ? { jsx, jsxs: jsx }
     : id === 'react-router-dom' ? { useNavigate: () => route => routes.push(route) } : {} });
 const flatten = node => node && typeof node === 'object'
   ? [node, ...[node.props.children].flat(Infinity).flatMap(flatten)] : [];

@@ -103,6 +103,10 @@ await test('Spanish and accessibility polish', () => {
   assert.match(read('src/components/wine-import/PurchaseInfoSelector.tsx'), /CardTitle className="flex flex-col items-start gap-2 pr-12 \[overflow-wrap:break-word\]/);
   assert.match(read('src/pages/UseMatchrim.tsx'), /TabsTrigger value="scanner" className="min-h-11/);
   assert.match(read('src/pages/Restaurant.tsx'), /if \(parsed\.pairs\.length\) requestAnimationFrame\(\(\) => \{ pairsList\.current\?\.scrollIntoView/, 'results scrolled into view');
+  const master = read('src/components/wine-import/NativeMasterLookup259.tsx');
+  assert.match(master, /to=\{buildAuthRedirectPath\('\/my-wines\/add'\)\}/, 'signed-out lookup continues in Añadir vino');
+  assert.match(master, /stashSignedOutWineDraft134\(\{ name: candidate\.name, producer: candidate\.producer, vintage: candidate\.vintage \}\)/);
+  assert.doesNotMatch(master, /tendrás que volver a hacer la foto/);
   const css = read('src/index.css');
   assert.match(css, /matchrim-accessibility-text :is\(h1, h2, h3\) \{\n  -webkit-hyphens: auto;\n  hyphens: auto;/, 'titles hyphenate at large text');
   assert.doesNotMatch(css, /matchrim-accessibility-text :is\([^)]*button[^)]*\) \{\n  -webkit-hyphens/, 'buttons keep whole words');
