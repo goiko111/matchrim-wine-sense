@@ -10,12 +10,13 @@ import PrivacyPolicy from '@/pages/PrivacyPolicy';
 // on the web the original new-tab link is unchanged.
 export const LegalLink136 = ({ doc, className, children }: { doc: 'terms' | 'privacy'; className?: string; children: ReactNode }) => {
   const [open, setOpen] = useState(false);
+  const [shown, setShown] = useState(doc);
   if (!Capacitor.isNativePlatform()) {
     return <a href={doc === 'terms' ? '/terms' : '/privacy'} target="_blank" rel="noreferrer" className={className}>{children}</a>;
   }
-  const title = doc === 'terms' ? 'Términos de uso' : 'Política de privacidad';
+  const title = shown === 'terms' ? 'Términos de uso' : 'Política de privacidad';
   return <>
-    <button type="button" className={className} onClick={event => { event.preventDefault(); event.stopPropagation(); setOpen(true); }}>{children}</button>
+    <button type="button" className={className} onClick={event => { event.preventDefault(); event.stopPropagation(); setShown(doc); setOpen(true); }}>{children}</button>
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" />
         <Dialog.Content className="fixed inset-0 z-50 mx-auto flex w-full max-w-xl flex-col bg-stone-50 px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]">
@@ -24,7 +25,7 @@ export const LegalLink136 = ({ doc, className, children }: { doc: 'terms' | 'pri
             <Dialog.Close className="flex h-11 w-11 shrink-0 items-center justify-center" aria-label={`Cerrar ${title.toLowerCase()}`}><X className="h-5 w-5" aria-hidden="true" /></Dialog.Close>
           </div>
           <Dialog.Description className="sr-only">Léelo y vuelve al registro; lo que has escrito se conserva.</Dialog.Description>
-          <div className="min-h-0 flex-1 overflow-y-auto">{doc === 'terms' ? <Terms embedded /> : <PrivacyPolicy embedded />}</div>
+          <div className="min-h-0 flex-1 overflow-y-auto">{shown === 'terms' ? <Terms embedded onOpenPrivacy={() => setShown('privacy')} /> : <PrivacyPolicy embedded />}</div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

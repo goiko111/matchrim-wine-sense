@@ -87,7 +87,7 @@ const AiRimConversation = ({ onBack, initialQuestion = '', onSelectFunction }: A
       requestController.current?.abort();
       requestController.current = null;
       setMessages((current) => isNative ? readAiRimMessages135(ownerId) : current.filter(message => message.id === 'welcome'));
-      setInput('');
+      setInput(isNative ? readAiRimDraft136(ownerId) : '');
       setIsLoading(false);
       if (isNative) { setNativeRequestContext(null); pendingNativeMessage.current = null; }
       contextOwner.current = user?.id;

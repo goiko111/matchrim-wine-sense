@@ -35,6 +35,6 @@ export const NativeCellarToolbar98 = ({ section, counts, countsUnknown = false, 
       </div>
       <DropdownMenu><DropdownMenuTrigger asChild><button type="button" className="flex min-h-12 w-11 shrink-0 items-center justify-center" aria-label="Más colecciones" title="Más colecciones"><MoreHorizontal className="h-5 w-5" /></button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuItem className="min-h-11" onSelect={() => onSectionChange('favorites')}>{countsUnknown ? 'Favoritos' : `Favoritos (${counts.favorites})`}</DropdownMenuItem><DropdownMenuItem className="min-h-11" onSelect={() => onSectionChange('rejected')}>{countsUnknown ? 'No repetir' : `No repetir (${counts.rejected})`}</DropdownMenuItem></DropdownMenuContent></DropdownMenu>
     </div>
-    {(section === 'favorites' || section === 'rejected') && <p className="flex items-center gap-1 text-sm font-medium text-red-900">{section === 'favorites' ? `Favoritos · ${counts.favorites}` : `No repetir · ${counts.rejected}`}<ChevronDown className="h-4 w-4" aria-hidden="true" /></p>}
+    {(section === 'favorites' || section === 'rejected') && <p className="flex items-center gap-1 text-sm font-medium text-red-900">{section === 'favorites' ? (countsUnknown ? 'Favoritos' : `Favoritos · ${counts.favorites}`) : (countsUnknown ? 'No repetir' : `No repetir · ${counts.rejected}`)}<ChevronDown className="h-4 w-4" aria-hidden="true" /></p>}
   </header>;
 };

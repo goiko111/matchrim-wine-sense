@@ -142,9 +142,10 @@ const PrivacyPolicy = ({ embedded = false }: { embedded?: boolean } = {}) => {
           </p>
           <p className="mt-3 text-sm leading-6 text-slate-600">
             También puedes iniciar una solicitud desde{' '}
-            <Link to="/account/delete" className="font-medium text-red-800 hover:underline">
+            {/* Embedded in registration there is no account yet, and leaving would drop the form. */}
+            {embedded ? 'eliminar cuenta' : <Link to="/account/delete" className="font-medium text-red-800 hover:underline">
               eliminar cuenta
-            </Link>
+            </Link>}
             .
           </p>
         </div>

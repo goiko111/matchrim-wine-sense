@@ -143,6 +143,7 @@ const FIT_OK_BAND = [0.8, 1.9] as const;
 const FIT_NOT_FOR_ME = 2.1;
 const FIT_CENTER = [3.5, 3.5, 1, 2, 3.5];
 const FIT_NEGATIVE_ONLY = 3;
+const FIT_NEGATIVE_PER_POSITIVE = 2;
 const fitProfileToRatings = (
   baseProfile: MatchrimProfileLike,
   evidence: { values: number[]; rating: Rating; weight: number }[],
@@ -150,10 +151,11 @@ const fitProfileToRatings = (
   const base = ATTRS.map(([key]) => baseProfile[key]);
   let point = [...base];
   const rate = 0.6 / (1 + evidence.length * 0.05 + FIT_PRIOR * 0.1);
-  // 136: with only "No va" there is nothing to move towards; every dislike pushed the profile further
-  // from the quiz (simulated error 0.71 -> 1.00 after 40). Their total pull is capped at FIT_NEGATIVE_ONLY votes.
-  const negativeOnly = evidence.length > 0 && evidence.every(({ rating }) => rating === 'not_for_me');
-  const negativeScale = negativeOnly ? Math.min(1, FIT_NEGATIVE_ONLY / evidence.length) : 1;
+  // 136: dislikes say what to avoid, not where the taste is; alone they pushed the profile ever further
+  // from the quiz (simulated error 0.71 -> 1.00 after 40). Their total pull is worth FIT_NEGATIVE_ONLY votes
+  // plus FIT_NEGATIVE_PER_POSITIVE per like/"ok", so one like no longer restores forty dislikes at once.
+  const dislikes = evidence.filter(({ rating }) => rating === 'not_for_me').length;
+  const negativeScale = dislikes ? Math.min(1, (FIT_NEGATIVE_ONLY + FIT_NEGATIVE_PER_POSITIVE * (evidence.length - dislikes)) / dislikes) : 1;
   for (let iteration = 0; iteration < 400; iteration += 1) {
     const gradient = point.map((value, index) => 2 * FIT_PRIOR * (value - base[index]) / 5);
     evidence.forEach(({ values, rating, weight }) => {
@@ -170,7 +172,8 @@ const fitProfileToRatings = (
         : rating === 'ok' ? (distance < FIT_OK_BAND[0] ? distance - FIT_OK_BAND[0] : distance > FIT_OK_BAND[1] ? distance - FIT_OK_BAND[1] : 0)
           : distance < FIT_NOT_FOR_ME ? distance - FIT_NOT_FOR_ME : 0;
       if (!residual) return;
-      diff.forEach((value, index) => { gradient[index] += negativeScale * weight * 2 * residual * value / (5 * distance); });
+      const scale = rating === 'not_for_me' ? negativeScale : 1;
+      diff.forEach((value, index) => { gradient[index] += scale * weight * 2 * residual * value / (5 * distance); });
     });
     const next = point.map((value, index) => clamp(value - rate * gradient[index]));
     const moved = Math.max(...next.map((value, index) => Math.abs(value - point[index])));

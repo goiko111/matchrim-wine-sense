@@ -95,6 +95,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
   const persist = useRef<Promise<void>>(Promise.resolve());
   const fileInput = useRef<HTMLInputElement>(null);
   const cameraInput = useRef<HTMLInputElement>(null);
+  const pairsList = useRef<HTMLOListElement>(null);
   const mutate = (change: (current: RestaurantSession91) => RestaurantSession91) => {
     const next = change(stateRef.current);
     setSavingDraft(true);
@@ -254,6 +255,8 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
       check(controller);
       if (stateRef.current.revision !== revision) throw new Error('Las cartas han cambiado. Vuelve a combinar.');
       mutate(current => ({ ...current, pairs: parsed.pairs, pairWarnings: parsed.warnings }));
+      // 136: at large text the results rendered below the fold and looked like nothing happened.
+      if (parsed.pairs.length) requestAnimationFrame(() => { pairsList.current?.scrollIntoView({ block: 'start', behavior: 'smooth' }); pairsList.current?.focus({ preventScroll: true }); });
       if (!parsed.pairs.length) setError('No hay combinaciones justificadas con estas lecturas. Revisa platos, vinos y datos faltantes.');
     } catch (failure) {
       if (mounted.current) setError(controller.signal.aborted ? 'Análisis cancelado o tiempo agotado. Puedes intentarlo de nuevo.' : message(failure));
@@ -400,7 +403,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
         {(restaurantCoverage91(state, 'food').partial || restaurantCoverage91(state, 'wine').partial) && <p className="mt-4 border-l-2 border-amber-500 pl-3 text-sm text-amber-900">Las cartas tienen páginas pendientes o lecturas parciales. Las combinaciones solo cubren lo leído, no toda la oferta.</p>}
         <p className="mt-4 text-sm text-slate-500">Maridajes orientativos por IA, no puntuaciones personales ni disponibilidad confirmada. Consulta ingredientes, alergias, precio y servicio con el restaurante.</p>
         {state.pairWarnings.map((warning, index) => <p key={index} className="mt-2 text-sm text-amber-800">{warning}</p>)}
-        <ol className="mt-5 divide-y divide-slate-200 border-t border-slate-200">{state.pairs.map((pair, index) => {
+        <ol ref={pairsList} tabIndex={-1} aria-label="Combinaciones" className="mt-5 divide-y divide-slate-200 border-t border-slate-200 focus:outline-none">{state.pairs.map((pair, index) => {
           const food = foods.find(row => row.id === pair.foodId), wine = wines.find(row => row.id === pair.wineId);
           if (!food || !wine) return null;
           return <li key={`${pair.foodId}-${pair.wineId}`} className="py-5"><p className="text-xs font-semibold text-red-900">{index + 1} · {pair.band === 'strong' ? 'Buen encaje orientativo' : pair.band === 'possible' ? 'Opción posible' : 'Faltan datos'}</p><h2 className="mt-2 break-words text-lg font-semibold">{food.name}</h2><p className="mt-1 break-words font-medium text-slate-700">{wine.name}{wine.vintage ? ` · ${wine.vintage}` : ''}</p>

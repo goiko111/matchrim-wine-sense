@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Dialog from '@radix-ui/react-dialog';
 import { ArrowRight, Camera, ChevronRight, RefreshCw, Search, UserRound, X } from 'lucide-react';
@@ -32,10 +32,11 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const [allOpen, setAllOpen] = useState(false);
+  const allButton = useRef<HTMLButtonElement>(null);
   // 136: one row renderer for Home and the full list ("Ver todos" used to jump to the restaurant screen).
   const renderWine = (wine: WinerimWineWithMatch, fromList = false) => {
     const { result } = buildNativeRecommendation95(wine, profile);
-    return <button key={String(wine.id)} type="button" className="grid min-h-44 w-full min-w-0 grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-4 py-4 text-left [html.matchrim-accessibility-text_&]:grid-cols-1" onClick={event => { if (fromList) setAllOpen(false); onSelect(wine, fromList ? undefined : event?.currentTarget); }}
+    return <button key={String(wine.id)} type="button" className="grid min-h-44 w-full min-w-0 grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-4 py-4 text-left [html.matchrim-accessibility-text_&]:grid-cols-1" onClick={event => { if (fromList) setAllOpen(false); onSelect(wine, fromList ? allButton.current ?? undefined : event?.currentTarget); }}
       aria-label={`Ver por qué ${wine.name}${result.state === 'ready' ? `. Afinidad orientativa ${result.score} de 100` : '. Afinidad pendiente'}`}>
       <NativeWinePhoto98 src={wine.photo} name={wine.name} className="h-36 w-[5.5rem] border border-stone-200" />
       <span className="block min-w-0">
@@ -65,7 +66,7 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
       <section aria-labelledby="home-wines98-title">
         <div className="mb-3 flex items-center justify-between gap-3">
           <h2 id="home-wines98-title" className="text-xl font-semibold">{hasProfile ? 'Para tu paladar' : 'Tu próximo vino'}</h2>
-          {hasProfile && recommendations.length > 3 && <button type="button" className="min-h-11 text-sm font-semibold text-red-900" onClick={() => setAllOpen(true)}>Ver todos</button>}
+          {hasProfile && recommendations.length > 3 && <button ref={allButton} type="button" className="min-h-11 text-sm font-semibold text-red-900" onClick={() => setAllOpen(true)}>Ver todos</button>}
         </div>
         {loading ? <div role="status" className="space-y-4" aria-label="Cargando vinos">
           {[0, 1].map(key => <div key={key} className="flex gap-4"><div className="h-36 w-24 shrink-0 rounded-md bg-stone-100 motion-safe:animate-pulse" /><div className="flex-1 space-y-3 py-4"><div className="h-4 w-3/4 rounded bg-stone-100" /><div className="h-4 w-1/2 rounded bg-stone-100" /></div></div>)}

@@ -35,7 +35,8 @@ const sections = [
 ];
 
 // 136: `embedded` renders only the terms (no header/back link) inside the registration sheet.
-const Terms = ({ embedded = false }: { embedded?: boolean } = {}) => (
+// `onOpenPrivacy` (embedded only) swaps the sheet to the policy instead of leaving the registration form.
+const Terms = ({ embedded = false, onOpenPrivacy }: { embedded?: boolean; onOpenPrivacy?: () => void } = {}) => (
   <div className={embedded ? 'bg-stone-50' : 'min-h-screen bg-stone-50'}>
     {!embedded && <Header />}
 
@@ -73,9 +74,11 @@ const Terms = ({ embedded = false }: { embedded?: boolean } = {}) => (
           <h2 className="text-xl font-semibold text-slate-950">Privacidad</h2>
           <p className="mt-3 text-sm leading-6 text-slate-600">
             El tratamiento de datos personales se explica en la{' '}
-            <Link to="/privacy" className="font-medium text-red-800 hover:underline">
+            {embedded ? <button type="button" className="font-medium text-red-800 hover:underline" onClick={onOpenPrivacy}>
               política de privacidad
-            </Link>
+            </button> : <Link to="/privacy" className="font-medium text-red-800 hover:underline">
+              política de privacidad
+            </Link>}
             .
           </p>
         </div>
