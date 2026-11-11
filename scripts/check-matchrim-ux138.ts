@@ -48,12 +48,13 @@ test('The store estimate never enters the scanner or the verified-sheet path', (
   assert.match(read('src/pages/Restaurant.tsx'), /\(estimación\)/);
 });
 test('Search result opens the affinity sheet; the add form is only the fallback', () => {
+  // 139 moved the search to Winerim's public store; the sheet now receives the store row directly.
   const home = read('src/components/NativeHome98.tsx');
-  assert.match(home, /onSelectWine=\{wine => \{ setSearchOpen\(false\); setSearched\(wine\); \}\}/);
+  assert.match(home, /onSelect=\{wine => \{ setSearchOpen\(false\); setSearched\(wine\); \}\}/);
   assert.match(home, /<NativeSearchWine138 wine=\{searched\}/);
   const sheet = read('src/components/NativeSearchWine138.tsx');
-  assert.match(sheet, /findWinerimWineForLabel\(/); assert.match(sheet, /findStoreEstimate138\(wine/);
-  assert.match(sheet, /Aún no tenemos la ficha de este vino/);
+  assert.match(sheet, /storeAffinity139\(profile, attributes\)/);
+  assert.match(sheet, /Aún no tenemos sus datos de sabor/);
 });
 test('iOS registration is one screen; the web keeps its steps', () => {
   const page = read('src/pages/Registration.tsx'), quick = read('src/components/registration/QuickRegistration138.tsx');

@@ -32,7 +32,7 @@ export const NativeProfileBody138 = ({ sentence, mainStyle, rows, baseValues, le
     <section className="rounded-xl bg-red-950 p-5 text-white" aria-label="Tu paladar">
       <p className="text-xs font-semibold uppercase tracking-wide text-red-200">Tu paladar</p>
       <div className="mt-2 text-xl font-semibold leading-7">{sentence}</div>
-      {mainStyle && <p className="mt-3 text-sm leading-6 text-red-100">Tu estilo de vino: <span className="font-semibold text-white">{mainStyle}</span></p>}
+      {mainStyle && <p className="mt-3 text-sm leading-6 text-red-100">Estilos que más te van: <span className="font-semibold text-white">{mainStyle}</span></p>}
     </section>
 
     {rows.length > 0 && <section aria-labelledby="profile-traits138">
@@ -59,7 +59,7 @@ export const NativeProfileBody138 = ({ sentence, mainStyle, rows, baseValues, le
         {styles.map((style, index) => <li key={style.id}>
           <button type="button" className="flex min-h-14 w-full items-center gap-3 px-4 py-3 text-left" onClick={() => onStyle(style.name)}>
             <span className="min-w-0 flex-1"><span className="flex flex-wrap items-center gap-2 text-base font-semibold">{style.name}
-              {index === 0 && <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs font-semibold text-red-900">Tu estilo</span>}</span>
+              {index === 0 && <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs font-semibold text-red-900">El que más</span>}</span>
               {style.description && <span className="mt-1 block text-sm leading-5 text-stone-600">{style.description}</span>}</span>
             <ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
           </button></li>)}
@@ -68,7 +68,7 @@ export const NativeProfileBody138 = ({ sentence, mainStyle, rows, baseValues, le
 
     {grapes.length > 0 && <section aria-labelledby="profile-grapes138">
       <h2 id="profile-grapes138" className={heading}>Uvas que suelen gustarte</h2>
-      <p className="mt-1 text-sm leading-6 text-stone-600">Si ves alguna en una carta, es buena pista.</p>
+      <p className="mt-1 text-sm leading-6 text-stone-600">Son las uvas de los vinos que más encajan contigo, de cualquier color. Si ves alguna en una carta, es buena pista.</p>
       <ul className="mt-3 flex flex-wrap gap-2">{grapes.map(grape => <li key={grape} className={chip}>{grape}</li>)}</ul>
     </section>}
 

@@ -13,7 +13,23 @@ const changes = [
 
 // 138: on iOS the three detailed notes sit under a short summary; the notes themselves are unchanged, so the
 // exact inverse puts them back in place and the historical byte-exact proofs keep covering them.
+// 139: the checkbox sits beside its sentence at a normal size (it was a 44px square on its own line).
+const layout139 = [
+  [
+    "isNative ? 'mt-[12px] flex min-w-0 min-h-[44px] cursor-pointer items-center gap-[12px] text-sm text-slate-700'",
+    "isNative ? 'mt-[16px] grid min-w-0 min-h-[44px] cursor-pointer gap-[8px] text-sm text-slate-700'"
+  ],
+  [
+    "className={isNative ? 'h-[28px] w-[28px] shrink-0 [&_svg]:h-[20px] [&_svg]:w-[20px]' : undefined}",
+    "className={isNative ? 'h-[44px] w-[44px] [&_svg]:h-[20px] [&_svg]:w-[20px]' : undefined}"
+  ],
+  [
+    "<span className={isNative ? 'min-w-0 flex-1 [overflow-wrap:normal]' : undefined}>",
+    "<span className={isNative ? 'min-w-0 w-full [overflow-wrap:normal]' : undefined}>"
+  ]
+];
 export const restoreScanPrivacy138 = (source) => {
+  for (const [next, previous] of layout139) if (source.includes(next)) { assert.equal(source.split(next).length, 2, 'One reviewed 139 privacy layout literal'); source = source.replace(next, previous); }
   const open = '  const detail = (\n', close = '  );\n\n  return (\n    <section';
   const blockStart = '      {/* 138: the short version first', blockEnd = '      </details> : detail}\n';
   if (!source.includes(blockStart)) return source;

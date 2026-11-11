@@ -8,10 +8,11 @@ import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { cellarAffinityView, type CellarAffinityWine } from '@/utils/bodegaAffinity';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { useOwnWinePhoto133 } from '@/utils/ownWinePhoto133';
+import { NativeWineNote139 } from '@/components/NativeWineNote139';
 
 interface Props {
   native: boolean;
-  wine: CellarAffinityWine & { id: string; producer?: string | null; vintage?: number | null; image_url?: string | null; rating?: string | null; quantity?: number | null; status?: string };
+  wine: CellarAffinityWine & { id: string; producer?: string | null; vintage?: number | null; image_url?: string | null; rating?: string | null; quantity?: number | null; status?: string; personal_note?: string | null };
   snapshot: ScanProfileSnapshot | null;
   resolveImage: boolean;
   children: ReactNode;
@@ -76,6 +77,7 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, child
         </div>}
         {sheetPhoto && <NativeWinePhoto98 src={sheetPhoto} name={wine.name} className="mx-auto mt-[12px] h-[144px] w-[88px]" />}
         {children}
+        <NativeWineNote139 wineId={wine.id} initial={wine.personal_note} />
       </div>
     </Dialog.Content></Dialog.Portal></Dialog.Root>
   </>;

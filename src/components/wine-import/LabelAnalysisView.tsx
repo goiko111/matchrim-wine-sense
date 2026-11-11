@@ -16,6 +16,8 @@ interface LabelAnalysisViewProps {
   pendingAffinity?: NativeAffinityGap210 | null;
   affinity: ReactNode;
   catalogueReference?: ReactNode;
+  /** 139: a labelled store estimate, shown above the pending explanation when there is no verified affinity. */
+  estimate?: ReactNode;
   lookup: ReactNode;
   disabled: boolean;
   onFindSheet: () => void;
@@ -28,11 +30,11 @@ interface LabelAnalysisViewProps {
 
 // Presentation only: the scanner retains identity, lookup and affinity authority.
 export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, identity, identityLabel,
-  catalogIdentityLinked, canExplainAffinity, hasProfile, pendingAffinity, affinity, catalogueReference, lookup, disabled,
+  catalogIdentityLinked, canExplainAffinity, hasProfile, pendingAffinity, affinity, catalogueReference, estimate = null, lookup, disabled,
   onFindSheet, onCorrect, onReturnToBatch, returnLabel = 'Volver al lote para guardar', children = null }: LabelAnalysisViewProps) => {
   if (!isNativePlatform) return <>{children}</>;
 
-  return <section className="min-w-0 space-y-4 py-3" aria-label="Vino seleccionado" data-testid="native-wine-primary">
+  return <section className="min-w-0 space-y-4 py-3 [&:has([data-testid=native-store-estimate139])_.gap139]:hidden" aria-label="Vino seleccionado" data-testid="native-wine-primary">
     {showIdentity ? <div className="min-w-0 space-y-1 [overflow-wrap:anywhere]">
       <h3 className="text-xl font-semibold leading-snug text-slate-950">{identity.name}</h3>
       <p className="text-sm leading-6 text-stone-700">
@@ -41,6 +43,7 @@ export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, ident
       <p className="text-xs leading-5 text-stone-500">{identityLabel}</p>
     </div> : <p className="text-xs leading-5 text-stone-500">{identityLabel}</p>}
 
+    {!canExplainAffinity && estimate}
     {canExplainAffinity ? affinity : catalogueReference || <div className="min-w-0 space-y-2 border-y border-stone-200 py-3" data-testid="native-label-next-step">
       <h4 className="font-semibold text-slate-950">{pendingAffinity?.title ?? 'Afinidad pendiente'}</h4>
       <p className="text-sm leading-6 text-stone-700" data-testid="native-affinity-gap-reason">{pendingAffinity?.description ?? (catalogIdentityLinked

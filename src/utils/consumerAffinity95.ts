@@ -12,6 +12,8 @@ export interface ConsumerAffinityInput {
   sensorySource?: AffinityDataSource;
   attributes?: WineAttributeInput | null;
   profile?: MatchrimProfileLike | null;
+  /** 139: traits that do not apply to this wine (the tannin of a white) are neither a reason nor a caution. */
+  notApplicable?: ReadonlyArray<AffinityAttributeInsight['key']>;
 }
 
 export type ConsumerAffinityResult = {
@@ -71,17 +73,18 @@ export const buildConsumerAffinity = (input: ConsumerAffinityInput): ConsumerAff
     return pending('score', 'La ficha está disponible, pero aún no hay una afinidad calculada para tu perfil.');
   }
   const score = Math.round(input.score);
-  const mostDifferent = [...insights.insights].sort((a, b) => b.delta - a.delta)[0];
+  const applies = (insight: AffinityAttributeInsight) => !input.notApplicable?.includes(insight.key);
+  const mostDifferent = insights.insights.filter(applies).sort((a, b) => b.delta - a.delta)[0];
   return {
     state: 'ready', score,
     // 138: the title answers "¿me gustará?" directly; "una opción para explorar" did not.
     title: score >= 80 ? 'Muy de tu estilo' : score >= 65 ? 'Probablemente te guste'
       : score >= 45 ? 'Puede que sí, puede que no' : 'No es tu estilo',
     // A very low tannin is true of every white or sparkling wine: say it last, after what sets this wine apart.
-    matches: [...insights.positives].sort((a, b) => Number(a.key === 'tanico' && a.wineValue <= 2.3) - Number(b.key === 'tanico' && b.wineValue <= 2.3))
+    matches: insights.positives.filter(applies).sort((a, b) => Number(a.key === 'tanico' && a.wineValue <= 2.3) - Number(b.key === 'tanico' && b.wineValue <= 2.3))
       .slice(0, 2).map(insight => aligned[insight.key][level(insight.wineValue)]),
     caution: mostDifferent && mostDifferent.tone !== 'positive'
       ? (mostDifferent.direction === 'higher' ? higher : lower)[mostDifferent.key] : null,
-    dimensions: insights.insights,
+    dimensions: insights.insights.filter(applies),
   };
 };

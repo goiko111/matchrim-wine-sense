@@ -30,6 +30,7 @@ import { AffinityExplanation } from '@/components/AffinityExplanation';
 import { NativeAffinitySummary } from '@/components/NativeAffinitySummary';
 import { buildConsumerAffinity } from '@/utils/consumerAffinity95';
 import { findStoreEstimate138 } from '@/utils/storeEstimate138';
+import { storeAffinity139 } from '@/utils/storeListing139';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { openCamera133 } from '@/utils/nativeCamera133';
 
@@ -336,8 +337,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
           // Most everyday wines are only in Winerim's public store: use its data as a labelled estimate (see storeEstimate138).
           const estimate = await findStoreEstimate138(row, controller.signal).catch(() => null);
           if (controller.signal.aborted) return;
-          if (estimate) { estimated = true; result = buildConsumerAffinity({ catalogIdentityLinked: true, sensorySource: 'catalog', attributes: estimate.attributes,
-            profile: snapshot?.profile ?? null, score: calculateLocalMatchrimAffinity(snapshot?.profile ?? null, estimate.attributes) }); }
+          if (estimate) { estimated = true; result = storeAffinity139(snapshot?.profile ?? null, estimate.attributes); }
         }
         setPersonal138(current => ({ ...current, [row.id]: { ...result, estimated } }));
       }

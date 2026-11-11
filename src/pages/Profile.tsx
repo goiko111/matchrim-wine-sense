@@ -930,7 +930,7 @@ const Profile = () => {
                 // 137: the bars alone did not tell a newcomer what they like; say it in one sentence first.
                 ? <p data-testid="profile-taste-words137">En pocas palabras: te gustan los vinos {tasteWords137.rows[0].phrase}, con {tasteWords137.rows[1].phrase} y {tasteWords137.rows[4].phrase}.</p>
                 : <p>Estos son tus gustos según tu test.</p>}
-              mainStyle={styleDetails[0]?.name ?? wineStyles[0] ?? null}
+              mainStyle={(styleDetails.length ? styleDetails.map(style => style.name) : wineStyles).slice(0, 3).join(', ') || null}
               rows={tasteWords137?.rows ?? []}
               baseValues={currentDisplayProfile ? { potente: currentDisplayProfile.potente, acidez: currentDisplayProfile.acidez, dulce: currentDisplayProfile.dulce, tanico: currentDisplayProfile.tanico, afrutado: currentDisplayProfile.afrutado } : null}
               learnedSamples={learnedProfile?.samples ?? 0}
@@ -1300,6 +1300,13 @@ const Profile = () => {
                   Realizar Nuevo Test
                 </Button>
               </div>
+            </div>
+          ) : isNative ? (
+            // 139: the empty iOS profile still used the old card; it now matches the Home taste card.
+            <div className="rounded-xl bg-red-950 p-5 text-white" data-testid="native-profile-empty139">
+              <p className="text-xl font-semibold leading-7">Aún no conocemos tus gustos</p>
+              <p className="mt-2 text-base leading-6 text-red-100">Son 20 preguntas sobre sabores que ya conoces, como el café, el limón o el picante. Con eso podemos decirte si un vino te va a gustar.</p>
+              <button type="button" className="mt-4 flex min-h-12 w-full items-center justify-center rounded-md bg-white px-4 py-3 font-semibold text-red-950" onClick={() => navigate('/matchrim')}>Conocer mis gustos · 2 min</button>
             </div>
           ) : (
             <Card>

@@ -52,6 +52,8 @@ export const NativeAiRimChat99 = (props: Props) => {
     const body = event.currentTarget;
     followsLatest.current = body.scrollHeight - body.scrollTop - body.clientHeight < 64;
   }} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-[16px] pb-4 pt-4" data-testid="native-airim-messages99">
+    {/* 139: on a real phone nothing said this was a place to ask; the title and the framed box below do. */}
+    {props.messages.every(message => message.id === 'welcome') && <h2 className="mb-2 text-[22px] font-bold leading-7 text-stone-950" data-testid="airim-title139">Pregúntame lo que quieras sobre vino</h2>}
     <section className="space-y-4" aria-label="Conversación con aiRIM" aria-live="polite">
       {props.messages.map(message => message.id === 'welcome'
         ? <p key={message.id} className="max-w-xl text-base leading-7 text-stone-600">{message.text}</p>
@@ -65,7 +67,7 @@ export const NativeAiRimChat99 = (props: Props) => {
     </section>
     {/* 137: an empty chat gave no idea what to ask; a tap writes the example so the person can edit or send it. */}
     {props.messages.every(message => message.id === 'welcome') && !props.input.trim() && <div className="mt-5" data-testid="airim-examples137">
-      <p className="text-sm font-semibold text-stone-800">Prueba a preguntar</p>
+      <p className="text-sm font-semibold text-stone-800">Toca una pregunta o escribe la tuya abajo</p>
       <div className="mt-2 flex flex-wrap gap-2">{examples137.map(example => <button key={example} type="button" disabled={props.loading}
         className="matchrim-pressable min-h-11 rounded-full border border-stone-300 bg-white px-4 py-2 text-left text-sm leading-5 text-stone-800" onClick={() => props.onInput(example)}>{example}</button>)}</div>
     </div>}
@@ -91,8 +93,8 @@ export const NativeAiRimChat99 = (props: Props) => {
     <label htmlFor="airim-question" className="sr-only">Pregunta para aiRIM</label>
     <Textarea id="airim-question" value={props.input} onChange={event => props.onInput(event.target.value)}
       onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); props.onSend(); } }}
-      placeholder="¿Qué vino o plato tienes en mente?" disabled={props.loading}
-      className="h-[80px] min-h-[64px] max-h-[22dvh] resize-none border-0 bg-transparent px-0 text-base shadow-none focus-visible:ring-0" />
+      placeholder="Escribe aquí tu pregunta: un plato, un vino, una ocasión…" disabled={props.loading}
+      className="h-[72px] min-h-[64px] max-h-[22dvh] resize-none rounded-xl border border-stone-300 bg-stone-50 px-3 py-2 text-base shadow-none placeholder:text-stone-500 focus-visible:border-red-900 focus-visible:ring-0" />
     <div className="flex min-h-[44px] items-center justify-end gap-3">
       {!props.canSend && !props.loading && <p role="status" className="min-w-0 flex-1 text-xs text-stone-600">{props.memoryLabel}</p>}
       <Button type="button" size="icon" onClick={props.onSend} disabled={!props.input.trim() || props.loading || !props.canSend}

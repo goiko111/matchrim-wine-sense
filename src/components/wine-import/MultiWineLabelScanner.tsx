@@ -1,3 +1,5 @@
+import { NativeStoreEstimate139 } from './NativeStoreEstimate139';
+import { recordScannedWine139 } from '@/utils/scannedWines139';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { confirm135 } from '@/utils/nativeConfirm135';
 import { Capacitor } from '@capacitor/core';
@@ -32,7 +34,9 @@ import { applyGlobalCatalogue103, independentGlobalProducer103, isGlobalWine103,
 import { GlobalWinePicker103, GlobalWineReference103 } from '@/components/wine-import/NativeGlobalCatalogue103';
 import { GlobalWineRecovery104 } from '@/components/wine-import/GlobalWineRecovery104';
 import { NativeMasterLookup259, NativeMasterReference259 } from '@/components/wine-import/NativeMasterLookup259';
-import { CandidateRecovery286 } from '@/components/wine-import/CandidateRecovery286';
+import { CandidateRecovery286, type CandidateResume139 } from '@/components/wine-import/CandidateRecovery286';
+import { ScanWaiting139 } from '@/components/ScanWaiting139';
+import { SCAN_STEPS139 } from '@/utils/autoLink139';
 import { nativeMasterLink259 } from '@/utils/nativeMasterLink259';
 import { makeCellarMasterReference260 } from '@/utils/cellarMasterReference260';
 import { nativeDuplicateWineGroups261 } from '@/utils/nativeMasterDuplicates261';
@@ -185,6 +189,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const [scanMode, setScanMode] = useState<'cloud' | 'local-single'>('cloud');
   const [localBatch, setLocalBatch] = useState(false);
   const [localReading, setLocalReading] = useState<{ regionId: string; value: LocalOCRResult106 } | null>(null);
+  // 139: a clear label links by itself (autoLink139). `autoLinked139` remembers what was replaced so «¿No es este? Cambiar»
+  // can put the unidentified label back; `manualList139` then reopens the list already found and keeps it manual.
+  // Both are bound to the candidate objects themselves, so a new photo or a new reading leaves them behind without a reset.
+  const [autoLinked139, setAutoLinked139] = useState<{ regionId: string; previous: WineCandidate; linked: WineCandidate; resume: CandidateResume139 } | null>(null);
+  const [manualList139, setManualList139] = useState<{ candidate: WineCandidate; resume: CandidateResume139 } | null>(null);
   const nativeMasterUrl = isNative ? import.meta.env.VITE_MATCHRIM_MASTER_CATALOG_URL : undefined;
   const [preview, setPreview] = useState<string | null>(null);
   const [quality, setQuality] = useState<ImageQualityReport | null>(null);
@@ -318,6 +327,13 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     if (regions.length === 1 && nativeReviewTarget) setSelectedRegionId(current => current ?? nativeReviewTarget.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, isNative, regions.length]);
+  // 139: every wine a scan identifies is remembered on the device, so leaving without saving does not lose it.
+  useEffect(() => {
+    if (!isNative || phase !== 'ready') return;
+    for (const region of regions) { const wine = getSelectedCandidate(region);
+      if (region.status === 'recognized' && wine?.name && !isPendingLocalIdentity109(wine)) recordScannedWine139(user?.id ?? null,
+        { name: wine.name, winery: wine.producer, vintage: wine.vintage, score: typeof wine.affinity === 'number' ? wine.affinity : null }); }
+  }, [phase, isNative, regions, user?.id]);
   const summary = useMemo(() => summarizeScanRegions(regions), [regions]);
   const regionProgress = useMemo(() => formatScanRegionProgress(summarizeScanRegionProgress(regions)), [regions]);
   const continuationPlan = useMemo(() => preparedSizeRef.current
@@ -355,6 +371,13 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   }), [duplicateGroups, regions]);
   const loading = phase === 'quality' || phase === 'profile' || phase === 'detecting' || phase === 'analyzing';
   const regionActionsLocked = batchLocked || loading;
+  // 139: the AI mode searches Winerim while it reads each label; the local mode searches afterwards, inside the sheet.
+  const waitStep139 = !localBatch && phase === 'analyzing' ? 1 : 0;
+  // 139: «Calidad con avisos · Resolución limitada…» over a wine that was found only worried the person.
+  const noWineRead139 = phase === 'error' || (phase === 'ready' && !regions.some(region => {
+    const candidate = getSelectedCandidate(region);
+    return region.status !== 'discarded' && candidate && !isPendingLocalIdentity109(candidate);
+  }));
   const reanalyzeSnapshot134 = useRef<{ controller: AbortController; region: ScanRegion } | null>(null);
   const manualLookupContext = { owner: user?.id ?? null, regionId: selectedRegionId, candidate: selectedCandidate,
     profile: scanProfile?.profile ?? null, locked: regionActionsLocked || saving || Boolean(batchRef.current) };
@@ -883,6 +906,16 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     }
   };
 
+  const reopenCandidates139 = () => {
+    const auto = autoLinked139;
+    if (!auto || batchRef.current || loading || savingRef.current) return;
+    updateRegion(auto.regionId, region => region.status === 'discarded' || region.selectedCandidateId !== auto.previous.id ? region
+      : { ...region, status: 'uncertain', error: null, fallback: null,
+        candidates: region.candidates.map(value => value.id === auto.previous.id ? auto.previous : value) });
+    setManualList139({ candidate: auto.previous, resume: auto.resume });
+    setAutoLinked139(null);
+  };
+
   const discardSelected = () => {
     if (batchRef.current || loading || !selectedRegion) return;
     updateRegion(selectedRegion.id, (current) => ({ ...current, status: 'discarded' }));
@@ -1273,12 +1306,15 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
               <FolderOpen className="h-4 w-4" /> Elegir de galería
             </Button>
           </div>
-          {loading && (
+          {loading && (isNative ? <div className="mt-4 space-y-2">
+            <ScanWaiting139 steps={SCAN_STEPS139} current={waitStep139} />
+            <Button type="button" variant="outline" className="min-h-11 gap-2 bg-white" onClick={cancelScan}><X className="h-4 w-4" /> Cancelar</Button>
+          </div> : (
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
               <p role="status" className="flex items-center gap-2 text-sm text-slate-700"><Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />{PHASE_LABELS[phase]}</p>
               <Button type="button" variant="outline" className="min-h-11 gap-2 bg-white" onClick={cancelScan}><X className="h-4 w-4" /> Cancelar</Button>
             </div>
-          )}
+          ))}
           {(phase === 'error' || phase === 'cancelled') && (
             <div role={phase === 'error' ? 'alert' : 'status'} data-testid={phase === 'error' ? 'scan-input-error' : 'scan-input-cancelled'} className="mt-4 rounded-lg border border-slate-300 bg-slate-50 p-3 text-sm text-slate-800">
               <p className="font-semibold">{phase === 'error' ? 'No se pudo preparar la foto' : PHASE_LABELS.cancelled}</p>
@@ -1296,8 +1332,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         <>
           <div className="matchrim-surface flex flex-wrap items-center justify-between gap-3 rounded-lg p-4">
             <div>
-              <div className="text-sm font-semibold text-slate-950" aria-live="polite">{localBatch && phase === 'analyzing' ? 'Leyendo en este iPhone' : PHASE_LABELS[phase]}</div>
-              {isNative ? <details data-testid="native-scan-diagnostics">
+              {/* 139: while it works, the shared wait below names the real step; megapixels, brightness and region counts are QA data. */}
+              {!(isNative && loading) && <div className="text-sm font-semibold text-slate-950" aria-live="polite">{PHASE_LABELS[phase]}</div>}
+              {isNative ? isMatchrimFixtureQaEnabled && <details data-testid="native-scan-diagnostics">
                 <summary className="min-h-11 cursor-pointer py-3 text-sm text-stone-600">Detalles del análisis</summary>
                 {scanDiagnostics}
               </details> : scanDiagnostics}
@@ -1321,7 +1358,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
             </div>
           </div>
 
-          {(loading || (!isNative && phase === 'ready')) && <Progress value={progress} aria-label="Progreso estimado del escaneo de etiquetas" className="h-2" />}
+          {isNative ? loading && <ScanWaiting139 steps={SCAN_STEPS139} current={waitStep139} />
+            : (loading || phase === 'ready') && <Progress value={progress} aria-label="Progreso estimado del escaneo de etiquetas" className="h-2" />}
 
           {isNative && phase === 'ready' && <section className="min-w-0 space-y-2 break-words" aria-label="Revisión de vinos">
             <p role="status" className="text-sm text-stone-700">{nativeReviewTarget
@@ -1333,7 +1371,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
             }}><Eye aria-hidden="true" className="h-4 w-4 shrink-0" />{nativeReviewTarget ? (regions.length === 1 ? 'Ver si me gustará' : 'Ver los vinos uno a uno') : 'Elegir otra foto'}</Button>
           </section>}
 
-          {quality?.warnings.length ? (
+          {quality?.warnings.length && (!isNative || noWineRead139) ? (
             <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
               <div className="flex items-center gap-2 font-semibold"><AlertTriangle className="h-4 w-4" /> Calidad con avisos</div>
               <ul className="mt-2 space-y-1">{quality.warnings.map((warning) => <li key={warning}>{warning}</li>)}</ul>
@@ -1585,6 +1623,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                 <DrawerDescription>
                   {isNative ? `${selectedCandidate?.producer || 'Bodega sin confirmar'}${selectedCandidate?.vintage ? '' : ' · Añada no indicada'}` : `Detección ${Math.round(selectedRegion.detectionConfidence * 100)}%. La identidad y la afinidad se muestran por separado.`}
                 </DrawerDescription>
+                {isNative && autoLinked139 && autoLinked139.regionId === selectedRegion.id && autoLinked139.linked === selectedCandidate
+                  && !regionActionsLocked && !saving && <button type="button" onClick={reopenCandidates139}
+                  className="min-h-11 self-start justify-self-start text-left text-sm text-stone-600 underline underline-offset-4">¿No es este? Cambiar</button>}
               </DrawerHeader>
 
               <div ref={isNative ? regionEditorBody : undefined} role="region" aria-label={`Contenido de la región ${selectedRegion.index}`} tabIndex={0} className="matchrim-scan-region-body min-h-0 min-w-0 flex-1 space-y-4 overflow-y-auto break-words px-4 pb-4">
@@ -1604,6 +1645,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   canExplainAffinity={Boolean(nativeConsumer?.canExplainAffinity)} hasProfile={Boolean(scanProfile?.profile)}
                   pendingAffinity={nativeConsumer?.pending}
                   affinity={affinityExplanation} disabled={regionActionsLocked}
+                  estimate={!isPendingLocalIdentity109(selectedCandidate) && selectedCandidate.name
+                    ? <NativeStoreEstimate139 identity={selectedCandidate} profile={scanProfile?.profile ?? null}
+                      onScore={score => recordScannedWine139(user?.id ?? null, { name: selectedCandidate.name, winery: selectedCandidate.producer, vintage: selectedCandidate.vintage, score })} /> : null}
                   catalogueReference={nativeMasterLink259(selectedCandidate)
                     ? <NativeMasterReference259 candidate={selectedCandidate} />
                     : isGlobalWine103(selectedCandidate, selectedCandidate.globalRecord)
@@ -1640,7 +1684,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                       reading={localReading?.regionId === selectedRegion.id ? localReading.value : undefined}
                       profile={manualLookupContext.profile} candidate={selectedCandidate} ownerId={user?.id ?? null}
                       invoke={(operation, signal) => invokeEdgeFunction('matchrim-master-catalog', operation, signal)}
-                      onConfirmed={confirmed => {
+                      autoLink={isNative && manualList139?.candidate !== selectedCandidate}
+                      resume={manualList139?.candidate === selectedCandidate ? manualList139.resume : undefined}
+                      onConfirmed={(confirmed, auto) => {
                         if (currentManualLookupKey.current !== manualLookupKey) return;
                         updateRegion(selectedRegion.id, region => {
                           const candidate = region.candidates.find(value => value.id === selectedCandidate.id);
@@ -1650,6 +1696,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                           return { ...region, status: 'recognized', error: null, fallback: null,
                             candidates: region.candidates.map(value => value.id === selectedCandidate.id ? confirmed : value) };
                         });
+                        // 139: linked without a tap. Keep the verdict sheet in front and offer the way back to the list.
+                        if (auto && (nativeMasterLink259(confirmed) || isGlobalWine103(confirmed, confirmed.globalRecord))) {
+                          setAutoLinked139({ regionId: selectedRegion.id, previous: selectedCandidate, linked: confirmed, resume: auto });
+                          setNativeResultView('wines'); setSelectedRegionId(selectedRegion.id);
+                        }
                       }} />
                     : <GlobalWineRecovery104 key={manualLookupKey} contextKey={manualLookupKey} disabled={manualLookupContext.locked}
                       image={selectedRegion.cropDataUrl}

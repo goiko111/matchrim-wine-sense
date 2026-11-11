@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { ChevronDown, CircleHelp } from 'lucide-react';
 import { buildConsumerAffinity, type ConsumerAffinityInput, type ConsumerAffinityResult } from '@/utils/consumerAffinity95';
 
+// 139: the same five words as the profile (the detail said Potencia/Acidez/Tanino, the profile Cuerpo/Frescura/Taninos).
+const traitNames139: Record<string, string> = { potente: 'Cuerpo', acidez: 'Frescura', dulce: 'Dulzor', tanico: 'Taninos', afrutado: 'Fruta' };
 export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: ConsumerAffinityResult; personalRating?: string | null; personalHistoryUnavailable?: boolean }) => {
   const result = input.result ?? buildConsumerAffinity(input);
   const personalTitle = input.personalRating === 'not_for_me' ? 'Tu valoración: no es para ti'
@@ -44,8 +46,8 @@ export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: 
         {personalTitle && <p className="mt-3 leading-6 text-stone-600">Encaje de estilo: ≈{result.score}/100. No cambia lo que tú has valorado.</p>}
         <dl className="mt-2 divide-y divide-stone-100">
           {result.dimensions.map(dimension => <div className="min-w-0 py-3" key={dimension.key}>
-            <dt className="flex min-w-0 flex-wrap items-baseline justify-between gap-x-3 gap-y-1 font-medium capitalize text-stone-800">{dimension.label}<span className="text-xs font-normal normal-case text-stone-600">{dimension.tone === 'positive' ? 'Cerca de tu gusto' : dimension.direction === 'higher' ? 'Más de lo que prefieres' : 'Menos de lo que prefieres'}</span></dt>
-            <dd className="mt-2 min-w-0 space-y-2 text-xs leading-5 text-stone-600" aria-label={`${dimension.label}: tu perfil ${dimension.profileValue.toFixed(1)}/5; este vino ${dimension.wineValue.toFixed(1)}/5`}>
+            <dt className="flex min-w-0 flex-wrap items-baseline justify-between gap-x-3 gap-y-1 font-medium capitalize text-stone-800">{traitNames139[dimension.key] ?? dimension.label}<span className="text-xs font-normal normal-case text-stone-600">{dimension.tone === 'positive' ? 'Cerca de tu gusto' : dimension.direction === 'higher' ? 'Más de lo que prefieres' : 'Menos de lo que prefieres'}</span></dt>
+            <dd className="mt-2 min-w-0 space-y-2 text-xs leading-5 text-stone-600" aria-label={`${traitNames139[dimension.key] ?? dimension.label}: tu perfil ${dimension.profileValue.toFixed(1)}/5; este vino ${dimension.wineValue.toFixed(1)}/5`}>
               {[{ label: 'Tú', value: dimension.profileValue, color: 'bg-stone-500' }, { label: 'Vino', value: dimension.wineValue, color: 'bg-red-800' }].map(row => <span key={row.label} className="grid grid-cols-[2rem_minmax(0,1fr)_3rem] items-center gap-2" aria-hidden="true">
                 <span>{row.label}</span><span className="h-1.5 overflow-hidden rounded-full bg-stone-100"><span className={`block h-full ${row.color}`} style={{ width: `${row.value * 20}%` }} /></span><span className="text-right tabular-nums">{row.value.toFixed(1)}/5</span>
               </span>)}

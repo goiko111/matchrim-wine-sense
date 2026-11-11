@@ -8,6 +8,7 @@ import { globalRecoveryQueries104 } from '../src/utils/globalWineProposals104.ts
 import * as recognition from '../src/utils/candidateRecognition286.ts';
 import { wineYearRoles105 } from '../src/utils/wineYearRole105.ts';
 import { suggestLocalOCRFragments108 } from '../src/utils/localOCRFragments108.ts';
+import * as autoLink from '../src/utils/autoLink139.ts';
 const require = createRequire(import.meta.url), ts = require('typescript');
 const React = require('react');
 const source = fs.readFileSync('src/components/wine-import/CandidateRecovery286.tsx', 'utf8');
@@ -29,10 +30,10 @@ const search = calls => async query => { calls.push(query);
   const keys = fold(query).split(/[^a-z0-9]+/).filter(Boolean);
   return { status: 'complete', rows: catalogue.filter(r => keys.every(k => fold(`${r.name} ${r.winery}`).includes(k))) }; };
 
-function host({ calls = [], confirm = async () => ({ wine: { id: 'store' } }), master = async () => ({ status: 'not-found' }), ownerId = 'owner1', input = candidate, local = reading } = {}) {
-  const state = [], effects = [], refs = [], confirmations = [], masterCalls = [], storeCalls = [];
+function host({ calls = [], confirm = async () => ({ wine: { id: 'store' } }), master = async () => ({ status: 'not-found' }), ownerId = 'owner1', input = candidate, local = reading, extra = {} } = {}) {
+  const state = [], effects = [], refs = [], confirmations = [], masterCalls = [], storeCalls = [], autoLinks = [];
   const props = { candidate: input, contextKey: 'owner1-region1', disabled: false, reading: local, ownerId, profile: { potente: 3 },
-    invoke: async () => { throw Error('invoke is only reached through resolveMasterCandidate259'); }, onConfirmed: value => confirmations.push(value) };
+    invoke: async () => { throw Error('invoke is only reached through resolveMasterCandidate259'); }, onConfirmed: (value, auto) => { confirmations.push(value); if (auto) autoLinks.push(auto); }, ...extra };
   let cursor = 0;
   const exports = {};
   vm.runInNewContext(ts.transpileModule(source, { compilerOptions: { jsx: ts.JsxEmit.ReactJSX, module: ts.ModuleKind.CommonJS,
@@ -59,12 +60,15 @@ function host({ calls = [], confirm = async () => ({ wine: { id: 'store' } }), m
     if (name.endsWith('/localOCRFragments108')) return { suggestLocalOCRFragments108 };
     // 130: the pilot feedback link is a plain mailto anchor; checked in check-matchrim-pilot-feedback130.ts.
     if (name.endsWith('/PilotFeedback130')) return { PilotFeedback130: 'pilot-feedback130' };
+    // 139: the shared wait is presentation; the decision is the real pure module.
+    if (name.endsWith('/ScanWaiting139')) return { ScanWaiting139: 'scan-waiting139' };
+    if (name.endsWith('/autoLink139')) return autoLink;
     throw Error('UNEXPECTED_IMPORT:' + name);
   } });
   const render = () => { cursor = 0; return exports.CandidateRecovery286(props); };
   const buttons = name => walk(render()).filter(n => n.type === 'button' && text(n).trim() === name);
   const tree = () => text(render());
-  return { props, render, tree, buttons, calls, confirmations, masterCalls, storeCalls, unmount: () => effects.forEach(e => e.cleanup?.()) };
+  return { props, render, tree, buttons, calls, confirmations, masterCalls, storeCalls, autoLinks, unmount: () => effects.forEach(e => e.cleanup?.()) };
 }
 let groups = 0;
 const test = async (name, run) => { await run(); groups++; console.log('PASS', name); };
@@ -137,5 +141,35 @@ await test('The scanner only uses it for an unidentified local label and accepts
   assert.match(scanner, /fallback=\{localBatch && selectedCandidate\.source !== 'manual' && isPendingLocalIdentity109\(selectedCandidate\)\s*\? <CandidateRecovery286/);
   assert.match(scanner, /!\(nativeMasterLink259\(confirmed\) \|\| isGlobalWine103\(confirmed, confirmed\.globalRecord\)\)\) return region;/);
 });
-assert.equal(groups, 7);
+await test('139: with autoLink a clear label is applied through the tap\'s own path; a misread, a typed search or a reopened list is not', async () => {
+  const lines = [{ text: 'TINTO PESQUERA', confidence: 1, box: box(0.1, 0.12) }, { text: 'CRIANZA', confidence: 1, box: box(0.4) },
+    { text: '2019', confidence: 1, box: box(0.6) }];
+  const clear = { local: { lines }, input: { ...candidate, evidence: lines.map(l => l.text) } };
+  const masterCandidate = { id: 'local', canonicalId: 'mantalak-master:9' };
+  const h = host({ ...clear, extra: { autoLink: true }, master: async () => ({ status: 'reference-ready', candidate: masterCandidate }) });
+  h.render(); await tick(); await tick();
+  assert.equal(h.masterCalls.length, 1, 'verified exactly like a tap');
+  assert.equal(h.masterCalls[0].manual.name, 'Pesquera Crianza'); assert.equal(h.masterCalls[0].manual.vintage, 2019);
+  assert.equal(h.masterCalls[0].manual.source, 'manual');
+  assert.deepEqual(h.confirmations, [masterCandidate]); assert.equal(h.autoLinks.length, 1);
+  assert.equal(h.autoLinks[0].vintage, 2019); assert.notEqual(h.autoLinks[0].decision.mode, 'none');
+  h.unmount();
+  const off = host(clear); off.render(); await tick(); await tick();
+  assert.equal(off.confirmations.length, 0, 'without the flag nothing links without a tap'); off.unmount();
+  const misread = host({ extra: { autoLink: true } }); misread.render(); await tick(); await tick();
+  assert.equal(misread.confirmations.length, 0, 'PESOUERA is not a clear label'); assert(misread.tree().includes('¿Es este tu vino?')); misread.unmount();
+  const unverified = host({ ...clear, extra: { autoLink: true }, confirm: async () => ({ status: 'ambiguous' }) });
+  unverified.render(); await tick(); await tick();
+  assert.equal(unverified.confirmations.length, 0); assert(unverified.tree().includes('No hemos podido verificar esa ficha'));
+  assert(unverified.tree().includes('Pesquera Crianza'), 'the list comes back when the sheet cannot be verified'); unverified.unmount();
+  const calls = [], reopened = host({ ...clear, calls, extra: { autoLink: false, resume: h.autoLinks[0] } }); reopened.render(); await tick();
+  assert.equal(calls.length, 0, '«Cambiar» does not search again'); assert.equal(reopened.confirmations.length, 0);
+  assert(reopened.tree().includes('Pesquera Crianza')); reopened.unmount();
+  const typed = host({ local: { lines: [{ text: '???', confidence: 0.2, box: box(0.1) }] }, input: { ...candidate, evidence: ['???'] }, extra: { autoLink: true } });
+  typed.render(); await tick();
+  walk(typed.render()).find(n => n.type === 'input').props.onChange({ target: { value: 'Pedrosa' } });
+  walk(typed.render()).find(n => n.type === 'form').props.onSubmit({ preventDefault() {} }); await tick(); await tick();
+  assert.equal(typed.confirmations.length, 0, 'a typed search never links by itself'); typed.unmount();
+});
+assert.equal(groups, 8);
 console.log(JSON.stringify({ groups, liveCalls: 0, modelStarts: 0, scope: 'Actual TSX handlers with isolated hooks and controlled transports; not browser layout or native QA' }));

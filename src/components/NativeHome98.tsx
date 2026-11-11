@@ -1,10 +1,13 @@
-import { useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Dialog from '@radix-ui/react-dialog';
 import { ArrowRight, Camera, ChevronRight, RefreshCw, ScrollText, Search, UserRound, Utensils, X } from 'lucide-react';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
-import { NativeWineSearch97, type NativeWine } from '@/components/wine-import/NativeWineSearch97';
+import { NativeStoreSearch139 } from '@/components/NativeStoreSearch139';
+import type { PublicGlobalRow103 } from '@/utils/nativeGlobalCatalogue103';
+import { getScannedWines139, SCANNED_WINES_EVENT139, type ScannedWine139 } from '@/utils/scannedWines139';
+import { searchStore139 } from '@/utils/storeListing139';
 import { NativeSearchWine138 } from '@/components/NativeSearchWine138';
 import { buildNativeRecommendation95 } from '@/utils/nativeRecommendation95';
 import { createNativeWineDraft98, stashSignedOutWineDraft134 } from '@/utils/nativeWineDraft98';
@@ -33,13 +36,22 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const [allOpen, setAllOpen] = useState(false);
-  const [searched, setSearched] = useState<NativeWine | null>(null);
-  const saveSearched = (wine: NativeWine) => {
-    setSearched(null);
-    if (!ownerId) stashSignedOutWineDraft134(wine);
-    navigate(ownerId ? '/my-wines/add' : buildAuthRedirectPath('/my-wines/add'), ownerId ? { state: createNativeWineDraft98(wine, ownerId) } : undefined);
-  };
+  const [searched, setSearched] = useState<PublicGlobalRow103 | null>(null);
   const allButton = useRef<HTMLButtonElement>(null);
+  // 139: wines identified by a scan stay one tap away, also when they were not saved.
+  const [scanned, setScanned] = useState<ScannedWine139[]>(() => getScannedWines139(ownerId));
+  useEffect(() => { const refresh = () => setScanned(getScannedWines139(ownerId)); refresh();
+    window.addEventListener(SCANNED_WINES_EVENT139, refresh); return () => window.removeEventListener(SCANNED_WINES_EVENT139, refresh); }, [ownerId]);
+  const fold = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const openScanned = async (wine: ScannedWine139) => {
+    const rows = await searchStore139(wine.name).catch(() => []);
+    const row = rows.find(item => fold(item.name) === fold(wine.name) && (!wine.winery || fold(item.winery) === fold(wine.winery)) && String(item.vintage ?? '') === (wine.vintage ?? ''))
+      ?? rows.find(item => fold(item.name) === fold(wine.name) && (!wine.winery || fold(item.winery) === fold(wine.winery)));
+    if (row) { setSearched(row); return; }
+    const draft = { name: wine.name, producer: wine.winery, vintage: wine.vintage ? Number(wine.vintage) : null };
+    if (!ownerId) stashSignedOutWineDraft134(draft);
+    navigate(ownerId ? '/my-wines/add' : buildAuthRedirectPath('/my-wines/add'), ownerId ? { state: createNativeWineDraft98(draft, ownerId) } : undefined);
+  };
   // 136: one row renderer for Home and the full list ("Ver todos" used to jump to the restaurant screen).
   const renderWine = (wine: WinerimWineWithMatch, fromList = false) => {
     const { result } = buildNativeRecommendation95(wine, profile);
@@ -110,6 +122,14 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
         </div>}
       </section>
 
+      {scanned.length > 0 && <section className="mt-7" aria-labelledby="home-scanned139-title" data-testid="native-home-scanned139">
+        <h2 id="home-scanned139-title" className="mb-2 text-lg font-semibold">Últimos vinos escaneados</h2>
+        <div className="divide-y divide-stone-200">{scanned.slice(0, 4).map(wine => <button key={`${wine.name}|${wine.winery}|${wine.vintage}`} type="button" className="flex min-h-16 w-full items-center gap-3 py-3 text-left" onClick={() => void openScanned(wine)}>
+          <span className="min-w-0 flex-1"><span className="block break-words text-sm font-medium">{wine.name}</span><span className="mt-1 block break-words text-xs text-stone-500">{[wine.winery, wine.vintage].filter(Boolean).join(' · ')}</span></span>
+          {wine.score !== null && <span className="shrink-0 rounded-full bg-stone-100 px-2 py-1 text-sm font-bold text-stone-800">{wine.score}<span className="text-[10px] font-semibold">/100</span></span>}
+          <ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
+        </button>)}</div>
+      </section>}
       {recent.length > 0 && <section className="mt-7" aria-labelledby="home-recent98-title">
         <h2 id="home-recent98-title" className="mb-2 text-lg font-semibold">Recientes</h2>
         <div className="divide-y divide-stone-200">{recent.slice(0, 3).map(item => <button key={item.id} type="button" className="flex min-h-16 w-full items-center gap-3 py-3 text-left" onClick={() => navigate(item.route)}>
@@ -131,14 +151,14 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
       <Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" /><Dialog.Content className="fixed inset-0 z-50 mx-auto flex w-full max-w-xl flex-col bg-white px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]">
         <div className="mb-4 flex shrink-0 items-center justify-between gap-3"><Dialog.Title className="text-lg font-semibold">Buscar vino</Dialog.Title><Dialog.Close className="flex h-11 w-11 items-center justify-center" aria-label="Cerrar búsqueda"><X className="h-5 w-5" /></Dialog.Close></div>
         <Dialog.Description className="sr-only">Busca un vino y mira cuánto encaja con tus gustos.</Dialog.Description>
-        <div className="min-h-0 overflow-y-auto"><NativeWineSearch97 onManualEntry={name => {
+        <div className="min-h-0 overflow-y-auto"><NativeStoreSearch139 onManualEntry={name => {
           setSearchOpen(false);
           if (!ownerId) stashSignedOutWineDraft134({ name });
           navigate(ownerId ? '/my-wines/add' : buildAuthRedirectPath('/my-wines/add'), ownerId ? { state: createNativeWineDraft98({ name }, ownerId) } : undefined);
-        }} onSelectWine={wine => { setSearchOpen(false); setSearched(wine); }} /></div>
+        }} onSelect={wine => { setSearchOpen(false); setSearched(wine); }} /></div>
       </Dialog.Content></Dialog.Portal>
     </Dialog.Root>
-    <NativeSearchWine138 wine={searched} profile={profile} onClose={() => setSearched(null)} onSave={saveSearched} />
+    <NativeSearchWine138 wine={searched} profile={profile} onClose={() => setSearched(null)} />
     {detail}<MobileBottomNav />
   </div>;
 };

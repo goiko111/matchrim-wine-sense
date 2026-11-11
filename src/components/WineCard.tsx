@@ -37,8 +37,15 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
           </div>
         </div>
         <div className="mt-3"><NativeAffinitySummary result={evidence.result} /></div>
-        {evidence.sourceAvailable && <details className="mt-4 border-t border-stone-200 pt-2">
-          <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium text-stone-700">Ficha y origen de los datos</summary>
+        {/* 139: the wine's Winerim data is shown at once; it used to sit behind a lookup that usually failed. */}
+        {(() => { const facts = [['Tipo', wine.type ? formatWineType(wine.type) : ''], ['Zona', [wine.region, wine.country ? formatCountryName(wine.country) : ''].filter(Boolean).join(' · ')],
+          ['Uvas', (wine.grapes ?? []).join(', ')], ['Añada', wine.vintage ? String(wine.vintage) : '']].filter(([, value]) => value);
+          return facts.length > 0 && <section className="mt-4" aria-label="Ficha de Winerim" data-testid="native-recommendation-sheet139">
+            <h5 className="text-sm font-semibold text-stone-950">Ficha de Winerim</h5>
+            <dl className="mt-1 divide-y divide-stone-100 text-sm">{facts.map(([label, value]) => <div key={label} className="flex justify-between gap-4 py-2"><dt className="text-stone-500">{label}</dt><dd className="min-w-0 text-right [overflow-wrap:anywhere]">{value}</dd></div>)}</dl>
+          </section>; })()}
+        {evidence.sourceAvailable && <details className="mt-2 border-t border-stone-200 pt-2">
+          <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium text-stone-700">Buscar su ficha verificada</summary>
           <WinerimSheetLookup identity={{ name: wine.name, producer: wine.winery, vintage: wine.vintage, region: wine.region, country: wine.country }} />
         </details>}
         <NativeWineSave98 wine={wine} />

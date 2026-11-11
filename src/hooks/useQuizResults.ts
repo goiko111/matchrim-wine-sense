@@ -197,7 +197,8 @@ export const useQuizResults = () => {
         else if (recommendationsError) throw recommendationsError;
       }
 
-      toast({
+      // 139: on iOS the long notice covered the title of the result screen.
+      toast(native ? { title: "Tus gustos están guardados" } : {
         title: "¡Resultados guardados!",
         description: "Tu perfil y recomendaciones han sido guardados exitosamente."
       });
