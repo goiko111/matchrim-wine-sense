@@ -212,3 +212,5 @@ Food-menu row splitting and detection-box normalization may be replayed determin
 - 2026-11-11: After trying 139 the owner said the Winerim sheet must not open outside the app ("eso no puede ser") and asked for any improvement that fits the app's purpose. 140 removes every iOS control that leaves for web.winerim.com (check-matchrim-original-library89-ui now asserts the absence), uses the list price to name the likely wine of a winery, and stops discarding «3, 3, 1, 3, 3» store vectors as filler.
 
 - 2026-11-11: Build 140 (c6c8b39, archive140-r1) uploaded to TestFlight after the owner replied "Sí, sube la 140"; HUMAN-AUTHORIZATION quotes it. Private beta only; known limitations listed there.
+
+- 2026-11-11: After 140 the owner asked for Winerim's real sheet framed inside the app (not a text summary), several photos per wine list, and found the 140 vintage fix wrong on the device (1927). 141 frames web.winerim.com in a sandboxed iframe (scripts, same-origin, forms; no popups or top navigation), saves a searched wine directly as «Por probar» without sensory data, and never takes an unmarked year older than forty years as a scanned bottle's vintage.
