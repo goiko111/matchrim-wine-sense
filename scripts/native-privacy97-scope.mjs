@@ -20,7 +20,7 @@ const layout139 = [
     "isNative ? 'mt-[16px] grid min-w-0 min-h-[44px] cursor-pointer gap-[8px] text-sm text-slate-700'"
   ],
   [
-    "className={isNative ? 'h-[28px] w-[28px] shrink-0 [&_svg]:h-[20px] [&_svg]:w-[20px]' : undefined}",
+    "className={isNative ? 'h-[44px] w-[44px] shrink-0 [&_svg]:h-[20px] [&_svg]:w-[20px]' : undefined}",
     "className={isNative ? 'h-[44px] w-[44px] [&_svg]:h-[20px] [&_svg]:w-[20px]' : undefined}"
   ],
   [

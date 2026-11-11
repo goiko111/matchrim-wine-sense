@@ -86,7 +86,7 @@ export const ScanPrivacyGate = ({ children }: ScanPrivacyGateProps) => {
         {detail}
       </details> : detail}
       <label className={isNative ? 'mt-[12px] flex min-w-0 min-h-[44px] cursor-pointer items-center gap-[12px] text-sm text-slate-700' : 'mt-4 flex min-h-11 cursor-pointer items-start gap-3 text-sm text-slate-700 sm:mt-5'}>
-        <Checkbox checked={checked} onCheckedChange={(value) => setChecked(value === true)} aria-label="He leído el aviso de privacidad del escáner" className={isNative ? 'h-[28px] w-[28px] shrink-0 [&_svg]:h-[20px] [&_svg]:w-[20px]' : undefined} />
+        <Checkbox checked={checked} onCheckedChange={(value) => setChecked(value === true)} aria-label="He leído el aviso de privacidad del escáner" className={isNative ? 'h-[44px] w-[44px] shrink-0 [&_svg]:h-[20px] [&_svg]:w-[20px]' : undefined} />
         <span className={isNative ? 'min-w-0 flex-1 [overflow-wrap:normal]' : undefined}>
           He leído este aviso y la{' '}
           <Link to="/privacy" className={isNative ? 'inline-block min-h-[44px] max-w-full py-[8px] font-semibold text-red-800 underline underline-offset-2' : 'font-semibold text-red-800 underline underline-offset-2'}>política de privacidad</Link>.
