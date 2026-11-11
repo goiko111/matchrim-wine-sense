@@ -218,3 +218,5 @@ Food-menu row splitting and detection-box normalization may be replayed determin
 - 2026-11-11: Build 141 (62dfa8f, archive141-r1) uploaded to TestFlight after the owner replied "Sí, sube la 141"; HUMAN-AUTHORIZATION quotes it. The first upload attempt stopped before exporting because the authorization file carried a mistyped commit hash; corrected and rerun. Private beta only.
 
 - 2026-11-11: Owner: take Vivino's interface language (not its content), build the wine sheet from Winerim's own data, let a searched wine be saved as tasted or at home, and do not frame Winerim's web (it leads to the whole store). He authorised driving his iPhone with a test runner to look at Vivino ("De meter un runner a mi iPhone y conectarte"); only viewing and scrolling were done. 142 is the first delivery ("Sí, constrúyela").
+
+- 2026-11-11: Build 142 (c0116df, archive142-r1) uploaded to TestFlight. The owner's reply was the single word "Si" to «¿La subo ahora?»; HUMAN-AUTHORIZATION quotes it with the question, and distribute-matchrim142 accepts a short reply only in that form. He then asked for the second delivery of the redesign ("Y luego haz la segunda entrega").
