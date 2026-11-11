@@ -1,0 +1,9 @@
+{
+  "prep": "qa-artifacts/native218-20261025/candidate140-r1/preparation.json",
+  "archive": "qa-artifacts/native218-20261025/archive140-r1/ARCHIVE-RESULT.json",
+  "visual": {
+    "master259": { "normal": "qa-artifacts/native218-20261025/native220-r135/RESULT.json", "max": "qa-artifacts/native218-20261025/native220-r136/RESULT.json" },
+    "vintage283": { "normal": "qa-artifacts/native218-20261025/native220-r133/RESULT.json", "max": "qa-artifacts/native218-20261025/native220-r134/RESULT.json" }
+  },
+  "retainedFailures": []
+}

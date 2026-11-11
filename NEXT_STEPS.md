@@ -2,6 +2,7 @@
 
 ## Current Delta: 2026-11-10, Candidate136 (extreme QA)
 
+1. candidate140-r1 (c6c8b39) ready, not uploaded: upload only with the owner's explicit OK (scripts/distribute-matchrim140.mjs; write HUMAN-AUTHORIZATION.json first). On the phone check: bottle photo and Winerim data inside the scanned-bottle sheet, vintage 2020 on the Vidure, the Ikili list (expect 7 exact, 4 likely, 5 ranges), back from a searched wine. Backend ask: a batch lookup in the Winerim store (each query takes 3-5 s).
 1. Build 139 (1a49a28, archive139-r2) uploaded to TestFlight on 2026-11-11 (owner: "Sí, sube la 139"; export139-r2 + upload139-r2, Apple acknowledged). On the real phone check first: clear-label auto-link with a real bottle, the wine list of Ikili (expect 16/19 with verdict or range), search with photos. Owner to review the 30 wine facts (src/utils/wineFacts139.ts) and docs/backend-proposals/. Open decisions: tannin 0 on verified sheets, saving from the wine list is two taps, test images.
 1. Build 138 (d06d66f) uploaded to TestFlight on 2026-11-11 (owner: "Sí, sube la 138"; export138-r1 + upload138-r1, Apple acknowledged). Next: wait for processing, then test on a real iPhone. Owner should try one real sign-up on 138 (empty first/last name reaches the backend untested). Backend follow-ups: pairing + affinity ranked together server-side; a provenance flag for store sensory data so the «estimación» label can go.
 1. Build 137 uploaded to TestFlight on 2026-11-11 (owner: "sube la 137 y todo esto lo hacemos").
