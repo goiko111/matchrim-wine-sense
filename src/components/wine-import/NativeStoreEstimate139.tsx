@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { NativeAffinitySummary } from '@/components/NativeAffinitySummary';
+import { Frown, Meh, Smile } from 'lucide-react';
+import { compatLines142 } from '@/utils/winerimDetail142';
 import { estimateListing139, storeAffinity139 } from '@/utils/storeListing139';
 import type { StoreEstimate138 } from '@/utils/storeEstimate138';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
@@ -31,8 +32,18 @@ export const NativeStoreEstimate139 = ({ identity, profile, onScore }: Props) =>
   const score = result?.state === 'ready' ? result.score : null;
   useEffect(() => { if (score !== null) onScore?.(score); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [score, key]);
   if (!result || result.state !== 'ready') return null;
+  // 143: the scanned-bottle sheet shows the verdict the way the new wine sheet does: the number, the answer, and
+  // why in one sentence per trait.
   return <div className="min-w-0" data-testid="native-store-estimate139">
-    <NativeAffinitySummary result={result} />
-    <p className="mt-2 text-xs leading-5 text-stone-500">Estimación con los datos de la tienda de Winerim{estimate!.row.vintage && String(estimate!.row.vintage) !== String(identity.vintage ?? '') ? ` (añada ${estimate!.row.vintage})` : ''}. Este vino aún no tiene ficha verificada, así que tómalo como una orientación.</p>
+    <div className="rounded-2xl bg-gradient-to-b from-stone-200 to-stone-50 px-4 py-5 text-center">
+      <p className={`text-5xl font-bold tabular-nums leading-none ${result.score >= 65 ? 'text-emerald-800' : 'text-stone-800'}`} aria-label={`Afinidad orientativa: ${result.score} de 100`}>{result.score}<span className="text-lg font-semibold text-stone-500">/100</span></p>
+      <p className="mt-2 text-lg font-semibold leading-6 text-stone-950">{result.title}</p><p className="mt-1 text-xs text-stone-600">para tu paladar</p>
+    </div>
+    <section className="mt-4 rounded-2xl border border-stone-200 bg-white px-4 py-2" aria-label="Por qué">
+      <h4 className="pt-2 text-base font-semibold text-stone-950">Por qué {result.score >= 65 ? 'encaja contigo' : 'puede no encajarte'}</h4>
+      <ul className="divide-y divide-stone-100">{compatLines142(result.dimensions).map(line => { const Face = line.face === 'good' ? Smile : line.face === 'fair' ? Meh : Frown;
+        return <li key={line.key} className="flex items-center gap-3 py-3 text-sm leading-5 text-stone-900"><Face className={`h-5 w-5 shrink-0 ${line.face === 'good' ? 'text-emerald-700' : line.face === 'fair' ? 'text-amber-600' : 'text-stone-500'}`} aria-hidden="true" />{line.text}</li>; })}</ul>
+      <p className="pb-2 text-xs leading-5 text-stone-500">Estimación con los datos de la tienda de Winerim{estimate!.row.vintage && String(estimate!.row.vintage) !== String(identity.vintage ?? '') ? ` (añada ${estimate!.row.vintage})` : ''}. Este vino aún no tiene ficha verificada, así que tómalo como una orientación.</p>
+    </section>
   </div>;
 };

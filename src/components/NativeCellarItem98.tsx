@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { ChevronDown, ChevronRight, MapPin, ThumbsDown, ThumbsUp, X } from 'lucide-react';
+import { ChevronDown, Frown, MapPin, Meh, Smile, ThumbsDown, ThumbsUp, X } from 'lucide-react';
 import { readCellarPublicReference107 } from '@/utils/cellarPublicReference107';
 import { cellarReferenceStyleView110 } from '@/utils/cellarReferenceStyle110';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
@@ -9,9 +9,8 @@ import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { useOwnWinePhoto133 } from '@/utils/ownWinePhoto133';
 import { NativeWineNote139 } from '@/components/NativeWineNote139';
 import { NativeWinerimFacts140 } from '@/components/NativeWinerimFacts140';
-
-import { NativeStoreEstimate139 } from '@/components/wine-import/NativeStoreEstimate139';
-import { estimateListing139, storeScore139 } from '@/utils/storeListing139';
+import { estimateListing139, storeAffinity139 } from '@/utils/storeListing139';
+import { compatLines142 } from '@/utils/winerimDetail142';
 import type { StoreAttributes138 } from '@/utils/storeEstimate138';
 import { safeWineImageUrl98 } from '@/utils/wineImage98';
 
@@ -23,6 +22,14 @@ export interface NativeCellarSheet141 { verified: ReactNode; rate: ReactNode; ex
 // are kept: a miss may be a network failure, and the store search underneath already remembers its own answers.
 type StoreHit141 = { photo: string | null; attributes: StoreAttributes138 };
 const storeHits141 = new Map<string, StoreHit141>();
+
+// 143: the saved-wine sheet and the list speak the visual language of the new wine sheet (WineSheet142): same
+// cards, same faces, same green from 65, and the same four answers to «¿me gustará?» for a verified score.
+const card143 = 'rounded-2xl border border-stone-200 bg-white';
+const faces143 = { good: [Smile, 'text-emerald-700'], fair: [Meh, 'text-amber-600'], far: [Frown, 'text-stone-500'] } as const;
+const rated143 = { love: ['Te encantó', ThumbsUp, 'bg-emerald-100 text-emerald-800', 'bg-emerald-50 text-emerald-900'], ok: ['Te pareció correcto', Meh, 'bg-white text-stone-700', 'bg-stone-100 text-stone-800'],
+  not_for_me: ['No te gustó', ThumbsDown, 'bg-white text-stone-700', 'bg-stone-100 text-stone-700'] } as const;
+const title143 = (score: number) => score >= 80 ? 'Muy de tu estilo' : score >= 65 ? 'Probablemente te guste' : score >= 45 ? 'Puede que sí, puede que no' : 'No es tu estilo';
 
 interface Props {
   native: boolean;
@@ -57,6 +64,11 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
   const view = native ? cellarAffinityView(wine, snapshot, true) : null;
   const style = native && view?.current === null ? cellarReferenceStyleView110(wine, snapshot) : null;
   const displayScore = view?.current ?? style?.current ?? null;
+  // 143: the affinity history is folded so the sheet stays short, but it starts open while «Guardar afinidad de
+  // hoy» is pending (nobody would find that button folded) and does not fold itself again once it is saved.
+  const affinityUnsaved = view?.current != null && !view.initial;
+  const [affinityOpen, setAffinityOpen] = useState(affinityUnsaved);
+  useEffect(() => { if (affinityUnsaved) setAffinityOpen(true); }, [affinityUnsaved]);
   // 141: a wine saved from search or scan showed "Sin foto · Afinidad por calcular" although the same wine had a
   // bottle photo and an estimate a minute earlier. The row now asks Winerim's store (same lookup as those screens)
   // when it is missing a photo or a verdict; the answer is only displayed, never saved to the wine or the profile.
@@ -81,10 +93,14 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
   const reference = readCellarPublicReference107(wine);
   const storeHit = store?.key === identityKey ? store.hit : null;
   const storeSettled = !canAskStore || store?.key === identityKey;
-  const estimate = !wine.rating && displayScore === null && storeHit ? storeScore139(snapshot?.profile, storeHit.attributes) : null;
-  const rating = wine.rating === 'love' ? 'Te gusta' : wine.rating === 'not_for_me' ? 'No es para ti' : wine.rating === 'ok' ? 'Te pareció correcto' : null;
+  // 143: the estimate keeps its reasons (one sentence per trait) for the sheet; it is still only displayed.
+  const estimated = !wine.rating && displayScore === null && storeHit ? storeAffinity139(snapshot?.profile, storeHit.attributes) : null;
+  const ready = estimated?.state === 'ready' ? estimated : null;
+  const estimate = ready?.score ?? null;
+  const rated = wine.rating === 'love' || wine.rating === 'ok' || wine.rating === 'not_for_me' ? rated143[wine.rating] : null;
   // 141: no verdict text at all when there is nothing to say ("Afinidad por calcular" told the person nothing).
-  const verdict = rating || (view?.current != null ? `≈${view.current}/100 para ti` : style?.current != null ? `≈${style.current}/100 por estilo` : estimate !== null ? `≈${estimate}/100 estimado` : null);
+  const verdict = rated?.[0] || (view?.current != null ? `≈${view.current}/100 para ti` : style?.current != null ? `≈${style.current}/100 por estilo` : estimate !== null ? `≈${estimate}/100 estimado` : null);
+  const score = displayScore ?? estimate;
   const stock = wine.status === 'collection' && wine.quantity != null ? `${wine.quantity} ${wine.quantity === 1 ? 'botella' : 'botellas'}` : null;
   // 134: the label used to be only "Ver <name>", so VoiceOver skipped vintage, verdict and stock.
   const rowLabel = `Ver ${[wine.name, wine.producer, wine.vintage, verdict, stock].filter(Boolean).join(', ')}`;
@@ -92,46 +108,70 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
   // and only with the sheet open (it was one more request per row while scrolling).
   const photo = wine.image_url || ownPhoto || storeHit?.photo || (resolved?.key === identityKey ? resolved.url : null);
   const identity = { name: wine.name, producer: wine.producer, vintage: wine.vintage };
-  const ratedTitle = wine.rating === 'love' ? 'Ya sabes que te gusta' : wine.rating === 'not_for_me' ? 'Ya sabes que no te gusta' : wine.rating === 'ok' ? 'Te pareció correcto' : null;
+  const RatedIcon = rated?.[1];
   return <>
-    <button ref={rowRef} type="button" className="flex min-h-36 w-full min-w-0 items-center gap-4 border-b border-stone-200 py-4 text-left" aria-label={rowLabel} onClick={() => setOpen(true)} data-testid="native-cellar-item98">
-      <NativeWinePhoto98 src={photo} ownedCapture name={wine.name} identity={identity} resolveMissing={!photo && open && storeSettled} onResolved={url => setResolved({ key: identityKey, url })} className="h-[112px] w-[80px] border border-stone-200" />
-      <span className="min-w-0 flex-1"><span className="block break-words text-base font-semibold leading-6 text-stone-950">{wine.name}</span><span className="mt-1 block break-words text-xs leading-5 text-stone-500">{[wine.producer, wine.vintage].filter(Boolean).join(' · ')}</span>
-        {verdict && <span className={`mt-2 flex items-center gap-1 text-sm font-semibold ${wine.rating === 'not_for_me' ? 'text-stone-700' : wine.rating === 'love' || (displayScore ?? estimate ?? -1) >= 70 ? 'text-emerald-800' : 'text-stone-600'}`}>{wine.rating === 'love' && <ThumbsUp className="h-4 w-4" aria-hidden="true" />}{wine.rating === 'not_for_me' && <ThumbsDown className="h-4 w-4" aria-hidden="true" />}{verdict}</span>}
-        {stock && <span className="mt-1 block text-xs text-stone-500">{stock}</span>}
-      </span><ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
+    {/* 143: each wine is a card (bottle on a soft tile, winery, name, vintage · region, verdict chip) instead of a ruled row. */}
+    <button ref={rowRef} type="button" className={`flex w-full min-w-0 items-center gap-3 p-3 text-left ${card143}`} aria-label={rowLabel} onClick={() => setOpen(true)} data-testid="native-cellar-item98">
+      <NativeWinePhoto98 src={photo} ownedCapture name={wine.name} identity={identity} resolveMissing={!photo && open && storeSettled} onResolved={url => setResolved({ key: identityKey, url })} className="h-[104px] w-[72px] !rounded-xl !bg-stone-100" />
+      <span className="min-w-0 flex-1">{wine.producer && <span className="block break-words text-xs leading-5 text-stone-600">{wine.producer}</span>}
+        <span className="block break-words text-base font-semibold leading-6 text-stone-950">{wine.name}</span>
+        {(wine.vintage || wine.region) && <span className="block break-words text-xs leading-5 text-stone-500">{[wine.vintage, wine.region].filter(Boolean).join(' · ')}</span>}
+        {(rated || score !== null || stock) && <span className="mt-2 flex flex-wrap items-center gap-2">
+          {rated && RatedIcon ? <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${rated[3]}`}><RatedIcon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />{rated[0]}</span>
+            : score !== null && <span className={`rounded-full px-2.5 py-1 text-xs font-bold tabular-nums ${score >= 65 ? 'bg-emerald-50 text-emerald-900' : 'bg-stone-100 text-stone-800'}`}>{score}/100</span>}
+          {stock && <span className="text-xs text-stone-500">{stock}</span>}
+        </span>}
+      </span>
     </button>
-    <Dialog.Root open={open} onOpenChange={setOpen}><Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" /><Dialog.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[94dvh] w-full max-w-xl flex-col overflow-hidden rounded-t-lg bg-white text-stone-950">
+    <Dialog.Root open={open} onOpenChange={setOpen}><Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" /><Dialog.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[94dvh] w-full max-w-xl flex-col overflow-hidden rounded-t-2xl bg-white text-stone-950">
       <div className="flex shrink-0 items-center justify-between gap-3 border-b border-stone-200 px-4 py-2"><Dialog.Title className="min-w-0 break-words text-base font-semibold">Tu vino</Dialog.Title><Dialog.Close className="flex h-11 w-11 shrink-0 items-center justify-center" aria-label="Cerrar vino"><X className="h-5 w-5" /></Dialog.Close></div>
       <Dialog.Description className="sr-only">Ficha, afinidad y valoración de {wine.name}.</Dialog.Description>
       {/* 141: the sheet repeated the web card (affinity "por calcular", chips, five buttons, Winerim data on top).
           It now reads like the other wine sheets: bottle and name, verdict, your rating, your note, Winerim data,
           and the rest folded under "Más opciones". The web card (`children`) is no longer shown on iOS. */}
-      <div className="min-h-0 overflow-y-auto pb-[calc(1rem+var(--matchrim-safe-bottom))]" data-testid="native-cellar-sheet141">
-        <div className="flex min-w-0 items-center gap-4 border-b border-stone-200 px-4 py-4">
-          {photo && <NativeWinePhoto98 src={photo} ownedCapture name={wine.name} className="h-[168px] w-[96px]" />}
-          <div className="min-w-0 flex-1"><h3 className="break-words text-xl font-semibold leading-7">{wine.name}</h3>
-            <p className="mt-1 break-words text-sm leading-5 text-stone-600">{[wine.producer, wine.vintage].filter(Boolean).join(' · ')}</p>
-            {stock && <p className="mt-1 text-xs text-stone-500">{stock}</p>}
+      <div className="min-h-0 overflow-y-auto bg-stone-50 pb-[calc(1rem+var(--matchrim-safe-bottom))]" data-testid="native-cellar-sheet141">
+        {/* 143: same opening as the new wine sheet: a big bottle and, beside it, the answer. The person's own
+            rating wins; then the verified score; then the store estimate. */}
+        <header className={`grid items-center gap-2 bg-gradient-to-b from-stone-200 to-stone-50 px-4 pb-4 pt-6 ${photo ? 'grid-cols-[minmax(0,1fr)_minmax(0,1fr)]' : ''}`}>
+          {photo && <NativeWinePhoto98 src={photo} ownedCapture name={wine.name} className="mx-auto h-[260px] w-[130px] !bg-transparent" />}
+          <div className="min-w-0 text-center" data-testid="native-cellar-verdict141">
+            {rated && RatedIcon ? <><span className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full ${rated[2]}`}><RatedIcon className="h-8 w-8" aria-hidden="true" /></span>
+              <p className="mt-3 text-lg font-semibold leading-6" role="status">{rated[0]}</p><p className="mt-1 text-xs text-stone-600">Tu valoración</p></>
+              : score !== null ? <><p className={`text-5xl font-bold tabular-nums leading-none ${score >= 65 ? 'text-emerald-800' : 'text-stone-800'}`} aria-label={`Afinidad orientativa: ${score} de 100`}>{score}<span className="text-lg font-semibold text-stone-500">/100</span></p>
+                <p className="mt-2 text-lg font-semibold leading-6">{ready ? ready.title : title143(score)}</p>
+                <p className="mt-1 text-xs text-stone-600">{ready ? 'estimación para tu paladar' : view?.current != null ? 'para tu paladar' : 'por estilo'}</p></>
+                : storeSettled && <p className="text-sm leading-6 text-stone-600">Aún no tenemos datos de este vino para decirte cuánto encaja contigo.</p>}
+          </div>
+        </header>
+        <div className="space-y-4 px-4 pt-4">
+          <div className="min-w-0">
+            {wine.producer && <p className="text-sm text-stone-600 [overflow-wrap:anywhere]">{wine.producer}</p>}
+            <h3 className="text-2xl font-bold leading-8 [overflow-wrap:anywhere]">{wine.name}</h3>
+            {wine.vintage && <p className="mt-1 inline-block rounded-full bg-stone-100 px-3 py-1 text-sm text-stone-700">{wine.vintage}</p>}
+            {stock && <p className="mt-2 text-sm text-stone-600">{stock}</p>}
             {wine.consumption_place && <p className="mt-1 flex items-start gap-1 text-xs leading-5 text-stone-500"><MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" /><span className="min-w-0 break-words">{wine.consumption_place}</span></p>}
             {sheet?.extra && <div className="mt-2">{sheet?.extra}</div>}
           </div>
+          <div className={`${card143} p-4`} data-testid="native-cellar-rate141">{sheet?.rate}</div>
+          <div className={`${card143} [&>section]:border-0`}><NativeWineNote139 wineId={wine.id} initial={wine.personal_note} /></div>
+          {/* 143: the estimate's reasons come from the store match the row already has: no second lookup, nothing saved. */}
+          {ready && <section className={`${card143} px-4 py-2`} aria-labelledby={`why143-${wine.id}`} data-testid="native-cellar-why143">
+            <h4 id={`why143-${wine.id}`} className="pt-2 text-base font-semibold">Por qué {ready.score >= 65 ? 'encaja contigo' : 'puede no encajarte'}</h4>
+            <ul className="divide-y divide-stone-100">{compatLines142(ready.dimensions).map(line => { const [Face, tone] = faces143[line.face];
+              return <li key={line.key} className="flex items-center gap-3 py-3 text-sm leading-5"><Face className={`h-5 w-5 shrink-0 ${tone}`} aria-hidden="true" />{line.text}</li>; })}</ul>
+            <p className="pb-2 text-xs leading-5 text-stone-500">Estimación con los datos de Winerim. Compara el estilo del vino con tus gustos; no es una nota de calidad.</p>
+          </section>}
+          {displayScore !== null && <details open={affinityOpen} onToggle={event => setAffinityOpen(event.currentTarget.open)} className={`group min-w-0 px-4 ${card143} [&_[data-testid=cellar-wine-affinity]]:border-0 [&_[data-testid=cellar-wine-affinity]]:pt-0 [&_[data-testid=native-affinity-summary]]:border-0 [&_[data-testid=native-affinity-summary]]:py-0`} data-testid="native-cellar-affinity143">
+            <summary aria-label="Ver cómo ha cambiado tu afinidad" className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 py-3 text-sm font-semibold text-stone-800"><span aria-hidden="true">Ver cómo ha cambiado tu afinidad</span><ChevronDown className="h-4 w-4 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true" /></summary>
+            {sheet?.verified}{reference?.catalogue_vintage === null && <p className="pb-3 text-xs leading-5 text-stone-600">Referencia sin añada. No confirma los datos sensoriales de tu botella.</p>}
+          </details>}
+          {/* 140: the Winerim sheet is shown here, inside the app; the link that opened Safari is gone. */}
+          <div className="empty:hidden" data-testid="cellar-winerim-facts140"><NativeWinerimFacts140 identity={identity} part="facts" profile={snapshot?.profile ?? null} /></div>
+          <details className={`group min-w-0 px-4 ${card143}`} data-testid="native-cellar-more141">
+            <summary aria-label="Más opciones" className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 py-3 text-sm font-semibold text-stone-800"><span aria-hidden="true">Más opciones</span><ChevronDown className="h-4 w-4 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true" /></summary>
+            {sheet?.more}
+          </details>
         </div>
-        <div className="border-b border-stone-200 px-4 py-3 [&>section]:border-0 [&>section]:py-0 [&_[data-testid=native-affinity-summary]]:border-0 [&_[data-testid=native-affinity-summary]]:py-0" data-testid="native-cellar-verdict141">
-          {displayScore !== null ? <>{sheet?.verified}{reference?.catalogue_vintage === null && <p className="pt-2 text-xs leading-5 text-stone-600">Referencia sin añada. No confirma los datos sensoriales de tu botella.</p>}</>
-            // 141: a rated wine keeps the person's own verdict; an estimate next to "No va" would contradict it.
-            : ratedTitle ? <p className="text-sm font-semibold text-stone-950" role="status">{ratedTitle}</p>
-              : <><NativeStoreEstimate139 identity={identity} profile={snapshot?.profile ?? null} />
-                {storeSettled && estimate === null && <p className="text-sm leading-6 text-stone-600">Aún no tenemos datos de este vino para decirte cuánto encaja contigo.</p>}</>}
-        </div>
-        <div className="border-b border-stone-200 px-4 py-3" data-testid="native-cellar-rate141">{sheet?.rate}</div>
-        <NativeWineNote139 wineId={wine.id} initial={wine.personal_note} />
-        {/* 140: the Winerim sheet is shown here, inside the app; the link that opened Safari is gone. */}
-        <div className="border-b border-stone-200 px-4 py-3 empty:hidden" data-testid="cellar-winerim-facts140"><NativeWinerimFacts140 identity={identity} part="facts" profile={snapshot?.profile ?? null} /></div>
-        <details className="group min-w-0 px-4" data-testid="native-cellar-more141">
-          <summary aria-label="Más opciones" className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 py-3 text-sm font-semibold text-stone-800"><span aria-hidden="true">Más opciones</span><ChevronDown className="h-4 w-4 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true" /></summary>
-          {sheet?.more}
-        </details>
       </div>
     </Dialog.Content></Dialog.Portal></Dialog.Root>
   </>;

@@ -4,6 +4,8 @@
 // winery has («mismatch»), ranges by midpoint below every certain answer, options closed and at most five.
 // 141: one confident action: a tray of up to four photos read into one list, unread parts retried once without
 // asking, a full-height wait, and each wine's number on the photo where the list prints it.
+// 143: the numbers reach the photo on a real list: when the server's read does not place the wines, the phone finds
+// the printed lines itself (on the device) and each wine takes the line that prints its name; larger badges.
 // Offline, no network. Run: npx tsx scripts/check-matchrim-menu139.ts
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -13,6 +15,9 @@ import { listedGrape140, menuCoverageWarning139, menuLikelyText140, menuLineKey1
 import { storeScore139 } from '../src/utils/storeListing139';
 import { MENU_BADGE_WIDTH141, MENU_TRAY_MAX141, addToMenuTray141, menuBadge141, menuBadgePlacement141, menuPhotoReliable141, menuReadingLabel141,
   menuTrayFull141, menuTrayHint141, menuTrayLabel141, removeFromMenuTray141, shouldAutoRetry141 } from '../src/utils/menuScan141';
+import { MENU_BADGE_HEIGHT143, MENU_BADGE_WIDTH143, MENU_POSITION_MIN_OVERLAP143, matchMenuPositions143, menuBadgePlacement143, menuPositionBox143,
+  spreadMenuBadges143, type MenuPosition143, type OcrLine143 } from '../src/utils/menuPositions143';
+import { createPageLines143 } from '../src/utils/nativeOcrLines143';
 
 let groups = 0;
 const test = (name: string, fn: () => void) => { fn(); groups += 1; console.log(`  ok ${name}`); };
@@ -296,9 +301,9 @@ test('141 wiring: tray before the read, one wait, silent retry, plain line, numb
   assert.match(menu, /steps=\{\[menuReadingLabel141\(reading141\), MENU_STEPS139\[1\], MENU_STEPS139\[2\]\]\}/);
   assert.match(menu, /aria-label="Cancelar análisis"[^]{0,400}<X className="h-4 w-4" aria-hidden="true" \/>Cancelar\s*<\/Button>/);
   // D: the photo opens with numbers only when reliable; nothing is said about positions on iOS.
-  assert.match(menu, /\.map\(photo => \(\{ \.\.\.photo, reliable: menuPhotoReliable141\(photo\.rows\.map\(row => row\.wine\.posicion\)\) \}\)\);/);
+  assert.match(menu, /\.map\(photo => \(\{ \.\.\.photo, reliable: menuPhotoReliable141\(photo\.rows\.map\(row => row\.wine\.posicion\)\) \}\)\)/);
   assert.match(menu, /const photosOpen141 = !loading && !convertingPdf && photoPages141\.some\(photo => photo\.reliable\);/);
-  assert.match(menu, /\{photo\.reliable && photo\.rows\.map\(\(\{ wine, index \}\) => \{\s*const badge = menuBadge141\(verdicts139\[index\]\);/);
+  assert.match(menu, /\{photo\.reliable && photo\.rows\.map\(\(\{ wine, index \}, row\) => \{\s*const badge = menuBadge141\(verdicts139\[index\]\);/);
   assert.match(menu, /style=\{\{ right: `\$\{place\.right\}%`, top: `\$\{place\.top\}%` \}\} onClick=\{\(event\) => openWineDetail\(index, event\.currentTarget\)\}>\{badge\.text\}<\/button>/);
   assert.match(menu, /\{preview && scannedWines\.length > 0 && \(!isNative \|\| scannedWines\.some\(\(wine\) => menuPage141\(wine\) === previewPage141 && getWinePosition\(wine\)\)\) && \(/);
   assert.match(menu, /const position = menuPage141\(wine\) === previewPage141 \? getWinePosition\(wine\) : null;/);
@@ -307,4 +312,178 @@ test('141 wiring: tray before the read, one wait, silent retry, plain line, numb
   // Web is untouched: every 141 block is behind isNative.
   assert.match(menu, /const photoPages141 = !isNative \? \[\] :/); assert.match(menu, /\{isNative && photosOpen141 && <section/); assert.match(menu, /\{isNative && missing141\.length > 0 && !loading && <div/);
 });
-console.log(`check-matchrim-menu139: ${groups}/17 groups passed`);
+
+// 143: a real list as Apple Vision returns it: headings, one line per name, and each price as its own line on the
+// same visual row, at the end of the dotted leader. Boxes are fractions of the page, top-left origin.
+const ocr = (text: string, x: number, y: number, width: number, height = 0.02): OcrLine143 => ({ text, box: { x, y, width, height } });
+const listed = (name: string, price: string, y: number): OcrLine143[] => [ocr(name, 0.08, y, Math.min(0.6, name.length * 0.017)), ocr(price, 0.82, y + 0.001, 0.1)];
+const page143: OcrLine143[] = [ocr('TINTOS', 0.38, 0.06, 0.24, 0.03), ocr('(RIOJA)', 0.08, 0.12, 0.14),
+  ...listed('LUIS R. – Tempranillo', '16.00€', 0.16), ...listed('MONTECILLO – Tempranillo', '18.00€', 0.20),
+  ...listed('RAMÓN BILBAO – Crianza', '22.00€', 0.24), ...listed('MONTECILLO – Reserva', '26.00€', 0.28),
+  ...listed('MARQUÉS DE RISCAL – Reserva', '34.00€', 0.32), ocr('(RIBERA DEL DUERO)', 0.08, 0.38, 0.3),
+  ...listed('PROTOS – Roble', '18.00€', 0.42), ...listed('PAGO DE CARRAOVEJAS', '58.00€', 0.46)];
+const wine143 = (name: string, price: number | null, source: string | null = null) => ({ name, source, prices: [price] });
+const rows143 = [wine143('LUIS R.', 16), wine143('MONTECILLO', 18), wine143('Ramon Bilbao', 22), wine143('MONTECILLO Reserva', 26),
+  wine143('Marqués de Riscal', 34), wine143('Protos', 18), wine143('Pago de Carraovejas', 58)];
+const lineOf = (text: string) => page143.find(line => line.text === text)!;
+const at = (position: MenuPosition143 | null, text: string) => position !== null && Math.abs(position.y - lineOf(text).box.y * 100) < 0.01 && Math.abs(position.x - lineOf(text).box.x * 100) < 0.01;
+
+test('143 matcher: on a real list every wine takes the line that prints it, with the price on its row', () => {
+  const places = matchMenuPositions143(page143, rows143);
+  const printed = ['LUIS R. – Tempranillo', 'MONTECILLO – Tempranillo', 'RAMÓN BILBAO – Crianza', 'MONTECILLO – Reserva', 'MARQUÉS DE RISCAL – Reserva', 'PROTOS – Roble', 'PAGO DE CARRAOVEJAS'];
+  printed.forEach((text, row) => assert(at(places[row], text), `${rows143[row].name} → ${text}: ${JSON.stringify(places[row])}`));
+  for (const place of places) {
+    // The 141 shape, in % of the photo, plus where the name ends and where the price on the same row starts and ends.
+    assert(place && place.confidence >= 0.9 && place.confidence <= 1, JSON.stringify(place));
+    assert.equal(place.priceStart, 82); assert.equal(place.priceEnd, 92); assert.equal(place.nameEnd, Math.round((place.x + place.width) * 100) / 100);
+    assert(place.height === 2 && place.x === 8);
+  }
+  // Same rule as 141 for opening the photo, fed with the device's places.
+  assert.equal(menuPhotoReliable141(places.map(menuPositionBox143)), true);
+  assert.deepEqual(menuPositionBox143(places[0]), { x: 8, y: 16, width: places[0]!.width, height: 2 }); assert.equal(menuPositionBox143(null), null);
+  // Row order does not matter, and the answer follows the rows: the same wine keeps its line.
+  const reversed = matchMenuPositions143(page143, [...rows143].reverse()).reverse();
+  assert.deepEqual(reversed, places);
+});
+test('143 matcher: accents, case and a misread letter still match; a line serves one wine only', () => {
+  const places = matchMenuPositions143(page143, [wine143('marques de riscal', null), wine143('MONTECILL0', 18), wine143('Ramón Bilbao Crianza', null), wine143('Marqués de Riscal Reserva', 34)]);
+  assert(at(places[1], 'MONTECILLO – Tempranillo'), 'one misread letter in a long word'); assert(at(places[2], 'RAMÓN BILBAO – Crianza'));
+  // Two rows read the same line: the one that fits best (its price is on the row) keeps it, the other gets none.
+  assert(at(places[3], 'MARQUÉS DE RISCAL – Reserva')); assert.equal(places[0], null);
+  const used = places.filter(Boolean).map(place => `${place!.x}/${place!.y}`); assert.equal(new Set(used).size, used.length);
+  // The row as printed is kept by the reader: a name corrected by hand still finds its line.
+  const corrected = matchMenuPositions143(page143, [wine143('Luis Rodríguez Viña de Martín', 16, 'LUIS R. – Tempranillo 16.00€')]);
+  assert(at(corrected[0], 'LUIS R. – Tempranillo'));
+});
+test('143 matcher: the price settles two lines of one winery; without it nothing is guessed', () => {
+  // «MONTECILLO» is on two lines. With its price on the row the wine is placed…
+  assert(at(matchMenuPositions143(page143, [wine143('MONTECILLO', 26)])[0], 'MONTECILLO – Reserva'));
+  assert(at(matchMenuPositions143(page143, [wine143('MONTECILLO', 18)])[0], 'MONTECILLO – Tempranillo'));
+  // …without a price, and with both lines free, it is not: either could be it.
+  assert.equal(matchMenuPositions143(page143, [wine143('MONTECILLO', null)])[0], null);
+  // The printed row tells them apart as well as the price does.
+  assert(at(matchMenuPositions143(page143, [wine143('MONTECILLO', null, 'MONTECILLO – Reserva')])[0], 'MONTECILLO – Reserva'));
+  // A word that many lines share is not a wine: «Tempranillo» or «Reserva» alone place nothing wrong.
+  const shared = matchMenuPositions143(page143, [...rows143, wine143('Viña Ardanza Reserva', 39), wine143('Tempranillo', null)]);
+  assert.equal(shared[7], null, 'a wine whose line was not found shares only «Reserva» with others'); assert.equal(shared[8], null);
+  assert(MENU_POSITION_MIN_OVERLAP143 >= 0.6);
+  // A heading, a price alone, an unknown wine, an empty name: no place. No lines or no rows: nothing, no throw.
+  for (const name of ['Vega Sicilia Único', 'Pesquera', '16.00', '', 'R.']) assert.equal(matchMenuPositions143(page143, [wine143(name, 16)])[0], null, name);
+  assert.deepEqual(matchMenuPositions143([], rows143), rows143.map(() => null)); assert.deepEqual(matchMenuPositions143(page143, []), []);
+  assert.deepEqual(matchMenuPositions143([{ text: 'LUIS R.', box: { x: Number.NaN, y: 0.1, width: 0.2, height: 0.02 } }, { text: 'LUIS R.', box: { x: 0.1, y: 0.1, width: 0, height: 0.02 } }], [wine143('LUIS R.', 16)]), [null]);
+  // Half of a page placed is not enough to open the photo (the 141 rule).
+  const half = matchMenuPositions143(page143.filter(line => line.box.y < 0.25), rows143);
+  assert.equal(half.filter(Boolean).length, 3); assert.equal(menuPhotoReliable141(half.map(menuPositionBox143)), false);
+});
+test('143 matcher: the same wine printed twice, two columns, and name and price read as one line', () => {
+  // The same text twice (by the glass and by the bottle): the first in reading order, no doubt.
+  const twice = [ocr('COPAS', 0.1, 0.05, 0.2), ...listed('PROTOS – Roble', '4.50€', 0.10), ocr('BOTELLAS', 0.1, 0.2, 0.2), ...listed('PROTOS – Roble', '18.00€', 0.25)];
+  assert.equal(matchMenuPositions143(twice, [wine143('Protos Roble', null)])[0]!.y, 10);
+  assert.equal(matchMenuPositions143(twice, [wine143('Protos Roble', 18)])[0]!.y, 25, 'the price picks the row');
+  const both = matchMenuPositions143(twice, [wine143('Protos Roble', 4.5), wine143('Protos Roble', 18)]); assert.deepEqual(both.map(place => place!.y), [10, 25]);
+  // Two columns: the price taken is the one that follows the name, not the other column's.
+  const columns = [ocr('ALBARIÑO MAR', 0.05, 0.3, 0.2), ocr('21', 0.38, 0.3, 0.04), ocr('GODELLO SIL', 0.55, 0.3, 0.2), ocr('24', 0.9, 0.3, 0.04)];
+  const [left, right] = matchMenuPositions143(columns, [wine143('Albariño Mar', 21), wine143('Godello Sil', 24)]);
+  assert.deepEqual([left!.priceStart, left!.priceEnd, right!.priceStart, right!.priceEnd], [38, 42, 90, 94]);
+  // A name with no price beside it does not borrow the next column's: the badge will go right after the name.
+  const lonely = matchMenuPositions143([columns[0], columns[2], columns[3]], [wine143('Albariño Mar', null)])[0]!;
+  assert.equal(lonely.priceStart, null); assert.equal(lonely.nameEnd, 25);
+  // The grape read apart on the same row belongs to the name: the name ends after it, the price follows.
+  const pieces = matchMenuPositions143([ocr('LUIS R.', 0.08, 0.5, 0.12), ocr('Tempranillo', 0.24, 0.5, 0.18), ocr('16.00€', 0.82, 0.5, 0.1)], [{ name: 'LUIS R.', extra: ['Tempranillo'], prices: [16] }])[0]!;
+  assert.deepEqual([pieces.x, pieces.nameEnd, pieces.priceStart], [8, 42, 82]);
+  // One line with the leader dropped from the text: the name ends well before the price, which is at the line's end.
+  const whole = matchMenuPositions143([ocr('LUIS R. – Tempranillo 16.00€', 0.08, 0.5, 0.84)], [wine143('LUIS R.', 16)], 4 / 3)[0]!;
+  assert(whole.priceEnd === 92 && whole.priceStart! > 75 && whole.priceStart! < 92 && whole.nameEnd < 50, JSON.stringify(whole));
+});
+test('143 badge place: before the price over the leader, never over the name, inside the photo, apart on a tight list', () => {
+  const place = (nameEnd: number, priceStart: number | null, priceEnd: number | null, y = 20): MenuPosition143 => ({ x: 8, y, width: nameEnd - 8, height: 2, confidence: 1, nameEnd, priceStart, priceEnd });
+  assert.equal(MENU_BADGE_HEIGHT143, 28); assert(MENU_BADGE_WIDTH143.score >= 9 && MENU_BADGE_WIDTH143.range > MENU_BADGE_WIDTH143.score);
+  // Room on the leader: the badge ends one point before the price, centred on the line.
+  assert.deepEqual(menuBadgePlacement143(place(45, 82, 92)), { right: 19, top: 21 });
+  assert.deepEqual(menuBadgePlacement143(place(45, 82, 92), MENU_BADGE_WIDTH143.range), { right: 19, top: 21 });
+  // A leader shorter than the badge: after the price when there is room there…
+  assert.deepEqual(menuBadgePlacement143(place(60, 64, 72)), { right: 100 - (72 + 1 + MENU_BADGE_WIDTH143.score), top: 21 });
+  // …and when there is none, over the price rather than over the name.
+  const tight = menuBadgePlacement143(place(80, 84, 95)); assert(100 - tight.right - MENU_BADGE_WIDTH143.score >= 80, JSON.stringify(tight));
+  // No price: right after the name.
+  assert.deepEqual(menuBadgePlacement143(place(45, null, null)), { right: 100 - (45 + 1 + MENU_BADGE_WIDTH143.score), top: 21 });
+  for (const width of [MENU_BADGE_WIDTH143.score, MENU_BADGE_WIDTH143.range]) for (const [nameEnd, start, end] of [[2, 3, 5], [45, 82, 92], [97, 98, 100], [99, null, null], [30, 31, 99.5]] as const) {
+    const spot = menuBadgePlacement143(place(nameEnd, start, end, 99.5), width);
+    assert(spot.right >= 1 && 100 - spot.right - width >= 1 - 1e-9 && spot.top <= 98, JSON.stringify({ nameEnd, start, end, width, spot }));
+  }
+  // Lines 2 % apart with a badge 5 % tall: the same column would pile up. Each badge moves by its width instead.
+  const spots = [20, 22, 24, 26, 28].map(y => ({ ...menuBadgePlacement143(place(40, 82, 92, y)), width: MENU_BADGE_WIDTH143.score, nameEnd: 40 }));
+  const spread = spreadMenuBadges143(spots, 5) as { right: number; top: number }[];
+  assert.deepEqual(spread.map(spot => spot.top), spots.map(spot => spot.top), 'a badge stays on its own line');
+  for (const [index, spot] of spread.entries()) {
+    assert(100 - spot.right - MENU_BADGE_WIDTH143.score >= 40 && spot.right >= 1, `off the name, inside: ${JSON.stringify(spot)}`);
+    for (const other of spread.slice(0, index)) assert(Math.abs(other.top - spot.top) >= 5 || Math.abs(other.right - spot.right) >= MENU_BADGE_WIDTH143.score, `apart: ${JSON.stringify([other, spot])}`);
+  }
+  assert.deepEqual(spread[0], { right: 19, top: 21 }, 'the first keeps its natural place');
+  // Lines further apart than a badge is tall: nothing moves. Wines without a place stay without one.
+  const loose = [20, 30, 40].map(y => ({ ...menuBadgePlacement143(place(40, 82, 92, y)), width: MENU_BADGE_WIDTH143.score, nameEnd: 40 }));
+  assert.deepEqual(spreadMenuBadges143([loose[0], null, loose[1], loose[2]], 5), [{ right: 19, top: 21 }, null, { right: 19, top: 31 }, { right: 19, top: 41 }]);
+  assert.deepEqual(spreadMenuBadges143([], 5), []);
+});
+await (async () => {
+  const id = '00000000-0000-4000-8000-000000000143', image = 'data:image/jpeg;base64,AAAA';
+  const reply = (lines: unknown[], extra: Record<string, unknown> = {}) => ({ source: 'apple-vision-device-lines', requestId: id, width: 1800, height: 2400, totalMs: 1, revision: 3, lines, ...extra });
+  const good = { text: ' LUIS R. – Tempranillo ', confidence: 0.9, box: { x: 0.08, y: 0.16, width: 0.36, height: 0.02 } };
+  const calls: string[] = [];
+  const page = await createPageLines143({ recognizeLines: async input => { calls.push(`lines:${input.requestId}`); return reply([good, good, { text: '', box: good.box }, { text: 'x', box: { ...good.box, x: 1.4 } }, { text: 'y' }, null]); },
+    recognize: async () => { calls.push('label'); return null; }, cancel: async () => null }, () => id)(image);
+  // Repeated text is kept (the same price on several rows); a line without text or outside the page is dropped.
+  assert.deepEqual(page, { lines: [{ text: 'LUIS R. – Tempranillo', box: good.box }, { text: 'LUIS R. – Tempranillo', box: good.box }], aspect: 2400 / 1800 });
+  assert.deepEqual(calls, [`lines:${id}`]);
+  // A binary without the page method (Capacitor says UNIMPLEMENTED, or the method is not there): the label reader answers.
+  for (const recognizeLines of [async () => { throw Object.assign(new Error('"MatchrimOCR.recognizeLines()" is not implemented on ios'), { code: 'UNIMPLEMENTED' }); }, undefined]) {
+    const old = await createPageLines143({ recognizeLines, recognize: async () => reply([good], { source: 'apple-vision-device', customWords: [] }), cancel: async () => null }, () => id)(image);
+    assert.deepEqual(old, { lines: [{ text: 'LUIS R. – Tempranillo', box: good.box }], aspect: 2400 / 1800 });
+  }
+  // Busy, failed, slow, another request's reply, nonsense, no plugin, not an image: null, never a throw, never a second read.
+  let labelReads = 0, cancelled = 0;
+  const failing = (recognizeLines: () => Promise<unknown>, wait?: number) => createPageLines143({ recognizeLines, recognize: async () => { labelReads += 1; return reply([good]); },
+    cancel: async () => { cancelled += 1; return null; } }, () => id, wait)(image);
+  assert.equal(await failing(async () => { throw Object.assign(new Error('The OCR worker is occupied.'), { code: 'BUSY' }); }), null);
+  assert.equal(await failing(async () => reply([good], { requestId: '00000000-0000-4000-8000-000000000999' })), null);
+  assert.equal(await failing(async () => 'nonsense'), null); assert.equal(await failing(async () => null), null); assert.equal(await failing(async () => ({ requestId: id, lines: 'x' })), null);
+  assert.equal(await failing(() => new Promise(() => undefined), 5), null); assert.equal(cancelled, 1, 'a read that is too slow is told to stop');
+  assert.equal(labelReads, 0);
+  assert.equal(await createPageLines143(null)(image), null);
+  const reader = createPageLines143({ recognizeLines: async () => { labelReads += 1; return reply([good]); }, recognize: async () => { labelReads += 1; return reply([good]); }, cancel: async () => null }, () => id);
+  for (const bad of ['', 'https://example.com/a.jpg', 'data:image/gif;base64,AAAA', 'data:image/jpeg;base64,@@']) assert.equal(await reader(bad), null, bad);
+  assert.equal(labelReads, 0, 'something that is not a photo never reaches the plugin');
+  groups += 1; console.log('  ok 143 device read: the page method first, the label method on an older binary, and silence on any failure');
+})();
+test('143 wiring: device lines only for a photo the server did not place, after the list is shown; the label reader is untouched', () => {
+  const menu = read('src/components/wine-import/WineMenuScanner.tsx'), swift = read('ios/App/App/MatchrimOCRPlugin106.swift'), bridge = read('src/utils/nativeOcrLines143.ts');
+  // Asked once per photo, never while the list is being read, never on the web, never for a photo already placed.
+  assert.match(menu, /useEffect\(\(\) => \{\s*if \(!isNative \|\| loading \|\| convertingPdf\) return;\s*pagePhotos141\.forEach\(\(src, page\) => \{\s*if \(!src \|\| asked143\.current\.get\(page\) === src\) return;\s*const rows = scannedWines\.filter\(wine => menuPage141\(wine\) === page\);\s*if \(!rows\.length \|\| menuPhotoReliable141\(rows\.map\(wine => wine\.posicion\)\)\) return;\s*asked143\.current\.set\(page, src\);\s*queue143\.current = queue143\.current\.then\(\(\) => readPageLines143\(src\)\)/);
+  assert.equal((menu.match(/readPageLines143\(/g) || []).length, 1, 'one place asks the phone for lines');
+  // The photo opens on the 141 rule (70 % placed, each on its own line), fed with the device's places.
+  assert.match(menu, /const matched = matchMenuPositions143\(found\.read\.lines, rows\.map\(menuRow143\), found\.read\.aspect\);\s*if \(menuPhotoReliable141\(matched\.map\(menuPositionBox143\)\)\) places\.set\(page, matched\);/);
+  assert.match(menu, /if \(!found\?\.read \|\| found\.src !== pagePhotos141\[page\]\) return;/, 'lines belong to the photo they were read from');
+  assert.match(menu, /const device = photo\.reliable \? null : devicePlaces143\.get\(photo\.page\) \?\? null;/);
+  assert.match(menu, /return \{ \.\.\.photo, reliable: photo\.reliable \|\| device !== null,\s*places143: spreadMenuBadges143\(spots, MENU_BADGE_HEIGHT143 \/ \(photoHeights143\[photo\.page\] \|\| 520\) \* 100\) \};/);
+  assert.match(menu, /const menuRow143 = \(wine: ScannedWine\): MenuRow143 => \(\{ name: wine\.nombre, producer: wine\.productor, source: wine\.texto_fuente,/);
+  assert.match(menu, /asked143\.current\.clear\(\); setPageLines143\(\[\]\); setPhotoHeights143\(\{\}\); \};/, 'a new list starts without the old lines');
+  // The badge: 28 pt, bold white on emerald-700 or stone-700, 2 px white ring, soft shadow; a tap opens the wine.
+  assert.match(menu, /const place = badge && photo\.places143\[row\];/);
+  assert.match(menu, /className=\{`absolute flex h-\[28px\] -translate-y-1\/2 items-center rounded-full px-\[8px\] text-\[13px\] font-bold leading-none tabular-nums text-white shadow-md ring-2 ring-white \$\{badge\.tone === 'good' \? 'bg-emerald-700' : 'bg-stone-700'\}`\}/);
+  // The photo never leaves the phone: the bridge only talks to the plugin.
+  assert.doesNotMatch(bridge, /fetch\(|supabase|https?:\/\//i); assert.match(bridge, /registerPlugin<PageLinesTransport143>\('MatchrimOCR'\)/);
+  // Native: one more method, registered; it shares the single worker and reads with the same Vision request.
+  assert.match(swift, /CAPPluginMethod\(name: "recognizeLines", returnType: CAPPluginReturnPromise\)/);
+  const added = swift.slice(swift.indexOf('// 143:'));
+  assert(added.length > 500 && added.length < swift.length);
+  assert.match(added, /@objc func recognizeLines\(_ call: CAPPluginCall\)/); assert.match(added, /guard activeJob == nil else \{\s*stateLock\.unlock\(\)\s*call\.reject\(Failure\.busy\.message, Failure\.busy\.rawValue\)/);
+  assert.match(added, /let request = try makeRequest\(\)/); assert.match(added, /"source": "apple-vision-device-lines"/);
+  assert.doesNotMatch(added, /URLSession|URLRequest|http|VNRecognizeTextRequest\(\)|usesCPUOnly|customWords/i);
+  // The label reader (the release gate reads labels through it) keeps its method, its limits and its result.
+  const label = swift.slice(0, swift.indexOf('// 133:'));
+  assert.doesNotMatch(label, /143|recognizeLines\(_/);
+  for (const kept of ['private static let maxLines = 100', 'guard !text.isEmpty, seen.insert(text).inserted else { continue }', '"source": "apple-vision-device",', '"customWords": [String](),',
+    'let thumbnail = Self.enlargedForText(try decode(image, for: job))', 'for (observation, region) in observed where lines.count < Self.maxLines {']) assert(label.includes(kept), kept);
+  assert.equal(swift.split('request.customWords = []').length, 2); assert.equal(swift.split('request.usesCPUOnly = true').length, 2);
+});
+console.log(`check-matchrim-menu139: ${groups}/24 groups passed`);

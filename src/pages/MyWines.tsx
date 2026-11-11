@@ -2039,7 +2039,8 @@ const MyWinesForOwner = () => {
                     </CardContent>
                   </Card>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  // 143: on iOS the wines are cards with their own border, so they sit closer together than the web cards.
+                  <div className={isNative ? 'grid grid-cols-1 gap-3' : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'}
                     style={isNative ? { gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))' } : undefined}>
                     {filteredWines.map((wine, index) => (
                       <NativeCellarItem98 key={wine.id} native={isNative} wine={wine} snapshot={cellarProfile} resolveImage={index < 4} sheet={isNative ? nativeSheet141(wine) : undefined}>

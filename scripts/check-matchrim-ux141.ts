@@ -29,7 +29,8 @@ test('The search filter reads the store’s subname; a saved wine’s sheet is t
   assert.match(read('src/utils/storeListing139.ts'), /test\(`\$\{row\.name\} \$\{row\.subname \?\? ''\}`\)/);
   const cellar = read('src/components/NativeCellarItem98.tsx');
   for (const id of ['native-cellar-sheet141', 'native-cellar-verdict141', 'native-cellar-rate141', 'native-cellar-more141']) assert(cellar.includes(id), id);
-  assert.match(cellar, /<NativeStoreEstimate139 identity=\{identity\}/);
+  // 143: the estimate's reasons are built from the row's own store match instead of a second NativeStoreEstimate139 lookup.
+  assert.match(cellar, /compatLines142\(ready\.dimensions\)/); assert(!cellar.includes('NativeStoreEstimate139 identity'));
   assert.match(read('src/pages/MyWines.tsx'), /Me he bebido una botella<\/Button>\}\n\s+<div className="space-y-1">\{ratingControls141\(wine\)\}<\/div>/, 'drinking a bottle stays in view');
 });
 console.log(`check-matchrim-ux141: ${groups}/3 groups passed`);

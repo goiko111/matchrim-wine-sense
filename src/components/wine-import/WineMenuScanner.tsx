@@ -93,8 +93,11 @@ import {
 import { openCamera133 } from '@/utils/nativeCamera133';
 import { ScanWaiting139 } from '@/components/ScanWaiting139';
 import { confirm135 } from '@/utils/nativeConfirm135';
-import { MENU_BADGE_WIDTH141, addToMenuTray141, menuBadge141, menuBadgePlacement141, menuPhotoReliable141, menuReadingLabel141, menuTrayFull141, menuTrayHint141,
+import { addToMenuTray141, menuBadge141, menuBadgePlacement141, menuPhotoReliable141, menuReadingLabel141, menuTrayFull141, menuTrayHint141,
   menuTrayLabel141, removeFromMenuTray141, shouldAutoRetry141, type MenuReading141 } from '@/utils/menuScan141';
+import { MENU_BADGE_HEIGHT143, MENU_BADGE_WIDTH143, matchMenuPositions143, menuBadgePlacement143, menuPositionBox143, spreadMenuBadges143,
+  type MenuPosition143, type MenuRow143 } from '@/utils/menuPositions143';
+import { readPageLines143, type PageLines143 } from '@/utils/nativeOcrLines143';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { estimateListing139, storeAffinity139, type ListingMatch139 } from '@/utils/storeListing139';
 import { menuCoverageWarning139, menuLikelyText140, menuLineKey139, menuRowName140, menuVerdict139, menuVerdictCertain140, menuVerdictScore140,
@@ -154,6 +157,10 @@ const menuBottlePrice140 = (wine: ScannedWine): number | null => {
 // 141: with several photos in one list each row remembers the photo it was read from: its position is a place on
 // that photo only. A row without the mark is from the first photo.
 const menuPage141 = (wine: ScannedWine) => (wine as ScannedWine & { pagina141?: number }).pagina141 ?? 0;
+// 143: what the on-device line matcher needs from a row: the name, the row as the list prints it (kept by the reader,
+// so a name corrected by hand still finds its line), words that may sit beside the name, and every price of the row.
+const menuRow143 = (wine: ScannedWine): MenuRow143 => ({ name: wine.nombre, producer: wine.productor, source: wine.texto_fuente,
+  extra: [wine.region, ...(wine.uvas ?? [])], prices: [wine.precio, wine.precios?.copa, wine.precios?.botella] });
 const formatWineType = (type?: string | null) => type?.trim() || 'Sin tipo';
 const formatPrice = formatMenuPriceAmount;
 
@@ -312,6 +319,14 @@ const WineMenuScannerSession = ({
   const partials141 = useRef<(PartialMenuReading95 | null)[]>([]);
   const edited141 = useRef(new Set<number>());
   const wines141 = useRef<ScannedWine[]>([]);
+  // 143: on a real list the server's read did not place the wines and the photo never opened. For such a photo the
+  // phone finds the printed lines itself (on the device, after the list is on screen); kept with the photo they
+  // belong to, so a new photo in the same slot never borrows them. The photo's height on screen sizes the badges.
+  const [pageLines143, setPageLines143] = useState<({ src: string; read: PageLines143 | null } | undefined)[]>([]);
+  const [photoHeights143, setPhotoHeights143] = useState<Record<number, number>>({});
+  const asked143 = useRef(new Map<number, string>());
+  const queue143 = useRef<Promise<void>>(Promise.resolve());
+  const alive143 = useRef(true);
   const estimateRequested139 = useRef(new Set<string>());
   const estimateAbort139 = useRef<AbortController | null>(null);
   const addCameraInputRef139 = useRef<HTMLInputElement>(null);
@@ -503,10 +518,41 @@ const WineMenuScannerSession = ({
   // 141: the tray holds object URLs for its thumbnails; they are released when a photo leaves it.
   const clearTray141 = () => { trayRef141.current.forEach(item => URL.revokeObjectURL(item.url)); trayRef141.current = []; setTray141([]); };
   const reset141 = () => { partials141.current = []; pageCount141.current = 0; edited141.current.clear();
-    setPagePhotos141([]); setPreviewPage141(0); setMissing141([]); };
+    setPagePhotos141([]); setPreviewPage141(0); setMissing141([]);
+    asked143.current.clear(); setPageLines143([]); setPhotoHeights143({}); };
   const pendingPages141 = () => Array.from(partials141.current, (partial, page) => partial?.failed.length ? page : -1).filter(page => page >= 0);
   useLayoutEffect(() => { wines141.current = scannedWines; }, [scannedWines]);
   useEffect(() => () => trayRef141.current.forEach(item => URL.revokeObjectURL(item.url)), []);
+  useEffect(() => { alive143.current = true; return () => { alive143.current = false; }; }, []);
+  // 143: only once the list is on screen (never during the read, so the list is not delayed), only for a photo whose
+  // wines the server did not place, once per photo, one photo at a time (the plugin has a single worker). No plugin,
+  // a failure or too few lines found: nothing changes and nothing is said.
+  useEffect(() => {
+    if (!isNative || loading || convertingPdf) return;
+    pagePhotos141.forEach((src, page) => {
+      if (!src || asked143.current.get(page) === src) return;
+      const rows = scannedWines.filter(wine => menuPage141(wine) === page);
+      if (!rows.length || menuPhotoReliable141(rows.map(wine => wine.posicion))) return;
+      asked143.current.set(page, src);
+      queue143.current = queue143.current.then(() => readPageLines143(src)).then(read => {
+        if (alive143.current && asked143.current.get(page) === src) setPageLines143(current => { const next = current.slice(); next[page] = { src, read }; return next; });
+      }, () => undefined);
+    });
+  }, [isNative, loading, convertingPdf, pagePhotos141, scannedWines]);
+  // 143: each wine's printed line on its photo. Kept only when 70 % or more of the photo's wines found theirs, the
+  // rule the server's positions already had to pass; matched again whenever a row changes.
+  const devicePlaces143 = useMemo(() => {
+    const places = new Map<number, (MenuPosition143 | null)[]>();
+    if (!isNative) return places;
+    pageLines143.forEach((found, page) => {
+      if (!found?.read || found.src !== pagePhotos141[page]) return;
+      const rows = scannedWines.filter(wine => menuPage141(wine) === page);
+      if (!rows.length || menuPhotoReliable141(rows.map(wine => wine.posicion))) return;
+      const matched = matchMenuPositions143(found.read.lines, rows.map(menuRow143), found.read.aspect);
+      if (menuPhotoReliable141(matched.map(menuPositionBox143))) places.set(page, matched);
+    });
+    return places;
+  }, [isNative, pageLines143, pagePhotos141, scannedWines]);
 
   useEffect(() => {
     scanAbortRef.current?.abort();
@@ -1681,7 +1727,21 @@ const WineMenuScannerSession = ({
   const photoPages141 = !isNative ? [] : Array.from(pagePhotos141, (src, page) => ({ src, page,
     rows: scannedWines.flatMap((wine, index) => menuPage141(wine) === page ? [{ wine, index }] : []) }))
     .filter(photo => photo.src && photo.rows.length > 0)
-    .map(photo => ({ ...photo, reliable: menuPhotoReliable141(photo.rows.map(row => row.wine.posicion)) }));
+    .map(photo => ({ ...photo, reliable: menuPhotoReliable141(photo.rows.map(row => row.wine.posicion)) }))
+    // 143: a photo the server did not place opens too when the phone found its lines. Every badge gets its spot here:
+    // ending before the price, off the name, and moved sideways when the lines are closer than a badge is tall.
+    .map(photo => {
+      const device = photo.reliable ? null : devicePlaces143.get(photo.page) ?? null;
+      const spots = !photo.reliable && !device ? [] : photo.rows.map(({ wine, index }, order) => {
+        const badge = menuBadge141(verdicts139[index]);
+        if (!badge) return null;
+        const width = badge.text.length > 2 ? MENU_BADGE_WIDTH143.range : MENU_BADGE_WIDTH143.score, found = device?.[order] ?? null;
+        const place = found ? menuBadgePlacement143(found, width) : device ? null : menuBadgePlacement141(wine.posicion, width);
+        return place ? { ...place, width, nameEnd: found?.nameEnd ?? null } : null;
+      });
+      return { ...photo, reliable: photo.reliable || device !== null,
+        places143: spreadMenuBadges143(spots, MENU_BADGE_HEIGHT143 / (photoHeights143[photo.page] || 520) * 100) };
+    });
   const photosOpen141 = !loading && !convertingPdf && photoPages141.some(photo => photo.reliable);
   const renderMenuPreview = (image: ReactNode) => nativeResultPreview ? (
     <div className="min-w-0 space-y-[8px]" data-testid="native-menu-image-review">
@@ -2493,14 +2553,19 @@ const WineMenuScannerSession = ({
               {photoPages141.map((photo, order) => <figure key={photo.page} className={`min-w-0 shrink-0 snap-center ${photoPages141.length > 1 ? 'w-[92%]' : 'w-full'}`}>
                 <div className="max-h-[62vh] overflow-y-auto rounded-lg border border-stone-200 bg-stone-100">
                   <div className="relative">
-                    <img src={photo.src} alt={`Foto ${order + 1} de la carta`} className="block h-auto w-full" />
-                    {photo.reliable && photo.rows.map(({ wine, index }) => {
+                    {/* 143: the photo's height on screen tells how much of it a 28 pt badge takes. */}
+                    <img src={photo.src} alt={`Foto ${order + 1} de la carta`} className="block h-auto w-full" onLoad={(event) => {
+                      const height = event.currentTarget.clientHeight;
+                      if (height > 0) setPhotoHeights143(current => current[photo.page] === height ? current : { ...current, [photo.page]: height });
+                    }} />
+                    {photo.reliable && photo.rows.map(({ wine, index }, row) => {
                       const badge = menuBadge141(verdicts139[index]);
-                      // The badge ends where the line ends (the price column), so the wine's name stays readable.
-                      const place = badge && menuBadgePlacement141(wine.posicion, badge.text.length > 2 ? MENU_BADGE_WIDTH141.range : MENU_BADGE_WIDTH141.score);
+                      // The badge ends where the leader ends (before the price), so the wine's name stays readable.
+                      // 143: large enough to read over paper at arm's length: 28 pt, white ring, soft shadow.
+                      const place = badge && photo.places143[row];
                       return badge && place ? <button key={`${wine.nombre}-${index}-badge141`} type="button" data-testid="native-menu-badge141"
                         aria-label={`${shownName140(wine, verdicts139[index]).name}: ${badge.text} sobre 100`}
-                        className={`absolute flex h-[20px] -translate-y-1/2 items-center rounded-full px-[6px] text-[11px] font-bold leading-none tabular-nums text-white shadow ring-1 ring-white ${badge.tone === 'good' ? 'bg-emerald-700' : 'bg-stone-600'}`}
+                        className={`absolute flex h-[28px] -translate-y-1/2 items-center rounded-full px-[8px] text-[13px] font-bold leading-none tabular-nums text-white shadow-md ring-2 ring-white ${badge.tone === 'good' ? 'bg-emerald-700' : 'bg-stone-700'}`}
                         style={{ right: `${place.right}%`, top: `${place.top}%` }} onClick={(event) => openWineDetail(index, event.currentTarget)}>{badge.text}</button> : null;
                     })}
                   </div>

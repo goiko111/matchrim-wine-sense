@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Dialog from '@radix-ui/react-dialog';
-import { ArrowRight, Camera, ChevronRight, RefreshCw, ScrollText, Search, UserRound, Utensils, X } from 'lucide-react';
+import { ArrowRight, Camera, ChevronRight, RefreshCw, ScrollText, Search, UserRound, Utensils, X, ThumbsDown, ThumbsUp } from 'lucide-react';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { NativeStoreSearch139 } from '@/components/NativeStoreSearch139';
 import type { PublicGlobalRow103 } from '@/utils/nativeGlobalCatalogue103';
 import { getScannedWines139, SCANNED_WINES_EVENT139, type ScannedWine139 } from '@/utils/scannedWines139';
 import { searchStore139 } from '@/utils/storeListing139';
+import { saveStoreWine142 } from '@/components/NativeSaveChoice142';
 import { formatWineType } from '@/utils/wineFormatters';
 import { NativeSearchWine138 } from '@/components/NativeSearchWine138';
 import { buildNativeRecommendation95 } from '@/utils/nativeRecommendation95';
@@ -46,6 +47,8 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
   const [scanned, setScanned] = useState<ScannedWine139[]>(() => getScannedWines139(ownerId));
   useEffect(() => { const refresh = () => setScanned(getScannedWines139(ownerId)); refresh();
     window.addEventListener(SCANNED_WINES_EVENT139, refresh); return () => window.removeEventListener(SCANNED_WINES_EVENT139, refresh); }, [ownerId]);
+  const [liked, setLiked] = useState<{ key: string; ok: boolean } | null>(null);
+  const scanKey = (wine: ScannedWine139) => `${wine.name}|${wine.winery}|${wine.vintage}|${wine.at}`;
   const fold = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
   const openScanned = async (wine: ScannedWine139) => {
     const rows = await searchStore139(wine.name).catch(() => []);
@@ -95,15 +98,25 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
           </button>)}
       </nav>
 
-      {/* 142: the wine just scanned is the first thing on Home, one tap from its sheet (where it can be saved or rated). */}
-      {scanned.length > 0 && <button type="button" className="mb-7 flex w-full items-center gap-4 rounded-2xl border border-stone-200 bg-white p-4 text-left shadow-sm active:bg-stone-50" onClick={() => void openScanned(scanned[0])} data-testid="native-home-last-scan142">
-        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-900"><Camera className="h-5 w-5" aria-hidden="true" /></span>
-        <span className="min-w-0 flex-1"><span className="block text-xs font-semibold uppercase tracking-wide text-stone-500">Tu último escaneo</span>
-          <span className="mt-0.5 block break-words text-base font-semibold leading-6">{scanned[0].name}</span>
-          <span className="block break-words text-xs text-stone-500">{[scanned[0].winery, scanned[0].vintage].filter(Boolean).join(' · ')}</span></span>
-        {scanned[0].score !== null && <span className={`shrink-0 rounded-full px-3 py-1.5 text-lg font-bold ${scanned[0].score >= 65 ? 'bg-emerald-50 text-emerald-900' : 'bg-stone-100 text-stone-800'}`}>{scanned[0].score}<span className="text-xs font-semibold">/100</span></span>}
-        <ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
-      </button>}
+      {/* 142: the wine just scanned is the first thing on Home. 143: with «¿Te gustó?» right there, as the owner saw in Vivino. */}
+      {scanned.length > 0 && <div className="mb-7 rounded-2xl border border-stone-200 bg-white shadow-sm" data-testid="native-home-last-scan142">
+        <button type="button" className="flex w-full items-center gap-4 p-4 text-left active:bg-stone-50" onClick={() => void openScanned(scanned[0])}>
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-900"><Camera className="h-5 w-5" aria-hidden="true" /></span>
+          <span className="min-w-0 flex-1"><span className="block text-xs font-semibold uppercase tracking-wide text-stone-500">Tu último escaneo</span>
+            <span className="mt-0.5 block break-words text-base font-semibold leading-6">{scanned[0].name}</span>
+            <span className="block break-words text-xs text-stone-500">{[scanned[0].winery, scanned[0].vintage].filter(Boolean).join(' · ')}</span></span>
+          {scanned[0].score !== null && <span className={`shrink-0 rounded-full px-3 py-1.5 text-lg font-bold ${scanned[0].score >= 65 ? 'bg-emerald-50 text-emerald-900' : 'bg-stone-100 text-stone-800'}`}>{scanned[0].score}<span className="text-xs font-semibold">/100</span></span>}
+          <ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
+        </button>
+        {ownerId && <div className="flex min-h-14 items-center justify-between gap-3 border-t border-stone-100 px-4 py-2" data-testid="native-home-liked143">
+          {liked?.key === scanKey(scanned[0]) ? <p role="status" className="text-sm font-semibold text-emerald-900">{liked.ok ? 'Guardado en Probados' : 'No se ha podido guardar'}</p>
+            : <><span className="text-sm text-stone-700">¿Lo has probado? ¿Te gustó?</span>
+              <span className="flex gap-2">{([['not_for_me', ThumbsDown, 'No me gustó'], ['love', ThumbsUp, 'Me gustó']] as const).map(([rating, Icon, label]) =>
+                <button key={rating} type="button" aria-label={label} className="flex h-11 w-11 items-center justify-center rounded-full border border-stone-300 bg-white text-stone-800 active:bg-stone-100"
+                  onClick={() => void saveStoreWine142(ownerId, { name: scanned[0].name, producer: scanned[0].winery, vintage: scanned[0].vintage }, 'tasted', rating).then(ok => setLiked({ key: scanKey(scanned[0]), ok }))}>
+                  <Icon className="h-5 w-5" aria-hidden="true" /></button>)}</span></>}
+        </div>}
+      </div>}
       <section aria-labelledby="home-wines98-title">
         <div className="mb-3 flex items-center justify-between gap-3">
           <h2 id="home-wines98-title" className="text-xl font-semibold">{hasProfile ? 'Para tu paladar' : 'Primero, tus gustos'}</h2>

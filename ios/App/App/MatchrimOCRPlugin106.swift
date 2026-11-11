@@ -14,7 +14,8 @@ public final class MatchrimOCRPlugin106: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "recognize", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "cancel", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "takePhoto", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "confirm", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "confirm", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "recognizeLines", returnType: CAPPluginReturnPromise)
     ]
 
     private static let maxEncodedBytes = 18 * 1024 * 1024
@@ -511,6 +512,92 @@ extension MatchrimOCRPlugin106 {
             alert.addAction(UIAlertAction(title: cancel, style: .cancel) { _ in call.resolve(["value": false]) })
             alert.addAction(UIAlertAction(title: ok, style: destructive ? .destructive : .default) { _ in call.resolve(["value": true]) })
             top.present(alert, animated: true)
+        }
+    }
+}
+
+// 143: the wine-list scanner paints each wine's score on the photo of the list and needs to know where every
+// printed line is. `recognize` is made for one label: it keeps 100 lines and drops a text it has already seen, so
+// on a list the second «18.00€» and the bottom of a long page are lost. This method reads one whole page once and
+// returns every line with its box (fractions of the page, top-left origin, as `recognize`). `recognize`, its limits
+// and its result are untouched; both share the single worker and the 20 s deadline. Nothing leaves the device.
+extension MatchrimOCRPlugin106 {
+    private static let maxPageLines143 = 400
+
+    @objc func recognizeLines(_ call: CAPPluginCall) {
+        let started = DispatchTime.now()
+        guard let requestID = call.getString("requestId"), let id = Self.uuid(requestID) else {
+            call.reject(Failure.invalidRequestID.message, Failure.invalidRequestID.rawValue)
+            return
+        }
+        guard let image = call.getString("image") else {
+            call.reject(Failure.invalidImage.message, Failure.invalidImage.rawValue)
+            return
+        }
+
+        stateLock.lock()
+        guard activeJob == nil else {
+            stateLock.unlock()
+            call.reject(Failure.busy.message, Failure.busy.rawValue)
+            return
+        }
+        let job = Job(id: id, requestID: requestID, call: call, started: started)
+        let timer = DispatchSource.makeTimerSource(queue: deadlineQueue)
+        timer.schedule(deadline: job.deadline, leeway: .nanoseconds(0))
+        timer.setEventHandler { [weak self, weak job] in
+            guard let self = self, let job = job else { return }
+            self.settle(job, as: .failure(.timeout))
+        }
+        job.timer = timer
+        activeJob = job
+        timer.resume()
+        stateLock.unlock()
+
+        workerQueue.async {
+            autoreleasepool {
+                self.runLines143(job, image: image)
+            }
+            self.releaseWorker(job)
+        }
+    }
+
+    private func runLines143(_ job: Job, image: String) {
+        do {
+            try checkpoint(job)
+            let page = try decode(image, for: job)
+            try checkpoint(job)
+            let request = try makeRequest()
+            try attach(request, to: job)
+            try checkpoint(job)
+            do {
+                try VNImageRequestHandler(cgImage: page, orientation: .up, options: [:]).perform([request])
+            } catch {
+                throw Failure.recognitionFailed
+            }
+            try checkpoint(job)
+            var lines: [[String: Any]] = []
+            for observation in request.results ?? [] where lines.count < Self.maxPageLines143 {
+                guard let candidate = observation.topCandidates(1).first,
+                      let box = Self.topLeftBox(observation.boundingBox) else { continue }
+                let text = Self.boundedText(candidate.string)
+                guard !text.isEmpty else { continue }
+                let confidence = candidate.confidence.isFinite ? min(1, max(0, candidate.confidence)) : 0
+                lines.append(["text": text, "confidence": Double(confidence), "box": box])
+            }
+            let totalMs = Double(DispatchTime.now().uptimeNanoseconds - job.started.uptimeNanoseconds) / 1_000_000
+            settle(job, as: .success([
+                "source": "apple-vision-device-lines",
+                "requestId": job.requestID,
+                "width": page.width,
+                "height": page.height,
+                "totalMs": totalMs,
+                "revision": request.revision,
+                "lines": lines
+            ]))
+        } catch let failure as Failure {
+            settle(job, as: .failure(failure))
+        } catch {
+            settle(job, as: .failure(.recognitionFailed))
         }
     }
 }
