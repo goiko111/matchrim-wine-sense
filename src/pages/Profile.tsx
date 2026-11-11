@@ -12,6 +12,7 @@ import { Wine, User, History, Droplet, Diamond, Zap, Grape, Flame, Clock, Beaker
 import { supabase } from '@/integrations/supabase/client';
 import AppNav from '@/components/AppNav';
 import NativeAccountActions from '@/components/NativeAccountActions';
+import { NativeProfileBody138 } from '@/components/NativeProfileBody138';
 import NativeProfileLayout133 from '@/components/NativeProfileLayout133';
 import MatchrimPassport from '@/components/MatchrimPassport';
 import WineCard from '@/components/WineCard';
@@ -819,6 +820,79 @@ const Profile = () => {
     </main>
   </>;
 
+  const learningDetails138 = learnedProfile ? (
+<details className="border-y border-stone-200 py-3" data-testid="native-profile-learning133">
+                  <summary aria-label={`Aprendizaje: ${learnedProfile.samples} vino${learnedProfile.samples !== 1 ? 's' : ''} valorado${learnedProfile.samples !== 1 ? 's' : ''}`}
+                    className="min-h-11 cursor-pointer py-2 text-sm font-semibold text-stone-800">
+                    <span aria-hidden="true">Aprendizaje: {learnedProfile.samples} vino{learnedProfile.samples !== 1 ? 's' : ''} valorado{learnedProfile.samples !== 1 ? 's' : ''}</span>
+                  </summary>
+                  <p className="mt-2 text-sm text-stone-700">{confidenceCopy}</p>
+                  <p className="mt-2 text-sm text-stone-700">Confianza del aprendizaje: {learnedProfile.confidence}%.</p>
+                  <p className="mt-2 text-sm text-stone-700">Tu test inicial se conserva; estas valoraciones ajustan el perfil activo.</p>
+                </details>
+  ) : null;
+  const passportDetails138 = passportProfile ? (
+              <details className="border-y border-stone-200 py-3" data-testid="native-profile-passport133">
+                <summary aria-label="Mi código Matchrim" className="min-h-11 cursor-pointer py-2 text-sm font-semibold text-stone-800"><span aria-hidden="true">Mi código Matchrim</span></summary>
+                <MatchrimPassport profile={passportProfile} />
+              </details>
+  ) : null;
+  const winesSection138 = (
+              <div>
+                <h3 className={isNative ? 'mb-3 text-lg font-semibold text-stone-950' : 'mb-6 flex items-center gap-2 text-2xl font-bold text-red-900'}>
+                  {!isNative && <Wine className="h-6 w-6" />}
+                  {isNative ? 'Vinos para probar' : 'Vinos Winerim que deberías probar'}
+                </h3>
+                {loadingProfileWinerimWines ? (
+                  <Card>
+                    <CardContent className="flex items-center justify-center py-8 text-gray-600">
+                      Cargando vinos Winerim...
+                    </CardContent>
+                  </Card>
+                ) : profileWinerimError ? (
+                  <Card className="border-amber-200 bg-amber-50">
+                    <CardContent className="py-6 text-sm text-amber-900">
+                      <p>{profileWinerimError}</p>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="mt-4 bg-white"
+                        disabled={loadingProfileWinerimWines}
+                        onClick={() => setProfileWinerimRetryKey((value) => value + 1)}
+                      >
+                        {loadingProfileWinerimWines ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                        Reintentar carga
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : nextWinerimWines.length > 0 ? (
+                  <>
+                    <p className="mb-4 max-w-2xl text-sm leading-6 text-stone-600">
+                      Estos salen de Winerim para tu perfil y no aparecen ya en Mis Vinos. Son candidatos para guardar en {isNative ? 'Por probar' : 'Quiero Probar'}.
+                    </p>
+                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                    {nextWinerimWines.slice(0, MAX_PROFILE_WINE_CARDS).map((wine, index) => (
+                      <WineCard key={wine.id} wine={wine} index={index} profile={activeDisplayProfile} />
+                    ))}
+                    </div>
+                  </>
+                ) : profileWinerimWines.length > 0 ? (
+                  <Card className="border-green-200 bg-green-50">
+                    <CardContent className="py-6 text-sm leading-6 text-green-950">
+                      Winerim sí ha devuelto vinos para tu perfil, pero todos los primeros candidatos ya están en Mis Vinos.
+                      Escanea una carta o usa Encontrar vino para descubrir opciones nuevas.
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card>
+                    <CardContent className="py-6 text-sm text-gray-600">
+                      Todavía no hay vinos Winerim disponibles para este perfil.
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+  );
+
   return (
     <>
       <AppNav />
@@ -827,9 +901,9 @@ const Profile = () => {
         style={isNative ? { paddingBottom: 'calc(6rem + env(safe-area-inset-bottom))' } : undefined}>
       <NativeAccountActions />
       <div className="mb-6">
-        <h1 className={`text-3xl font-bold text-red-900 mb-2 flex items-center gap-2${isNative ? ' matchrim-profile-title133' : ''}`}>
-          <User className="w-8 h-8" />
-          Mi Perfil
+        <h1 className={`text-3xl font-bold mb-2 flex items-center gap-2${isNative ? ' text-stone-950 matchrim-profile-title133' : ' text-red-900'}`}>
+          {!isNative && <User className="w-8 h-8" />}
+          {isNative ? 'Mi perfil' : 'Mi Perfil'}
         </h1>
         {!isNative && <p className="text-gray-600">
           Gestiona tu información y visualiza tu perfil sensorial Winerim
@@ -841,7 +915,7 @@ const Profile = () => {
         <TabsList className="mb-8 grid h-auto min-h-11 w-full grid-cols-2 p-0">
           <TabsTrigger value="profile" className="flex min-h-11 items-center gap-2">
             <Wine className="w-4 h-4" />
-            Perfil Sensorial
+            {isNative ? 'Mis gustos' : 'Perfil Sensorial'}
           </TabsTrigger>
           <TabsTrigger value="history" className="flex min-h-11 items-center gap-2">
             <History className="w-4 h-4" />
@@ -850,20 +924,33 @@ const Profile = () => {
         </TabsList>
 
         <TabsContent value="profile">
-          {baseProfile ? (
+          {baseProfile ? isNative ? (
+            <NativeProfileBody138
+              sentence={tasteWords137
+                // 137: the bars alone did not tell a newcomer what they like; say it in one sentence first.
+                ? <p data-testid="profile-taste-words137">En pocas palabras: te gustan los vinos {tasteWords137.rows[0].phrase}, con {tasteWords137.rows[1].phrase} y {tasteWords137.rows[4].phrase}.</p>
+                : <p>Estos son tus gustos según tu test.</p>}
+              mainStyle={styleDetails[0]?.name ?? wineStyles[0] ?? null}
+              rows={tasteWords137?.rows ?? []}
+              baseValues={currentDisplayProfile ? { potente: currentDisplayProfile.potente, acidez: currentDisplayProfile.acidez, dulce: currentDisplayProfile.dulce, tanico: currentDisplayProfile.tanico, afrutado: currentDisplayProfile.afrutado } : null}
+              learnedSamples={learnedProfile?.samples ?? 0}
+              styles={styleDetails}
+              grapes={(winerimGrapeRecommendations.length > 0 ? winerimGrapeRecommendations.map(grape => grape.name) : recommendedGrapes).slice(0, 8)}
+              regions={[...new Set([...winerimRegionRecommendations.map(region => region.region), ...recommendedRegions.map(region => region.split('(')[0].trim())])].slice(0, 10)}
+              wines={winesSection138}
+              learning={learnedProfile && learnedProfile.samples > 0 ? learningDetails138 : null}
+              passport={passportProfile ? passportDetails138 : null}
+              profileName={profileName}
+              onStyle={name => navigate(`/wine-styles/${generateSlug(name)}`)}
+              onAllStyles={() => navigate('/wine-styles')}
+              onRetake={() => navigate('/matchrim?retake=1')}
+            />
+          ) : (
             <div className="space-y-8">
               {!isNative && passportProfile && <MatchrimPassport profile={passportProfile} />}
 
               {learnedProfile && learnedProfile.samples > 0 && (
-                isNative ? <details className="border-y border-stone-200 py-3" data-testid="native-profile-learning133">
-                  <summary aria-label={`Aprendizaje: ${learnedProfile.samples} vino${learnedProfile.samples !== 1 ? 's' : ''} valorado${learnedProfile.samples !== 1 ? 's' : ''}`}
-                    className="min-h-11 cursor-pointer py-2 text-sm font-semibold text-stone-800">
-                    <span aria-hidden="true">Aprendizaje: {learnedProfile.samples} vino{learnedProfile.samples !== 1 ? 's' : ''} valorado{learnedProfile.samples !== 1 ? 's' : ''}</span>
-                  </summary>
-                  <p className="mt-2 text-sm text-stone-700">{confidenceCopy}</p>
-                  <p className="mt-2 text-sm text-stone-700">Confianza del aprendizaje: {learnedProfile.confidence}%.</p>
-                  <p className="mt-2 text-sm text-stone-700">Tu test inicial se conserva; estas valoraciones ajustan el perfil activo.</p>
-                </details> : <Card className="border-amber-200 bg-amber-50/70">
+                isNative ? null : <Card className="border-amber-200 bg-amber-50/70">
                   <CardContent className="p-5">
                     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                       <div>
@@ -893,8 +980,6 @@ const Profile = () => {
                 <h3 className="text-xl font-semibold text-red-800 flex items-center gap-2">
                   <span className="text-2xl">📊</span> Tu perfil sensorial
                 </h3>
-                {/* 137: the bars alone did not tell a newcomer what they like; say it in one sentence first. */}
-                {isNative && tasteWords137 && <p className="mt-3 text-base leading-7 text-stone-800" data-testid="profile-taste-words137">En pocas palabras: te gustan los vinos {tasteWords137.rows[0].phrase}, con {tasteWords137.rows[1].phrase} y {tasteWords137.rows[4].phrase}.</p>}
                 {hasLearnedProfile && (
                   <div className="mt-3 flex flex-wrap gap-2">
                     <Badge variant="outline" className="border-stone-300 text-stone-700">
@@ -957,10 +1042,6 @@ const Profile = () => {
               </div>
 
               {/* Wine Styles Section */}
-              {isNative && passportProfile && <details className="border-y border-stone-200 py-3" data-testid="native-profile-passport133">
-                <summary aria-label="Mi código Matchrim" className="min-h-11 cursor-pointer py-2 text-sm font-semibold text-stone-800"><span aria-hidden="true">Mi código Matchrim</span></summary>
-                <MatchrimPassport profile={passportProfile} />
-              </details>}
               {styleDetails.length > 0 && (
                 <div>
                   <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
@@ -1193,59 +1274,7 @@ const Profile = () => {
               )}
 
               {/* Tip Section */}
-              <div>
-                <h3 className="mb-6 flex items-center gap-2 text-2xl font-bold text-red-900">
-                  <Wine className="h-6 w-6" />
-                  Vinos Winerim que deberías probar
-                </h3>
-                {loadingProfileWinerimWines ? (
-                  <Card>
-                    <CardContent className="flex items-center justify-center py-8 text-gray-600">
-                      Cargando vinos Winerim...
-                    </CardContent>
-                  </Card>
-                ) : profileWinerimError ? (
-                  <Card className="border-amber-200 bg-amber-50">
-                    <CardContent className="py-6 text-sm text-amber-900">
-                      <p>{profileWinerimError}</p>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="mt-4 bg-white"
-                        disabled={loadingProfileWinerimWines}
-                        onClick={() => setProfileWinerimRetryKey((value) => value + 1)}
-                      >
-                        {loadingProfileWinerimWines ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                        Reintentar carga
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ) : nextWinerimWines.length > 0 ? (
-                  <>
-                    <p className="mb-4 max-w-2xl text-sm leading-6 text-stone-600">
-                      Estos salen de Winerim para tu perfil y no aparecen ya en Mis Vinos. Son candidatos para guardar en {isNative ? 'Por probar' : 'Quiero Probar'}.
-                    </p>
-                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                    {nextWinerimWines.slice(0, MAX_PROFILE_WINE_CARDS).map((wine, index) => (
-                      <WineCard key={wine.id} wine={wine} index={index} profile={activeDisplayProfile} />
-                    ))}
-                    </div>
-                  </>
-                ) : profileWinerimWines.length > 0 ? (
-                  <Card className="border-green-200 bg-green-50">
-                    <CardContent className="py-6 text-sm leading-6 text-green-950">
-                      Winerim sí ha devuelto vinos para tu perfil, pero todos los primeros candidatos ya están en Mis Vinos.
-                      Escanea una carta o usa Encontrar vino para descubrir opciones nuevas.
-                    </CardContent>
-                  </Card>
-                ) : (
-                  <Card>
-                    <CardContent className="py-6 text-sm text-gray-600">
-                      Todavía no hay vinos Winerim disponibles para este perfil.
-                    </CardContent>
-                  </Card>
-                )}
-              </div>
+              {winesSection138}
 
               <div className="bg-red-50 p-5 rounded-lg border border-red-200">
                 <div className="flex items-start gap-3">

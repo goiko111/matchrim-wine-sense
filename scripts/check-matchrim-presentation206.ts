@@ -24,7 +24,7 @@ let checks = 0;
 const check = (name: string, action: () => void) => { action(); checks++; console.log('PASS', name); };
 check('One consumer answer, two reasons at most, one friction, exact score', () => {
   const tree = render(input), visible = text(tree, true);
-  assert.match(visible, /Puede encajar contigo/); assert.match(visible, /76/);
+  assert.match(visible, /Probablemente te guste/); assert.match(visible, /76/);
   assert.match(visible, /Es más seco de lo que sueles elegir/);
   assert(nodes(tree).filter(n => n.type === 'li').length <= 2);
   assert.equal(nodes(tree).filter(n => n.props['data-testid'] === 'native-affinity-summary').length, 1);
@@ -32,7 +32,7 @@ check('One consumer answer, two reasons at most, one friction, exact score', () 
 check('Personal ratings override headline, score and model reasons, without erasing detail', () => {
   for (const [rating, title] of [['not_for_me', 'no es para ti'], ['love', 'te encanta'], ['ok', 'correcto']]) {
     const tree = render({ ...input, personalRating: rating }), visible = text(tree, true);
-    assert.match(visible, new RegExp(title)); assert.doesNotMatch(visible, /76|Puede encajar contigo|Por qué encaja|Es más seco/);
+    assert.match(visible, new RegExp(title)); assert.doesNotMatch(visible, /76|Probablemente te guste|Por qué encaja|Es más seco/);
     assert.match(text(tree), /Encaje de estilo: ≈\s*76\s*\/100/);
   }
 });

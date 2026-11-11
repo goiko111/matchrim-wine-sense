@@ -24,7 +24,7 @@ const dictionaries: Dictionaries = {
     'auth.forgotPassword': '¿Olvidaste tu contraseña?',
     'auth.tagline': 'Descubre tu perfil de vino perfecto',
     'auth.signupHint': 'Crea tu cuenta para guardar tus gustos y tus vinos',
-    'auth.signupNote': 'Son tres pasos cortos.',
+    'auth.signupNote': 'Solo email y contraseña.',
     'recover.title': 'Recuperar contraseña',
     'recover.subtitle': 'Te enviaremos un enlace para crear una nueva contraseña.',
     'recover.send': 'Enviar enlace',

@@ -35,7 +35,7 @@ check('Null/nonfinite/out-of-range score is not a visible zero or an empty badge
 check('An actual zero score is a valid low-fit result, not missing', () => {
   const value = buildConsumerAffinity({ ...base, score: 0 });
   assert.equal(value.state, 'ready');
-  if (value.state === 'ready') assert.equal(value.title, 'Se aleja de tus gustos actuales');
+  if (value.state === 'ready') assert.equal(value.title, 'No es tu estilo');
 });
 check('Owner sensory control explains dry versus sweet preference in ordinary language', () => {
   const value = buildConsumerAffinity({ ...base, score: calculateLocalMatchrimAffinity(profile, attributes) });

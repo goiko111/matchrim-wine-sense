@@ -4,7 +4,8 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { ArrowRight, Camera, ChevronRight, RefreshCw, ScrollText, Search, UserRound, Utensils, X } from 'lucide-react';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
-import { NativeWineSearch97 } from '@/components/wine-import/NativeWineSearch97';
+import { NativeWineSearch97, type NativeWine } from '@/components/wine-import/NativeWineSearch97';
+import { NativeSearchWine138 } from '@/components/NativeSearchWine138';
 import { buildNativeRecommendation95 } from '@/utils/nativeRecommendation95';
 import { createNativeWineDraft98, stashSignedOutWineDraft134 } from '@/utils/nativeWineDraft98';
 import { buildAuthRedirectPath } from '@/utils/navigation';
@@ -32,6 +33,12 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const [allOpen, setAllOpen] = useState(false);
+  const [searched, setSearched] = useState<NativeWine | null>(null);
+  const saveSearched = (wine: NativeWine) => {
+    setSearched(null);
+    if (!ownerId) stashSignedOutWineDraft134(wine);
+    navigate(ownerId ? '/my-wines/add' : buildAuthRedirectPath('/my-wines/add'), ownerId ? { state: createNativeWineDraft98(wine, ownerId) } : undefined);
+  };
   const allButton = useRef<HTMLButtonElement>(null);
   // 136: one row renderer for Home and the full list ("Ver todos" used to jump to the restaurant screen).
   const renderWine = (wine: WinerimWineWithMatch, fromList = false) => {
@@ -123,18 +130,15 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
     <Dialog.Root open={searchOpen} onOpenChange={setSearchOpen}>
       <Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" /><Dialog.Content className="fixed inset-0 z-50 mx-auto flex w-full max-w-xl flex-col bg-white px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]">
         <div className="mb-4 flex shrink-0 items-center justify-between gap-3"><Dialog.Title className="text-lg font-semibold">Buscar vino</Dialog.Title><Dialog.Close className="flex h-11 w-11 items-center justify-center" aria-label="Cerrar búsqueda"><X className="h-5 w-5" /></Dialog.Close></div>
-        <Dialog.Description className="sr-only">Busca una referencia del catálogo y revisa los datos antes de guardarla.</Dialog.Description>
+        <Dialog.Description className="sr-only">Busca un vino y mira cuánto encaja con tus gustos.</Dialog.Description>
         <div className="min-h-0 overflow-y-auto"><NativeWineSearch97 onManualEntry={name => {
           setSearchOpen(false);
           if (!ownerId) stashSignedOutWineDraft134({ name });
           navigate(ownerId ? '/my-wines/add' : buildAuthRedirectPath('/my-wines/add'), ownerId ? { state: createNativeWineDraft98({ name }, ownerId) } : undefined);
-        }} onSelectWine={wine => {
-          setSearchOpen(false);
-          if (!ownerId) stashSignedOutWineDraft134(wine);
-          navigate(ownerId ? '/my-wines/add' : buildAuthRedirectPath('/my-wines/add'), ownerId ? { state: createNativeWineDraft98(wine, ownerId) } : undefined);
-        }} /></div>
+        }} onSelectWine={wine => { setSearchOpen(false); setSearched(wine); }} /></div>
       </Dialog.Content></Dialog.Portal>
     </Dialog.Root>
+    <NativeSearchWine138 wine={searched} profile={profile} onClose={() => setSearched(null)} onSave={saveSearched} />
     {detail}<MobileBottomNav />
   </div>;
 };

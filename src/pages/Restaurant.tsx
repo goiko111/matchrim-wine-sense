@@ -29,6 +29,7 @@ import { calculateLocalMatchrimAffinity } from '@/utils/wineAffinityExplanation'
 import { AffinityExplanation } from '@/components/AffinityExplanation';
 import { NativeAffinitySummary } from '@/components/NativeAffinitySummary';
 import { buildConsumerAffinity } from '@/utils/consumerAffinity95';
+import { findStoreEstimate138 } from '@/utils/storeEstimate138';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { openCamera133 } from '@/utils/nativeCamera133';
 
@@ -91,6 +92,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
   const [preview, setPreview] = useState<{ name: string; image?: string; text?: string } | null>(null);
   const [sheet, setSheet] = useState<OriginalSheet | null>(null);
   const [profile, setProfile] = useState<ScanProfileSnapshot | null>(null);
+  const [personal138, setPersonal138] = useState<Record<string, 'loading' | (ReturnType<typeof buildConsumerAffinity> & { estimated?: boolean })>>({});
   const [sheetRow, setSheetRow] = useState('');
   const request = useRef<AbortController | null>(null);
   const mounted = useRef(true);
@@ -315,6 +317,38 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
       {origin.row.description && <p>{origin.row.description}</p>}
       {origin.row.notes?.map((note, noteIndex) => <p key={noteIndex}>{note}</p>)}
     </li>)}</ul>;
+  // 138: a pairing said which wine suits the dish but not whether this person would like the wine. Each paired
+  // wine with a Winerim sheet now also carries the personal verdict; nothing is sent beyond the public sheet lookup.
+  const pairedWineKey = native ? [...new Set(state.pairs.map(pair => pair.wineId))].slice(0, 10).join('|') : '';
+  useEffect(() => {
+    if (!pairedWineKey) { setPersonal138({}); return; }
+    const controller = new AbortController();
+    const rows = pairedWineKey.split('|').flatMap(id => activeRestaurantRows91(stateRef.current).filter(row => row.id === id && row.kind === 'wine'));
+    setPersonal138(Object.fromEntries(rows.map(row => [row.id, 'loading' as const])));
+    void (async () => {
+      const snapshot = await loadMatchrimScanProfile(user?.id ?? null, controller.signal).catch(() => null);
+      for (const row of rows) {
+        if (controller.signal.aborted) return;
+        const found = await lookupWinerimOriginalSheet({ name: row.name, producer: row.producer, vintage: row.vintage }, controller.signal).catch(() => null);
+        if (controller.signal.aborted) return;
+        let result = nativeRestaurantAffinity95(row, found?.status === 'verified' ? found.sheet : null, snapshot?.profile ?? null), estimated = false;
+        if (result.state === 'pending' && result.reason !== 'profile') {
+          // Most everyday wines are only in Winerim's public store: use its data as a labelled estimate (see storeEstimate138).
+          const estimate = await findStoreEstimate138(row, controller.signal).catch(() => null);
+          if (controller.signal.aborted) return;
+          if (estimate) { estimated = true; result = buildConsumerAffinity({ catalogIdentityLinked: true, sensorySource: 'catalog', attributes: estimate.attributes,
+            profile: snapshot?.profile ?? null, score: calculateLocalMatchrimAffinity(snapshot?.profile ?? null, estimate.attributes) }); }
+        }
+        setPersonal138(current => ({ ...current, [row.id]: { ...result, estimated } }));
+      }
+    })();
+    return () => controller.abort();
+  }, [pairedWineKey, user?.id]);
+  const personalScore138 = (wineId: string) => { const value = personal138[wineId]; return value && value !== 'loading' && value.state === 'ready' ? value.score : -1; };
+  const bandRank138 = (band: string) => band === 'strong' ? 0 : band === 'possible' ? 1 : 2;
+  const orderedPairs138 = native ? state.pairs.map((pair, index) => ({ pair, index }))
+    .sort((a, b) => bandRank138(a.pair.band) - bandRank138(b.pair.band) || personalScore138(b.pair.wineId) - personalScore138(a.pair.wineId) || a.index - b.index)
+    .map(item => item.pair) : state.pairs;
   const attributes = !native && sheet?.sensoryAttributes ? { potencia: sheet.sensoryAttributes.power, acidez: sheet.sensoryAttributes.acidity,
     dulzura: sheet.sensoryAttributes.sweetness, taninos: sheet.sensoryAttributes.tannin, afrutado: sheet.sensoryAttributes.fruity } : null;
   const affinity = calculateLocalMatchrimAffinity(profile?.profile, attributes);
@@ -416,12 +450,18 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
         </details>
         {(!foods.length || !wines.length) && <p className="mt-3 text-sm text-slate-500">{foods.length ? 'Falta la carta de vinos: añádela en el paso 2.' : wines.length ? 'Falta la carta de platos: añádela en el paso 1.' : 'Primero añade la carta de platos (paso 1) y la de vinos (paso 2).'}</p>}
         {(restaurantCoverage91(state, 'food').partial || restaurantCoverage91(state, 'wine').partial) && <p className="mt-4 border-l-2 border-amber-500 pl-3 text-sm text-amber-900">Las cartas tienen páginas pendientes o lecturas parciales. Las combinaciones solo cubren lo leído, no toda la oferta.</p>}
-        <p className="mt-4 text-sm text-slate-500">Maridajes orientativos hechos con IA: dicen qué va bien con el plato, no si el vino te gustará a ti (para eso, toca «¿Me gustará este vino?»). Confirma alergias, precio y disponibilidad con el restaurante.</p>
+        <p className="mt-4 text-sm text-slate-500">{native ? 'Maridajes orientativos hechos con IA. Bajo cada vino te decimos además si encaja con tus gustos, cuando tenemos su ficha. Confirma alergias, precio y disponibilidad con el restaurante.' : 'Maridajes orientativos hechos con IA: dicen qué va bien con el plato, no si el vino te gustará a ti (para eso, toca «¿Me gustará este vino?»). Confirma alergias, precio y disponibilidad con el restaurante.'}</p>
         {state.pairWarnings.map((warning, index) => <p key={index} className="mt-2 text-sm text-amber-800">{warning}</p>)}
-        <ol ref={pairsList} tabIndex={-1} aria-label="Combinaciones" className="mt-5 divide-y divide-slate-200 border-t border-slate-200 focus:outline-none">{state.pairs.map((pair, index) => {
+        <ol ref={pairsList} tabIndex={-1} aria-label="Combinaciones" className="mt-5 divide-y divide-slate-200 border-t border-slate-200 focus:outline-none">{orderedPairs138.map((pair, index) => {
           const food = foods.find(row => row.id === pair.foodId), wine = wines.find(row => row.id === pair.wineId);
           if (!food || !wine) return null;
           return <li key={`${pair.foodId}-${pair.wineId}`} className="py-5"><p className="text-xs font-semibold text-red-900">{index + 1} · {pair.band === 'strong' ? 'Muy buena pareja' : pair.band === 'possible' ? 'Puede funcionar' : 'Faltan datos para valorarlo'}</p><h2 className="mt-2 break-words text-lg font-semibold">{food.name}</h2><p className="mt-1 break-words font-medium text-slate-700">{wine.name}{wine.vintage ? ` · ${wine.vintage}` : ''}</p>
+            {native && (() => { const mine = personal138[wine.id];
+              return <p className={`mt-2 text-sm ${mine && mine !== 'loading' && mine.state === 'ready' && mine.score >= 65 ? 'font-semibold text-emerald-800' : 'text-slate-600'}`} data-testid="restaurant-personal138">
+                {!mine ? 'Para ti: toca «¿Me gustará este vino?» para saberlo.' : mine === 'loading' ? 'Para ti: mirando si encaja con tus gustos…'
+                  : mine.state === 'ready' ? `Para ti: ${mine.title.toLowerCase()} · ≈${mine.score}/100${mine.estimated ? ' (estimación)' : ''}`
+                    : mine.reason === 'profile' ? 'Para ti: haz el test de gustos y te diremos si te gustará.'
+                      : 'Para ti: no tenemos la ficha de este vino, así que no podemos saberlo.'}</p>; })()}
             {wine.manual && <p className="mt-2 text-xs text-slate-500">Vino añadido por ti; puede no estar en la carta.</p>}
             <h3 className="mt-4 text-sm font-semibold">Por qué van bien juntos</h3><ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">{pair.positives.map((text, i) => <li key={i}>{text}</li>)}</ul>
             {pair.frictions.length > 0 && <><h3 className="mt-3 text-sm font-semibold">A tener en cuenta</h3><ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-700">{pair.frictions.map((text, i) => <li key={i}>{text}</li>)}</ul></>}

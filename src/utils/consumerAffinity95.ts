@@ -74,8 +74,9 @@ export const buildConsumerAffinity = (input: ConsumerAffinityInput): ConsumerAff
   const mostDifferent = [...insights.insights].sort((a, b) => b.delta - a.delta)[0];
   return {
     state: 'ready', score,
-    title: score >= 80 ? 'Encaja mucho contigo' : score >= 65 ? 'Puede encajar contigo'
-      : score >= 45 ? 'Es una opción para explorar' : 'Se aleja de tus gustos actuales',
+    // 138: the title answers "¿me gustará?" directly; "una opción para explorar" did not.
+    title: score >= 80 ? 'Muy de tu estilo' : score >= 65 ? 'Probablemente te guste'
+      : score >= 45 ? 'Puede que sí, puede que no' : 'No es tu estilo',
     // A very low tannin is true of every white or sparkling wine: say it last, after what sets this wine apart.
     matches: [...insights.positives].sort((a, b) => Number(a.key === 'tanico' && a.wineValue <= 2.3) - Number(b.key === 'tanico' && b.wineValue <= 2.3))
       .slice(0, 2).map(insight => aligned[insight.key][level(insight.wineValue)]),

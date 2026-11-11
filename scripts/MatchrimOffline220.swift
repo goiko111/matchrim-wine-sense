@@ -429,7 +429,7 @@ final class MatchrimOffline220Tests: XCTestCase {
         let skip = app.buttons["Saltar guía"].firstMatch
         if skip.waitForExistence(timeout: 2) && skip.isHittable { skip.tap() }
         XCTAssertTrue(app.buttons["Buscar vino o bodega"].waitForExistence(timeout: 15))
-        try tap(app.links["Bodega"].firstMatch, app)
+        try tap(app.links["Mis vinos"].firstMatch, app)
         XCTAssertTrue(app.secureTextFields["Contraseña"].firstMatch.waitForExistence(timeout: 10))
         capture(app, "bodega-anonymous-auth-boundary")
         try tap(app.buttons["Volver"].firstMatch, app)

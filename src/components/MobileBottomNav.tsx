@@ -50,7 +50,8 @@ const MobileBottomNav = () => {
     { path: '/', label: t('nav.home'), icon: Home },
     { path: '/inteligencia-liquida', label: 'aiRIM', icon: BrainCircuit },
     { path: '/escanear', label: 'Escanear', icon: ScanLine },
-    { path: '/my-wines', label: 'Bodega', icon: Wine, requiresAuth: true },
+    // 138: the screen is titled «Mis vinos» and most people do not own a cellar; the tab says the same on iOS.
+    { path: '/my-wines', label: isNative ? 'Mis vinos' : 'Bodega', icon: Wine, requiresAuth: true },
     {
       path: '/profile',
       label: 'Perfil',

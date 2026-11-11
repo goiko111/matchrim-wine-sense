@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import BasicInfoStep from '@/components/registration/BasicInfoStep';
 import WinePreferencesStep from '@/components/registration/WinePreferencesStep';
 import FinalStep from '@/components/registration/FinalStep';
+import QuickRegistration138 from '@/components/registration/QuickRegistration138';
 import { useRegistrationData } from '@/hooks/useRegistrationData';
 import { buildAuthRedirectPath, getSafeRedirectPath } from '@/utils/navigation';
 import { useI18n } from '@/i18n';
@@ -71,6 +72,7 @@ const Registration = () => {
   };
 
   const renderStep = () => {
+    if (isNative) return <QuickRegistration138 data={registrationData} onUpdate={updateRegistrationData} onComplete={handleComplete} isSaving={isSaving} />;
     switch (currentStep) {
       case 1:
         return (
@@ -133,7 +135,7 @@ const Registration = () => {
             className="h-16 w-16 mx-auto mb-4"
           />
           <h1 className="text-3xl font-bold text-red-900">Matchrim</h1>
-          <p className="text-red-600">Descubre tu perfil de vino perfecto</p>
+          <p className="text-red-600">{isNative ? 'Para guardar tus gustos y tus vinos' : 'Descubre tu perfil de vino perfecto'}</p>
         </div>
 
         {emailConfirmationAddress ? (
@@ -167,17 +169,17 @@ const Registration = () => {
           <Card className={isNative ? 'min-w-0 border-0 bg-transparent shadow-none' : undefined}>
             <CardHeader className={isNative ? 'min-w-0 p-0 pb-[16px]' : undefined}>
               <div className={isNative ? 'flex min-w-0 flex-col items-start gap-[8px]' : 'flex items-center justify-between'}>
-                <CardTitle className="text-red-900">{getStepTitle()}</CardTitle>
-                <span className="text-sm text-red-600">
+                <CardTitle className="text-red-900">{isNative ? 'Crea tu cuenta' : getStepTitle()}</CardTitle>
+                {isNative ? <span className="text-sm text-red-600">Solo email y contraseña. Menos de un minuto.</span> : <span className="text-sm text-red-600">
                   Paso {currentStep} de {totalSteps}
-                </span>
+                </span>}
               </div>
-              <div className="w-full bg-red-100 rounded-full h-2">
+              {!isNative && <div className="w-full bg-red-100 rounded-full h-2">
                 <div
                   className="bg-red-700 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${(currentStep / totalSteps) * 100}%` }}
                 />
-              </div>
+              </div>}
             </CardHeader>
             <CardContent className={isNative ? 'min-w-0 p-0' : undefined}>
               {renderStep()}
