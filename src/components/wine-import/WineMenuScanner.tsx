@@ -92,6 +92,9 @@ import {
 } from "@/utils/wineMenuScan";
 import { openCamera133 } from '@/utils/nativeCamera133';
 import { ScanWaiting139 } from '@/components/ScanWaiting139';
+import { confirm135 } from '@/utils/nativeConfirm135';
+import { MENU_BADGE_WIDTH141, addToMenuTray141, menuBadge141, menuBadgePlacement141, menuPhotoReliable141, menuReadingLabel141, menuTrayFull141, menuTrayHint141,
+  menuTrayLabel141, removeFromMenuTray141, shouldAutoRetry141, type MenuReading141 } from '@/utils/menuScan141';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { estimateListing139, storeAffinity139, type ListingMatch139 } from '@/utils/storeListing139';
 import { menuCoverageWarning139, menuLikelyText140, menuLineKey139, menuRowName140, menuVerdict139, menuVerdictCertain140, menuVerdictScore140,
@@ -148,6 +151,9 @@ const menuBottlePrice140 = (wine: ScannedWine): number | null => {
   if (evidence.service === 'glass' || evidence.service === 'both' || typeof evidence.prices?.glass === 'number') return null;
   return typeof evidence.price === 'number' ? evidence.price : null;
 };
+// 141: with several photos in one list each row remembers the photo it was read from: its position is a place on
+// that photo only. A row without the mark is from the first photo.
+const menuPage141 = (wine: ScannedWine) => (wine as ScannedWine & { pagina141?: number }).pagina141 ?? 0;
 const formatWineType = (type?: string | null) => type?.trim() || 'Sin tipo';
 const formatPrice = formatMenuPriceAmount;
 
@@ -290,6 +296,22 @@ const WineMenuScannerSession = ({
   const [menuPages139, setMenuPages139] = useState(1);
   // 140: which lines have their other wines open. Closed until asked: six options under every line made the list endless.
   const [openChoices140, setOpenChoices140] = useState<Set<string>>(new Set());
+  // 141: photos gathered before the read (iOS), and what each read left: one photo and one set of unread parts per
+  // page, so a page can be shown with its numbers and asked again on its own.
+  const [tray141, setTray141] = useState<readonly { file: File; url: string }[]>([]);
+  const [reading141, setReading141] = useState<MenuReading141 | null>(null);
+  const [pagePhotos141, setPagePhotos141] = useState<string[]>([]);
+  const [previewPage141, setPreviewPage141] = useState(0);
+  const [missing141, setMissing141] = useState<number[]>([]);
+  const trayRef141 = useRef(tray141); trayRef141.current = tray141;
+  const traySource141 = useRef<'camera' | 'file'>('camera');
+  const trayRun141 = useRef<File[] | null>(null);
+  const run141 = useRef({ page: 0, replacePage: false, quiet: false });
+  const driving141 = useRef(false);
+  const pageCount141 = useRef(0);
+  const partials141 = useRef<(PartialMenuReading95 | null)[]>([]);
+  const edited141 = useRef(new Set<number>());
+  const wines141 = useRef<ScannedWine[]>([]);
   const estimateRequested139 = useRef(new Set<string>());
   const estimateAbort139 = useRef<AbortController | null>(null);
   const addCameraInputRef139 = useRef<HTMLInputElement>(null);
@@ -478,6 +500,14 @@ const WineMenuScannerSession = ({
     setIdentityHoldIndexes(new Set());
   };
 
+  // 141: the tray holds object URLs for its thumbnails; they are released when a photo leaves it.
+  const clearTray141 = () => { trayRef141.current.forEach(item => URL.revokeObjectURL(item.url)); trayRef141.current = []; setTray141([]); };
+  const reset141 = () => { partials141.current = []; pageCount141.current = 0; edited141.current.clear();
+    setPagePhotos141([]); setPreviewPage141(0); setMissing141([]); };
+  const pendingPages141 = () => Array.from(partials141.current, (partial, page) => partial?.failed.length ? page : -1).filter(page => page >= 0);
+  useLayoutEffect(() => { wines141.current = scannedWines; }, [scannedWines]);
+  useEffect(() => () => trayRef141.current.forEach(item => URL.revokeObjectURL(item.url)), []);
+
   useEffect(() => {
     scanAbortRef.current?.abort();
     lastScanInputRef.current = null;
@@ -493,6 +523,7 @@ const WineMenuScannerSession = ({
     setHasProfile(false);
     setLoading(false);
     resetEstimates139();
+    clearTray141(); reset141(); setReading141(null);
     return () => { scanAbortRef.current?.abort(); estimateAbort139.current?.abort(); lastScanInputRef.current = null; partialMenuReadingRef.current = null; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
@@ -566,7 +597,8 @@ const WineMenuScannerSession = ({
   const overlay = useOverlayViewport(scannedWines.length);
   const menuPinClusters = useMemo(() => clusterScreenOverlayPins(
     scannedWines.flatMap((wine, index) => {
-      const position = getWinePosition(wine);
+      // 141: «Ver carta» shows the last photo read; a row of another photo has no place on it.
+      const position = menuPage141(wine) === previewPage141 ? getWinePosition(wine) : null;
       return position ? [{
         key: `wine-${index}`,
         order: index,
@@ -576,7 +608,7 @@ const WineMenuScannerSession = ({
       }] : [];
     }),
     overlay.viewport,
-  ), [overlay.viewport, scannedWines]);
+  ), [overlay.viewport, scannedWines, previewPage141]);
 
   const menuDecision = useMemo(() => {
     if (scannedWines.length === 0) return null;
@@ -741,6 +773,18 @@ const WineMenuScannerSession = ({
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>, addPage = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    // 141: on iOS a photo waits in the tray, so a list of several pages is photographed first and read in one go.
+    // «Analizar la carta» comes back here with the whole tray. A PDF, «Añadir otra página» and the deterministic
+    // fixture QA build (its journeys deliver one file and expect the list) are read at once, as before.
+    const batch = trayRun141.current; trayRun141.current = null;
+    if (!batch && isNative && !addPage && !isMatchrimFixtureQaEnabled && file.type.startsWith('image/')) {
+      if (menuTrayFull141(trayRef141.current.length)) return;
+      traySource141.current = e.target === cameraInputRef.current ? 'camera' : 'file';
+      const next = addToMenuTray141(trayRef141.current, { file, url: URL.createObjectURL(file) });
+      trayRef141.current = next; setTray141(next);
+      return;
+    }
+    if (trayRef141.current.length) clearTray141();
     const append = addPage && isNative && scannedWines.length > 0 && file.type.startsWith('image/');
 
     const isImage = file.type.startsWith('image/');
@@ -789,6 +833,8 @@ const WineMenuScannerSession = ({
       // Preparation owns the single read and its preview; a second unguarded
       // reader could publish the cancelled file after this session ended.
       setPreview(null);
+      if (isNative) await readPages141(batch ?? [file], noticeGeneration, append);
+      else
       await processFile(file, 'image', noticeGeneration, 'full', append);
     }
   };
@@ -870,6 +916,11 @@ const WineMenuScannerSession = ({
       || retained.failed.length === 0)) return;
     if (isNative && readMode !== 'failed-regions') { partialMenuReadingRef.current = null; setFailedRegionCount(0); }
     if (isNative) lastScanInputRef.current = { file, type };
+    // 141: which photo of the list this read is, whether its rows replace the ones that photo already gave (a
+    // retry of its unread parts) and whether the caller announces the result itself. A new list starts from page 0.
+    const { page: page141, replacePage: replacePage141, quiet: quiet141 } = run141.current;
+    if (isNative && !append && readMode !== 'failed-regions') reset141();
+    pageCount141.current = Math.max(pageCount141.current, page141 + 1);
     // Mantener el loader activo durante todo el proceso real
     setLoading(true);
     if (!append) { setScannedWines([]); if (isNative) resetEstimates139(); }
@@ -892,11 +943,13 @@ const WineMenuScannerSession = ({
       if (scanAbortRef.current !== controller || controller.signal.aborted) return;
       const base64File = prepared.dataUrl;
       setPreview(prepared.dataUrl);
+      if (isNative) { setPreviewPage141(page141);
+        setPagePhotos141(current => { const next = current.slice(); next[page141] = prepared.dataUrl; return next; }); }
       setMenuQualityWarnings(prepared.quality.warnings);
       if (controller.signal.aborted) return;
       if (shouldRejectTextAnalysis(prepared.quality)) {
         setScanFeedback('La imagen es demasiado pequeña y desenfocada para leer la carta. Acerca la cámara o fotografía una sección con el texto enfocado.');
-        if (append) toast.error('No hemos podido leer esa página. La lista se queda como estaba.');
+        if (append && !replacePage141) toast.error('No hemos podido leer esa página. La lista se queda como estaba.');
         trackAppEvent('wine_menu_scan_quality_rejected', {
           userId: user?.id,
           metadata: {
@@ -998,6 +1051,7 @@ const WineMenuScannerSession = ({
         partialMenuReadingRef.current = failedTiles.length ? { file, ownerId: user?.id ?? null,
           successful: successfulTiles, failed: failedTiles } : null;
         setFailedRegionCount(failedTiles.length);
+        partials141.current[page141] = partialMenuReadingRef.current;
       }
       let data = resolveMenuTileResults(successfulTiles, { preserveNumericReferences: isNative, preserveServingFormats: isNative, preserveReadingAlternatives: isNative });
       if (!nativeRun && !isMatchrimFixtureQaEnabled && mayHaveUnreadMenuColumn({ ...data, layout: fullResponse?.layout }) && shouldRunRightFocusMenuScan(
@@ -1019,7 +1073,7 @@ const WineMenuScannerSession = ({
       }
       if (failedTileCount > 0) {
         if (isNative) setMenuQualityWarnings(warnings => [...warnings,
-          `${failedTileCount} de ${attemptedTileCount} zonas no se han podido leer. Conservamos lo recuperado; la carta no está completa.`]);
+          'No hemos podido leer toda la carta.']);
         data.coverage = {
           ...data.coverage,
           status: 'partial',
@@ -1069,7 +1123,12 @@ const WineMenuScannerSession = ({
         // 139: earlier pages keep their rows (and row numbers); their pins belonged to the previous photo.
         const before = append ? scannedWines.length : 0;
         const merged = append ? mergeMenuPages139<ScannedWine>(scannedWines.map(wine => ({ ...wine, posicion: null })), normalizedWines) : normalizedWines;
-        if (append) setScannedWines(current => mergeMenuPages139<ScannedWine>(current.map(wine => ({ ...wine, posicion: null })), normalizedWines));
+        // 141: each row keeps the photo it came from and its place on it. A retry of a photo's unread parts reads
+        // that whole photo again: its rows are swapped only now that the new read is in, so a failed retry loses nothing.
+        const tagged141 = normalizedWines.map(wine => ({ ...wine, pagina141: page141 }) as ScannedWine);
+        if (append && replacePage141) edited141.current.delete(page141);
+        if (append) setScannedWines(current => mergeMenuPages139<ScannedWine>(
+          replacePage141 ? current.filter(wine => menuPage141(wine) !== page141) : current, tagged141));
         else setScannedWines(normalizedWines);
         setHasProfile(Boolean(profile));
         onScanComplete?.(normalizedWines.length);
@@ -1099,14 +1158,14 @@ const WineMenuScannerSession = ({
         }
 
         if (detectionNoticeRef.current.active && detectionNoticeRef.current.generation === noticeGeneration
-          && scanAbortRef.current === controller && !controller.signal.aborted) {
+          && scanAbortRef.current === controller && !controller.signal.aborted && !quiet141) {
           const added = merged.length - before;
           detectionNoticeRef.current.id = toast.success(append ? added > 0 ? `${added} ${added === 1 ? 'vino añadido' : 'vinos añadidos'} a la lista` : 'Esa página no añade vinos nuevos'
             : isNative ? `${normalizedWines.length} ${normalizedWines.length === 1 ? 'vino leído' : 'vinos leídos'} en la carta`
             : `✨ ${normalizedWines.length} vinos detectados en la carta`);
         }
       } else if (append) {
-        toast.info('No hemos encontrado vinos en esa página. La lista se queda como estaba.');
+        if (!replacePage141) toast.info('No hemos encontrado vinos en esa página. La lista se queda como estaba.');
       } else {
         setScannedWines([]);
         setScanFeedback(data?.vinos?.length
@@ -1141,7 +1200,7 @@ const WineMenuScannerSession = ({
         },
       });
       setScanFeedback(isNative ? message : `${message}. Si la carta es grande, prueba a escanear solo una página o una sección con menos vinos.`);
-      if (append) toast.error('No hemos podido leer esa página. La lista se queda como estaba.');
+      if (append && !replacePage141) toast.error('No hemos podido leer esa página. La lista se queda como estaba.');
       if (!isNative) toast.error(message);
     } finally {
       if (nativeRun) {
@@ -1149,8 +1208,85 @@ const WineMenuScannerSession = ({
         console.info('matchrim.menu_scan.metrics', JSON.stringify(metrics));
       }
       if (scanAbortRef.current === controller) setLoading(false);
+      if (isNative && scanAbortRef.current === controller && !driving141.current) setMissing141(pendingPages141());
     }
   };
+
+  // 141: one wait for the whole list. Photos are read one after another into the same list; the parts of a photo
+  // the reader left unread are asked again once, without a question, as the end of the same wait.
+  const stopped141 = (generation: number) => Boolean(scanAbortRef.current?.signal.aborted) || !detectionNoticeRef.current.active
+    || detectionNoticeRef.current.generation !== generation;
+  const readPages141 = async (files: File[], generation: number, append: boolean) => {
+    const before = append ? wines141.current.length : 0;
+    driving141.current = true;
+    try {
+      for (let index = 0; index < files.length; index += 1) {
+        const later = append || index > 0, page = later ? pageCount141.current : 0;
+        if (index > 0) setMenuPages139(pages => pages + 1);
+        setReading141({ index, total: files.length, finishing: false });
+        run141.current = { page, replacePage: false, quiet: true };
+        await processFile(files[index], 'image', generation, 'full', later);
+        pageCount141.current = page + 1;
+        if (stopped141(generation)) return;
+        if (shouldAutoRetry141({ pending: partials141.current[page]?.failed.length ?? 0, retried: false, cancelled: false })) {
+          setReading141({ index, total: files.length, finishing: true });
+          run141.current = { page, replacePage: true, quiet: true };
+          await processFile(files[index], 'image', generation, 'failed-regions', true);
+          if (stopped141(generation)) return;
+        }
+      }
+      // The last photo's rows reach the screen on the next paint: count after it.
+      await new Promise(resolve => window.setTimeout(resolve, 80));
+      if (stopped141(generation)) return;
+      const total = wines141.current.length, added = total - before;
+      if (!total) setScanFeedback(current => current ?? 'No he encontrado vinos claros en las fotos. Prueba con una foto más cercana o con una sección más pequeña de la carta.');
+      else detectionNoticeRef.current.id = toast.success(append ? added > 0 ? `${added} ${added === 1 ? 'vino añadido' : 'vinos añadidos'} a la lista` : 'Esa página no añade vinos nuevos'
+        : `${total} ${total === 1 ? 'vino leído' : 'vinos leídos'} en la carta`);
+    } finally {
+      driving141.current = false; run141.current = { page: 0, replacePage: false, quiet: false };
+      setReading141(null); setMissing141(pendingPages141());
+    }
+  };
+  // 141: «Volver a intentar» asks again for what is still unread. It replaces the rows of that photo, so a person who
+  // corrected one of them by hand is asked first; nobody else is.
+  const retryMissing141 = async () => {
+    if (loading || savingRef.current || driving141.current) return;
+    const pages = pendingPages141();
+    if (!pages.length) { setMissing141([]); return; }
+    if (pages.some(page => edited141.current.has(page))
+      && !await confirm135('Al volver a intentar se perderán las correcciones que has hecho en esta carta.', { ok: 'Volver a intentar' })) return;
+    invalidateDetailFocus(); dismissDetectionNotice(); invalidateProfileRetry(); resetSaveBatch();
+    setScanFeedback(null); setEditingWineIndex(null); setExpandedWineActionsIndex(null); setHighlightedWineIndex(null); setSelectedPinIndex(null);
+    const generation = detectionNoticeRef.current.generation;
+    driving141.current = true;
+    try {
+      for (const page of pages) {
+        const partial = partials141.current[page];
+        if (!partial) continue;
+        partialMenuReadingRef.current = partial;
+        setReading141({ index: 0, total: 1, finishing: true });
+        run141.current = { page, replacePage: true, quiet: true };
+        await processFile(partial.file, 'image', generation, 'failed-regions', true);
+        if (stopped141(generation)) return;
+      }
+      if (pendingPages141().length) toast.info('No hemos podido leer más. Prueba con otra foto de la parte que falta.');
+      else toast.success('Lista actualizada');
+    } finally {
+      driving141.current = false; run141.current = { page: 0, replacePage: false, quiet: false };
+      setReading141(null); setMissing141(pendingPages141());
+    }
+  };
+  const analyseTray141 = () => {
+    const files = trayRef141.current.map(item => item.file);
+    if (!files.length || loading) return;
+    clearTray141();
+    trayRun141.current = files;
+    void handleFileSelect({ target: { files: [files[0]] } } as unknown as React.ChangeEvent<HTMLInputElement>);
+  };
+  const removeTrayPhoto141 = (index: number) => { const item = trayRef141.current[index]; if (!item) return;
+    URL.revokeObjectURL(item.url); const next = removeFromMenuTray141(trayRef141.current, index); trayRef141.current = next; setTray141(next); };
+  const addTrayPhoto141 = () => { if (traySource141.current === 'camera') void openCamera133(cameraInputRef.current);
+    else if (fileInputRef.current) { fileInputRef.current.value = ''; fileInputRef.current.click(); } };
 
   const retryNativeScan = (readMode: NativeMenuReadMode95) => {
     const input = lastScanInputRef.current;
@@ -1174,6 +1310,7 @@ const WineMenuScannerSession = ({
     lastScanInputRef.current = null;
     partialMenuReadingRef.current = null;
     setFailedRegionCount(0);
+    clearTray141(); reset141(); setReading141(null);
     resetSaveBatch();
     resetEstimates139();
     setPreview(null);
@@ -1207,6 +1344,7 @@ const WineMenuScannerSession = ({
   const updateScannedWine = (index: number, updates: Partial<ScannedWine>) => {
     const boundIdentity = savedCardsRef.current.get(index)?.identity ?? pendingIdentitiesRef.current.get(index);
     const currentWine = scannedWines[index];
+    if (currentWine) edited141.current.add(menuPage141(currentWine));
     if (boundIdentity && currentWine && menuCardIdentity({ ...currentWine, ...updates }) !== boundIdentity) {
       identityHoldsRef.current.add(index);
       setIdentityHoldIndexes(new Set(identityHoldsRef.current));
@@ -1537,6 +1675,14 @@ const WineMenuScannerSession = ({
   const saveWineAsFavorite = (wine: ScannedWine, index: number) => saveScannedWine(wine, index, 'wishlist', true);
 
   const nativeResultPreview = isNative && Boolean(preview) && scannedWines.length > 0 && !loading && !convertingPdf;
+  // 141: while photos wait in the tray the screen is only the tray; an earlier list comes back if the tray is emptied.
+  const trayOpen141 = isNative && tray141.length > 0 && !loading && !convertingPdf;
+  // 141: the photos that gave rows, each with its rows. A photo carries numbers only when the reader placed its wines.
+  const photoPages141 = !isNative ? [] : Array.from(pagePhotos141, (src, page) => ({ src, page,
+    rows: scannedWines.flatMap((wine, index) => menuPage141(wine) === page ? [{ wine, index }] : []) }))
+    .filter(photo => photo.src && photo.rows.length > 0)
+    .map(photo => ({ ...photo, reliable: menuPhotoReliable141(photo.rows.map(row => row.wine.posicion)) }));
+  const photosOpen141 = !loading && !convertingPdf && photoPages141.some(photo => photo.reliable);
   const renderMenuPreview = (image: ReactNode) => nativeResultPreview ? (
     <div className="min-w-0 space-y-[8px]" data-testid="native-menu-image-review">
       <div className="flex justify-end gap-[8px]">
@@ -2058,7 +2204,10 @@ const WineMenuScannerSession = ({
 
       {/* Scanner Section */}
       <section aria-labelledby="wine-menu-upload-title">
-          <div className={nativeResultPreview ? "matchrim-scan-stage min-w-0 rounded-lg p-[12px] text-left text-white" : preview || loading || convertingPdf
+          <div className={trayOpen141 ? "min-w-0 rounded-lg border border-slate-200 bg-white p-4 shadow-sm"
+            // 141: the wait is the screen, not a small dark box: it takes the height there is, with the card in the middle.
+            : isNative && (loading || convertingPdf) ? "flex min-h-[calc(100dvh-16rem)] min-w-0 flex-col justify-center"
+            : nativeResultPreview ? "matchrim-scan-stage min-w-0 rounded-lg p-[12px] text-left text-white" : preview || loading || convertingPdf
             ? "matchrim-scan-stage rounded-lg p-4 text-center text-white"
             : "rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:p-5"}
           >
@@ -2084,7 +2233,29 @@ const WineMenuScannerSession = ({
               <input ref={addFileInputRef139} type="file" accept="image/*" onChange={event => void handleFileSelect(event, true)} className="hidden" disabled={loading} />
             </>}
 
-	            {(preview || convertingPdf) && !loading ? renderMenuPreview(
+	            {trayOpen141 ? (
+              <div className="min-w-0 space-y-4 text-left" data-testid="native-menu-tray141">
+                <div className="min-w-0">
+                  <h2 id="wine-menu-upload-title" className="text-lg font-bold text-slate-950">{menuTrayLabel141(tray141.length)}</h2>
+                  <p className="mt-1 text-sm leading-5 text-slate-600">{menuTrayHint141(tray141.length)}</p>
+                </div>
+                <ul className="flex min-w-0 gap-3 overflow-x-auto">
+                  {tray141.map((item, index) => <li key={item.url} className="relative h-[112px] w-[84px] shrink-0">
+                    <img src={item.url} alt={`Foto ${index + 1}`} className="h-full w-full rounded-md border border-slate-200 object-cover" />
+                    <button type="button" aria-label={`Quitar la foto ${index + 1}`} className="matchrim-pressable absolute right-0 top-0 flex h-[44px] w-[44px] items-start justify-end p-[4px]"
+                      onClick={() => removeTrayPhoto141(index)}>
+                      <span className="flex h-[24px] w-[24px] items-center justify-center rounded-full bg-stone-950/85 text-white"><X aria-hidden="true" style={{ width: 14, height: 14 }} /></span>
+                    </button>
+                  </li>)}
+                </ul>
+                <div className="grid min-w-0 grid-cols-1 gap-2">
+                  <Button type="button" className="matchrim-pressable h-auto min-h-12 gap-2 whitespace-normal bg-red-900 text-white hover:bg-red-800" data-testid="native-menu-analyse141"
+                    onClick={analyseTray141}>Analizar la carta</Button>
+                  <Button type="button" variant="outline" className="matchrim-pressable h-auto min-h-12 gap-2 whitespace-normal border-slate-300 bg-white text-slate-950 hover:bg-slate-50"
+                    disabled={menuTrayFull141(tray141.length)} onClick={addTrayPhoto141}><Camera className="h-4 w-4 shrink-0" aria-hidden="true" />Añadir otra foto</Button>
+                </div>
+              </div>
+            ) : (preview || convertingPdf) && !loading ? renderMenuPreview(
 	              <div className="space-y-4">
 	                <div className="relative inline-block max-w-full">
 		                  {preview ? (
@@ -2154,7 +2325,7 @@ const WineMenuScannerSession = ({
 	                    <X className="h-4 w-4" />
 	                  </Button>}
 	                </div>
-	                {preview && scannedWines.length > 0 && (
+	                {preview && scannedWines.length > 0 && (!isNative || scannedWines.some((wine) => menuPage141(wine) === previewPage141 && getWinePosition(wine))) && (
 		                  <div className="mx-auto max-w-2xl rounded-md border border-white/10 bg-white/8 p-3 text-left text-xs text-white/72">
 	                    {scannedWines.some((wine) => getWinePosition(wine)) ? (
 	                      <p>
@@ -2169,14 +2340,17 @@ const WineMenuScannerSession = ({
 	                )}
 	              </div>
             ) : (loading || convertingPdf) && isNative ? (
-              <div className="space-y-4">
-                <ScanWaiting139 className="text-left" steps={MENU_STEPS139} current={convertingPdf || scanPhase !== 'ranking' ? 0 : 1} />
+              <div className="min-w-0 space-y-4" data-testid="native-menu-waiting141">
+                {/* 141: «esta pantalla es como muy pequeña»: larger steps and fact; the first step says which photo is being read. */}
+                <ScanWaiting139 className="p-5 text-left [&_li]:text-[17px] [&_li]:leading-6 [&_[data-testid=scan-fact139]]:min-h-[7rem] [&_[data-testid=scan-fact139]]:text-lg [&_[data-testid=scan-fact139]]:leading-7"
+                  steps={[menuReadingLabel141(reading141), MENU_STEPS139[1], MENU_STEPS139[2]]}
+                  current={convertingPdf || scanPhase !== 'ranking' || Boolean(reading141 && reading141.index < reading141.total - 1) ? 0 : 1} />
                 <p className="sr-only" aria-live="off" data-testid="menu-scan-progress">{Math.floor((nativeScanMetrics?.elapsedMs ?? 0) / 1000)} s</p>
-                <Button type="button" variant="outline" className="min-h-11 border-white/25 bg-transparent text-white hover:bg-white/10 hover:text-white" onClick={() => {
+                <Button type="button" variant="outline" aria-label="Cancelar análisis" className="min-h-12 w-full gap-2 border-stone-300 bg-white text-base text-stone-900 hover:bg-stone-50" onClick={() => {
                   partialMenuReadingRef.current = null; setFailedRegionCount(0);
                   scanAbortRef.current?.abort();
                 }}>
-                  <X className="mr-2 h-4 w-4" /> Cancelar análisis
+                  <X className="h-4 w-4" aria-hidden="true" />Cancelar
                 </Button>
               </div>
             ) : loading || convertingPdf ? (
@@ -2273,7 +2447,7 @@ const WineMenuScannerSession = ({
 	        </div>
 	      )}
 
-	      {scanFeedback && scannedWines.length === 0 && !loading && (
+	      {scanFeedback && scannedWines.length === 0 && !loading && !trayOpen141 && (
         <Card className="rounded-lg border-amber-200 bg-amber-50">
           <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -2310,8 +2484,32 @@ const WineMenuScannerSession = ({
       )}
 
       {/* Results Section */}
-      {scannedWines.length > 0 && (
+      {scannedWines.length > 0 && !trayOpen141 && (
         <div ref={resultsRef} className="scroll-mt-24 space-y-4 break-words">
+          {/* 141: the photo with each wine's number where the list prints it. Only when the reader placed the wines:
+              a number next to the wrong line is worse than none, and then the photo stays closed in «Ver carta». */}
+          {isNative && photosOpen141 && <section aria-label="La carta con tu afinidad" className="min-w-0 space-y-2" data-testid="native-menu-photos141">
+            <div className="flex min-w-0 snap-x snap-mandatory gap-2 overflow-x-auto">
+              {photoPages141.map((photo, order) => <figure key={photo.page} className={`min-w-0 shrink-0 snap-center ${photoPages141.length > 1 ? 'w-[92%]' : 'w-full'}`}>
+                <div className="max-h-[62vh] overflow-y-auto rounded-lg border border-stone-200 bg-stone-100">
+                  <div className="relative">
+                    <img src={photo.src} alt={`Foto ${order + 1} de la carta`} className="block h-auto w-full" />
+                    {photo.reliable && photo.rows.map(({ wine, index }) => {
+                      const badge = menuBadge141(verdicts139[index]);
+                      // The badge ends where the line ends (the price column), so the wine's name stays readable.
+                      const place = badge && menuBadgePlacement141(wine.posicion, badge.text.length > 2 ? MENU_BADGE_WIDTH141.range : MENU_BADGE_WIDTH141.score);
+                      return badge && place ? <button key={`${wine.nombre}-${index}-badge141`} type="button" data-testid="native-menu-badge141"
+                        aria-label={`${shownName140(wine, verdicts139[index]).name}: ${badge.text} sobre 100`}
+                        className={`absolute flex h-[20px] -translate-y-1/2 items-center rounded-full px-[6px] text-[11px] font-bold leading-none tabular-nums text-white shadow ring-1 ring-white ${badge.tone === 'good' ? 'bg-emerald-700' : 'bg-stone-600'}`}
+                        style={{ right: `${place.right}%`, top: `${place.top}%` }} onClick={(event) => openWineDetail(index, event.currentTarget)}>{badge.text}</button> : null;
+                    })}
+                  </div>
+                </div>
+                {photoPages141.length > 1 && <figcaption className="mt-1 text-center text-xs text-stone-500">Foto {order + 1} de {photoPages141.length}</figcaption>}
+              </figure>)}
+            </div>
+            <p className="text-xs text-stone-500">Toca un número para ver ese vino.</p>
+          </section>}
           {/* 137: the answer first; reading details and tools follow. */}
               {isNative && menuDecision && <section className="min-w-0 space-y-3 border-y border-stone-200 py-4" aria-label="Tu elección en esta carta" data-testid="native-menu-decision">
                 {menuDecision.best ? <>
@@ -2356,14 +2554,12 @@ const WineMenuScannerSession = ({
           {isNative && nativeScanMetrics?.outcome === 'completed' && <p className="sr-only" data-testid="menu-scan-metrics">
             {Math.round(nativeScanMetrics.elapsedMs / 1000)} s · {nativeScanMetrics.requests} {nativeScanMetrics.requests === 1 ? 'solicitud' : 'solicitudes'} de lectura
           </p>}
-          {isNative && menuPages139 === 1 && failedRegionCount > 0 && !loading && <div className="min-w-0 space-y-2 border-l-2 border-amber-500 pl-[12px]">
-            <p className="text-sm text-stone-700">Se conservan las zonas ya leídas. El reintento actualizará la lista y sustituirá las correcciones manuales de esta lectura.</p>
-            <Button type="button" variant="outline" disabled={Boolean(savingWineKey)}
-              className="h-auto min-h-[44px] min-w-0 w-full flex-col gap-[4px] whitespace-normal px-[12px] py-[10px]"
-              onClick={() => retryNativeScan('failed-regions')}>
-              <RefreshCw aria-hidden="true" className="shrink-0" style={{ width: 20, height: 20 }} />
-              <span className="min-w-0 w-full text-center">{failedRegionCount === 1 ? 'Reintentar la zona pendiente' : `Reintentar ${failedRegionCount} zonas pendientes`}</span>
-            </Button>
+          {/* 141: «¿eso qué es?». Unread parts were already asked again once during the wait; what is still missing
+              is one plain line and one action, with no reading jargon. */}
+          {isNative && missing141.length > 0 && !loading && <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1" data-testid="native-menu-missing141">
+            <p className="min-w-0 flex-1 text-sm text-stone-700">Puede que falten vinos de la carta.</p>
+            <Button type="button" variant="outline" disabled={Boolean(savingWineKey)} className="h-auto min-h-[44px] shrink-0 gap-2 whitespace-normal px-[12px]"
+              onClick={() => void retryMissing141()}><RefreshCw aria-hidden="true" className="shrink-0" style={{ width: 18, height: 18 }} />Volver a intentar</Button>
           </div>}
           <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div>
@@ -2795,6 +2991,7 @@ const WineMenuScannerSession = ({
                         if (savingRef.current || savedCardsRef.current.has(selectedPinIndex) || unconfirmedRef.current.has(selectedPinIndex)
                           || identityHoldsRef.current.has(selectedPinIndex)) return;
                         const identity = menuCardIdentity(selectedPinWine);
+                        edited141.current.add(menuPage141(selectedPinWine));
                         setScannedWines(current => current.map((wine, index) => index === selectedPinIndex && menuCardIdentity(wine) === identity
                           ? confirmedMenuCatalogIdentity95(wine, sheet, scanProfile?.profile ?? null) ?? wine : wine));
                       }}

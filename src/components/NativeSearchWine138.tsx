@@ -6,7 +6,7 @@ import { usableStoreSensory138 } from '@/utils/storeEstimate138';
 import { storeAffinity139 } from '@/utils/storeListing139';
 import { NativeAffinitySummary } from '@/components/NativeAffinitySummary';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
-import { NativeWineSave98 } from '@/components/NativeWineSave98';
+import { NativeQuickSave141 } from '@/components/NativeQuickSave141';
 import { WinerimFactsList140 } from '@/components/NativeWinerimFacts140';
 import { ArrowLeft } from 'lucide-react';
 
@@ -51,7 +51,7 @@ export const NativeSearchWine138 = ({ wine, profile, onClose, backLabel }: Props
               <p className="mt-2 text-sm leading-6 text-stone-600">Sin ellos no podemos decirte cuánto encaja contigo. No significa que no te vaya a gustar. Puedes guardarlo y valorarlo cuando lo pruebes.</p>
             </div>}
             <div className="mt-4"><WinerimFactsList140 row={wine} /></div>
-            <NativeWineSave98 wine={{ name, winery: wine.winery, vintage: wine.vintage ?? undefined }} />
+            <NativeQuickSave141 wine={{ name, producer: wine.winery, vintage: wine.vintage, region: wine.region, country: wine.country, photo: wine.photo, storeId: wine.id, storeSlug: wine.slugname }} />
           </div>}
         </div>
       </Dialog.Content>

@@ -557,6 +557,9 @@ const MyWinesForOwner = () => {
         && (!controller.signal.aborted || timedOut);
 	    setLoading(true);
       setWineLoadFailed(false);
+      // 141: on iOS the section counts waited for the whole list to arrive before being asked for; they are
+      // an independent read, so both now travel together (the list aborted the previous count just above).
+      if (isNative) void loadSectionCounts();
 	    try {
 	      let query = supabase.from("user_wines").select("*").eq("user_id", ownerId);
       
@@ -580,7 +583,7 @@ const MyWinesForOwner = () => {
       if (error) throw error;
       setWines(((data as UserWine[]) || []).map(normalizeUserWine));
       loadedSection134.current = `${ownerId}:${statusFilter}`;
-      void loadSectionCounts();
+      if (!isNative) void loadSectionCounts();
     } catch (error) {
       if (!isCurrent()) return;
       console.error("Error loading wines:", error);
@@ -593,6 +596,9 @@ const MyWinesForOwner = () => {
 
 	  const loadLearningWines = async () => {
 	    if (!user || !ownerLifetime.current.active) return;
+      // 141: iOS never shows the learning panel this query feeds, yet every visit downloaded all rated wines
+      // (with their JSON) and only then asked for the taste profile. On iOS the profile is now asked for at once.
+      if (isNative) { void loadCellarProfile(); return; }
       const generation = ownerLifetime.current.generation;
       learningLoadController.current?.abort();
       const controller = new AbortController();
@@ -1502,6 +1508,91 @@ const MyWinesForOwner = () => {
     );
   }
 
+  // 141: the three rating buttons are the same element on the web card and in the iOS sheet, which now places
+  // them right under the verdict; one definition keeps the writes (handleRating) identical in both.
+  const ratingControls141 = (wine: UserWine) => <>
+                          {wine.rating && (
+                            <Button variant="ghost" className="min-h-11 text-slate-600" disabled={savingWineActions.has(wine.id)} aria-busy={savingWineActions.has(wine.id)} onClick={() => handleRating(wine.id, null)}>
+                              Quitar valoración
+                            </Button>
+                          )}
+                          {isNative && !wine.rating && (wine.status === 'tasted' || wine.status === 'collection' || wine.status === 'wishlist') && (
+                            <p className="pt-2 text-sm font-semibold text-slate-900">¿Lo has probado? Dinos qué te pareció<span className="mt-1 block text-xs font-normal leading-5 text-slate-600">Cada valoración afina lo que te recomendamos.</span></p>
+                          )}
+                          {(wine.status === 'tasted' || wine.status === 'collection' || wine.status === 'wishlist') && (
+                            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,6.5rem),1fr))] gap-2 pt-2">
+                              <Button
+                                variant={wine.rating === 'love' ? 'default' : 'outline'}
+                                size="sm"
+                                className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
+                                onClick={() => handleRating(wine.id, 'love')}
+                                aria-pressed={wine.rating === 'love'}
+                                disabled={savingWineActions.has(wine.id)}
+                                aria-busy={savingWineActions.has(wine.id)}
+                              >
+                                <ThumbsUp className="mr-1 h-3.5 w-3.5 shrink-0" />
+                                Me encanta
+                              </Button>
+                              <Button
+                                variant={wine.rating === 'ok' ? 'default' : 'outline'}
+                                size="sm"
+                                className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
+                                onClick={() => handleRating(wine.id, 'ok')}
+                                aria-pressed={wine.rating === 'ok'}
+                                disabled={savingWineActions.has(wine.id)}
+                                aria-busy={savingWineActions.has(wine.id)}
+                              >
+                                <Meh className="mr-1 h-3.5 w-3.5 shrink-0" />
+                                Correcto
+                              </Button>
+                              <Button
+                                variant={wine.rating === 'not_for_me' ? 'default' : 'outline'}
+                                size="sm"
+                                className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
+                                onClick={() => handleRating(wine.id, 'not_for_me')}
+                                aria-pressed={wine.rating === 'not_for_me'}
+                                disabled={savingWineActions.has(wine.id)}
+                                aria-busy={savingWineActions.has(wine.id)}
+                              >
+                                <ThumbsDown className="mr-1 h-3.5 w-3.5 shrink-0" />
+                                No va
+                              </Button>
+                            </div>
+                          )}
+  </>;
+
+  // 141: on iPhone the saved-wine sheet repeated the web card (affinity "por calcular", loose chips, five buttons).
+  // These are the pieces the iOS sheet arranges itself; every action calls the same handler as the web card.
+  const nativeSheet141 = (wine: UserWine) => ({
+    verified: <CellarWineAffinity wine={wine} snapshot={cellarProfile} resolving={savingWineActions.has(wine.id)}
+      onResolve={() => { void resolveCellarWine(wine); }} onRetryProfile={() => { void loadCellarProfile(); }} />,
+    // «Me he bebido una botella» is the everyday action of a wine kept at home: it stays in view, not under «Más opciones».
+    rate: <div className="space-y-3">
+      {wine.status === 'collection' && (wine.quantity ?? 1) > 0 && <Button type="button" variant="outline" className="h-auto min-h-11 w-full justify-center gap-2 whitespace-normal py-2"
+        disabled={savingWineActions.has(wine.id)} aria-busy={savingWineActions.has(wine.id)} onClick={() => void handleDrinkBottle134(wine)}>
+        <Wine className="h-4 w-4 shrink-0" aria-hidden="true" />Me he bebido una botella</Button>}
+      <div className="space-y-1">{ratingControls141(wine)}</div>
+    </div>,
+    extra: wine.menu_price_view ? <div role="group" aria-label={`Precio de carta de ${wine.name}`} className="space-y-1 text-xs leading-5 text-stone-600">
+      {wine.menu_price_view.lines.map((line, index) => <p key={index} className="break-words">{line}</p>)}</div> : null,
+    more: <div className="grid gap-2 pb-2">
+      <Button type="button" variant="outline" className="h-auto min-h-11 justify-start gap-2 whitespace-normal py-2" onClick={() => askAiRimAboutWine(wine, 'dish')}>
+        <Utensils className="h-4 w-4 shrink-0" aria-hidden="true" />{'Qu\u00e9 comer con este vino'}</Button>
+      <Button type="button" variant="outline" className="h-auto min-h-11 justify-start gap-2 whitespace-normal py-2" onClick={() => askAiRimAboutWine(wine, 'similar')}>
+        <ScanLine className="h-4 w-4 shrink-0" aria-hidden="true" />Buscar parecido</Button>
+      {wine.rating && Boolean(wine.sensory_attributes) && <label htmlFor={`cellar-training-${wine.id}`} className="flex min-h-11 items-center justify-between gap-3 rounded-md border border-stone-200 px-3 py-2 text-sm">
+        <span className="min-w-0">Usar esta valoración para afinar mi perfil</span>
+        <Switch id={`cellar-training-${wine.id}`} checked={Boolean(wine.use_for_profile_training)} onCheckedChange={(checked) => handleToggleProfileTraining(wine.id, checked)}
+          aria-label={`Usar ${wine.name} para entrenar perfil`} disabled={savingWineActions.has(wine.id)} aria-busy={savingWineActions.has(wine.id)} /></label>}
+      <Button type="button" variant="outline" className="h-auto min-h-11 justify-start gap-2 whitespace-normal py-2" aria-label={wine.is_favorite ? `Quitar ${wine.name} de favoritos` : `Guardar ${wine.name} en favoritos`}
+        disabled={savingFavorites.has(wine.id)} aria-busy={savingFavorites.has(wine.id)} onClick={() => handleToggleFavorite(wine.id, wine.is_favorite)}>
+        <Heart className={`h-4 w-4 shrink-0 ${wine.is_favorite ? 'fill-red-500 text-red-500' : ''}`} aria-hidden="true" />{wine.is_favorite ? 'Quitar favorito' : 'Añadir favorito'}</Button>
+      <Button type="button" variant="outline" className="h-auto min-h-11 justify-start gap-2 whitespace-normal py-2 text-destructive" aria-label={`Eliminar ${wine.name}`}
+        disabled={savingWineActions.has(wine.id)} aria-busy={savingWineActions.has(wine.id)} onClick={() => handleDeleteWine(wine.id)}>
+        <Trash2 className="h-4 w-4 shrink-0" aria-hidden="true" />Eliminar de mis vinos</Button>
+    </div>,
+  });
+
   if (loading && !(isNative && loadedSection134.current === `${user?.id}:${statusFilter}`)) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20">
@@ -1951,7 +2042,9 @@ const MyWinesForOwner = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                     style={isNative ? { gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))' } : undefined}>
                     {filteredWines.map((wine, index) => (
-                      <NativeCellarItem98 key={wine.id} native={isNative} wine={wine} snapshot={cellarProfile} resolveImage={index < 4}>
+                      <NativeCellarItem98 key={wine.id} native={isNative} wine={wine} snapshot={cellarProfile} resolveImage={index < 4} sheet={isNative ? nativeSheet141(wine) : undefined}>
+                      {/* 141: this card is the web view. On iOS NativeCellarItem98 shows its own sheet built from `sheet`
+                          and does not render it, so the isNative branches left inside are no longer reached. */}
                       <Card key={wine.id} className="relative group">
                         {/* Wine Image */}
                         {wine.image_url && (
@@ -2176,55 +2269,7 @@ const MyWinesForOwner = () => {
                             </Button>
                           )}
 
-                          {/* Rating Buttons - move wishlist wines to tasted and train the profile */}
-                          {wine.rating && (
-                            <Button variant="ghost" className="min-h-11 text-slate-600" disabled={savingWineActions.has(wine.id)} aria-busy={savingWineActions.has(wine.id)} onClick={() => handleRating(wine.id, null)}>
-                              Quitar valoración
-                            </Button>
-                          )}
-                          {isNative && !wine.rating && (wine.status === 'tasted' || wine.status === 'collection' || wine.status === 'wishlist') && (
-                            <p className="pt-2 text-sm font-semibold text-slate-900">¿Lo has probado? Dinos qué te pareció<span className="mt-1 block text-xs font-normal leading-5 text-slate-600">Cada valoración afina lo que te recomendamos.</span></p>
-                          )}
-                          {(wine.status === 'tasted' || wine.status === 'collection' || wine.status === 'wishlist') && (
-                            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,6.5rem),1fr))] gap-2 pt-2">
-                              <Button
-                                variant={wine.rating === 'love' ? 'default' : 'outline'}
-                                size="sm"
-                                className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
-                                onClick={() => handleRating(wine.id, 'love')}
-                                aria-pressed={wine.rating === 'love'}
-                                disabled={savingWineActions.has(wine.id)}
-                                aria-busy={savingWineActions.has(wine.id)}
-                              >
-                                <ThumbsUp className="mr-1 h-3.5 w-3.5 shrink-0" />
-                                Me encanta
-                              </Button>
-                              <Button
-                                variant={wine.rating === 'ok' ? 'default' : 'outline'}
-                                size="sm"
-                                className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
-                                onClick={() => handleRating(wine.id, 'ok')}
-                                aria-pressed={wine.rating === 'ok'}
-                                disabled={savingWineActions.has(wine.id)}
-                                aria-busy={savingWineActions.has(wine.id)}
-                              >
-                                <Meh className="mr-1 h-3.5 w-3.5 shrink-0" />
-                                Correcto
-                              </Button>
-                              <Button
-                                variant={wine.rating === 'not_for_me' ? 'default' : 'outline'}
-                                size="sm"
-                                className="h-auto min-h-11 min-w-0 whitespace-normal px-2 text-xs leading-tight sm:text-sm"
-                                onClick={() => handleRating(wine.id, 'not_for_me')}
-                                aria-pressed={wine.rating === 'not_for_me'}
-                                disabled={savingWineActions.has(wine.id)}
-                                aria-busy={savingWineActions.has(wine.id)}
-                              >
-                                <ThumbsDown className="mr-1 h-3.5 w-3.5 shrink-0" />
-                                No va
-                              </Button>
-                            </div>
-                          )}
+                          {ratingControls141(wine)}
                         </CardContent>
                       </Card>
                       </NativeCellarItem98>

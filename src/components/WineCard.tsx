@@ -13,6 +13,7 @@ import { buildNativeRecommendation95 } from '@/utils/nativeRecommendation95';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { NativeWineSave98 } from '@/components/NativeWineSave98';
 import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
+import { NativeWinerimFacts140 } from '@/components/NativeWinerimFacts140';
 
 interface WineCardProps {
   wine: WinerimWineWithMatch;
@@ -44,6 +45,7 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
             <h5 className="text-sm font-semibold text-stone-950">Ficha de Winerim</h5>
             <dl className="mt-1 divide-y divide-stone-100 text-sm">{facts.map(([label, value]) => <div key={label} className="flex justify-between gap-4 py-2"><dt className="text-stone-500">{label}</dt><dd className="min-w-0 text-right [overflow-wrap:anywhere]">{value}</dd></div>)}</dl>
           </section>; })()}
+        <div className="mt-3 empty:hidden"><NativeWinerimFacts140 identity={{ name: wine.name, producer: wine.winery, vintage: wine.vintage }} part="link" /></div>
         {evidence.sourceAvailable && <details className="mt-2 border-t border-stone-200 pt-2">
           <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium text-stone-700">Buscar su ficha verificada</summary>
           <WinerimSheetLookup identity={{ name: wine.name, producer: wine.winery, vintage: wine.vintage, region: wine.region, country: wine.country }} />

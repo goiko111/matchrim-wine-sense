@@ -2,6 +2,8 @@
 // next to verified sheets, ordered by score, several photos in one list, a clean results screen.
 // 140: shorter and more certain: a range settled by the list price («likely»), a printed grape that no wine of the
 // winery has («mismatch»), ranges by midpoint below every certain answer, options closed and at most five.
+// 141: one confident action: a tray of up to four photos read into one list, unread parts retried once without
+// asking, a full-height wait, and each wine's number on the photo where the list prints it.
 // Offline, no network. Run: npx tsx scripts/check-matchrim-menu139.ts
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -9,6 +11,8 @@ import { listedGrape140, menuCoverageWarning139, menuLikelyText140, menuLineKey1
   menuVerdictRank139, menuVerdictScore140, menuVerdictText139, mergeMenuPages139, optionHasGrape140, shownMenuOptions140,
   sortMenuVerdicts139, storeOptionName139, type MenuVerdict139 } from '../src/utils/menuEstimates139';
 import { storeScore139 } from '../src/utils/storeListing139';
+import { MENU_BADGE_WIDTH141, MENU_TRAY_MAX141, addToMenuTray141, menuBadge141, menuBadgePlacement141, menuPhotoReliable141, menuReadingLabel141,
+  menuTrayFull141, menuTrayHint141, menuTrayLabel141, removeFromMenuTray141, shouldAutoRetry141 } from '../src/utils/menuScan141';
 
 let groups = 0;
 const test = (name: string, fn: () => void) => { fn(); groups += 1; console.log(`  ok ${name}`); };
@@ -195,11 +199,112 @@ test('Scanner wiring: iOS only, estimates never saved or learned, clean results 
   assert.match(menu, /\{wine\.productor \|\| \(isNative \? '' : 'Identidad parcial'\)\}/);
   assert.match(menu, /\{isNative \? 'Guardar o corregir un vino' : 'Ver fichas completas y acciones'\}/);
   assert.match(menu, /const nativeWarning = isNative \? menuCoverageWarning139\(normalizedWines\.length, expected\) : null;/);
-  assert.match(menu, /\) : \(loading \|\| convertingPdf\) && isNative \? \(\s*<div className="space-y-4">\s*<ScanWaiting139 /);
+  assert.match(menu, /\) : \(loading \|\| convertingPdf\) && isNative \? \(\s*<div className="min-w-0 space-y-4" data-testid="native-menu-waiting141">[^]{0,200}<ScanWaiting139 /);
   const more = menu.slice(menu.indexOf('data-testid="native-menu-more139"'));
   assert(/^[^]{0,400}Más opciones<\/summary>[^]{0,300}menuSheets139\}[^]{0,80}\{menuTools139\}[^]{0,80}\{menuReRead139\}/.test(more), 'tools live behind one closed «Más opciones»');
   assert.match(menu, /\{!isNative && menuTools139\}/); assert.match(menu, /isNative \? null : menuSheets139/);
   const list = menu.indexOf('data-testid="native-menu-row139"'), add = menu.indexOf('data-testid="native-menu-add-page139"'), decision = menu.indexOf('data-testid="native-menu-decision"');
   assert(decision > 0 && decision < list && list < add && add < menu.indexOf('data-testid="native-menu-more139"'), 'answer, list, add a page, then options');
 });
-console.log(`check-matchrim-menu139: ${groups}/10 groups passed`);
+test('141 tray: up to four photos, in order; a full tray takes no more', () => {
+  assert.equal(MENU_TRAY_MAX141, 4);
+  let tray: readonly string[] = [];
+  for (const photo of ['a', 'b', 'c', 'd']) tray = addToMenuTray141(tray, photo);
+  assert.deepEqual(tray, ['a', 'b', 'c', 'd']); assert(menuTrayFull141(tray.length) && !menuTrayFull141(3));
+  assert.equal(addToMenuTray141(tray, 'e'), tray, 'a fifth photo is not taken and the tray is the same array');
+  assert.deepEqual(removeFromMenuTray141(tray, 1), ['a', 'c', 'd']); assert.deepEqual(removeFromMenuTray141(['a'], 0), []);
+  assert.deepEqual(removeFromMenuTray141(tray, 9), ['a', 'b', 'c', 'd']);
+  assert.equal(menuTrayLabel141(1), '1 foto'); assert.equal(menuTrayLabel141(3), '3 fotos');
+  assert.equal(menuTrayHint141(1), '¿La carta sigue en otra página? Añade otra foto antes de analizar.'); assert.equal(menuTrayHint141(4), 'Máximo 4 fotos por lectura.');
+});
+test('141 wait: one photo reads «la carta», several say which one, the retry is the end of the same wait', () => {
+  assert.equal(menuReadingLabel141(null), 'Leyendo la carta'); assert.equal(menuReadingLabel141({ index: 0, total: 1, finishing: false }), 'Leyendo la carta');
+  assert.equal(menuReadingLabel141({ index: 0, total: 2, finishing: false }), 'Leyendo la foto 1 de 2');
+  assert.equal(menuReadingLabel141({ index: 3, total: 4, finishing: false }), 'Leyendo la foto 4 de 4');
+  assert.equal(menuReadingLabel141({ index: 1, total: 2, finishing: true }), 'Terminando de leer la carta…');
+  for (const reading of [null, { index: 0, total: 3, finishing: false }, { index: 0, total: 1, finishing: true }]) assert(!/zona/i.test(menuReadingLabel141(reading)));
+});
+test('141 unread parts: asked again once, never twice, never after a cancel', () => {
+  assert.equal(shouldAutoRetry141({ pending: 2, retried: false, cancelled: false }), true);
+  assert.equal(shouldAutoRetry141({ pending: 0, retried: false, cancelled: false }), false, 'nothing unread: no second read');
+  assert.equal(shouldAutoRetry141({ pending: 2, retried: true, cancelled: false }), false, 'only once on its own');
+  assert.equal(shouldAutoRetry141({ pending: 2, retried: false, cancelled: true }), false);
+});
+test('141 badge: a certain score is one number, green from 65; a range is grey; no answer is no badge', () => {
+  assert.deepEqual(menuBadge141({ kind: 'verified', score: 82, title: 't' }), { text: '82', tone: 'good' });
+  assert.deepEqual(menuBadge141({ kind: 'estimate', score: 65, title: 't', estimate: near, chosen: false }), { text: '65', tone: 'good' });
+  assert.deepEqual(menuBadge141({ kind: 'likely', score: 64, title: 't', estimate: near, options: [] }), { text: '64', tone: 'plain' });
+  assert.deepEqual(menuBadge141({ kind: 'range', low: 64, high: 79, options: [] }), { text: '64–79', tone: 'plain' });
+  assert.deepEqual(menuBadge141({ kind: 'range', low: 90, high: 90, options: [] }), { text: '90', tone: 'plain' }, 'a range is never green: it is not one wine');
+  for (const verdict of [{ kind: 'none' }, { kind: 'loading' }, { kind: 'pending' }, { kind: 'mismatch', grape: 'Syrah', options: [] }] as MenuVerdict139[]) assert.equal(menuBadge141(verdict), null);
+  assert.equal(menuBadge141(null), null); assert.equal(menuBadge141(undefined), null);
+});
+test('141 badge place: right end of the line, never over the name, always inside the photo', () => {
+  // A line from x=10 to x=90, 4 high: the badge ends at 90 and is centred on the line.
+  assert.deepEqual(menuBadgePlacement141({ x: 10, y: 20, width: 80, height: 4 }), { right: 10, top: 22 });
+  // No width: the anchor is where the name starts, so the badge goes to the right margin instead of onto the name.
+  assert.deepEqual(menuBadgePlacement141({ x: 10, y: 20, width: null, height: null }), { right: 1, top: 20 });
+  // A box wider than the photo, or at its edges, is clamped: right edge at most 99, centre between 2 and 98.
+  assert.deepEqual(menuBadgePlacement141({ x: 60, y: 99.5, width: 70, height: 3 }), { right: 1, top: 98 });
+  assert.deepEqual(menuBadgePlacement141({ x: 5, y: 0, width: 50, height: 2 }), { right: 45, top: 2 });
+  // A narrow box at the left: the badge keeps its whole width inside the photo (wider for a range).
+  assert.deepEqual(menuBadgePlacement141({ x: 0, y: 50, width: 4, height: 3 }), { right: 90, top: 51.5 });
+  assert.deepEqual(menuBadgePlacement141({ x: 0, y: 50, width: 4, height: 3 }, MENU_BADGE_WIDTH141.range), { right: 84, top: 51.5 });
+  for (const width of [MENU_BADGE_WIDTH141.score, MENU_BADGE_WIDTH141.range]) for (const x of [0, 30, 97]) for (const boxWidth of [1, 40, 200]) {
+    const place = menuBadgePlacement141({ x, y: 50, width: boxWidth, height: 3 }, width)!;
+    assert(place.right >= 1 && 100 - place.right - width >= 1, `inside: x=${x} w=${boxWidth}`);
+    // The badge's left edge is never left of where it would start if it hugged the end of the line.
+    assert(100 - place.right >= Math.min(99, x + boxWidth) - 0.001 || 100 - place.right === width + 1);
+  }
+  // A block several lines tall: the name is on its first line.
+  assert.deepEqual(menuBadgePlacement141({ x: 10, y: 20, width: 80, height: 30 }), { right: 10, top: 20 });
+  assert.equal(menuBadgePlacement141(null), null); assert.equal(menuBadgePlacement141({ x: null, y: 20 }), null); assert.equal(menuBadgePlacement141({ x: 10, y: Number.NaN }), null);
+});
+test('141 photo: numbers only when most wines were placed, each on its own line', () => {
+  const line = (y: number) => ({ x: 10, y, width: 80, height: 3 });
+  assert.equal(menuPhotoReliable141([line(10), line(15), line(20), line(25)]), true);
+  assert.equal(menuPhotoReliable141([line(10), line(15), line(20), null]), true, '3 of 4 placed');
+  assert.equal(menuPhotoReliable141([line(10), line(15), null, null]), false, 'half placed: the photo stays closed');
+  assert.equal(menuPhotoReliable141([null, null]), false); assert.equal(menuPhotoReliable141([]), false);
+  assert.equal(menuPhotoReliable141([line(10), line(10.2), line(10.4), line(30)]), false, 'wines piled on one spot: the reader is guessing');
+  assert.equal(menuPhotoReliable141([{ x: 5, y: 10, width: 40, height: 3 }, { x: 55, y: 10, width: 40, height: 3 }, line(20), line(30)]), true, 'two columns share a height');
+});
+test('141 wiring: tray before the read, one wait, silent retry, plain line, numbers on the photo (iOS only)', () => {
+  const menu = read('src/components/wine-import/WineMenuScanner.tsx'), helper = read('src/utils/menuScan141.ts');
+  assert(!/supabase|localStorage|fetch\(/.test(helper));
+  // A: an iOS photo waits in the tray; a PDF, «Añadir otra página» and the fixture QA build are read at once.
+  assert.match(menu, /if \(!batch && isNative && !addPage && !isMatchrimFixtureQaEnabled && file\.type\.startsWith\('image\/'\)\) \{\s*if \(menuTrayFull141\(trayRef141\.current\.length\)\) return;/);
+  assert.match(menu, /if \(isNative\) await readPages141\(batch \?\? \[file\], noticeGeneration, append\);\s*else\s*await processFile\(file, 'image', noticeGeneration, 'full', append\);/);
+  assert.match(menu, /const later = append \|\| index > 0, page = later \? pageCount141\.current : 0;/);
+  assert.match(menu, /await processFile\(files\[index\], 'image', generation, 'full', later\);/);
+  assert.match(menu, /const trayOpen141 = isNative && tray141\.length > 0 && !loading && !convertingPdf;/);
+  assert.match(menu, /data-testid="native-menu-analyse141"\s*onClick=\{analyseTray141\}>Analizar la carta<\/Button>/);
+  assert.match(menu, /disabled=\{menuTrayFull141\(tray141\.length\)\} onClick=\{addTrayPhoto141\}>[^]{0,120}Añadir otra foto<\/Button>/);
+  assert.match(menu, /aria-label=\{`Quitar la foto \$\{index \+ 1\}`\}/);
+  // B: unread parts are asked again once inside the same wait; the retry swaps that photo's rows only when it is in.
+  assert.match(menu, /if \(shouldAutoRetry141\(\{ pending: partials141\.current\[page\]\?\.failed\.length \?\? 0, retried: false, cancelled: false \}\)\) \{\s*setReading141\(\{ index, total: files\.length, finishing: true \}\);\s*run141\.current = \{ page, replacePage: true, quiet: true \};\s*await processFile\(files\[index\], 'image', generation, 'failed-regions', true\);/);
+  assert.equal((menu.match(/shouldAutoRetry141\(/g) || []).length, 1, 'one automatic retry per photo, in one place');
+  assert.match(menu, /replacePage141 \? current\.filter\(wine => menuPage141\(wine\) !== page141\) : current, tagged141\)\);/);
+  assert.match(menu, /data-testid="native-menu-missing141">\s*<p[^>]*>Puede que falten vinos de la carta\.<\/p>[^]{0,300}onClick=\{\(\) => void retryMissing141\(\)\}>[^]{0,120}Volver a intentar<\/Button>/);
+  for (const gone of ['Se conservan las zonas ya leídas', 'Reintentar ${failedRegionCount}', 'Reintentar la zona pendiente', 'zonas no se han podido leer']) assert(!menu.includes(gone), gone);
+  // The person is asked only when a row of that photo was corrected by hand.
+  assert.match(menu, /if \(pages\.some\(page => edited141\.current\.has\(page\)\)\s*&& !await confirm135\('Al volver a intentar se perderán las correcciones que has hecho en esta carta\.', \{ ok: 'Volver a intentar' \}\)\) return;/);
+  assert.match(menu, /if \(currentWine\) edited141\.current\.add\(menuPage141\(currentWine\)\);/);
+  // C: the wait takes the height of the screen, without the dark box, with larger type and a plain «Cancelar».
+  assert.match(menu, /: isNative && \(loading \|\| convertingPdf\) \? "flex min-h-\[calc\(100dvh-16rem\)\] min-w-0 flex-col justify-center"/);
+  assert.match(menu, /\[&_li\]:text-\[17px\][^"]*\[&_\[data-testid=scan-fact139\]\]:text-lg/);
+  assert.match(menu, /steps=\{\[menuReadingLabel141\(reading141\), MENU_STEPS139\[1\], MENU_STEPS139\[2\]\]\}/);
+  assert.match(menu, /aria-label="Cancelar análisis"[^]{0,400}<X className="h-4 w-4" aria-hidden="true" \/>Cancelar\s*<\/Button>/);
+  // D: the photo opens with numbers only when reliable; nothing is said about positions on iOS.
+  assert.match(menu, /\.map\(photo => \(\{ \.\.\.photo, reliable: menuPhotoReliable141\(photo\.rows\.map\(row => row\.wine\.posicion\)\) \}\)\);/);
+  assert.match(menu, /const photosOpen141 = !loading && !convertingPdf && photoPages141\.some\(photo => photo\.reliable\);/);
+  assert.match(menu, /\{photo\.reliable && photo\.rows\.map\(\(\{ wine, index \}\) => \{\s*const badge = menuBadge141\(verdicts139\[index\]\);/);
+  assert.match(menu, /style=\{\{ right: `\$\{place\.right\}%`, top: `\$\{place\.top\}%` \}\} onClick=\{\(event\) => openWineDetail\(index, event\.currentTarget\)\}>\{badge\.text\}<\/button>/);
+  assert.match(menu, /\{preview && scannedWines\.length > 0 && \(!isNative \|\| scannedWines\.some\(\(wine\) => menuPage141\(wine\) === previewPage141 && getWinePosition\(wine\)\)\) && \(/);
+  assert.match(menu, /const position = menuPage141\(wine\) === previewPage141 \? getWinePosition\(wine\) : null;/);
+  const photos = menu.indexOf('data-testid="native-menu-photos141"'), decision = menu.indexOf('data-testid="native-menu-decision"');
+  assert(photos > 0 && photos < decision, 'the photo with its numbers is the first thing in the results');
+  // Web is untouched: every 141 block is behind isNative.
+  assert.match(menu, /const photoPages141 = !isNative \? \[\] :/); assert.match(menu, /\{isNative && photosOpen141 && <section/); assert.match(menu, /\{isNative && missing141\.length > 0 && !loading && <div/);
+});
+console.log(`check-matchrim-menu139: ${groups}/17 groups passed`);

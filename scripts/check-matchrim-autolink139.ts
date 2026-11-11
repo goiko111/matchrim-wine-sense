@@ -94,8 +94,10 @@ test('Vintage: taken only when the label supports exactly one', () => {
   assert.equal(labelVintage139(lines('VIDURE 2020', 'Nº 1998')), 2020);
   assert.equal(labelVintage139(lines('VIDURE', 'L-12/2020')), null, 'glued to a larger number');
   assert.equal(labelVintage139(lines('VIDURE', '2020', 'Esta edición celebra el año 1927')), 2020, 'alone on its line wins over one inside a sentence');
-  assert.equal(labelVintage139(lines('VIDURE', '2020', '1927')), null, 'two years alone: still ambiguous');
-  assert.equal(labelVintage139(lines('VIDURE 2020', 'Edición 1927')), null, 'two years inside text: none is invented');
+  // 141: an unmarked year over forty years old is no longer a candidate, so these use two plausible harvests.
+  assert.equal(labelVintage139(lines('VIDURE', '2020', '2018')), null, 'two years alone: still ambiguous');
+  assert.equal(labelVintage139(lines('VIDURE 2020', 'Edición 2018')), null, 'two years inside text: none is invented');
+  assert.equal(labelVintage139(lines('VIDURE', '2020', '1927')), 2020, 'an old bare number does not compete with the harvest');
   assert.equal(labelVintage139(lines('2019', 'Cosecha 2020')), 2020, 'an explicit mark still wins');
   assert.equal(labelVintage139(lines('Albariño 2020', 'Sauvignon 2020')), 2020, '«no» or «n» inside a word is not a number mark');
   const list = read('src/components/wine-import/CandidateRecovery286.tsx');
@@ -148,5 +150,15 @@ test('140: the sheet of a linked bottle is short on iOS and never leaves the app
   assert.match(scanner, /\{!\(short140 && regions\.length === 1\) && <><Button type="button" variant="outline" title="Reanalizar"/);
   assert.match(scanner, /max-h-64 w-auto max-w-full rounded-md bg-stone-100 object-contain/, 'the label photo is not letterboxed in black');
 });
+{
+  // 141: what the phone actually produced — the bottle number on its own line, and the harvest read or not.
+  const line = (text: string) => ({ text }) as never;
+  const label = ['Pago de Cirsus', 'VIDURE', 'CABERNET SAUVIGNON', 'ESTA ES UNA EDICIÓN ESPECIAL', 'SÓLO HAY 3.407 BOTELLAS', 'Esta es la botella número', '1927'];
+  assert.equal(labelVintage139([...label, '·2020·'].map(line)), 2020, 'the bottle number on its own line is not the harvest');
+  assert.equal(labelVintage139(label.map(line)), null, 'with the harvest unread, the bottle number is still not taken');
+  assert.equal(labelVintage139(['Viña Antigua', '1968'].map(line)), null, 'an unmarked year older than forty years is not a vintage');
+  assert.equal(labelVintage139(['Viña Antigua', 'Cosecha 1968'].map(line)), 1968, 'a marked old harvest is kept');
+  console.log('  ok 141: bottle number on its own line');
+}
 console.log(`check-matchrim-autolink139: ${groups}/8 groups passed`);
 if (groups !== 8) process.exit(1);

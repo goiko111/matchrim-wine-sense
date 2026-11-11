@@ -87,9 +87,15 @@ export const labelVintage139 = (input: readonly YearLine105[]): number | null =>
   const years = wineYearRoles105(lines);
   if (!years.supported) return null;
   const folded = lines.map(line => fold(line.text));
+  // 141: on the real iPhone the 140 rule chose 1927. The phone reads «Esta es la botella número» and «1927» as two
+  // lines, so the number stood alone on its line and looked like the harvest. A line is now also judged together with
+  // the one before it, and an unmarked year more than forty years old is never taken as the vintage of a scanned bottle.
+  const context = folded.map((text, index) => `${index ? folded[index - 1] : ''} ${text}`.trim());
+  const oldest = new Date().getFullYear() - 40;
   const possible = years.roles.filter(role => (role.role === 'vintage' || role.role === 'unclassified')
     // A year that only ever appears as a number («botella número 1927», «L-12/2020») is left out; marked ones stay.
-    && (role.role === 'vintage' || folded.some(text => new RegExp(`\\b${role.year}\\b`).test(text) && !numbered140(text, role.year))));
+    && (role.role === 'vintage' || (role.year >= oldest && folded.some((text, index) => new RegExp(`\\b${role.year}\\b`).test(text)
+      && !numbered140(text, role.year) && !numbered140(context[index], role.year)))));
   if (possible.length === 1) return possible[0].year;
   const marked = possible.filter(role => role.role === 'vintage');
   if (marked.length) return marked.length === 1 ? marked[0].year : null;

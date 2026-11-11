@@ -45,7 +45,11 @@ export const NativeStoreSearch139 = ({ onSelect, onManualEntry, query, onQuery: 
   useEffect(() => {
     if (trimmed.length < 2) { setState({ query: trimmed, phase: 'idle', wines: [] }); return; }
     const controller = new AbortController();
-    setState(previous => ({ query: trimmed, phase: 'loading', wines: previous.wines }));
+    // 141: each store query takes 3-5 s. While it runs, the previous results that still match what is typed stay on
+    // screen, so adding a letter narrows the list at once instead of blanking it.
+    const words = key(trimmed).split(' ').filter(Boolean);
+    setState(previous => ({ query: trimmed, phase: 'loading', wines: previous.wines.filter(wine => { const text = ` ${key(`${wine.name} ${wine.subname ?? ''} ${wine.winery}`)}`;
+      return words.every(word => text.includes(` ${word}`)); }) }));
     const timer = setTimeout(() => {
       searchStore139(trimmed, controller.signal).then(rows => { if (!controller.signal.aborted) setState({ query: trimmed, phase: 'ready', wines: groupStoreRows139(rows, trimmed).slice(0, 20) }); },
         () => { if (!controller.signal.aborted) setState({ query: trimmed, phase: 'error', wines: [] }); });

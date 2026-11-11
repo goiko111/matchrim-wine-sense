@@ -136,7 +136,7 @@ export const searchStore139 = (query: string, signal?: AbortSignal): Promise<rea
     try {
       const first = await readPage140(query.trim(), 1, controller.signal);
       const seen = new Set<number>();
-      return first.rows.filter(row => !seen.has(row.id) && seen.add(row.id) && !/\b\d+([.,]\d+)?\s*(euros?|€)/i.test(row.name));
+      return first.rows.filter(row => !seen.has(row.id) && seen.add(row.id) && !/\b\d+([.,]\d+)?\s*(euros?|€)/i.test(`${row.name} ${row.subname ?? ''}`));
     } finally { clearTimeout(timer); }
   });
   cache.set(id, pending); pending.catch(() => cache.delete(id));

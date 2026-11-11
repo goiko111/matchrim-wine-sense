@@ -57,8 +57,11 @@ await test('Native side: takePhoto registered, camera only, upright JPEG, nothin
 });
 await test('Cellar: own photo first, catalogue lookup for every row near the screen, one lookup per identity', () => {
   const item = fs.readFileSync('src/components/NativeCellarItem98.tsx', 'utf8');
-  assert.match(item, /src=\{wine\.image_url \|\| ownPhoto\}/);
-  assert.match(item, /resolveMissing=\{!ownPhoto && \(resolveImage \|\| open \|\| visible\)\}/);
+  // 141: own photo first, then Winerim's store photo (looked up only near the screen); the Library only with the sheet open.
+  assert.match(item, /const photo = wine\.image_url \|\| ownPhoto \|\| storeHit\?\.photo \|\|/);
+  assert.match(item, /const near = resolveImage \|\| visible \|\| open;/);
+  assert.match(item, /useOwnWinePhoto133\(wine\.id, native && !wine\.image_url && near\)/);
+  assert.match(item, /resolveMissing=\{!photo && open && storeSettled\}/);
   assert.match(item, /new IntersectionObserver/);
   const photo = fs.readFileSync('src/components/NativeWinePhoto98.tsx', 'utf8');
   assert.match(photo, /resolvedPhotos133\.has\(identityKey\)/);
