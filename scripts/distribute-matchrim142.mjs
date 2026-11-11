@@ -23,7 +23,10 @@ export function validatePair142(prep, archive, auth) {
 export function validateAuthorization142(auth) {
   assert(auth.build === 142 && /^[0-9a-f]{40}$/.test(auth.sourceCommit) && auth.privateBetaOnly === true
     && auth.humanExplicitUpload === true && auth.knownLimitationsAccepted === true
-    && typeof auth.exactHumanReply === 'string' && auth.exactHumanReply.trim().length >= 8
+    // 142: the owner answered «Si» to a question that named the build. The reply is quoted exactly; a short reply is
+    // accepted only together with the question it answered, which must name this build and TestFlight.
+    && typeof auth.exactHumanReply === 'string' && (auth.exactHumanReply.trim().length >= 8
+      || (/^s[ií]$/i.test(auth.exactHumanReply.trim()) && typeof auth.questionAnswered === 'string' && /142/.test(auth.questionAnswered) && /TestFlight|sub/i.test(auth.questionAnswered)))
     && Array.isArray(auth.knownLimitations) && auth.knownLimitations.length > 0,
   'EXPLICIT_LIMITED_BETA_AUTHORIZATION_REQUIRED');
 }
