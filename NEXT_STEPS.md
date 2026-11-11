@@ -2,7 +2,7 @@
 
 ## Current Delta: 2026-11-10, Candidate136 (extreme QA)
 
-1. candidate138-r1 (d06d66f) ready, not uploaded: upload only with the owner's explicit OK (scripts/distribute-matchrim138.mjs, qa-artifacts/testflight138-20261111/RELEASE.json; write HUMAN-AUTHORIZATION.json with the exact words first). Owner should try one real sign-up on 138 (empty first/last name reaches the backend untested). Backend follow-ups: pairing + affinity ranked together server-side; a provenance flag for store sensory data so the «estimación» label can go.
+1. Build 138 (d06d66f) uploaded to TestFlight on 2026-11-11 (owner: "Sí, sube la 138"; export138-r1 + upload138-r1, Apple acknowledged). Next: wait for processing, then test on a real iPhone. Owner should try one real sign-up on 138 (empty first/last name reaches the backend untested). Backend follow-ups: pairing + affinity ranked together server-side; a provenance flag for store sensory data so the «estimación» label can go.
 1. Build 137 uploaded to TestFlight on 2026-11-11 (owner: "sube la 137 y todo esto lo hacemos").
 1. Build 136 uploaded to TestFlight on 2026-11-10 (owner: "Sí, sube la 136"; export136-r1 + upload136-r1, Apple acknowledged). Next: wait for App Store Connect processing, then test 136 on a real iPhone. Commits 132-136 still local, push only with the owner's OK.
 2. Before each build: harness/run-all.sh and audit.mjs on the QA copy (WEB=web-dev for the working tree).
