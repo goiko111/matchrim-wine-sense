@@ -210,3 +210,5 @@ Food-menu row splitting and detection-box normalization may be replayed determin
 - 2026-11-11: Build 139 (1a49a28, archive139-r2) uploaded to TestFlight after the owner replied "Sí, sube la 139"; HUMAN-AUTHORIZATION quotes it. Private beta only; known limitations listed there.
 
 - 2026-11-11: After trying 139 the owner said the Winerim sheet must not open outside the app ("eso no puede ser") and asked for any improvement that fits the app's purpose. 140 removes every iOS control that leaves for web.winerim.com (check-matchrim-original-library89-ui now asserts the absence), uses the list price to name the likely wine of a winery, and stops discarding «3, 3, 1, 3, 3» store vectors as filler.
+
+- 2026-11-11: Build 140 (c6c8b39, archive140-r1) uploaded to TestFlight after the owner replied "Sí, sube la 140"; HUMAN-AUTHORIZATION quotes it. Private beta only; known limitations listed there.
