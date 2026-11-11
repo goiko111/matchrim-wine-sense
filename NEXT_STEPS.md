@@ -2,7 +2,8 @@
 
 ## Current Delta: 2026-11-10, Candidate136 (extreme QA)
 
-1. candidate137-r1 (8b06c21, usability pass: docs/MATCHRIM_137_USABILIDAD_2026-11-10.md) ready: native QA r117-r120 PASS, archive137-r1 signed, not uploaded; upload only with the owner's explicit OK (scripts/distribute-matchrim137.mjs; RELEASE not yet validated by a dry run). r113 failed once on a lost keystroke ("Pino" for "Pinot Blanc") and passed on rerun; retained. Owner decisions pending are listed in that doc.
+1. candidate138-r1 (d06d66f) ready, not uploaded: upload only with the owner's explicit OK (scripts/distribute-matchrim138.mjs, qa-artifacts/testflight138-20261111/RELEASE.json; write HUMAN-AUTHORIZATION.json with the exact words first). Owner should try one real sign-up on 138 (empty first/last name reaches the backend untested). Backend follow-ups: pairing + affinity ranked together server-side; a provenance flag for store sensory data so the «estimación» label can go.
+1. Build 137 uploaded to TestFlight on 2026-11-11 (owner: "sube la 137 y todo esto lo hacemos").
 1. Build 136 uploaded to TestFlight on 2026-11-10 (owner: "Sí, sube la 136"; export136-r1 + upload136-r1, Apple acknowledged). Next: wait for App Store Connect processing, then test 136 on a real iPhone. Commits 132-136 still local, push only with the owner's OK.
 2. Before each build: harness/run-all.sh and audit.mjs on the QA copy (WEB=web-dev for the working tree).
 3. Remaining: restaurant service messages unaccented in supabase/functions/_shared/matchrim-restaurant91.ts (shared with backend); contradictory votes on identical wines still move unrelated axes (confidence 43); legal pages name the app Winerim/Matchrim inconsistently (owner); plus the 135 list below (search accents, Universal Link, phone, own photos).
