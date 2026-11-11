@@ -44,7 +44,7 @@ test('The store estimate never enters the scanner or the verified-sheet path', (
   assert.match(read('src/utils/nativeGlobalCatalogue103.ts'), /const sensory = null;/);
   for (const file of ['src/components/wine-import/MultiWineLabelScanner.tsx', 'src/utils/multiWineConsumer95.ts', 'src/utils/winerimOriginalSheet.ts', 'src/services/winerimApi.ts'])
     assert(!read(file).includes('storeEstimate138'), file);
-  assert.match(read('src/components/NativeSearchWine138.tsx'), /Estimación con los datos de la tienda de Winerim/);
+  assert.match(read('src/components/WineSheet142.tsx'), /Estimación con los datos de Winerim/);
   assert.match(read('src/pages/Restaurant.tsx'), /\(estimación\)/);
 });
 test('Search result opens the affinity sheet; the add form is only the fallback', () => {
@@ -53,8 +53,10 @@ test('Search result opens the affinity sheet; the add form is only the fallback'
   assert.match(home, /onSelect=\{wine => \{ setSearchOpen\(false\); setFromSearch\(true\); setSearched\(wine\); \}\}/);
   assert.match(home, /<NativeSearchWine138 wine=\{searched\}/);
   const sheet = read('src/components/NativeSearchWine138.tsx');
-  assert.match(sheet, /storeAffinity139\(profile, attributes\)/);
-  assert.match(sheet, /Aún no tenemos sus datos de sabor/);
+  // 142: the body of the sheet is WineSheet142.
+  assert.match(sheet, /<WineSheet142 /);
+  assert.match(read('src/components/WineSheet142.tsx'), /storeAffinity139\(profile, attributes\)/);
+  assert.match(read('src/components/WineSheet142.tsx'), /Aún no tenemos sus datos de sabor/);
 });
 test('iOS registration is one screen; the web keeps its steps', () => {
   const page = read('src/pages/Registration.tsx'), quick = read('src/components/registration/QuickRegistration138.tsx');

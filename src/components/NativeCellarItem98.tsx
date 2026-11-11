@@ -127,7 +127,7 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
         <div className="border-b border-stone-200 px-4 py-3" data-testid="native-cellar-rate141">{sheet?.rate}</div>
         <NativeWineNote139 wineId={wine.id} initial={wine.personal_note} />
         {/* 140: the Winerim sheet is shown here, inside the app; the link that opened Safari is gone. */}
-        <div className="border-b border-stone-200 px-4 py-3 empty:hidden" data-testid="cellar-winerim-facts140"><NativeWinerimFacts140 identity={identity} part="facts" /></div>
+        <div className="border-b border-stone-200 px-4 py-3 empty:hidden" data-testid="cellar-winerim-facts140"><NativeWinerimFacts140 identity={identity} part="facts" profile={snapshot?.profile ?? null} /></div>
         <details className="group min-w-0 px-4" data-testid="native-cellar-more141">
           <summary aria-label="Más opciones" className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 py-3 text-sm font-semibold text-stone-800"><span aria-hidden="true">Más opciones</span><ChevronDown className="h-4 w-4 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true" /></summary>
           {sheet?.more}

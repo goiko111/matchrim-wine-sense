@@ -127,7 +127,7 @@ test('The wait names its steps with «Cancelar» visible, and the jargon is gone
 test('140: the sheet of a linked bottle is short on iOS and never leaves the app', () => {
   const scanner = read('src/components/wine-import/MultiWineLabelScanner.tsx'), view = read('src/components/wine-import/LabelAnalysisView.tsx');
   // Winerim photo above the verdict, Winerim data below the save button, one «Corregir».
-  assert.match(scanner, /photo=\{facts140 && <NativeWinerimFacts140 identity=\{facts140\} part="photo" \/>\}\s*facts=\{facts140 && <NativeWinerimFacts140 identity=\{facts140\} part="facts" \/>\}/);
+  assert.match(scanner, /photo=\{facts140 && <NativeWinerimFacts140 identity=\{facts140\} part="photo" \/>\}\s*facts=\{facts140 && <NativeWinerimFacts140 identity=\{facts140\} part="facts" profile=\{scanProfile\?\.profile \?\? null\} \/>\}/);
   const order = ['{photo}', '{!canExplainAffinity && estimate}', '{canExplainAffinity ? affinity', '{returnLabel}', '{facts}', 'aria-label="Corregir identificación"'].map(part => view.indexOf(part));
   assert(order.every((at, index) => at > 0 && (index === 0 || at > order[index - 1])), `photo, verdict, save, data, correct: ${order}`);
   assert.equal(view.match(/aria-label="Corregir identificación"/g)?.length, 1);

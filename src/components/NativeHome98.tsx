@@ -95,6 +95,15 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
           </button>)}
       </nav>
 
+      {/* 142: the wine just scanned is the first thing on Home, one tap from its sheet (where it can be saved or rated). */}
+      {scanned.length > 0 && <button type="button" className="mb-7 flex w-full items-center gap-4 rounded-2xl border border-stone-200 bg-white p-4 text-left shadow-sm active:bg-stone-50" onClick={() => void openScanned(scanned[0])} data-testid="native-home-last-scan142">
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-900"><Camera className="h-5 w-5" aria-hidden="true" /></span>
+        <span className="min-w-0 flex-1"><span className="block text-xs font-semibold uppercase tracking-wide text-stone-500">Tu último escaneo</span>
+          <span className="mt-0.5 block break-words text-base font-semibold leading-6">{scanned[0].name}</span>
+          <span className="block break-words text-xs text-stone-500">{[scanned[0].winery, scanned[0].vintage].filter(Boolean).join(' · ')}</span></span>
+        {scanned[0].score !== null && <span className={`shrink-0 rounded-full px-3 py-1.5 text-lg font-bold ${scanned[0].score >= 65 ? 'bg-emerald-50 text-emerald-900' : 'bg-stone-100 text-stone-800'}`}>{scanned[0].score}<span className="text-xs font-semibold">/100</span></span>}
+        <ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
+      </button>}
       <section aria-labelledby="home-wines98-title">
         <div className="mb-3 flex items-center justify-between gap-3">
           <h2 id="home-wines98-title" className="text-xl font-semibold">{hasProfile ? 'Para tu paladar' : 'Primero, tus gustos'}</h2>
@@ -126,9 +135,9 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
         </div>}
       </section>
 
-      {scanned.length > 0 && <section className="mt-7" aria-labelledby="home-scanned139-title" data-testid="native-home-scanned139">
-        <h2 id="home-scanned139-title" className="mb-2 text-lg font-semibold">Últimos vinos escaneados</h2>
-        <div className="divide-y divide-stone-200">{scanned.slice(0, 4).map(wine => <button key={`${wine.name}|${wine.winery}|${wine.vintage}`} type="button" className="flex min-h-16 w-full items-center gap-3 py-3 text-left" onClick={() => void openScanned(wine)}>
+      {scanned.length > 1 && <section className="mt-7" aria-labelledby="home-scanned139-title" data-testid="native-home-scanned139">
+        <h2 id="home-scanned139-title" className="mb-2 text-lg font-semibold">Escaneos anteriores</h2>
+        <div className="divide-y divide-stone-200">{scanned.slice(1, 5).map(wine => <button key={`${wine.name}|${wine.winery}|${wine.vintage}`} type="button" className="flex min-h-16 w-full items-center gap-3 py-3 text-left" onClick={() => void openScanned(wine)}>
           <span className="min-w-0 flex-1"><span className="block break-words text-sm font-medium">{wine.name}</span><span className="mt-1 block break-words text-xs text-stone-500">{[wine.winery, wine.vintage].filter(Boolean).join(' · ')}</span></span>
           {wine.score !== null && <span className="shrink-0 rounded-full bg-stone-100 px-2 py-1 text-sm font-bold text-stone-800">{wine.score}<span className="text-[10px] font-semibold">/100</span></span>}
           <ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />

@@ -15,14 +15,15 @@ test('Winerim’s own page opens framed inside the app, and only a well-formed s
   const sheet = read('src/components/WinerimWebSheet141.tsx');
   assert.match(sheet, /sandbox="allow-scripts allow-same-origin allow-forms"/, 'the frame cannot open windows or navigate the app');
   assert(!/allow-popups|allow-top-navigation/.test(sheet));
-  assert.match(read('src/components/NativeWinerimFacts140.tsx'), /<WinerimWebSheet141 url=\{winerimStoreUrl141\(row\.id, row\.slugname\)\}/);
+  // 142: the framed page is no longer offered (it let people wander into the whole Winerim store); the data is shown natively.
+  assert(!read('src/components/NativeWinerimFacts140.tsx').includes('WinerimWebSheet141'));
 });
 test('A searched wine is saved in one tap, as «Por probar», without flavour data or profile training', () => {
   const save = read('src/components/NativeQuickSave141.tsx');
   assert.match(save, /status: 'wishlist'/); assert.match(save, /matchrim_affinity: null, sensory_attributes: null, use_for_profile_training: false/);
   assert.match(save, /\^https:\\\/\\\/app\\\.winerim\\\.com\\\//, 'only a Winerim image is stored as the photo');
   const sheet = read('src/components/NativeSearchWine138.tsx');
-  assert.match(sheet, /<NativeQuickSave141 wine=/); assert(!sheet.includes('NativeWineSave98'));
+  assert.match(sheet, /<NativeSaveChoice142 /); assert(!sheet.includes('NativeWineSave98'));
 });
 test('The search filter reads the store’s subname; a saved wine’s sheet is the short one', () => {
   assert.match(read('src/utils/storeListing139.ts'), /test\(`\$\{row\.name\} \$\{row\.subname \?\? ''\}`\)/);

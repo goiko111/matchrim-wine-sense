@@ -1,0 +1,63 @@
+import type { StoreRow140 } from './storeListing139';
+
+// 142: Winerim's public store already holds, for each wine, what a rich wine sheet needs: pairings, six flavour axes,
+// a written tasting note, a one-line origin and personality, the wine's story, service data and related wines. The
+// app showed four fields of it and sent people to Winerim's web page for the rest. This reads the detail once per
+// wine per session, keeps only well-formed text, and never sends anything about the person.
+const STORE = 'https://app.winerim.com/api/v1/restaurant/00000000-0000-0000-0000-000000000001/wines';
+export interface WinerimDetail142 {
+  pairings: string[];
+  nose: string | null; palate: string | null;
+  origin: string | null; personality: string | null; story: string | null;
+  alcohol: string | null; temperature: string | null;
+  related: StoreRow140[];
+}
+const text = (value: unknown, max = 900): string | null => typeof value === 'string' && value.trim() && !/[<>]/.test(value) ? value.replace(/\s+/g, ' ').trim().slice(0, max) : null;
+const record = (value: unknown): Record<string, unknown> => value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {};
+const names: Record<string, string> = { 'carne-aves': 'Aves', 'carne-roja': 'Carne roja', 'carne-blanca': 'Carne blanca', 'carne-caza': 'Caza', 'pescado-blanco': 'Pescado blanco',
+  'pescado-azul': 'Pescado azul', 'queso-curado': 'Queso curado', 'queso-suave': 'Queso suave', 'queso-azul': 'Queso azul', 'comida-picante': 'Comida picante' };
+export const pairingLabel142 = (slug: string) => names[slug] ?? slug.replace(/-/g, ' ').replace(/^./, letter => letter.toUpperCase());
+const row = (value: unknown): StoreRow140 | null => {
+  const raw = record(value), name = text(raw.name, 240), winery = text(raw.winery, 240);
+  if (typeof raw.id !== 'number' || !Number.isSafeInteger(raw.id) || raw.id <= 0 || !name || !winery || typeof raw.slugname !== 'string') return null;
+  return { id: raw.id, name, winery, slugname: raw.slugname, vintage: /^(19|20)\d{2}$/.test(String(raw.vintage ?? '')) ? String(raw.vintage) : null, subname: text(raw.subname, 240),
+    type: text(raw.type, 60), region: text(raw.region, 120), country: text(raw.country, 60), photo: typeof raw.photo === 'string' && /^https:\/\/app\.winerim\.com\//.test(raw.photo) ? raw.photo : null,
+    grapes: Array.isArray(raw.grapes) ? raw.grapes.slice(0, 20) : [], tastingAttributes: raw.tastingAttributes, bottlePrice: null } as StoreRow140;
+};
+export const parseWinerimDetail142 = (value: unknown): WinerimDetail142 => {
+  const raw = record(value), note = record(raw.tastingNote), quick = record(raw.quickSheet), details = record(raw.wineDetails);
+  const alcohol = typeof details.alcohol === 'number' && details.alcohol > 0 ? (details.alcohol > 25 ? details.alcohol / 10 : details.alcohol) : null;
+  return {
+    pairings: [...new Set((Array.isArray(raw.pairings) ? raw.pairings : []).flatMap(item => { const slug = record(item).name; return typeof slug === 'string' && /^[a-zñáéíóú-]{2,40}$/i.test(slug) ? [pairingLabel142(slug)] : []; }))].slice(0, 8),
+    nose: text(note.nose), palate: text(note.palate), origin: text(quick.origin, 400), personality: text(quick.personality, 400), story: text(record(raw.storytelling).narrative, 1200),
+    alcohol: alcohol !== null && alcohol >= 4 && alcohol <= 23 ? `${alcohol.toLocaleString('es-ES', { maximumFractionDigits: 1 })} % vol.` : null,
+    temperature: typeof details.serviceTemperature === 'string' && /^\d{1,2}(-\d{1,2})?$/.test(details.serviceTemperature) ? `${details.serviceTemperature.replace('-', '–')} °C` : null,
+    related: (Array.isArray(raw.relatedWines) ? raw.relatedWines : []).flatMap(item => row(item) ?? []).slice(0, 8),
+  };
+};
+const cache = new Map<string, Promise<WinerimDetail142 | null>>();
+export const loadWinerimDetail142 = (id: number, slug: string): Promise<WinerimDetail142 | null> => {
+  if (!Number.isSafeInteger(id) || id <= 0 || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,239}$/.test(slug)) return Promise.resolve(null);
+  const key = `${id}/${slug}`, cached = cache.get(key); if (cached) return cached;
+  const pending = (async () => {
+    const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 15000);
+    try {
+      const response = await fetch(`${STORE}/${id}/${slug}`, { method: 'GET', credentials: 'omit', redirect: 'error', referrerPolicy: 'no-referrer', headers: { Accept: 'application/json' }, signal: controller.signal });
+      return response.ok ? parseWinerimDetail142(await response.json()) : null;
+    } catch { return null; } finally { clearTimeout(timer); }
+  })();
+  cache.set(key, pending); void pending.then(value => { if (!value) cache.delete(key); });
+  return pending;
+};
+
+export type CompatFace142 = 'good' | 'fair' | 'far';
+/** «Por qué encaja», one short sentence per trait with a face, instead of two bars and «3.0/5». */
+export const compatLines142 = (dimensions: ReadonlyArray<{ key: string; tone: string; direction: string; wineValue: number }>): Array<{ key: string; face: CompatFace142; text: string }> => {
+  const words: Record<string, [string, string, string]> = { // [trait as it is, more of it, less of it]
+    potente: ['El cuerpo', 'Tiene más cuerpo', 'Es más ligero'], acidez: ['La frescura', 'Es más fresco y ácido', 'Es menos fresco'], dulce: ['El dulzor', 'Es más dulce', 'Es más seco'],
+    tanico: ['Los taninos', 'Es más áspero en boca', 'Es más suave en boca'], afrutado: ['La fruta', 'Es más afrutado', 'Es menos afrutado'] };
+  return dimensions.flatMap((item): Array<{ key: string; face: CompatFace142; text: string }> => { const set = words[item.key]; if (!set) return [];
+    if (item.tone === 'positive') return [{ key: item.key, face: 'good' as const, text: `${set[0]} es como te gusta` }];
+    const change = item.direction === 'higher' ? set[1] : set[2];
+    return [{ key: item.key, face: item.tone === 'neutral' ? 'fair' as const : 'far' as const, text: `${change} de lo que sueles preferir${item.tone === 'neutral' ? ', por poco' : ''}` }]; });
+};

@@ -1662,7 +1662,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   pendingAffinity={nativeConsumer?.pending}
                   affinity={affinityExplanation} disabled={regionActionsLocked}
                   photo={facts140 && <NativeWinerimFacts140 identity={facts140} part="photo" />}
-                  facts={facts140 && <NativeWinerimFacts140 identity={facts140} part="facts" />}
+                  facts={facts140 && <NativeWinerimFacts140 identity={facts140} part="facts" profile={scanProfile?.profile ?? null} />}
                   estimate={!isPendingLocalIdentity109(selectedCandidate) && selectedCandidate.name
                     ? <NativeStoreEstimate139 identity={selectedCandidate} profile={scanProfile?.profile ?? null}
                       onScore={score => recordScannedWine139(user?.id ?? null, { name: selectedCandidate.name, winery: selectedCandidate.producer, vintage: selectedCandidate.vintage, score })} /> : null}
