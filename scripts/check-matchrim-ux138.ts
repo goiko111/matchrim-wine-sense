@@ -24,7 +24,7 @@ test('Store vectors: real ones are usable, filler-like ones are not', () => {
   assert(usableStoreSensory138(row(2, 'Lagar de Cervera', 'La Rioja Alta', null, 'blanco', [2, 4, 1, 0, 3])), 'a white may have tannin 0');
   assert.equal(usableStoreSensory138(row(3, 'x', 'y', null, 'tinto', [4, 3, 1, 0, 3])), null, 'a red with tannin 0 is «not applicable»');
   assert.equal(usableStoreSensory138(row(4, 'x', 'y', null, 'blanco', [3, 3, 3, 3, 3])), null);
-  assert.equal(usableStoreSensory138(row(5, 'x', 'y', null, 'tinto', [3, 3, 1, 3, 3])), null, 'four defaults');
+  assert(usableStoreSensory138(row(5, 'x', 'y', null, 'tinto', [3, 3, 1, 3, 3])), '140: a medium dry red is real data, not a default');
   assert.equal(usableStoreSensory138(row(6, 'x', 'y', null, 'tinto', [0, 3, 1, 3, 4])), null);
   assert.equal(usableStoreSensory138(row(7, 'x', 'y', null, 'tinto', null)), null);
   assert.equal(usableStoreSensory138(row(8, 'x', 'y', null, 'tinto', [4, 3, 1, 3, 9])), null);

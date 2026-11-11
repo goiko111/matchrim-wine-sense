@@ -1,4 +1,4 @@
-import { createGlobalCatalogue103, type PublicGlobalRow103 } from './nativeGlobalCatalogue103';
+import type { PublicGlobalRow103 } from './nativeGlobalCatalogue103';
 import { buildConsumerAffinity, type ConsumerAffinityResult } from './consumerAffinity95';
 import { calculateLocalMatchrimAffinity } from './wineAffinityExplanation';
 import type { MatchrimProfileLike } from './matchrimPassport';
@@ -35,15 +35,19 @@ export const matchListing139 = (line: ListingLine139, rows: readonly PublicGloba
   const read = readListingLine139(line);
   if (read.name.length < 3) return null;
   // One entry per wine: the asked vintage if the store has it, otherwise the most recent one.
-  const wines = new Map<string, StoreEstimate138>();
+  const wines = new Map<string, StoreEstimate138>(), prices = new Map<string, number[]>(), photos = new Map<string, string>();
   for (const row of rows) {
     const attributes = usableStoreSensory138(row); if (!attributes) continue;
     const id = `${rowName(row)}|${brandKey(row.winery)}`, previous = wines.get(id), year = String(row.vintage ?? '');
+    const price = (row as { bottlePrice?: number | null }).bottlePrice;
+    if (typeof price === 'number') prices.set(id, [...(prices.get(id) ?? []), price]);
+    if (row.photo && !photos.has(id)) photos.set(id, row.photo);
     const better = !previous || (read.vintage && year === read.vintage)
       || (String(previous.row.vintage ?? '') !== read.vintage && Number(row.vintage ?? 0) > Number(previous.row.vintage ?? 0));
     if (better) wines.set(id, { row, attributes });
   }
-  const all = [...wines.values()];
+  const all = [...wines.entries()].map(([id, item]) => ({ ...item, row: item.row.photo ? item.row : { ...item.row, photo: photos.get(id) ?? null },
+    typicalPrice: median(prices.get(id) ?? []) }));
   const producer = line.producer ? brandKey(line.producer) : '';
   const ofProducer = (item: StoreEstimate138) => !producer || brandKey(item.row.winery) === producer;
   // «PAGOS DE ANGUIX COSTALARA» is the wine «Costalara» of the winery «Pagos de Anguix».
@@ -86,25 +90,66 @@ export const storeScore139 = (profile: MatchrimProfileLike | null | undefined, a
   const result = storeAffinity139(profile, attributes); return result.state === 'ready' ? result.score : null;
 };
 
-// One store search per distinct query per session, three at a time: a 20-line list costs at most 20 GETs.
-const cache = new Map<string, Promise<readonly PublicGlobalRow103[]>>();
+// One store search per distinct query per session. Measured 2026-11-11: a request takes 3-5 s and the server
+// starts timing out above roughly six at once, so six are in flight and only the first page (20 rows) is read.
+// 140: the store is read here directly instead of through the scanner's strict catalogue client, which read up to
+// four pages in sequence and dropped the prices. The public store lists one row per restaurant that sells a wine,
+// so its prices are restaurant prices: their median says which wine of a winery a list line at 30 € most likely is.
+const STORE139 = 'https://app.winerim.com/api/v1/restaurant/00000000-0000-0000-0000-000000000001/wines';
+export type StoreRow140 = PublicGlobalRow103 & { bottlePrice: number | null };
+const parseRow140 = (value: unknown): StoreRow140 | null => {
+  if (!value || typeof value !== 'object') return null;
+  const raw = value as Record<string, unknown>;
+  const text = (field: unknown) => typeof field === 'string' && field.trim() && field.length <= 240 ? field.replace(/\s+/g, ' ').trim() : null;
+  const name = text(raw.name), winery = text(raw.winery);
+  if (typeof raw.id !== 'number' || !Number.isSafeInteger(raw.id) || raw.id <= 0 || !name || !winery) return null;
+  const vintage = /^(19|20)\d{2}$/.test(String(raw.vintage ?? '')) ? String(raw.vintage) : null;
+  const bottle = (Array.isArray(raw.prices) ? raw.prices : []).flatMap(price => {
+    const item = price && typeof price === 'object' ? price as Record<string, unknown> : {};
+    const amount = Number(item.price);
+    return item.variant === 'botella' && Number.isFinite(amount) && amount >= 6 && amount <= 900 ? [amount] : [];
+  })[0] ?? null;
+  return { id: raw.id, name, winery, slugname: typeof raw.slugname === 'string' ? raw.slugname : '_', vintage, subname: text(raw.subname), type: text(raw.type),
+    region: text(raw.region), country: text(raw.country), photo: typeof raw.photo === 'string' && /^https:\/\/app\.winerim\.com\//.test(raw.photo) ? raw.photo : null,
+    grapes: Array.isArray(raw.grapes) ? raw.grapes.slice(0, 20) : [], tastingAttributes: raw.tastingAttributes, bottlePrice: bottle } as StoreRow140;
+};
+const cache = new Map<string, Promise<readonly StoreRow140[]>>();
 let running = 0; const waiting: Array<() => void> = [];
 const slot = async <T,>(work: () => Promise<T>): Promise<T> => {
-  if (running >= 3) await new Promise<void>(resolve => waiting.push(resolve));
+  if (running >= 6) await new Promise<void>(resolve => waiting.push(resolve));
   running += 1;
   try { return await work(); } finally { running -= 1; waiting.shift()?.(); }
 };
-export const searchStore139 = (query: string, signal?: AbortSignal): Promise<readonly PublicGlobalRow103[]> => {
-  const id = key(query); if (id.length < 2) return Promise.resolve([]);
+const readPage140 = async (query: string, page: number, signal?: AbortSignal) => {
+  const response = await fetch(`${STORE139}?${new URLSearchParams({ page: String(page), text: query, store: '1' })}`,
+    { method: 'GET', credentials: 'omit', redirect: 'error', referrerPolicy: 'no-referrer', headers: { Accept: 'application/json' }, signal });
+  if (!response.ok) throw new Error('STORE_UNAVAILABLE');
+  const body = await response.json() as { count?: unknown; results?: unknown };
+  return { count: typeof body.count === 'number' ? body.count : 0, rows: Array.isArray(body.results) ? body.results.slice(0, 20).flatMap(row => parseRow140(row) ?? []) : [] };
+};
+export const searchStore139 = (query: string, signal?: AbortSignal): Promise<readonly StoreRow140[]> => {
+  const id = key(query); if (id.length < 2 || query.length > 120) return Promise.resolve([]);
   const cached = cache.get(id); if (cached) return cached;
+  // The shared request is not tied to one caller's signal: another line of the same list may be waiting for it.
   const pending = slot(async () => {
-    const page = await createGlobalCatalogue103().searchProposals(query, signal);
-    // One malformed row marks the page «incomplete»; the rows that did parse are still good search results.
-    if (page.status !== 'complete' && page.status !== 'partial' && !(page.status === 'incomplete' && page.rows.length)) throw new Error('STORE_UNAVAILABLE');
-    return page.rows as readonly PublicGlobalRow103[];
+    const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 15000);
+    try {
+      const first = await readPage140(query.trim(), 1, controller.signal);
+      const seen = new Set<number>();
+      return first.rows.filter(row => !seen.has(row.id) && seen.add(row.id) && !/\b\d+([.,]\d+)?\s*(euros?|€)/i.test(row.name));
+    } finally { clearTimeout(timer); }
   });
   cache.set(id, pending); pending.catch(() => cache.delete(id));
-  return pending;
+  return signal ? Promise.race([pending, new Promise<never>((_, reject) => signal.addEventListener('abort', () => reject(new DOMException('Cancelled', 'AbortError')), { once: true }))]) : pending;
+};
+const median = (values: number[]) => { const sorted = [...values].sort((a, b) => a - b); return sorted.length ? sorted[Math.floor((sorted.length - 1) / 2)] : null; };
+/** Which option a list price points at: the wine whose usual restaurant price is closest, when one clearly is. */
+export const likelyByPrice140 = (options: readonly StoreEstimate138[], listPrice: number | null | undefined): StoreEstimate138 | null => {
+  if (typeof listPrice !== 'number' || !Number.isFinite(listPrice) || listPrice <= 0) return null;
+  const ranked = options.filter(item => typeof item.typicalPrice === 'number' && item.typicalPrice > 0)
+    .map(item => ({ item, gap: Math.abs(Math.log(listPrice / (item.typicalPrice as number))) })).sort((a, b) => a.gap - b.gap);
+  if (!ranked.length || ranked[0].gap > 0.36) return null;
+  return ranked.length === 1 || ranked[1].gap - ranked[0].gap >= 0.12 ? ranked[0].item : null;
 };
 export const estimateListing139 = async (line: ListingLine139, signal?: AbortSignal): Promise<ListingMatch139 | null> => {
   const read = readListingLine139(line);

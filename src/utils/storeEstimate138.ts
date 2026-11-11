@@ -6,7 +6,9 @@ import { hasExactWinerimProducer } from './winerimOriginalSheet';
 // is never used as a verified sheet, for the scanner or to train the profile. Here it only backs an estimate
 // that is labelled as such, and vectors that look like filler are discarded.
 export type StoreAttributes138 = { scale: 'winerim-0-5'; power: number; acidity: number; sweetness: number; tannin: number; fruity: number };
-export type StoreEstimate138 = { row: PublicGlobalRow103; attributes: StoreAttributes138 };
+export type StoreEstimate138 = { row: PublicGlobalRow103; attributes: StoreAttributes138;
+  /** 140: median bottle price of this wine across the restaurants of the store, when known. */
+  typicalPrice?: number | null };
 
 const key = (value: string) => value.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 const keys = ['power', 'acidity', 'sweetness', 'tannin', 'fruity'] as const;
@@ -20,8 +22,9 @@ export const usableStoreSensory138 = (row: Pick<PublicGlobalRow103, 'type' | 'ta
   // 0 means «not applicable» in this source: acceptable only for the tannin of a wine that is not red.
   if (power === 0 || acidity === 0 || sweetness === 0 || fruity === 0) return null;
   if (tannin === 0 && /tinto|red|rouge/i.test(row.type ?? '')) return null;
-  // A flat vector or an almost-all-3 one is indistinguishable from the default.
-  if (new Set(values).size === 1 || values.filter(value => value === 3).length >= 4) return null;
+  // 140: only a flat vector is treated as the default. «3, 3, 1, 3, 3» is an ordinary medium dry red, and dropping it
+  // hid the most common wine of several wineries (Baigorri Crianza) from a wine list.
+  if (new Set(values).size === 1) return null;
   return { scale: 'winerim-0-5', power, acidity, sweetness, tannin, fruity };
 };
 
