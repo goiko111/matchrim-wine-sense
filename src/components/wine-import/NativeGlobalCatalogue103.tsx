@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { BookOpen, Check, ChevronLeft, ChevronRight, Loader2, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { Capacitor } from '@capacitor/core';
 import { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97';
 import { Input } from '@/components/ui/input';
 import type { WineCandidate } from '@/utils/multiWineScan';
@@ -42,9 +43,10 @@ export const GlobalWineReference103 = ({ candidate, profile }: { candidate: Wine
     <details className="text-xs leading-5 text-stone-600"><summary className="flex min-h-11 cursor-pointer items-center">Por qué falta la afinidad</summary>
       Esta ficha puede contener valores de relleno sin distinguirlos de datos disponibles. No los usamos para calcular tu afinidad ni para aprender tus gustos.
     </details>
-    <Button asChild variant="outline" className="h-auto min-h-11 max-w-full gap-2 whitespace-normal px-3 py-3 text-left">
+    {/* 140: on iOS this link left the app for Safari (web.winerim.com); the in-app Winerim data replaces it there. */}
+    {!Capacitor.isNativePlatform() && <Button asChild variant="outline" className="h-auto min-h-11 max-w-full gap-2 whitespace-normal px-3 py-3 text-left">
       <a href={wine.url} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer"><BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" /> Ver ficha original Winerim</a>
-    </Button>
+    </Button>}
   </section>;
 };
 

@@ -8,6 +8,7 @@ import { NativeStoreSearch139 } from '@/components/NativeStoreSearch139';
 import type { PublicGlobalRow103 } from '@/utils/nativeGlobalCatalogue103';
 import { getScannedWines139, SCANNED_WINES_EVENT139, type ScannedWine139 } from '@/utils/scannedWines139';
 import { searchStore139 } from '@/utils/storeListing139';
+import { formatWineType } from '@/utils/wineFormatters';
 import { NativeSearchWine138 } from '@/components/NativeSearchWine138';
 import { buildNativeRecommendation95 } from '@/utils/nativeRecommendation95';
 import { createNativeWineDraft98, stashSignedOutWineDraft134 } from '@/utils/nativeWineDraft98';
@@ -37,6 +38,9 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
   const [searchOpen, setSearchOpen] = useState(false);
   const [allOpen, setAllOpen] = useState(false);
   const [searched, setSearched] = useState<PublicGlobalRow103 | null>(null);
+  // 140: closing a wine opened from the search goes back to the search, with its text and results.
+  const [searchQuery, setSearchQuery] = useState('');
+  const [fromSearch, setFromSearch] = useState(false);
   const allButton = useRef<HTMLButtonElement>(null);
   // 139: wines identified by a scan stay one tap away, also when they were not saved.
   const [scanned, setScanned] = useState<ScannedWine139[]>(() => getScannedWines139(ownerId));
@@ -47,7 +51,7 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
     const rows = await searchStore139(wine.name).catch(() => []);
     const row = rows.find(item => fold(item.name) === fold(wine.name) && (!wine.winery || fold(item.winery) === fold(wine.winery)) && String(item.vintage ?? '') === (wine.vintage ?? ''))
       ?? rows.find(item => fold(item.name) === fold(wine.name) && (!wine.winery || fold(item.winery) === fold(wine.winery)));
-    if (row) { setSearched(row); return; }
+    if (row) { setFromSearch(false); setSearched(row); return; }
     const draft = { name: wine.name, producer: wine.winery, vintage: wine.vintage ? Number(wine.vintage) : null };
     if (!ownerId) stashSignedOutWineDraft134(draft);
     navigate(ownerId ? '/my-wines/add' : buildAuthRedirectPath('/my-wines/add'), ownerId ? { state: createNativeWineDraft98(draft, ownerId) } : undefined);
@@ -60,7 +64,7 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
       <NativeWinePhoto98 src={wine.photo} name={wine.name} className="h-36 w-[5.5rem] border border-stone-200" />
       <span className="block min-w-0">
         <span className="block break-words text-base font-semibold leading-6">{wine.name}</span>
-        <span className="mt-1 block break-words text-xs leading-5 text-stone-500">{[wine.winery, wine.vintage].filter(Boolean).join(' · ')}</span>
+        <span className="mt-1 block break-words text-xs leading-5 text-stone-500">{[wine.winery, wine.vintage, wine.type ? formatWineType(wine.type) : ''].filter(Boolean).join(' · ')}</span>
         <span className={`mt-2 flex flex-wrap items-center gap-2 text-sm font-semibold ${result.state === 'ready' && result.score >= 65 ? 'text-emerald-800' : 'text-stone-700'}`}>
           {result.state === 'ready' && <span aria-hidden="true" className={`inline-flex min-w-11 shrink-0 items-baseline justify-center rounded-full px-2 py-1 text-base font-bold leading-none ${result.score >= 65 ? 'bg-emerald-50 text-emerald-900' : 'bg-stone-100 text-stone-800'}`}>{result.score}<span className="text-[10px] font-semibold">/100</span></span>}
           <span className="min-w-0">{result.state === 'ready' ? result.title : 'Afinidad por calcular'}</span></span>
@@ -155,10 +159,11 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
           setSearchOpen(false);
           if (!ownerId) stashSignedOutWineDraft134({ name });
           navigate(ownerId ? '/my-wines/add' : buildAuthRedirectPath('/my-wines/add'), ownerId ? { state: createNativeWineDraft98({ name }, ownerId) } : undefined);
-        }} onSelect={wine => { setSearchOpen(false); setSearched(wine); }} /></div>
+        }} query={searchQuery} onQuery={setSearchQuery} onSelect={wine => { setSearchOpen(false); setFromSearch(true); setSearched(wine); }} /></div>
       </Dialog.Content></Dialog.Portal>
     </Dialog.Root>
-    <NativeSearchWine138 wine={searched} profile={profile} onClose={() => setSearched(null)} />
+    <NativeSearchWine138 wine={searched} profile={profile} backLabel={fromSearch ? 'Volver a la búsqueda' : undefined}
+      onClose={() => { setSearched(null); if (fromSearch) { setFromSearch(false); setSearchOpen(true); } }} />
     {detail}<MobileBottomNav />
   </div>;
 };

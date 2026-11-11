@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { BookOpen, Check, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { Capacitor } from '@capacitor/core';
 import { buildAuthRedirectPath } from '@/utils/navigation';
 import { stashSignedOutWineDraft134 } from '@/utils/nativeWineDraft98';
 import type { WineCandidate } from '@/utils/multiWineScan';
@@ -24,7 +25,8 @@ export const NativeMasterReference259 = ({ candidate }: { candidate: WineCandida
     <p className="font-semibold text-slate-950">{shown.title}</p>
     <p className="text-sm leading-6 text-stone-700">{shown.description}</p>
     {gap && <p className="text-sm leading-6 text-stone-700">{gap.nextStep}</p>}
-    {link.wine.webUrl && <Button asChild variant="outline" className="h-auto min-h-11 max-w-full gap-2 whitespace-normal px-3 py-3 text-left">
+    {/* 140: on iOS this link left the app for Safari (web.winerim.com); the in-app Winerim data replaces it there. */}
+    {link.wine.webUrl && !Capacitor.isNativePlatform() && <Button asChild variant="outline" className="h-auto min-h-11 max-w-full gap-2 whitespace-normal px-3 py-3 text-left">
       <a href={link.wine.webUrl} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer">
         <BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" /> Ver ficha original Winerim
       </a>

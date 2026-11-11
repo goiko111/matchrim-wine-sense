@@ -94,8 +94,8 @@ import { openCamera133 } from '@/utils/nativeCamera133';
 import { ScanWaiting139 } from '@/components/ScanWaiting139';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { estimateListing139, storeAffinity139, type ListingMatch139 } from '@/utils/storeListing139';
-import { menuCoverageWarning139, menuLineKey139, menuVerdict139, menuVerdictRank139, menuVerdictText139, mergeMenuPages139,
-  sortMenuVerdicts139, storeOptionName139, type MenuVerdict139 } from '@/utils/menuEstimates139';
+import { menuCoverageWarning139, menuLikelyText140, menuLineKey139, menuRowName140, menuVerdict139, menuVerdictCertain140, menuVerdictScore140,
+  menuVerdictText139, mergeMenuPages139, shownMenuOptions140, sortMenuVerdicts139, storeOptionName139, type MenuOption140, type MenuVerdict139 } from '@/utils/menuEstimates139';
 
 // 139: the wait names the real step instead of «2/4 lecturas terminadas».
 const MENU_STEPS139 = ['Leyendo la carta', 'Buscando los vinos en Winerim', 'Comparando con tus gustos'] as const;
@@ -138,6 +138,16 @@ type ScannedWineSortMode = 'compatibility' | 'price-asc' | 'price-desc' | 'name'
 type NativeMenuReadMode95 = 'full' | 'regions' | 'failed-regions';
 type PartialMenuReading95 = { file: File; ownerId: string | null; successful: MenuTileResult[]; failed: MenuScanTile[] };
 
+// 140: only a bottle price in euros says which wine of a winery a line is: the store's prices are restaurant bottle
+// prices, and a glass price (or one that may be either) would point at a cheaper wine.
+const menuBottlePrice140 = (wine: ScannedWine): number | null => {
+  const currency = normalizeScanCurrency(wine.moneda);
+  if (currency && currency !== 'EUR') return null;
+  const evidence = menuWinePriceEvidence(wine);
+  if (typeof evidence.prices?.bottle === 'number') return evidence.prices.bottle;
+  if (evidence.service === 'glass' || evidence.service === 'both' || typeof evidence.prices?.glass === 'number') return null;
+  return typeof evidence.price === 'number' ? evidence.price : null;
+};
 const formatWineType = (type?: string | null) => type?.trim() || 'Sin tipo';
 const formatPrice = formatMenuPriceAmount;
 
@@ -278,6 +288,8 @@ const WineMenuScannerSession = ({
   const [estimates139, setEstimates139] = useState<Map<string, ListingMatch139 | null>>(new Map());
   const [picked139, setPicked139] = useState<Map<string, number>>(new Map());
   const [menuPages139, setMenuPages139] = useState(1);
+  // 140: which lines have their other wines open. Closed until asked: six options under every line made the list endless.
+  const [openChoices140, setOpenChoices140] = useState<Set<string>>(new Set());
   const estimateRequested139 = useRef(new Set<string>());
   const estimateAbort139 = useRef<AbortController | null>(null);
   const addCameraInputRef139 = useRef<HTMLInputElement>(null);
@@ -449,6 +461,7 @@ const WineMenuScannerSession = ({
     estimateRequested139.current.clear();
     setEstimates139(new Map());
     setPicked139(new Map());
+    setOpenChoices140(new Set());
     setMenuPages139(1);
   };
 
@@ -511,7 +524,8 @@ const WineMenuScannerSession = ({
     if (verified.state === 'ready') return menuVerdict139({ score: verified.score, title: verified.title }, null, profile139);
     if (isLiteralWineStyle95(wine)) return { kind: 'pending' };
     const key = menuLineKey139(wine);
-    return menuVerdict139(null, estimates139.has(key) ? estimates139.get(key) : undefined, profile139, picked139.get(key), estimatesOn139);
+    return menuVerdict139(null, estimates139.has(key) ? estimates139.get(key) : undefined, profile139, picked139.get(key), estimatesOn139,
+      { name: wine.nombre, bottlePrice: menuBottlePrice140(wine) });
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const verdicts139 = useMemo(() => isNative ? scannedWines.map(verdict139) : [], [isNative, scannedWines, estimates139, picked139, profile139, estimatesOn139]);
@@ -567,13 +581,15 @@ const WineMenuScannerSession = ({
   const menuDecision = useMemo(() => {
     if (scannedWines.length === 0) return null;
 
-    // 139: on iOS the choice also counts store estimates (a range by its upper bound); they are flagged so the
-    // block says «estimación». A verified sheet keeps its own score and the web ranking is unchanged.
+    // 139: on iOS the choice also counts store estimates; they are flagged so the block says «estimación». A verified
+    // sheet keeps its own score and the web ranking is unchanged.
+    // 140: one wine with one score (verified, exact or likely) always goes before a range, which counts by its
+    // midpoint: a range is the top pick only when the list has nothing certain.
     type Scored139 = { wine: ScannedWine; index: number; score: number; verdict?: MenuVerdict139 };
     const scored: Scored139[] = isNative ? scannedWines
-      .map((wine, index) => ({ wine, index, verdict: verdicts139[index], score: verdicts139[index] ? menuVerdictRank139(verdicts139[index]) : -2 }))
-      .filter(({ score }) => score >= 0)
-      .sort((a, b) => b.score - a.score) : scannedWines
+      .flatMap((wine, index) => { const verdict = verdicts139[index], score = verdict ? menuVerdictScore140(verdict) : null;
+        return verdict && score !== null ? [{ wine, index, verdict, score: Math.round(score) }] : []; })
+      .sort((a, b) => Number(menuVerdictCertain140(b.verdict!)) - Number(menuVerdictCertain140(a.verdict!)) || b.score - a.score) : scannedWines
       .map((wine, index) => ({ wine, index, score: wine.compatibilidad as number }))
       .filter(({ wine }) => typeof wine.compatibilidad === 'number' && isMenuIdentityConfirmed(wine))
       .sort((a, b) => b.score - a.score);
@@ -616,6 +632,7 @@ const WineMenuScannerSession = ({
     const rows = menuPriceRows
       .filter(({ price, currency }) => maxPrice === null || (currency === menuCurrency && price !== null && price <= maxPrice));
     // 139: iOS orders verified and estimated scores together, unmatched lines last.
+    // 140: ranges go below every certain answer, by their midpoint (see menuVerdictRank139).
     if (isNative && scanSortMode === 'compatibility') return sortMenuVerdicts139(rows.map(row => ({ ...row, verdict: verdicts139[row.index] ?? { kind: 'pending' as const } })));
     return rows
       .sort((a, b) => {
@@ -633,6 +650,7 @@ const WineMenuScannerSession = ({
       });
   }, [scanMaxPrice, scanSortMode, menuPriceRows, menuCurrency, isNative, verdicts139]);
 
+  const shownName140 = (wine: ScannedWine, verdict?: MenuVerdict139) => menuRowName140(wine.nombre, verdict ?? { kind: 'pending' });
   const listPriceText = (wine: ScannedWine, index: number) => {
     if (wine.precio_manual_pendiente) return `Precio manual ${formatPrice(wine.precio, wine.moneda) ?? 'sin importe'}${isNative ? '' : ' · formato pendiente'}`;
     const evidence = { id: `menu-row-${index}`, name: wine.nombre, ...menuWinePriceEvidence(wine) };
@@ -1299,21 +1317,32 @@ const WineMenuScannerSession = ({
     </div>
   );
   // 139: a winery-only line: the wines of that winery with their score; picking one fixes the row.
-  const renderRangePicker139 = (wine: ScannedWine, verdict: MenuVerdict139) => verdict.kind === 'range' && <div className="mt-2 min-w-0 space-y-2" data-testid="native-menu-range139">
-    {verdict.options.map(option => <Button key={option.estimate.row.id} type="button" variant="outline"
+  // 140: at most five, the one whose usual price is closest to the list's first, and never open by default.
+  const pickChoice140 = (wine: ScannedWine, id: number) => { const key = menuLineKey139(wine);
+    setPicked139(current => new Map(current).set(key, id));
+    setOpenChoices140(current => { const next = new Set(current); next.delete(key); return next; }); };
+  const renderChoices140 = (wine: ScannedWine, options: readonly MenuOption140[]) => <div className="mt-2 min-w-0 space-y-2" data-testid="native-menu-range139">
+    {shownMenuOptions140(options).map(option => <Button key={option.estimate.row.id} type="button" variant="outline"
       className="h-auto min-h-[44px] w-full min-w-0 justify-between gap-3 whitespace-normal px-[12px] py-[8px] text-left"
-      onClick={() => setPicked139(current => new Map(current).set(menuLineKey139(wine), option.estimate.row.id))}>
-      <span className="min-w-0 break-words">{storeOptionName139(option.estimate)}</span>
+      onClick={() => pickChoice140(wine, option.estimate.row.id)}>
+      <span className="min-w-0 break-words">{storeOptionName139(option.estimate)}
+        {typeof option.estimate.typicalPrice === 'number' && <span className="block text-xs font-normal text-stone-500">Suele costar unos {Math.round(option.estimate.typicalPrice)} €</span>}</span>
       <span className="shrink-0 font-semibold text-red-900">≈{option.score}/100</span>
     </Button>)}
   </div>;
+  const closedChoices140 = (wine: ScannedWine, label: string, options: readonly MenuOption140[]) => options.length > 0 && <details className="mt-2 min-w-0">
+    <summary className="flex min-h-[44px] cursor-pointer items-center text-sm font-medium text-red-900">{label}</summary>
+    {renderChoices140(wine, options)}
+  </details>;
   const renderWineAffinityExplanation = (wine: ScannedWine) => {
     const decision = getWineDecision(wine);
     if (isNative) {
       // 139: a line without a verified sheet shows its store estimate, labelled as such, instead of «Primero,
       // confirmemos el vino». The verified path above it is untouched.
       const verdict = verdict139(wine);
-      if (verdict.kind === 'estimate') { const { row } = verdict.estimate; return <div className="min-w-0" data-testid="native-menu-estimate139">
+      // 140: a wine the list price points at is shown like an exact one, saying why, with the others one tap away.
+      if (verdict.kind === 'estimate' || verdict.kind === 'likely') { const { row } = verdict.estimate; return <div className="min-w-0" data-testid="native-menu-estimate139">
+        {verdict.kind === 'likely' && <p className="mb-3 text-sm font-medium leading-6 text-stone-800" data-testid="native-menu-likely140">{menuLikelyText140(verdict)}</p>}
         <div className="flex min-w-0 flex-wrap items-start gap-4">
           {row.photo && <NativeWinePhoto98 src={row.photo} name={storeOptionName139(verdict.estimate)} className="h-[144px] w-[88px]" />}
           <div className="min-w-[min(100%,10rem)] flex-1"><p className="break-words text-base font-semibold leading-6 text-stone-950">{storeOptionName139(verdict.estimate)}</p>
@@ -1321,14 +1350,21 @@ const WineMenuScannerSession = ({
         </div>
         <div className="mt-3"><NativeAffinitySummary result={storeAffinity139(profile139, verdict.estimate.attributes)} /></div>
         <p className="mt-3 text-xs leading-5 text-stone-500">Estimación con los datos de la tienda de Winerim.</p>
-        {verdict.chosen && <Button type="button" variant="ghost" className="mt-1 h-auto min-h-[44px] whitespace-normal px-0 text-left text-sm font-medium text-red-900 underline underline-offset-4"
+        {verdict.kind === 'estimate' && verdict.chosen && <Button type="button" variant="ghost" className="mt-1 h-auto min-h-[44px] whitespace-normal px-0 text-left text-sm font-medium text-red-900 underline underline-offset-4"
           onClick={() => setPicked139(current => { const next = new Map(current); next.delete(menuLineKey139(wine)); return next; })}>Elegir otro vino de esta bodega</Button>}
+        {verdict.kind === 'likely' && closedChoices140(wine, '¿Es otro? Elegir', verdict.options)}
       </div>; }
       if (verdict.kind === 'range') return <section className="min-w-0 border-y border-stone-200 py-4" aria-label="Cuánto encaja contigo" data-testid="native-menu-range-detail139">
         <h4 className="text-lg font-semibold leading-6 text-slate-950">{menuVerdictText139(verdict)}</h4>
-        <p className="mt-2 text-sm leading-6 text-stone-600">La carta solo indica la bodega. Elige el vino exacto y te decimos cuánto encaja contigo.</p>
-        {renderRangePicker139(wine, verdict)}
+        <p className="mt-2 text-sm leading-6 text-stone-600">La carta solo indica la bodega. Elige el vino y te decimos cuánto encaja contigo.</p>
+        {closedChoices140(wine, 'Elegir el vino', verdict.options)}
         <p className="mt-3 text-xs leading-5 text-stone-500">Estimación con los datos de la tienda de Winerim.</p>
+      </section>;
+      // 140: «– Syrah» with no Syrah of that winery in the store: its other wines are not offered as if they were it.
+      if (verdict.kind === 'mismatch') return <section className="min-w-0 border-y border-stone-200 py-4 text-sm" data-testid="native-menu-mismatch140">
+        <h4 className="text-base font-semibold text-slate-950">{menuVerdictText139(verdict)}</h4>
+        <p className="mt-2 leading-6 text-stone-600">No significa que no te vaya a gustar. Puedes buscarlo tú mismo aquí abajo.</p>
+        {closedChoices140(wine, 'Ver otros vinos de la bodega', verdict.options)}
       </section>;
       if (verdict.kind === 'loading') return <p role="status" className="flex items-center gap-2 border-y border-stone-200 py-4 text-sm text-stone-700"><Loader2 className="h-4 w-4 shrink-0 animate-spin" aria-hidden="true" />Buscando en Winerim…</p>;
       if (verdict.kind === 'none') return <section className="min-w-0 border-y border-stone-200 py-4 text-sm" data-testid="native-menu-none139">
@@ -1367,7 +1403,10 @@ const WineMenuScannerSession = ({
       <div className={kind === 'comparison' ? 'min-w-0 pt-2 [html.matchrim-accessibility-text_&_label]:flex-wrap [html.matchrim-accessibility-text_&_label]:px-[12px] [html.matchrim-accessibility-text_&_label>span]:basis-full' : 'min-w-0 pt-2'}>{children}</div>
     </details> : children;
 
-  const saveScannedWine = async (wine: ScannedWine, index: number, status: 'wishlist' | 'tasted', favorite = false) => {
+  // 140: `winerim` is the name and winery Winerim knows the line as (exact or likely store match). Only those two
+  // words are saved over the capitals of the list: no store flavour data, score or training flag travels with them.
+  const saveScannedWine = async (wine: ScannedWine, index: number, status: 'wishlist' | 'tasted', favorite = false,
+    winerim: { nombre: string; productor: string } | null = null) => {
     if (isNative && isLiteralWineStyle95(wine)) {
       toast.info('Identifica primero la botella concreta para guardarla en Bodega.');
       return;
@@ -1400,8 +1439,8 @@ const WineMenuScannerSession = ({
       const priceSnapshot = menuPriceSnapshot(wine);
       const draftPayload = {
           user_id: ownerId,
-          name: wine.nombre,
-          producer: wine.productor || null,
+          name: winerim?.nombre || wine.nombre,
+          producer: winerim?.productor || wine.productor || null,
           vintage: wine.anada || null,
           region: wine.region || null,
           country: wine.pais || null,
@@ -1479,10 +1518,10 @@ const WineMenuScannerSession = ({
       });
       toast.success(
         payload.is_favorite && payload.status !== 'tasted'
-          ? `${wine.nombre} guardado en ${isNative ? 'Por probar' : 'Quiero Probar'} y Favoritos`
+          ? `${payload.name} guardado en ${isNative ? 'Por probar' : 'Quiero Probar'} y Favoritos`
           : payload.status === 'wishlist'
-          ? `${wine.nombre} guardado en ${isNative ? 'Por probar' : 'Quiero Probar'}`
-          : `${wine.nombre} guardado en ${isNative ? 'Probados' : 'Ya Probados'}. Puntúalo para afinar tu Matchrim`
+          ? `${payload.name} guardado en ${isNative ? 'Por probar' : 'Quiero Probar'}`
+          : `${payload.name} guardado en ${isNative ? 'Probados' : 'Ya Probados'}. Puntúalo para afinar tu Matchrim`
       );
     } catch (error) {
       if (!isCurrent()) return;
@@ -2278,18 +2317,21 @@ const WineMenuScannerSession = ({
                 {menuDecision.best ? <>
                   <p className="text-sm font-semibold text-red-900">El que más encaja contigo de esta carta</p>
                   <Button variant="ghost" className="h-auto min-h-11 w-full min-w-0 justify-between gap-3 whitespace-normal px-0 text-left" onClick={(event) => openWineDetail(menuDecision.best!.index, event.currentTarget)}>
-                    <span className="min-w-0"><span className="block text-lg font-semibold leading-6 text-stone-950">{menuDecision.best.wine.nombre}</span><span className="mt-1 block text-sm font-normal text-stone-600">{listPriceText(menuDecision.best.wine, menuDecision.best.index)}</span></span>
+                    {/* 140: an exact or likely wine is named as Winerim knows it, not in the capitals of the list. */}
+                    <span className="min-w-0"><span className="block text-lg font-semibold leading-6 text-stone-950">{shownName140(menuDecision.best.wine, menuDecision.best.verdict).name}</span><span className="mt-1 block text-sm font-normal text-stone-600">{listPriceText(menuDecision.best.wine, menuDecision.best.index)}</span>
+                      {shownName140(menuDecision.best.wine, menuDecision.best.verdict).listed && <span className="block break-words text-xs font-normal leading-5 text-stone-500">En la carta: {menuDecision.best.wine.nombre}</span>}</span>
                     <span className="shrink-0 text-xl font-bold text-red-900">{menuDecision.best.verdict?.kind === 'range' && menuDecision.best.verdict.low !== menuDecision.best.verdict.high
                       ? `${menuDecision.best.verdict.low}–${menuDecision.best.verdict.high}` : `≈${menuDecision.best.score}`}<span className="text-sm font-medium text-stone-500">/100</span></span>
                   </Button>
                   {(() => {
                     // 139: the best wine may be a store estimate; say so next to the reason.
                     const verdict = menuDecision.best.verdict;
-                    const result = verdict?.kind === 'estimate' ? storeAffinity139(profile139, verdict.estimate.attributes)
+                    const result = verdict?.kind === 'estimate' || verdict?.kind === 'likely' ? storeAffinity139(profile139, verdict.estimate.attributes)
                       : nativeMenuWineAffinity(menuDecision.best.wine, scanProfile?.profile ?? null);
                     return <>
                       {result.state === 'ready' && <p className="text-sm leading-6 text-stone-700">{result.matches.slice(0, 2).join(' ') || result.caution || result.title}</p>}
                       {verdict?.kind === 'range' && <p className="text-sm leading-6 text-stone-700">La carta solo indica la bodega: encaja más o menos según cuál de sus vinos sea.</p>}
+                      {verdict?.kind === 'likely' && <p className="text-sm leading-6 text-stone-700" data-testid="native-menu-decision-likely140">Probablemente es este vino, por el precio de la carta.</p>}
                       {verdict && verdict.kind !== 'verified' && <p className="text-xs leading-5 text-stone-500" data-testid="native-menu-decision-estimate139">Es una estimación con los datos de la tienda de Winerim.</p>}
                     </>;
                   })()}
@@ -2299,7 +2341,7 @@ const WineMenuScannerSession = ({
                       menuDecision.value && menuDecision.value.index !== menuDecision.safeAlternative?.index && { entry: menuDecision.value, label: 'Por afinidad y precio' }]
                       .filter(option => option && option.entry.index !== menuDecision.best?.index)
                       .map(option => option && <Button key={option.entry.index} variant="ghost" className="h-auto min-h-11 w-full min-w-0 justify-between gap-3 whitespace-normal px-0 text-left" onClick={(event) => openWineDetail(option.entry.index, event.currentTarget)}>
-                        <span className="min-w-0"><span className="block text-xs text-stone-500">{option.label}</span>{option.entry.wine.nombre}</span>
+                        <span className="min-w-0"><span className="block text-xs text-stone-500">{option.label}</span>{shownName140(option.entry.wine, option.entry.verdict).name}</span>
                         <span className="shrink-0 text-right text-red-900">{option.entry.verdict?.kind === 'range' && option.entry.verdict.low !== option.entry.verdict.high
                           ? `${option.entry.verdict.low}–${option.entry.verdict.high}` : `≈${option.entry.score}`}/100{option.entry.verdict && option.entry.verdict.kind !== 'verified' && <span className="block text-xs font-normal text-stone-500">estimación</span>}</span>
                       </Button>)}
@@ -2544,32 +2586,47 @@ const WineMenuScannerSession = ({
 		              <div className="divide-y divide-stone-100" role={isNative ? 'list' : undefined}>
 	                        {visibleScannedWines.map(({ wine, index }) => isNative ? (() => {
                         // 139: one tappable row per wine: name, price and the answer to «¿me gustará?».
+                        // 140: three short lines. An exact or likely wine shows its Winerim name and bottle, with the
+                        // list's own words small; the other wines of a range stay closed behind one short control.
                         const verdict: MenuVerdict139 = verdicts139[index] ?? { kind: 'pending' };
+                        const shown = shownName140(wine, verdict);
+                        const photo = verdict.kind === 'estimate' || verdict.kind === 'likely' ? verdict.estimate.row.photo : null;
                         const price = [listPriceText(wine, index), literalMenuServingFormat95(wine)].filter(Boolean).join(' · ');
                         const answer = verdict.kind === 'verified' ? `${verdict.title} · Con ficha de Winerim`
                           : verdict.kind === 'estimate' ? `${verdict.title} (estimación)`
-                            : verdict.kind === 'pending' ? isLiteralWineStyle95(wine) ? 'Estilo de la carta \u00b7 botella sin identificar'
-                              : profile139 ? 'Sin ficha de Winerim todavía' : 'Haz el test de paladar para saber si te gustará'
-                              : menuVerdictText139(verdict);
+                            : verdict.kind === 'likely' ? `${verdict.title} · probablemente, por el precio`
+                              : verdict.kind === 'pending' ? isLiteralWineStyle95(wine) ? 'Estilo de la carta \u00b7 botella sin identificar'
+                                : profile139 ? 'Sin ficha de Winerim todavía' : 'Haz el test de paladar para saber si te gustará'
+                                : menuVerdictText139(verdict);
                         const spoken = verdict.kind === 'pending' ? answer : verdict.kind === 'verified' ? `${menuVerdictText139(verdict)} · Con ficha de Winerim` : menuVerdictText139(verdict);
+                        const choices = verdict.kind === 'likely' || verdict.kind === 'range' || verdict.kind === 'mismatch' ? verdict.options : [];
+                        const lineKey = menuLineKey139(wine), choosing = choices.length > 0 && openChoices140.has(lineKey);
+                        const score = menuVerdictCertain140(verdict) && <span className="shrink-0 text-lg font-bold tabular-nums text-red-900" aria-hidden="true">≈{verdict.score}<span className="text-xs font-medium text-stone-500">/100</span></span>;
                         return <div key={`${wine.nombre}-${index}-list-row`} role="listitem" className="min-w-0" data-testid="native-menu-row139">
-                          <button type="button" aria-label={`${wine.nombre}${wine.anada ? ` ${wine.anada}` : ''}. ${price}. ${spoken}`}
-                            className={`matchrim-pressable flex min-h-[44px] w-full min-w-0 items-start gap-3 px-[12px] py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
-                            onClick={(event) => openWineDetail(index, event.currentTarget)}>
-                            <span className="min-w-0 flex-1">
-                              <span className="block whitespace-normal break-words font-semibold text-slate-950">{wine.nombre}{wine.anada ? ` ${wine.anada}` : ''}</span>
-                              <span className="block whitespace-normal break-words text-sm text-slate-600">{price}</span>
-                              {renderNativeTakeawayPrice(wine, requestedServiceFormat === 'any' ? null : requestedServiceFormat)}
-                              <span className={`mt-1 flex items-center gap-2 whitespace-normal break-words text-sm ${verdict.kind === 'verified' || verdict.kind === 'estimate' || verdict.kind === 'range' ? 'text-stone-800' : 'text-stone-500'}`} data-testid="native-menu-verdict139">
-                                {verdict.kind === 'loading' && <Loader2 className="h-3 w-3 shrink-0 animate-spin" aria-hidden="true" />}{answer}</span>
-                            </span>
-                            {(verdict.kind === 'verified' || verdict.kind === 'estimate') && <span className="shrink-0 text-lg font-bold tabular-nums text-red-900" aria-hidden="true">≈{verdict.score}<span className="text-xs font-medium text-stone-500">/100</span></span>}
-                            <ChevronRight aria-hidden="true" className="mt-1 shrink-0 text-stone-400" style={{ width: 20, height: 20 }} />
-                          </button>
-                          {verdict.kind === 'range' && <details className="min-w-0 px-[12px] pb-3">
-                            <summary className="flex min-h-[44px] cursor-pointer items-center text-sm font-medium text-red-900">Elegir el vino exacto</summary>
-                            {renderRangePicker139(wine, verdict)}
-                          </details>}
+                          <div className="flex min-w-0 items-stretch">
+                            <button type="button" aria-label={`${shown.name}${wine.anada ? ` ${wine.anada}` : ''}. ${shown.listed ? `En la carta: ${shown.listed}. ` : ''}${price}. ${spoken}`}
+                              className={`matchrim-pressable flex min-h-[44px] min-w-0 flex-1 items-start gap-3 px-[12px] py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}
+                              onClick={(event) => openWineDetail(index, event.currentTarget)}>
+                              {photo && <NativeWinePhoto98 src={photo} name={shown.name} className="h-[56px] w-[40px] [&>img]:p-[2px] [&_span_span]:hidden [&_svg]:h-5 [&_svg]:w-5" />}
+                              <span className="min-w-0 flex-1">
+                                <span className="block whitespace-normal break-words font-semibold text-slate-950">{shown.name}{wine.anada ? ` ${wine.anada}` : ''}</span>
+                                <span className={`block text-sm text-slate-600 ${shown.listed ? 'truncate' : 'whitespace-normal break-words'}`}>{price}{shown.listed && <span className="text-xs text-stone-500"> · En la carta: {shown.listed}</span>}</span>
+                                {renderNativeTakeawayPrice(wine, requestedServiceFormat === 'any' ? null : requestedServiceFormat)}
+                                <span className={`mt-1 flex items-center gap-2 whitespace-normal break-words text-sm ${menuVerdictCertain140(verdict) || verdict.kind === 'range' ? 'text-stone-800' : 'text-stone-500'}`} data-testid="native-menu-verdict139">
+                                  {verdict.kind === 'loading' && <Loader2 className="h-3 w-3 shrink-0 animate-spin" aria-hidden="true" />}{answer}</span>
+                              </span>
+                              {choices.length === 0 && score}
+                              {choices.length === 0 && <ChevronRight aria-hidden="true" className="mt-1 shrink-0 text-stone-400" style={{ width: 20, height: 20 }} />}
+                            </button>
+                            {choices.length > 0 && <div className="flex shrink-0 flex-col items-end justify-between py-2 pr-[12px]">
+                              {score}
+                              <button type="button" aria-expanded={choosing} data-testid="native-menu-choose140"
+                                className={`matchrim-pressable flex min-h-[44px] max-w-[7rem] items-center whitespace-normal text-right font-medium text-red-900 underline underline-offset-4 ${verdict.kind === 'range' ? 'text-sm' : 'text-xs'}`}
+                                onClick={() => setOpenChoices140(current => { const next = new Set(current); if (!next.delete(lineKey)) next.add(lineKey); return next; })}>
+                                {verdict.kind === 'likely' ? '¿Es otro? Elegir' : verdict.kind === 'range' ? 'Elegir el vino' : 'Ver otros vinos de la bodega'}</button>
+                            </div>}
+                          </div>
+                          {choosing && <div className="min-w-0 px-[12px] pb-3">{renderChoices140(wine, choices)}</div>}
                         </div>;
                       })() : (
 		                  <button
@@ -2692,6 +2749,22 @@ const WineMenuScannerSession = ({
                 {isNative && <p className="my-3 text-sm text-slate-600">{[selectedPinWine.productor, selectedPinWine.region,
                   formatPrice(selectedPinWine.precio, selectedPinWine.moneda)].filter(Boolean).join(' · ')}</p>}
                 {renderNativeTakeawayPrice(selectedPinWine)}
+                {(() => {
+                  // 140: saving a wine of the list took «Más opciones → Guardar o corregir un vino». A wine we are
+                  // sure of (verified, exact or likely) is saved from its own sheet, with the same function and key.
+                  const verdict = isNative ? verdicts139[selectedPinIndex] : null;
+                  if (!verdict || !menuVerdictCertain140(verdict) || isLiteralWineStyle95(selectedPinWine)) return null;
+                  const saveKey = `wishlist-${selectedPinWine.nombre}-${selectedPinIndex}`, saved = savedWineKeys.has(saveKey);
+                  const winerim = verdict.kind === 'verified' ? null : { nombre: storeOptionName139(verdict.estimate), productor: verdict.estimate.row.winery };
+                  return <div className="my-3 min-w-0" data-testid="native-menu-save140">
+                    <Button type="button" variant="outline" className="h-auto min-h-[44px] w-full min-w-0 gap-2 whitespace-normal px-[12px] py-[10px]"
+                      disabled={Boolean(savingWineKey) || unconfirmedWineIndexes.has(selectedPinIndex) || identityHoldIndexes.has(selectedPinIndex) || saved}
+                      onClick={() => void saveScannedWine(selectedPinWine, selectedPinIndex, 'wishlist', false, winerim)}>
+                      {saved ? <CheckCircle className="h-4 w-4 shrink-0 text-green-600" /> : savingWineKey === saveKey ? <Loader2 className="h-4 w-4 shrink-0 animate-spin" /> : <BookmarkPlus className="h-4 w-4 shrink-0" />}
+                      {saved ? 'Guardado en Por probar' : 'Guardar en Por probar'}</Button>
+                    {unconfirmedWineIndexes.has(selectedPinIndex) && <p role="status" className="mt-2 text-sm text-amber-900">Guardado sin confirmar. Revisa Bodega antes de repetirlo.</p>}
+                  </div>;
+                })()}
 	                {!isNative && <div className="matchrim-data-rail mb-4 grid grid-cols-3 gap-3 rounded-lg px-2 py-3 text-center">
 	                  <div><div className="text-xl font-bold text-red-900">{selectedPinDecision?.score == null ? '-' : `≈${selectedPinDecision.score}%`}</div><div className="text-xs text-slate-500">{selectedPinDecision?.state === 'pending' ? 'Afinidad pendiente' : 'Afinidad estimada'}</div></div>
 	                  <div><div className="text-xl font-bold capitalize text-slate-900">{getConfidenceBand(selectedPinWine.confidence)}</div><div className="text-xs text-slate-500">Señal de identidad</div></div>

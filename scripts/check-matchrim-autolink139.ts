@@ -85,6 +85,19 @@ test('Vintage: taken only when the label supports exactly one', () => {
   assert.equal(labelVintage139(lines('Cosecha 2020', 'Vendimia 2019')), null);
   assert.equal(labelVintage139(lines(`VIDURE ${new Date().getUTCFullYear() + 1}`)), null, 'not a year in the future');
   assert.equal(labelVintage139(lines('VIDURE 1850', 'L20201')), null, 'not 19xx/20xx');
+  // 140: the owner's bottle. «·2020·» alone on its line is the harvest; «botella número 1927» is a bottle number.
+  const owner = ['Pago de Cirsus', 'VIDURE', 'CABERNET SAUVIGNON', 'ESTA ES UNA EDICIÓN ESPECIAL', 'SÓLO HAY 3.407 BOTELLAS', 'Vol. Alcohol 15% Vol', 'Esta es la botella número 1927', '·2020·'];
+  assert.equal(labelVintage139(lines(...owner)), 2020);
+  assert.equal(link(owner, cirsus, labelVintage139(lines(...owner)))?.name, 'Vidure', 'and the label still links by itself');
+  assert.equal(labelVintage139(lines('VIDURE', '- 2 0 2 0 -', 'Botella Nº 1927 de 3.407')), 2020, 'large digits read with spaces');
+  assert.equal(labelVintage139(lines('VIDURE', 'Esta es la botella número 1927')), null, 'a bottle number alone is never the harvest');
+  assert.equal(labelVintage139(lines('VIDURE 2020', 'Nº 1998')), 2020);
+  assert.equal(labelVintage139(lines('VIDURE', 'L-12/2020')), null, 'glued to a larger number');
+  assert.equal(labelVintage139(lines('VIDURE', '2020', 'Esta edición celebra el año 1927')), 2020, 'alone on its line wins over one inside a sentence');
+  assert.equal(labelVintage139(lines('VIDURE', '2020', '1927')), null, 'two years alone: still ambiguous');
+  assert.equal(labelVintage139(lines('VIDURE 2020', 'Edición 1927')), null, 'two years inside text: none is invented');
+  assert.equal(labelVintage139(lines('2019', 'Cosecha 2020')), 2020, 'an explicit mark still wins');
+  assert.equal(labelVintage139(lines('Albariño 2020', 'Sauvignon 2020')), 2020, '«no» or «n» inside a word is not a number mark');
   const list = read('src/components/wine-import/CandidateRecovery286.tsx');
   assert.match(list, /if \(lines\.length\) year = labelVintage139\(lines\);/);
   assert.match(list, /const bottle = auto \? auto\.vintage : vintage;/, 'the automatic link carries the year of its own search');
@@ -96,7 +109,10 @@ test('The wait names its steps with «Cancelar» visible, and the jargon is gone
   assert.match(list, /<ScanWaiting139 steps=\{SCAN_STEPS139\} current=\{step\} \/>\s*<Button[^>]*onClick=\{\(\) => \{\s*pending\.current\?\.abort\(\);[^}]*\}\}><X[^>]*\/> Cancelar<\/Button>/);
   assert.equal(scanner.match(/<ScanWaiting139 steps=\{SCAN_STEPS139\} current=\{waitStep139\} \/>/g)?.length, 2, 'before and after the preview, local and AI mode');
   assert.match(scanner, /<ScanWaiting139 steps=\{SCAN_STEPS139\} current=\{waitStep139\} \/>\s*<Button[^>]*onClick=\{cancelScan\}><X[^>]*\/> Cancelar<\/Button>/);
-  assert.match(scanner, /\{loading && \(\s*<Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white" onClick=\{cancelScan\}>/, 'the header keeps its «Cancelar»');
+  // 140: on iOS the header box held nothing but «Cancelar» while loading; it is under the waiting card now, and the web header keeps its own.
+  assert.match(scanner, /\{loading && !isNative && \(\s*<Button type="button" variant="outline" className="matchrim-pressable min-h-11 gap-2 bg-white" onClick=\{cancelScan\}>/);
+  assert.match(scanner, /\{\(!\(isNative && loading\) \|\| isMatchrimFixtureQaEnabled\) && <div className="matchrim-surface flex flex-wrap items-center justify-between gap-3 rounded-lg p-4">/);
+  assert.equal(scanner.match(/<ScanWaiting139 steps=\{SCAN_STEPS139\} current=\{waitStep139\} \/>\s*<Button[^>]*onClick=\{cancelScan\}><X[^>]*\/> Cancelar<\/Button>/g)?.length, 2, 'both waits carry «Cancelar»');
   assert(!scanner.includes('Leyendo en este iPhone'));
   assert(!/Lectura parcial: compara la etiqueta|Esta ficha no confirma la cosecha de tu botella/.test(list.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')));
   assert.match(list, /decision\?\.mode === 'choose' && <p[^>]*>Elige el que coincide con tu botella\.<\/p>/);
@@ -106,5 +122,31 @@ test('The wait names its steps with «Cancelar» visible, and the jargon is gone
   for (const label of ['Una etiqueta', 'Ver si me gustará', 'Guardar este vino en Por probar', 'Reanalizar', 'Cerrar']) assert(scanner.includes(label), label);
   assert(read('src/components/wine-import/LabelAnalysisView.tsx').includes('aria-label="Corregir identificación"'));
 });
-console.log(`check-matchrim-autolink139: ${groups}/7 groups passed`);
-if (groups !== 7) process.exit(1);
+test('140: the sheet of a linked bottle is short on iOS and never leaves the app', () => {
+  const scanner = read('src/components/wine-import/MultiWineLabelScanner.tsx'), view = read('src/components/wine-import/LabelAnalysisView.tsx');
+  // Winerim photo above the verdict, Winerim data below the save button, one «Corregir».
+  assert.match(scanner, /photo=\{facts140 && <NativeWinerimFacts140 identity=\{facts140\} part="photo" \/>\}\s*facts=\{facts140 && <NativeWinerimFacts140 identity=\{facts140\} part="facts" \/>\}/);
+  const order = ['{photo}', '{!canExplainAffinity && estimate}', '{canExplainAffinity ? affinity', '{returnLabel}', '{facts}', 'aria-label="Corregir identificación"'].map(part => view.indexOf(part));
+  assert(order.every((at, index) => at > 0 && (index === 0 || at > order[index - 1])), `photo, verdict, save, data, correct: ${order}`);
+  assert.equal(view.match(/aria-label="Corregir identificación"/g)?.length, 1);
+  assert.match(view, /: !canExplainAffinity && <p className="gap139 text-xs leading-5 text-stone-500">\{identityLabel\}<\/p>\}/, 'no grey provenance line under a verdict');
+  // No control of this flow opens web.winerim.com on iOS; the web keeps its links.
+  assert.match(read('src/components/wine-import/NativeMasterLookup259.tsx'), /\{link\.wine\.webUrl && !Capacitor\.isNativePlatform\(\) && <Button asChild/);
+  assert.match(read('src/components/wine-import/NativeGlobalCatalogue103.tsx'), /\{!Capacitor\.isNativePlatform\(\) && <Button asChild[^>]*>\s*<a href=\{wine\.url\}/);
+  assert.match(read('src/components/WinerimOriginalSheet.tsx'), /\{!externalLink \? null : url \? <Button asChild/);
+  assert.match(scanner, /<WinerimOriginalSheet sheet=\{selectedCandidate\.originalSheet\} externalLink=\{false\} \/>/);
+  // The repeated reference block goes only for a wine linked from the list; the hand-corrected path of the native gate keeps it.
+  assert.match(scanner, /const short140 = linkedFromList140 && Boolean\(nativeConsumer\?\.canExplainAffinity\);/);
+  assert.match(scanner, /nativeConsumer\?\.canExplainAffinity && !short140 && \(nativeMasterLink259\(selectedCandidate\)/);
+  assert.equal(scanner.match(/setFromList140\(/g)?.length, 1, 'set only where the candidate list confirms');
+  // Reading details are QA data, the correction form shows only once opened, and a label link is not «revisada por ti».
+  assert.match(scanner, /isNative \? isMatchrimFixtureQaEnabled && <details className="space-y-3" data-testid="native-wine-diagnostics">/);
+  assert.match(scanner, /selectedCandidate\.source === 'manual' && !autoLinkedNow140 && <p[^>]*data-testid="manual-identity-notice"/);
+  assert.match(scanner, /<details id="native-label-reference" className="space-y-3 \[&:not\(\[open\]\)\]:hidden"/);
+  // One bottle: no previous/next. The native gate still taps «Reanalizar» outside the short sheet.
+  assert.match(scanner, /\{!\(isNative && regions\.length === 1\) && <><Button type="button" variant="outline" title="Anterior"/);
+  assert.match(scanner, /\{!\(short140 && regions\.length === 1\) && <><Button type="button" variant="outline" title="Reanalizar"/);
+  assert.match(scanner, /max-h-64 w-auto max-w-full rounded-md bg-stone-100 object-contain/, 'the label photo is not letterboxed in black');
+});
+console.log(`check-matchrim-autolink139: ${groups}/8 groups passed`);
+if (groups !== 8) process.exit(1);

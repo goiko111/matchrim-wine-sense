@@ -63,18 +63,36 @@ export const autoLink139 = <T extends AutoLinkCandidate139>(input: {
   return only;
 };
 
+// 140: on the owner's bottle the label printed a huge «·2020·» and the sheet still said «Añada no indicada». The
+// reading also held «Esta es la botella número 1927»: two bare years, so none was taken. A numbered bottle or lot, or
+// digits glued to a larger number or decimal, are not a harvest; and a year printed alone on its line is the vintage.
+const numbered140 = (text: string, year: number) => new RegExp(`(?:\\b(?:numero|num|nro|no|n|botella|bottle|bouteille|bottiglia|garrafa|flasche|lote|lot)\\s*[.:ºo°]*\\s*|[#º°]\\s*)${year}\\b`).test(text)
+  || new RegExp(`\\d[.,/-]${year}\\b|\\b${year}[.,/]\\d`).test(text);
+/** «2020», «·2020·», «- 2 0 2 0 -»: nothing but one 19xx/20xx year on the line. */
+const alone140 = (text: string) => {
+  const core = text.replace(/[^\p{L}\p{N}]+/gu, '');
+  return year.test(core) ? Number(core) : null;
+};
+
 /**
  * The bottle's vintage when the text read supports exactly one: a 19xx/20xx year that is not in the future and is not
- * a medal, a foundation or a bottling date (105). With several possible years only one explicitly marked
- * («Cosecha 2020») is taken; otherwise none, never a guess.
+ * a medal, a foundation, a bottling date (105) or a bottle/lot number. With several possible years, one explicitly
+ * marked («Cosecha 2020») is taken; failing that, the only one printed alone on its line; otherwise none, never a guess.
  */
-export const labelVintage139 = (lines: readonly YearLine105[]): number | null => {
+export const labelVintage139 = (input: readonly YearLine105[]): number | null => {
   // 105 examines at most eight years per line: beyond that a hidden date could change the answer.
-  if (!Array.isArray(lines) || lines.some(line => (line?.text?.match?.(/\b(?:19|20)\d{2}\b/g)?.length ?? 0) > 8)) return null;
+  if (!Array.isArray(input) || input.some(line => (line?.text?.match?.(/\b(?:19|20)\d{2}\b/g)?.length ?? 0) > 8)) return null;
+  // Large digits are often read spaced («2 0 2 0»): a line that is only a year is given to 105 as that year.
+  const lines = input.map(line => typeof line?.text === 'string' && alone140(line.text) !== null ? { ...line, text: String(alone140(line.text)) } : line);
   const years = wineYearRoles105(lines);
   if (!years.supported) return null;
-  const possible = years.roles.filter(role => role.role === 'vintage' || role.role === 'unclassified');
+  const folded = lines.map(line => fold(line.text));
+  const possible = years.roles.filter(role => (role.role === 'vintage' || role.role === 'unclassified')
+    // A year that only ever appears as a number («botella número 1927», «L-12/2020») is left out; marked ones stay.
+    && (role.role === 'vintage' || folded.some(text => new RegExp(`\\b${role.year}\\b`).test(text) && !numbered140(text, role.year))));
   if (possible.length === 1) return possible[0].year;
   const marked = possible.filter(role => role.role === 'vintage');
-  return marked.length === 1 ? marked[0].year : null;
+  if (marked.length) return marked.length === 1 ? marked[0].year : null;
+  const single = possible.filter(role => lines.some(line => alone140(line.text) === role.year));
+  return single.length === 1 ? single[0].year : null;
 };

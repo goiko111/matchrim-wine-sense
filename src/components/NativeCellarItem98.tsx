@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { BookOpen, ChevronRight, ThumbsDown, ThumbsUp, X } from 'lucide-react';
+import { ChevronRight, ThumbsDown, ThumbsUp, X } from 'lucide-react';
 import { readCellarPublicReference107 } from '@/utils/cellarPublicReference107';
 import { readCellarMasterReference260 } from '@/utils/cellarMasterReference260';
 import { cellarReferenceStyleView110 } from '@/utils/cellarReferenceStyle110';
@@ -9,6 +9,7 @@ import { cellarAffinityView, type CellarAffinityWine } from '@/utils/bodegaAffin
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { useOwnWinePhoto133 } from '@/utils/ownWinePhoto133';
 import { NativeWineNote139 } from '@/components/NativeWineNote139';
+import { NativeWinerimFacts140 } from '@/components/NativeWinerimFacts140';
 
 interface Props {
   native: boolean;
@@ -65,16 +66,10 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, child
         {masterReference && <div className="min-w-0 space-y-2 border-b border-stone-200 px-4 py-3" data-testid="cellar-master-reference260">
           <p className="text-sm font-semibold">Referencia encontrada en Winerim</p>
           <p className="text-sm leading-6 text-stone-700">Conservamos la referencia del catálogo. Faltan datos de sabor respaldados para calcular tu afinidad; guardar el vino no los completa.</p>
-          {masterReference.public_url && <a href={masterReference.public_url} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer"
-            className="flex min-h-11 items-center gap-2 text-sm font-semibold text-red-950"><BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" />Ficha original de Winerim</a>}
         </div>}
-        {reference && <div className="border-b border-stone-200 px-4 py-3">
-          <a href={reference.url} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer"
-            className="flex min-h-11 items-center gap-2 text-sm font-semibold text-red-950" data-testid="cellar-public-reference107">
-            <BookOpen className="h-5 w-5 shrink-0" aria-hidden="true" />Ficha original de Winerim
-          </a>
-          {reference.catalogue_vintage === null && <p className="text-xs leading-5 text-stone-600">Referencia sin añada. No confirma los datos sensoriales de tu botella.</p>}
-        </div>}
+        {/* 140: the Winerim sheet is shown here, inside the app; the link that opened Safari is gone. */}
+        <div className="border-b border-stone-200 px-4 py-3 empty:hidden" data-testid="cellar-winerim-facts140"><NativeWinerimFacts140 identity={{ name: wine.name, producer: wine.producer, vintage: wine.vintage }} part="facts" /></div>
+        {reference?.catalogue_vintage === null && <p className="px-4 py-2 text-xs leading-5 text-stone-600">Referencia sin añada. No confirma los datos sensoriales de tu botella.</p>}
         {sheetPhoto && <NativeWinePhoto98 src={sheetPhoto} name={wine.name} className="mx-auto mt-[12px] h-[144px] w-[88px]" />}
         {children}
         <NativeWineNote139 wineId={wine.id} initial={wine.personal_note} />

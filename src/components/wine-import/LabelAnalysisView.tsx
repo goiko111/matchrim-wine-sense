@@ -18,6 +18,9 @@ interface LabelAnalysisViewProps {
   catalogueReference?: ReactNode;
   /** 139: a labelled store estimate, shown above the pending explanation when there is no verified affinity. */
   estimate?: ReactNode;
+  /** 140: the Winerim bottle photo (above the verdict) and the Winerim data (below the save button), as in the search sheet. */
+  photo?: ReactNode;
+  facts?: ReactNode;
   lookup: ReactNode;
   disabled: boolean;
   onFindSheet: () => void;
@@ -30,7 +33,7 @@ interface LabelAnalysisViewProps {
 
 // Presentation only: the scanner retains identity, lookup and affinity authority.
 export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, identity, identityLabel,
-  catalogIdentityLinked, canExplainAffinity, hasProfile, pendingAffinity, affinity, catalogueReference, estimate = null, lookup, disabled,
+  catalogIdentityLinked, canExplainAffinity, hasProfile, pendingAffinity, affinity, catalogueReference, estimate = null, photo = null, facts = null, lookup, disabled,
   onFindSheet, onCorrect, onReturnToBatch, returnLabel = 'Volver al lote para guardar', children = null }: LabelAnalysisViewProps) => {
   if (!isNativePlatform) return <>{children}</>;
 
@@ -41,10 +44,15 @@ export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, ident
         {identity.producer || 'Bodega sin confirmar'} · {identity.vintage || 'Añada no indicada'}
       </p>
       <p className="text-xs leading-5 text-stone-500">{identityLabel}</p>
-    </div> : <p className="text-xs leading-5 text-stone-500">{identityLabel}</p>}
+    </div>
+      // 140: «Referencia del catálogo Winerim» as a grey line under a verdict told the person nothing. With a verified
+      // affinity nothing is said; with a store estimate (gap139) its own sentence explains it. Other states keep the line.
+      : !canExplainAffinity && <p className="gap139 text-xs leading-5 text-stone-500">{identityLabel}</p>}
 
+    {photo}
     {!canExplainAffinity && estimate}
-    {canExplainAffinity ? affinity : catalogueReference || <div className="min-w-0 space-y-2 border-y border-stone-200 py-3" data-testid="native-label-next-step">
+    {/* 140: with a store estimate on screen the «found, no flavour data» reference block under it only repeats the wine. */}
+    {canExplainAffinity ? affinity : catalogueReference ? <div className="gap139">{catalogueReference}</div> : <div className="min-w-0 space-y-2 border-y border-stone-200 py-3" data-testid="native-label-next-step">
       <h4 className="font-semibold text-slate-950">{pendingAffinity?.title ?? 'Afinidad pendiente'}</h4>
       <p className="text-sm leading-6 text-stone-700" data-testid="native-affinity-gap-reason">{pendingAffinity?.description ?? (catalogIdentityLinked
         ? hasProfile ? 'La ficha está enlazada, pero aún faltan datos para calcular tu afinidad.'
@@ -65,11 +73,13 @@ export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, ident
       </Button>}
     </div>}
 
-    {canExplainAffinity && onReturnToBatch && <Button type="button" disabled={disabled} onClick={onReturnToBatch}
-      className="h-auto min-h-11 w-full min-w-0 gap-2 whitespace-normal bg-red-950 px-3 py-3 text-left text-white hover:bg-red-900">
+    {/* 140: a wine whose verdict is a store estimate can be saved from here too (the button shows only then). */}
+    {onReturnToBatch && (canExplainAffinity || estimate) && <Button type="button" disabled={disabled} onClick={onReturnToBatch}
+      className={`h-auto min-h-11 w-full min-w-0 gap-2 whitespace-normal bg-red-950 px-3 py-3 text-left text-white hover:bg-red-900 ${canExplainAffinity ? '' : 'hidden [section:has([data-testid=native-store-estimate139])_&]:flex'}`}>
       <Check aria-hidden="true" className="h-5 w-5 shrink-0" /><span className="min-w-0 [overflow-wrap:anywhere]">{returnLabel}</span>
     </Button>}
 
+    {facts}
     <div className="flex min-w-0 flex-wrap gap-2">
       <Button type="button" variant="outline" aria-label="Corregir identificación" disabled={disabled} onClick={onCorrect}
         className="h-auto min-h-11 min-w-0 flex-1 basis-32 gap-2 whitespace-normal px-3 py-3">

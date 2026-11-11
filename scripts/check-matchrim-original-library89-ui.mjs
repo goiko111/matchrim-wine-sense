@@ -90,14 +90,17 @@ try {
   page.on('pageerror', error => errors.push(String(error)));
   const load = async () => { await page.goto(origin + '/__original-sheet-qa'); await page.waitForFunction(() => Boolean(window.sheetQA)); };
   const search = () => page.getByRole('button', { name: /^Ficha original Winerim:/ }).click();
-  const verified = () => page.getByRole('link', { name: 'Ver ficha original Winerim', exact: true });
+  // 140: on iOS the verified sheet is shown in the app and no longer links out to Safari (owner decision after
+  // the real-iPhone round); the sheet itself is the verified signal.
+  const verified = () => page.locator('[data-testid="winerim-original-sheet"][data-verified="true"]');
+  const externalLink = () => page.getByRole('link', { name: 'Ver ficha original Winerim', exact: true });
   const paint = () => page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   const waitHeld = async () => { for (let i = 0; i < 100 && !held; i++) await new Promise(resolve => setTimeout(resolve, 10)); assert.ok(held); };
   const reset = async (nextMode) => { mode = nextMode; await load(); };
 
   await reset('success'); await search(); await verified().waitFor();
   assert.equal(await page.getByTestId('winerim-original-sheet').count(), 1);
-  assert.equal(await verified().getAttribute('href'), 'https://web.winerim.com/the-library/wines/123/Luna-Reserva_2021');
+  assert.equal(await externalLink().count(), 0, 'no control leaves the app on iOS');
   assert.ok(await page.getByText('0/5', { exact: true }).isVisible());
   assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('aria-label')), 'Ficha original Winerim: Luna Reserva');
   pass('Actual components: verified link, zero sensory and accessible result focus');
@@ -152,7 +155,7 @@ try {
   assert.equal(await verified().count(), 0);
   mode = 'success'; await search(); await verified().waitFor(); releaseOld();
   await page.waitForTimeout(100);
-  assert.equal(await verified().getAttribute('href'), 'https://web.winerim.com/the-library/wines/124/Otra-Reserva_2020');
+  assert.match(await verified().innerText(), /Otra Reserva/, 'the newer identity is the one shown');
   assert.equal(await page.getByText('Luna Reserva', { exact: true }).count(), 0);
   pass('Identity change cannot inherit an old sheet or be overwritten by a stale response');
 
