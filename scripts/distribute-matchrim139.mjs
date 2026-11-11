@@ -55,7 +55,7 @@ export async function main139(mode = process.argv[2]) {
   const proofs = { master259: {}, vintage283: {} };
   for (const key of Object.keys(inputs).filter(item => item.includes('.'))) { const [scenario, name] = key.split('.'); proofs[scenario][name] = JSON.parse(bytes[key]); }
   validateAuthorization139(authorization); validatePair139(prep, archive, authorization); validateVisual139(prep, proofs);
-  const output = path.join(base, mode + '139-r1'); assert(!fs.existsSync(output), 'NO_DUPLICATE_EXPORT_OR_UPLOAD');
+  const output = path.join(base, mode + '139-r2'); assert(!fs.existsSync(output), 'NO_DUPLICATE_EXPORT_OR_UPLOAD');
   const owner = runnerOwner();
   const guard = () => {
     const leases = JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json')).leases;
@@ -75,7 +75,7 @@ export async function main139(mode = process.argv[2]) {
   assert.equal(cap.appId, 'wine.matchrim.app'); assert(!cap.server?.url, 'NO_REMOTE_PREVIEW');
   let exported;
   if (mode === 'upload') {
-    exported = JSON.parse(fs.readFileSync(path.join(base, 'export139-r1/RESULT.json')));
+    exported = JSON.parse(fs.readFileSync(path.join(base, 'export139-r2/RESULT.json')));
     assert(exported.passed && exported.signatureVerified && exported.build === 139 && exported.debugEntitlement === false
       && exported.sourceCommit === prep.commit && exported.mode === 'export');
     assert.equal(sha(fs.readFileSync(exported.ipa)), exported.ipaSHA256, 'EXPORTED_IPA_DRIFT');
