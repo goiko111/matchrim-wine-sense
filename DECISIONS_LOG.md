@@ -206,3 +206,5 @@ Food-menu row splitting and detection-box normalization may be replayed determin
 - 2026-11-11: Build 138 (d06d66f, archive138-r1) uploaded to TestFlight after the owner replied "Sí, sube la 138"; HUMAN-AUTHORIZATION quotes it. Private beta only; known limitations listed there.
 
 - 2026-11-11: After testing 138 on his iPhone the owner said "si, hazlo todo" to the 139 plan (list verdicts from the store, auto-link of clear labels, store search, recents, notes, aiRIM visibility, waiting facts, cleanup) and to preparing backend changes for review. The prudence rule «never link an identity without a tap» is relaxed only for a label whose read text contains both the wine name and the winery of exactly one candidate. Store-based verdicts stay labelled estimates and out of profile learning. Backend changes are patches under docs/backend-proposals/, not applied.
+
+- 2026-11-11: Build 139 (1a49a28, archive139-r2) uploaded to TestFlight after the owner replied "Sí, sube la 139"; HUMAN-AUTHORIZATION quotes it. Private beta only; known limitations listed there.
