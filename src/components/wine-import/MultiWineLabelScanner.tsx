@@ -1468,8 +1468,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
           {regions.length > 0 && (
             <div className="space-y-4">
-              {/* 144: one bottle has nothing to compare and its photo was just taken: no «Foto · Vinos (1) · Comparar» tabs. */}
-              {isNative && !(regions.length === 1 && !isMatchrimFixtureQaEnabled) && (
+              {isNative && (
                 <div className="matchrim-result-tabs grid grid-cols-[repeat(auto-fit,minmax(min(6rem,100%),1fr))] rounded-lg bg-slate-100 p-1" role="tablist" aria-label="Vista de resultados">
                   {([
                     ['scene', 'Foto'],
@@ -1890,7 +1889,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   {!(short140 && regions.length === 1) && <><Button type="button" variant="outline" title="Reanalizar" disabled={regionActionsLocked || (localBatch && selectedRegion.status === 'recognized')} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" onClick={isNative ? async () => {
                     if (localBatch || await confirm135('Se enviará de nuevo el recorte al servicio de lectura con IA. ¿Quieres continuar?', { ok: 'Continuar' })) void reanalyzeSelected();
                   } : () => void reanalyzeSelected()}>
-                    <RefreshCw className="h-4 w-4" /><span className={isNative && regions.length > 1 ? 'sr-only' : undefined}>{isNative ? 'Leer otra vez' : 'Reanalizar'}</span>
+                    <RefreshCw className="h-4 w-4" /><span className={isNative && regions.length > 1 ? 'sr-only' : undefined}>Reanalizar</span>
                   </Button>
                   <Button type="button" variant="outline" title="Descartar" disabled={regionActionsLocked} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2 text-red-800" onClick={discardSelected}>
                     <Trash2 className="h-4 w-4" /><span className={isNative && regions.length > 1 ? 'sr-only' : undefined}>Descartar</span>
