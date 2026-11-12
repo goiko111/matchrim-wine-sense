@@ -1928,8 +1928,9 @@ const MyWinesForOwner = () => {
                   </Card>
                 )}
 
-                {/* Filters */}
-                <div className="flex items-center gap-2">
+                {/* Filters. 144 (iOS): the menu held one filter, «Alta afinidad», whose count ignored the wines whose verdict is a
+                    store estimate (it said 0 beside a 93/100); the pills above already filter by place, so it is not shown there. */}
+                <div className={isNative ? 'hidden' : 'flex items-center gap-2'}>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm" className="min-h-11 gap-2">
@@ -2029,11 +2030,11 @@ const MyWinesForOwner = () => {
                         )}
                         <Button
                           variant="outline"
-                          onClick={() => navigate('/escanear/carta-vinos')}
+                          onClick={() => navigate(isNative ? '/escanear/etiqueta' : '/escanear/carta-vinos')}
                           className="gap-2"
                         >
                           <ScanLine className="h-4 w-4" />
-                          Escanear carta
+                          {isNative ? 'Escanear una botella' : 'Escanear carta'}
                         </Button>
                       </div>
                     </CardContent>

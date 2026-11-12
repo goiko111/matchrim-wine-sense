@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ChevronDown, CircleHelp } from 'lucide-react';
+import { WhyLines144 } from '@/components/WineSheet142';
 import { buildConsumerAffinity, type ConsumerAffinityInput, type ConsumerAffinityResult } from '@/utils/consumerAffinity95';
 
 // 139: the same five words as the profile (the detail said Potencia/Acidez/Tanino, the profile Cuerpo/Frescura/Taninos).
@@ -21,25 +22,18 @@ export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: 
   );
   return (
     <section className="min-w-0 space-y-4 border-y border-stone-200 py-4" aria-label="Cuánto encaja contigo" data-testid="native-affinity-summary">
-      <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0 flex-1 basis-44">
-          <p className="text-xs font-medium text-stone-500">{personalTitle ? 'Tu experiencia con este vino' : 'Para tu paladar'}</p>
-          <h4 className="mt-1 text-lg font-semibold leading-6 text-slate-950">{personalTitle ?? (input.personalHistoryUnavailable ? 'Comparación de estilo provisional' : result.title)}</h4>
-        </div>
-        {!personalTitle && <p className="shrink-0 text-xl font-semibold tabular-nums text-red-900" aria-label={`Afinidad orientativa: ${result.score} de 100`}>
-          <span aria-hidden="true">≈{result.score}<span className="text-sm font-medium text-stone-500">/100</span></span>
-          <span className="block text-xs font-normal text-stone-500" aria-hidden="true">de afinidad</span>
-        </p>}
+      {/* 144: the catalogue verdict looks like every other wine sheet: the number, the answer, and why in two short lists. */}
+      <div className="rounded-2xl bg-gradient-to-b from-stone-200 to-stone-50 px-4 py-5 text-center">
+        {!personalTitle && <p className={`text-5xl font-bold tabular-nums leading-none ${result.score >= 65 ? 'text-emerald-800' : 'text-stone-800'}`} aria-label={`Afinidad orientativa: ${result.score} de 100`}>
+          <span aria-hidden="true">{result.score}<span className="text-lg font-semibold text-stone-500">/100</span></span></p>}
+        <h4 className="mt-2 text-lg font-semibold leading-6 text-slate-950">{personalTitle ?? (input.personalHistoryUnavailable ? 'Comparación de estilo provisional' : result.title)}</h4>
+        <p className="mt-1 text-xs text-stone-600">{personalTitle ? 'Tu experiencia con este vino' : 'Para tu paladar'}</p>
       </div>
       <div className="space-y-2 text-sm leading-6 text-stone-700">
         {personalTitle && <p>Tu valoración tiene prioridad sobre la comparación de estilo.</p>}
         {input.personalHistoryUnavailable && !personalTitle && <p role="status">No se pudieron consultar tus valoraciones guardadas. Tu experiencia previa puede cambiar esta recomendación.</p>}
-        {!personalTitle && <>
-          {result.matches.length > 0 ? <div><p className="mb-1 font-semibold text-stone-900">Por qué encaja</p><ul className="list-disc space-y-1 pl-5">{result.matches.slice(0, 2).map(reason => <li key={reason}>{reason}</li>)}</ul></div>
-            : <p>No destaca una coincidencia clara con tus preferencias actuales.</p>}
-          {result.caution && <div className="border-l-2 border-amber-500 pl-3"><p className="font-semibold text-stone-900">Lo que podría gustarte menos</p><p>{result.caution}</p></div>}
-          <p className="text-xs leading-5 text-stone-500">Compara el estilo con tus gustos. No es una garantía ni una nota de calidad.</p>
-        </>}
+        {!personalTitle && <div className="rounded-2xl border border-stone-200 bg-white px-4 py-2">
+          <WhyLines144 dimensions={result.dimensions} note="Compara el estilo con tus gustos. No es una garantía ni una nota de calidad." /></div>}
       </div>
       <details className="min-w-0 border-t border-stone-200 pt-3 text-sm" data-testid="native-affinity-details">
         <summary aria-label="Ver el detalle de afinidad" className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-medium text-stone-800"><span aria-hidden="true">Ver el detalle de afinidad</span><ChevronDown className="h-4 w-4 shrink-0" aria-hidden="true" /></summary>

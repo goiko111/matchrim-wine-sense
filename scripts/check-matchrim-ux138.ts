@@ -50,7 +50,7 @@ test('The store estimate never enters the scanner or the verified-sheet path', (
 test('Search result opens the affinity sheet; the add form is only the fallback', () => {
   // 139 moved the search to Winerim's public store; the sheet now receives the store row directly.
   const home = read('src/components/NativeHome98.tsx');
-  assert.match(home, /onSelect=\{wine => \{ setSearchOpen\(false\); setFromSearch\(true\); setSearched\(wine\); \}\}/);
+  assert.match(home, /onSelect=\{wine => \{ setSearchOpen\(false\); setFromSearch\(true\); setCatalogueRule144\(false\); setSearched\(wine\); \}\}/);
   assert.match(home, /<NativeSearchWine138 wine=\{searched\}/);
   const sheet = read('src/components/NativeSearchWine138.tsx');
   // 142: the body of the sheet is WineSheet142.

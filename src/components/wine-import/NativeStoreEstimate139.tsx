@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Frown, Meh, Smile } from 'lucide-react';
-import { compatLines142 } from '@/utils/winerimDetail142';
+import { WhyLines144 } from '@/components/WineSheet142';
 import { estimateListing139, storeAffinity139 } from '@/utils/storeListing139';
 import type { StoreEstimate138 } from '@/utils/storeEstimate138';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
@@ -40,10 +39,7 @@ export const NativeStoreEstimate139 = ({ identity, profile, onScore }: Props) =>
       <p className="mt-2 text-lg font-semibold leading-6 text-stone-950">{result.title}</p><p className="mt-1 text-xs text-stone-600">para tu paladar</p>
     </div>
     <section className="mt-4 rounded-2xl border border-stone-200 bg-white px-4 py-2" aria-label="Por qué">
-      <h4 className="pt-2 text-base font-semibold text-stone-950">Por qué {result.score >= 65 ? 'encaja contigo' : 'puede no encajarte'}</h4>
-      <ul className="divide-y divide-stone-100">{compatLines142(result.dimensions).map(line => { const Face = line.face === 'good' ? Smile : line.face === 'fair' ? Meh : Frown;
-        return <li key={line.key} className="flex items-center gap-3 py-3 text-sm leading-5 text-stone-900"><Face className={`h-5 w-5 shrink-0 ${line.face === 'good' ? 'text-emerald-700' : line.face === 'fair' ? 'text-amber-600' : 'text-stone-500'}`} aria-hidden="true" />{line.text}</li>; })}</ul>
-      <p className="pb-2 text-xs leading-5 text-stone-500">Estimación con los datos de la tienda de Winerim{estimate!.row.vintage && String(estimate!.row.vintage) !== String(identity.vintage ?? '') ? ` (añada ${estimate!.row.vintage})` : ''}. Este vino aún no tiene ficha verificada, así que tómalo como una orientación.</p>
+      <WhyLines144 dimensions={result.dimensions} note={`Estimación con los datos de la tienda de Winerim${estimate!.row.vintage && String(estimate!.row.vintage) !== String(identity.vintage ?? '') ? ` (añada ${estimate!.row.vintage})` : ''}. Este vino aún no tiene ficha verificada, así que tómalo como una orientación.`} />
     </section>
   </div>;
 };

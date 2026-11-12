@@ -98,6 +98,7 @@ import { addToMenuTray141, menuBadge141, menuBadgePlacement141, menuPhotoReliabl
 import { MENU_BADGE_HEIGHT143, MENU_BADGE_WIDTH143, matchMenuPositions143, menuBadgePlacement143, menuPositionBox143, spreadMenuBadges143,
   type MenuPosition143, type MenuRow143 } from '@/utils/menuPositions143';
 import { readPageLines143, type PageLines143 } from '@/utils/nativeOcrLines143';
+import { takeMenuPhoto144 } from '@/utils/scanKind144';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { estimateListing139, storeAffinity139, type ListingMatch139 } from '@/utils/storeListing139';
 import { menuCoverageWarning139, menuLikelyText140, menuLineKey139, menuRowName140, menuVerdict139, menuVerdictCertain140, menuVerdictScore140,
@@ -313,6 +314,8 @@ const WineMenuScannerSession = ({
   const trayRef141 = useRef(tray141); trayRef141.current = tray141;
   const traySource141 = useRef<'camera' | 'file'>('camera');
   const trayRun141 = useRef<File[] | null>(null);
+  // 144: a list photographed through «Botellas» arrives here already taken: it waits in the tray like any other photo.
+  const [handed144, setHanded144] = useState(false);
   const run141 = useRef({ page: 0, replacePage: false, quiet: false });
   const driving141 = useRef(false);
   const pageCount141 = useRef(0);
@@ -570,6 +573,9 @@ const WineMenuScannerSession = ({
     setLoading(false);
     resetEstimates139();
     clearTray141(); reset141(); setReading141(null);
+    // 144: picked up here, after the tray of the previous account is emptied, so the handed photo is the one that stays.
+    const handed = isNative ? takeMenuPhoto144() : null;
+    if (handed) { const next = addToMenuTray141([], { file: handed, url: URL.createObjectURL(handed) }); trayRef141.current = next; setTray141(next); setHanded144(true); }
     return () => { scanAbortRef.current?.abort(); estimateAbort139.current?.abort(); lastScanInputRef.current = null; partialMenuReadingRef.current = null; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
@@ -2298,6 +2304,7 @@ const WineMenuScannerSession = ({
                 <div className="min-w-0">
                   <h2 id="wine-menu-upload-title" className="text-lg font-bold text-slate-950">{menuTrayLabel141(tray141.length)}</h2>
                   <p className="mt-1 text-sm leading-5 text-slate-600">{menuTrayHint141(tray141.length)}</p>
+                  {handed144 && <p role="status" className="mt-2 rounded-xl bg-emerald-50 px-3 py-2 text-sm leading-5 text-emerald-900" data-testid="menu-handed144">Tu foto es una carta de vinos, no una botella: la leemos como carta para decirte cuál pedir.</p>}
                 </div>
                 <ul className="flex min-w-0 gap-3 overflow-x-auto">
                   {tray141.map((item, index) => <li key={item.url} className="relative h-[112px] w-[84px] shrink-0">

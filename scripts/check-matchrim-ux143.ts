@@ -17,7 +17,7 @@ test('Home: «¿Te gustó?» on the last scan saves it as tasted with the rating
 });
 test('Scanned bottle: the estimate is the big number, the answer and one sentence per trait', () => {
   const estimate = read('src/components/wine-import/NativeStoreEstimate139.tsx');
-  assert.match(estimate, /compatLines142\(result\.dimensions\)/); assert(!estimate.includes('NativeAffinitySummary'));
+  assert.match(estimate, /<WhyLines144 dimensions=\{result\.dimensions\}/); assert(!estimate.includes('NativeAffinitySummary'));
   assert.match(estimate, /Estimación con los datos de la tienda de Winerim/);
 });
 test('Saved wines: cards, pill filters and the new header keep their handles', () => {

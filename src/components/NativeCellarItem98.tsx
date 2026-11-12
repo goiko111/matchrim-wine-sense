@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { ChevronDown, Frown, MapPin, Meh, Smile, ThumbsDown, ThumbsUp, X } from 'lucide-react';
+import { ChevronDown, MapPin, Meh, ThumbsDown, ThumbsUp, X } from 'lucide-react';
 import { readCellarPublicReference107 } from '@/utils/cellarPublicReference107';
 import { cellarReferenceStyleView110 } from '@/utils/cellarReferenceStyle110';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
@@ -8,9 +8,9 @@ import { cellarAffinityView, type CellarAffinityWine } from '@/utils/bodegaAffin
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { useOwnWinePhoto133 } from '@/utils/ownWinePhoto133';
 import { NativeWineNote139 } from '@/components/NativeWineNote139';
+import { WhyLines144 } from '@/components/WineSheet142';
 import { NativeWinerimFacts140 } from '@/components/NativeWinerimFacts140';
 import { estimateListing139, storeAffinity139 } from '@/utils/storeListing139';
-import { compatLines142 } from '@/utils/winerimDetail142';
 import type { StoreAttributes138 } from '@/utils/storeEstimate138';
 import { safeWineImageUrl98 } from '@/utils/wineImage98';
 
@@ -26,7 +26,6 @@ const storeHits141 = new Map<string, StoreHit141>();
 // 143: the saved-wine sheet and the list speak the visual language of the new wine sheet (WineSheet142): same
 // cards, same faces, same green from 65, and the same four answers to «¿me gustará?» for a verified score.
 const card143 = 'rounded-2xl border border-stone-200 bg-white';
-const faces143 = { good: [Smile, 'text-emerald-700'], fair: [Meh, 'text-amber-600'], far: [Frown, 'text-stone-500'] } as const;
 const rated143 = { love: ['Te encantó', ThumbsUp, 'bg-emerald-100 text-emerald-800', 'bg-emerald-50 text-emerald-900'], ok: ['Te pareció correcto', Meh, 'bg-white text-stone-700', 'bg-stone-100 text-stone-800'],
   not_for_me: ['No te gustó', ThumbsDown, 'bg-white text-stone-700', 'bg-stone-100 text-stone-700'] } as const;
 const title143 = (score: number) => score >= 80 ? 'Muy de tu estilo' : score >= 65 ? 'Probablemente te guste' : score >= 45 ? 'Puede que sí, puede que no' : 'No es tu estilo';
@@ -155,11 +154,8 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
           <div className={`${card143} p-4`} data-testid="native-cellar-rate141">{sheet?.rate}</div>
           <div className={`${card143} [&>section]:border-0`}><NativeWineNote139 wineId={wine.id} initial={wine.personal_note} /></div>
           {/* 143: the estimate's reasons come from the store match the row already has: no second lookup, nothing saved. */}
-          {ready && <section className={`${card143} px-4 py-2`} aria-labelledby={`why143-${wine.id}`} data-testid="native-cellar-why143">
-            <h4 id={`why143-${wine.id}`} className="pt-2 text-base font-semibold">Por qué {ready.score >= 65 ? 'encaja contigo' : 'puede no encajarte'}</h4>
-            <ul className="divide-y divide-stone-100">{compatLines142(ready.dimensions).map(line => { const [Face, tone] = faces143[line.face];
-              return <li key={line.key} className="flex items-center gap-3 py-3 text-sm leading-5"><Face className={`h-5 w-5 shrink-0 ${tone}`} aria-hidden="true" />{line.text}</li>; })}</ul>
-            <p className="pb-2 text-xs leading-5 text-stone-500">Estimación con los datos de Winerim. Compara el estilo del vino con tus gustos; no es una nota de calidad.</p>
+          {ready && <section className={`${card143} px-4 py-2`} aria-label="Por qué" data-testid="native-cellar-why143">
+            <WhyLines144 dimensions={ready.dimensions} note="Estimación con los datos de Winerim. Compara el estilo del vino con tus gustos; no es una nota de calidad." />
           </section>}
           {displayScore !== null && <details open={affinityOpen} onToggle={event => setAffinityOpen(event.currentTarget.open)} className={`group min-w-0 px-4 ${card143} [&_[data-testid=cellar-wine-affinity]]:border-0 [&_[data-testid=cellar-wine-affinity]]:pt-0 [&_[data-testid=native-affinity-summary]]:border-0 [&_[data-testid=native-affinity-summary]]:py-0`} data-testid="native-cellar-affinity143">
             <summary aria-label="Ver cómo ha cambiado tu afinidad" className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 py-3 text-sm font-semibold text-stone-800"><span aria-hidden="true">Ver cómo ha cambiado tu afinidad</span><ChevronDown className="h-4 w-4 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true" /></summary>

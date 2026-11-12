@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { BookOpen, Check, Search, X } from 'lucide-react';
+import { BookOpen, Check, ChevronRight, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import type { WineCandidate } from '@/utils/multiWineScan';
@@ -126,19 +126,24 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
 
   const card = (value: Candidate286, action: string) => {
     const photo = safeWineImageUrl98(value.row.photo);
-    return <li key={value.row.id} className="min-w-0 space-y-2 py-3 [overflow-wrap:anywhere]" data-testid="candidate286">
-      <div className="flex min-w-0 items-start gap-3">
-        {photo && <img src={photo} alt={`Foto de Winerim: ${value.name}`} className="h-[112px] w-[64px] shrink-0 object-contain" referrerPolicy="no-referrer" loading="lazy" />}
-        <div className="min-w-0">
-          <p className="font-semibold text-slate-950">{value.name}</p>
-          <p className="text-sm text-stone-700">{value.row.winery} · {value.row.vintage || 'Ficha sin añada'}</p>
-          {(value.row.type || value.row.region) && <p className="text-sm text-stone-600">{[value.row.type, value.row.region].filter(Boolean).join(' · ')}</p>}
-        </div>
-      </div>
-      {/* 139: «Lectura parcial…» and «Esta ficha no confirma la cosecha…» repeated under each of ten wines read as noise; one plain line above the list replaces them. */}
-      {value.row.vintage != null && vintage !== null && vintage !== Number(value.row.vintage) && <p className="text-sm text-stone-700">Elegirla cambiará tu añada a {value.row.vintage}.</p>}
-      <Button type="button" variant={action === 'Sí, es este' ? 'default' : 'outline'} disabled={disabled || busy} onClick={() => void choose(value)}
-        className={`h-auto min-h-11 w-full gap-2 whitespace-normal py-3 ${action === 'Sí, es este' ? 'bg-red-950 text-white' : ''}`}>
+    const tile = <span className="flex h-[104px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-xl bg-stone-100">
+      {photo && <img src={photo} alt="" className="h-full w-full object-contain" referrerPolicy="no-referrer" loading="lazy" />}</span>;
+    const words = <span className="min-w-0 flex-1 text-left">
+      <span className="block text-xs leading-5 text-stone-600">{value.row.winery}</span>
+      <span className="block text-base font-semibold leading-6 text-stone-950">{value.name}</span>
+      <span className="block text-xs leading-5 text-stone-500">{[value.row.type, value.row.region, value.row.vintage].filter(Boolean).join(' · ')}</span>
+      {value.row.vintage != null && vintage !== null && vintage !== Number(value.row.vintage) && <span className="mt-1 block text-xs leading-5 text-stone-700">Elegirla cambiará tu añada a {value.row.vintage}.</span>}
+    </span>;
+    // 144: with several candidates the whole card is the button (one tap, as in the search results); the lone
+    // candidate keeps its explicit «Sí, es este».
+    if (action !== 'Sí, es este') return <li key={value.row.id} className="min-w-0 [overflow-wrap:anywhere]" data-testid="candidate286">
+      <button type="button" disabled={disabled || busy} onClick={() => void choose(value)} aria-label={`Es este: ${value.name}, ${value.row.winery}`}
+        className="flex w-full min-w-0 items-center gap-3 rounded-2xl border border-stone-200 bg-white p-3 text-left active:bg-stone-50 disabled:opacity-60">
+        {tile}{words}<ChevronRight aria-hidden="true" className="h-5 w-5 shrink-0 text-stone-400" /></button>
+    </li>;
+    return <li key={value.row.id} className="min-w-0 space-y-3 rounded-2xl border border-stone-200 bg-white p-3 [overflow-wrap:anywhere]" data-testid="candidate286">
+      <div className="flex min-w-0 items-center gap-3">{tile}{words}</div>
+      <Button type="button" disabled={disabled || busy} onClick={() => void choose(value)} className="h-auto min-h-11 w-full gap-2 whitespace-normal bg-red-950 py-3 text-white">
         <Check aria-hidden="true" className="h-4 w-4 shrink-0" /> {action}
       </Button>
     </li>;
@@ -156,13 +161,13 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
     {notice && !busy && <p role="status" className="text-sm leading-6 text-stone-700">{notice}</p>}
     {shown.length > 0 && <h3 ref={heading} tabIndex={-1} className="text-base font-semibold text-stone-950 outline-none">
       {decision?.mode === 'one' ? '¿Es este tu vino?' : '¿Es alguno de estos?'}</h3>}
-    {shown.length > 0 && decision?.mode === 'choose' && <p className="text-sm leading-6 text-stone-700">Elige el que coincide con tu botella.</p>}
-    {shown.length > 0 && <ul className="min-w-0 divide-y divide-stone-200">{shown.map(value => card(value, decision?.mode === 'one' ? 'Sí, es este' : 'Es este'))}</ul>}
+    {shown.length > 0 && decision?.mode === 'choose' && <p className="text-sm leading-6 text-stone-700">Toca el que coincide con tu botella.</p>}
+    {shown.length > 0 && <ul className="min-w-0 space-y-2">{shown.map(value => card(value, decision?.mode === 'one' ? 'Sí, es este' : 'Es este'))}</ul>}
     {more.length > 0 && <details className="min-w-0 border-t border-stone-200 pt-2">
       <summary className="flex min-h-11 cursor-pointer items-center text-sm font-medium">
         {decision?.mode === 'one' ? `No es este: ver otros candidatos (${more.length})` : `Ver más candidatos (${more.length})`}
       </summary>
-      <ul className="min-w-0 divide-y divide-stone-200">{more.map(value => card(value, 'Es este'))}</ul>
+      <ul className="min-w-0 space-y-2">{more.map(value => card(value, 'Es este'))}</ul>
     </details>}
     <form className="min-w-0 space-y-2 border-t border-stone-200 pt-3" onSubmit={event => {
       event.preventDefault(); const query = typed.trim(); if (query.length >= 2) void find(query);

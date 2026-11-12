@@ -30,9 +30,11 @@ export const NativeSaveChoice142 = ({ wine }: { wine: QuickSaveWine141 }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [state, setState] = useState<{ phase: 'idle' | 'rating' | 'saving' | 'error' } | { phase: 'saved'; place: Place }>({ phase: 'idle' });
+  // 144: the first choice was filled in wine red and read as already selected; the three are now equal, and the one tapped shows the wait.
+  const [busy144, setBusy144] = useState<Place | null>(null);
   const save = async (place: Place, rating: 'love' | 'ok' | 'not_for_me' | null = null) => {
     if (!user) { stashSignedOutWineDraft134({ name: wine.name, producer: wine.producer, vintage: wine.vintage }); navigate(buildAuthRedirectPath('/my-wines/add')); return; }
-    setState({ phase: 'saving' });
+    setBusy144(place); setState({ phase: 'saving' });
     setState(await saveStoreWine142(user.id, wine, place, rating) ? { phase: 'saved', place } : { phase: 'error' });
   };
   if (state.phase === 'saved') return <div className="rounded-2xl bg-emerald-50 px-4 py-3" role="status" data-testid="save-done142">
@@ -47,11 +49,11 @@ export const NativeSaveChoice142 = ({ wine }: { wine: QuickSaveWine141 }) => {
     <button type="button" className="mt-1 min-h-11 text-sm text-stone-600 underline underline-offset-2" onClick={() => void save('tasted')}>Guardar sin valorar</button>
   </div>;
   return <div data-testid="save-choice142">
-    <div className="grid grid-cols-3 gap-2">{places.map(([place, Icon, label], index) =>
+    <div className="grid grid-cols-3 gap-2">{places.map(([place, Icon, label]) =>
       <button key={place} type="button" disabled={state.phase === 'saving'} data-testid={`save-${place}142`}
-        className={`flex min-h-[4.5rem] flex-col items-center justify-center gap-1.5 rounded-xl px-1 text-center text-xs font-semibold leading-4 disabled:opacity-60 ${index === 0 ? 'bg-red-900 text-white' : 'border border-stone-300 bg-white text-stone-900'}`}
+        className={`flex min-h-[4.5rem] flex-col items-center justify-center gap-1.5 rounded-xl px-1 text-center text-xs font-semibold leading-4 disabled:opacity-60 border border-stone-300 bg-white text-stone-900 active:bg-stone-100`}
         onClick={() => place === 'tasted' ? setState({ phase: 'rating' }) : void save(place)}>
-        {state.phase === 'saving' && index === 0 ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <Icon className="h-5 w-5" aria-hidden="true" />}{label}</button>)}</div>
+        {state.phase === 'saving' && busy144 === place ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <Icon className="h-5 w-5" aria-hidden="true" />}{label}</button>)}</div>
     {state.phase === 'error' && <p role="alert" className="mt-2 text-sm text-red-800">No se ha podido guardar. Comprueba la conexión e inténtalo de nuevo.</p>}
   </div>;
 };

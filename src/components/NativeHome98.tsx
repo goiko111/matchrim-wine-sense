@@ -6,7 +6,7 @@ import MobileBottomNav from '@/components/MobileBottomNav';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { NativeStoreSearch139 } from '@/components/NativeStoreSearch139';
 import type { PublicGlobalRow103 } from '@/utils/nativeGlobalCatalogue103';
-import { getScannedWines139, SCANNED_WINES_EVENT139, type ScannedWine139 } from '@/utils/scannedWines139';
+import { getScannedWines139, markScannedSaved144, SCANNED_WINES_EVENT139, type ScannedWine139 } from '@/utils/scannedWines139';
 import { searchStore139 } from '@/utils/storeListing139';
 import { saveStoreWine142 } from '@/components/NativeSaveChoice142';
 import { formatWineType } from '@/utils/wineFormatters';
@@ -42,6 +42,8 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
   // 140: closing a wine opened from the search goes back to the search, with its text and results.
   const [searchQuery, setSearchQuery] = useState('');
   const [fromSearch, setFromSearch] = useState(false);
+  // 144: the last scan opens with the number the scan gave (see WineSheet142 catalogueRule).
+  const [catalogueRule144, setCatalogueRule144] = useState(false);
   const allButton = useRef<HTMLButtonElement>(null);
   // 139: wines identified by a scan stay one tap away, also when they were not saved.
   const [scanned, setScanned] = useState<ScannedWine139[]>(() => getScannedWines139(ownerId));
@@ -54,7 +56,7 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
     const rows = await searchStore139(wine.name).catch(() => []);
     const row = rows.find(item => fold(item.name) === fold(wine.name) && (!wine.winery || fold(item.winery) === fold(wine.winery)) && String(item.vintage ?? '') === (wine.vintage ?? ''))
       ?? rows.find(item => fold(item.name) === fold(wine.name) && (!wine.winery || fold(item.winery) === fold(wine.winery)));
-    if (row) { setFromSearch(false); setSearched(row); return; }
+    if (row) { setFromSearch(false); setCatalogueRule144(Boolean(wine.catalogue)); setSearched(row); return; }
     const draft = { name: wine.name, producer: wine.winery, vintage: wine.vintage ? Number(wine.vintage) : null };
     if (!ownerId) stashSignedOutWineDraft134(draft);
     navigate(ownerId ? '/my-wines/add' : buildAuthRedirectPath('/my-wines/add'), ownerId ? { state: createNativeWineDraft98(draft, ownerId) } : undefined);
@@ -109,11 +111,11 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
           <ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
         </button>
         {ownerId && <div className="flex min-h-14 items-center justify-between gap-3 border-t border-stone-100 px-4 py-2" data-testid="native-home-liked143">
-          {liked?.key === scanKey(scanned[0]) ? <p role="status" className="text-sm font-semibold text-emerald-900">{liked.ok ? 'Guardado en Probados' : 'No se ha podido guardar'}</p>
+          {scanned[0].saved || liked?.key === scanKey(scanned[0]) ? <p role="status" className="text-sm font-semibold text-emerald-900">{scanned[0].saved || liked?.ok ? 'Guardado en Probados' : 'No se ha podido guardar'}</p>
             : <><span className="text-sm text-stone-700">¿Lo has probado? ¿Te gustó?</span>
               <span className="flex gap-2">{([['not_for_me', ThumbsDown, 'No me gustó'], ['love', ThumbsUp, 'Me gustó']] as const).map(([rating, Icon, label]) =>
                 <button key={rating} type="button" aria-label={label} className="flex h-11 w-11 items-center justify-center rounded-full border border-stone-300 bg-white text-stone-800 active:bg-stone-100"
-                  onClick={() => void saveStoreWine142(ownerId, { name: scanned[0].name, producer: scanned[0].winery, vintage: scanned[0].vintage }, 'tasted', rating).then(ok => setLiked({ key: scanKey(scanned[0]), ok }))}>
+                  onClick={() => void saveStoreWine142(ownerId, { name: scanned[0].name, producer: scanned[0].winery, vintage: scanned[0].vintage }, 'tasted', rating).then(ok => { setLiked({ key: scanKey(scanned[0]), ok }); if (ok) markScannedSaved144(ownerId, scanned[0]); })}>
                   <Icon className="h-5 w-5" aria-hidden="true" /></button>)}</span></>}
         </div>}
       </div>}
@@ -181,10 +183,10 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
           setSearchOpen(false);
           if (!ownerId) stashSignedOutWineDraft134({ name });
           navigate(ownerId ? '/my-wines/add' : buildAuthRedirectPath('/my-wines/add'), ownerId ? { state: createNativeWineDraft98({ name }, ownerId) } : undefined);
-        }} query={searchQuery} onQuery={setSearchQuery} onSelect={wine => { setSearchOpen(false); setFromSearch(true); setSearched(wine); }} /></div>
+        }} query={searchQuery} onQuery={setSearchQuery} onSelect={wine => { setSearchOpen(false); setFromSearch(true); setCatalogueRule144(false); setSearched(wine); }} /></div>
       </Dialog.Content></Dialog.Portal>
     </Dialog.Root>
-    <NativeSearchWine138 wine={searched} profile={profile} backLabel={fromSearch ? 'Volver a la búsqueda' : undefined}
+    <NativeSearchWine138 wine={searched} profile={profile} catalogueRule={catalogueRule144} backLabel={fromSearch ? 'Volver a la búsqueda' : undefined}
       onClose={() => { setSearched(null); if (fromSearch) { setFromSearch(false); setSearchOpen(true); } }} />
     {detail}<MobileBottomNav />
   </div>;

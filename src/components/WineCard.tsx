@@ -11,7 +11,7 @@ import { getWinerimPriceDisplay } from '@/utils/winerimPrice';
 import { NativeAffinitySummary } from '@/components/NativeAffinitySummary';
 import { buildNativeRecommendation95 } from '@/utils/nativeRecommendation95';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
-import { NativeWineSave98 } from '@/components/NativeWineSave98';
+import { NativeSaveChoice142 } from '@/components/NativeSaveChoice142';
 import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
 import { NativeWinerimFacts140 } from '@/components/NativeWinerimFacts140';
 
@@ -38,13 +38,14 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
           </div>
         </div>
         <div className="mt-3"><NativeAffinitySummary result={evidence.result} /></div>
+        {/* 144: the same three choices as every other wine sheet («Guardar en Mis vinos» opened a ten-field form). */}
+        <div className="mt-4"><NativeSaveChoice142 wine={{ name: wine.name, producer: wine.winery, vintage: wine.vintage, region: wine.region, country: wine.country, photo: wine.photo }} /></div>
         {/* 142: the wine's Winerim data (facts, flavour bars, pairings, notes) is shown here, inside the app. */}
         <div className="mt-4 empty:hidden"><NativeWinerimFacts140 identity={{ name: wine.name, producer: wine.winery, vintage: wine.vintage }} part="facts" profile={profile} /></div>
         {evidence.sourceAvailable && <details className="mt-2 border-t border-stone-200 pt-2">
           <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium text-stone-700">Buscar su ficha verificada</summary>
           <WinerimSheetLookup identity={{ name: wine.name, producer: wine.winery, vintage: wine.vintage, region: wine.region, country: wine.country }} />
         </details>}
-        <NativeWineSave98 wine={wine} />
       </div>
     );
   }

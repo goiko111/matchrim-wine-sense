@@ -14,12 +14,14 @@ interface Props {
   onClose: () => void;
   /** 140: when the sheet was opened from the search, closing it returns there. */
   backLabel?: string;
+  /** 144: the wine was scored by its catalogue sheet when scanned; the sheet shows that same comparison (not for related wines). */
+  catalogueRule?: boolean;
 }
 
 // 138: picking a search result opened the ten-field «Añadir vino» form. Whoever searches a wine wants to know
 // whether they will like it. 139: the result is a row of Winerim's public store, so the sheet opens at once with
 // its photo, its Winerim data and the affinity (a labelled estimate: store data is not a verified sheet).
-export const NativeSearchWine138 = ({ wine, profile, onClose, backLabel }: Props) => {
+export const NativeSearchWine138 = ({ wine, profile, onClose, backLabel, catalogueRule = false }: Props) => {
   // 142: a related wine opens in the same sheet; «back» returns to the one before it.
   const [trail, setTrail] = useState<PublicGlobalRow103[]>([]);
   useEffect(() => { setTrail([]); }, [wine]);
@@ -40,7 +42,7 @@ export const NativeSearchWine138 = ({ wine, profile, onClose, backLabel }: Props
         <div ref={body} className="min-h-0 overflow-y-auto px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))]">
           <Dialog.Description id="search-wine138-description" className="sr-only">El vino que has buscado y cómo encaja con tus gustos.</Dialog.Description>
           {shown && <div data-testid={usableStoreSensory138(shown) ? 'native-search-estimate138' : 'native-search-missing138'}>
-            <WineSheet142 key={shown.id} row={shown} profile={profile} onRelated={next => setTrail(previous => [...previous, next])}
+            <WineSheet142 key={shown.id} row={shown} profile={profile} catalogueRule={catalogueRule && !trail.length} onRelated={next => setTrail(previous => [...previous, next])}
               actions={<NativeSaveChoice142 key={shown.id} wine={{ name, producer: shown.winery, vintage: shown.vintage, region: shown.region, country: shown.country, photo: shown.photo, storeId: shown.id, storeSlug: shown.slugname }} />} />
           </div>}
         </div>

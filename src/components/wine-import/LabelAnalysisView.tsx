@@ -37,6 +37,9 @@ export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, ident
   onFindSheet, onCorrect, onReturnToBatch, returnLabel = 'Volver al lote para guardar', children = null }: LabelAnalysisViewProps) => {
   if (!isNativePlatform) return <>{children}</>;
 
+  // 144: while the person is still choosing the wine among candidates, the explanation of why there is no affinity yet
+  // («Primero, identifiquemos el vino…») is noise above the list: it stays for VoiceOver only.
+  const picking = isNativePlatform && !catalogIdentityLinked && pendingAffinity?.reason === 'identity' && Boolean(lookup);
   return <section className="min-w-0 space-y-4 py-3 [&:has([data-testid=native-store-estimate139])_.gap139]:hidden" aria-label="Vino seleccionado" data-testid="native-wine-primary">
     {showIdentity ? <div className="min-w-0 space-y-1 [overflow-wrap:anywhere]">
       <h3 className="text-xl font-semibold leading-snug text-slate-950">{identity.name}</h3>
@@ -47,18 +50,18 @@ export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, ident
     </div>
       // 140: «Referencia del catálogo Winerim» as a grey line under a verdict told the person nothing. With a verified
       // affinity nothing is said; with a store estimate (gap139) its own sentence explains it. Other states keep the line.
-      : !canExplainAffinity && <p className="gap139 text-xs leading-5 text-stone-500">{identityLabel}</p>}
+      : !canExplainAffinity && <p className={`gap139 text-xs leading-5 text-stone-500 ${picking ? 'sr-only' : ''}`}>{identityLabel}</p>}
 
     {photo}
     {!canExplainAffinity && estimate}
     {/* 140: with a store estimate on screen the «found, no flavour data» reference block under it only repeats the wine. */}
-    {canExplainAffinity ? affinity : catalogueReference ? <div className="gap139">{catalogueReference}</div> : <div className="min-w-0 space-y-2 border-y border-stone-200 py-3" data-testid="native-label-next-step">
-      <h4 className="font-semibold text-slate-950">{pendingAffinity?.title ?? 'Afinidad pendiente'}</h4>
-      <p className="text-sm leading-6 text-stone-700" data-testid="native-affinity-gap-reason">{pendingAffinity?.description ?? (catalogIdentityLinked
+    {canExplainAffinity ? affinity : catalogueReference ? <div className="gap139">{catalogueReference}</div> : <div className={`min-w-0 space-y-2 ${picking ? '' : 'border-y border-stone-200 py-3'}`} data-testid="native-label-next-step">
+      <h4 className={picking ? 'sr-only' : 'font-semibold text-slate-950'}>{pendingAffinity?.title ?? 'Afinidad pendiente'}</h4>
+      <p className={picking ? 'sr-only' : 'text-sm leading-6 text-stone-700'} data-testid="native-affinity-gap-reason">{pendingAffinity?.description ?? (catalogIdentityLinked
         ? hasProfile ? 'La ficha está enlazada, pero aún faltan datos para calcular tu afinidad.'
           : 'La ficha está enlazada. Completa tu test para compararla con tus gustos.'
         : 'Aún no hay una ficha enlazada para comparar este vino con tus gustos.')}</p>
-      {pendingAffinity && <p className="text-sm leading-6 text-stone-700" data-testid="native-affinity-gap-next-step">{pendingAffinity.nextStep}</p>}
+      {pendingAffinity && <p className={picking ? 'sr-only' : 'text-sm leading-6 text-stone-700'} data-testid="native-affinity-gap-next-step">{pendingAffinity.nextStep}</p>}
       {!catalogIdentityLinked && (lookup || <Button type="button" disabled={disabled} onClick={onFindSheet}
         className="h-auto min-h-11 w-full min-w-0 gap-2 whitespace-normal bg-red-950 px-3 py-3 text-left text-white hover:bg-red-900">
         <BookOpen aria-hidden="true" className="h-5 w-5 shrink-0" /><span className="min-w-0 [overflow-wrap:anywhere]">Buscar ficha para mi afinidad</span>

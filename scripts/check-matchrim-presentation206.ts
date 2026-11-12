@@ -3,9 +3,11 @@ import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import ts from 'typescript';
 import { buildConsumerAffinity } from '../src/utils/consumerAffinity95';
+import { compatLines142 } from '../src/utils/winerimDetail142';
 
 type Node = { type: unknown; props: Record<string, unknown>; children: unknown[] };
-const element = (type: unknown, props: Record<string, unknown> | null, ...children: unknown[]): Node => ({ type, props: props ?? {}, children });
+const element = (type: unknown, props: Record<string, unknown> | null, ...children: unknown[]): Node =>
+  typeof type === 'function' ? (type as (props: Record<string, unknown>) => Node)(props ?? {}) : { type, props: props ?? {}, children };
 const nodes = (tree: unknown): Node[] => Array.isArray(tree) ? tree.flatMap(nodes)
   : tree && typeof tree === 'object' && 'children' in tree ? [tree as Node, ...nodes((tree as Node).children)] : [];
 const text = (tree: unknown, hideDetails = false): string => Array.isArray(tree) ? tree.map(n => text(n, hideDetails)).join(' ')
@@ -15,18 +17,21 @@ const source = readFileSync('src/components/NativeAffinitySummary.tsx', 'utf8');
 const stripped = source.replace(/^import .*;\n/gm, '');
 const exports: Record<string, (props: Record<string, unknown>) => Node> = {};
 vm.runInNewContext(ts.transpileModule(stripped, { compilerOptions: { jsx: ts.JsxEmit.React, module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText,
-  { exports, React: { createElement: element }, Link: 'Link', ChevronDown: 'ChevronDown', CircleHelp: 'CircleHelp', buildConsumerAffinity });
+  { exports, React: { createElement: element }, Link: 'Link', ChevronDown: 'ChevronDown', CircleHelp: 'CircleHelp', buildConsumerAffinity,
+    WhyLines144: ({ dimensions, note }: { dimensions: Parameters<typeof compatLines142>[0]; note: string }) =>
+      element('div', null, ...compatLines142(dimensions).map(line => element('li', { key: line.key }, line.text)), element('p', null, note)) });
 const render = exports.NativeAffinitySummary;
 const input = { catalogIdentityLinked: true, sensorySource: 'catalog' as const, score: 76,
   profile: { potente: 5, acidez: 4, dulce: 4, tanico: 5, afrutado: 3 },
   attributes: { scale: 'winerim-0-5' as const, power: 4, acidity: 3, sweetness: 1, tannin: 4, fruity: 4 } };
 let checks = 0;
 const check = (name: string, action: () => void) => { action(); checks++; console.log('PASS', name); };
-check('One consumer answer, two reasons at most, one friction, exact score', () => {
+check('One consumer answer, one sentence per trait, exact score', () => {
   const tree = render(input), visible = text(tree, true);
   assert.match(visible, /Probablemente te guste/); assert.match(visible, /76/);
-  assert.match(visible, /Es más seco de lo que sueles elegir/);
-  assert(nodes(tree).filter(n => n.type === 'li').length <= 2);
+  // 144: one sentence per trait (five at most), split into what fits and what may not, as in every wine sheet.
+  assert.match(visible, /Es más seco de lo que sueles preferir/);
+  assert(nodes(tree).filter(n => n.type === 'li').length <= 5);
   assert.equal(nodes(tree).filter(n => n.props['data-testid'] === 'native-affinity-summary').length, 1);
 });
 check('Personal ratings override headline, score and model reasons, without erasing detail', () => {

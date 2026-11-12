@@ -11,7 +11,19 @@ export interface WinerimDetail142 {
   origin: string | null; personality: string | null; story: string | null;
   alcohol: string | null; temperature: string | null;
   related: StoreRow140[];
+  /** 144: the rest of what Winerim holds for a wine, shown folded: the whole tasting note, how it is made, where it comes from. */
+  appearance: string | null; body: string | null; structure: string | null; finish: string | null;
+  pairingLine: string | null; style: string | null; curiosity: string | null;
+  aging: string | null; winemaking: string | null; wineryStory: string | null; vineyard: string | null; climate: string | null;
+  agingLevel: number | null;
 }
+// 144: some sheets carry a paragraph written for a sibling wine (the sheet of «Ramón Bilbao» describing «Ramón Bilbao
+// Edición Limitada»). A paragraph that names this wine followed by another capitalised word is about another wine: left out.
+const escape144 = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+export const aboutAnotherWine144 = (value: string, wineName: string): boolean => {
+  const name = wineName.trim(); if (name.length < 3) return false;
+  return new RegExp(`${escape144(name)}\\s+(?!(?:Es|Se|Ha|Fue|Tiene|Nace|Ofrece|Presenta|Envejece|Procede)\\b)\\p{Lu}[\\p{L}\\d]+`, 'u').test(value);
+};
 const text = (value: unknown, max = 900): string | null => typeof value === 'string' && value.trim() && !/[<>]/.test(value) ? value.replace(/\s+/g, ' ').trim().slice(0, max) : null;
 const record = (value: unknown): Record<string, unknown> => value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {};
 const names: Record<string, string> = { 'carne-aves': 'Aves', 'carne-roja': 'Carne roja', 'carne-blanca': 'Carne blanca', 'carne-caza': 'Caza', 'pescado-blanco': 'Pescado blanco',
@@ -26,6 +38,9 @@ const row = (value: unknown): StoreRow140 | null => {
 };
 export const parseWinerimDetail142 = (value: unknown): WinerimDetail142 => {
   const raw = record(value), note = record(raw.tastingNote), quick = record(raw.quickSheet), details = record(raw.wineDetails);
+  const land = record(raw.vineyardDetails), wineName = text(raw.name, 240) ?? '';
+  const own = (field: unknown, max = 900) => { const value = text(field, max); return value && !aboutAnotherWine144(value, wineName) ? value : null; };
+  const agingLevel = record(raw.tastingAttributes).aging;
   const alcohol = typeof details.alcohol === 'number' && details.alcohol > 0 ? (details.alcohol > 25 ? details.alcohol / 10 : details.alcohol) : null;
   return {
     pairings: [...new Set((Array.isArray(raw.pairings) ? raw.pairings : []).flatMap(item => { const slug = record(item).name; return typeof slug === 'string' && /^[a-zñáéíóú-]{2,40}$/i.test(slug) ? [pairingLabel142(slug)] : []; }))].slice(0, 8),
@@ -33,6 +48,10 @@ export const parseWinerimDetail142 = (value: unknown): WinerimDetail142 => {
     alcohol: alcohol !== null && alcohol >= 4 && alcohol <= 23 ? `${alcohol.toLocaleString('es-ES', { maximumFractionDigits: 1 })} % vol.` : null,
     temperature: typeof details.serviceTemperature === 'string' && /^\d{1,2}(-\d{1,2})?$/.test(details.serviceTemperature) ? `${details.serviceTemperature.replace('-', '–')} °C` : null,
     related: (Array.isArray(raw.relatedWines) ? raw.relatedWines : []).flatMap(item => row(item) ?? []).slice(0, 8),
+    appearance: text(note.appearance), body: text(note.body), structure: text(note.structure), finish: text(note.finish),
+    pairingLine: own(quick.pairing, 300), style: own(quick.style, 300), curiosity: own(quick.curiosity, 300),
+    aging: own(land.aging), winemaking: own(land.winemakingProcess), wineryStory: own(land.winery), vineyard: own(land.vineyard), climate: own(land.climate),
+    agingLevel: typeof agingLevel === 'number' && Number.isFinite(agingLevel) && agingLevel >= 1 && agingLevel <= 5 ? agingLevel : null,
   };
 };
 const cache = new Map<string, Promise<WinerimDetail142 | null>>();

@@ -1,4 +1,6 @@
 import { NativeStoreEstimate139 } from './NativeStoreEstimate139';
+import { useNavigate } from 'react-router-dom';
+import { handMenuPhoto144, looksLikeWineList144 } from '@/utils/scanKind144';
 import { recordScannedWine139 } from '@/utils/scannedWines139';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { confirm135 } from '@/utils/nativeConfirm135';
@@ -185,6 +187,7 @@ const userFacingScanError = (error: unknown) => {
 };
 
 const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScannerProps) => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const isNative = Capacitor.isNativePlatform();
   const [scanMode, setScanMode] = useState<'cloud' | 'local-single'>('cloud');
@@ -336,7 +339,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     if (!isNative || phase !== 'ready') return;
     for (const region of regions) { const wine = getSelectedCandidate(region);
       if (region.status === 'recognized' && wine?.name && !isPendingLocalIdentity109(wine)) recordScannedWine139(user?.id ?? null,
-        { name: wine.name, winery: wine.producer, vintage: wine.vintage, score: typeof wine.affinity === 'number' ? wine.affinity : null }); }
+        { name: wine.name, winery: wine.producer, vintage: wine.vintage, score: typeof wine.affinity === 'number' ? wine.affinity : null, catalogue: typeof wine.affinity === 'number' }); }
   }, [phase, isNative, regions, user?.id]);
   const summary = useMemo(() => summarizeScanRegions(regions), [regions]);
   const regionProgress = useMemo(() => formatScanRegionProgress(summarizeScanRegionProgress(regions)), [regions]);
@@ -590,6 +593,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         setPhase('analyzing');
         const reading = await readLocalWineText106(prepared.dataUrl, controller.signal);
         if (abortRef.current !== controller || controller.signal.aborted) return;
+        // 144: a photographed wine list is not one bottle: it goes to the list reader's tray instead of twenty candidates.
+        if (!isMatchrimFixtureQaEnabled && looksLikeWineList144(reading.lines)) {
+          handMenuPhoto144(file); setPhase('idle'); setPreview(null);
+          navigate('/escanear/carta-vinos'); return;
+        }
         const regionId = `local-single-${reading.requestId}`;
         const candidate = localSingleCandidate109(reading, `${regionId}-candidate`);
         const region: ScanRegion = { id: regionId, index: 1, box: { x: 0, y: 0, width: 100, height: 100 },
@@ -1130,6 +1138,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   // the Winerim photo and data inside the app (they replace «Ver ficha original Winerim», which opened Safari) unless
   // the public-store block, which carries its own photo, is on screen.
   const linkedFromList140 = isNative && Boolean(selectedCandidate) && fromList140 === selectedCandidate;
+  // 144: while the wine is still being chosen the sheet asks one plain question instead of «Etiqueta por identificar · Bodega sin confirmar».
+  const picking144 = isNative && Boolean(selectedCandidate && isPendingLocalIdentity109(selectedCandidate));
   const autoLinkedNow140 = Boolean(selectedCandidate && autoLinked139?.linked === selectedCandidate);
   const short140 = linkedFromList140 && Boolean(nativeConsumer?.canExplainAffinity);
   const facts140 = isNative && selectedCandidate && !isPendingLocalIdentity109(selectedCandidate) && selectedCandidate.name
@@ -1458,7 +1468,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
           {regions.length > 0 && (
             <div className="space-y-4">
-              {isNative && (
+              {/* 144: one bottle has nothing to compare and its photo was just taken: no «Foto · Vinos (1) · Comparar» tabs. */}
+              {isNative && !(regions.length === 1 && !isMatchrimFixtureQaEnabled) && (
                 <div className="matchrim-result-tabs grid grid-cols-[repeat(auto-fit,minmax(min(6rem,100%),1fr))] rounded-lg bg-slate-100 p-1" role="tablist" aria-label="Vista de resultados">
                   {([
                     ['scene', 'Foto'],
@@ -1516,7 +1527,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
               </div>
 
               <div hidden={isNative && nativeResultView !== 'wines'} className="space-y-4">
-              {scanProfile && <p className="text-sm text-stone-600" data-testid="scan-profile-source">{scanProfile.note}</p>}
+              {scanProfile && <p className={isNative && regions.length === 1 ? 'sr-only' : 'text-sm text-stone-600'} data-testid="scan-profile-source">{scanProfile.note}</p>}
               {isNative && user && nativeVerdicts?.status === 'unavailable' && <p className="text-sm text-stone-600" role="status">No se pudieron consultar tus valoraciones guardadas para este análisis.</p>}
               <div className="matchrim-surface divide-y divide-stone-100 overflow-hidden rounded-lg">
                 {rankedGroups.map((group, index) => {
@@ -1635,9 +1646,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
           {selectedRegion && (
             <div ref={isNative ? regionEditorLayout : undefined} role={isNative ? 'region' : undefined} aria-label={isNative ? `Panel desplazable de la región ${selectedRegion.index}` : undefined} tabIndex={isNative ? 0 : undefined} className="matchrim-scan-region-layout mx-auto flex w-full min-w-0 max-w-2xl min-h-0 flex-1 flex-col">
               <DrawerHeader className={isNative ? 'max-h-[40dvh] min-w-0 shrink-0 overflow-y-auto break-words border-b border-stone-200 bg-white text-left [overflow-wrap:anywhere]' : 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left'}>
-                <DrawerTitle>{isNative ? <>{selectedCandidate?.name || 'Etiqueta sin identificar'}{selectedCandidate?.vintage ? ` · ${selectedCandidate.vintage}` : ''}</> : <>Región {selectedRegion.index}: {statusLabel(selectedRegion)}</>}</DrawerTitle>
+                <DrawerTitle>{isNative ? picking144 ? '¿Cuál es tu vino?' : <>{selectedCandidate?.name || 'Etiqueta sin identificar'}{selectedCandidate?.vintage ? ` · ${selectedCandidate.vintage}` : ''}</> : <>Región {selectedRegion.index}: {statusLabel(selectedRegion)}</>}</DrawerTitle>
                 <DrawerDescription>
-                  {isNative ? `${selectedCandidate?.producer || 'Bodega sin confirmar'}${selectedCandidate?.vintage ? '' : ' · Añada no indicada'}` : `Detección ${Math.round(selectedRegion.detectionConfidence * 100)}%. La identidad y la afinidad se muestran por separado.`}
+                  {isNative ? picking144 ? 'Toca el que coincide con tu botella.' : [selectedCandidate?.producer, selectedCandidate?.vintage ? null : 'Añada no indicada'].filter(Boolean).join(' · ') : `Detección ${Math.round(selectedRegion.detectionConfidence * 100)}%. La identidad y la afinidad se muestran por separado.`}
                 </DrawerDescription>
                 {isNative && autoLinked139 && autoLinked139.regionId === selectedRegion.id && autoLinked139.linked === selectedCandidate
                   && !regionActionsLocked && !saving && <button type="button" onClick={reopenCandidates139}
@@ -1879,10 +1890,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   {!(short140 && regions.length === 1) && <><Button type="button" variant="outline" title="Reanalizar" disabled={regionActionsLocked || (localBatch && selectedRegion.status === 'recognized')} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2" onClick={isNative ? async () => {
                     if (localBatch || await confirm135('Se enviará de nuevo el recorte al servicio de lectura con IA. ¿Quieres continuar?', { ok: 'Continuar' })) void reanalyzeSelected();
                   } : () => void reanalyzeSelected()}>
-                    <RefreshCw className="h-4 w-4" /><span className={isNative ? 'sr-only' : undefined}>Reanalizar</span>
+                    <RefreshCw className="h-4 w-4" /><span className={isNative && regions.length > 1 ? 'sr-only' : undefined}>{isNative ? 'Leer otra vez' : 'Reanalizar'}</span>
                   </Button>
                   <Button type="button" variant="outline" title="Descartar" disabled={regionActionsLocked} className="matchrim-pressable h-auto min-h-11 min-w-0 flex-wrap gap-1 whitespace-normal bg-white px-2 text-red-800" onClick={discardSelected}>
-                    <Trash2 className="h-4 w-4" /><span className={isNative ? 'sr-only' : undefined}>Descartar</span>
+                    <Trash2 className="h-4 w-4" /><span className={isNative && regions.length > 1 ? 'sr-only' : undefined}>Descartar</span>
                   </Button></>}
                 </div>
                 <DrawerClose asChild><Button type="button" variant="secondary" className={isNative ? 'matchrim-region-close-action min-h-11' : 'min-h-11'}

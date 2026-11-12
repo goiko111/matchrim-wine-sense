@@ -120,7 +120,7 @@ function mount(file: string, source: string, native: boolean) {
     buildWinerimWineUrl: () => 'https://web.winerim.com/the-library/wines/278688/Manzanilla-La-Gitana',
     NativeAffinitySummary: 'NativeAffinitySummary', WineCard: 'WineCard', AppNav: 'AppNav', Button: 'Button', Card: 'Card', CardContent: 'CardContent',
     NativeWinePhoto98: 'NativeWinePhoto98', NativeWineSearch97: 'NativeWineSearch97',
-    NativeWineSave98: 'NativeWineSave98', WinerimSheetLookup: 'WinerimSheetLookup', NativeWinerimFacts140: 'NativeWinerimFacts140',
+    NativeSaveChoice142: 'NativeSaveChoice142', WinerimSheetLookup: 'WinerimSheetLookup', NativeWinerimFacts140: 'NativeWinerimFacts140',
     AiRimMark: 'AiRimMark', MatchrimQuickGuide: 'MatchrimQuickGuide', MobileBottomNav: 'MobileBottomNav',
     DialogPrimitive: dialog, Dialog: dialog,
     window: { addEventListener() {}, removeEventListener() {}, open() { throw new Error('Unexpected external open'); } },
@@ -165,10 +165,10 @@ function assertNativeCard(tree: unknown, rawWine: WinerimWineWithMatch, active: 
   const cards = flatten(tree).filter(n => n.props['data-testid'] === 'native-recommendation-card');
   assert.equal(cards.length, 1, 'actual native WineCard is expanded');
   const card = cards[0], nodes = flatten(card), photo = onlyNode(card, 'NativeWinePhoto98');
-  const summary = onlyNode(card, 'NativeAffinitySummary'), save = onlyNode(card, 'NativeWineSave98');
+  const summary = onlyNode(card, 'NativeAffinitySummary'), save = onlyNode(card, 'NativeSaveChoice142');
   assert.equal(photo.props.src, rawWine.photo); assert.equal(photo.props.name, rawWine.name);
   assert.deepEqual(clean(photo.props.identity), { name: rawWine.name, producer: rawWine.winery, vintage: rawWine.vintage });
-  assert.equal(photo.props.resolveMissing, true); assert.equal(save.props.wine, rawWine);
+  assert.equal(photo.props.resolveMissing, true); assert.deepEqual(clean(save.props.wine), clean({ name: rawWine.name, producer: rawWine.winery, vintage: rawWine.vintage, region: rawWine.region, country: rawWine.country, photo: rawWine.photo }));
   const evidence = buildNativeRecommendation95(rawWine, active);
   assert.deepEqual(clean(summary.props.result), clean(evidence.result));
   assert(nodes.indexOf(photo) < nodes.indexOf(summary)); assert(nodes.indexOf(summary) < nodes.indexOf(save));
@@ -176,7 +176,8 @@ function assertNativeCard(tree: unknown, rawWine: WinerimWineWithMatch, active: 
   assert.equal(lookups.length, evidence.sourceAvailable ? 1 : 0);
   if (evidence.sourceAvailable) {
     assert(nodes.indexOf(summary) < nodes.indexOf(lookups[0]), 'one shared answer precedes the unverified source lookup');
-    assert(nodes.indexOf(lookups[0]) < nodes.indexOf(save));
+    // 144: the save choices sit right under the answer, as in every wine sheet; the source lookup follows.
+    assert(nodes.indexOf(save) < nodes.indexOf(lookups[0]));
     assert.deepEqual(clean(lookups[0].props.identity), { name: rawWine.name, producer: rawWine.winery,
       vintage: rawWine.vintage, region: rawWine.region, country: rawWine.country });
   }
@@ -417,7 +418,7 @@ if (output) { mkdirSync(output, { recursive: true }); writeFileSync(output + '/u
   checksPassed: checks.length, checksTotal: checks.length, checks, realNetworkCalls: 0,
   scope: { execution: 'offline utility, AST and VM checks; no browser or device validation', webBaseline: 'c25b282',
     nativeComponents: ['NativeAppHome', 'NativeHome98', 'WineCard'],
-    mockedNativeLeaves: ['NativeAffinitySummary', 'NativeWinePhoto98', 'NativeWineSearch97', 'WinerimSheetLookup', 'NativeWineSave98'],
+    mockedNativeLeaves: ['NativeAffinitySummary', 'NativeWinePhoto98', 'NativeWineSearch97', 'WinerimSheetLookup', 'NativeSaveChoice142'],
     excluded: 'Image resolution, catalogue search, sheet verification and persistence are not executed.' },
   sourceHashes: Object.fromEntries([...files, nativeHomeFile, 'src/pages/Index.tsx', 'src/pages/UseMatchrim.tsx',
     'src/utils/nativeRecommendation95.ts', 'src/utils/nativeWineDraft98.ts'].map(f => [f,

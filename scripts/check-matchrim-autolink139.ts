@@ -117,7 +117,7 @@ test('The wait names its steps with «Cancelar» visible, and the jargon is gone
   assert.equal(scanner.match(/<ScanWaiting139 steps=\{SCAN_STEPS139\} current=\{waitStep139\} \/>\s*<Button[^>]*onClick=\{cancelScan\}><X[^>]*\/> Cancelar<\/Button>/g)?.length, 2, 'both waits carry «Cancelar»');
   assert(!scanner.includes('Leyendo en este iPhone'));
   assert(!/Lectura parcial: compara la etiqueta|Esta ficha no confirma la cosecha de tu botella/.test(list.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')));
-  assert.match(list, /decision\?\.mode === 'choose' && <p[^>]*>Elige el que coincide con tu botella\.<\/p>/);
+  assert.match(list, /decision\?\.mode === 'choose' && <p[^>]*>Toca el que coincide con tu botella\.<\/p>/);
   assert.match(scanner, /isNative \? isMatchrimFixtureQaEnabled && <details data-testid="native-scan-diagnostics">/, 'megapixels and region counts are QA data on iOS');
   assert.match(scanner, /quality\?\.warnings\.length && \(!isNative \|\| noWineRead139\) \?/, '«Calidad con avisos» only when no wine came out');
   // The native gate (scripts/MatchrimOffline220.swift) drives this screen by these labels.
@@ -131,7 +131,7 @@ test('140: the sheet of a linked bottle is short on iOS and never leaves the app
   const order = ['{photo}', '{!canExplainAffinity && estimate}', '{canExplainAffinity ? affinity', '{returnLabel}', '{facts}', 'aria-label="Corregir identificación"'].map(part => view.indexOf(part));
   assert(order.every((at, index) => at > 0 && (index === 0 || at > order[index - 1])), `photo, verdict, save, data, correct: ${order}`);
   assert.equal(view.match(/aria-label="Corregir identificación"/g)?.length, 1);
-  assert.match(view, /: !canExplainAffinity && <p className="gap139 text-xs leading-5 text-stone-500">\{identityLabel\}<\/p>\}/, 'no grey provenance line under a verdict');
+  assert.match(view, /: !canExplainAffinity && <p className=\{`gap139 text-xs leading-5 text-stone-500 \$\{picking \? 'sr-only' : ''\}`\}>\{identityLabel\}<\/p>\}/, 'no grey provenance line under a verdict');
   // No control of this flow opens web.winerim.com on iOS; the web keeps its links.
   assert.match(read('src/components/wine-import/NativeMasterLookup259.tsx'), /\{link\.wine\.webUrl && !Capacitor\.isNativePlatform\(\) && <Button asChild/);
   assert.match(read('src/components/wine-import/NativeGlobalCatalogue103.tsx'), /\{!Capacitor\.isNativePlatform\(\) && <Button asChild[^>]*>\s*<a href=\{wine\.url\}/);
