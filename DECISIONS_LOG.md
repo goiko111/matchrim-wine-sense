@@ -232,3 +232,4 @@ Food-menu row splitting and detection-box normalization may be replayed determin
 - 2026-11-12: Build 147 (78361cd, archive147-r1) uploaded to TestFlight after the owner answered «Sí, sube la 147» to «¿Subo la 147 a TestFlight?»; HUMAN-AUTHORIZATION quotes the words. Private beta only.
 - 2026-11-12: Build 148 (a0f4a30, archive148-r1) uploaded to TestFlight after the owner answered «Sí, sube la 148» to «¿Subo la 148 a TestFlight? Sí o aún no.»; HUMAN-AUTHORIZATION quotes the words. Private beta only.
 - 2026-11-12: Owner chose «B, ilustraciones» for the taste test images (flat illustrations drawn in the app, over uniform photos or no images). Built in 149, iOS only.
+- 2026-11-12: Build 149 (19f7d1d, archive149-r1) uploaded to TestFlight after the owner answered «Sí, sube la 149» to «¿Subo la 149 a TestFlight?»; HUMAN-AUTHORIZATION quotes the words. Private beta only.
