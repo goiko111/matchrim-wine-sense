@@ -18,10 +18,17 @@ export const saveStoreWine142 = async (userId: string, wine: QuickSaveWine141, p
   // 145: the same wine was saved twice (once «Por probar» from the scan, again «Probado» from Home's thumb). A wine
   // the person already has moves to the new place (and takes the rating) instead of being added again.
   const same = (value: string | null | undefined, other: string | null | undefined) => (value ?? '').trim().toLowerCase() === (other ?? '').trim().toLowerCase();
-  const { data: mine } = await supabase.from('user_wines').select('id,name,producer,vintage').eq('user_id', userId).eq('name', wine.name.slice(0, 200)).limit(20);
+  const { data: mine } = await supabase.from('user_wines').select('id,name,producer,vintage,status,rating').eq('user_id', userId).eq('name', wine.name.slice(0, 200)).limit(20);
   const had = (mine ?? []).find(row => same(row.producer, wine.producer?.slice(0, 160)) && (row.vintage == null || vintage == null || row.vintage === vintage));
   if (had) {
-    const { error } = await supabase.from('user_wines').update({ status: place, ...(rating ? { rating } : {}), ...(place === 'collection' ? { quantity: 1 } : {}) }).eq('id', had.id).eq('user_id', userId);
+    // 146 (owner's decision): a wine can be tasted and at home at once. «Probados» is every wine with a rating and
+    // «En bodega» every wine kept at home, so a bottle at home that is rated keeps its place and takes the rating;
+    // a rated wine brought home goes to the cellar and keeps its rating. «Por probar» never takes a wine back.
+    const change = place === 'wishlist' ? null
+      : place === 'tasted' ? had.status === 'collection' ? (rating ? { rating } : null) : { status: 'tasted' as const, ...(rating ? { rating } : {}) }
+        : { status: 'collection' as const, quantity: 1 };
+    if (!change) return true;
+    const { error } = await supabase.from('user_wines').update(change).eq('id', had.id).eq('user_id', userId);
     return !error;
   }
   const { error } = await supabase.from('user_wines').insert([{ user_id: userId, name: wine.name.slice(0, 200), producer: wine.producer?.slice(0, 160) || null, vintage,

@@ -62,7 +62,9 @@ await test('One number per line on a tight list; no range pills on the photo', (
 
 await test('A wine the person already has moves instead of being saved twice; the scan sheet has the three choices', () => {
   const save = read('src/components/NativeSaveChoice142.tsx');
-  assert.match(save, /if \(had\) \{\s*const \{ error \} = await supabase\.from\('user_wines'\)\.update\(\{ status: place/);
+  assert.match(save, /if \(had\) \{[\s\S]{0,900}supabase\.from\('user_wines'\)\.update\(change\)/);
+  // 146: at home and tasted at once: a bottle at home that is rated keeps its place.
+  assert.match(save, /place === 'tasted' \? had\.status === 'collection' \? \(rating \? \{ rating \} : null\)/);
   assert.match(read('src/components/wine-import/MultiWineLabelScanner.tsx'), /saveChoice=\{saveSingle137 && user \? <NativeSaveChoice142/);
   assert(read('src/components/wine-import/LabelAnalysisView.tsx').includes('data-testid="scan-save-choice145"'));
 });
