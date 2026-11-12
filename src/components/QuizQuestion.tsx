@@ -4,7 +4,8 @@ import { Capacitor } from '@capacitor/core';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Question } from '../data/quizData';
-import { ChevronLeft, Home } from 'lucide-react';
+import { ChevronLeft, Home, Meh, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { QuizArt149 } from '@/components/QuizArt149';
 
 interface QuizQuestionProps {
   question: Question;
@@ -46,23 +47,26 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   if (isNative) {
     return (
       <section className="matchrim-native-quiz-question mx-auto w-full min-w-0 max-w-2xl scroll-mt-[calc(12px+var(--matchrim-safe-top))] px-0 pb-[24px]">
-        <div className="flex min-w-0 flex-wrap items-center justify-between gap-[8px] text-sm text-slate-500">
+        {/* 149: the test in the visual language of the rest of the app: a full-width progress line, the food as a flat
+            illustration on its own colour (QuizArt149, the owner's choice), and three large answers with a face each. */}
+        <div className="flex min-w-0 flex-wrap items-center justify-between gap-[8px] text-sm text-stone-600">
           <span>{`Pregunta ${currentQuestionIndex + 1} de ${totalQuestions}`}</span>
-          <progress aria-label="Progreso del test" value={currentQuestionIndex + 1} max={totalQuestions} className="h-2 w-[96px] max-w-full accent-red-800" />
+          <Button type="button" onClick={onBackToStart} variant="ghost" size="icon" className="h-[44px] min-h-[44px] w-[44px] min-w-[44px] shrink-0 p-0" aria-label="Salir del test" title="Salir del test"><Home className="h-5 w-5" /></Button>
         </div>
-        <img src={question.image} alt="" aria-hidden="true" className="matchrim-native-quiz-image mt-4 aspect-[3/2] max-h-64 w-full rounded-lg bg-white object-contain" />
-        <h1 ref={title} tabIndex={-1} className="mt-5 text-xl font-semibold leading-tight text-slate-950 outline-none">{question.text}</h1>
-        <RadioGroup value={currentAnswer} onValueChange={handleAnswerChange} className="mt-4 gap-2" aria-label={question.text}>
-          {([['si', 'Me gusta'], ['indiferente', 'Me da igual'], ['no', 'No me gusta']] as const).map(([value, label]) => (
-            <label key={value} className={`flex min-h-14 items-center gap-3 rounded-md border px-4 py-3 ${currentAnswer === value ? 'border-red-800 bg-red-50' : 'border-stone-200 bg-white'}`}>
-              <RadioGroupItem value={value} id={`quiz-${question.id}-${value}`} aria-label={label} /><span className="font-medium">{label}</span>
+        <progress aria-label="Progreso del test" value={currentQuestionIndex + 1} max={totalQuestions} className="block h-1.5 w-full overflow-hidden rounded-full accent-red-900 [&::-webkit-progress-bar]:bg-stone-200 [&::-webkit-progress-value]:bg-red-900" />
+        <QuizArt149 id={question.id} className="matchrim-native-quiz-image mx-auto mt-4 aspect-square max-h-56 w-auto max-w-full rounded-3xl" />
+        <h1 ref={title} tabIndex={-1} className="mt-5 text-center text-2xl font-bold leading-tight text-stone-950 outline-none">{question.text}</h1>
+        <RadioGroup value={currentAnswer} onValueChange={handleAnswerChange} className="mt-5 grid grid-cols-3 gap-2 [html.matchrim-accessibility-text_&]:grid-cols-1" aria-label={question.text}>
+          {([['si', 'Me gusta', ThumbsUp], ['indiferente', 'Me da igual', Meh], ['no', 'No me gusta', ThumbsDown]] as const).map(([value, label, Icon]) => (
+            <label key={value} className={`relative flex min-h-[5.5rem] flex-col items-center justify-center gap-2 rounded-2xl border px-2 py-3 text-center ${currentAnswer === value ? 'border-red-900 bg-red-900 text-white' : 'border-stone-200 bg-white text-stone-900'}`}>
+              <RadioGroupItem value={value} id={`quiz-${question.id}-${value}`} aria-label={label} className="absolute inset-0 h-full w-full rounded-2xl border-0 opacity-0" />
+              <Icon className="h-6 w-6" aria-hidden="true" /><span className="text-sm font-semibold leading-4">{label}</span>
             </label>
           ))}
         </RadioGroup>
-        <div className="mt-5 grid min-w-0 grid-cols-[44px_minmax(0,1fr)_44px] gap-[8px]">
-          <Button type="button" onClick={onPrevious} disabled={isFirst} variant="outline" size="icon" className="col-start-1 row-start-1 h-[44px] min-h-[44px] w-[44px] min-w-[44px] p-0" aria-label="Anterior" title="Anterior"><ChevronLeft className="h-4 w-4" /></Button>
-          <Button type="button" onClick={onContinue} disabled={!currentAnswer} className="col-span-3 row-start-2 h-auto min-h-[44px] w-full min-w-0 whitespace-normal bg-red-900 px-[12px] py-[8px]">{isLast ? 'Ver mi perfil' : 'Siguiente'}</Button>
-          <Button type="button" onClick={onBackToStart} variant="ghost" size="icon" className="col-start-3 row-start-1 h-[44px] min-h-[44px] w-[44px] min-w-[44px] shrink-0 p-0" aria-label="Salir del test" title="Salir del test"><Home className="h-5 w-5" /></Button>
+        <div className="mt-5 grid min-w-0 grid-cols-[48px_minmax(0,1fr)] gap-[8px]">
+          <Button type="button" onClick={onPrevious} disabled={isFirst} variant="outline" size="icon" className="h-[48px] min-h-[48px] w-[48px] min-w-[48px] rounded-full p-0" aria-label="Anterior" title="Anterior"><ChevronLeft className="h-4 w-4" /></Button>
+          <Button type="button" onClick={onContinue} disabled={!currentAnswer} className="h-auto min-h-[48px] w-full min-w-0 whitespace-normal rounded-full bg-red-900 px-[12px] py-[8px] text-base">{isLast ? 'Ver mi perfil' : 'Siguiente'}</Button>
         </div>
       </section>
     );
