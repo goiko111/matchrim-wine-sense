@@ -22,7 +22,7 @@ test('One way in: the phone reads first and tells a bottle from a wine list', ()
 
 test('Saved from the bottle’s sheet, the scan closes', () => {
   const scanner = read('src/components/wine-import/MultiWineLabelScanner.tsx');
-  assert.match(scanner, /closeAfterSave146\.current = true; void confirmBatch\(\);/);
+  assert.match(scanner, /closeAfterSave146\.current = true; setClosing148\(true\); void confirmBatch\(\)/); // 148: with a «Guardando…» state instead of a flash
   assert.match(scanner, /if \(closeAfterSave146\.current\) \{ closeAfterSave146\.current = false; toast\.success\('Vino guardado en Por probar'\); resetAfterSave146\.current\?\.\(\); return; \}/);
 });
 
