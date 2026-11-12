@@ -370,9 +370,10 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
     <p role="status" className="sr-only">{savingDraft ? 'Guardando borrador...' : 'Borrador guardado en este dispositivo.'}</p>
     {storageError && <p role="status" className="my-3 text-sm text-amber-800">{storageError}</p>}
     <Tabs value={tab} onValueChange={value => { setTab(value as Tab); setLinks([]); setUrl(''); setError(''); }}>
-    <TabsList aria-label="Cartas y combinaciones" className="grid h-auto grid-cols-3 rounded-none border-b border-slate-200 bg-transparent p-0">
+    <TabsList aria-label="Cartas y combinaciones" className={native ? 'grid h-auto grid-cols-3 gap-1 rounded-full bg-stone-200/70 p-1' : 'grid h-auto grid-cols-3 rounded-none border-b border-slate-200 bg-transparent p-0'}>
       {(Object.keys(labels) as Tab[]).map(id => <TabsTrigger key={id} value={id} disabled={Boolean(busy)}
-        className="min-h-[48px] min-w-0 flex-col whitespace-normal rounded-none border-b-2 border-transparent px-[4px] py-[12px] text-sm font-semibold text-slate-500 transition-none data-[state=active]:border-red-900 data-[state=active]:bg-transparent data-[state=active]:text-red-900 data-[state=active]:shadow-none"><span className="block min-w-0 max-w-full [overflow-wrap:anywhere]">{tabTitles137[id]}</span>{id !== 'pairs' && <span className="block min-w-0 max-w-full text-xs font-normal [overflow-wrap:anywhere]">{id === 'food' ? `${foods.length} ${foods.length === 1 ? 'plato' : 'platos'}` : `${wines.length} ${wines.length === 1 ? 'vino' : 'vinos'}`}</span>}</TabsTrigger>)}
+        className={native ? 'min-h-[44px] min-w-0 flex-col whitespace-normal rounded-full px-[4px] py-[8px] text-sm font-semibold text-stone-600 transition-none data-[state=active]:bg-white data-[state=active]:text-stone-950 data-[state=active]:shadow-sm'
+          : 'min-h-[48px] min-w-0 flex-col whitespace-normal rounded-none border-b-2 border-transparent px-[4px] py-[12px] text-sm font-semibold text-slate-500 transition-none data-[state=active]:border-red-900 data-[state=active]:bg-transparent data-[state=active]:text-red-900 data-[state=active]:shadow-none'}><span className="block min-w-0 max-w-full [overflow-wrap:anywhere]">{tabTitles137[id]}</span>{id !== 'pairs' && <span className="block min-w-0 max-w-full text-xs font-normal [overflow-wrap:anywhere]">{id === 'food' ? `${foods.length} ${foods.length === 1 ? 'plato' : 'platos'}` : `${wines.length} ${wines.length === 1 ? 'vino' : 'vinos'}`}</span>}</TabsTrigger>)}
     </TabsList>
     {error && <p role="alert" className="my-4 whitespace-pre-line break-words border-l-2 border-red-700 pl-3 text-sm text-red-800">{error}</p>}
     {busy && <div role="status" aria-live="polite" className="my-4 flex flex-wrap items-center gap-3 border-y border-slate-200 py-3">
@@ -396,7 +397,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
           {state.pages.some(page => page.enabled && page.status !== 'read' && state.documents.find(doc => doc.id === page.documentId)?.kind === tab) && <Button disabled={Boolean(busy)} className={`${actionClass} bg-slate-950`} onClick={() => void analyze(tab)}><ScanLine className="h-4 w-4 shrink-0" />Leer la carta</Button>}</div>}
         {!user && <Link to="/auth?redirect=/restaurante" className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-red-900 underline">Entra con tu cuenta para leer la carta</Link>}
         {!state.documents.some(doc => doc.kind === tab) && <p className="py-8 text-sm text-slate-500">{tab === 'food' ? 'Aún no has añadido la carta de platos.' : 'Aún no has añadido la carta de vinos.'}</p>}
-        <ul className="mt-3 divide-y divide-slate-200 border-y border-slate-200">{state.documents.filter(doc => doc.kind === tab).map(doc => <li key={doc.id} className="py-3">
+        <ul className={native ? 'mt-3 space-y-2 empty:hidden' : 'mt-3 divide-y divide-slate-200 border-y border-slate-200'}>{state.documents.filter(doc => doc.kind === tab).map(doc => <li key={doc.id} className={native ? 'rounded-2xl border border-stone-200 bg-white px-4 py-3' : 'py-3'}>
           <div className="flex items-start justify-between gap-2"><div className="min-w-0"><h3 className="break-words text-sm font-semibold">{doc.name}</h3><p className="text-xs text-slate-500">{doc.pageCount} {doc.pageCount === 1 ? 'página' : 'páginas'}</p></div>
             <Button size="icon" variant="ghost" className={iconClass} title="Eliminar archivo" aria-label={`Eliminar ${doc.name}`} disabled={Boolean(busy)} onClick={() => mutate(current => removeRestaurantDocument91(current, doc.id))}><Trash2 className="h-4 w-4" /></Button></div>
           <details className="mt-2"><summary className="flex min-h-11 cursor-pointer items-center gap-2 text-sm"><ChevronDown className="h-4 w-4" />Ver páginas</summary>
@@ -416,7 +417,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
           onClick={() => { const toPairs = tab === 'wine'; setTab(toPairs ? 'pairs' : 'wine'); setLinks([]); setUrl(''); setError(''); window.scrollTo({ top: 0 });
             if (toPairs && foods.length && wines.length && !state.pairs.length) void compare(); }}>
           {tab === 'food' ? (wines.length ? 'Siguiente: revisar los vinos' : 'Siguiente: añadir la carta de vinos') : foods.length ? 'Siguiente: ver los maridajes' : 'Ver maridajes'}<ArrowRight className="h-4 w-4 shrink-0" /></Button>}
-        <ul className="divide-y divide-slate-200">{(tab === 'food' ? foods : wines).map(row => <li key={row.id} className="py-4">
+        <ul className={native ? 'mt-3 space-y-2' : 'divide-y divide-slate-200'}>{(tab === 'food' ? foods : wines).map(row => <li key={row.id} className={native ? 'rounded-2xl border border-stone-200 bg-white p-4' : 'py-4'}>
           <div className="flex items-start justify-between gap-2"><div className="min-w-0"><h3 className="break-words font-semibold">{row.name}</h3>
             <p className="mt-1 text-sm text-slate-600">{[row.price != null ? (native && row.currency ? formatScanPrice(row.price, row.currency) : null) ?? `${row.price} ${row.currency || ''}`.trim() : null, row.service === 'glass' ? 'Copa' : row.service === 'bottle' ? 'Botella' : null].filter(Boolean).join(' · ') || 'Precio no leído'}</p>
             {(row.manual || row.reviewed) && <p className="mt-1 text-xs text-slate-500">{row.manual ? 'Vino añadido por ti · puede no estar en la carta' : 'Corregido por ti'}</p>}</div>
@@ -437,7 +438,7 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
         </li>)}</ul>
       </> : <>
         <Button className={`${actionClass} w-full bg-red-900 text-white hover:bg-red-950`} disabled={Boolean(busy) || !foods.length || !wines.length} onClick={() => void compare()}><ChefHat className="h-4 w-4 shrink-0" />{selectedFood && !selectedWine ? 'Elegir vinos para este plato' : selectedWine && !selectedFood ? 'Elegir platos para este vino' : 'Ver qué vino va con cada plato'}</Button>
-        <details className="mt-3 border-y border-slate-200" open={Boolean(selectedFood || selectedWine || budget || service !== 'any')} data-testid="restaurant-filters137">
+        <details className={native ? 'mt-3 rounded-2xl border border-stone-200 bg-white px-4' : 'mt-3 border-y border-slate-200'} open={Boolean(selectedFood || selectedWine || budget || service !== 'any')} data-testid="restaurant-filters137">
           <summary className="flex min-h-11 cursor-pointer items-center text-sm font-medium text-slate-700">Afinar: un plato concreto, precio máximo, copa o botella</summary>
           <div className="pb-4">
         <div className="grid gap-4 sm:grid-cols-2"><label className="min-w-0 text-sm font-semibold">Plato<select aria-label="Plato" value={selectedFood} disabled={Boolean(busy)} onChange={event => { setSelectedFood(event.target.value); invalidateSelection(); }} className="mt-1 min-h-11 w-full min-w-0 rounded-md border border-slate-300 bg-white p-2 text-base"><option value="">Todos los platos</option>{foods.map(row => <option key={row.id} value={row.id}>{row.name}</option>)}</select></label>
@@ -452,12 +453,12 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
         {(restaurantCoverage91(state, 'food').partial || restaurantCoverage91(state, 'wine').partial) && <p className="mt-4 border-l-2 border-amber-500 pl-3 text-sm text-amber-900">Las cartas tienen páginas pendientes o lecturas parciales. Las combinaciones solo cubren lo leído, no toda la oferta.</p>}
         <p className="mt-4 text-sm text-slate-500">{native ? 'Maridajes orientativos hechos con IA. Bajo cada vino te decimos además si encaja con tus gustos, cuando tenemos su ficha. Confirma alergias, precio y disponibilidad con el restaurante.' : 'Maridajes orientativos hechos con IA: dicen qué va bien con el plato, no si el vino te gustará a ti (para eso, toca «¿Me gustará este vino?»). Confirma alergias, precio y disponibilidad con el restaurante.'}</p>
         {state.pairWarnings.map((warning, index) => <p key={index} className="mt-2 text-sm text-amber-800">{warning}</p>)}
-        <ol ref={pairsList} tabIndex={-1} aria-label="Combinaciones" className="mt-5 divide-y divide-slate-200 border-t border-slate-200 focus:outline-none">{orderedPairs138.map((pair, index) => {
+        <ol ref={pairsList} tabIndex={-1} aria-label="Combinaciones" className={native ? 'mt-5 space-y-3 focus:outline-none' : 'mt-5 divide-y divide-slate-200 border-t border-slate-200 focus:outline-none'}>{orderedPairs138.map((pair, index) => {
           const food = foods.find(row => row.id === pair.foodId), wine = wines.find(row => row.id === pair.wineId);
           if (!food || !wine) return null;
-          return <li key={`${pair.foodId}-${pair.wineId}`} className="py-5"><p className="text-xs font-semibold text-red-900">{index + 1} · {pair.band === 'strong' ? 'Muy buena pareja' : pair.band === 'possible' ? 'Puede funcionar' : 'Faltan datos para valorarlo'}</p><h2 className="mt-2 break-words text-lg font-semibold">{food.name}</h2><p className="mt-1 break-words font-medium text-slate-700">{wine.name}{wine.vintage ? ` · ${wine.vintage}` : ''}</p>
+          return <li key={`${pair.foodId}-${pair.wineId}`} className={native ? 'rounded-2xl border border-stone-200 bg-white p-4' : 'py-5'}><p className={native ? `inline-block rounded-full px-2.5 py-1 text-xs font-semibold ${pair.band === 'strong' ? 'bg-emerald-50 text-emerald-900' : 'bg-stone-100 text-stone-700'}` : 'text-xs font-semibold text-red-900'}>{index + 1} · {pair.band === 'strong' ? 'Muy buena pareja' : pair.band === 'possible' ? 'Puede funcionar' : 'Faltan datos para valorarlo'}</p><h2 className="mt-2 break-words text-lg font-semibold">{food.name}</h2><p className="mt-1 break-words font-medium text-slate-700">{wine.name}{wine.vintage ? ` · ${wine.vintage}` : ''}</p>
             {native && (() => { const mine = personal138[wine.id];
-              return <p className={`mt-2 text-sm ${mine && mine !== 'loading' && mine.state === 'ready' && mine.score >= 65 ? 'font-semibold text-emerald-800' : 'text-slate-600'}`} data-testid="restaurant-personal138">
+              return <p className={`mt-3 rounded-xl px-3 py-2 text-sm ${mine && mine !== 'loading' && mine.state === 'ready' && mine.score >= 65 ? 'bg-emerald-50 font-semibold text-emerald-900' : 'bg-stone-100 text-stone-700'}`} data-testid="restaurant-personal138">
                 {!mine ? 'Para ti: toca «¿Me gustará este vino?» para saberlo.' : mine === 'loading' ? 'Para ti: mirando si encaja con tus gustos…'
                   : mine.state === 'ready' ? `Para ti: ${mine.title.toLowerCase()} · ≈${mine.score}/100${mine.estimated ? ' (estimación)' : ''}`
                     : mine.reason === 'profile' ? 'Para ti: haz el test de gustos y te diremos si te gustará.'
@@ -488,10 +489,11 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
 const Restaurant = () => {
   const { user, loading } = useAuth();
   const native = Capacitor.isNativePlatform();
-  return <div className="matchrim-restaurant91 matchrim-app-shell min-h-screen bg-white [overflow-wrap:anywhere] [&_svg]:!h-[20px] [&_svg]:!w-[20px]">
+  return <div className={`matchrim-restaurant91 matchrim-app-shell min-h-screen ${native ? 'bg-stone-50' : 'bg-white'} [overflow-wrap:anywhere] [&_svg]:!h-[20px] [&_svg]:!w-[20px]`}>
     <main className={`mx-auto w-full max-w-3xl pl-[calc(16px+var(--matchrim-safe-left))] pr-[calc(16px+var(--matchrim-safe-right))] pb-[calc(var(--matchrim-bottom-nav-height,6rem)+2rem)] ${native ? 'pt-[calc(var(--matchrim-safe-top)+1rem)]' : 'pt-6'}`}>
       <Link to="/escanear" aria-label="Volver al escáner" className="inline-flex min-h-11 items-center gap-2 text-sm text-slate-600"><ArrowLeft className="h-4 w-4" />Escanear</Link>
-      <header className="mb-5 mt-2"><h1 className={`${native ? 'text-xl' : 'text-2xl'} font-bold text-slate-950`}>En el restaurante</h1></header>
+      <header className="mb-5 mt-2"><h1 className={`${native ? 'text-2xl' : 'text-2xl'} font-bold text-slate-950`}>En el restaurante</h1>
+        {native && <p className="mt-1 text-sm leading-5 text-stone-600">Añade la carta de platos y la de vinos y te decimos qué pedir.</p>}</header>
       <ScanPrivacyGate>{loading ? <p role="status">Cargando sesión...</p> : <RestaurantSession key={user?.id ?? 'anonymous'} owner={user?.id ?? 'anonymous'} />}</ScanPrivacyGate>
     </main><MobileBottomNav />
   </div>;

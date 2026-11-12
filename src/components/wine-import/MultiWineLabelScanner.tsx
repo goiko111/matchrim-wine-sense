@@ -190,6 +190,7 @@ const userFacingScanError = (error: unknown) => {
 const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScannerProps) => {
   const navigate = useNavigate();
   const closeAfterSave146 = useRef(false), resetAfterSave146 = useRef<(() => void) | null>(null);
+  const [closing148, setClosing148] = useState(false);
   const { user } = useAuth();
   const isNative = Capacitor.isNativePlatform();
   // 146: one camera: the phone's own reading is the default (it is what tells a bottle from a wine list).
@@ -623,6 +624,15 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         trackAppEvent('multi_wine_label_scan_completed', { userId: user?.id,
           metadata: { regions: 1, reading_mode: 'device-single', recognized: 0, edge_requests: 0, detection_calls: 0 } });
         return;
+      }
+      // 148: in «Varias botellas» too, a photographed wine list goes to the list reader: the phone reads the photo first
+      // (on the device, about a second) and nothing is sent when it turns out to be a list.
+      if (isNative && !isMatchrimFixtureQaEnabled && localOCRAvailable106()) {
+        try {
+          const peek = await readLocalWineText106(prepared.dataUrl, controller.signal);
+          if (abortRef.current !== controller || controller.signal.aborted) return;
+          if (looksLikeWineList144(peek.lines)) { handMenuPhoto144(file); setPhase('idle'); setPreview(null); navigate('/escanear/carta-vinos'); return; }
+        } catch { if (controller.signal.aborted) return; /* The phone could not read it: the shelf is scanned as before. */ }
       }
       setPhase('detecting');
       const detectImage = async (image: string, tileId: string) => {
@@ -1151,6 +1161,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const picking144 = isNative && Boolean(selectedCandidate && isPendingLocalIdentity109(selectedCandidate));
   const autoLinkedNow140 = Boolean(selectedCandidate && autoLinked139?.linked === selectedCandidate);
   const short140 = linkedFromList140 && Boolean(nativeConsumer?.canExplainAffinity);
+  // 148: with one bottle picked from the candidates (or linked by its label), closing its sheet ends the scan:
+  // «Lectura terminada · Foto · Vinos (1) · Comparar» said nothing the sheet had not said. A wine identified by hand
+  // (the correction form) keeps the page, as does anything half done (a save in course, a batch already saved).
+  const endsOnClose148 = isNative && regions.length === 1 && phase === 'ready' && short140 && !saving && !confirmed && !closeAfterSave146.current;
   const facts140 = isNative && selectedCandidate && !isPendingLocalIdentity109(selectedCandidate) && selectedCandidate.name
     ? { name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage } : null;
   const candidateDiagnostics = selectedCandidate && selectedRegion && <>
@@ -1301,7 +1315,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   </>;
 
   return (
-    <div className="space-y-5">
+    <div className={closing148 ? 'space-y-5 [&>*:not([data-closing148])]:hidden' : 'space-y-5'}>
+      {/* 148: while a wine saved from its sheet is being stored, the old result page flashed for half a second. */}
+      {closing148 && <p data-closing148 role="status" className="flex min-h-24 items-center justify-center gap-2 text-sm text-stone-600"><Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />Guardando…</p>}
       {isMatchrimFixtureQaEnabled && (
         <div role="status" className="rounded-lg border-l-4 border-amber-500 bg-amber-50 px-3 py-2 text-sm text-amber-950">
           QA local: respuestas deterministas. Este build valida el flujo, no la precisión del OCR.
@@ -1649,7 +1665,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         </>
       )}
 
-      <Drawer open={Boolean(selectedRegion)} onOpenChange={(open) => !open && setSelectedRegionId(null)} repositionInputs={!isNative} shouldScaleBackground={!isNative}>
+      <Drawer open={Boolean(selectedRegion)} onOpenChange={(open) => { if (open) return; setSelectedRegionId(null); if (endsOnClose148) resetScan(); }} repositionInputs={!isNative} shouldScaleBackground={!isNative}>
         <DrawerContent className="matchrim-scan-region-sheet w-full min-w-0 max-w-[100vw] max-h-[calc(100dvh-var(--matchrim-safe-top))] border-stone-200 bg-stone-50 pb-[var(--matchrim-safe-bottom)]">
           {selectedRegion && (
             <div ref={isNative ? regionEditorLayout : undefined} role={isNative ? 'region' : undefined} aria-label={isNative ? `Panel desplazable de la región ${selectedRegion.index}` : undefined} tabIndex={isNative ? 0 : undefined} className="matchrim-scan-region-layout mx-auto flex w-full min-w-0 max-w-2xl min-h-0 flex-1 flex-col">
@@ -1696,7 +1712,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   } : undefined}
                   saveChoice={saveSingle137 && user ? <NativeSaveChoice142 key={selectedCandidate.id}
                     wine={{ name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage, region: selectedCandidate.region, country: selectedCandidate.country }}
-                    onWishlist={() => { setNativeResultView('wines'); setSelectedRegionId(null); closeAfterSave146.current = true; void confirmBatch(); }}
+                    onWishlist={() => { setNativeResultView('wines'); setSelectedRegionId(null); closeAfterSave146.current = true; setClosing148(true); void confirmBatch().finally(() => setClosing148(false)); }}
                     onSaved={place => { if (place === 'tasted') markScannedSaved144(user.id, { name: selectedCandidate.name, winery: selectedCandidate.producer ?? null, vintage: selectedCandidate.vintage == null ? null : String(selectedCandidate.vintage) });
                       toast.success(place === 'tasted' ? 'Guardado en Probados' : 'Guardado en tu bodega'); resetScan(); }} /> : undefined}
                   returnLabel={saveSingle137 ? 'Guardar en Por probar' : confirmed ? 'Volver a la lista' : 'Volver a la lista para guardar'}

@@ -1,4 +1,5 @@
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { diskGet145, diskSet145 } from '@/utils/storeDiskCache145';
 import { Capacitor } from '@capacitor/core';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useNavigate } from 'react-router-dom';
@@ -42,6 +43,7 @@ type HomeLearningInfo = {
   confidence: number;
 };
 
+const HOME_DISK148 = 'matchrim.home_wines.v1';
 interface NativeAppHomeProps {
   onboardingReady?: boolean;
   hasSavedWines?: boolean;
@@ -98,7 +100,16 @@ const NativeAppHome = ({
   const [recentScans, setRecentScans] = useState<ScanHistoryItem[]>(() => getScanHistory(ownerId).slice(0, 3));
   const [selection, setSelection] = useState<{ wine: WinerimWineWithMatch; ownerId: string | null; open?: boolean; trigger?: HTMLButtonElement } | null>(null);
   useLayoutEffect(() => { setSelection(null); }, [ownerId, activeProfile, recommendations]);
-  const selectedWine = selection?.ownerId === ownerId && selection.open !== false && recommendations.includes(selection.wine)
+  // 148: Home showed grey boxes for some seconds on every start while the recommendations loaded. What was last shown
+  // to this person is kept on the phone for a week and shown at once; the fresh answer replaces it when it arrives.
+  const homeKey148 = ownerId ?? 'anonymous';
+  const kept148 = useMemo(() => isNative ? diskGet145<{ wines: WinerimWineWithMatch[]; profile: typeof activeProfile }>(HOME_DISK148, homeKey148) : null, [isNative, homeKey148]);
+  const waiting148 = loadingCode || loadingRecommendations;
+  useEffect(() => { if (isNative && !waiting148 && recommendations.length > 0 && activeProfile) diskSet145(HOME_DISK148, homeKey148, { wines: recommendations.slice(0, 12), profile: activeProfile }, 3); },
+    [isNative, waiting148, recommendations, activeProfile, homeKey148]);
+  const fromDisk148 = isNative && waiting148 && recommendations.length === 0 && Array.isArray(kept148?.wines) && kept148!.wines.length > 0 && Boolean(kept148!.profile);
+  const shownWines148 = fromDisk148 ? kept148!.wines : recommendations, shownProfile148 = fromDisk148 ? kept148!.profile : activeProfile;
+  const selectedWine = selection?.ownerId === ownerId && selection.open !== false && shownWines148.includes(selection.wine)
     ? selection.wine : null;
 
   useLayoutEffect(() => {
@@ -116,10 +127,10 @@ const NativeAppHome = ({
     navigate(user ? '/profile' : buildAuthRedirectPath('/profile'));
   };
 
-  if (isNative) return <NativeHome98 key={ownerId ?? 'anonymous'} ownerId={ownerId} hasProfile={hasCode}
+  if (isNative) return <NativeHome98 key={ownerId ?? 'anonymous'} ownerId={ownerId} hasProfile={hasCode || fromDisk148}
     readError={nativeHomeReadError} onRetry={onRetryNativeHome}
-    loading={loadingCode || loadingRecommendations} unavailable={recommendationsUnavailable}
-    exhausted={recommendationsExhausted} recommendations={recommendations} profile={activeProfile}
+    loading={waiting148 && !fromDisk148} unavailable={recommendationsUnavailable}
+    exhausted={recommendationsExhausted} recommendations={shownWines148} profile={shownProfile148}
     recent={recentScans} onSelect={(wine, trigger) => setSelection({ wine, ownerId, open: true, trigger })}
     detail={<DialogPrimitive.Root open={Boolean(selectedWine)} onOpenChange={open => { if (!open) setSelection(previous => previous ? { ...previous, open: false } : null); }}>
       <DialogPrimitive.Portal><DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/40" />
@@ -132,7 +143,7 @@ const NativeAppHome = ({
           </div>
           <div className="min-h-0 overflow-y-auto px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))]">
             <DialogPrimitive.Description id="home-wine98-description" className="sr-only">La botella, su ficha y cómo encaja con tus gustos.</DialogPrimitive.Description>
-            {selectedWine && <WineCard wine={selectedWine} index={0} profile={activeProfile} />}
+            {selectedWine && <WineCard wine={selectedWine} index={0} profile={shownProfile148} />}
           </div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>

@@ -113,6 +113,8 @@ function mount(file: string, source: string, native: boolean) {
     useLayoutEffect: (effect: () => void, next: unknown[]) => { const { slots } = hooks, i = hooks.cursor++;
       const old = slots[i] as unknown[] | undefined;
       if (!old || old.length !== next.length || old.some((v, n) => !Object.is(v, next[n]))) { slots[i] = next; effects.push(effect); } },
+    // 148: Home keeps what it last showed on the phone; nothing is kept in this render, so the fresh list is what shows.
+    useMemo: (make: () => unknown) => make(), diskGet145: () => null, diskSet145: () => {},
     Capacitor: { isNativePlatform: () => native }, useNavigate: () => () => {}, useAuth: () => ({ user: owner ? { id: owner } : null }),
     getScanHistory: () => [], SCAN_HISTORY_UPDATED_EVENT: 'history', heroWine: 'hero.jpg',
     buildAuthRedirectPath: (v: string) => v, buildNativeRecommendation95, buildAffinityInsights, createNativeWineDraft98,
