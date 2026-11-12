@@ -234,3 +234,4 @@ Food-menu row splitting and detection-box normalization may be replayed determin
 - 2026-11-12: Owner chose «B, ilustraciones» for the taste test images (flat illustrations drawn in the app, over uniform photos or no images). Built in 149, iOS only.
 - 2026-11-12: Build 149 (19f7d1d, archive149-r1) uploaded to TestFlight after the owner answered «Sí, sube la 149» to «¿Subo la 149 a TestFlight?»; HUMAN-AUTHORIZATION quotes the words. Private beta only.
 - 2026-11-12: 150 gives the iOS screens visual layers after a tester said everything looked at the same level; score tags use the verdict cuts (80/65/45). A label read poorly upright is read turned; a normal photo is still read once.
+- 2026-11-12: Build 150 uploaded to TestFlight with the owner's explicit yes.

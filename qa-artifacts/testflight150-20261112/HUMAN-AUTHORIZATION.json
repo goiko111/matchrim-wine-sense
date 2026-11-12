@@ -1,0 +1,20 @@
+{
+  "build": 150,
+  "sourceCommit": "9dfb4a40a891a217ed4bbbf0a8d138719af5910c",
+  "privateBetaOnly": true,
+  "humanExplicitUpload": true,
+  "knownLimitationsAccepted": true,
+  "exactHumanReply": "Si",
+  "questionAnswered": "¿Subo la 150 a TestFlight?",
+  "humanRequestDate": "2026-11-12",
+  "acceptanceBasis": "After candidate150-r1 passed prepare, compile, native QA (r177-r180, first run), the simulator E2E battery (85/85), the check sweep and the signed archive150-r1, the owner was shown the before/after screens, told what was unverified, asked whether to upload 150 to TestFlight, and replied with the exact word quoted.",
+  "productChangeFrom149": "Visual relief on iOS (warm page, lifted cards, four-level score tags, bottles drawn in the wine's colour where there is no photo, one filled action per screen, scan mode switch, candidate sheet that shows only the wait while searching) and labels on their side read turned a quarter either way.",
+  "limits": ["No web/main/backend publication", "No additional paid calls or budget", "No claim that upload receipt proves installability", "Internal/private TestFlight only; no external review submission"],
+  "knownLimitations": [
+    "Not exercised on a real iPhone; simulator QA only",
+    "The lying bottle was not run end to end against the real store (simulator store is emulated)",
+    "Wine sheet, wine list, Profile, aiRIM and restaurant only get the new page colour",
+    "Saved wines have no type: their drawn bottle is grey until the store answers",
+    "check-matchrim-menu88 could not read an evidence file in ~/Documents (ETIMEDOUT), unrelated to the change"
+  ]
+}
