@@ -9,7 +9,7 @@ import { assertOwnLeases, runnerOwner } from './matchrim-runner-owner.mjs';
 
 const repo = process.cwd(), prep = JSON.parse(fs.readFileSync(path.resolve(process.argv[2], 'preparation.json')));
 const out = path.resolve(process.argv[3]), developer = '/Applications/Xcode-26.0.1.app/Contents/Developer';
-assert(path.dirname(out) === path.join(repo, 'qa-artifacts/native218-20261025') && /^compile(?:110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126|127|128|129|130|131|132|133|134|135|136|137|138|139|140|141|142|143|144|145|146|147|148|149)-r\d+$/.test(path.basename(out)) && !fs.existsSync(out));
+assert(path.dirname(out) === path.join(repo, 'qa-artifacts/native218-20261025') && /^compile(?:110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126|127|128|129|130|131|132|133|134|135|136|137|138|139|140|141|142|143|144|145|146|147|148|149|150)-r\d+$/.test(path.basename(out)) && !fs.existsSync(out));
 const sha = value => createHash('sha256').update(value).digest('hex'), owner = runnerOwner();
 const guard = () => {
   const leases = JSON.parse(fs.readFileSync('/Users/GOIKO/Library/Application Support/Winerim Automation/parallel_20261017/leases.json')).leases;
@@ -17,7 +17,7 @@ const guard = () => {
   const disk = fs.statfsSync(repo); assert(Number(disk.bavail) * Number(disk.bsize) >= 5 * 1024 ** 3, 'LOW_DISK_HOLD');
 };
 const verify = app => {
-  assert(prep.passed && [110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149].includes(prep.build) && !prep.sourceDirty && prep.typecheck === 'PASS');
+  assert(prep.passed && [110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150].includes(prep.build) && !prep.sourceDirty && prep.typecheck === 'PASS');
   for (const [file, expected] of Object.entries(prep.sourceFingerprints)) assert.equal(sha(fs.readFileSync(path.join(repo, file))), expected, file);
   if (app) {
     for (const [file, expected] of Object.entries(prep.webResources)) assert.equal(sha(fs.readFileSync(path.join(app, 'public', file))), expected, file);
