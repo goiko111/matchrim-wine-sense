@@ -172,8 +172,16 @@ export const createGlobalCatalogue103 = (fetcher: typeof fetch = fetch) => {
           const malformed = append(first.data.results);
           if (malformed || (first.data.count <= 80 && first.data.count > rows.length && first.data.results.length !== 20)) return finish('incomplete');
           if (first.data.count > rows.length && first.data.count <= 80) {
-            for (let number = 2; number <= Math.ceil(first.data.count / 20); number++) {
-              const next = envelope.safeParse(await read(`${root}?${new URLSearchParams({ page: String(number), text: query.trim(), store: '1' })}`));
+            // 145: the further pages are asked together (each takes about four seconds at Winerim; one after
+            // another, three of them ran into the time limit and the search came back «incomplete»). They are
+            // checked and added in page order, exactly as before.
+            const numbers = Array.from({ length: Math.ceil(first.data.count / 20) - 1 }, (_, index) => index + 2);
+            const pages = await Promise.allSettled(numbers.map(number => read(`${root}?${new URLSearchParams({ page: String(number), text: query.trim(), store: '1' })}`)));
+            for (const [index, number] of numbers.entries()) {
+              const settled = pages[index];
+              // A page that could not be read fails the whole search, as when they came one by one (a damaged earlier page still ends it first).
+              if (settled.status === 'rejected') throw settled.reason;
+              const next = envelope.safeParse(settled.value);
               const expected = Math.min(20, first.data.count - (number - 1) * 20);
               if (!next.success || next.data.count !== first.data.count || next.data.page !== number
                 || next.data.results.length !== expected) return finish('incomplete');

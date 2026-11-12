@@ -29,7 +29,8 @@ check('A current verified menu row exposes the actual local score and exact dime
   assert.equal(result.state, 'ready');
   if (result.state === 'ready') {
     assert.equal(result.score, 93);
-    assert.equal(result.dimensions.find(d => d.key === 'tanico')?.wineValue, 0);
+    // 145 (owner's decision): a tannin of 0 is «not applicable» and is not compared; the score is unchanged here because this profile's own tannin is 0.
+    assert.equal(result.dimensions.find(d => d.key === 'tanico'), undefined);
     assert.equal(result.dimensions.find(d => d.key === 'potente')?.wineValue, 2.4);
   }
 });

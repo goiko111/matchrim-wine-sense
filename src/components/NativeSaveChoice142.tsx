@@ -15,6 +15,15 @@ const saved: Record<Place, string> = { wishlist: 'Guardado en Por probar', taste
 /** Saves a wine known from Winerim's store to the person's wines. Never stores flavour data; never trains the profile. */
 export const saveStoreWine142 = async (userId: string, wine: QuickSaveWine141, place: Place, rating: 'love' | 'ok' | 'not_for_me' | null = null) => {
   const vintage = /^(19|20)\d{2}$/.test(String(wine.vintage ?? '')) ? Number(wine.vintage) : null;
+  // 145: the same wine was saved twice (once «Por probar» from the scan, again «Probado» from Home's thumb). A wine
+  // the person already has moves to the new place (and takes the rating) instead of being added again.
+  const same = (value: string | null | undefined, other: string | null | undefined) => (value ?? '').trim().toLowerCase() === (other ?? '').trim().toLowerCase();
+  const { data: mine } = await supabase.from('user_wines').select('id,name,producer,vintage').eq('user_id', userId).eq('name', wine.name.slice(0, 200)).limit(20);
+  const had = (mine ?? []).find(row => same(row.producer, wine.producer?.slice(0, 160)) && (row.vintage == null || vintage == null || row.vintage === vintage));
+  if (had) {
+    const { error } = await supabase.from('user_wines').update({ status: place, ...(rating ? { rating } : {}), ...(place === 'collection' ? { quantity: 1 } : {}) }).eq('id', had.id).eq('user_id', userId);
+    return !error;
+  }
   const { error } = await supabase.from('user_wines').insert([{ user_id: userId, name: wine.name.slice(0, 200), producer: wine.producer?.slice(0, 160) || null, vintage,
     region: wine.region || null, country: wine.country || null, grape_varieties: wine.grapes?.length ? wine.grapes.slice(0, 12) : null,
     image_url: wine.photo && /^https:\/\/app\.winerim\.com\//.test(wine.photo) ? wine.photo : null, status: place, quantity: place === 'collection' ? 1 : null, rating,
@@ -26,7 +35,11 @@ export const saveStoreWine142 = async (userId: string, wine: QuickSaveWine141, p
 // 142: a searched or scanned wine is not always one «to try»: the person may have drunk it already or have it at home.
 // One row of three choices saves it where it belongs; «Ya lo he probado» asks how it was in the same place.
 // The store's flavour data is never stored, and a wine saved here does not train the profile.
-export const NativeSaveChoice142 = ({ wine }: { wine: QuickSaveWine141 }) => {
+export const NativeSaveChoice142 = ({ wine, onWishlist, onSaved }: { wine: QuickSaveWine141;
+  /** 145 (scanner): «Quiero probarlo» keeps the scanner's own save, which stores the linked sheet with the wine. */
+  onWishlist?: () => void;
+  /** 145 (scanner): told once a wine is saved here, so the scan can close instead of offering to save it again. */
+  onSaved?: (place: Place) => void }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [state, setState] = useState<{ phase: 'idle' | 'rating' | 'saving' | 'error' } | { phase: 'saved'; place: Place }>({ phase: 'idle' });
@@ -35,7 +48,9 @@ export const NativeSaveChoice142 = ({ wine }: { wine: QuickSaveWine141 }) => {
   const save = async (place: Place, rating: 'love' | 'ok' | 'not_for_me' | null = null) => {
     if (!user) { stashSignedOutWineDraft134({ name: wine.name, producer: wine.producer, vintage: wine.vintage }); navigate(buildAuthRedirectPath('/my-wines/add')); return; }
     setBusy144(place); setState({ phase: 'saving' });
-    setState(await saveStoreWine142(user.id, wine, place, rating) ? { phase: 'saved', place } : { phase: 'error' });
+    const ok = await saveStoreWine142(user.id, wine, place, rating);
+    setState(ok ? { phase: 'saved', place } : { phase: 'error' });
+    if (ok) onSaved?.(place);
   };
   if (state.phase === 'saved') return <div className="rounded-2xl bg-emerald-50 px-4 py-3" role="status" data-testid="save-done142">
     <p className="flex items-center gap-2 text-sm font-semibold text-emerald-900"><Check className="h-5 w-5 shrink-0" aria-hidden="true" />{saved[state.place]}</p>
@@ -52,7 +67,7 @@ export const NativeSaveChoice142 = ({ wine }: { wine: QuickSaveWine141 }) => {
     <div className="grid grid-cols-3 gap-2">{places.map(([place, Icon, label]) =>
       <button key={place} type="button" disabled={state.phase === 'saving'} data-testid={`save-${place}142`}
         className={`flex min-h-[4.5rem] flex-col items-center justify-center gap-1.5 rounded-xl px-1 text-center text-xs font-semibold leading-4 disabled:opacity-60 border border-stone-300 bg-white text-stone-900 active:bg-stone-100`}
-        onClick={() => place === 'tasted' ? setState({ phase: 'rating' }) : void save(place)}>
+        onClick={() => place === 'tasted' ? setState({ phase: 'rating' }) : place === 'wishlist' && onWishlist && user ? onWishlist() : void save(place)}>
         {state.phase === 'saving' && busy144 === place ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <Icon className="h-5 w-5" aria-hidden="true" />}{label}</button>)}</div>
     {state.phase === 'error' && <p role="alert" className="mt-2 text-sm text-red-800">No se ha podido guardar. Comprueba la conexión e inténtalo de nuevo.</p>}
   </div>;

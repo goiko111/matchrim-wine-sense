@@ -66,7 +66,7 @@ await test('A later bad row retains valid rows from that page and the validated 
     const h = host(responses), result = await h.client.searchProposals(input.name);
     assert.equal(result.status, 'incomplete'); assert.equal(result.rows.length, failingPage * 20 - 1);
     assert(!result.rows.some(value => value.id === 363580));
-    assert(result.rows.every(value => Object.isFrozen(value))); assert.equal(h.calls.length, failingPage);
+    assert(result.rows.every(value => Object.isFrozen(value))); assert.equal(h.calls.length, 4); // 145: the further pages are asked together
     assert.deepEqual(result.rows.map(value => value.id),
       Array.from({ length: failingPage * 20 }, (_, i) => i + 1).filter(id => id !== (failingPage - 1) * 20 + 4));
   }

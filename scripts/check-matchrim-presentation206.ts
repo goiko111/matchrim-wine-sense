@@ -41,13 +41,13 @@ check('Personal ratings override headline, score and model reasons, without eras
     assert.match(text(tree), /Encaje de estilo: ≈\s*76\s*\/100/);
   }
 });
-check('Detailed five-axis comparison preserves exact zero and decimals', () => {
-  const tree = render({ ...input, attributes: { ...input.attributes, tannin: 0, acidity: 2.4 } });
+check('Detailed comparison keeps decimals; a tannin of 0 is not compared (145, owner\'s decision)', () => {
+  const tree = render({ ...input, attributes: { ...input.attributes, acidity: 2.4 } });
   const rows = nodes(tree).filter(n => n.type === 'dd'); assert.equal(rows.length, 5);
-  assert(rows.some(n => String(n.props['aria-label']).includes('este vino 0.0/5')));
   assert(rows.some(n => String(n.props['aria-label']).includes('este vino 2.4/5')));
-  const widths = nodes(tree).filter(n => n.props.style).map(n => (n.props.style as { width: string }).width);
-  assert(widths.includes('0%')); assert(widths.includes('48%'));
+  assert(nodes(tree).filter(n => n.props.style).map(n => (n.props.style as { width: string }).width).includes('48%'));
+  const white = nodes(render({ ...input, attributes: { ...input.attributes, tannin: 0 } })).filter(n => n.type === 'dd');
+  assert.equal(white.length, 4); assert(!white.some(n => String(n.props['aria-label']).startsWith('Taninos')));
 });
 check('Technical comparison starts closed; no raw weights or confidence percentages', () => {
   const tree = render(input), detail = nodes(tree).find(n => n.type === 'details');
@@ -78,4 +78,4 @@ check('Presentation does not mutate original inputs or write personal data', () 
   const before = JSON.stringify(input); render(input); assert.equal(JSON.stringify(input), before);
   assert.doesNotMatch(source, /localStorage|fetch\(|\.invoke\(|Math\.random/);
 });
-console.log(JSON.stringify({ passed: true, groups: checks, networkCalls: 0, realUsers: 0, formulaChanged: false }));
+console.log(JSON.stringify({ passed: true, groups: checks, networkCalls: 0, realUsers: 0, formulaChanged: false, tanninZeroCompared: false }));

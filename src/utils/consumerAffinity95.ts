@@ -1,5 +1,6 @@
 import {
   buildAffinityInsights,
+  calculateLocalMatchrimAffinity,
   type AffinityAttributeInsight,
   type AffinityDataSource,
   type WineAttributeInput,
@@ -72,6 +73,16 @@ export const buildConsumerAffinity = (input: ConsumerAffinityInput): ConsumerAff
   if (typeof input.score !== 'number' || !Number.isFinite(input.score) || input.score < 0 || input.score > 100) {
     return pending('score', 'La ficha está disponible, pero aún no hay una afinidad calculada para tu perfil.');
   }
+  // 145 (owner's decision, 2026-11-12): one number per wine. A tannin of 0 means «not applicable» (whites, rosés,
+  // sparkling) and does not count anywhere. The store estimate already left it out (139); the catalogue comparison
+  // counted it as a gap, so the same white said 74 scanned and 82 searched. What is shown follows the one rule;
+  // what is saved with a wine does not change.
+  const raw = (input.attributes ?? {}) as Record<string, unknown>;
+  if (!input.notApplicable && raw.scale === 'winerim-0-5' && (raw.tannin ?? raw.taninos ?? raw.tanico) === 0 && typeof input.profile.tanico === 'number') {
+    const compared = { ...raw, tannin: Math.max(0, Math.min(5, input.profile.tanico)), taninos: undefined, tanico: undefined } as WineAttributeInput;
+    const rescored = calculateLocalMatchrimAffinity(input.profile, compared);
+    if (rescored !== null) return buildConsumerAffinity({ ...input, attributes: compared, score: rescored, notApplicable: ['tanico'] });
+  }
   const score = Math.round(input.score);
   const applies = (insight: AffinityAttributeInsight) => !input.notApplicable?.includes(insight.key);
   const mostDifferent = insights.insights.filter(applies).sort((a, b) => b.delta - a.delta)[0];
@@ -87,4 +98,11 @@ export const buildConsumerAffinity = (input: ConsumerAffinityInput): ConsumerAff
       ? (mostDifferent.direction === 'higher' ? higher : lower)[mostDifferent.key] : null,
     dimensions: insights.insights.filter(applies),
   };
+};
+
+/** 145: the number shown for a catalogue score, under the one rule of every wine sheet (see buildConsumerAffinity). */
+export const shownScore145 = (profile: MatchrimProfileLike | null | undefined, attributes: WineAttributeInput | null | undefined, score: number | null | undefined): number | null => {
+  if (typeof score !== 'number' || !Number.isFinite(score)) return null;
+  const result = buildConsumerAffinity({ catalogIdentityLinked: true, sensorySource: 'catalog', attributes, profile, score });
+  return result.state === 'ready' ? result.score : Math.round(score);
 };

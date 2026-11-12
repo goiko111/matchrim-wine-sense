@@ -53,7 +53,7 @@ async function main() {
     assert.equal(result.state, 'ready');
     if (result.state === 'ready') {
       assert.equal(result.score, 93);
-      assert.equal(result.dimensions.find(d => d.key === 'tanico')?.wineValue, 0);
+      assert.equal(result.dimensions.find(d => d.key === 'tanico'), undefined); // 145: a tannin of 0 is not compared
     }
   });
   await check('Actual Restaurant adapter preserves decimals, not integer-normalized source values', () => {
@@ -64,7 +64,7 @@ async function main() {
       assert.equal(result.score, 93);
       assert.equal(result.dimensions.find(d => d.key === 'potente')?.wineValue, 2.4);
       assert.equal(result.dimensions.find(d => d.key === 'acidez')?.wineValue, 4.75);
-      assert.equal(result.dimensions.find(d => d.key === 'tanico')?.wineValue, 0);
+      assert.equal(result.dimensions.find(d => d.key === 'tanico'), undefined); // 145: a tannin of 0 is not compared
     }
   });
   for (const [label, currentRow, currentSheet] of [

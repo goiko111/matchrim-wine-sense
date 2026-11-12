@@ -70,7 +70,8 @@ await test('Malformed pages remain incomplete, retaining only validated explicit
     assert.equal(result.status, 'incomplete');
     assert.deepEqual(result.rows.map(value => value.id), expected);
     assert(result.rows.every(value => Object.isFrozen(value) && value.slugname.length > 0));
-    assert.equal(h.calls.length, failingPage);
+    // 145: the further pages are asked together (one after another they ran into the time limit); the rows kept are the same.
+    assert.equal(h.calls.length, 4);
   }
   const h = rig(61, value => value.page === 1 ? { ...value, results: value.results.slice(1) } : value);
   const result = await h.client.searchProposals(input.name);

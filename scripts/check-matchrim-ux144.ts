@@ -32,7 +32,7 @@ test('A photographed wine list is told from a bottle label by the text the phone
   assert.match(menu, /clearTray141\(\); reset141\(\); setReading141\(null\);[\s\S]{0,200}takeMenuPhoto144\(\)[\s\S]{0,120}addToMenuTray141/); assert(menu.includes('data-testid="menu-handed144"'));
 });
 
-test('A scanned wine says the same number on Home and in the sheet Home opens; no scoring formula changed', () => {
+test('A scanned wine says the same number on Home, in its sheet and searched', () => {
   const store = new Map<string, string>();
   (globalThis as Record<string, unknown>).window = { localStorage: { getItem: (key: string) => store.get(key) ?? null, setItem: (key: string, value: string) => { store.set(key, value); } }, dispatchEvent: () => true };
   (globalThis as Record<string, unknown>).Event = class { constructor(public type: string) {} };
@@ -40,18 +40,18 @@ test('A scanned wine says the same number on Home and in the sheet Home opens; n
   scanned.recordScannedWine139(null, { name: 'Estimado', winery: 'Bodega', score: 82 });
   const [estimated, catalogue] = scanned.getScannedWines139(null);
   assert.equal(catalogue.catalogue, true); assert.equal(estimated.catalogue, undefined);
-  // The catalogue comparison counts a tannin of 0; the store estimate leaves it out (139). Both formulas are as they were.
+  // 145 (owner's decision): a tannin of 0 does not count in either comparison, so both say the same number.
   const profile = { potente: 3, acidez: 4, dulce: 1, tanico: 3, afrutado: 4 };
   const white = { scale: 'winerim-0-5' as const, power: 3, acidity: 3, sweetness: 1, tannin: 0, fruity: 3 };
   const byCatalogue = buildConsumerAffinity({ catalogIdentityLinked: true, sensorySource: 'catalog', attributes: white, profile, score: calculateLocalMatchrimAffinity(profile, white) });
   const byStore = storeAffinity139(profile, white);
-  assert(byCatalogue.state === 'ready' && byStore.state === 'ready'); assert(byCatalogue.score < byStore.score);
-  assert(byCatalogue.dimensions.some(item => item.key === 'tanico')); assert(!byStore.dimensions.some(item => item.key === 'tanico'));
+  assert(byCatalogue.state === 'ready' && byStore.state === 'ready'); assert.equal(byCatalogue.score, byStore.score);
+  assert(!byCatalogue.dimensions.some(item => item.key === 'tanico')); assert(!byStore.dimensions.some(item => item.key === 'tanico'));
   const sheet = read('src/components/WineSheet142.tsx');
   assert.match(sheet, /catalogueRule\s*\? buildConsumerAffinity\(\{ catalogIdentityLinked: true, sensorySource: 'catalog', attributes, profile, score: calculateLocalMatchrimAffinity\(profile, attributes\) \}\)\s*: storeAffinity139\(profile, attributes\)/);
   assert.match(read('src/components/NativeHome98.tsx'), /setCatalogueRule144\(Boolean\(wine\.catalogue\)\)/);
   assert.match(read('src/components/NativeSearchWine138.tsx'), /catalogueRule=\{catalogueRule && !trail\.length\}/);
-  assert.match(read('src/components/wine-import/MultiWineLabelScanner.tsx'), /catalogue: typeof wine\.affinity === 'number' \}\)/);
+  assert.match(read('src/components/wine-import/MultiWineLabelScanner.tsx'), /nativeWineConsumerResult\(wine, scanProfile\?\.profile \?\? null\)\.shownScore/);
   store.clear();
 });
 

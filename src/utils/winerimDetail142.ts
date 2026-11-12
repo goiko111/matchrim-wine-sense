@@ -1,9 +1,11 @@
 import type { StoreRow140 } from './storeListing139';
+import { diskGet145, diskSet145 } from './storeDiskCache145';
 
 // 142: Winerim's public store already holds, for each wine, what a rich wine sheet needs: pairings, six flavour axes,
 // a written tasting note, a one-line origin and personality, the wine's story, service data and related wines. The
 // app showed four fields of it and sent people to Winerim's web page for the rest. This reads the detail once per
 // wine per session, keeps only well-formed text, and never sends anything about the person.
+const DETAIL_DISK145 = 'matchrim.store_detail.v1';
 const STORE = 'https://app.winerim.com/api/v1/restaurant/00000000-0000-0000-0000-000000000001/wines';
 export interface WinerimDetail142 {
   pairings: string[];
@@ -58,11 +60,18 @@ const cache = new Map<string, Promise<WinerimDetail142 | null>>();
 export const loadWinerimDetail142 = (id: number, slug: string): Promise<WinerimDetail142 | null> => {
   if (!Number.isSafeInteger(id) || id <= 0 || !/^[A-Za-z0-9][A-Za-z0-9_-]{0,239}$/.test(slug)) return Promise.resolve(null);
   const key = `${id}/${slug}`, cached = cache.get(key); if (cached) return cached;
+  // 145: a sheet opened within the last week is on the phone already (the raw public sheet is kept and parsed again).
+  const kept = diskGet145<unknown>(DETAIL_DISK145, key);
+  if (kept) { const ready = Promise.resolve(parseWinerimDetail142(kept)); cache.set(key, ready); return ready; }
   const pending = (async () => {
     const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 15000);
     try {
       const response = await fetch(`${STORE}/${id}/${slug}`, { method: 'GET', credentials: 'omit', redirect: 'error', referrerPolicy: 'no-referrer', headers: { Accept: 'application/json' }, signal: controller.signal });
-      return response.ok ? parseWinerimDetail142(await response.json()) : null;
+      if (!response.ok) return null;
+      const body = await response.json() as Record<string, unknown>;
+      // Only the parts the sheet shows are kept (not prices or stock).
+      diskSet145(DETAIL_DISK145, key, Object.fromEntries(['name', 'pairings', 'tastingNote', 'quickSheet', 'storytelling', 'wineDetails', 'vineyardDetails', 'tastingAttributes', 'relatedWines'].map(field => [field, body?.[field]])), 25);
+      return parseWinerimDetail142(body);
     } catch { return null; } finally { clearTimeout(timer); }
   })();
   cache.set(key, pending); void pending.then(value => { if (!value) cache.delete(key); });

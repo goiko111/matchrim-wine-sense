@@ -46,7 +46,7 @@ check('Exact original zero and decimals survive optional detailed view', () => {
   const value = buildConsumerAffinity({ ...base, attributes: { ...attributes, tannin: 0, acidity: 2.4 }, score: 70 });
   assert.equal(value.state, 'ready');
   if (value.state === 'ready') {
-    assert.equal(value.dimensions.find(item => item.key === 'tanico')?.wineValue, 0);
+    assert.equal(value.dimensions.find(item => item.key === 'tanico'), undefined); // 145: a tannin of 0 is «not applicable», not a gap
     assert.equal(value.dimensions.find(item => item.key === 'acidez')?.wineValue, 2.4);
   }
 });

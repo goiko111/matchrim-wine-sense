@@ -1,4 +1,5 @@
 import type { PublicGlobalRow103 } from './nativeGlobalCatalogue103';
+import { diskGet145, diskSet145 } from './storeDiskCache145';
 import { buildConsumerAffinity, type ConsumerAffinityResult } from './consumerAffinity95';
 import { calculateLocalMatchrimAffinity } from './wineAffinityExplanation';
 import type { MatchrimProfileLike } from './matchrimPassport';
@@ -114,6 +115,7 @@ const parseRow140 = (value: unknown): StoreRow140 | null => {
     grapes: Array.isArray(raw.grapes) ? raw.grapes.slice(0, 20) : [], tastingAttributes: raw.tastingAttributes, bottlePrice: bottle } as StoreRow140;
 };
 const cache = new Map<string, Promise<readonly StoreRow140[]>>();
+const STORE_SEARCH_DISK145 = 'matchrim.store_search.v1';
 let running = 0; const waiting: Array<() => void> = [];
 const slot = async <T,>(work: () => Promise<T>): Promise<T> => {
   if (running >= 6) await new Promise<void>(resolve => waiting.push(resolve));
@@ -130,6 +132,9 @@ const readPage140 = async (query: string, page: number, signal?: AbortSignal) =>
 export const searchStore139 = (query: string, signal?: AbortSignal): Promise<readonly StoreRow140[]> => {
   const id = key(query); if (id.length < 2 || query.length > 120) return Promise.resolve([]);
   const cached = cache.get(id); if (cached) return cached;
+  // 145: a search answered within the last week is on the phone already.
+  const kept = diskGet145<StoreRow140[]>(STORE_SEARCH_DISK145, id);
+  if (Array.isArray(kept)) { const ready = Promise.resolve(kept as readonly StoreRow140[]); cache.set(id, ready); return ready; }
   // The shared request is not tied to one caller's signal: another line of the same list may be waiting for it.
   const pending = slot(async () => {
     const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 15000);
@@ -139,7 +144,7 @@ export const searchStore139 = (query: string, signal?: AbortSignal): Promise<rea
       return first.rows.filter(row => !seen.has(row.id) && seen.add(row.id) && !/\b\d+([.,]\d+)?\s*(euros?|€)/i.test(`${row.name} ${row.subname ?? ''}`));
     } finally { clearTimeout(timer); }
   });
-  cache.set(id, pending); pending.catch(() => cache.delete(id));
+  cache.set(id, pending); pending.then(rows => diskSet145(STORE_SEARCH_DISK145, id, rows, 40), () => cache.delete(id));
   return signal ? Promise.race([pending, new Promise<never>((_, reject) => signal.addEventListener('abort', () => reject(new DOMException('Cancelled', 'AbortError')), { once: true }))]) : pending;
 };
 const median = (values: number[]) => { const sorted = [...values].sort((a, b) => a - b); return sorted.length ? sorted[Math.floor((sorted.length - 1) / 2)] : null; };

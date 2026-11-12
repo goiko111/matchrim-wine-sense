@@ -21,6 +21,8 @@ interface LabelAnalysisViewProps {
   /** 140: the Winerim bottle photo (above the verdict) and the Winerim data (below the save button), as in the search sheet. */
   photo?: ReactNode;
   facts?: ReactNode;
+  /** 145: replaces the single «Guardar en Por probar» button when the scan holds one bottle. */
+  saveChoice?: ReactNode;
   lookup: ReactNode;
   disabled: boolean;
   onFindSheet: () => void;
@@ -33,7 +35,7 @@ interface LabelAnalysisViewProps {
 
 // Presentation only: the scanner retains identity, lookup and affinity authority.
 export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, identity, identityLabel,
-  catalogIdentityLinked, canExplainAffinity, hasProfile, pendingAffinity, affinity, catalogueReference, estimate = null, photo = null, facts = null, lookup, disabled,
+  catalogIdentityLinked, canExplainAffinity, hasProfile, pendingAffinity, affinity, catalogueReference, estimate = null, photo = null, facts = null, saveChoice = null, lookup, disabled,
   onFindSheet, onCorrect, onReturnToBatch, returnLabel = 'Volver al lote para guardar', children = null }: LabelAnalysisViewProps) => {
   if (!isNativePlatform) return <>{children}</>;
 
@@ -77,7 +79,9 @@ export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, ident
     </div>}
 
     {/* 140: a wine whose verdict is a store estimate can be saved from here too (the button shows only then). */}
-    {onReturnToBatch && (canExplainAffinity || estimate) && <Button type="button" disabled={disabled} onClick={onReturnToBatch}
+    {/* 145: one bottle is saved where it belongs (to try, tasted, at home), as in every other wine sheet. */}
+    {saveChoice ? (canExplainAffinity || estimate) && <div className={canExplainAffinity ? '' : 'hidden [section:has([data-testid=native-store-estimate139])_&]:block'} data-testid="scan-save-choice145">{saveChoice}</div>
+      : onReturnToBatch && (canExplainAffinity || estimate) && <Button type="button" disabled={disabled} onClick={onReturnToBatch}
       className={`h-auto min-h-11 w-full min-w-0 gap-2 whitespace-normal bg-red-950 px-3 py-3 text-left text-white hover:bg-red-900 ${canExplainAffinity ? '' : 'hidden [section:has([data-testid=native-store-estimate139])_&]:flex'}`}>
       <Check aria-hidden="true" className="h-5 w-5 shrink-0" /><span className="min-w-0 [overflow-wrap:anywhere]">{returnLabel}</span>
     </Button>}

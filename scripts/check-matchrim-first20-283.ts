@@ -98,7 +98,7 @@ try {
       if (sensory) {
         assert.deepEqual(result.candidate.sensoryAttributes, sensory.attributes);
         assert.equal(typeof result.candidate.affinity, 'number'); assert.equal(consumer.canExplainAffinity, true);
-        assert.equal(consumer.affinityValue, `≈${result.candidate.affinity}/100`); assert.equal(consumer.pending, null);
+        assert.equal(consumer.affinityValue, `≈${consumer.shownScore}/100`); if (((sensory.attributes as Record<string, unknown>).tannin ?? (sensory.attributes as Record<string, unknown>).taninos) !== 0) assert.equal(consumer.shownScore, result.candidate.affinity); assert.equal(consumer.pending, null);
         matrix.push({ imageId: row.imageId, canonicalId: row.canonicalId, file, bottleVintage: requested,
           declaredVintages: wine.vintages, sensoryRows: rowYears.length ? rowYears : ['generic'], vintageStatus: evidence.status,
           sensoryScope: evidence.scope, summary: masterSensorySummary259(link)!.description, affinity: consumer.affinityValue, imageIdentityConfirmed: false });
@@ -141,7 +141,9 @@ try {
     assert.equal(evidence.status, 'known'); assert.equal(evidence.scope, 'exact');
     assert.deepEqual(rebound.candidate.sensoryAttributes, { scale: 'winerim-0-5', potencia: 3, acidez: 4, dulzura: 1, taninos: 0, afrutado: 4 });
     const shown = nativeWineConsumerResult(rebound.candidate, profile);
-    assert.equal(shown.canExplainAffinity, true); assert.equal(shown.affinityValue, `≈${rebound.candidate.affinity}/100`);
+    assert.equal(shown.canExplainAffinity, true); assert.equal(rebound.candidate.affinity, 77);
+    // 145 (owner's decision): this white's tannin of 0 is not compared, so the sheet and the list say more than the saved score, which stays 77.
+    assert.equal(shown.affinityValue, '≈93/100');
     assert(masterSensorySummary259(link)!.description.includes('añada 2020'));
     matrix.push({ imageId: 'img-020', variant: 'human corrected 2000 -> 2020', vintageStatus: evidence.status,
       sensoryScope: evidence.scope, affinity: shown.affinityValue });

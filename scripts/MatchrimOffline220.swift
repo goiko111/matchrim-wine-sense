@@ -177,7 +177,8 @@ final class MatchrimOffline220Tests: XCTestCase {
         try tap(app.buttons["Cerrar"].firstMatch, app)
         try tap(app.buttons["Vinos (1)"].firstMatch, app)
         XCTAssertTrue(row.waitForExistence(timeout: 8))
-        XCTAssertTrue(row.label.contains("≈85/100") && !row.label.contains("Sin calcular"), row.label)
+        // 145 (owner's decision): this white's tannin of 0 is not compared, so the row says 93 (85 with it counted).
+        XCTAssertTrue(row.label.contains("≈93/100") && !row.label.contains("Sin calcular"), row.label)
         capture(app, "vintage283-batch-row-2020")
     }
 

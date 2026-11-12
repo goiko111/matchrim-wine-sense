@@ -14,6 +14,7 @@ import { safeWineImageUrl98 } from '@/utils/wineImage98';
 import { suggestLocalOCRFragments108 } from '@/utils/localOCRFragments108';
 import { PilotFeedback130 } from '@/components/PilotFeedback130';
 import { ScanWaiting139 } from '@/components/ScanWaiting139';
+import { labelLines145, shortNames145 } from '@/utils/scanKind144';
 import { autoLink139, labelVintage139, SCAN_STEPS139 } from '@/utils/autoLink139';
 
 type Props = {
@@ -62,7 +63,7 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
     setNotice(manualQuery ? 'Buscando en Winerim…' : 'Buscando tu vino en Winerim con el texto leído…');
     let auto: { picked: Candidate286; resume: CandidateResume139 } | null = null;
     try {
-      const lines = reading?.lines ?? [];
+      const lines = labelLines145(reading?.lines ?? []);
       const read = lines.length ? lines.map(line => line.text) : candidate.evidence;
       const fragments = lines.length ? suggestLocalOCRFragments108(lines).alternatives.map(line => line.text) : [];
       const evidence = [...(manualQuery ? [manualQuery] : []), ...read, ...fragments].slice(0, 100);
@@ -70,7 +71,14 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
       if (lines.length) year = labelVintage139(lines);
       setVintage(year);
       if (!evidence.length) { setDecision({ mode: 'none' }); setNotice('No se lee texto en este recorte. Escribe el nombre o la bodega.'); return; }
-      const literal = manualQuery ? [manualQuery] : globalRecoveryQueries104(candidate.name, evidence, false, year, lines.length ? lines : undefined);
+      const fromLines = manualQuery ? [manualQuery] : globalRecoveryQueries104(candidate.name, evidence, false, year, lines.length ? lines : undefined);
+      // 145: a three-letter name («Psi 2023») was never searched (queries need four letters), and the bottle was
+      // looked up by whatever else the photo showed. A label line that is one such word, with or without its year,
+      // is the wine's name: it is searched when the longer lines leave room.
+      // The short name goes first, and a symbol read at the edge of a line («* Psi» for «Ψ Psi») is not part of a query.
+      const tidy = (query: string) => query.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '').trim();
+      const short = shortNames145(lines.map(line => line.text));
+      const literal = manualQuery ? fromLines : [...new Map([...short, ...fromLines.map(tidy)].filter(query => query.length >= 3).map(query => [query.toLowerCase(), query])).values()].slice(0, 2);
       const client = createGlobalCatalogue103();
       const found = await searchCandidates286(evidence, literal, year, query => client.searchProposals(query, controller.signal), lines);
       if (!active()) return;

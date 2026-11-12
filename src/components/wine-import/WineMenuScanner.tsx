@@ -99,6 +99,7 @@ import { MENU_BADGE_HEIGHT143, MENU_BADGE_WIDTH143, matchMenuPositions143, menuB
   type MenuPosition143, type MenuRow143 } from '@/utils/menuPositions143';
 import { readPageLines143, type PageLines143 } from '@/utils/nativeOcrLines143';
 import { takeMenuPhoto144 } from '@/utils/scanKind144';
+import { MenuQuickPreview145 } from '@/components/wine-import/MenuQuickPreview145';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { estimateListing139, storeAffinity139, type ListingMatch139 } from '@/utils/storeListing139';
 import { menuCoverageWarning139, menuLikelyText140, menuLineKey139, menuRowName140, menuVerdict139, menuVerdictCertain140, menuVerdictScore140,
@@ -1738,15 +1739,26 @@ const WineMenuScannerSession = ({
     // ending before the price, off the name, and moved sideways when the lines are closer than a badge is tall.
     .map(photo => {
       const device = photo.reliable ? null : devicePlaces143.get(photo.page) ?? null;
+      // 145: on a real list the lines were closer together than a 28 pt badge is tall, so the numbers piled up over the
+      // price column. When the phone placed the lines and they are that tight, the badge shrinks to the line pitch
+      // and sits right after the wine's name: one per line, none on another. A line that is «one of several wines»
+      // gets no badge on the photo (a «64–79» pill said nothing); the list below still offers the choice.
+      const photoHeight = photoHeights143[photo.page] || 520;
+      const tops = (device ?? []).flatMap(found => found ? [found.y + found.height / 2] : []).sort((a, b) => a - b);
+      const gaps = tops.slice(1).map((top, at) => top - tops[at]).filter(gap => gap > 0.2).sort((a, b) => a - b);
+      const pitch = gaps.length ? gaps[Math.floor((gaps.length - 1) / 2)] / 100 * photoHeight : MENU_BADGE_HEIGHT143 * 2;
+      const compact = device !== null && pitch < MENU_BADGE_HEIGHT143 + 2;
+      const badgeHeight = compact ? Math.max(14, Math.floor(pitch) - 1) : MENU_BADGE_HEIGHT143;
       const spots = !photo.reliable && !device ? [] : photo.rows.map(({ wine, index }, order) => {
-        const badge = menuBadge141(verdicts139[index]);
+        const badge = verdicts139[index]?.kind === 'range' ? null : menuBadge141(verdicts139[index]);
         if (!badge) return null;
-        const width = badge.text.length > 2 ? MENU_BADGE_WIDTH143.range : MENU_BADGE_WIDTH143.score, found = device?.[order] ?? null;
-        const place = found ? menuBadgePlacement143(found, width) : device ? null : menuBadgePlacement141(wine.posicion, width);
+        const width = compact ? 7.5 : badge.text.length > 2 ? MENU_BADGE_WIDTH143.range : MENU_BADGE_WIDTH143.score, found = device?.[order] ?? null;
+        const place = found ? compact ? { right: 100 - Math.max(width + 1, Math.min(99, found.nameEnd + 1.5 + width)), top: Math.max(2, Math.min(98, found.y + found.height / 2)) }
+          : menuBadgePlacement143(found, width) : device ? null : menuBadgePlacement141(wine.posicion, width);
         return place ? { ...place, width, nameEnd: found?.nameEnd ?? null } : null;
       });
-      return { ...photo, reliable: photo.reliable || device !== null,
-        places143: spreadMenuBadges143(spots, MENU_BADGE_HEIGHT143 / (photoHeights143[photo.page] || 520) * 100) };
+      return { ...photo, reliable: photo.reliable || device !== null, badgeHeight145: badgeHeight, compact145: compact,
+        places143: spreadMenuBadges143(spots, badgeHeight / photoHeight * 100) };
     });
   const photosOpen141 = !loading && !convertingPdf && photoPages141.some(photo => photo.reliable);
   const renderMenuPreview = (image: ReactNode) => nativeResultPreview ? (
@@ -2412,6 +2424,7 @@ const WineMenuScannerSession = ({
                 <ScanWaiting139 className="p-5 text-left [&_li]:text-[17px] [&_li]:leading-6 [&_[data-testid=scan-fact139]]:min-h-[7rem] [&_[data-testid=scan-fact139]]:text-lg [&_[data-testid=scan-fact139]]:leading-7"
                   steps={[menuReadingLabel141(reading141), MENU_STEPS139[1], MENU_STEPS139[2]]}
                   current={convertingPdf || scanPhase !== 'ranking' || Boolean(reading141 && reading141.index < reading141.total - 1) ? 0 : 1} />
+                {!convertingPdf && !isMatchrimFixtureQaEnabled && <MenuQuickPreview145 file={lastScanInputRef.current?.file} profile={profile139} />}
                 <p className="sr-only" aria-live="off" data-testid="menu-scan-progress">{Math.floor((nativeScanMetrics?.elapsedMs ?? 0) / 1000)} s</p>
                 <Button type="button" variant="outline" aria-label="Cancelar análisis" className="min-h-12 w-full gap-2 border-stone-300 bg-white text-base text-stone-900 hover:bg-stone-50" onClick={() => {
                   partialMenuReadingRef.current = null; setFailedRegionCount(0);
@@ -2566,14 +2579,15 @@ const WineMenuScannerSession = ({
                       if (height > 0) setPhotoHeights143(current => current[photo.page] === height ? current : { ...current, [photo.page]: height });
                     }} />
                     {photo.reliable && photo.rows.map(({ wine, index }, row) => {
-                      const badge = menuBadge141(verdicts139[index]);
+                      const badge = verdicts139[index]?.kind === 'range' ? null : menuBadge141(verdicts139[index]);
                       // The badge ends where the leader ends (before the price), so the wine's name stays readable.
                       // 143: large enough to read over paper at arm's length: 28 pt, white ring, soft shadow.
                       const place = badge && photo.places143[row];
                       return badge && place ? <button key={`${wine.nombre}-${index}-badge141`} type="button" data-testid="native-menu-badge141"
                         aria-label={`${shownName140(wine, verdicts139[index]).name}: ${badge.text} sobre 100`}
                         className={`absolute flex h-[28px] -translate-y-1/2 items-center rounded-full px-[8px] text-[13px] font-bold leading-none tabular-nums text-white shadow-md ring-2 ring-white ${badge.tone === 'good' ? 'bg-emerald-700' : 'bg-stone-700'}`}
-                        style={{ right: `${place.right}%`, top: `${place.top}%` }} onClick={(event) => openWineDetail(index, event.currentTarget)}>{badge.text}</button> : null;
+                        style={{ right: `${place.right}%`, top: `${place.top}%`, ...(photo.compact145 ? { height: photo.badgeHeight145, fontSize: Math.max(9, Math.min(12, photo.badgeHeight145 - 5)), paddingLeft: 5, paddingRight: 5, boxShadow: '0 0 0 1px #fff' } : {}) }}
+                        onClick={(event) => openWineDetail(index, event.currentTarget)}>{badge.text}</button> : null;
                     })}
                   </div>
                 </div>

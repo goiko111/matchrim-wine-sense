@@ -1,7 +1,8 @@
 import { NativeStoreEstimate139 } from './NativeStoreEstimate139';
 import { useNavigate } from 'react-router-dom';
 import { handMenuPhoto144, looksLikeWineList144 } from '@/utils/scanKind144';
-import { recordScannedWine139 } from '@/utils/scannedWines139';
+import { markScannedSaved144, recordScannedWine139 } from '@/utils/scannedWines139';
+import { NativeSaveChoice142 } from '@/components/NativeSaveChoice142';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { confirm135 } from '@/utils/nativeConfirm135';
 import { Capacitor } from '@capacitor/core';
@@ -339,7 +340,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     if (!isNative || phase !== 'ready') return;
     for (const region of regions) { const wine = getSelectedCandidate(region);
       if (region.status === 'recognized' && wine?.name && !isPendingLocalIdentity109(wine)) recordScannedWine139(user?.id ?? null,
-        { name: wine.name, winery: wine.producer, vintage: wine.vintage, score: typeof wine.affinity === 'number' ? wine.affinity : null, catalogue: typeof wine.affinity === 'number' }); }
+        { name: wine.name, winery: wine.producer, vintage: wine.vintage, score: nativeWineConsumerResult(wine, scanProfile?.profile ?? null).shownScore ?? (typeof wine.affinity === 'number' ? wine.affinity : null) }); }
   }, [phase, isNative, regions, user?.id]);
   const summary = useMemo(() => summarizeScanRegions(regions), [regions]);
   const regionProgress = useMemo(() => formatScanRegionProgress(summarizeScanRegionProgress(regions)), [regions]);
@@ -1685,6 +1686,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     setSelectedRegionId(null);
                     if (saveSingle137) void confirmBatch();
                   } : undefined}
+                  saveChoice={saveSingle137 && user ? <NativeSaveChoice142 key={selectedCandidate.id}
+                    wine={{ name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage, region: selectedCandidate.region, country: selectedCandidate.country }}
+                    onWishlist={() => { setNativeResultView('wines'); setSelectedRegionId(null); void confirmBatch(); }}
+                    onSaved={place => { if (place === 'tasted') markScannedSaved144(user.id, { name: selectedCandidate.name, winery: selectedCandidate.producer ?? null, vintage: selectedCandidate.vintage == null ? null : String(selectedCandidate.vintage) });
+                      toast.success(place === 'tasted' ? 'Guardado en Probados' : 'Guardado en tu bodega'); resetScan(); }} /> : undefined}
                   returnLabel={saveSingle137 ? 'Guardar en Por probar' : confirmed ? 'Volver a la lista' : 'Volver a la lista para guardar'}
                   onFindSheet={() => {
                     const details = document.getElementById('native-label-reference');

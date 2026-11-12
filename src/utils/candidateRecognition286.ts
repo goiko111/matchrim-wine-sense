@@ -155,24 +155,24 @@ export const searchCandidates286 = async (evidence: readonly string[], literalQu
   vintage: number | null, search: CandidateSearch286, lines: readonly Line286[] = []) => {
   const rows: PublicGlobalRow103[] = [], searched: string[] = [], fruitful: string[] = [];
   let unavailable = false, incomplete = false;
-  const run = async (query: string) => {
-    const page = await search(query);
-    searched.push(query); rows.push(...page.rows);
-    if (page.rows.length) fruitful.push(query);
-    unavailable ||= page.status === 'unavailable'; incomplete ||= page.status !== 'complete';
+  // 145: the queries of one stage go out together (each takes about four seconds at Winerim; one after another a
+  // label took up to 48 s). Results are added in the order asked, so the ranking is the same as before.
+  const runAll = async (queries: readonly string[]) => {
+    const pages = await Promise.all(queries.map(query => search(query)));
+    const barren: string[] = [];
+    queries.forEach((query, index) => { const page = pages[index];
+      searched.push(query); rows.push(...page.rows);
+      if (page.rows.length) fruitful.push(query); else barren.push(query);
+      unavailable ||= page.status === 'unavailable'; incomplete ||= page.status !== 'complete'; });
+    return barren;
   };
-  for (const query of literalQueries.slice(0, 2)) await run(query);
+  await runAll(literalQueries.slice(0, 2));
   let ranked = rankCandidates286(evidence, rows, vintage);
   if (candidateDecision286(ranked).mode !== 'one') {
-    const barren: string[] = [];
-    for (const query of candidateQueries286(evidence, fruitful, 3, lines)) {
-      const before = rows.length;
-      await run(query);
-      if (rows.length === before) barren.push(query);
-    }
+    const barren = await runAll(candidateQueries286(evidence, fruitful, 3, lines));
     ranked = rankCandidates286(evidence, rows, vintage);
     if (candidateDecision286(ranked).mode !== 'one') {
-      for (const query of fragmentQueries286(barren)) await run(query);
+      await runAll(fragmentQueries286(barren));
       ranked = rankCandidates286(evidence, rows, vintage);
     }
   }

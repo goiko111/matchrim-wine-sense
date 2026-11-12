@@ -24,7 +24,7 @@ globalThis.fetch = async () => { throw new Error('Network forbidden'); };
 check('exact current score and original zero', () => {
   const r = buildNativeRecommendation95(wine, profile).result;
   assert.equal(r.state, 'ready'); if (r.state === 'ready') {
-    assert.equal(r.score, 93); assert.equal(r.dimensions.find(d => d.key === 'tanico')?.wineValue, 0);
+    assert.equal(r.score, 93); assert.equal(r.dimensions.find(d => d.key === 'tanico'), undefined); // 145: a tannin of 0 is not compared
   }
   assert(!JSON.stringify(r).includes('detailVerified'));
 });
@@ -46,7 +46,7 @@ check('changed profile excludes old score', () => assert.equal(buildNativeRecomm
 check('opposite current score is explained without invented details', () => {
   const score = calculateLocalMatchrimAffinity(opposite, wine.tastingAttributes)!;
   const r = buildNativeRecommendation95({ ...wine, matchPercentage: score }, opposite).result;
-  assert.equal(r.state, 'ready'); if (r.state === 'ready') { assert.equal(r.score, 24); assert(r.caution); }
+  assert.equal(r.state, 'ready'); if (r.state === 'ready') { assert.equal(r.score, 35); assert(r.caution); } // 145: the wine's tannin of 0 is not compared (24 with it counted)
 });
 check('decimals remain exact', () => {
   const attributes = { ...wine.tastingAttributes!, power: 2.4, tannin: 0.25 };
@@ -192,7 +192,7 @@ check('actual native WineCard binds raw photo/save and one shared answer before 
   const result = assertNativeCard(tree, boundWine);
   assert.equal(result.state, 'ready');
   if (result.state === 'ready') {
-    assert.equal(result.score, 93); assert.equal(result.dimensions.find(d => d.key === 'tanico')?.wineValue, 0);
+    assert.equal(result.score, 93); assert.equal(result.dimensions.find(d => d.key === 'tanico'), undefined); // 145: a tannin of 0 is not compared
   }
   assert.equal(JSON.stringify(boundWine), before);
 });

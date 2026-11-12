@@ -5,6 +5,7 @@ import { isVerifiedWinerimSheetForIdentity, validateWinerimOriginalSensory } fro
 import { isVerifiedNativeMaster102 } from './nativeMasterCatalog102';
 import { exactGlobalVintage103, globalSensory103, isGlobalWine103 } from './nativeGlobalCatalogue103';
 import { isPendingLocalIdentity109 } from './nativeSingleLabel109';
+import { shownScore145 } from './consumerAffinity95';
 import { masterAffinityGap259, masterSensory259, nativeMasterLink259 } from './nativeMasterLink259';
 
 export type NativeAffinityGap210 = {
@@ -127,7 +128,9 @@ export const nativeWineConsumerResult = (candidate: WineCandidate | null, profil
         nextStep: 'Revisa la ficha y tus preferencias antes de usar una puntuación anterior.' };
     }
   }
-  return { ...result, pending };
+  // 145: the list shows the same number as the sheet (a tannin of 0 does not count; see buildConsumerAffinity).
+  const shown = result.canExplainAffinity && candidate ? shownScore145(profile, candidate.sensoryAttributes, candidate.affinity) : null;
+  return { ...result, affinityValue: shown !== null ? `≈${shown}/100` : result.affinityValue, shownScore: shown, pending };
 };
 
 export const nextNativeWineReview = (regions: ScanRegion[]) => {

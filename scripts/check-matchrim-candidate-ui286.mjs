@@ -9,6 +9,7 @@ import * as recognition from '../src/utils/candidateRecognition286.ts';
 import { wineYearRoles105 } from '../src/utils/wineYearRole105.ts';
 import { suggestLocalOCRFragments108 } from '../src/utils/localOCRFragments108.ts';
 import * as autoLink from '../src/utils/autoLink139.ts';
+import * as scanKind from '../src/utils/scanKind144.ts';
 const require = createRequire(import.meta.url), ts = require('typescript');
 const React = require('react');
 const source = fs.readFileSync('src/components/wine-import/CandidateRecovery286.tsx', 'utf8');
@@ -63,6 +64,7 @@ function host({ calls = [], confirm = async () => ({ wine: { id: 'store' } }), m
     // 139: the shared wait is presentation; the decision is the real pure module.
     if (name.endsWith('/ScanWaiting139')) return { ScanWaiting139: 'scan-waiting139' };
     if (name.endsWith('/autoLink139')) return autoLink;
+    if (name.endsWith('/scanKind144')) return scanKind; // 145: the label's own lines and three-letter names (pure)
     throw Error('UNEXPECTED_IMPORT:' + name);
   } });
   const render = () => { cursor = 0; return exports.CandidateRecovery286(props); };
@@ -77,7 +79,8 @@ await test('Searches on its own with the text read, shows one leading wine, and 
   const h = host(); h.render(); await tick();
   assert(h.calls.length >= 1 && h.calls.length <= 7, 'bounded searches');
   assert(h.tree().includes('¿Es este tu vino?'), h.tree());
-  assert(h.tree().includes('Pesquera Crianza') && h.tree().includes('Tinto Pesquera · 2019'));
+  // 144: the card shows winery, name and «type · region · year» on their own lines.
+  assert(h.tree().includes('Pesquera Crianza') && h.tree().includes('Tinto Pesquera') && h.tree().includes('2019'));
   assert.equal(h.confirmations.length, 0);
   assert(h.tree().includes('No es este: ver otros candidatos'));
   h.unmount();

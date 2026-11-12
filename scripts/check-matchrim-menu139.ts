@@ -303,8 +303,8 @@ test('141 wiring: tray before the read, one wait, silent retry, plain line, numb
   // D: the photo opens with numbers only when reliable; nothing is said about positions on iOS.
   assert.match(menu, /\.map\(photo => \(\{ \.\.\.photo, reliable: menuPhotoReliable141\(photo\.rows\.map\(row => row\.wine\.posicion\)\) \}\)\)/);
   assert.match(menu, /const photosOpen141 = !loading && !convertingPdf && photoPages141\.some\(photo => photo\.reliable\);/);
-  assert.match(menu, /\{photo\.reliable && photo\.rows\.map\(\(\{ wine, index \}, row\) => \{\s*const badge = menuBadge141\(verdicts139\[index\]\);/);
-  assert.match(menu, /style=\{\{ right: `\$\{place\.right\}%`, top: `\$\{place\.top\}%` \}\} onClick=\{\(event\) => openWineDetail\(index, event\.currentTarget\)\}>\{badge\.text\}<\/button>/);
+  assert.match(menu, /\{photo\.reliable && photo\.rows\.map\(\(\{ wine, index \}, row\) => \{\s*const badge = verdicts139\[index\]\?\.kind === 'range' \? null : menuBadge141\(verdicts139\[index\]\);/);
+  assert.match(menu, /style=\{\{ right: `\$\{place\.right\}%`, top: `\$\{place\.top\}%`, [^\n]*\}\}\s*onClick=\{\(event\) => openWineDetail\(index, event\.currentTarget\)\}>\{badge\.text\}<\/button>/);
   assert.match(menu, /\{preview && scannedWines\.length > 0 && \(!isNative \|\| scannedWines\.some\(\(wine\) => menuPage141\(wine\) === previewPage141 && getWinePosition\(wine\)\)\) && \(/);
   assert.match(menu, /const position = menuPage141\(wine\) === previewPage141 \? getWinePosition\(wine\) : null;/);
   const photos = menu.indexOf('data-testid="native-menu-photos141"'), decision = menu.indexOf('data-testid="native-menu-decision"');
@@ -464,7 +464,7 @@ test('143 wiring: device lines only for a photo the server did not place, after 
   assert.match(menu, /const matched = matchMenuPositions143\(found\.read\.lines, rows\.map\(menuRow143\), found\.read\.aspect\);\s*if \(menuPhotoReliable141\(matched\.map\(menuPositionBox143\)\)\) places\.set\(page, matched\);/);
   assert.match(menu, /if \(!found\?\.read \|\| found\.src !== pagePhotos141\[page\]\) return;/, 'lines belong to the photo they were read from');
   assert.match(menu, /const device = photo\.reliable \? null : devicePlaces143\.get\(photo\.page\) \?\? null;/);
-  assert.match(menu, /return \{ \.\.\.photo, reliable: photo\.reliable \|\| device !== null,\s*places143: spreadMenuBadges143\(spots, MENU_BADGE_HEIGHT143 \/ \(photoHeights143\[photo\.page\] \|\| 520\) \* 100\) \};/);
+  assert.match(menu, /return \{ \.\.\.photo, reliable: photo\.reliable \|\| device !== null,[^\n]*\s*places143: spreadMenuBadges143\(spots, badgeHeight \/ photoHeight \* 100\) \};/);
   assert.match(menu, /const menuRow143 = \(wine: ScannedWine\): MenuRow143 => \(\{ name: wine\.nombre, producer: wine\.productor, source: wine\.texto_fuente,/);
   assert.match(menu, /asked143\.current\.clear\(\); setPageLines143\(\[\]\); setPhotoHeights143\(\{\}\); \};/, 'a new list starts without the old lines');
   // The badge: 28 pt, bold white on emerald-700 or stone-700, 2 px white ring, soft shadow; a tap opens the wine.

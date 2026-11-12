@@ -8,6 +8,7 @@ import { cellarAffinityView, type CellarAffinityWine } from '@/utils/bodegaAffin
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { useOwnWinePhoto133 } from '@/utils/ownWinePhoto133';
 import { NativeWineNote139 } from '@/components/NativeWineNote139';
+import { shownScore145 } from '@/utils/consumerAffinity95';
 import { WhyLines144 } from '@/components/WineSheet142';
 import { NativeWinerimFacts140 } from '@/components/NativeWinerimFacts140';
 import { estimateListing139, storeAffinity139 } from '@/utils/storeListing139';
@@ -62,7 +63,8 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
   }, [native, visible]);
   const view = native ? cellarAffinityView(wine, snapshot, true) : null;
   const style = native && view?.current === null ? cellarReferenceStyleView110(wine, snapshot) : null;
-  const displayScore = view?.current ?? style?.current ?? null;
+  // 145: the same number as the scan and the search sheet (a tannin of 0 does not count; see buildConsumerAffinity).
+  const displayScore = (view?.current != null ? shownScore145(snapshot?.profile, view.attributes, view.current) : null) ?? style?.current ?? null;
   // 143: the affinity history is folded so the sheet stays short, but it starts open while «Guardar afinidad de
   // hoy» is pending (nobody would find that button folded) and does not fold itself again once it is saved.
   const affinityUnsaved = view?.current != null && !view.initial;
