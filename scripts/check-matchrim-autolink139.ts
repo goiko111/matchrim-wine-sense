@@ -107,7 +107,7 @@ test('Vintage: taken only when the label supports exactly one', () => {
 });
 test('The wait names its steps with «Cancelar» visible, and the jargon is gone on iOS', () => {
   const list = read('src/components/wine-import/CandidateRecovery286.tsx'), scanner = read('src/components/wine-import/MultiWineLabelScanner.tsx');
-  assert.deepEqual([...SCAN_STEPS139], ['Leyendo la etiqueta', 'Buscando el vino en Winerim', 'Comparando con tus gustos']);
+  assert.deepEqual([...SCAN_STEPS139], ['Leyendo la foto', 'Buscando el vino en Winerim', 'Comparando con tus gustos']);
   assert.match(list, /<ScanWaiting139 steps=\{SCAN_STEPS139\} current=\{step\} \/>\s*<Button[^>]*onClick=\{\(\) => \{\s*pending\.current\?\.abort\(\);[^}]*\}\}><X[^>]*\/> Cancelar<\/Button>/);
   assert.equal(scanner.match(/<ScanWaiting139 steps=\{SCAN_STEPS139\} current=\{waitStep139\} \/>/g)?.length, 2, 'before and after the preview, local and AI mode');
   assert.match(scanner, /<ScanWaiting139 steps=\{SCAN_STEPS139\} current=\{waitStep139\} \/>\s*<Button[^>]*onClick=\{cancelScan\}><X[^>]*\/> Cancelar<\/Button>/);

@@ -149,6 +149,20 @@ export const fragmentQueries286 = (barren: readonly string[], max = 2) => [...ne
     return [word.slice(0, size), word.slice(-size)];
   }))].slice(0, max);
 
+// 147: «LA ZORRERA» in large letters with «Vino de parcela de la finca Legardeta · Garnacha» in small print brought
+// «Finca Legardeta … Garnacha» first: the ranking counts read words, not their size. A wine whose own name is exactly
+// what one of the label's largest lines says (and is not just the winery) is what the label is called: it goes first.
+export const promoteHeadline147 = (ranked: readonly Candidate286[], lines: readonly Line286[]): Candidate286[] => {
+  const sized = lines.filter(line => (line.box?.height ?? 0) > 0);
+  if (sized.length < 2 || ranked.length < 2) return [...ranked];
+  const tallest = Math.max(...sized.map(line => line.box!.height));
+  const wineries = new Set(ranked.map(value => distinct(value.row.winery).join(' ')));
+  const headlines = new Set(sized.filter(line => line.box!.height >= tallest * 0.6).map(line => distinct(line.text).join(' '))
+    .filter(text => text.length >= 3 && !wineries.has(text) && !text.split(' ').every(word => generic.has(word))));
+  const named = ranked.filter(value => headlines.has(distinct(value.name).join(' ')));
+  return named.length === 1 && named[0] !== ranked[0] ? [named[0], ...ranked.filter(value => value !== named[0])] : [...ranked];
+};
+
 export type CandidateSearch286 = (query: string) => Promise<{ status: string; rows: readonly PublicGlobalRow103[] }>;
 // At most two literal, three word and two fragment queries per user action.
 export const searchCandidates286 = async (evidence: readonly string[], literalQueries: readonly string[],
@@ -167,13 +181,13 @@ export const searchCandidates286 = async (evidence: readonly string[], literalQu
     return barren;
   };
   await runAll(literalQueries.slice(0, 2));
-  let ranked = rankCandidates286(evidence, rows, vintage);
+  let ranked = promoteHeadline147(rankCandidates286(evidence, rows, vintage), lines);
   if (candidateDecision286(ranked).mode !== 'one') {
     const barren = await runAll(candidateQueries286(evidence, fruitful, 3, lines));
-    ranked = rankCandidates286(evidence, rows, vintage);
+    ranked = promoteHeadline147(rankCandidates286(evidence, rows, vintage), lines);
     if (candidateDecision286(ranked).mode !== 'one') {
       await runAll(fragmentQueries286(barren));
-      ranked = rankCandidates286(evidence, rows, vintage);
+      ranked = promoteHeadline147(rankCandidates286(evidence, rows, vintage), lines);
     }
   }
   return { ranked, decision: candidateDecision286(ranked), searched, unavailable, incomplete };

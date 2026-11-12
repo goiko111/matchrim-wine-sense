@@ -1,6 +1,6 @@
 import React from 'react';
 import { Capacitor } from '@capacitor/core';
-import { Wine, TrendingUp, ExternalLink } from 'lucide-react';
+import { ChevronDown, Wine, TrendingUp, ExternalLink } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { buildWinerimWineUrl, WinerimWineWithMatch } from '@/services/winerimApi';
@@ -21,22 +21,33 @@ interface WineCardProps {
   isHighlighted?: boolean;
   setWineRef?: (id: string | number, ref: HTMLDivElement | null) => void;
   profile?: MatchrimProfileLike | null;
+  /** 147 (iOS): in a list (the profile) the card starts closed and opens on a tap; alone (Home's dialog) it is open. */
+  compact?: boolean;
 }
 
-const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false, setWineRef, profile }) => {
+const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false, setWineRef, profile, compact = false }) => {
   if (Capacitor.isNativePlatform()) {
     const evidence = buildNativeRecommendation95(wine, profile);
+    const ready = evidence.result.state === 'ready' ? evidence.result : null;
+    // 147: a recommended wine was a screen-long block (bottle, verdict, lists, Winerim data) and three of them made
+    // the profile endless. It is now the same compact card as a saved wine: bottle, winery, name, the number; a tap
+    // opens the rest in place. Everything that was shown is still there, in the same order.
     return (
-      <div ref={(node) => setWineRef?.(wine.id, node)}
+      <details open={compact ? undefined : true} ref={(node) => setWineRef?.(wine.id, node as unknown as HTMLDivElement | null)}
         data-testid="native-recommendation-card"
-        className={`min-w-0 border-b border-stone-200 py-4 text-left ${isHighlighted ? 'border-l-2 border-l-red-800 pl-3' : ''}`}>
-        <div className="flex min-w-0 flex-wrap items-start gap-4">
-          <NativeWinePhoto98 src={wine.photo} name={wine.name} identity={{ name: wine.name, producer: wine.winery, vintage: wine.vintage }} resolveMissing className="h-[176px] w-[96px]" />
-          <div className="min-w-[min(100%,12rem)] flex-1 pt-2">
-            <h4 className="break-words text-xl font-semibold leading-7 text-slate-950">{wine.name}</h4>
-            <p className="mt-2 break-words text-sm leading-6 text-stone-600">{[wine.winery, wine.vintage, wine.region].filter(Boolean).join(' · ')}</p>
-          </div>
-        </div>
+        className={`group min-w-0 rounded-2xl border bg-white text-left ${isHighlighted ? 'border-red-800' : 'border-stone-200'}`}>
+        <summary className="flex min-w-0 cursor-pointer list-none items-center gap-3 p-3 [&::-webkit-details-marker]:hidden" aria-label={`Ver ${wine.name}${ready ? `. Afinidad orientativa ${ready.score} de 100` : ''}`}>
+          <NativeWinePhoto98 src={wine.photo} name={wine.name} identity={{ name: wine.name, producer: wine.winery, vintage: wine.vintage }} resolveMissing className="h-[104px] w-[72px] !rounded-xl !bg-stone-100" />
+          <span className="min-w-0 flex-1" aria-hidden="true">
+            <span className="block break-words text-xs leading-5 text-stone-600">{wine.winery}</span>
+            <span className="block break-words text-base font-semibold leading-6 text-stone-950">{wine.name}</span>
+            <span className="block break-words text-xs leading-5 text-stone-500">{[wine.vintage, wine.region].filter(Boolean).join(' · ')}</span>
+            {ready && <span className="mt-2 flex flex-wrap items-center gap-2"><span className={`rounded-full px-2.5 py-1 text-xs font-bold tabular-nums ${ready.score >= 65 ? 'bg-emerald-50 text-emerald-900' : 'bg-stone-100 text-stone-800'}`}>{ready.score}/100</span>
+              <span className="text-xs font-semibold text-stone-700">{ready.title}</span></span>}
+          </span>
+          {compact && <ChevronDown className="h-5 w-5 shrink-0 text-stone-400 transition-transform group-open:rotate-180" aria-hidden="true" />}
+        </summary>
+        <div className="border-t border-stone-100 px-3 pb-4 pt-1">
         <div className="mt-3"><NativeAffinitySummary result={evidence.result} /></div>
         {/* 144: the same three choices as every other wine sheet («Guardar en Mis vinos» opened a ten-field form). */}
         <div className="mt-4"><NativeSaveChoice142 wine={{ name: wine.name, producer: wine.winery, vintage: wine.vintage, region: wine.region, country: wine.country, photo: wine.photo }} /></div>
@@ -46,7 +57,8 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
           <summary className="min-h-11 cursor-pointer py-3 text-sm font-medium text-stone-700">Buscar su ficha verificada</summary>
           <WinerimSheetLookup identity={{ name: wine.name, producer: wine.winery, vintage: wine.vintage, region: wine.region, country: wine.country }} />
         </details>}
-      </div>
+        </div>
+      </details>
     );
   }
 

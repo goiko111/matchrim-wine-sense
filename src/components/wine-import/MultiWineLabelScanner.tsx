@@ -324,6 +324,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const selectedRegion = regions.find((region) => region.id === selectedRegionId) ?? null;
   const selectedCandidate = selectedRegion ? getSelectedCandidate(selectedRegion) : null;
   const nativeConsumer = isNative ? nativeWineConsumerResult(selectedCandidate, scanProfile?.profile ?? null) : null;
+  // 147: once the wine is known the sheet shows its top (bottle and number); it kept the scroll of the candidate list.
+  const linked147 = Boolean(nativeConsumer?.canExplainAffinity) ? selectedCandidate?.name ?? '' : '';
+  useEffect(() => { if (isNative && linked147 && regionEditorBody.current) regionEditorBody.current.scrollTop = 0; }, [isNative, linked147]);
   const selectedPersonalVerdict = isNative ? resolveNativeRescanVerdict159(user?.id ?? null, nativeVerdicts, selectedCandidate) : null;
   const nativeReviewTarget = isNative ? nextNativeWineReview(regions) : null;
   // 137: the photo with a number on it answered nothing. One bottle opens its verdict; several open the list with each affinity.

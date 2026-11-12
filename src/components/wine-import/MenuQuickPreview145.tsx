@@ -35,7 +35,7 @@ export const MenuQuickPreview145 = ({ file, profile }: { file: File | null | und
   if (!lines.length) return null;
   return <section className="min-w-0 rounded-2xl border border-stone-200 bg-white px-4 py-3 text-left" aria-label="Vista rápida de la carta" data-testid="menu-quick-preview145">
     <h3 className="text-base font-semibold text-stone-950">Vista rápida</h3>
-    <p className="mt-1 text-sm leading-5 text-stone-600">Lo que tu iPhone ya lee. La lista completa llega en unos segundos.</p>
+    <p className="mt-1 text-sm leading-5 text-stone-600">Lo que tu iPhone ya lee. La lista completa, con todos los números, tarda alrededor de medio minuto.</p>
     <ul className="mt-2 divide-y divide-stone-100">{lines.map((line, index) => { const match = matches[index];
       const result = match?.kind === 'exact' && profile ? storeAffinity139(profile, match.estimate.attributes) : null;
       const score = result?.state === 'ready' ? result.score : null;

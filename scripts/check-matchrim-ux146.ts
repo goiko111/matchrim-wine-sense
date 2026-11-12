@@ -38,6 +38,6 @@ test('Small things: the heading while loading, plain recent scans, no worrying n
   assert.match(read('src/components/NativeHome98.tsx'), /\{hasProfile \|\| loading \? 'Para tu paladar' : 'Primero, tus gustos'\}/);
   const hub = read('src/components/NativeScanHub99.tsx'); assert.match(hub, /plain146\(item\.title\)/); assert.match(hub, /plainSubtitle146\(item\.subtitle\)/);
   assert(!read('src/components/wine-import/CandidateRecovery286.tsx').includes("? found.incomplete ? 'Algunas búsquedas"));
-  assert.match(read('src/components/wine-import/WineMenuScanner.tsx'), /const badgeHeight = compact \? Math\.max\(17, Math\.floor\(pitch\) \+ 2\)/);
+  assert.match(read('src/components/wine-import/WineMenuScanner.tsx'), /const badgeHeight = compact \? Math\.max\(17, /); // 147: sized by the printed text
 });
 console.log(`check-matchrim-ux146: ${groups}/4 groups passed`);

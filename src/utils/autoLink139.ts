@@ -5,7 +5,7 @@ import { hasConflictingNativeVintage100 } from './nativeVintageEvidence100';
 // read «Pago de Cirsus · VIDURE · 2020» still made the person pick from ten wines of the winery. The decision is
 // pure and deliberately narrow: exact whole words only (no misread tolerance), one single candidate, no contradiction.
 // The same three steps in the scanner and in the candidate search, so the wait reads as one process.
-export const SCAN_STEPS139 = ['Leyendo la etiqueta', 'Buscando el vino en Winerim', 'Comparando con tus gustos'] as const;
+export const SCAN_STEPS139 = ['Leyendo la foto', 'Buscando el vino en Winerim', 'Comparando con tus gustos'] as const;
 
 const fold = (value: string) => value.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
   .replace(/œ/g, 'oe').replace(/æ/g, 'ae').replace(/ß/g, 'ss');

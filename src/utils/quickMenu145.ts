@@ -8,7 +8,9 @@ export type QuickMenuLine145 = { text: string; price: number | null; y: number }
 const PRICE = /(\d{1,4})(?:[.,](\d{1,2}))?\s?(?:€|eur(?:os?)?\b)|(\d{1,3})[.,](\d{2})\s*$/i;
 const priceOf = (text: string): number | null => { const match = text.match(PRICE); if (!match) return null;
   const value = Number(`${match[1] ?? match[3]}.${(match[2] ?? match[4] ?? '0')}`); return Number.isFinite(value) && value >= 3 && value <= 5000 ? value : null; };
-const HEADING = /^(?:tintos?|blancos?|rosados?|espumosos?|cavas?|champagnes?|dulces?|generosos?|vinos?|carta de vinos|copas?|por copas|botellas?|red|white|ros[eé]|sparkling)(?:\s+(?:y|e|and)\s+\p{L}+)?$/iu;
+const SECTION = /^(?:tintos?|blancos?|rosados?|espumosos?|cavas?|champagnes?|champ[aá]n|dulces?|generosos?|vinos?|carta|copas?|botellas?|magnums?|red|white|ros[eé]|sparkling|wines?|y|e|and|de|por|los|las|la|el)$/iu;
+// A section title is made only of such words («TINTOS», «CAVAS, CHAMPAGNES Y ESPUMOSOS», «VINOS POR COPAS»).
+const HEADING = { test: (text: string) => { const words = text.split(/[^\p{L}]+/u).filter(Boolean); return words.length > 0 && words.every(word => SECTION.test(word)); } };
 
 export const quickMenuLines145 = (lines: ReadonlyArray<OcrLine143>, max = 40): QuickMenuLine145[] => {
   const prices = lines.flatMap(line => { const bare = line.text.replace(PRICE, '').replace(/[\s.·_-]+/g, ''); const price = priceOf(line.text);
@@ -20,13 +22,18 @@ export const quickMenuLines145 = (lines: ReadonlyArray<OcrLine143>, max = 40): Q
     const letters = text.replace(/[^\p{L}]/gu, '');
     // Not a wine: a bare price, a section in brackets («(RIOJA)»), a heading, or too little to search.
     // 146: nor the restaurant's own lines at the foot of the page («IKILIEUS / @IKILI.DONOSTIA», a web address, a phone).
+    // 147: a zone in brackets cut by the edge («(EUSKA»), and a line that runs off the right edge of the photo with
+    // no price of its own (the next column, cut: «MONTECIL», «LUIS CAN») are not wines to show either.
+    if (/^\(/.test(text) || (inline === null && line.box.x + line.box.width > 0.985)) continue;
     if (letters.length < 3 || /^\(.*\)$/.test(text) || HEADING.test(text) || /@|www\.|https?:|\.(?:com|es|eus|net)\b|\btel\b|\d{3}\s?\d{3}\s?\d{3}/i.test(text)) continue;
     const middle = line.box.y + line.box.height / 2;
     let price = inline;
     if (price === null) {
       // The price column is read as lines of its own: the one level with this line, to its right, is its price.
-      const near = prices.filter(item => !item.used && item.x > line.box.x && Math.abs(item.y - middle) <= line.box.height * 0.7)
-        .sort((a, b) => Math.abs(a.y - middle) - Math.abs(b.y - middle))[0];
+      // 147: with two columns the price level with a line may belong to the other column: the nearest one to the right wins.
+      const end = line.box.x + line.box.width;
+      const near = prices.filter(item => !item.used && item.x >= end - 0.02 && Math.abs(item.y - middle) <= line.box.height * 0.7)
+        .sort((a, b) => (a.x - end) - (b.x - end) || Math.abs(a.y - middle) - Math.abs(b.y - middle))[0];
       if (near) { near.used = true; price = near.price; }
     }
     out.push({ text: text.slice(0, 160), price, y: middle });

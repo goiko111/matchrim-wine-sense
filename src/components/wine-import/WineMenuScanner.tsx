@@ -1744,15 +1744,17 @@ const WineMenuScannerSession = ({
       // and sits right after the wine's name: one per line, none on another. A line that is «one of several wines»
       // gets no badge on the photo (a «64–79» pill said nothing); the list below still offers the choice.
       const photoHeight = photoHeights143[photo.page] || 520;
-      const tops = (device ?? []).flatMap(found => found ? [found.y + found.height / 2] : []).sort((a, b) => a - b);
-      const gaps = tops.slice(1).map((top, at) => top - tops[at]).filter(gap => gap > 0.2).sort((a, b) => a - b);
-      const pitch = gaps.length ? gaps[Math.floor((gaps.length - 1) / 2)] / 100 * photoHeight : MENU_BADGE_HEIGHT143 * 2;
-      const compact = device !== null && pitch < MENU_BADGE_HEIGHT143 + 2;
-      const badgeHeight = compact ? Math.max(17, Math.floor(pitch) + 2) : MENU_BADGE_HEIGHT143; // 146: a little larger (they read too small on the phone); neighbours sit at different distances, so two points of overlap in height do not touch
+      // 147: the pitch was taken from the wines that got a place, so on a real page (ten of twenty-two placed, two
+      // columns) the lines looked far apart and the badges stayed large and spread over the gap before the prices.
+      // The printed text's own height says how tight the page is: the badge is about one and a half lines tall.
+      const heights = (device ?? []).flatMap(found => found ? [found.height] : []).sort((a, b) => a - b);
+      const textPx = heights.length ? heights[Math.floor((heights.length - 1) / 2)] / 100 * photoHeight : MENU_BADGE_HEIGHT143;
+      const compact = device !== null;
+      const badgeHeight = compact ? Math.max(17, Math.min(MENU_BADGE_HEIGHT143, Math.round(textPx * 1.5))) : MENU_BADGE_HEIGHT143;
       const spots = !photo.reliable && !device ? [] : photo.rows.map(({ wine, index }, order) => {
         const badge = verdicts139[index]?.kind === 'range' ? null : menuBadge141(verdicts139[index]);
         if (!badge) return null;
-        const width = compact ? 8.5 : badge.text.length > 2 ? MENU_BADGE_WIDTH143.range : MENU_BADGE_WIDTH143.score, found = device?.[order] ?? null;
+        const width = compact ? 8 : badge.text.length > 2 ? MENU_BADGE_WIDTH143.range : MENU_BADGE_WIDTH143.score, found = device?.[order] ?? null;
         const place = found ? compact ? { right: 100 - Math.max(width + 1, Math.min(99, found.nameEnd + 1.5 + width)), top: Math.max(2, Math.min(98, found.y + found.height / 2)) }
           : menuBadgePlacement143(found, width) : device ? null : menuBadgePlacement141(wine.posicion, width);
         return place ? { ...place, width, nameEnd: found?.nameEnd ?? null } : null;
@@ -2586,7 +2588,7 @@ const WineMenuScannerSession = ({
                       return badge && place ? <button key={`${wine.nombre}-${index}-badge141`} type="button" data-testid="native-menu-badge141"
                         aria-label={`${shownName140(wine, verdicts139[index]).name}: ${badge.text} sobre 100`}
                         className={`absolute flex h-[28px] -translate-y-1/2 items-center rounded-full px-[8px] text-[13px] font-bold leading-none tabular-nums text-white shadow-md ring-2 ring-white ${badge.tone === 'good' ? 'bg-emerald-700' : 'bg-stone-700'}`}
-                        style={{ right: `${place.right}%`, top: `${place.top}%`, ...(photo.compact145 ? { height: photo.badgeHeight145, fontSize: Math.max(11, Math.min(13, photo.badgeHeight145 - 5)), paddingLeft: 5, paddingRight: 5, boxShadow: '0 0 0 1px #fff' } : {}) }}
+                        style={{ right: `${place.right}%`, top: `${place.top}%`, ...(photo.compact145 ? { height: photo.badgeHeight145, fontSize: Math.max(11, Math.min(13, photo.badgeHeight145 - 6)), paddingLeft: 5, paddingRight: 5, boxShadow: '0 0 0 1px #fff' } : {}) }}
                         onClick={(event) => openWineDetail(index, event.currentTarget)}>{badge.text}</button> : null;
                     })}
                   </div>

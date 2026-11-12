@@ -870,9 +870,9 @@ const Profile = () => {
                     <p className="mb-4 max-w-2xl text-sm leading-6 text-stone-600">
                       Estos salen de Winerim para tu perfil y no aparecen ya en Mis Vinos. Son candidatos para guardar en {isNative ? 'Por probar' : 'Quiero Probar'}.
                     </p>
-                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                    <div className={isNative ? 'space-y-2' : 'grid grid-cols-1 gap-6 lg:grid-cols-3'}>
                     {nextWinerimWines.slice(0, MAX_PROFILE_WINE_CARDS).map((wine, index) => (
-                      <WineCard key={wine.id} wine={wine} index={index} profile={activeDisplayProfile} />
+                      <WineCard key={wine.id} wine={wine} index={index} profile={activeDisplayProfile} compact={isNative} />
                     ))}
                     </div>
                   </>

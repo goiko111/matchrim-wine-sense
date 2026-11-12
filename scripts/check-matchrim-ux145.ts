@@ -56,7 +56,7 @@ await test('The wines the phone already reads are shown while the server reads t
 
 await test('One number per line on a tight list; no range pills on the photo', () => {
   const menu = read('src/components/wine-import/WineMenuScanner.tsx');
-  assert.match(menu, /const compact = device !== null && pitch < MENU_BADGE_HEIGHT143 \+ 2;/);
+  assert.match(menu, /const compact = device !== null;/); // 147: whenever the phone placed the lines
   assert.match(menu, /const badge = verdicts139\[index\]\?\.kind === 'range' \? null : menuBadge141\(verdicts139\[index\]\);/);
 });
 

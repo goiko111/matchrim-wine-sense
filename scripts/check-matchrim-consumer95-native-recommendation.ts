@@ -120,6 +120,7 @@ function mount(file: string, source: string, native: boolean) {
     buildWinerimWineUrl: () => 'https://web.winerim.com/the-library/wines/278688/Manzanilla-La-Gitana',
     NativeAffinitySummary: 'NativeAffinitySummary', WineCard: 'WineCard', AppNav: 'AppNav', Button: 'Button', Card: 'Card', CardContent: 'CardContent',
     NativeWinePhoto98: 'NativeWinePhoto98', NativeWineSearch97: 'NativeWineSearch97',
+    ChevronDown: 'ChevronDown', // 147: the recommended wine is a compact card that opens in place
     NativeSaveChoice142: 'NativeSaveChoice142', WinerimSheetLookup: 'WinerimSheetLookup', NativeWinerimFacts140: 'NativeWinerimFacts140',
     AiRimMark: 'AiRimMark', MatchrimQuickGuide: 'MatchrimQuickGuide', MobileBottomNav: 'MobileBottomNav',
     DialogPrimitive: dialog, Dialog: dialog,
