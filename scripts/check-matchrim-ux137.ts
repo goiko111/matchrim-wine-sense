@@ -24,7 +24,8 @@ test('Affinity reasons describe the wine in everyday words; a low tannin is neve
 test('Home says what the app is for and puts the three scans one tap away', () => {
   const home = read('src/components/NativeHome98.tsx');
   assert.match(home, /¿Te va a gustar ese vino\?/);
-  for (const route of ['/escanear/etiqueta', '/escanear/carta', '/restaurante']) assert(home.includes(`['${route}',`), route);
+  // 146: one camera for bottle and wine list (the app tells them apart), so two shortcuts.
+  for (const route of ['/escanear/etiqueta', '/restaurante']) assert(home.includes(`['${route}',`), route);
   assert.match(home, /!hasProfile \? <div[^>]*data-testid="native-home-taste137"/);
   assert.match(home, /aria-label="Conocer mis gustos" onClick=\{\(\) => navigate\('\/matchrim'\)\}/, 'native probe name kept');
   assert.doesNotMatch(home, /por estilo/);

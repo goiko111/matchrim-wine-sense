@@ -1748,11 +1748,11 @@ const WineMenuScannerSession = ({
       const gaps = tops.slice(1).map((top, at) => top - tops[at]).filter(gap => gap > 0.2).sort((a, b) => a - b);
       const pitch = gaps.length ? gaps[Math.floor((gaps.length - 1) / 2)] / 100 * photoHeight : MENU_BADGE_HEIGHT143 * 2;
       const compact = device !== null && pitch < MENU_BADGE_HEIGHT143 + 2;
-      const badgeHeight = compact ? Math.max(14, Math.floor(pitch) - 1) : MENU_BADGE_HEIGHT143;
+      const badgeHeight = compact ? Math.max(17, Math.floor(pitch) + 2) : MENU_BADGE_HEIGHT143; // 146: a little larger (they read too small on the phone); neighbours sit at different distances, so two points of overlap in height do not touch
       const spots = !photo.reliable && !device ? [] : photo.rows.map(({ wine, index }, order) => {
         const badge = verdicts139[index]?.kind === 'range' ? null : menuBadge141(verdicts139[index]);
         if (!badge) return null;
-        const width = compact ? 7.5 : badge.text.length > 2 ? MENU_BADGE_WIDTH143.range : MENU_BADGE_WIDTH143.score, found = device?.[order] ?? null;
+        const width = compact ? 8.5 : badge.text.length > 2 ? MENU_BADGE_WIDTH143.range : MENU_BADGE_WIDTH143.score, found = device?.[order] ?? null;
         const place = found ? compact ? { right: 100 - Math.max(width + 1, Math.min(99, found.nameEnd + 1.5 + width)), top: Math.max(2, Math.min(98, found.y + found.height / 2)) }
           : menuBadgePlacement143(found, width) : device ? null : menuBadgePlacement141(wine.posicion, width);
         return place ? { ...place, width, nameEnd: found?.nameEnd ?? null } : null;
@@ -2586,7 +2586,7 @@ const WineMenuScannerSession = ({
                       return badge && place ? <button key={`${wine.nombre}-${index}-badge141`} type="button" data-testid="native-menu-badge141"
                         aria-label={`${shownName140(wine, verdicts139[index]).name}: ${badge.text} sobre 100`}
                         className={`absolute flex h-[28px] -translate-y-1/2 items-center rounded-full px-[8px] text-[13px] font-bold leading-none tabular-nums text-white shadow-md ring-2 ring-white ${badge.tone === 'good' ? 'bg-emerald-700' : 'bg-stone-700'}`}
-                        style={{ right: `${place.right}%`, top: `${place.top}%`, ...(photo.compact145 ? { height: photo.badgeHeight145, fontSize: Math.max(9, Math.min(12, photo.badgeHeight145 - 5)), paddingLeft: 5, paddingRight: 5, boxShadow: '0 0 0 1px #fff' } : {}) }}
+                        style={{ right: `${place.right}%`, top: `${place.top}%`, ...(photo.compact145 ? { height: photo.badgeHeight145, fontSize: Math.max(11, Math.min(13, photo.badgeHeight145 - 5)), paddingLeft: 5, paddingRight: 5, boxShadow: '0 0 0 1px #fff' } : {}) }}
                         onClick={(event) => openWineDetail(index, event.currentTarget)}>{badge.text}</button> : null;
                     })}
                   </div>

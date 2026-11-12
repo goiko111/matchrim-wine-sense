@@ -30,6 +30,10 @@ const Entry = ({ title, subtitle, label, icon: Icon, tone, onClick }: {
   </button>
 );
 
+// 146: «1 referencia confirmada · 1 objetos · 0 dudosos · 0 sin reconocer» was the scanner's own bookkeeping.
+const plain146 = (title: string) => title.replace(/^(\d+) referencias? confirmadas?$/i, (_, count: string) => count === '1' ? '1 vino guardado' : `${count} vinos guardados`);
+const plainSubtitle146 = (subtitle: string) => /\bobjetos?\b|\bdudosos?\b|sin reconocer/i.test(subtitle) ? '' : subtitle;
+
 export const NativeScanHub99 = ({ ownerId, options, onSelectMode, onOpenRestaurant, onOpenRecent }: Props) => {
   const [recent, setRecent] = useState(() => getScanHistory(ownerId));
 
@@ -49,8 +53,7 @@ export const NativeScanHub99 = ({ ownerId, options, onSelectMode, onOpenRestaura
   }, [ownerId]);
 
   const bottles = options.find(option => option.id === 'label');
-  const wineMenu = options.find(option => option.id === 'wine-menu');
-  const more = options.filter(option => option.id !== 'label' && option.id !== 'wine-menu');
+  const more = options.filter(option => option.id !== 'label');
 
   return <div className="min-w-0 [overflow-wrap:anywhere]" data-testid="native-scan-hub99">
     <header className="mb-[24px]">
@@ -58,11 +61,11 @@ export const NativeScanHub99 = ({ ownerId, options, onSelectMode, onOpenRestaura
     </header>
 
     <div className="divide-y divide-stone-200 border-y border-stone-200" data-testid="native-scan-primary99">
-      {bottles && <Entry title="Botellas" subtitle="¿Me gustará? Una botella o una vitrina entera"
-        label={`${bottles.title} · Botellas · Una o varias`} icon={bottles.icon} tone="bg-red-50 text-red-900"
+      {/* 146: one camera. The person photographed a wine list through «Botellas» twice: the app now tells a bottle from
+          a list by itself (scanKind144), so there is one way in. The list reader stays under «Más formas» (PDF, several pages). */}
+      {bottles && <Entry title="Botella o carta" subtitle="Haz la foto: la app sabe si es una botella o una carta de vinos"
+        label={`${bottles.title} · Botellas y cartas · Una foto`} icon={bottles.icon} tone="bg-red-50 text-red-900"
         onClick={() => onSelectMode(bottles.id)} />}
-      {wineMenu && <Entry title={wineMenu.title} subtitle="¿Cuál pido? Foto de la carta o de la pizarra" icon={wineMenu.icon}
-        tone="bg-emerald-50 text-emerald-800" onClick={() => onSelectMode(wineMenu.id)} />}
       <Entry title="Comida y vino" subtitle="¿Qué vino va con mi plato? Carta de platos y de vinos"
         label="Comida y vinos del restaurante · Comida y vino" icon={Utensils} tone="bg-stone-100 text-stone-700"
         onClick={onOpenRestaurant} />
@@ -74,7 +77,7 @@ export const NativeScanHub99 = ({ ownerId, options, onSelectMode, onOpenRestaura
         <ChevronDown className="h-[20px] w-[20px] shrink-0 group-open:rotate-180" aria-hidden="true" focusable="false" />
       </summary>
       <div className="divide-y divide-stone-200">
-        {more.map(option => <Entry key={option.id} title={option.title} icon={option.icon}
+        {more.map(option => <Entry key={option.id} title={option.id === 'wine-menu' ? 'Carta de vinos en varias fotos o PDF' : option.title} icon={option.icon}
           tone="bg-stone-100 text-stone-700" onClick={() => onSelectMode(option.id)} />)}
       </div>
     </details>
@@ -86,8 +89,8 @@ export const NativeScanHub99 = ({ ownerId, options, onSelectMode, onOpenRestaura
           <button type="button" onClick={() => onOpenRecent(item.route)}
             className="matchrim-pressable flex min-h-[44px] w-full min-w-0 items-center gap-[12px] py-[12px] text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-900">
             <span className="min-w-0 flex-1">
-              <span className="block text-sm font-semibold">{item.title}</span>
-              {item.subtitle && <span className="mt-[4px] block text-xs text-stone-500">{item.subtitle}</span>}
+              <span className="block text-sm font-semibold">{plain146(item.title)}</span>
+              {item.subtitle && plainSubtitle146(item.subtitle) && <span className="mt-[4px] block text-xs text-stone-500">{plainSubtitle146(item.subtitle)}</span>}
             </span>
             <ChevronRight className="h-[20px] w-[20px] shrink-0 text-stone-400" aria-hidden="true" focusable="false" />
           </button>

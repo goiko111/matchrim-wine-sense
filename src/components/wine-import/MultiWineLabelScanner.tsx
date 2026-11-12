@@ -189,9 +189,11 @@ const userFacingScanError = (error: unknown) => {
 
 const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScannerProps) => {
   const navigate = useNavigate();
+  const closeAfterSave146 = useRef(false), resetAfterSave146 = useRef<(() => void) | null>(null);
   const { user } = useAuth();
   const isNative = Capacitor.isNativePlatform();
-  const [scanMode, setScanMode] = useState<'cloud' | 'local-single'>('cloud');
+  // 146: one camera: the phone's own reading is the default (it is what tells a bottle from a wine list).
+  const [scanMode, setScanMode] = useState<'cloud' | 'local-single'>(() => Capacitor.isNativePlatform() && localOCRAvailable106() ? 'local-single' : 'cloud');
   const [localBatch, setLocalBatch] = useState(false);
   const [localReading, setLocalReading] = useState<{ regionId: string; value: LocalOCRResult106 } | null>(null);
   // 139: a clear label links by itself (autoLink139). `autoLinked139` remembers what was replaced so «¿No es este? Cambiar»
@@ -813,6 +815,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     if (cameraInputRef.current) cameraInputRef.current.value = '';
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
+  resetAfterSave146.current = resetScan;
 
   const retryScan = () => {
     if (lastFileRef.current) void startScan(lastFileRef.current);
@@ -1115,6 +1118,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       },
     });
     setConfirmed(true);
+    // 146: saved from the bottle's own sheet: the scan is over, so the camera screen comes back instead of «Lectura terminada · Vinos (1)».
+    if (closeAfterSave146.current) { closeAfterSave146.current = false; toast.success('Vino guardado en Por probar'); resetAfterSave146.current?.(); return; }
     toast.success(isNative ? groups.length === 1 ? 'Vino guardado en Por probar' : `${groups.length} vinos guardados en Por probar` : `Lote confirmado: ${groups.length} referencias`);
   };
 
@@ -1311,7 +1316,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
             <div className="min-w-0 flex-1">
               <h2 className="text-lg font-bold text-slate-950">{isNative && scanMode === 'local-single' ? 'Fotografía una etiqueta' : 'Fotografía las botellas'}</h2>
               <p className="mt-1 max-w-md text-sm leading-5 text-slate-600">
-                {isNative && scanMode === 'local-single' ? 'La foto se queda en este iPhone. La búsqueda en Winerim usa solo el texto leído.' : 'Una botella o varias a la vez (una estantería, una vitrina). Te decimos cuánto encaja cada una contigo.'}
+                {isNative && scanMode === 'local-single' ? 'Una etiqueta o una carta de vinos: la app sabe cuál es. La foto de una botella se queda en este iPhone.' : 'Una botella o varias a la vez (una estantería, una vitrina). Te decimos cuánto encaja cada una contigo.'}
               </p>
             </div>
           </div>
@@ -1688,7 +1693,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   } : undefined}
                   saveChoice={saveSingle137 && user ? <NativeSaveChoice142 key={selectedCandidate.id}
                     wine={{ name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage, region: selectedCandidate.region, country: selectedCandidate.country }}
-                    onWishlist={() => { setNativeResultView('wines'); setSelectedRegionId(null); void confirmBatch(); }}
+                    onWishlist={() => { setNativeResultView('wines'); setSelectedRegionId(null); closeAfterSave146.current = true; void confirmBatch(); }}
                     onSaved={place => { if (place === 'tasted') markScannedSaved144(user.id, { name: selectedCandidate.name, winery: selectedCandidate.producer ?? null, vintage: selectedCandidate.vintage == null ? null : String(selectedCandidate.vintage) });
                       toast.success(place === 'tasted' ? 'Guardado en Probados' : 'Guardado en tu bodega'); resetScan(); }} /> : undefined}
                   returnLabel={saveSingle137 ? 'Guardar en Por probar' : confirmed ? 'Volver a la lista' : 'Volver a la lista para guardar'}

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Dialog from '@radix-ui/react-dialog';
-import { ArrowRight, Camera, ChevronRight, RefreshCw, ScrollText, Search, UserRound, Utensils, X, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { ArrowRight, Camera, ChevronRight, RefreshCw, Search, UserRound, Utensils, X, ThumbsDown, ThumbsUp } from 'lucide-react';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { NativeStoreSearch139 } from '@/components/NativeStoreSearch139';
@@ -92,8 +92,8 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
       <button type="button" aria-label="Buscar vino o bodega" className="mb-4 flex min-h-12 w-full items-center gap-3 rounded-md border border-stone-300 bg-white px-4 py-3 text-left text-sm text-stone-600" onClick={() => setSearchOpen(true)}><Search className="h-5 w-5 shrink-0" aria-hidden="true" /><span className="min-w-0 flex-1 [overflow-wrap:normal]">Busca un vino por su nombre</span></button>
 
       {/* 137: the three things people open the app for, one tap away (they were behind the Escanear tab). */}
-      <nav aria-label="Qué quieres hacer" className="mb-7 grid grid-cols-3 gap-2 [html.matchrim-accessibility-text_&]:grid-cols-1" data-testid="native-home-actions137">
-        {([['/escanear/etiqueta', Camera, 'Una botella', '¿Me gustará?'], ['/escanear/carta', ScrollText, 'Carta de vinos', '¿Cuál pido?'], ['/restaurante', Utensils, 'Comida y vino', '¿Qué va con mi plato?']] as const).map(([route, Icon, title, hint]) =>
+      <nav aria-label="Qué quieres hacer" className="mb-7 grid grid-cols-2 gap-2 [html.matchrim-accessibility-text_&]:grid-cols-1" data-testid="native-home-actions137">
+        {([['/escanear/etiqueta', Camera, 'Botella o carta', '¿Me gustará? ¿Cuál pido?'], ['/restaurante', Utensils, 'Comida y vino', '¿Qué va con mi plato?']] as const).map(([route, Icon, title, hint]) =>
           <button key={route} type="button" className="flex min-h-28 min-w-0 flex-col items-start justify-between gap-3 rounded-xl border border-stone-200 bg-white p-3 text-left shadow-sm active:bg-stone-50" onClick={() => navigate(route)}>
             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-red-50 text-red-900"><Icon className="h-5 w-5" aria-hidden="true" /></span>
             <span className="block min-w-0"><span className="block text-sm font-semibold leading-5">{title}</span><span className="mt-0.5 block text-xs leading-4 text-stone-600">{hint}</span></span>
@@ -121,7 +121,7 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
       </div>}
       <section aria-labelledby="home-wines98-title">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <h2 id="home-wines98-title" className="text-xl font-semibold">{hasProfile ? 'Para tu paladar' : 'Primero, tus gustos'}</h2>
+          <h2 id="home-wines98-title" className="text-xl font-semibold">{hasProfile || loading ? 'Para tu paladar' : 'Primero, tus gustos'}</h2>
           {hasProfile && recommendations.length > 3 && <button ref={allButton} type="button" className="min-h-11 text-sm font-semibold text-red-900" onClick={() => setAllOpen(true)}>Ver todos</button>}
         </div>
         {loading ? <div role="status" className="space-y-4" aria-label="Cargando vinos">

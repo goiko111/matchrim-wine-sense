@@ -27,6 +27,11 @@ export const MenuQuickPreview145 = ({ file, profile }: { file: File | null | und
     })();
     return () => { live = false; controller.abort(); };
   }, [file]);
+  const range = (match: ListingMatch139 | null | undefined): [number, number] | null => {
+    if (match?.kind !== 'range' || !profile) return null;
+    const scores = match.options.flatMap(option => { const result = storeAffinity139(profile, option.attributes); return result.state === 'ready' ? [result.score] : []; });
+    return scores.length ? [Math.min(...scores), Math.max(...scores)] : null;
+  };
   if (!lines.length) return null;
   return <section className="min-w-0 rounded-2xl border border-stone-200 bg-white px-4 py-3 text-left" aria-label="Vista rápida de la carta" data-testid="menu-quick-preview145">
     <h3 className="text-base font-semibold text-stone-950">Vista rápida</h3>
@@ -39,7 +44,8 @@ export const MenuQuickPreview145 = ({ file, profile }: { file: File | null | und
           {line.price !== null && <span className="block text-xs text-stone-500">{line.price.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €</span>}</span>
         {score !== null ? <span className={`shrink-0 rounded-full px-2.5 py-1 text-sm font-bold tabular-nums ${score >= 65 ? 'bg-emerald-50 text-emerald-900' : 'bg-stone-100 text-stone-800'}`} aria-label={`Estimación: ${score} de 100`}>≈{score}</span>
           : match === undefined ? <span className="h-2 w-8 shrink-0 animate-pulse rounded-full bg-stone-200" aria-label="Buscando" />
-            : <span className="shrink-0 text-xs text-stone-400" aria-hidden="true">—</span>}
+            // 146: a dash on thirteen of nineteen lines looked broken. A winery with several wines shows its range; nothing found shows nothing.
+            : range(match) ? <span className="shrink-0 rounded-full bg-stone-100 px-2.5 py-1 text-xs font-semibold tabular-nums text-stone-600" aria-label={`Entre ${range(match)![0]} y ${range(match)![1]} de 100, según el vino`}>≈{range(match)![0] === range(match)![1] ? range(match)![0] : `${range(match)![0]}–${range(match)![1]}`}</span> : null}
       </li>; })}</ul>
   </section>;
 };

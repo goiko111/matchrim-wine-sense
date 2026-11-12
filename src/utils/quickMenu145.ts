@@ -19,7 +19,8 @@ export const quickMenuLines145 = (lines: ReadonlyArray<OcrLine143>, max = 40): Q
     const text = line.text.replace(PRICE, ' ').replace(/[.·_]{2,}/g, ' ').replace(/\s+/g, ' ').trim();
     const letters = text.replace(/[^\p{L}]/gu, '');
     // Not a wine: a bare price, a section in brackets («(RIOJA)»), a heading, or too little to search.
-    if (letters.length < 3 || /^\(.*\)$/.test(text) || HEADING.test(text)) continue;
+    // 146: nor the restaurant's own lines at the foot of the page («IKILIEUS / @IKILI.DONOSTIA», a web address, a phone).
+    if (letters.length < 3 || /^\(.*\)$/.test(text) || HEADING.test(text) || /@|www\.|https?:|\.(?:com|es|eus|net)\b|\btel\b|\d{3}\s?\d{3}\s?\d{3}/i.test(text)) continue;
     const middle = line.box.y + line.box.height / 2;
     let price = inline;
     if (price === null) {

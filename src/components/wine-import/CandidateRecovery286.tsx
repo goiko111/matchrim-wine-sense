@@ -88,7 +88,8 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
         text: read, candidates: found.ranked, vintage: year }) : null;
       if (clear) { auto = { picked: clear, resume: { decision: found.decision, vintage: year } }; setLinking(true); }
       setNotice(found.decision.mode !== 'none'
-        ? found.incomplete ? 'Algunas búsquedas no se han completado; puede haber más candidatos.' : ''
+        // 146: with a wine on screen the notice only worried («Algunas búsquedas no se han completado» above the right wine).
+        ? ''
         : found.unavailable ? 'No podemos conectar con Winerim. Puedes reintentar; tu vino no ha cambiado.'
           : 'No hemos encontrado candidatos con el texto leído. Escribe el nombre o la bodega.');
     } catch { if (active()) setNotice('No se ha podido consultar Winerim. Puedes reintentar; tu vino no ha cambiado.'); }
