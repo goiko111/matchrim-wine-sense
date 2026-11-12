@@ -87,9 +87,10 @@ export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, ident
     </Button>}
 
     {facts}
-    <div className="flex min-w-0 flex-wrap gap-2">
-      <Button type="button" variant="outline" aria-label="Corregir identificación" disabled={disabled} onClick={onCorrect}
-        className="h-auto min-h-11 min-w-0 flex-1 basis-32 gap-2 whitespace-normal px-3 py-3">
+    {/* 150: a quiet link, not one more full-width button among the answers. */}
+    <div className="flex min-w-0 flex-wrap justify-center gap-2" data-quiet150>
+      <Button type="button" variant="ghost" aria-label="Corregir identificación" disabled={disabled} onClick={onCorrect}
+        className="h-auto min-h-11 min-w-0 gap-2 whitespace-normal px-3 py-3 text-sm font-medium text-stone-600 underline underline-offset-4">
         <Pencil aria-hidden="true" className="h-4 w-4 shrink-0" /> Corregir
       </Button>
     </div>

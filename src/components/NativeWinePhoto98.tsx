@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Wine } from 'lucide-react';
+import { Bottle150 } from '@/components/Relief150';
 import { safeOwnedWineImage98, safeWineImageUrl98 } from '@/utils/wineImage98';
 import { lookupWinerimOriginalSheet, type WinerimOriginalIdentity } from '@/utils/winerimOriginalSheet';
 
@@ -11,12 +11,14 @@ interface Props {
   className?: string;
   ownedCapture?: boolean;
   onResolved?: (url: string) => void;
+  /** 150: the wine's type, to draw a bottle of its colour when there is no photo. */
+  type?: string | null;
 }
 
 // 133: one catalogue lookup per identity per session; scrolling the cellar back does not repeat it.
 const resolvedPhotos133 = new Map<string, string | null>();
 
-export const NativeWinePhoto98 = ({ src, name, identity, resolveMissing = false, className = '', ownedCapture = false, onResolved }: Props) => {
+export const NativeWinePhoto98 = ({ src, name, identity, resolveMissing = false, className = '', ownedCapture = false, onResolved, type }: Props) => {
   const direct = ownedCapture ? safeOwnedWineImage98(src) : safeWineImageUrl98(src);
   const identityKey = JSON.stringify([identity?.name, identity?.producer, identity?.vintage, identity?.region, identity?.country, identity?.inferredFields]);
   const identityRef = useRef(identity);
@@ -49,8 +51,6 @@ export const NativeWinePhoto98 = ({ src, name, identity, resolveMissing = false,
   return <span className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-md bg-white ${className}`} data-testid="native-wine-photo98">
     {url && failed !== url
       ? <img key={url} src={url} alt={`Botella de ${name}`} className="h-full w-full object-contain p-2" loading="lazy" decoding="async" onError={() => setFailed(url)} />
-      : <span className="flex h-full w-full flex-col items-center justify-center gap-2 bg-stone-100 text-stone-400">
-        <Wine className="h-8 w-8" aria-hidden="true" /><span className="text-xs text-stone-600">Sin foto</span>
-      </span>}
+      : <Bottle150 type={type} />}
   </span>;
 };

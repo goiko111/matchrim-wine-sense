@@ -102,7 +102,9 @@ function mount(file: string, source: string, native: boolean) {
   // 138: the search-result sheet is a closed dialog in this render; check-matchrim-ux138 and the simulator journeys cover it.
   deps.NativeSearchWine138 = 'NativeSearchWine138';
   // 139: the store search and the scanned-wines memory are leaves outside this render (no scans recorded here).
-  Object.assign(deps, { NativeStoreSearch139: 'NativeStoreSearch139', getScannedWines139: () => [], SCANNED_WINES_EVENT139: 'x', searchStore139: async () => [], useEffect: () => {}, formatWineType: (value: string) => value });
+  Object.assign(deps, { NativeStoreSearch139: 'NativeStoreSearch139', getScannedWines139: () => [], SCANNED_WINES_EVENT139: 'x', searchStore139: async () => [], useEffect: () => {}, formatWineType: (value: string) => value,
+    // 150: the relief pieces are leaves here (a coloured score tag, a type dot, card and title looks).
+    card150: '', title150: '', ScorePill150: 'ScorePill150', TypeDot150: 'TypeDot150' });
   const dialog = Object.fromEntries(['Root','Portal','Overlay','Content','Title','Close','Description'].map(k => [k, 'Dialog'+k]));
   const sandbox = vm.createContext({ ...deps, React: { createElement: element, Fragment: fragment }, exports: {},
     useState: (initial: unknown) => { const { slots } = hooks, i = hooks.cursor++;

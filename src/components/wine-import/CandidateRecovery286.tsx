@@ -1,3 +1,4 @@
+import { Bottle150, card150, TypeDot150 } from '@/components/Relief150';
 import { useEffect, useRef, useState } from 'react';
 import { BookOpen, Check, ChevronRight, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -136,18 +137,18 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
   const card = (value: Candidate286, action: string) => {
     const photo = safeWineImageUrl98(value.row.photo);
     const tile = <span className="flex h-[104px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-xl bg-stone-100">
-      {photo && <img src={photo} alt="" className="h-full w-full object-contain" referrerPolicy="no-referrer" loading="lazy" />}</span>;
+      {photo ? <img src={photo} alt="" className="h-full w-full object-contain" referrerPolicy="no-referrer" loading="lazy" /> : <Bottle150 type={value.row.type} />}</span>;
     const words = <span className="min-w-0 flex-1 text-left">
-      <span className="block text-xs leading-5 text-stone-600">{value.row.winery}</span>
+      <span className="block text-[11px] font-semibold uppercase tracking-wide leading-5 text-stone-500">{value.row.winery}</span>
       <span className="block text-base font-semibold leading-6 text-stone-950">{value.name}</span>
-      <span className="block text-xs leading-5 text-stone-500">{[value.row.type, value.row.region, value.row.vintage].filter(Boolean).join(' · ')}</span>
+      <span className="flex min-w-0 items-center gap-1.5 text-xs leading-5 text-stone-500"><TypeDot150 type={value.row.type} /><span className="min-w-0">{[value.row.type, value.row.region, value.row.vintage].filter(Boolean).join(' · ')}</span></span>
       {value.row.vintage != null && vintage !== null && vintage !== Number(value.row.vintage) && <span className="mt-1 block text-xs leading-5 text-stone-700">Elegirla cambiará tu añada a {value.row.vintage}.</span>}
     </span>;
     // 144: with several candidates the whole card is the button (one tap, as in the search results); the lone
     // candidate keeps its explicit «Sí, es este».
     if (action !== 'Sí, es este') return <li key={value.row.id} className="min-w-0 [overflow-wrap:anywhere]" data-testid="candidate286">
       <button type="button" disabled={disabled || busy} onClick={() => void choose(value)} aria-label={`Es este: ${value.name}, ${value.row.winery}`}
-        className="flex w-full min-w-0 items-center gap-3 rounded-2xl border border-stone-200 bg-white p-3 text-left active:bg-stone-50 disabled:opacity-60">
+        className={`flex w-full min-w-0 items-center gap-3 p-3 text-left active:bg-stone-50 disabled:opacity-60 ${card150}`}>
         {tile}{words}<ChevronRight aria-hidden="true" className="h-5 w-5 shrink-0 text-stone-400" /></button>
     </li>;
     return <li key={value.row.id} className="min-w-0 space-y-3 rounded-2xl border border-stone-200 bg-white p-3 [overflow-wrap:anywhere]" data-testid="candidate286">
@@ -159,7 +160,10 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
   };
   const shown = linking ? [] : decision?.mode === 'one' ? [decision.first] : decision?.mode === 'choose' ? decision.shown : [];
   const more = !linking && decision && decision.mode !== 'none' ? decision.more : [];
-  return <section aria-label="¿Es alguno de estos?" className="min-w-0 space-y-3" data-testid="candidate-recovery286">
+  // 150: while the search runs the sheet shows the wait and nothing else (it showed an empty search box and five
+  // buttons under it), and the sheet's own title already asks «¿Cuál es tu vino?», so the list does not ask again.
+  const searching150 = busy && !decision;
+  return <section aria-label="¿Es alguno de estos?" className="min-w-0 space-y-3" data-testid="candidate-recovery286" data-busy150={busy || linking || undefined}>
     {/* 139: a bare spinner for up to a minute said nothing; the shared wait shows the real step. «Cancelar» stays visible. */}
     {busy && <div className="min-w-0 space-y-2">
       <ScanWaiting139 steps={SCAN_STEPS139} current={step} />
@@ -168,9 +172,9 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
       }}><X aria-hidden="true" className="h-4 w-4" /> Cancelar</Button>
     </div>}
     {notice && !busy && <p role="status" className="text-sm leading-6 text-stone-700">{notice}</p>}
-    {shown.length > 0 && <h3 ref={heading} tabIndex={-1} className="text-base font-semibold text-stone-950 outline-none">
+    {shown.length > 0 && <h3 ref={heading} tabIndex={-1} className={decision?.mode === 'choose' ? 'sr-only' : 'text-base font-semibold text-stone-950 outline-none'}>
       {decision?.mode === 'one' ? '¿Es este tu vino?' : '¿Es alguno de estos?'}</h3>}
-    {shown.length > 0 && decision?.mode === 'choose' && <p className="text-sm leading-6 text-stone-700">Toca el que coincide con tu botella.</p>}
+    {shown.length > 0 && decision?.mode === 'choose' && <p className="sr-only">Toca el que coincide con tu botella.</p>}
     {shown.length > 0 && <ul className="min-w-0 space-y-2">{shown.map(value => card(value, decision?.mode === 'one' ? 'Sí, es este' : 'Es este'))}</ul>}
     {more.length > 0 && <details className="min-w-0 border-t border-stone-200 pt-2">
       <summary className="flex min-h-11 cursor-pointer items-center text-sm font-medium">
@@ -178,19 +182,19 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
       </summary>
       <ul className="min-w-0 space-y-2">{more.map(value => card(value, 'Es este'))}</ul>
     </details>}
-    <form className="min-w-0 space-y-2 border-t border-stone-200 pt-3" onSubmit={event => {
+    {!searching150 && <form className="min-w-0 space-y-2 rounded-2xl bg-stone-100 p-3" onSubmit={event => {
       event.preventDefault(); const query = typed.trim(); if (query.length >= 2) void find(query);
     }}>
       <label htmlFor="candidate-search286" className="text-sm font-medium text-stone-800">
         {shown.length ? '¿No está? Busca por nombre o bodega' : 'Busca por nombre o bodega'}</label>
       <div className="flex min-w-0 gap-2">
         <Input id="candidate-search286" value={typed} maxLength={100} disabled={disabled}
-          onChange={event => setTyped(event.target.value)} className="min-h-11 min-w-0 flex-1" autoComplete="off" />
-        <Button type="submit" disabled={disabled || busy || typed.trim().length < 2} className="min-h-11 gap-2">
+          onChange={event => setTyped(event.target.value)} className="min-h-11 min-w-0 flex-1 bg-white" autoComplete="off" />
+        <Button type="submit" variant="outline" disabled={disabled || busy || typed.trim().length < 2} className="min-h-11 gap-2 bg-white font-semibold text-red-900">
           <Search aria-hidden="true" className="h-4 w-4" /> Buscar
         </Button>
       </div>
-    </form>
+    </form>}
     {!busy && decision?.mode === 'none' && <Button type="button" variant="outline" disabled={disabled} onClick={() => void find()}
       className="h-auto min-h-11 w-full gap-2 whitespace-normal py-3"><BookOpen aria-hidden="true" className="h-4 w-4 shrink-0" /> Reintentar con el texto leído</Button>}
     {!busy && !linking && decision && <PilotFeedback130 label={shown.length ? '¿Ninguno es tu vino? Avísanos' : 'Avísanos de este fallo'}

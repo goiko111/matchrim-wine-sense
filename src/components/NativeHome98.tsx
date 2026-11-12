@@ -4,6 +4,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { ArrowRight, Camera, ChevronRight, RefreshCw, Search, UserRound, Utensils, X, ThumbsDown, ThumbsUp } from 'lucide-react';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
+import { card150, ScorePill150, title150, TypeDot150 } from '@/components/Relief150';
 import { NativeStoreSearch139 } from '@/components/NativeStoreSearch139';
 import type { PublicGlobalRow103 } from '@/utils/nativeGlobalCatalogue103';
 import { getScannedWines139, markScannedSaved144, SCANNED_WINES_EVENT139, type ScannedWine139 } from '@/utils/scannedWines139';
@@ -64,22 +65,22 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
   // 136: one row renderer for Home and the full list ("Ver todos" used to jump to the restaurant screen).
   const renderWine = (wine: WinerimWineWithMatch, fromList = false) => {
     const { result } = buildNativeRecommendation95(wine, profile);
-    return <button key={String(wine.id)} type="button" className="grid min-h-44 w-full min-w-0 grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-4 py-4 text-left [html.matchrim-accessibility-text_&]:grid-cols-1" onClick={event => { if (fromList) setAllOpen(false); onSelect(wine, fromList ? allButton.current ?? undefined : event?.currentTarget); }}
+    return <button key={String(wine.id)} type="button" className={`grid w-full min-w-0 grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-4 p-3 text-left active:bg-stone-50 [html.matchrim-accessibility-text_&]:grid-cols-1 ${card150}`} onClick={event => { if (fromList) setAllOpen(false); onSelect(wine, fromList ? allButton.current ?? undefined : event?.currentTarget); }}
       aria-label={`Ver por qué ${wine.name}${result.state === 'ready' ? `. Afinidad orientativa ${result.score} de 100` : '. Afinidad pendiente'}`}>
-      <NativeWinePhoto98 src={wine.photo} name={wine.name} className="h-36 w-[5.5rem] border border-stone-200" />
+      <NativeWinePhoto98 src={wine.photo} name={wine.name} type={wine.type} className="h-32 w-[5.5rem] !rounded-xl" />
       <span className="block min-w-0">
         <span className="block break-words text-base font-semibold leading-6">{wine.name}</span>
-        <span className="mt-1 block break-words text-xs leading-5 text-stone-500">{[wine.winery, wine.vintage, wine.type ? formatWineType(wine.type) : ''].filter(Boolean).join(' · ')}</span>
+        <span className="mt-1 flex min-w-0 items-center gap-1.5 text-xs leading-5 text-stone-500"><TypeDot150 type={wine.type} /><span className="min-w-0 break-words">{[wine.winery, wine.vintage, wine.type ? formatWineType(wine.type) : ''].filter(Boolean).join(' · ')}</span></span>
         <span className={`mt-2 flex flex-wrap items-center gap-2 text-sm font-semibold ${result.state === 'ready' && result.score >= 65 ? 'text-emerald-800' : 'text-stone-700'}`}>
-          {result.state === 'ready' && <span aria-hidden="true" className={`inline-flex min-w-11 shrink-0 items-baseline justify-center rounded-full px-2 py-1 text-base font-bold leading-none ${result.score >= 65 ? 'bg-emerald-50 text-emerald-900' : 'bg-stone-100 text-stone-800'}`}>{result.score}<span className="text-[10px] font-semibold">/100</span></span>}
+          {result.state === 'ready' && <ScorePill150 score={result.score} />}
           <span className="min-w-0">{result.state === 'ready' ? result.title : 'Afinidad por calcular'}</span></span>
-        <span className="mt-1 block text-sm leading-6 text-stone-700">{result.state === 'ready'
+        <span className="mt-1.5 block text-[13px] leading-5 text-stone-600">{result.state === 'ready'
           ? (result.score >= 65 ? result.matches.slice(0, 2).join(' ') : '') || result.caution || result.matches[0] || 'El encaje depende del conjunto de sus rasgos.'
           : result.reason === 'profile' ? 'Falta conocer tus gustos.' : 'Revisa qué datos faltan en su ficha.'}</span>
       </span>
     </button>;
   };
-  return <div className="matchrim-app-shell matchrim-native-home-shell min-h-screen bg-[#fafafa] text-stone-950" data-testid="native-home98">
+  return <div className="matchrim-app-shell matchrim-native-home-shell min-h-screen bg-[#f3efe9] text-stone-950" data-testid="native-home98">
     <main className="matchrim-native-home-main matchrim-native-safe-x mx-auto w-full max-w-xl pb-[calc(7rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]">
       <header className="mb-5 flex min-h-11 items-center justify-between gap-3">
         <h1 className="flex items-center gap-2 whitespace-nowrap text-[24px] font-bold" style={{ WebkitTextSizeAdjust: '100%' }}><img src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png" className="h-[32px] w-[32px] object-contain" alt="" />Matchrim</h1>
@@ -89,28 +90,29 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
         <h2 className="text-[26px] font-bold leading-8 tracking-tight">¿Te va a gustar ese vino?</h2>
         <p className="mt-2 text-base leading-6 text-stone-600">Haz una foto a la botella o a la carta y te decimos cuánto encaja contigo antes de pedirlo.</p>
       </div>}
-      <button type="button" aria-label="Buscar vino o bodega" className="mb-4 flex min-h-12 w-full items-center gap-3 rounded-md border border-stone-300 bg-white px-4 py-3 text-left text-sm text-stone-600" onClick={() => setSearchOpen(true)}><Search className="h-5 w-5 shrink-0" aria-hidden="true" /><span className="min-w-0 flex-1 [overflow-wrap:normal]">Busca un vino por su nombre</span></button>
+      <button type="button" aria-label="Buscar vino o bodega" className="mb-4 flex min-h-12 w-full items-center gap-3 rounded-full border border-stone-200 bg-white px-4 py-3 text-left text-sm text-stone-500 shadow-sm" onClick={() => setSearchOpen(true)}><Search className="h-5 w-5 shrink-0" aria-hidden="true" /><span className="min-w-0 flex-1 [overflow-wrap:normal]">Busca un vino por su nombre</span></button>
 
       {/* 137: the three things people open the app for, one tap away (they were behind the Escanear tab). */}
       <nav aria-label="Qué quieres hacer" className="mb-7 grid grid-cols-2 gap-2 [html.matchrim-accessibility-text_&]:grid-cols-1" data-testid="native-home-actions137">
-        {([['/escanear/etiqueta', Camera, 'Botella o carta', '¿Me gustará? ¿Cuál pido?'], ['/restaurante', Utensils, 'Comida y vino', '¿Qué va con mi plato?']] as const).map(([route, Icon, title, hint]) =>
-          <button key={route} type="button" className="flex min-h-28 min-w-0 flex-col items-start justify-between gap-3 rounded-xl border border-stone-200 bg-white p-3 text-left shadow-sm active:bg-stone-50" onClick={() => navigate(route)}>
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-red-50 text-red-900"><Icon className="h-5 w-5" aria-hidden="true" /></span>
-            <span className="block min-w-0"><span className="block text-sm font-semibold leading-5">{title}</span><span className="mt-0.5 block text-xs leading-4 text-stone-600">{hint}</span></span>
+        {/* 150: the two doors are not equals: scanning is what the app is for, so it is the filled one. */}
+        {([['/escanear/etiqueta', Camera, 'Botella o carta', '¿Me gustará? ¿Cuál pido?', true], ['/restaurante', Utensils, 'Comida y vino', '¿Qué va con mi plato?', false]] as const).map(([route, Icon, title, hint, main]) =>
+          <button key={route} type="button" data-main150={main || undefined} className={`flex min-h-28 min-w-0 flex-col items-start justify-between gap-3 rounded-2xl p-3.5 text-left ${main ? 'bg-red-900 text-white shadow-[0_8px_18px_-8px_rgba(127,29,29,.6)] active:bg-red-950' : `${card150} active:bg-stone-50`}`} onClick={() => navigate(route)}>
+            <span className={`flex h-10 w-10 items-center justify-center rounded-full ${main ? 'bg-white/15 text-white' : 'bg-red-50 text-red-900'}`}><Icon className="h-5 w-5" aria-hidden="true" /></span>
+            <span className="block min-w-0"><span className="block text-base font-bold leading-5">{title}</span><span className={`mt-1 block text-xs leading-4 ${main ? 'text-red-100' : 'text-stone-600'}`}>{hint}</span></span>
           </button>)}
       </nav>
 
       {/* 142: the wine just scanned is the first thing on Home. 143: with «¿Te gustó?» right there, as the owner saw in Vivino. */}
-      {scanned.length > 0 && <div className="mb-7 rounded-2xl border border-stone-200 bg-white shadow-sm" data-testid="native-home-last-scan142">
+      {scanned.length > 0 && <div className={`mb-7 overflow-hidden ${card150}`} data-testid="native-home-last-scan142">
         <button type="button" className="flex w-full items-center gap-4 p-4 text-left active:bg-stone-50" onClick={() => void openScanned(scanned[0])}>
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-900"><Camera className="h-5 w-5" aria-hidden="true" /></span>
-          <span className="min-w-0 flex-1"><span className="block text-xs font-semibold uppercase tracking-wide text-stone-500">Tu último escaneo</span>
+          <span className="min-w-0 flex-1"><span className="block text-[11px] font-bold uppercase tracking-wider text-red-900">Tu último escaneo</span>
             <span className="mt-0.5 block break-words text-base font-semibold leading-6">{scanned[0].name}</span>
             <span className="block break-words text-xs text-stone-500">{[scanned[0].winery, scanned[0].vintage].filter(Boolean).join(' · ')}</span></span>
-          {scanned[0].score !== null && <span className={`shrink-0 rounded-full px-3 py-1.5 text-lg font-bold ${scanned[0].score >= 65 ? 'bg-emerald-50 text-emerald-900' : 'bg-stone-100 text-stone-800'}`}>{scanned[0].score}<span className="text-xs font-semibold">/100</span></span>}
+          {scanned[0].score !== null && <ScorePill150 score={scanned[0].score} large />}
           <ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
         </button>
-        {ownerId && <div className="flex min-h-14 items-center justify-between gap-3 border-t border-stone-100 px-4 py-2" data-testid="native-home-liked143">
+        {ownerId && <div className="flex min-h-14 items-center justify-between gap-3 border-t border-stone-100 bg-stone-50 px-4 py-2" data-testid="native-home-liked143">
           {scanned[0].saved || liked?.key === scanKey(scanned[0]) ? <p role="status" className="text-sm font-semibold text-emerald-900">{scanned[0].saved || liked?.ok ? 'Guardado en Probados' : 'No se ha podido guardar'}</p>
             : <><span className="text-sm text-stone-700">¿Lo has probado? ¿Te gustó?</span>
               <span className="flex gap-2">{([['not_for_me', ThumbsDown, 'No me gustó'], ['love', ThumbsUp, 'Me gustó']] as const).map(([rating, Icon, label]) =>
@@ -121,7 +123,7 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
       </div>}
       <section aria-labelledby="home-wines98-title">
         <div className="mb-3 flex items-center justify-between gap-3">
-          <h2 id="home-wines98-title" className="text-xl font-semibold">{hasProfile || loading ? 'Para tu paladar' : 'Primero, tus gustos'}</h2>
+          <h2 id="home-wines98-title" className={title150}>{hasProfile || loading ? 'Para tu paladar' : 'Primero, tus gustos'}</h2>
           {hasProfile && recommendations.length > 3 && <button ref={allButton} type="button" className="min-h-11 text-sm font-semibold text-red-900" onClick={() => setAllOpen(true)}>Ver todos</button>}
         </div>
         {loading ? <div role="status" className="space-y-4" aria-label="Cargando vinos">
@@ -134,7 +136,7 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
           <button type="button" className="mt-3 inline-flex min-h-11 items-center gap-2 font-semibold text-red-900" onClick={onRetry}>
             <RefreshCw className="h-4 w-4 shrink-0" aria-hidden="true" />Reintentar carga
           </button>
-        </div> : recommendations.length ? <div className="divide-y divide-stone-200" data-testid="native-home-wines98">
+        </div> : recommendations.length ? <div className="space-y-3" data-testid="native-home-wines98">
           {recommendations.slice(0, 3).map(wine => renderWine(wine))}
         </div> : !hasProfile ? <div className="rounded-xl bg-red-950 p-5 text-white" data-testid="native-home-taste137">
           <p className="text-base leading-6">Para decirte si un vino te va a gustar necesitamos conocer tu paladar. No hace falta saber de vino: son 20 preguntas sobre sabores que ya conoces, como el café, el limón o el picante.</p>
@@ -151,16 +153,16 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
       </section>
 
       {scanned.length > 1 && <section className="mt-7" aria-labelledby="home-scanned139-title" data-testid="native-home-scanned139">
-        <h2 id="home-scanned139-title" className="mb-2 text-lg font-semibold">Escaneos anteriores</h2>
-        <div className="divide-y divide-stone-200">{scanned.slice(1, 5).map(wine => <button key={`${wine.name}|${wine.winery}|${wine.vintage}`} type="button" className="flex min-h-16 w-full items-center gap-3 py-3 text-left" onClick={() => void openScanned(wine)}>
+        <h2 id="home-scanned139-title" className={`mb-3 ${title150}`}>Escaneos anteriores</h2>
+        <div className={`divide-y divide-stone-100 px-4 ${card150}`}>{scanned.slice(1, 5).map(wine => <button key={`${wine.name}|${wine.winery}|${wine.vintage}`} type="button" className="flex min-h-16 w-full items-center gap-3 py-3 text-left" onClick={() => void openScanned(wine)}>
           <span className="min-w-0 flex-1"><span className="block break-words text-sm font-medium">{wine.name}</span><span className="mt-1 block break-words text-xs text-stone-500">{[wine.winery, wine.vintage].filter(Boolean).join(' · ')}</span></span>
-          {wine.score !== null && <span className="shrink-0 rounded-full bg-stone-100 px-2 py-1 text-sm font-bold text-stone-800">{wine.score}<span className="text-[10px] font-semibold">/100</span></span>}
+          {wine.score !== null && <ScorePill150 score={wine.score} />}
           <ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
         </button>)}</div>
       </section>}
       {recent.length > 0 && <section className="mt-7" aria-labelledby="home-recent98-title">
-        <h2 id="home-recent98-title" className="mb-2 text-lg font-semibold">Recientes</h2>
-        <div className="divide-y divide-stone-200">{recent.slice(0, 3).map(item => <button key={item.id} type="button" className="flex min-h-16 w-full items-center gap-3 py-3 text-left" onClick={() => navigate(item.route)}>
+        <h2 id="home-recent98-title" className={`mb-3 ${title150}`}>Recientes</h2>
+        <div className={`divide-y divide-stone-100 px-4 ${card150}`}>{recent.slice(0, 3).map(item => <button key={item.id} type="button" className="flex min-h-16 w-full items-center gap-3 py-3 text-left" onClick={() => navigate(item.route)}>
           <span className="min-w-0 flex-1"><span className="block break-words text-sm font-medium">{item.title}</span>{item.subtitle && <span className="mt-1 block break-words text-xs text-stone-500">{item.subtitle}</span>}</span><ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
         </button>)}</div>
       </section>}
@@ -169,14 +171,14 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
       </button>}
     </main>
     <Dialog.Root open={allOpen} onOpenChange={setAllOpen}>
-      <Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" /><Dialog.Content className="fixed inset-0 z-50 mx-auto flex w-full max-w-xl flex-col bg-white px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]">
+      <Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" /><Dialog.Content className="fixed inset-0 z-50 mx-auto flex w-full max-w-xl flex-col bg-[#f3efe9] px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]">
         <div className="mb-2 flex shrink-0 items-center justify-between gap-3"><Dialog.Title className="text-lg font-semibold">Para tu paladar</Dialog.Title><Dialog.Close className="flex h-11 w-11 items-center justify-center" aria-label="Cerrar lista"><X className="h-5 w-5" /></Dialog.Close></div>
         <Dialog.Description className="text-sm text-stone-600">{`${recommendations.length} vinos del catálogo Winerim que aún no tienes, ordenados por afinidad.`}</Dialog.Description>
-        <div className="min-h-0 flex-1 divide-y divide-stone-200 overflow-y-auto" data-testid="native-home-all136">{recommendations.map(wine => renderWine(wine, true))}</div>
+        <div className="mt-3 min-h-0 flex-1 space-y-3 overflow-y-auto pb-2" data-testid="native-home-all136">{recommendations.map(wine => renderWine(wine, true))}</div>
       </Dialog.Content></Dialog.Portal>
     </Dialog.Root>
     <Dialog.Root open={searchOpen} onOpenChange={setSearchOpen}>
-      <Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" /><Dialog.Content className="fixed inset-0 z-50 mx-auto flex w-full max-w-xl flex-col bg-white px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]">
+      <Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" /><Dialog.Content className="fixed inset-0 z-50 mx-auto flex w-full max-w-xl flex-col bg-[#f3efe9] px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))] pt-[calc(1rem+var(--matchrim-safe-top))]">
         <div className="mb-4 flex shrink-0 items-center justify-between gap-3"><Dialog.Title className="text-lg font-semibold">Buscar vino</Dialog.Title><Dialog.Close className="flex h-11 w-11 items-center justify-center" aria-label="Cerrar búsqueda"><X className="h-5 w-5" /></Dialog.Close></div>
         <Dialog.Description className="sr-only">Busca un vino y mira cuánto encaja con tus gustos.</Dialog.Description>
         <div className="min-h-0 overflow-y-auto"><NativeStoreSearch139 onManualEntry={name => {

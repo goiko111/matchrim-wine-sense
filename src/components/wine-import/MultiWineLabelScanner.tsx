@@ -30,6 +30,7 @@ import { catalogWineFromVerifiedSheet } from '@/utils/winerimOriginalSheet';
 import { canAdmitNativeCatalogLookup97 } from '@/utils/nativeCatalogAdmission97';
 import { normalizeNativeYear105 } from '@/utils/wineYearRole105';
 import { localOCRAvailable106, readLocalWineText106, type LocalOCRResult106 } from '@/utils/nativeOCR106';
+import { readLabelAnyWay150 } from '@/utils/labelTurn150';
 import { isPendingLocalIdentity109, localSingleCandidate109 } from '@/utils/nativeSingleLabel109';
 import { applyNativeMaster102, lookupNativeMaster102, nativeMasterAudit102 } from '@/utils/nativeMasterCatalog102';
 import { hasMissingVisibleQualifier102 } from '@/utils/nativeWineQualifier102';
@@ -598,7 +599,8 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
       const profileFinishedAt = globalThis.performance.now();
       if (locally) {
         setPhase('analyzing');
-        const reading = await readLocalWineText106(prepared.dataUrl, controller.signal);
+        // 150: a label on its side (a bottle lying on a rack) is read turned; see labelTurn150.
+        const { reading, image: readImage150 } = await readLabelAnyWay150(prepared.dataUrl, image => readLocalWineText106(image, controller.signal));
         if (abortRef.current !== controller || controller.signal.aborted) return;
         // 144: a photographed wine list is not one bottle: it goes to the list reader's tray instead of twenty candidates.
         if (!isMatchrimFixtureQaEnabled && looksLikeWineList144(reading.lines)) {
@@ -610,7 +612,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         const region: ScanRegion = { id: regionId, index: 1, box: { x: 0, y: 0, width: 100, height: 100 },
           objectType: 'label', detectionConfidence: 0, quality: { glare: 'medium', occlusion: 'medium', legibility: 'limited' },
           status: candidate ? 'uncertain' : 'unrecognized', candidates: candidate ? [candidate] : [], selectedCandidateId: candidate?.id ?? null,
-          duplicateCount: 1, cropDataUrl: prepared.dataUrl, error: null,
+          duplicateCount: 1, cropDataUrl: readImage150, error: null,
           fallback: candidate ? null : { code: 'insufficient_visible_text', message: 'No se lee suficiente texto. Prueba una foto más cercana.', suggestedActions: ['Acercar la etiqueta', 'Escribir el nombre'] } };
         setLocalReading({ regionId, value: reading });
         setRegions([region]);
@@ -1339,17 +1341,19 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
               </p>
             </div>
           </div>
-          {isNative && localOCRAvailable106() && <div role="group" aria-label="Tipo de lectura" className="mt-4 grid grid-cols-2 gap-2 [.matchrim-accessibility-text_&]:grid-cols-1">
-            <Button type="button" variant={scanMode === 'local-single' ? 'default' : 'outline'} aria-pressed={scanMode === 'local-single'} disabled={loading || saving}
-              className="h-auto min-h-11 gap-2 whitespace-normal py-3" onClick={() => setScanMode('local-single')}><Smartphone aria-hidden="true" className="h-4 w-4 shrink-0" />Una etiqueta</Button>
-            <Button type="button" variant={scanMode === 'cloud' ? 'default' : 'outline'} aria-pressed={scanMode === 'cloud'} disabled={loading || saving}
-              className="h-auto min-h-11 gap-2 whitespace-normal py-3" onClick={() => setScanMode('cloud')}><ScanLine aria-hidden="true" className="h-4 w-4 shrink-0" />Varias botellas</Button>
+          {/* 150: the choice of one or several was drawn like the «Hacer foto» button (three dark-red blocks in a row).
+              It is now a switch on a grey track, the photo button is the only filled one, and the gallery is a quiet link. */}
+          {isNative && localOCRAvailable106() && <div role="group" aria-label="Tipo de lectura" className="mt-4 grid grid-cols-2 gap-1 rounded-xl bg-stone-200/70 p-1 [.matchrim-accessibility-text_&]:grid-cols-1" data-testid="scan-mode150">
+            {([['local-single', Smartphone, 'Una etiqueta'], ['cloud', ScanLine, 'Varias botellas']] as const).map(([mode, Icon, label]) =>
+              <button key={mode} type="button" aria-pressed={scanMode === mode} disabled={loading || saving} onClick={() => setScanMode(mode)}
+                className={`flex min-h-11 items-center justify-center gap-2 rounded-lg px-2 py-2 text-sm font-semibold disabled:opacity-50 ${scanMode === mode ? 'bg-white text-stone-950 shadow-sm' : 'text-stone-600'}`}>
+                <Icon aria-hidden="true" className="h-4 w-4 shrink-0" />{label}</button>)}
           </div>}
           <div className="scan-upload-actions mt-5 grid gap-2 sm:grid-cols-2">
-            <Button type="button" disabled={loading || saving} className="matchrim-pressable min-h-12 gap-2 bg-red-900 hover:bg-red-800" onClick={() => void openCamera133(cameraInputRef.current)}>
-              <Camera className="h-4 w-4" /> Hacer foto
+            <Button type="button" disabled={loading || saving} className={`matchrim-pressable gap-2 bg-red-900 hover:bg-red-800 ${isNative ? 'min-h-14 rounded-xl text-base font-bold shadow-[0_8px_18px_-8px_rgba(127,29,29,.6)]' : 'min-h-12'}`} onClick={() => void openCamera133(cameraInputRef.current)}>
+              <Camera className={isNative ? 'h-5 w-5' : 'h-4 w-4'} /> Hacer foto
             </Button>
-            <Button type="button" disabled={loading || saving} variant="outline" className="matchrim-pressable min-h-12 gap-2 border-slate-300 bg-white" onClick={() => fileInputRef.current?.click()}>
+            <Button type="button" disabled={loading || saving} variant={isNative ? 'ghost' : 'outline'} className={`matchrim-pressable min-h-12 gap-2 ${isNative ? 'font-semibold text-red-900' : 'border-slate-300 bg-white'}`} onClick={() => fileInputRef.current?.click()}>
               <FolderOpen className="h-4 w-4" /> Elegir de galería
             </Button>
           </div>
@@ -1671,7 +1675,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
             <div ref={isNative ? regionEditorLayout : undefined} role={isNative ? 'region' : undefined} aria-label={isNative ? `Panel desplazable de la región ${selectedRegion.index}` : undefined} tabIndex={isNative ? 0 : undefined} className="matchrim-scan-region-layout mx-auto flex w-full min-w-0 max-w-2xl min-h-0 flex-1 flex-col">
               <DrawerHeader className={isNative ? 'max-h-[40dvh] min-w-0 shrink-0 overflow-y-auto break-words border-b border-stone-200 bg-white text-left [overflow-wrap:anywhere]' : 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left'}>
                 <DrawerTitle>{isNative ? picking144 ? '¿Cuál es tu vino?' : <>{selectedCandidate?.name || 'Etiqueta sin identificar'}{selectedCandidate?.vintage ? ` · ${selectedCandidate.vintage}` : ''}</> : <>Región {selectedRegion.index}: {statusLabel(selectedRegion)}</>}</DrawerTitle>
-                <DrawerDescription>
+                <DrawerDescription data-needs-candidates150={isNative && picking144 ? '' : undefined}>
                   {isNative ? picking144 ? 'Toca el que coincide con tu botella.' : [selectedCandidate?.producer, selectedCandidate?.vintage ? null : 'Añada no indicada'].filter(Boolean).join(' · ') : `Detección ${Math.round(selectedRegion.detectionConfidence * 100)}%. La identidad y la afinidad se muestran por separado.`}
                 </DrawerDescription>
                 {isNative && autoLinked139 && autoLinked139.regionId === selectedRegion.id && autoLinked139.linked === selectedCandidate

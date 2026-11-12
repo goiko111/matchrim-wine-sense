@@ -1023,3 +1023,20 @@ html.matchrim-native-platform section[aria-labelledby="wine-comparison-title"] b
   position: relative;
 }
 /* End native comparison checkbox touch target. */
+
+/* 150: while the label search runs, the sheet shows the wait and «Cerrar» only. */
+html.matchrim-native-platform .matchrim-scan-region-layout:has([data-busy150]) :is([data-testid="native-label-photo"], .matchrim-region-footer-actions, [data-quiet150]) {
+  display: none;
+}
+
+/* 150: one warm page colour behind every iOS screen, so the white cards stand out from it. */
+html.matchrim-native-platform body,
+html.matchrim-native-platform .matchrim-app-shell,
+html.matchrim-native-platform :is(.min-h-screen.bg-gray-50, .min-h-screen.bg-gradient-to-br) {
+  background: #f3efe9;
+}
+
+/* 150: «Toca el que coincide con tu botella» only when there is a bottle to tap. */
+html.matchrim-native-platform .matchrim-scan-region-layout:not(:has([data-testid="candidate286"])) [data-needs-candidates150] {
+  display: none;
+}

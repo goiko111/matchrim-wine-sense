@@ -10,6 +10,7 @@ import { useOwnWinePhoto133 } from '@/utils/ownWinePhoto133';
 import { NativeWineNote139 } from '@/components/NativeWineNote139';
 import { shownScore145 } from '@/utils/consumerAffinity95';
 import { WhyLines144 } from '@/components/WineSheet142';
+import { card150, ScorePill150 } from '@/components/Relief150';
 import { NativeWinerimFacts140 } from '@/components/NativeWinerimFacts140';
 import { estimateListing139, storeAffinity139 } from '@/utils/storeListing139';
 import type { StoreAttributes138 } from '@/utils/storeEstimate138';
@@ -21,12 +22,13 @@ export interface NativeCellarSheet141 { verified: ReactNode; rate: ReactNode; ex
 
 // 141: one store match per wine identity per session (photo + flavour data for the row's estimate). Only matches
 // are kept: a miss may be a network failure, and the store search underneath already remembers its own answers.
-type StoreHit141 = { photo: string | null; attributes: StoreAttributes138 };
+type StoreHit141 = { photo: string | null; attributes: StoreAttributes138; type?: string | null };
 const storeHits141 = new Map<string, StoreHit141>();
 
 // 143: the saved-wine sheet and the list speak the visual language of the new wine sheet (WineSheet142): same
 // cards, same faces, same green from 65, and the same four answers to «¿me gustará?» for a verified score.
-const card143 = 'rounded-2xl border border-stone-200 bg-white';
+// 150: the cards lift off the page with a shadow instead of a hairline.
+const card143 = card150;
 const rated143 = { love: ['Te encantó', ThumbsUp, 'bg-emerald-100 text-emerald-800', 'bg-emerald-50 text-emerald-900'], ok: ['Te pareció correcto', Meh, 'bg-white text-stone-700', 'bg-stone-100 text-stone-800'],
   not_for_me: ['No te gustó', ThumbsDown, 'bg-white text-stone-700', 'bg-stone-100 text-stone-700'] } as const;
 const title143 = (score: number) => score >= 80 ? 'Muy de tu estilo' : score >= 65 ? 'Probablemente te guste' : score >= 45 ? 'Puede que sí, puede que no' : 'No es tu estilo';
@@ -83,7 +85,7 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
     const controller = new AbortController();
     void estimateListing139({ name: wine.name, producer: wine.producer, vintage: wine.vintage }, controller.signal).then(match => {
       if (controller.signal.aborted) return;
-      const hit = match?.kind === 'exact' ? { photo: safeWineImageUrl98(match.estimate.row.photo), attributes: match.estimate.attributes } : null;
+      const hit = match?.kind === 'exact' ? { photo: safeWineImageUrl98(match.estimate.row.photo), attributes: match.estimate.attributes, type: match.estimate.row.type } : null;
       if (hit) storeHits141.set(identityKey, hit);
       setStore({ key: identityKey, hit });
     }, () => undefined);
@@ -113,13 +115,13 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
   return <>
     {/* 143: each wine is a card (bottle on a soft tile, winery, name, vintage · region, verdict chip) instead of a ruled row. */}
     <button ref={rowRef} type="button" className={`flex w-full min-w-0 items-center gap-3 p-3 text-left ${card143}`} aria-label={rowLabel} onClick={() => setOpen(true)} data-testid="native-cellar-item98">
-      <NativeWinePhoto98 src={photo} ownedCapture name={wine.name} identity={identity} resolveMissing={!photo && open && storeSettled} onResolved={url => setResolved({ key: identityKey, url })} className="h-[104px] w-[72px] !rounded-xl !bg-stone-100" />
-      <span className="min-w-0 flex-1">{wine.producer && <span className="block break-words text-xs leading-5 text-stone-600">{wine.producer}</span>}
+      <NativeWinePhoto98 src={photo} ownedCapture name={wine.name} identity={identity} resolveMissing={!photo && open && storeSettled} onResolved={url => setResolved({ key: identityKey, url })} type={storeHit?.type} className="h-[104px] w-[72px] !rounded-xl !bg-stone-100" />
+      <span className="min-w-0 flex-1">{wine.producer && <span className="block break-words text-[11px] font-semibold uppercase tracking-wide leading-5 text-stone-500">{wine.producer}</span>}
         <span className="block break-words text-base font-semibold leading-6 text-stone-950">{wine.name}</span>
         {(wine.vintage || wine.region) && <span className="block break-words text-xs leading-5 text-stone-500">{[wine.vintage, wine.region].filter(Boolean).join(' · ')}</span>}
         {(rated || score !== null || stock) && <span className="mt-2 flex flex-wrap items-center gap-2">
           {rated && RatedIcon ? <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${rated[3]}`}><RatedIcon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />{rated[0]}</span>
-            : score !== null && <span className={`rounded-full px-2.5 py-1 text-xs font-bold tabular-nums ${score >= 65 ? 'bg-emerald-50 text-emerald-900' : 'bg-stone-100 text-stone-800'}`}>{score}/100</span>}
+            : score !== null && <ScorePill150 score={score} />}
           {stock && <span className="text-xs text-stone-500">{stock}</span>}
         </span>}
       </span>

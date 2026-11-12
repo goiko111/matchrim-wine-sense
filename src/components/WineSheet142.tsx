@@ -92,7 +92,7 @@ export const WinerimRich142 = ({ row, profile, vintage, onRelated }: { row: Publ
       <h4 id={`rel142-${row.id}`} className={heading}>Vinos parecidos</h4>
       <div className="-mx-4 mt-3 flex gap-3 overflow-x-auto px-4 pb-2" data-testid="winerim-related142">{data.related.map(wine => { const sensory = usableStoreSensory138(wine); const score = sensory ? storeScore139(profile, sensory) : null;
         return <button key={wine.id} type="button" className="w-36 shrink-0 text-left" onClick={() => onRelated(wine)}>
-          <NativeWinePhoto98 src={wine.photo} name={wine.name} className="h-44 w-36 rounded-2xl bg-stone-100" />
+          <NativeWinePhoto98 src={wine.photo} name={wine.name} type={wine.type} className="h-44 w-36 rounded-2xl bg-stone-100" />
           <span className="mt-2 block text-xs text-stone-600 [overflow-wrap:anywhere]">{wine.winery}</span>
           <span className="block text-sm font-semibold leading-5 text-stone-950 [overflow-wrap:anywhere]">{wine.name}</span>
           {score !== null && <span className={`mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-bold ${score >= 65 ? 'bg-emerald-50 text-emerald-900' : 'bg-stone-100 text-stone-800'}`}>{score}/100</span>}
@@ -130,7 +130,7 @@ export const WineSheet142 = ({ row, profile, photo, vintage, actions, onRelated,
   const name = [row.name, row.subname].filter(Boolean).join(' ');
   return <article className="pb-4 text-stone-950" data-testid="wine-sheet142">
     <header className="-mx-4 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-2 bg-gradient-to-b from-stone-200 to-stone-50 px-4 pb-4 pt-6">
-      <NativeWinePhoto98 src={photo || row.photo} ownedCapture={Boolean(photo)} name={name} className="mx-auto h-[260px] w-[130px] !bg-transparent" />
+      <NativeWinePhoto98 src={photo || row.photo} ownedCapture={Boolean(photo)} name={name} type={row.type} className="mx-auto h-[260px] w-[130px] !bg-transparent" />
       <div className="min-w-0 text-center" data-testid="wine-verdict142">
         {ready ? <><p className={`text-5xl font-bold tabular-nums leading-none ${ready.score >= 65 ? 'text-emerald-800' : 'text-stone-800'}`} aria-label={`Afinidad orientativa: ${ready.score} de 100`}>{ready.score}<span className="text-lg font-semibold text-stone-500">/100</span></p>
           <p className="mt-2 text-lg font-semibold leading-6">{ready.title}</p><p className="mt-1 text-xs text-stone-600">para tu paladar</p></>

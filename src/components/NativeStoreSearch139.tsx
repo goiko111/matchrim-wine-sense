@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Loader2, RefreshCw, Search } from 'lucide-react';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
+import { card150, TypeDot150 } from '@/components/Relief150';
 import { searchStore139 } from '@/utils/storeListing139';
 import type { PublicGlobalRow103 } from '@/utils/nativeGlobalCatalogue103';
 import { formatWineType } from '@/utils/wineFormatters';
@@ -71,15 +72,15 @@ export const NativeStoreSearch139 = ({ onSelect, onManualEntry, query, onQuery: 
       <button type="button" className="flex min-h-11 items-center gap-2 text-sm font-semibold text-red-900" onClick={() => setRetry(value => value + 1)}><RefreshCw aria-hidden="true" className="h-4 w-4" />Reintentar búsqueda</button>
     </div>}
     {current?.phase === 'ready' && current.wines.length === 0 && <p role="status" className="text-sm text-stone-600">No lo encontramos en Winerim. Prueba con menos palabras o con el nombre de la bodega.</p>}
-    {current && current.wines.length > 0 && current.phase !== 'error' && <ul aria-label="Resultados de vinos" className="min-w-0 divide-y divide-stone-200">
+    {current && current.wines.length > 0 && current.phase !== 'error' && <ul aria-label="Resultados de vinos" className="min-w-0 space-y-2">
       {current.wines.map(wine => <li key={wine.id} className="min-w-0">
-        <button type="button" onClick={() => onSelect(wine)} className="grid min-h-28 w-full min-w-0 grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-4 py-3 text-left active:bg-stone-50">
+        <button type="button" onClick={() => onSelect(wine)} className={`grid min-h-28 w-full min-w-0 grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-4 p-3 text-left active:bg-stone-50 ${card150}`}>
           {/* 140: the bottle was too small to recognise. */}
-          <NativeWinePhoto98 src={wine.photo} name={wine.name} className="h-[104px] w-[72px] border border-stone-200" />
+          <NativeWinePhoto98 src={wine.photo} name={wine.name} type={wine.type} className="h-[104px] w-[72px] !rounded-xl" />
           <span className="block min-w-0 [overflow-wrap:anywhere]">
             <span className="block text-base font-semibold leading-6">{[wine.name, wine.subname].filter(Boolean).join(' ')}</span>
             <span className="block text-sm leading-5 text-stone-600">{wine.winery}</span>
-            <span className="block text-xs leading-5 text-stone-500">{[wine.type ? formatWineType(wine.type) : '', wine.region].filter(Boolean).join(' · ')}</span>
+            <span className="flex min-w-0 items-center gap-1.5 text-xs leading-5 text-stone-500"><TypeDot150 type={wine.type} /><span className="min-w-0">{[wine.type ? formatWineType(wine.type) : '', wine.region].filter(Boolean).join(' · ')}</span></span>
           </span>
         </button>
       </li>)}

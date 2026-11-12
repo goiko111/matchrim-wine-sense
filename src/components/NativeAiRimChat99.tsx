@@ -41,7 +41,7 @@ export const NativeAiRimChat99 = (props: Props) => {
     }
   }, [props.messages, props.loading]);
   return <section
-  className="fixed inset-0 flex min-h-0 flex-col bg-[#fafafa] pb-[var(--matchrim-bottom-nav-height,88px)] text-stone-950"
+  className="fixed inset-0 flex min-h-0 flex-col bg-[#f3efe9] pb-[var(--matchrim-bottom-nav-height,88px)] text-stone-950"
   data-testid="native-airim-chat99">
   <header className="flex shrink-0 items-center justify-between gap-3 border-b border-stone-200 bg-white pb-2 pl-[calc(12px+var(--matchrim-safe-left))] pr-[calc(12px+var(--matchrim-safe-right))] pt-[calc(8px+var(--matchrim-safe-top))]">
     <button type="button" onClick={props.onBack} aria-label="Volver desde aiRIM" title="Volver" className="matchrim-pressable flex h-[44px] w-[44px] shrink-0 items-center justify-center"><ArrowLeft className="h-[20px] w-[20px]" aria-hidden="true" /></button>
