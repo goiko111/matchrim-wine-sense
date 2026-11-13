@@ -17,7 +17,7 @@ const source = readFileSync('src/components/NativeAffinitySummary.tsx', 'utf8');
 const stripped = source.replace(/^import .*;\n/gm, '');
 const exports: Record<string, (props: Record<string, unknown>) => Node> = {};
 vm.runInNewContext(ts.transpileModule(stripped, { compilerOptions: { jsx: ts.JsxEmit.React, module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText,
-  { exports, React: { createElement: element }, Link: 'Link', ChevronDown: 'ChevronDown', CircleHelp: 'CircleHelp', buildConsumerAffinity,
+  { exports, useVerdictSlot153: () => null, React: { createElement: element }, Link: 'Link', ChevronDown: 'ChevronDown', CircleHelp: 'CircleHelp', buildConsumerAffinity,
     WhyLines144: ({ dimensions, note }: { dimensions: Parameters<typeof compatLines142>[0]; note: string }) =>
       element('div', null, ...compatLines142(dimensions).map(line => element('li', { key: line.key }, line.text)), element('p', null, note)) });
 const render = exports.NativeAffinitySummary;

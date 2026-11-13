@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
 import { ChevronDown, CircleHelp } from 'lucide-react';
 import { WhyLines144 } from '@/components/WineSheet142';
+import { useVerdictSlot153 } from '@/components/verdictSlot153';
 import { buildConsumerAffinity, type ConsumerAffinityInput, type ConsumerAffinityResult } from '@/utils/consumerAffinity95';
 
 // 139: the same five words as the profile (the detail said Potencia/Acidez/Tanino, the profile Cuerpo/Frescura/Taninos).
 const traitNames139: Record<string, string> = { potente: 'Cuerpo', acidez: 'Frescura', dulce: 'Dulzor', tanico: 'Taninos', afrutado: 'Fruta' };
 export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: ConsumerAffinityResult; personalRating?: string | null; personalHistoryUnavailable?: boolean }) => {
   const result = input.result ?? buildConsumerAffinity(input);
+  const saveSlot153 = useVerdictSlot153(result.state !== 'pending');
   const personalTitle = input.personalRating === 'not_for_me' ? 'Tu valoración: no es para ti'
     : input.personalRating === 'love' ? 'Tu valoración: te encanta'
       : input.personalRating === 'ok' ? 'Tu valoración: correcto' : null;
@@ -29,6 +31,7 @@ export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: 
         <h4 className="mt-2 text-lg font-semibold leading-6 text-slate-950">{personalTitle ?? (input.personalHistoryUnavailable ? 'Comparación de estilo provisional' : result.title)}</h4>
         <p className="mt-1 text-xs text-stone-600">{personalTitle ? 'Tu experiencia con este vino' : 'Para tu paladar'}</p>
       </div>
+      {saveSlot153 && <div data-testid="verdict-slot153">{saveSlot153}</div>}
       <div className="space-y-2 text-sm leading-6 text-stone-700">
         {personalTitle && <p>Tu valoración tiene prioridad sobre la comparación de estilo.</p>}
         {input.personalHistoryUnavailable && !personalTitle && <p role="status">No se pudieron consultar tus valoraciones guardadas. Tu experiencia previa puede cambiar esta recomendación.</p>}

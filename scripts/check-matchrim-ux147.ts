@@ -39,7 +39,8 @@ test('Badges on the photo sit after each name, sized by the printed text', () =>
 test('Profile: the wine sheet’s scales with the «Tú» mark; recommended wines are compact cards', () => {
   const profile = read('src/components/NativeProfileBody138.tsx');
   assert.match(profile, /const ends147: Record<string, \[string, string\]> = \{ potente: \['Ligero', 'Con cuerpo'\]/);
-  assert.match(profile, /role="meter" aria-label=\{`\$\{row\.label\}: perfil actual`\}/); assert(!profile.includes('bg-red-950'));
+  assert.match(profile, /role="meter" aria-label=\{`\$\{row\.label\}: perfil actual`\}/); // 153: the one dark block is the sentence at the top; the scales and lists stay light.
+  assert.equal((profile.match(/bg-red-950/g) ?? []).length, 1); assert.match(profile, /bg-red-950[^"]*" aria-label="Tu paladar" data-hero153/);
   const card = read('src/components/WineCard.tsx');
   assert.match(card, /<details open=\{compact \? undefined : true\}/); assert.match(read('src/pages/Profile.tsx'), /compact=\{isNative\}/);
 });

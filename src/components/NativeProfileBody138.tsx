@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { ChevronRight } from 'lucide-react';
+import { card150 } from '@/components/Relief150';
 
 interface TasteRow { key: string; label: string; value: number; description: string }
 interface Props {
@@ -23,8 +24,8 @@ interface Props {
 
 // The same ends as the wine sheet's «Cómo es», so «Tú» means the same thing in both places.
 const ends147: Record<string, [string, string]> = { potente: ['Ligero', 'Con cuerpo'], dulce: ['Seco', 'Dulce'], acidez: ['Suave', 'Fresco y ácido'], tanico: ['Sedoso', 'Tánico'], afrutado: ['Sobrio', 'Afrutado'] };
-const chip = 'rounded-full border border-stone-200 bg-white px-3 py-2 text-sm text-stone-800';
-const heading = 'text-lg font-semibold text-stone-950';
+const chip = 'rounded-full bg-white px-3 py-2 text-sm font-medium text-stone-800 shadow-[0_1px_2px_rgba(41,37,36,.08)]';
+const heading = 'text-[20px] font-bold leading-7 tracking-tight text-stone-950';
 
 // 138: the iOS profile was seven screens of pastel cards, emoji and «RANGO WINERIM · Pot. Ac. Dul.» scales. It now
 // follows Home: what you like in one sentence, five plain traits, and short lists for styles, grapes and regions.
@@ -33,10 +34,11 @@ export const NativeProfileBody138 = ({ sentence, mainStyle, rows, baseValues, le
   <div className="space-y-8 text-stone-950" data-testid="native-profile138">
     {/* 147: the profile speaks the visual language of the wine sheet (142): soft header, round cards, and the same
         two-ended scales with the «Tú» mark the person sees on every wine. */}
-    <section className="rounded-2xl bg-gradient-to-b from-stone-200 to-stone-50 px-5 py-6" aria-label="Tu paladar">
-      <p className="text-xs font-semibold uppercase tracking-wide text-stone-600">Tu paladar</p>
-      <div className="mt-2 text-xl font-semibold leading-7 text-stone-950">{sentence}</div>
-      {mainStyle && <p className="mt-3 text-sm leading-6 text-stone-700">Estilos que más te van: <span className="font-semibold text-stone-950">{mainStyle}</span></p>}
+    {/* 153: the sentence that says who you are as a drinker is the one dark block of the profile; it was one more pale card. */}
+    <section className="rounded-2xl bg-red-950 px-5 py-6 text-white shadow-[0_10px_22px_-12px_rgba(69,10,10,.7)]" aria-label="Tu paladar" data-hero153>
+      <p className="text-xs font-semibold uppercase tracking-wide text-red-200">Tu paladar</p>
+      <div className="mt-2 text-xl font-semibold leading-7 text-white">{sentence}</div>
+      {mainStyle && <p className="mt-3 text-sm leading-6 text-white/80">Estilos que más te van: <span className="font-semibold text-white">{mainStyle}</span></p>}
     </section>
 
     {rows.length > 0 && <section aria-labelledby="profile-traits138">
@@ -46,7 +48,7 @@ export const NativeProfileBody138 = ({ sentence, mainStyle, rows, baseValues, le
           const at = (value: number) => `calc(${Math.max(0, Math.min(5, value)) * 20}% - ${Math.max(0, Math.min(5, value)) * 0.3}rem)`;
           return <div key={row.key}>
             <dt className="sr-only">{row.label}</dt>
-            <dd className="relative flex h-11 items-center justify-between rounded-full border border-stone-200 bg-white px-4 text-sm" role="meter" aria-label={`${row.label}: perfil actual`}
+            <dd className="relative flex h-11 items-center justify-between rounded-full bg-white px-4 text-sm shadow-[0_1px_2px_rgba(41,37,36,.08)]" role="meter" aria-label={`${row.label}: perfil actual`}
               aria-valuemin={0} aria-valuemax={5} aria-valuenow={row.value}
               aria-valuetext={`${row.description}; ${row.value.toLocaleString('es-ES', { maximumFractionDigits: 1 })} de 5${typeof base === 'number' && learnedSamples > 0 ? `; test inicial: ${base.toLocaleString('es-ES', { maximumFractionDigits: 1 })} de 5` : ''}`}>
               <span className={row.value <= 2 ? 'font-semibold text-stone-950' : 'text-stone-500'} aria-hidden="true">{low}</span>
@@ -64,11 +66,11 @@ export const NativeProfileBody138 = ({ sentence, mainStyle, rows, baseValues, le
     {styles.length > 0 && <section aria-labelledby="profile-styles138">
       <div className="flex items-center justify-between gap-3"><h2 id="profile-styles138" className={heading}>Estilos que te van</h2>
         <button type="button" className="min-h-11 text-sm font-semibold text-red-900" onClick={onAllStyles}>Ver todos</button></div>
-      <ul className="mt-1 divide-y divide-stone-200 rounded-2xl border border-stone-200 bg-white">
+      <ul className={`mt-1 divide-y divide-stone-100 ${card150}`}>
         {styles.map((style, index) => <li key={style.id}>
           <button type="button" className="flex min-h-14 w-full items-center gap-3 px-4 py-3 text-left" onClick={() => onStyle(style.name)}>
             <span className="min-w-0 flex-1"><span className="flex flex-wrap items-center gap-2 text-base font-semibold">{style.name}
-              {index === 0 && <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs font-semibold text-red-900">El que más</span>}</span>
+              {index === 0 && <span className="rounded-full bg-red-900 px-2 py-0.5 text-xs font-semibold text-white">El que más</span>}</span>
               {style.description && <span className="mt-1 block text-sm leading-5 text-stone-600">{style.description}</span>}</span>
             <ChevronRight className="h-5 w-5 shrink-0 text-stone-400" aria-hidden="true" />
           </button></li>)}
@@ -88,7 +90,7 @@ export const NativeProfileBody138 = ({ sentence, mainStyle, rows, baseValues, le
 
     {wines}
 
-    <section className="rounded-2xl border border-stone-200 bg-white px-4 [&>details:first-child]:border-t-0 [&>details]:border-b-0" aria-label="Más sobre tu perfil">
+    <section className={`px-4 ${card150} [&>details:first-child]:border-t-0 [&>details]:border-b-0`} aria-label="Más sobre tu perfil">
       {learning}
       {passport}
       {profileName && <p className="border-t border-stone-200 py-4 text-sm leading-6 text-stone-700 first:border-t-0">En un restaurante con Winerim, di tu código <span className="font-semibold text-red-900">{profileName}</span> y verás solo los vinos que encajan contigo.</p>}

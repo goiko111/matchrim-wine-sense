@@ -839,7 +839,7 @@ const Profile = () => {
   ) : null;
   const winesSection138 = (
               <div>
-                <h3 className={isNative ? 'mb-3 text-lg font-semibold text-stone-950' : 'mb-6 flex items-center gap-2 text-2xl font-bold text-red-900'}>
+                <h3 className={isNative ? 'mb-3 text-[20px] font-bold leading-7 tracking-tight text-stone-950' : 'mb-6 flex items-center gap-2 text-2xl font-bold text-red-900'}>
                   {!isNative && <Wine className="h-6 w-6" />}
                   {isNative ? 'Vinos para probar' : 'Vinos Winerim que deberías probar'}
                 </h3>

@@ -3,6 +3,7 @@ import { ChevronDown, ChevronRight, ExternalLink, Utensils, type LucideIcon } fr
 import type { ScanMode, scanOptions } from '@/components/wine-import/ScanHub';
 import { trackAppEvent } from '@/lib/analytics';
 import { getScanHistory, SCAN_HISTORY_UPDATED_EVENT } from '@/utils/scanHistory';
+import { card150, title150 } from '@/components/Relief150';
 
 interface Props {
   ownerId: string | null;
@@ -15,18 +16,21 @@ interface Props {
 const rowClass = 'matchrim-pressable grid min-h-[44px] w-full min-w-0 grid-cols-[44px_minmax(0,1fr)_20px] items-center gap-x-[12px] gap-y-[8px] py-[20px] text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-900';
 const textClass = 'min-w-0 [html.matchrim-accessibility-text_&]:col-span-3 [html.matchrim-accessibility-text_&]:col-start-1 [html.matchrim-accessibility-text_&]:row-start-2';
 
-const Entry = ({ title, subtitle, label, icon: Icon, tone, onClick }: {
-  title: string; subtitle?: string; label?: string; icon: LucideIcon; tone: string; onClick: () => void;
+// 153: the two ways in were two rows of a list, as quiet as «Más formas». The camera is the filled door (as on Home)
+// and «Comida y vino» a card; the rest stay rows inside a card.
+const looks153 = { main: 'rounded-2xl bg-red-900 px-4 text-white shadow-[0_8px_18px_-8px_rgba(127,29,29,.6)] active:bg-red-950', card: `${card150} px-4 active:bg-stone-50`, row: '' } as const;
+const Entry = ({ title, subtitle, label, icon: Icon, tone, onClick, look = 'row' }: {
+  title: string; subtitle?: string; label?: string; icon: LucideIcon; tone: string; onClick: () => void; look?: keyof typeof looks153;
 }) => (
-  <button type="button" className={rowClass} aria-label={label} onClick={onClick}>
-    <span className={`flex h-[44px] w-[44px] items-center justify-center rounded-md ${tone}`}>
+  <button type="button" className={`${rowClass} ${looks153[look]}`} aria-label={label} onClick={onClick} data-look153={look}>
+    <span className={`flex h-[44px] w-[44px] items-center justify-center ${look === 'main' ? 'rounded-full bg-white/15 text-white' : `rounded-md ${tone}`}`}>
       <Icon className="h-[22px] w-[22px]" aria-hidden="true" focusable="false" />
     </span>
     <span className={textClass}>
       <span className="block text-base font-semibold leading-6">{title}</span>
-      {subtitle && <span className="mt-[4px] block text-sm leading-5 text-stone-500">{subtitle}</span>}
+      {subtitle && <span className={`mt-[4px] block text-sm leading-5 ${look === 'main' ? 'text-red-100' : 'text-stone-500'}`}>{subtitle}</span>}
     </span>
-    <ChevronRight className="col-start-3 row-start-1 h-[20px] w-[20px] text-stone-400" aria-hidden="true" focusable="false" />
+    <ChevronRight className={`col-start-3 row-start-1 h-[20px] w-[20px] ${look === 'main' ? 'text-white/70' : 'text-stone-400'}`} aria-hidden="true" focusable="false" />
   </button>
 );
 
@@ -57,21 +61,21 @@ export const NativeScanHub99 = ({ ownerId, options, onSelectMode, onOpenRestaura
 
   return <div className="min-w-0 [overflow-wrap:anywhere]" data-testid="native-scan-hub99">
     <header className="mb-[24px]">
-      <h1 className="text-2xl font-bold leading-tight">Escanear</h1>
+      <h1 className={title150}>Escanear</h1>
     </header>
 
-    <div className="divide-y divide-stone-200 border-y border-stone-200" data-testid="native-scan-primary99">
+    <div className="space-y-3" data-testid="native-scan-primary99">
       {/* 146: one camera. The person photographed a wine list through «Botellas» twice: the app now tells a bottle from
           a list by itself (scanKind144), so there is one way in. The list reader stays under «Más formas» (PDF, several pages). */}
       {bottles && <Entry title="Botella o carta" subtitle="Haz la foto: la app sabe si es una botella o una carta de vinos"
-        label={`${bottles.title} · Botellas y cartas · Una foto`} icon={bottles.icon} tone="bg-red-50 text-red-900"
+        label={`${bottles.title} · Botellas y cartas · Una foto`} icon={bottles.icon} tone="bg-red-50 text-red-900" look="main"
         onClick={() => onSelectMode(bottles.id)} />}
       <Entry title="Comida y vino" subtitle="¿Qué vino va con mi plato? Carta de platos y de vinos"
-        label="Comida y vinos del restaurante · Comida y vino" icon={Utensils} tone="bg-stone-100 text-stone-700"
+        label="Comida y vinos del restaurante · Comida y vino" icon={Utensils} tone="bg-red-50 text-red-900" look="card"
         onClick={onOpenRestaurant} />
     </div>
 
-    <details className="group mt-[12px] border-b border-stone-200" data-testid="native-scan-more99">
+    <details className={`group mt-[12px] px-4 ${card150}`} data-testid="native-scan-more99">
       <summary aria-label="Más" className="matchrim-pressable flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-[12px] py-[12px] text-sm font-semibold text-stone-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-900 [&::-webkit-details-marker]:hidden">
         <span aria-hidden="true" className="min-w-0">Más formas de escanear</span>
         <ChevronDown className="h-[20px] w-[20px] shrink-0 group-open:rotate-180" aria-hidden="true" focusable="false" />
@@ -83,8 +87,8 @@ export const NativeScanHub99 = ({ ownerId, options, onSelectMode, onOpenRestaura
     </details>
 
     {recent.length > 0 && <section className="mt-[28px]" aria-labelledby="native-scan-recent99-title">
-      <h2 id="native-scan-recent99-title" className="mb-[8px] text-base font-semibold">Últimos escaneos</h2>
-      <ul className="divide-y divide-stone-200 border-y border-stone-200">
+      <h2 id="native-scan-recent99-title" className="mb-[8px] text-lg font-bold text-stone-950">Últimos escaneos</h2>
+      <ul className={`divide-y divide-stone-100 px-4 ${card150}`}>
         {recent.slice(0, 5).map(item => <li key={item.id} className="min-w-0 py-[4px]">
           <button type="button" onClick={() => onOpenRecent(item.route)}
             className="matchrim-pressable flex min-h-[44px] w-full min-w-0 items-center gap-[12px] py-[12px] text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-900">

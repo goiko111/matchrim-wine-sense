@@ -54,10 +54,10 @@ export const NativeAiRimChat99 = (props: Props) => {
   }} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-[16px] pb-4 pt-4" data-testid="native-airim-messages99">
     {/* 139: on a real phone nothing said this was a place to ask; the title and the framed box below do. */}
     {/* 148: the same visual language as the wine sheet and the profile: a soft header card, round bubbles with the aiRIM mark, and the examples as cards. */}
-    {props.messages.every(message => message.id === 'welcome') && <h2 className="-mb-2 rounded-t-2xl bg-gradient-to-b from-stone-200 to-stone-100 px-5 pb-2 pt-5 text-[22px] font-bold leading-7 text-stone-950" data-testid="airim-title139">Pregúntame lo que quieras sobre vino</h2>}
+    {props.messages.every(message => message.id === 'welcome') && <h2 className="-mb-2 rounded-t-2xl bg-red-950 px-5 pb-2 pt-5 text-[22px] font-bold leading-7 text-white" data-testid="airim-title139" data-hero153>Pregúntame lo que quieras sobre vino</h2>}
     <section className="space-y-4" aria-label="Conversación con aiRIM" aria-live="polite">
       {props.messages.map(message => message.id === 'welcome'
-        ? <p key={message.id} className="rounded-b-2xl bg-gradient-to-b from-stone-100 to-stone-50 px-5 pb-5 pt-2 text-base leading-7 text-stone-700">{message.text}</p>
+        ? <p key={message.id} className={props.messages.every(item => item.id === 'welcome') ? 'rounded-b-2xl bg-red-950 px-5 pb-5 pt-2 text-base leading-7 text-white/85 shadow-[0_10px_22px_-12px_rgba(69,10,10,.7)]' : 'rounded-2xl bg-white px-5 py-4 text-base leading-7 text-stone-700'}>{message.text}</p>
         : <div key={message.id} className={`flex items-end gap-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
           {message.role !== 'user' && <span className="mb-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-stone-200" aria-hidden="true"><AiRimMark className="h-[16px] w-[16px]" iconClassName="h-[16px] w-[16px]" /></span>}
           <p className={`max-w-[86%] whitespace-pre-wrap break-words px-4 py-3 text-[15px] leading-6 ${message.role === 'user' ? 'rounded-2xl rounded-br-md bg-red-900 text-white' : 'rounded-2xl rounded-bl-md border border-stone-200 bg-white text-stone-900'}`}>{message.text}</p>
@@ -69,11 +69,11 @@ export const NativeAiRimChat99 = (props: Props) => {
     </section>
     {/* 137: an empty chat gave no idea what to ask; a tap writes the example so the person can edit or send it. */}
     {props.messages.every(message => message.id === 'welcome') && !props.input.trim() && <div className="mt-5" data-testid="airim-examples137">
-      <p className="text-sm font-semibold text-stone-800">Toca una pregunta o escribe la tuya abajo</p>
+      <p className="text-lg font-bold text-stone-950">Toca una pregunta o escribe la tuya abajo</p>
       <div className="mt-2 grid grid-cols-2 gap-2 [html.matchrim-accessibility-text_&]:grid-cols-1">{examples137.map(example => <button key={example} type="button" disabled={props.loading}
-        className="matchrim-pressable flex min-h-[4.5rem] items-center rounded-2xl border border-stone-200 bg-white px-4 py-3 text-left text-sm font-medium leading-5 text-stone-900 active:bg-stone-50" onClick={() => props.onInput(example)}>{example}</button>)}</div>
+        className="matchrim-pressable flex min-h-[4.5rem] items-center rounded-2xl bg-white px-4 py-3 text-left text-sm font-semibold leading-5 text-stone-900 shadow-[0_1px_2px_rgba(41,37,36,.06),0_6px_16px_-8px_rgba(41,37,36,.18)] active:bg-stone-50" onClick={() => props.onInput(example)}>{example}</button>)}</div>
     </div>}
-    {props.messages.every(message => message.id === 'welcome') && <div className="mt-6 rounded-2xl border border-stone-200 bg-white px-4">
+    {props.messages.every(message => message.id === 'welcome') && <div className="mt-6 rounded-2xl bg-white px-4 shadow-[0_1px_2px_rgba(41,37,36,.06),0_6px_16px_-8px_rgba(41,37,36,.18)]">
       <button type="button" onClick={props.onRestaurant} className="matchrim-pressable flex min-h-16 w-full items-center gap-3 py-3 text-left" aria-label="Comida y vinos del restaurante">
         <FileText className="h-[22px] w-[22px] shrink-0 text-red-900" aria-hidden="true" /><span className="min-w-0 flex-1 font-medium [overflow-wrap:normal]">Elegir con las cartas del restaurante</span><ChevronRight className="h-[20px] w-[20px] shrink-0 text-stone-400" aria-hidden="true" />
       </button>

@@ -14,6 +14,7 @@ import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { NativeSaveChoice142 } from '@/components/NativeSaveChoice142';
 import { WinerimSheetLookup } from '@/components/WinerimSheetLookup';
 import { NativeWinerimFacts140 } from '@/components/NativeWinerimFacts140';
+import { card150, ScorePill150, TypeDot150 } from '@/components/Relief150';
 
 interface WineCardProps {
   wine: WinerimWineWithMatch;
@@ -35,14 +36,14 @@ const WineCard: React.FC<WineCardProps> = ({ wine, index, isHighlighted = false,
     return (
       <details open={compact ? undefined : true} ref={(node) => setWineRef?.(wine.id, node as unknown as HTMLDivElement | null)}
         data-testid="native-recommendation-card"
-        className={`group min-w-0 rounded-2xl border bg-white text-left ${isHighlighted ? 'border-red-800' : 'border-stone-200'}`}>
+        className={`group min-w-0 text-left ${card150} ${isHighlighted ? 'ring-2 ring-red-800' : ''}`}>
         <summary className="flex min-w-0 cursor-pointer list-none items-center gap-3 p-3 [&::-webkit-details-marker]:hidden" aria-label={`Ver ${wine.name}${ready ? `. Afinidad orientativa ${ready.score} de 100` : ''}`}>
-          <NativeWinePhoto98 src={wine.photo} name={wine.name} identity={{ name: wine.name, producer: wine.winery, vintage: wine.vintage }} resolveMissing className="h-[104px] w-[72px] !rounded-xl !bg-stone-100" />
+          <NativeWinePhoto98 src={wine.photo} name={wine.name} type={wine.type} identity={{ name: wine.name, producer: wine.winery, vintage: wine.vintage }} resolveMissing className="h-[104px] w-[72px] !rounded-xl !bg-stone-100" />
           <span className="min-w-0 flex-1" aria-hidden="true">
             <span className="block break-words text-xs leading-5 text-stone-600">{wine.winery}</span>
             <span className="block break-words text-base font-semibold leading-6 text-stone-950">{wine.name}</span>
-            <span className="block break-words text-xs leading-5 text-stone-500">{[wine.vintage, wine.region].filter(Boolean).join(' · ')}</span>
-            {ready && <span className="mt-2 flex flex-wrap items-center gap-2"><span className={`rounded-full px-2.5 py-1 text-xs font-bold tabular-nums ${ready.score >= 65 ? 'bg-emerald-50 text-emerald-900' : 'bg-stone-100 text-stone-800'}`}>{ready.score}/100</span>
+            <span className="flex min-w-0 items-center gap-1.5 break-words text-xs leading-5 text-stone-500"><TypeDot150 type={wine.type} />{[wine.type ? formatWineType(wine.type) : '', wine.vintage, wine.region].filter(Boolean).join(' · ')}</span>
+            {ready && <span className="mt-2 flex flex-wrap items-center gap-2"><ScorePill150 score={ready.score} />
               <span className="text-xs font-semibold text-stone-700">{ready.title}</span></span>}
           </span>
           {compact && <ChevronDown className="h-5 w-5 shrink-0 text-stone-400 transition-transform group-open:rotate-180" aria-hidden="true" />}
