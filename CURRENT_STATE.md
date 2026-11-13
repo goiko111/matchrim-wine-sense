@@ -29,6 +29,7 @@
 - Build 151 uploaded to TestFlight on 2026-11-13 (owner: «Sí, sube la 151»; Apple acknowledged). Open items: docs/MATCHRIM_PENDIENTES_2026-11-13.md.
 - 152 (4d3dd50, runners 15e920f): owner's video of 151 showed «Pegar foto» answering «No hay ninguna foto copiada» with a photo just copied in Fotos. The native plugin now reads UIPasteboard (`pasteImage`); page read kept as fallback. Rating notices on iPhone say only what happened. candidate152-r1 PASS (r185-r188, archive152-r1, uploaded:false); E2E 85/85; paste verified in the simulator with the real system pasteboard and the iOS prompt. Not on a real iPhone.
 - Build 152 uploaded to TestFlight on 2026-11-13 (owner: «Sí, sube la 152»; Apple acknowledged).
+- Owner's video of 152 on his iPhone: «Pegar foto» works (iOS prompt, allow, label read, candidates). 153 (7f12be2, runners 5efafbd): relief on Escanear, Perfil, aiRIM, recommended wines; scan sheet saves under the verdict (VerdictSlot153). candidate153-r1 PASS (r189-r192, archive153-r1, uploaded:false); E2E 85/85; scan sheet seen on the compiled 153 in the simulator.
 
 ## Current Gate: 2026-11-09, Candidates 134/135 Built (Claude, afternoon QA)
 

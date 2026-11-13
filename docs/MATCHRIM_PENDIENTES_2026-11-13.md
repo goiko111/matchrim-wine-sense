@@ -14,15 +14,14 @@ Lista única de lo que queda abierto tras subir la build 151. Nada de esto está
 ## Desarrollo nuevo
 3. **«Compartir → Matchrim» desde la galería de fotos.** Extensión nativa (objetivo nuevo en Xcode, grupo de apps,
    perfil de firma). «Pegar foto» (151) cubre el caso mientras tanto.
-4. **Extender el relieve** de la 150/151 a la carta de vinos, Perfil, aiRIM y restaurante (hoy solo tienen el fondo
-   nuevo). La ficha del vino ya tiene las tarjetas y el bloque de guardado.
+4. **Extender el relieve** a la carta de vinos y al modo restaurante (Perfil, aiRIM y Escanear hechos en la 153). La ficha del vino ya tiene las tarjetas y el bloque de guardado.
 5. **Vinos guardados sin tipo:** su botella dibujada sale gris hasta que la tienda responde.
 
 ## Sin comprobar en un iPhone real
 6. Todo lo de las builds 147 a 151 solo está probado en simulador.
 7. La botella tumbada (150) de principio a fin con la tienda real, y qué leyó de verdad el iPhone en el vídeo.
 8. «Pegar foto» en el teléfono: falló en la 151; la 152 lo lee desde la parte nativa (probado en simulador, falta el iPhone).
-8b. En la ficha de escaneo el bloque de guardar queda debajo de «Por qué encaja contigo»; subirlo exige reordenar esa ficha.
+8b. (Hecho en la 153) El bloque de guardar de la ficha de escaneo va bajo el veredicto.
 9. Que la 151 aparezca para instalar en TestFlight (Apple confirmó la recepción, nada más).
 
 ## Deuda de pruebas
