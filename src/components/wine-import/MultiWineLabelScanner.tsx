@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { handMenuPhoto144, looksLikeWineList144 } from '@/utils/scanKind144';
 import { markScannedSaved144, recordScannedWine139 } from '@/utils/scannedWines139';
 import { NativeSaveChoice142 } from '@/components/NativeSaveChoice142';
+import { pastedPhoto151, PASTE_HELP151 } from '@/utils/pastePhoto151';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { confirm135 } from '@/utils/nativeConfirm135';
 import { Capacitor } from '@capacitor/core';
 import {
   AlertTriangle,
+  ClipboardPaste,
   Camera,
   Check,
   ChevronLeft,
@@ -790,6 +792,15 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     await startScan(file);
   };
 
+  // 151: a photo copied elsewhere (Fotos, WhatsApp, a web page) goes through the same door as one chosen from the gallery.
+  const pastePhoto151 = async () => {
+    if (savingRef.current) return;
+    const file = await pastedPhoto151();
+    if (typeof file === 'string') { toast.error(file === 'unavailable' ? 'Este iPhone no deja pegar fotos aquí. Usa «Elegir de galería».' : PASTE_HELP151, { duration: 7000 }); return; }
+    trackAppEvent('multi_wine_label_scan_started', { userId: user?.id, metadata: { file_type: file.type, file_size: file.size, pasted: true } });
+    await startScan(file);
+  };
+
   const cancelScan = () => {
     const reread = reanalyzeSnapshot134.current;
     if (isNative && reread && abortRef.current === reread.controller) {
@@ -1353,9 +1364,14 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
             <Button type="button" disabled={loading || saving} className={`matchrim-pressable gap-2 bg-red-900 hover:bg-red-800 ${isNative ? 'min-h-14 rounded-xl text-base font-bold shadow-[0_8px_18px_-8px_rgba(127,29,29,.6)]' : 'min-h-12'}`} onClick={() => void openCamera133(cameraInputRef.current)}>
               <Camera className={isNative ? 'h-5 w-5' : 'h-4 w-4'} /> Hacer foto
             </Button>
-            <Button type="button" disabled={loading || saving} variant={isNative ? 'ghost' : 'outline'} className={`matchrim-pressable min-h-12 gap-2 ${isNative ? 'font-semibold text-red-900' : 'border-slate-300 bg-white'}`} onClick={() => fileInputRef.current?.click()}>
+            <div className={isNative ? 'grid grid-cols-2 gap-2 [.matchrim-accessibility-text_&]:grid-cols-1' : 'contents'}>
+            <Button type="button" disabled={loading || saving} variant={isNative ? 'ghost' : 'outline'} className={`matchrim-pressable min-h-12 gap-2 ${isNative ? 'px-2 font-semibold text-red-900' : 'border-slate-300 bg-white'}`} onClick={() => fileInputRef.current?.click()}>
               <FolderOpen className="h-4 w-4" /> Elegir de galería
             </Button>
+            {isNative && <Button type="button" disabled={loading || saving} variant="ghost" className="matchrim-pressable min-h-12 gap-2 px-2 font-semibold text-red-900" data-testid="paste-photo151" onClick={() => void pastePhoto151()}>
+              <ClipboardPaste className="h-4 w-4" /> Pegar foto
+            </Button>}
+            </div>
           </div>
           {loading && (isNative ? <div className="mt-4 space-y-2">
             <ScanWaiting139 steps={SCAN_STEPS139} current={waitStep139} />

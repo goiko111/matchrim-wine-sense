@@ -155,7 +155,8 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
             {wine.consumption_place && <p className="mt-1 flex items-start gap-1 text-xs leading-5 text-stone-500"><MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" /><span className="min-w-0 break-words">{wine.consumption_place}</span></p>}
             {sheet?.extra && <div className="mt-2">{sheet?.extra}</div>}
           </div>
-          <div className={`${card143} p-4`} data-testid="native-cellar-rate141">{sheet?.rate}</div>
+          {/* 151: an unrated wine asks for its rating in the one dark block of the sheet (the request went unnoticed among white cards). */}
+          <div className={wine.rating ? `${card143} p-4` : 'rounded-2xl bg-red-950 p-4 shadow-[0_10px_22px_-12px_rgba(69,10,10,.7)] [&_p]:!text-white [&_p_span]:!text-white/80'} data-testid="native-cellar-rate141" data-ask151={wine.rating ? undefined : ''}>{sheet?.rate}</div>
           <div className={`${card143} [&>section]:border-0`}><NativeWineNote139 wineId={wine.id} initial={wine.personal_note} /></div>
           {/* 143: the estimate's reasons come from the store match the row already has: no second lookup, nothing saved. */}
           {ready && <section className={`${card143} px-4 py-2`} aria-label="Por qué" data-testid="native-cellar-why143">

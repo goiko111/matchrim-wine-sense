@@ -1530,7 +1530,7 @@ const MyWinesForOwner = () => {
                                 disabled={savingWineActions.has(wine.id)}
                                 aria-busy={savingWineActions.has(wine.id)}
                               >
-                                <ThumbsUp className="mr-1 h-3.5 w-3.5 shrink-0" />
+                                <ThumbsUp className={`mr-1 shrink-0 ${isNative ? `h-5 w-5 ${wine.rating === 'love' ? '' : 'text-emerald-700'}` : 'h-3.5 w-3.5'}`} />
                                 Me encanta
                               </Button>
                               <Button
@@ -1542,7 +1542,7 @@ const MyWinesForOwner = () => {
                                 disabled={savingWineActions.has(wine.id)}
                                 aria-busy={savingWineActions.has(wine.id)}
                               >
-                                <Meh className="mr-1 h-3.5 w-3.5 shrink-0" />
+                                <Meh className={`mr-1 shrink-0 ${isNative ? `h-5 w-5 ${wine.rating === 'ok' ? '' : 'text-amber-600'}` : 'h-3.5 w-3.5'}`} />
                                 Correcto
                               </Button>
                               <Button
@@ -1554,7 +1554,7 @@ const MyWinesForOwner = () => {
                                 disabled={savingWineActions.has(wine.id)}
                                 aria-busy={savingWineActions.has(wine.id)}
                               >
-                                <ThumbsDown className="mr-1 h-3.5 w-3.5 shrink-0" />
+                                <ThumbsDown className={`mr-1 shrink-0 ${isNative ? `h-5 w-5 ${wine.rating === 'not_for_me' ? '' : 'text-stone-500'}` : 'h-3.5 w-3.5'}`} />
                                 No va
                               </Button>
                             </div>

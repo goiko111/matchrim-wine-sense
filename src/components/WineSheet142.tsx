@@ -9,12 +9,14 @@ import { usableStoreSensory138 } from '@/utils/storeEstimate138';
 import { storeAffinity139, storeScore139, type StoreRow140 } from '@/utils/storeListing139';
 import { compatLines142, loadWinerimDetail142, type WinerimDetail142 } from '@/utils/winerimDetail142';
 import { formatCountryName, formatWineType } from '@/utils/wineFormatters';
+import { card150 } from '@/components/Relief150';
 
 const grapeNames = (row: PublicGlobalRow103) => [...new Set((row.grapes ?? []).flat(2).flatMap(grape => {
   const name = typeof grape === 'string' ? grape : grape && typeof grape === 'object' ? (grape as { name?: unknown }).name : null;
   return typeof name === 'string' && name.trim() ? [name.trim()] : [];
 }))];
-const card = 'rounded-2xl border border-stone-200 bg-white';
+// 151: the sheet's cards take the relief of 150 (a soft shadow instead of a hairline border).
+const card = card150;
 const heading = 'text-lg font-semibold text-stone-950';
 const more = 'flex min-h-11 cursor-pointer items-center text-sm font-semibold text-red-900';
 
