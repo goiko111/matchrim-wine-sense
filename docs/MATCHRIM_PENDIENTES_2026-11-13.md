@@ -21,7 +21,8 @@ Lista única de lo que queda abierto tras subir la build 151. Nada de esto está
 ## Sin comprobar en un iPhone real
 6. Todo lo de las builds 147 a 151 solo está probado en simulador.
 7. La botella tumbada (150) de principio a fin con la tienda real, y qué leyó de verdad el iPhone en el vídeo.
-8. El aviso de permiso de iOS al tocar «Pegar foto» (151).
+8. «Pegar foto» en el teléfono: falló en la 151; la 152 lo lee desde la parte nativa (probado en simulador, falta el iPhone).
+8b. En la ficha de escaneo el bloque de guardar queda debajo de «Por qué encaja contigo»; subirlo exige reordenar esa ficha.
 9. Que la 151 aparezca para instalar en TestFlight (Apple confirmó la recepción, nada más).
 
 ## Deuda de pruebas

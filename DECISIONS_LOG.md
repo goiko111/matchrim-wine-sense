@@ -237,3 +237,4 @@ Food-menu row splitting and detection-box normalization may be replayed determin
 - 2026-11-12: Build 150 uploaded to TestFlight with the owner's explicit yes.
 - 2026-11-13: 151 keeps the three ratings the database accepts. The intermediate «Me gusta» asked by a tester needs a server change (check constraint and learning weights) and waits for the owner's decision; it is not emulated in the app.
 - 2026-11-13: Build 151 (9970439, archive151-r1) uploaded to TestFlight after the owner answered «Sí, sube la 151» to «¿Subo la 151 a TestFlight?»; HUMAN-AUTHORIZATION quotes the words. Private beta only. Owner: «deja anotado todo lo pendiente para mas adelante»; list in docs/MATCHRIM_PENDIENTES_2026-11-13.md.
+- 2026-11-13: «Pegar foto» reads the system pasteboard from native code (152). The web clipboard API inside the app returned nothing on the phone; it stays only as a fallback for shells without the method.

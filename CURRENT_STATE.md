@@ -27,6 +27,7 @@
 - Not pushed; web and backend untouched; no real device.
 - 151 (c374ee2, runners 9970439), from the voice notes of the owner's wife (12-nov): saving and rating are the one dark block of the wine sheet («¿Qué haces con este vino?»), each rating has its colour, an unrated saved wine asks for its rating in that block, and the scanner takes a pasted photo («Pegar foto»). candidate151-r1: prepare/compile/native QA r181-r184/archive PASS (uploaded:false); E2E 85/85; sweep same failures as 150. Not on a real iPhone; the iOS paste prompt was not seen in the simulator (clipboard replaced in the test).
 - Build 151 uploaded to TestFlight on 2026-11-13 (owner: «Sí, sube la 151»; Apple acknowledged). Open items: docs/MATCHRIM_PENDIENTES_2026-11-13.md.
+- 152 (4d3dd50, runners 15e920f): owner's video of 151 showed «Pegar foto» answering «No hay ninguna foto copiada» with a photo just copied in Fotos. The native plugin now reads UIPasteboard (`pasteImage`); page read kept as fallback. Rating notices on iPhone say only what happened. candidate152-r1 PASS (r185-r188, archive152-r1, uploaded:false); E2E 85/85; paste verified in the simulator with the real system pasteboard and the iOS prompt. Not on a real iPhone.
 
 ## Current Gate: 2026-11-09, Candidates 134/135 Built (Claude, afternoon QA)
 
