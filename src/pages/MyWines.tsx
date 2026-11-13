@@ -1190,14 +1190,15 @@ const MyWinesForOwner = () => {
         throw new Error('Rating update not confirmed');
       }
 
-      const message = isNative && wine.status === 'collection' ? 'Valoraci\u00f3n guardada; stock sin cambios'
+      // 152: on iPhone the notice said «stock sin cambios. Faltan atributos sensoriales para afinar tu perfil»: it now says what happened, nothing else.
+      const message = isNative && wine.status === 'collection' ? 'Valoraci\u00f3n guardada'
         : wine?.status === 'collection' && !wine.rating
         ? `Vino puntuado${wine.quantity && wine.quantity > 1 ? ` (quedan ${wine.quantity - 1} botellas)` : ' y movido a Ya Probados'}`
         : rating && wine.status === 'wishlist'
           ? (isNative ? 'Vino movido a Probados' : 'Vino movido a Ya Probados')
           : "Valoración guardada";
       
-      toast.success(rating && !hasSensoryAttributes
+      toast.success(rating && !hasSensoryAttributes && !isNative
         ? `${message}. Faltan atributos sensoriales para afinar tu perfil.`
         : message);
       trackAppEvent("wine_rating_added", {

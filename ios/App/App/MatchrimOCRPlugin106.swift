@@ -14,6 +14,7 @@ public final class MatchrimOCRPlugin106: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "recognize", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "cancel", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "takePhoto", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "pasteImage", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "confirm", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "recognizeLines", returnType: CAPPluginReturnPromise)
     ]
@@ -479,6 +480,17 @@ extension MatchrimOCRPlugin106: UIImagePickerControllerDelegate, UINavigationCon
         DispatchQueue.global(qos: .userInitiated).async {
             guard let jpeg = Self.cameraJPEG(image) else { call.reject("The photo could not be encoded.", "CAMERA_FAILED"); return }
             call.resolve(["status": "captured", "image": "data:image/jpeg;base64," + jpeg.base64EncodedString()])
+        }
+    }
+
+    // 152: «Pegar foto» read the clipboard from the web page, and on the phone that read came back empty with a
+    // photo copied in Fotos. The system pasteboard is read here instead; iOS asks the person before handing it over,
+    // and a refusal reads as an empty clipboard. The photo stays on the device, like one taken with the camera.
+    @objc func pasteImage(_ call: CAPPluginCall) {
+        DispatchQueue.main.async {
+            let board = UIPasteboard.general
+            guard board.hasImages, let image = board.image, let data = Self.cameraJPEG(image) else { call.resolve(["status": "empty"]); return }
+            call.resolve(["status": "captured", "image": "data:image/jpeg;base64," + data.base64EncodedString()])
         }
     }
 
