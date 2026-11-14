@@ -11,7 +11,8 @@ export const RowEstimate156 = ({ identity, profile, children }: { identity: { na
   const key = JSON.stringify([identity.name, identity.producer, identity.vintage]);
   const [found, setFound] = useState<{ key: string; score: number; title: string } | null>(null);
   useEffect(() => {
-    if (!profile || !identity.name?.trim() || !identity.producer?.trim()) return;
+    // 157: a label that gives no winery («Psi») still asks: the store matches it by its exact name, or not at all.
+    if (!profile || !identity.name?.trim()) return;
     const controller = new AbortController();
     void estimateListing139({ name: identity.name, producer: identity.producer, vintage: identity.vintage }, controller.signal).then(match => {
       if (controller.signal.aborted || match?.kind !== 'exact') return;

@@ -50,7 +50,11 @@ export const matchListing139 = (line: ListingLine139, rows: readonly PublicGloba
   const all = [...wines.entries()].map(([id, item]) => ({ ...item, row: item.row.photo ? item.row : { ...item.row, photo: photos.get(id) ?? null },
     typicalPrice: median(prices.get(id) ?? []) }));
   const producer = line.producer ? brandKey(line.producer) : '';
-  const ofProducer = (item: StoreEstimate138) => !producer || brandKey(item.row.winery) === producer;
+  // 157: a label reads «J. Chivite Family Estates» where the store says «Chivite» (the owner's video of 156: the wine
+  // stayed «Pendiente» though Winerim has it). The winery also counts when one name holds the other as whole words;
+  // the wine's own name must still match exactly below.
+  const ofProducer = (item: StoreEstimate138) => { const winery = brandKey(item.row.winery);
+    return !producer || winery === producer || (winery.length >= 4 && ` ${producer} `.includes(` ${winery} `)) || (producer.length >= 4 && ` ${winery} `.includes(` ${producer} `)); };
   // «PAGOS DE ANGUIX COSTALARA» is the wine «Costalara» of the winery «Pagos de Anguix».
   const withoutWinery = (item: StoreEstimate138) => { const winery = key(item.row.winery);
     return read.name.startsWith(winery + ' ') ? read.name.slice(winery.length + 1) : null; };

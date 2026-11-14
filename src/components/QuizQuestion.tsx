@@ -4,8 +4,8 @@ import { Capacitor } from '@capacitor/core';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Question } from '../data/quizData';
-import { ChevronLeft, Home, Meh, ThumbsDown, ThumbsUp } from 'lucide-react';
-import { QuizArt149 } from '@/components/QuizArt149';
+import { ChevronLeft, ChevronRight, Home, Meh, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { QuizPhoto157 } from '@/components/QuizPhoto157';
 
 interface QuizQuestionProps {
   question: Question;
@@ -33,6 +33,16 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   onContinue
 }) => {
   const isNative = Capacitor.isNativePlatform();
+  // 157 (native; declared before the scroll effect, which check 241 expects to be the last one): the parent's onContinue reads the stored answer, so it is called through a ref once the answer has
+  // been rendered; leaving the question (Anterior, exit) cancels a pending advance.
+  const continueRef = useRef(onContinue); continueRef.current = onContinue;
+  const pending = useRef<number | null>(null);
+  useEffect(() => () => { if (pending.current !== null) { window.clearTimeout(pending.current); pending.current = null; } }, [question.id]);
+  const advanceSoon = (value: string) => {
+    if (pending.current !== null) return;
+    if (currentAnswer !== value) onAnswer(value);
+    pending.current = window.setTimeout(() => { pending.current = null; continueRef.current?.(); }, 280);
+  };
   const title = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     if (isNative) {
@@ -46,27 +56,33 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   };
   if (isNative) {
     return (
-      <section className="matchrim-native-quiz-question mx-auto w-full min-w-0 max-w-2xl scroll-mt-[calc(12px+var(--matchrim-safe-top))] px-0 pb-[24px]">
-        {/* 149: the test in the visual language of the rest of the app: a full-width progress line, the food as a flat
-            illustration on its own colour (QuizArt149, the owner's choice), and three large answers with a face each. */}
-        <div className="flex min-w-0 flex-wrap items-center justify-between gap-[8px] text-sm text-stone-600">
-          <span>{`Pregunta ${currentQuestionIndex + 1} de ${totalQuestions}`}</span>
-          <Button type="button" onClick={onBackToStart} variant="ghost" size="icon" className="h-[44px] min-h-[44px] w-[44px] min-w-[44px] shrink-0 p-0" aria-label="Salir del test" title="Salir del test"><Home className="h-5 w-5" /></Button>
+      <section className="matchrim-native-quiz-question mx-auto w-full min-w-0 max-w-2xl scroll-mt-[calc(12px+var(--matchrim-safe-top))] px-0 pb-[24px]" data-quiz157>
+        {/* 157: the owner chose full-bleed photographs (QuizPhoto157) over the flat drawings of 149, and asked that an
+            answer moves on by itself. The photo carries the progress line and the question; a tap on an answer shows
+            it selected for a moment and advances. «Anterior» stays, and an answered question can be passed again. */}
+        <div className="relative -mx-4 flex min-h-[46vh] flex-col justify-between overflow-hidden bg-stone-900 [@media(orientation:landscape)_and_(max-height:600px)]:min-h-[9rem]">
+          <QuizPhoto157 key={question.id} id={question.id} eager className="matchrim-native-quiz-image absolute inset-0 h-full w-full" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/80" aria-hidden="true" />
+          <div className="relative px-4 pt-2">
+            <div className="flex min-w-0 flex-wrap items-center justify-between gap-[8px] text-sm font-medium text-white">
+              <span>{`Pregunta ${currentQuestionIndex + 1} de ${totalQuestions}`}</span>
+              <Button type="button" onClick={onBackToStart} variant="ghost" size="icon" className="h-[44px] min-h-[44px] w-[44px] min-w-[44px] shrink-0 p-0 text-white hover:bg-white/15 hover:text-white" aria-label="Salir del test" title="Salir del test"><Home className="h-5 w-5" /></Button>
+            </div>
+            <progress aria-label="Progreso del test" value={currentQuestionIndex + 1} max={totalQuestions} className="block h-1.5 w-full overflow-hidden rounded-full accent-white [&::-webkit-progress-bar]:bg-white/35 [&::-webkit-progress-value]:bg-white" />
+          </div>
+          <h1 ref={title} tabIndex={-1} className="relative px-4 pb-4 pt-10 text-3xl font-bold leading-tight text-white outline-none [overflow-wrap:anywhere]">{question.text}</h1>
         </div>
-        <progress aria-label="Progreso del test" value={currentQuestionIndex + 1} max={totalQuestions} className="block h-1.5 w-full overflow-hidden rounded-full accent-red-900 [&::-webkit-progress-bar]:bg-stone-200 [&::-webkit-progress-value]:bg-red-900" />
-        <QuizArt149 id={question.id} className="matchrim-native-quiz-image mx-auto mt-4 aspect-square max-h-56 w-auto max-w-full rounded-3xl" />
-        <h1 ref={title} tabIndex={-1} className="mt-5 text-center text-2xl font-bold leading-tight text-stone-950 outline-none">{question.text}</h1>
-        <RadioGroup value={currentAnswer} onValueChange={handleAnswerChange} className="mt-5 grid grid-cols-3 gap-2 [html.matchrim-accessibility-text_&]:grid-cols-1" aria-label={question.text}>
+        <RadioGroup value={currentAnswer} onValueChange={handleAnswerChange} className="mt-4 grid grid-cols-3 gap-2 [html.matchrim-accessibility-text_&]:grid-cols-1" aria-label={question.text}>
           {([['si', 'Me gusta', ThumbsUp], ['indiferente', 'Me da igual', Meh], ['no', 'No me gusta', ThumbsDown]] as const).map(([value, label, Icon]) => (
             <label key={value} className={`relative flex min-h-[5.5rem] flex-col items-center justify-center gap-2 rounded-2xl border px-2 py-3 text-center ${currentAnswer === value ? 'border-red-900 bg-red-900 text-white' : 'border-stone-200 bg-white text-stone-900'}`}>
-              <RadioGroupItem value={value} id={`quiz-${question.id}-${value}`} aria-label={label} className="absolute inset-0 h-full w-full rounded-2xl border-0 opacity-0" />
+              <RadioGroupItem value={value} id={`quiz-${question.id}-${value}`} aria-label={label} onClick={() => advanceSoon(value)} className="absolute inset-0 h-full w-full rounded-2xl border-0 opacity-0" />
               <Icon className="h-6 w-6" aria-hidden="true" /><span className="text-sm font-semibold leading-4">{label}</span>
             </label>
           ))}
         </RadioGroup>
-        <div className="mt-5 grid min-w-0 grid-cols-[48px_minmax(0,1fr)] gap-[8px]">
-          <Button type="button" onClick={onPrevious} disabled={isFirst} variant="outline" size="icon" className="h-[48px] min-h-[48px] w-[48px] min-w-[48px] rounded-full p-0" aria-label="Anterior" title="Anterior"><ChevronLeft className="h-4 w-4" /></Button>
-          <Button type="button" onClick={onContinue} disabled={!currentAnswer} className="h-auto min-h-[48px] w-full min-w-0 whitespace-normal rounded-full bg-red-900 px-[12px] py-[8px] text-base">{isLast ? 'Ver mi perfil' : 'Siguiente'}</Button>
+        <div className="mt-4 flex min-w-0 items-center justify-between gap-[8px]">
+          <Button type="button" onClick={onPrevious} disabled={isFirst} variant="outline" className="h-[48px] min-h-[48px] min-w-[48px] gap-1 rounded-full px-4" aria-label="Anterior" title="Anterior"><ChevronLeft className="h-4 w-4" aria-hidden="true" />Anterior</Button>
+          {currentAnswer && <Button type="button" onClick={onContinue} variant="outline" className="h-[48px] min-h-[48px] min-w-[48px] gap-1 rounded-full px-4" data-testid="quiz-forward157">{isLast ? 'Ver mi perfil' : 'Siguiente'}<ChevronRight className="h-4 w-4" aria-hidden="true" /></Button>}
         </div>
       </section>
     );

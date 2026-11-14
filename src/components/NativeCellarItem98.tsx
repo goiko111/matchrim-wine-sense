@@ -40,10 +40,13 @@ interface Props {
   snapshot: ScanProfileSnapshot | null;
   resolveImage: boolean;
   sheet?: NativeCellarSheet141;
+  // 157: rating straight from the list (the owner's OK to «valorar desde la lista»): same handler as the sheet.
+  onRate?: (rating: 'love' | 'ok' | 'not_for_me') => void;
+  rateBusy?: boolean;
   children: ReactNode;
 }
 
-export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet, children }: Props) => {
+export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet, onRate, rateBusy, children }: Props) => {
   const [open, setOpen] = useState(false);
   const [resolved, setResolved] = useState<{ key: string; url: string } | null>(null);
   const identityKey = JSON.stringify([wine.name, wine.producer, wine.vintage]);
@@ -118,7 +121,8 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
   const RatedIcon = rated?.[1];
   return <>
     {/* 143: each wine is a card (bottle on a soft tile, winery, name, vintage · region, verdict chip) instead of a ruled row. */}
-    <button ref={rowRef} type="button" className={`flex w-full min-w-0 items-center gap-3 p-3 text-left ${card143}`} aria-label={rowLabel} onClick={() => setOpen(true)} data-testid="native-cellar-item98">
+    <div className={`min-w-0 overflow-hidden ${card143}`} data-testid="native-cellar-card157">
+    <button ref={rowRef} type="button" className="flex w-full min-w-0 items-center gap-3 p-3 text-left" aria-label={rowLabel} onClick={() => setOpen(true)} data-testid="native-cellar-item98">
       <NativeWinePhoto98 src={photo} ownedCapture name={wine.name} identity={identity} resolveMissing={!photo && open && storeSettled} onResolved={url => setResolved({ key: identityKey, url })} type={storeHit?.type ?? rememberedWineType154(identityKey) ?? guessWineType154(wine.name, (wine as { grape_varieties?: string[] | null }).grape_varieties)} className="h-[104px] w-[72px] !rounded-xl !bg-stone-100" />
       <span className="min-w-0 flex-1">{wine.producer && <span className="block break-words text-[11px] font-semibold uppercase tracking-wide leading-5 text-stone-500">{wine.producer}</span>}
         <span className="block break-words text-base font-semibold leading-6 text-stone-950">{wine.name}</span>
@@ -130,6 +134,13 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
         </span>}
       </span>
     </button>
+    {/* 157: an unrated wine can be rated without opening it. Three faces in the colours of the sheet's answers. */}
+    {!wine.rating && onRate && <div className="flex min-w-0 flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-stone-100 py-1.5 pl-4 pr-2" role="group" aria-label={`Valorar ${wine.name}`} data-testid="native-cellar-quick157">
+      <span className="text-xs font-medium text-stone-600">¿Lo has probado?</span>
+      <span className="flex shrink-0 items-center gap-1">{([['love', 'Me encantó', ThumbsUp, 'text-emerald-700'], ['ok', 'Correcto', Meh, 'text-amber-600'], ['not_for_me', 'No me gustó', ThumbsDown, 'text-stone-500']] as const).map(([value, label, Icon, tone]) =>
+        <button key={value} type="button" disabled={rateBusy} aria-busy={rateBusy} aria-label={label} title={label} onClick={() => onRate(value)} className={`flex h-11 w-11 items-center justify-center rounded-full border border-stone-200 bg-white disabled:opacity-50 ${tone}`}><Icon className="h-5 w-5" aria-hidden="true" /></button>)}</span>
+    </div>}
+    </div>
     <Dialog.Root open={open} onOpenChange={setOpen}><Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" /><Dialog.Content className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[94dvh] w-full max-w-xl flex-col overflow-hidden rounded-t-2xl bg-white text-stone-950">
       <div className="flex shrink-0 items-center justify-between gap-3 border-b border-stone-200 px-4 py-2"><Dialog.Title className="min-w-0 break-words text-base font-semibold">Tu vino</Dialog.Title><Dialog.Close className="flex h-11 w-11 shrink-0 items-center justify-center" aria-label="Cerrar vino"><X className="h-5 w-5" /></Dialog.Close></div>
       <Dialog.Description className="sr-only">Ficha, afinidad y valoración de {wine.name}.</Dialog.Description>
@@ -139,8 +150,9 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
       <div className="min-h-0 overflow-y-auto bg-stone-50 pb-[calc(1rem+var(--matchrim-safe-bottom))]" data-testid="native-cellar-sheet141">
         {/* 143: same opening as the new wine sheet: a big bottle and, beside it, the answer. The person's own
             rating wins; then the verified score; then the store estimate. */}
-        <header className={`grid items-center gap-2 bg-gradient-to-b from-stone-200 to-stone-50 px-4 pb-4 pt-6 ${photo ? 'grid-cols-[minmax(0,1fr)_minmax(0,1fr)]' : ''}`}>
-          {photo && <NativeWinePhoto98 src={photo} ownedCapture name={wine.name} className="mx-auto h-[260px] w-[130px] !bg-transparent" />}
+        <header className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-2 bg-gradient-to-b from-stone-200 to-stone-50 px-4 pb-4 pt-6 [html.matchrim-accessibility-text_&]:grid-cols-1">
+          {/* 157: the bottle always stands beside the answer; without a photo it is the drawn one in the wine's colour. */}
+          <NativeWinePhoto98 src={photo} ownedCapture name={wine.name} type={storeHit?.type ?? rememberedWineType154(identityKey) ?? guessWineType154(wine.name, (wine as { grape_varieties?: string[] | null }).grape_varieties)} className={`mx-auto !bg-transparent ${photo ? 'h-[260px] w-[130px]' : 'h-[200px] w-[100px]'}`} />
           <div className="min-w-0 text-center" data-testid="native-cellar-verdict141">
             {rated && RatedIcon ? <><span className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full ${rated[2]}`}><RatedIcon className="h-8 w-8" aria-hidden="true" /></span>
               <p className="mt-3 text-lg font-semibold leading-6" role="status">{rated[0]}</p><p className="mt-1 text-xs text-stone-600">Tu valoración</p>

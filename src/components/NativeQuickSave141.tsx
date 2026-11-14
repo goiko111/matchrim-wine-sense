@@ -10,7 +10,9 @@ import type { Json } from '@/integrations/supabase/types';
 export interface QuickSaveWine141 { name: string; producer?: string | null; vintage?: string | number | null; region?: string | null;
   country?: string | null; grapes?: string[]; photo?: string | null; storeId?: number | null; storeSlug?: string | null;
   /** 156: a wine Winerim does not have, kept with what its label says. */
-  source?: 'label' }
+  source?: 'label';
+  /** 157: the picture the person took of the label; kept on this iPhone only as the wine's thumbnail (ownWinePhoto133). */
+  labelPhoto?: string | null }
 
 // 141: saving a wine found by search opened the ten-field «Añadir vino» form («No encuentro coincidencias claras ·
 // Nombre confirmado»). A wine that comes from Winerim already has its name, winery, zone and photo: one tap saves it

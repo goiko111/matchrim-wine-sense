@@ -1,3 +1,6 @@
+import { historyLines157 } from '@/utils/history157';
+import { useRatedWines157 } from '@/hooks/useRatedWines157';
+import { FlavourCards157 } from '@/components/FlavourCards157';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Calendar, Frown, Grape, MapPin, Meh, Smile, Thermometer, Wine } from 'lucide-react';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
@@ -67,6 +70,7 @@ export const WinerimRich142 = ({ row, profile, vintage, onRelated }: { row: Publ
     </section>}
     {data && (data.personality || note144.length > 0) && <section aria-labelledby={`note142-${row.id}`}>
       <h4 id={`note142-${row.id}`} className={heading}>A qué sabe</h4>
+      <FlavourCards157 texts={[data.nose, data.palate, data.finish]} />
       {data.personality && <p className="mt-2 text-base leading-7 text-stone-800">{data.personality}</p>}
       {/* 144: the whole tasting note of Winerim (sight, nose, mouth, body, structure, finish), each part with its name. */}
       {note144.length > 0 && <details className="mt-1"><summary className={more}>Leer la nota de cata</summary>
@@ -127,6 +131,7 @@ export const WineSheet142 = ({ row, profile, photo, vintage, actions, onRelated,
     : storeAffinity139(profile, attributes);
   const ready = result?.state === 'ready' ? result : null;
   const name = [row.name, row.subname].filter(Boolean).join(' ');
+  const history = historyLines157(useRatedWines157(), { region: row.region, grapes: grapeNames(row) });
   return <article className="pb-4 text-stone-950" data-testid="wine-sheet142">
     <header className="-mx-4 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-2 bg-gradient-to-b from-stone-200 to-stone-50 px-4 pb-4 pt-6">
       <NativeWinePhoto98 src={photo || row.photo} ownedCapture={Boolean(photo)} name={name} type={row.type} className="mx-auto h-[260px] w-[130px] !bg-transparent" />
@@ -145,6 +150,12 @@ export const WineSheet142 = ({ row, profile, photo, vintage, actions, onRelated,
     {actions && <div className="mt-4">{actions}</div>}
     {ready && <section className={`${card} mt-6 px-4 py-2`} aria-label="Por qué" data-testid="wine-why142">
       <WhyLines144 dimensions={ready.dimensions} note="Estimación con los datos de Winerim. Compara el estilo del vino con tus gustos; no es una nota de calidad." />
+    </section>}
+    {history.length > 0 && <section className={`${card} mt-4 px-4 py-2`} aria-labelledby={`history157-${row.id}`} data-testid="wine-history157">
+      <h4 id={`history157-${row.id}`} className="pt-2 text-base font-semibold text-stone-950">Lo que ya has probado</h4>
+      <ul className="divide-y divide-stone-100">{history.map(item => { const [Face, tone] = faces[item.face];
+        return <li key={item.key} className="flex items-center gap-3 py-3 text-sm leading-5 text-stone-900"><Face className={`h-5 w-5 shrink-0 ${tone}`} aria-hidden="true" />{item.text}</li>; })}</ul>
+      <p className="pb-2 pt-1 text-xs leading-5 text-stone-500">Según tus propias valoraciones en Mis vinos.</p>
     </section>}
     <div className="mt-6"><WinerimRich142 row={row} profile={profile} vintage={vintage} onRelated={onRelated} /></div>
   </article>;

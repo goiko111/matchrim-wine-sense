@@ -1,3 +1,4 @@
+import { saveOwnWinePhoto133 } from '@/utils/ownWinePhoto133';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bookmark, Check, Home, Loader2, ThumbsDown, ThumbsUp, Smile } from 'lucide-react';
@@ -30,6 +31,7 @@ export const saveStoreWine142 = async (userId: string, wine: QuickSaveWine141, p
     const change = place === 'wishlist' ? null
       : place === 'tasted' ? had.status === 'collection' ? (rating ? { rating } : null) : { status: 'tasted' as const, ...(rating ? { rating } : {}) }
         : { status: 'collection' as const, quantity: 1 };
+    if (wine.labelPhoto && !wine.photo) void saveOwnWinePhoto133(had.id, wine.labelPhoto);
     if (!change) return true;
     const { error } = await supabase.from('user_wines').update(change).eq('id', had.id).eq('user_id', userId);
     return !error;
@@ -39,6 +41,13 @@ export const saveStoreWine142 = async (userId: string, wine: QuickSaveWine141, p
     image_url: wine.photo && /^https:\/\/app\.winerim\.com\//.test(wine.photo) ? wine.photo : null, status: place, quantity: place === 'collection' ? 1 : null, rating,
     matchrim_affinity: null, sensory_attributes: null, use_for_profile_training: false,
     place_details: (wine.source === 'label' ? { source: 'label_only' } : { source: 'winerim_store', store_id: wine.storeId ?? null, store_slug: wine.storeSlug ?? null }) as Json }]);
+  // 157: the wine keeps the photo the person took (only where Winerim has none): the row is read back for its id and
+  // the thumbnail stays on this iPhone. A failure here never undoes the save.
+  if (!error && wine.labelPhoto && !wine.photo) void (async () => { try {
+    const { data: rows } = await supabase.from('user_wines').select('id,name,producer,vintage,status,rating').eq('user_id', userId).eq('name', wine.name.slice(0, 200)).limit(20);
+    const row = (rows ?? []).find(item => same(item.producer, wine.producer?.slice(0, 160)) && (item.vintage == null || vintage == null || item.vintage === vintage));
+    if (row) await saveOwnWinePhoto133(row.id, wine.labelPhoto);
+  } catch { /* the wine is saved; only its thumbnail is missing */ } })();
   return !error;
 };
 

@@ -19,7 +19,7 @@ export const NativeStoreEstimate139 = ({ identity, profile, onScore }: Props) =>
   const key = JSON.stringify([identity.name, identity.producer, identity.vintage]);
   const [found, setFound] = useState<{ key: string; estimate: StoreEstimate138 } | null>(null);
   useEffect(() => {
-    if (!profile || !identity.name?.trim() || !identity.producer?.trim()) return;
+    if (!profile || !identity.name?.trim()) return;
     const controller = new AbortController();
     void estimateListing139({ name: identity.name, producer: identity.producer, vintage: identity.vintage }, controller.signal).then(match => {
       if (!controller.signal.aborted && match?.kind === 'exact') setFound({ key, estimate: match.estimate });

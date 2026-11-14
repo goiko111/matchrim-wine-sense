@@ -1759,7 +1759,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     if (saveSingle137) void confirmBatch();
                   } : undefined}
                   saveChoice={saveSingle137 && user ? <NativeSaveChoice142 key={selectedCandidate.id}
-                    wine={{ name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage, region: selectedCandidate.region, country: selectedCandidate.country }}
+                    wine={{ name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage, region: selectedCandidate.region, country: selectedCandidate.country, labelPhoto: selectedRegion?.cropDataUrl || preview }}
                     onWishlist={() => { setNativeResultView('wines'); setSelectedRegionId(null); closeAfterSave146.current = true; setClosing148(true); void confirmBatch().finally(() => setClosing148(false)); }}
                     onSaved={place => { if (place === 'tasted') markScannedSaved144(user.id, { name: selectedCandidate.name, winery: selectedCandidate.producer ?? null, vintage: selectedCandidate.vintage == null ? null : String(selectedCandidate.vintage) });
                       toast.success(place === 'tasted' ? 'Guardado en Probados' : 'Guardado en tu bodega'); resetScan(); }} /> : undefined}
@@ -1787,7 +1787,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                         });
                       }} fallback={localBatch && selectedCandidate.source !== 'manual' && isPendingLocalIdentity109(selectedCandidate)
                     ? <CandidateRecovery286 key={manualLookupKey} contextKey={manualLookupKey} disabled={manualLookupContext.locked}
-                      reading={localReading?.regionId === selectedRegion.id ? localReading.value : undefined}
+                      reading={localReading?.regionId === selectedRegion.id ? localReading.value : undefined} labelPhoto={selectedRegion.cropDataUrl || preview}
                       profile={manualLookupContext.profile} candidate={selectedCandidate} ownerId={user?.id ?? null}
                       invoke={(operation, signal) => invokeEdgeFunction('matchrim-master-catalog', operation, signal)}
                       autoLink={isNative && manualList139?.candidate !== selectedCandidate}

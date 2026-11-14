@@ -1,3 +1,4 @@
+import { labelFit157 } from '@/utils/labelFit157';
 import { Bottle150, card150, TypeDot150 } from '@/components/Relief150';
 import { useEffect, useRef, useState } from 'react';
 import { BookOpen, Check, ChevronRight, Search, X } from 'lucide-react';
@@ -29,6 +30,8 @@ type Props = {
   resume?: CandidateResume139;
   /** 156: told when the person keeps a wine that is not in Winerim, so the scan can close. */
   onKept?: (place: 'wishlist' | 'tasted' | 'collection') => void;
+  /** 157: the label picture, kept as the thumbnail of a wine saved from here. */
+  labelPhoto?: string | null;
 };
 export type CandidateResume139 = { decision: CandidateDecision286; vintage: number | null };
 
@@ -37,7 +40,7 @@ export type CandidateResume139 = { decision: CandidateDecision286; vintage: numb
 // without that tap; a pick is verified against Winerim before it is applied.
 // 139: with autoLink, the one candidate whose name and winery the label plainly shows (autoLink139) is applied
 // through the very same choose() as the tap, so the verification and everything downstream are identical.
-export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled, reading, ownerId, invoke, onConfirmed, autoLink = false, resume, onKept }: Props) => {
+export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled, reading, ownerId, invoke, onConfirmed, autoLink = false, resume, onKept, labelPhoto }: Props) => {
   const [busy, setBusy] = useState(false), [notice, setNotice] = useState('');
   const [decision, setDecision] = useState<CandidateDecision286 | null>(resume?.decision ?? null);
   const [vintage, setVintage] = useState<number | null>(resume ? resume.vintage : candidate.vintage);
@@ -161,8 +164,16 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
       </Button>
     </li>;
   };
-  const shown = linking ? [] : decision?.mode === 'one' ? [decision.first] : decision?.mode === 'choose' ? decision.shown : [];
-  const more = !linking && decision && decision.mode !== 'none' ? decision.more : [];
+  const found157 = linking ? [] : decision?.mode === 'one' ? [decision.first] : decision?.mode === 'choose' ? decision.shown : [];
+  const rest157 = !linking && decision && decision.mode !== 'none' ? decision.more : [];
+  // 157: of the wines found by the label's own text, only those the label really reads like are put forward
+  // (labelFit157); the others wait folded. A search the person typed is shown as it came.
+  const labelLines157 = reading?.lines.map(line => line.text) ?? [];
+  const sift157 = decision?.mode === 'choose' && labelLines157.length > 0 && !typed.trim();
+  const fits157 = (value: Candidate286) => labelFit157(labelLines157, value.name, value.row.winery);
+  const shown = sift157 ? found157.filter(fits157) : found157;
+  const more = sift157 ? [...found157.filter(value => !fits157(value)), ...rest157] : rest157;
+  const none157 = sift157 && shown.length === 0 && !linking;
   // 150: while the search runs the sheet shows the wait and nothing else (it showed an empty search box and five
   // buttons under it), and the sheet's own title already asks «¿Cuál es tu vino?», so the list does not ask again.
   const searching150 = busy && !decision;
@@ -175,13 +186,15 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
       }}><X aria-hidden="true" className="h-4 w-4" /> Cancelar</Button>
     </div>}
     {notice && !busy && <p role="status" className="text-sm leading-6 text-stone-700">{notice}</p>}
+    {!busy && none157 && <><p role="status" className="text-sm leading-6 text-stone-800" data-testid="candidate-none157">No vemos tu vino entre los de Winerim.</p>
+      <KeepUnlisted156 reading={reading} open onSaved={onKept} labelPhoto={labelPhoto} /></>}
     {shown.length > 0 && <h3 ref={heading} tabIndex={-1} className={decision?.mode === 'choose' ? 'sr-only' : 'text-base font-semibold text-stone-950 outline-none'}>
       {decision?.mode === 'one' ? '¿Es este tu vino?' : '¿Es alguno de estos?'}</h3>}
     {shown.length > 0 && decision?.mode === 'choose' && <p className="sr-only">Toca el que coincide con tu botella.</p>}
     {shown.length > 0 && <ul className="min-w-0 space-y-2">{shown.map(value => card(value, decision?.mode === 'one' ? 'Sí, es este' : 'Es este'))}</ul>}
     {more.length > 0 && <details className="min-w-0 border-t border-stone-200 pt-2">
       <summary className="flex min-h-11 cursor-pointer items-center text-sm font-medium">
-        {decision?.mode === 'one' ? `No es este: ver otros candidatos (${more.length})` : `Ver más candidatos (${more.length})`}
+        {decision?.mode === 'one' ? `No es este: ver otros candidatos (${more.length})` : none157 ? `Ver vinos parecidos de Winerim (${more.length})` : `Ver más candidatos (${more.length})`}
       </summary>
       <ul className="min-w-0 space-y-2">{more.map(value => card(value, 'Es este'))}</ul>
     </details>}
@@ -200,7 +213,7 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
     </form>}
     {!busy && decision?.mode === 'none' && <Button type="button" variant="outline" disabled={disabled} onClick={() => void find()}
       className="h-auto min-h-11 w-full gap-2 whitespace-normal py-3"><BookOpen aria-hidden="true" className="h-4 w-4 shrink-0" /> Reintentar con el texto leído</Button>}
-    {!busy && !linking && decision && <KeepUnlisted156 reading={reading} open={decision.mode === 'none'} onSaved={onKept} />}
+    {!busy && !linking && decision && !none157 && <KeepUnlisted156 reading={reading} open={decision.mode === 'none'} onSaved={onKept} labelPhoto={labelPhoto} />}
     {!busy && !linking && decision && <PilotFeedback130 label="Pedir a Winerim que añada este vino"
       context={{ where: 'candidatos', read: reading?.lines.map(line => line.text) ?? candidate.evidence,
         shown: [...shown, ...more].slice(0, 5).map(value => `${value.name} (${value.row.winery})`), searched: typed }} />}

@@ -2045,7 +2045,8 @@ const MyWinesForOwner = () => {
                   <div className={isNative ? 'grid grid-cols-1 gap-3' : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'}
                     style={isNative ? { gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 20rem), 1fr))' } : undefined}>
                     {filteredWines.map((wine, index) => (
-                      <NativeCellarItem98 key={wine.id} native={isNative} wine={wine} snapshot={cellarProfile} resolveImage={index < 4} sheet={isNative ? nativeSheet141(wine) : undefined}>
+                      <NativeCellarItem98 key={wine.id} native={isNative} wine={wine} snapshot={cellarProfile} resolveImage={index < 4} sheet={isNative ? nativeSheet141(wine) : undefined}
+                        onRate={isNative ? rating => { void handleRating(wine.id, rating); } : undefined} rateBusy={savingWineActions.has(wine.id)}>
                       {/* 141: this card is the web view. On iOS NativeCellarItem98 shows its own sheet built from `sheet`
                           and does not render it, so the isNative branches left inside are no longer reached. */}
                       <Card key={wine.id} className="relative group">

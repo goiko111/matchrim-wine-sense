@@ -8,7 +8,7 @@ import { labelName156, labelYear156 } from '@/utils/labelName156';
 // 156: a wine Winerim does not have («La Nine», Minervois) left the person with a list of other wines and a button
 // that opened the mail app. A customer needs a way out that stays in the app: keep the wine with what its label
 // says. It is saved to their wines with no flavour data and no affinity, and says so; nothing is invented.
-export const KeepUnlisted156 = ({ reading, open = false, onSaved }: { reading?: LocalOCRResult106; open?: boolean; onSaved?: (place: 'wishlist' | 'tasted' | 'collection') => void }) => {
+export const KeepUnlisted156 = ({ reading, open = false, onSaved, labelPhoto }: { reading?: LocalOCRResult106; open?: boolean; labelPhoto?: string | null; onSaved?: (place: 'wishlist' | 'tasted' | 'collection') => void }) => {
   const [name, setName] = useState(() => labelName156(reading?.lines));
   const [producer, setProducer] = useState('');
   const [vintage, setVintage] = useState(() => labelYear156(reading?.lines));
@@ -26,7 +26,7 @@ export const KeepUnlisted156 = ({ reading, open = false, onSaved }: { reading?: 
         <label className="block text-sm font-medium text-stone-800">Añada
           <Input value={vintage} maxLength={4} inputMode="numeric" onChange={event => setVintage(event.target.value.replace(/\D/g, ''))} className={field} autoComplete="off" /></label>
       </div>
-      {name.trim().length >= 2 ? <NativeSaveChoice142 wine={{ name: name.trim(), producer: producer.trim() || null, vintage: vintage || null, source: 'label' }} onSaved={onSaved} />
+      {name.trim().length >= 2 ? <NativeSaveChoice142 wine={{ name: name.trim(), producer: producer.trim() || null, vintage: vintage || null, source: 'label', labelPhoto }} onSaved={onSaved} />
         : <p className="text-sm text-stone-600">Escribe el nombre para poder guardarlo.</p>}
     </div>
   </details>;
