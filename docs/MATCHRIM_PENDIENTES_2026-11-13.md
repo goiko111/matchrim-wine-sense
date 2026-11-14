@@ -14,8 +14,8 @@ Lista única de lo que queda abierto tras subir la build 151. Nada de esto está
 ## Desarrollo nuevo
 3. **«Compartir → Matchrim» desde la galería de fotos.** Extensión nativa (objetivo nuevo en Xcode, grupo de apps,
    perfil de firma). «Pegar foto» (151) cubre el caso mientras tanto.
-4. **Extender el relieve** a la carta de vinos y al modo restaurante (Perfil, aiRIM y Escanear hechos en la 153). La ficha del vino ya tiene las tarjetas y el bloque de guardado.
-5. **Vinos guardados sin tipo:** su botella dibujada sale gris hasta que la tienda responde.
+4. (Hecho en la 154) Relieve en la carta de vinos y el modo restaurante. La ficha del vino ya tiene las tarjetas y el bloque de guardado.
+5. (Hecho en la 154) Las botellas dibujadas toman color del nombre, las uvas o la última respuesta de la tienda.
 
 ## Sin comprobar en un iPhone real
 6. Todo lo de las builds 147 a 151 solo está probado en simulador.
