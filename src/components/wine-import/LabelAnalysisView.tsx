@@ -93,7 +93,7 @@ export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, ident
 
     {facts}
     {/* 150: a quiet link, not one more full-width button among the answers. */}
-    <div className="flex min-w-0 flex-wrap justify-center gap-2" data-quiet150>
+    <div className="flex min-w-0 flex-wrap justify-center gap-2 pb-3" data-quiet150>
       <Button type="button" variant="ghost" aria-label="Corregir identificación" disabled={disabled} onClick={onCorrect}
         className="h-auto min-h-11 min-w-0 gap-2 whitespace-normal px-3 py-3 text-sm font-medium text-stone-600 underline underline-offset-4">
         <Pencil aria-hidden="true" className="h-4 w-4 shrink-0" /> Corregir

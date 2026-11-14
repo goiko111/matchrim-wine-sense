@@ -16,11 +16,11 @@ export const KeepUnlisted156 = ({ reading, open = false, onSaved }: { reading?: 
   return <details open={open} className="group min-w-0 rounded-2xl border border-stone-300 bg-white" data-testid="keep-unlisted156">
     <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-stone-950 [&::-webkit-details-marker]:hidden">
       <span>¿No está tu vino? Guárdalo igualmente</span><ChevronDown className="h-4 w-4 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true" /></summary>
-    <div className="space-y-3 border-t border-stone-200 px-4 pb-4 pt-3">
+    <div className="space-y-3 border-t border-stone-200 px-4 pb-4 pt-3 [html.matchrim-accessibility-text_&]:px-1">
       <p className="text-sm leading-6 text-stone-700">Winerim aún no tiene este vino. Lo guardamos en tus vinos con lo que dice la etiqueta; cuando tenga ficha podremos decirte cuánto encaja contigo.</p>
       <label className="block text-sm font-medium text-stone-800">Nombre del vino
         <Input value={name} maxLength={80} onChange={event => setName(event.target.value)} className={field} autoComplete="off" data-testid="keep-name156" /></label>
-      <div className="grid grid-cols-[minmax(0,1fr)_6.5rem] gap-2">
+      <div className="grid grid-cols-[minmax(0,1fr)_6.5rem] gap-2 [html.matchrim-accessibility-text_&]:grid-cols-1">
         <label className="block text-sm font-medium text-stone-800">Bodega (opcional)
           <Input value={producer} maxLength={80} onChange={event => setProducer(event.target.value)} className={field} autoComplete="off" /></label>
         <label className="block text-sm font-medium text-stone-800">Añada

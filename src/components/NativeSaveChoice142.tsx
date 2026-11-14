@@ -10,7 +10,9 @@ import type { QuickSaveWine141 } from '@/components/NativeQuickSave141';
 
 type Place = 'wishlist' | 'tasted' | 'collection';
 const places: Array<[Place, typeof Bookmark, string]> = [['wishlist', Bookmark, 'Quiero probarlo'], ['tasted', Check, 'Ya lo he probado'], ['collection', Home, 'Lo tengo en casa']];
-const panel151 = 'rounded-2xl bg-red-950 p-4 shadow-[0_10px_22px_-12px_rgba(69,10,10,.7)]';
+const panel151 = 'rounded-2xl bg-red-950 p-4 shadow-[0_10px_22px_-12px_rgba(69,10,10,.7)] [html.matchrim-accessibility-text_&]:p-3';
+// 156: with the largest text three columns left a few letters per line (seen in native QA inside the candidates sheet): one column there.
+const grid156 = 'mt-3 grid grid-cols-3 gap-2 [html.matchrim-accessibility-text_&]:grid-cols-1';
 const saved: Record<Place, string> = { wishlist: 'Guardado en Por probar', tasted: 'Guardado en Probados', collection: 'Guardado en tu bodega' };
 
 /** Saves a wine known from Winerim's store to the person's wines. Never stores flavour data; never trains the profile. */
@@ -67,9 +69,9 @@ export const NativeSaveChoice142 = ({ wine, onWishlist, onSaved }: { wine: Quick
   // 151: the three answers were three identical white boxes; each now carries its own colour (green, amber, grey).
   if (state.phase === 'rating') return <div className={panel151} data-testid="save-rating142">
     <p className="text-lg font-bold leading-6 text-white">¿Qué te pareció?</p>
-    <div className="mt-3 grid grid-cols-3 gap-2">{([['love', ThumbsUp, 'Me encantó', 'bg-emerald-700 text-white'], ['ok', Smile, 'Correcto', 'bg-amber-100 text-amber-900'], ['not_for_me', ThumbsDown, 'No me gustó', 'bg-stone-200 text-stone-700']] as const).map(([rating, Icon, label, tone]) =>
-      <button key={rating} type="button" className="flex min-h-[5.25rem] flex-col items-center justify-center gap-1.5 rounded-xl bg-white px-1 text-xs font-semibold text-stone-950 active:bg-stone-100" onClick={() => void save('tasted', rating)}>
-        <span className={`flex h-10 w-10 items-center justify-center rounded-full ${tone}`}><Icon className="h-5 w-5" aria-hidden="true" /></span>{label}</button>)}</div>
+    <div className={grid156}>{([['love', ThumbsUp, 'Me encantó', 'bg-emerald-700 text-white'], ['ok', Smile, 'Correcto', 'bg-amber-100 text-amber-900'], ['not_for_me', ThumbsDown, 'No me gustó', 'bg-stone-200 text-stone-700']] as const).map(([rating, Icon, label, tone]) =>
+      <button key={rating} type="button" className="flex min-h-[5.25rem] flex-col items-center justify-center gap-1.5 rounded-xl bg-white px-1 text-xs font-semibold text-stone-950 active:bg-stone-100 [html.matchrim-accessibility-text_&]:min-h-14 [html.matchrim-accessibility-text_&]:px-2 [html.matchrim-accessibility-text_&]:py-3 [html.matchrim-accessibility-text_&]:[overflow-wrap:anywhere]" onClick={() => void save('tasted', rating)}>
+        <span className={`flex h-10 w-10 items-center justify-center rounded-full [html.matchrim-accessibility-text_&]:hidden ${tone}`}><Icon className="h-5 w-5" aria-hidden="true" /></span>{label}</button>)}</div>
     <button type="button" className="mt-1 min-h-11 text-sm text-white/85 underline underline-offset-2" onClick={() => void save('tasted')}>Guardar sin valorar</button>
   </div>;
   // 151: «el siguiente paso me pasa desapercibido: todo es del mismo color y no veo los botones» (13-nov). The three
@@ -78,11 +80,11 @@ export const NativeSaveChoice142 = ({ wine, onWishlist, onSaved }: { wine: Quick
   return <div className={panel151} data-testid="save-choice142" data-panel151>
     <p className="text-lg font-bold leading-6 text-white">¿Qué haces con este vino?</p>
     <p className="mt-0.5 text-sm leading-5 text-white/80">Guárdalo. Si ya lo has probado, nos dices qué te pareció.</p>
-    <div className="mt-3 grid grid-cols-3 gap-2">{places.map(([place, Icon, label]) =>
+    <div className={grid156}>{places.map(([place, Icon, label]) =>
       <button key={place} type="button" disabled={state.phase === 'saving'} data-testid={`save-${place}142`}
-        className="flex min-h-[5.25rem] flex-col items-center justify-center gap-1.5 rounded-xl bg-white px-1 text-center text-xs font-semibold leading-4 text-stone-950 disabled:opacity-60 active:bg-stone-100"
+        className="flex min-h-[5.25rem] flex-col items-center justify-center gap-1.5 rounded-xl bg-white px-1 text-center text-xs font-semibold leading-4 text-stone-950 disabled:opacity-60 active:bg-stone-100 [html.matchrim-accessibility-text_&]:min-h-14 [html.matchrim-accessibility-text_&]:px-2 [html.matchrim-accessibility-text_&]:py-3 [html.matchrim-accessibility-text_&]:[overflow-wrap:anywhere]"
         onClick={() => place === 'tasted' ? setState({ phase: 'rating' }) : place === 'wishlist' && onWishlist && user ? onWishlist() : void save(place)}>
-        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-red-900/10 text-red-900">{state.phase === 'saving' && busy144 === place ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <Icon className="h-5 w-5" aria-hidden="true" />}</span>{label}</button>)}</div>
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-red-900/10 text-red-900 [html.matchrim-accessibility-text_&]:hidden">{state.phase === 'saving' && busy144 === place ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <Icon className="h-5 w-5" aria-hidden="true" />}</span>{label}</button>)}</div>
     {state.phase === 'error' && <p role="alert" className="mt-2 rounded-lg bg-white px-3 py-2 text-sm text-red-800">No se ha podido guardar. Comprueba la conexión e inténtalo de nuevo.</p>}
   </div>;
 };
