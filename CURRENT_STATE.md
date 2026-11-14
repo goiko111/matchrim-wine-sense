@@ -34,6 +34,7 @@
 - 154 (c3269c2, runners 959fc4d): wine list best pick as the dark block with coloured score tags per row, restaurant cards lifted with coloured pairing bands, saved wines' drawn bottles coloured from name/grapes/remembered store type (wineTypeGuess154; nothing stored with the wine). candidate154-r1 PASS (r193-r196, archive154-r1, uploaded:false); E2E 85/85.
 - Build 154 uploaded to TestFlight on 2026-11-14 (owner: «si, subela…»; Apple acknowledged).
 - 155 (1c3e1f3, runners 49c3ef6 + QA rename fix): share extension target ShareExtension (wine.matchrim.app.share), app group group.wine.matchrim.app, matchrim:// scheme, plugin takeSharedImage + sharedImage event, scanner pickup. candidate155-r1 PASS (r201-r204; r197 failed on the QA copy's extension id, fixed in the runner), archive155-r1 signed with the group. Simulator: Photos share → extension → «¿Abrir en Matchrim?» → scanner reads the photo. Harness copies need an ad-hoc signature with the group entitlement for this (CODE_SIGNING_ALLOWED=NO builds carry none); get-task-allow in that signature made the simulator refuse the launch.
+- Build 155 uploaded to TestFlight on 2026-11-14 (owner: «Sí, sube la 155»; Apple acknowledged; distribution-signed IPA includes ShareExtension.appex with the group).
 
 ## Current Gate: 2026-11-09, Candidates 134/135 Built (Claude, afternoon QA)
 
