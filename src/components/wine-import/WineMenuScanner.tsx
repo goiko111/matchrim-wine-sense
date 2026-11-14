@@ -21,6 +21,7 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { AffinityExplanation } from "@/components/AffinityExplanation";
+import { ScorePill150 } from '@/components/Relief150';
 import { NativeAffinitySummary } from '@/components/NativeAffinitySummary';
 import { nativeLiteralMenuEvidence95, nativeMenuWineAffinity } from '@/utils/menuWineConsumer95';
 import { isLiteralWineStyle95, isNativeWineMenuItem95 } from '@/utils/menuLiteralStyle95';
@@ -2599,14 +2600,15 @@ const WineMenuScannerSession = ({
             <p className="text-xs text-stone-500">Toca un número para ver ese vino.</p>
           </section>}
           {/* 137: the answer first; reading details and tools follow. */}
-              {isNative && menuDecision && <section className="min-w-0 space-y-3 border-y border-stone-200 py-4" aria-label="Tu elección en esta carta" data-testid="native-menu-decision">
+              {/* 154: the answer to «¿cuál pido?» is the one dark block of the wine list; it was a line of red text between two rules. */}
+              {isNative && menuDecision && <section className={`min-w-0 space-y-3 ${menuDecision.best ? 'rounded-2xl bg-red-950 p-4 shadow-[0_10px_22px_-12px_rgba(69,10,10,.7)]' : 'border-y border-stone-200 py-4'}`} aria-label="Tu elección en esta carta" data-testid="native-menu-decision" data-best154={menuDecision.best ? '' : undefined}>
                 {menuDecision.best ? <>
                   <p className="text-sm font-semibold text-red-900">El que más encaja contigo de esta carta</p>
                   <Button variant="ghost" className="h-auto min-h-11 w-full min-w-0 justify-between gap-3 whitespace-normal px-0 text-left" onClick={(event) => openWineDetail(menuDecision.best!.index, event.currentTarget)}>
                     {/* 140: an exact or likely wine is named as Winerim knows it, not in the capitals of the list. */}
                     <span className="min-w-0"><span className="block text-lg font-semibold leading-6 text-stone-950">{shownName140(menuDecision.best.wine, menuDecision.best.verdict).name}</span><span className="mt-1 block text-sm font-normal text-stone-600">{listPriceText(menuDecision.best.wine, menuDecision.best.index)}</span>
                       {shownName140(menuDecision.best.wine, menuDecision.best.verdict).listed && <span className="block break-words text-xs font-normal leading-5 text-stone-500">En la carta: {menuDecision.best.wine.nombre}</span>}</span>
-                    <span className="shrink-0 text-xl font-bold text-red-900">{menuDecision.best.verdict?.kind === 'range' && menuDecision.best.verdict.low !== menuDecision.best.verdict.high
+                    <span data-keep154 className="shrink-0 rounded-full bg-white px-3 py-1.5 text-xl font-bold tabular-nums text-red-950">{menuDecision.best.verdict?.kind === 'range' && menuDecision.best.verdict.low !== menuDecision.best.verdict.high
                       ? `${menuDecision.best.verdict.low}–${menuDecision.best.verdict.high}` : `≈${menuDecision.best.score}`}<span className="text-sm font-medium text-stone-500">/100</span></span>
                   </Button>
                   {(() => {
@@ -2885,7 +2887,7 @@ const WineMenuScannerSession = ({
                         const spoken = verdict.kind === 'pending' ? answer : verdict.kind === 'verified' ? `${menuVerdictText139(verdict)} · Con ficha de Winerim` : menuVerdictText139(verdict);
                         const choices = verdict.kind === 'likely' || verdict.kind === 'range' || verdict.kind === 'mismatch' ? verdict.options : [];
                         const lineKey = menuLineKey139(wine), choosing = choices.length > 0 && openChoices140.has(lineKey);
-                        const score = menuVerdictCertain140(verdict) && <span className="shrink-0 text-lg font-bold tabular-nums text-red-900" aria-hidden="true">≈{verdict.score}<span className="text-xs font-medium text-stone-500">/100</span></span>;
+                        const score = menuVerdictCertain140(verdict) && <ScorePill150 score={verdict.score} estimate />;
                         return <div key={`${wine.nombre}-${index}-list-row`} role="listitem" className="min-w-0" data-testid="native-menu-row139">
                           <div className="flex min-w-0 items-stretch">
                             <button type="button" aria-label={`${shown.name}${wine.anada ? ` ${wine.anada}` : ''}. ${shown.listed ? `En la carta: ${shown.listed}. ` : ''}${price}. ${spoken}`}

@@ -14,6 +14,7 @@ import { card150, ScorePill150 } from '@/components/Relief150';
 import { NativeWinerimFacts140 } from '@/components/NativeWinerimFacts140';
 import { estimateListing139, storeAffinity139 } from '@/utils/storeListing139';
 import type { StoreAttributes138 } from '@/utils/storeEstimate138';
+import { guessWineType154, rememberedWineType154, rememberWineType154 } from '@/utils/wineTypeGuess154';
 import { safeWineImageUrl98 } from '@/utils/wineImage98';
 
 // 141: the pieces of the iOS sheet that need the page's handlers (rating, favourite, stock, delete). The sheet
@@ -86,7 +87,7 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
     void estimateListing139({ name: wine.name, producer: wine.producer, vintage: wine.vintage }, controller.signal).then(match => {
       if (controller.signal.aborted) return;
       const hit = match?.kind === 'exact' ? { photo: safeWineImageUrl98(match.estimate.row.photo), attributes: match.estimate.attributes, type: match.estimate.row.type } : null;
-      if (hit) storeHits141.set(identityKey, hit);
+      if (hit) { storeHits141.set(identityKey, hit); rememberWineType154(identityKey, hit.type); }
       setStore({ key: identityKey, hit });
     }, () => undefined);
     return () => controller.abort();
@@ -115,7 +116,7 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
   return <>
     {/* 143: each wine is a card (bottle on a soft tile, winery, name, vintage · region, verdict chip) instead of a ruled row. */}
     <button ref={rowRef} type="button" className={`flex w-full min-w-0 items-center gap-3 p-3 text-left ${card143}`} aria-label={rowLabel} onClick={() => setOpen(true)} data-testid="native-cellar-item98">
-      <NativeWinePhoto98 src={photo} ownedCapture name={wine.name} identity={identity} resolveMissing={!photo && open && storeSettled} onResolved={url => setResolved({ key: identityKey, url })} type={storeHit?.type} className="h-[104px] w-[72px] !rounded-xl !bg-stone-100" />
+      <NativeWinePhoto98 src={photo} ownedCapture name={wine.name} identity={identity} resolveMissing={!photo && open && storeSettled} onResolved={url => setResolved({ key: identityKey, url })} type={storeHit?.type ?? rememberedWineType154(identityKey) ?? guessWineType154(wine.name, (wine as { grape_varieties?: string[] | null }).grape_varieties)} className="h-[104px] w-[72px] !rounded-xl !bg-stone-100" />
       <span className="min-w-0 flex-1">{wine.producer && <span className="block break-words text-[11px] font-semibold uppercase tracking-wide leading-5 text-stone-500">{wine.producer}</span>}
         <span className="block break-words text-base font-semibold leading-6 text-stone-950">{wine.name}</span>
         {(wine.vintage || wine.region) && <span className="block break-words text-xs leading-5 text-stone-500">{[wine.vintage, wine.region].filter(Boolean).join(' · ')}</span>}

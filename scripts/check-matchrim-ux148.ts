@@ -19,8 +19,8 @@ test('aiRIM: round bubbles with the mark, example cards; every handle and label 
 test('Restaurant mode: pill steps and cards on iOS; the web keeps its layout', () => {
   const page = read('src/pages/Restaurant.tsx');
   assert.match(page, /className=\{native \? 'grid h-auto grid-cols-3 gap-1 rounded-full bg-stone-200\/70 p-1' : 'grid h-auto grid-cols-3 rounded-none border-b border-slate-200 bg-transparent p-0'\}/);
-  assert.match(page, /className=\{native \? 'rounded-2xl border border-stone-200 bg-white p-4' : 'py-4'\}/);
-  assert.match(page, /className=\{native \? 'rounded-2xl border border-stone-200 bg-white p-4' : 'py-5'\}/);
+  // 154: the cards keep their place and padding; the hairline border became the lifted card of 150.
+  assert(page.includes("className={native ? `${card150} p-4` : 'py-4'}")); assert(page.includes("className={native ? `${card150} p-4` : 'py-5'}"));
   for (const keep of ['data-testid="restaurant-next137"', 'data-testid="restaurant-filters137"', 'data-testid="restaurant-personal138"', "'1 · Platos'"]) assert(page.includes(keep), keep);
 });
 

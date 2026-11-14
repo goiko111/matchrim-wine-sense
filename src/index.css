@@ -1040,3 +1040,8 @@ html.matchrim-native-platform :is(.min-h-screen.bg-gray-50, .min-h-screen.bg-gra
 html.matchrim-native-platform .matchrim-scan-region-layout:not(:has([data-testid="candidate286"])) [data-needs-candidates150] {
   display: none;
 }
+
+/* 154: inside the wine list's dark «best for you» block every line reads in white; the score keeps its own white tag. */
+[data-best154] :is(p, span, summary, button):not([data-keep154], [data-keep154] *) { color: #fff !important; }
+[data-best154] details { border-color: rgba(255, 255, 255, .25) !important; }
+[data-best154] button:hover, [data-best154] button:active { background: rgba(255, 255, 255, .08) !important; }
