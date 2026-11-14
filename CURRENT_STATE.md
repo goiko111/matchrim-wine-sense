@@ -1197,3 +1197,4 @@ Selected redacted physical-QA screenshots are versioned under `docs/qa-evidence/
 - Isolated staging has the three required functions active at version 1, but lacks `LOVABLE_API_KEY`; no fixture was sent to a known failing path.
 - After that secret is configured: traced staging reconciliation of final box/crop/result, then OCR/canonical resolution and confidence calibration for cabinet scenes.
 - iOS deployment target must move from 14 to 15 before April 2027.
+- 2026-11-14: build 156 (b96423d, archive156-r4) uploaded to TestFlight after the owner's «Sí, sube la 156» (export156-r1, upload156-r1; Apple acknowledged, installability not confirmed). Not exercised on a real iPhone before the upload.
