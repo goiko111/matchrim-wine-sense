@@ -32,3 +32,9 @@ Lista única de lo que queda abierto tras subir la build 151. Nada de esto está
 ## Esperando respuesta
 11. La opinión de Goiko y de su mujer sobre la 150 y la 151 en el teléfono: si el relieve convence y si ahora se ve
     el paso de guardar y valorar.
+
+## Añadido el 14-nov (tras el vídeo de la 155)
+12. Filtrar los candidatos del escáner que solo comparten palabras comunes con la etiqueta (caso «La Nine»: 20 vinos «Jean Baptiste»).
+13. Pedir a Winerim desde la app un vino que no está: alcance en `MATCHRIM_ALCANCE_VINO_NO_ENCONTRADO_2026-11-14.md`, pendiente de enviar a desarrollo y de su respuesta.
+14. Aviso «prueba con la contraetiqueta» cuando la etiqueta delantera no tiene texto útil.
+15. Conectar AgentMail en esta sesión (o seguir pasando los mensajes por Codex).

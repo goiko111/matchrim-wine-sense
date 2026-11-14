@@ -35,6 +35,7 @@
 - Build 154 uploaded to TestFlight on 2026-11-14 (owner: «si, subela…»; Apple acknowledged).
 - 155 (1c3e1f3, runners 49c3ef6 + QA rename fix): share extension target ShareExtension (wine.matchrim.app.share), app group group.wine.matchrim.app, matchrim:// scheme, plugin takeSharedImage + sharedImage event, scanner pickup. candidate155-r1 PASS (r201-r204; r197 failed on the QA copy's extension id, fixed in the runner), archive155-r1 signed with the group. Simulator: Photos share → extension → «¿Abrir en Matchrim?» → scanner reads the photo. Harness copies need an ad-hoc signature with the group entitlement for this (CODE_SIGNING_ALLOWED=NO builds carry none); get-task-allow in that signature made the simulator refuse the launch.
 - Build 155 uploaded to TestFlight on 2026-11-14 (owner: «Sí, sube la 155»; Apple acknowledged; distribution-signed IPA includes ShareExtension.appex with the group).
+- Owner's video of 155: share extension works on his iPhone. 156 (07ad47c…b96423d): KeepUnlisted156 (wine not in Winerim saved as read, place_details.source label_only), Scale156 (track, marks, wine dot inside the person's ring), fit shown on rated wines, three-way scan switch, RowEstimate156 in the several-bottles list, restaurant steps. candidate156-r4 PASS (r218-r221, archive156-r4, uploaded:false); r1-r3 failed native QA at max text (documented). E2E 85/85.
 
 ## Current Gate: 2026-11-09, Candidates 134/135 Built (Claude, afternoon QA)
 
