@@ -33,7 +33,9 @@ const args = ['archive', '-quiet', '-workspace', path.join(prep.production, 'ios
   '-scheme', 'App', '-configuration', 'Release', '-destination', 'generic/platform=iOS',
   '-derivedDataPath', path.join(output, 'derived'), '-archivePath', archive,
   '-resultBundlePath', path.join(output, 'archive.xcresult'), '-disableAutomaticPackageResolution', '-skipPackageUpdates', '-jobs', '1',
-  `CURRENT_PROJECT_VERSION=${prep.build}`, 'DEVELOPMENT_TEAM=8X3XTD6XYX', 'CODE_SIGN_STYLE=Automatic'];
+  `CURRENT_PROJECT_VERSION=${prep.build}`, 'DEVELOPMENT_TEAM=8X3XTD6XYX', 'CODE_SIGN_STYLE=Automatic',
+  // 155: the share extension is a second signed product with an app group; automatic signing needs to fetch its profile.
+  ...(prep.build >= 155 ? ['-allowProvisioningUpdates'] : [])];
 const receipt = { startedUTC: new Date().toISOString(), runnerOwner: owner, sourceCommit: prep.commit, build: prep.build,
   version: '1.0', bundleId: cap.appId, command: [path.join(developer, 'usr/bin/xcodebuild'), ...args],
   uploaded: false, exported: false, webPublished: false, backendDeployed: false, modelStarts: 0,
