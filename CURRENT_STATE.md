@@ -32,6 +32,7 @@
 - Owner's video of 152 on his iPhone: «Pegar foto» works (iOS prompt, allow, label read, candidates). 153 (7f12be2, runners 5efafbd): relief on Escanear, Perfil, aiRIM, recommended wines; scan sheet saves under the verdict (VerdictSlot153). candidate153-r1 PASS (r189-r192, archive153-r1, uploaded:false); E2E 85/85; scan sheet seen on the compiled 153 in the simulator.
 - Build 153 uploaded to TestFlight on 2026-11-14 (owner: «Sí, sube la 153»; Apple acknowledged).
 - 154 (c3269c2, runners 959fc4d): wine list best pick as the dark block with coloured score tags per row, restaurant cards lifted with coloured pairing bands, saved wines' drawn bottles coloured from name/grapes/remembered store type (wineTypeGuess154; nothing stored with the wine). candidate154-r1 PASS (r193-r196, archive154-r1, uploaded:false); E2E 85/85.
+- Build 154 uploaded to TestFlight on 2026-11-14 (owner: «si, subela…»; Apple acknowledged).
 
 ## Current Gate: 2026-11-09, Candidates 134/135 Built (Claude, afternoon QA)
 

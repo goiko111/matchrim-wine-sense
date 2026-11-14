@@ -240,3 +240,4 @@ Food-menu row splitting and detection-box normalization may be replayed determin
 - 2026-11-13: «Pegar foto» reads the system pasteboard from native code (152). The web clipboard API inside the app returned nothing on the phone; it stays only as a fallback for shells without the method.
 - 2026-11-13: Build 152 (15e920f, archive152-r1) uploaded to TestFlight after the owner answered «Sí, sube la 152» to «¿Subo la 152 a TestFlight?»; HUMAN-AUTHORIZATION quotes the words. Private beta only.
 - 2026-11-14: Build 153 (5efafbd, archive153-r1) uploaded to TestFlight after the owner answered «Sí, sube la 153» to «¿Subo la 153 a TestFlight?»; HUMAN-AUTHORIZATION quotes the words. Private beta only.
+- 2026-11-14: Build 154 (959fc4d, archive154-r1) uploaded to TestFlight after the owner answered «si, subela y dime que mas nos falta» to «¿Subo la 154 a TestFlight?»; HUMAN-AUTHORIZATION quotes the words. Private beta only.
