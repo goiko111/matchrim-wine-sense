@@ -4,6 +4,7 @@ import { handMenuPhoto144, looksLikeWineList144 } from '@/utils/scanKind144';
 import { markScannedSaved144, recordScannedWine139 } from '@/utils/scannedWines139';
 import { NativeSaveChoice142 } from '@/components/NativeSaveChoice142';
 import { pastedPhoto151, PASTE_HELP151 } from '@/utils/pastePhoto151';
+import { SHARED_PHOTO_EVENT155, takeStashedSharedPhoto155 } from '@/utils/sharedPhoto155';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { confirm135 } from '@/utils/nativeConfirm135';
 import { Capacitor } from '@capacitor/core';
@@ -791,6 +792,23 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     });
     await startScan(file);
   };
+
+  // 155: a photo shared to Matchrim from another app arrives here, whether the scanner was already open or is opening for it.
+  const startShared155 = useRef<() => void>(() => undefined);
+  startShared155.current = () => {
+    if (savingRef.current) return;
+    const file = takeStashedSharedPhoto155();
+    if (!file) return;
+    trackAppEvent('multi_wine_label_scan_started', { userId: user?.id, metadata: { file_type: file.type, file_size: file.size, shared: true } });
+    void startScan(file);
+  };
+  useEffect(() => {
+    if (!isNative) return;
+    const start = () => startShared155.current();
+    start();
+    window.addEventListener(SHARED_PHOTO_EVENT155, start);
+    return () => window.removeEventListener(SHARED_PHOTO_EVENT155, start);
+  }, [isNative]);
 
   // 151: a photo copied elsewhere (Fotos, WhatsApp, a web page) goes through the same door as one chosen from the gallery.
   const pastePhoto151 = async () => {

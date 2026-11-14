@@ -11,6 +11,7 @@ import { useIsAdmin } from '@/hooks/useIsAdmin';
 import { AppErrorBoundary } from '@/components/AppErrorBoundary';
 import './App.css';
 import { I18nProvider } from '@/i18n';
+import { useSharedPhoto155 } from '@/utils/sharedPhoto155';
 
 const queryClient = new QueryClient();
 
@@ -85,6 +86,7 @@ function AdminOnly({ children }: { children: ReactNode }) {
 function AppRoutes() {
   const location = useLocation();
   const resetKey = `${location.pathname}${location.search}`;
+  useSharedPhoto155();
   useLayoutEffect(() => {
     if (!Capacitor.isNativePlatform()) return;
     (document.activeElement as HTMLElement | null)?.blur();

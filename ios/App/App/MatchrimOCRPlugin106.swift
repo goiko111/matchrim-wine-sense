@@ -15,6 +15,7 @@ public final class MatchrimOCRPlugin106: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "cancel", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "takePhoto", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "pasteImage", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "takeSharedImage", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "confirm", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "recognizeLines", returnType: CAPPluginReturnPromise)
     ]
@@ -492,6 +493,29 @@ extension MatchrimOCRPlugin106: UIImagePickerControllerDelegate, UINavigationCon
             guard board.hasImages, let image = board.image, let data = Self.cameraJPEG(image) else { call.resolve(["status": "empty"]); return }
             call.resolve(["status": "captured", "image": "data:image/jpeg;base64," + data.base64EncodedString()])
         }
+    }
+
+    // 155: «Compartir → Matchrim». The share extension leaves one photo in the folder it shares with the app (the app
+    // group). The app takes it once (the file is removed as it is read) and tells the page whenever it comes to the
+    // front with a photo waiting. The photo stays on the phone, like one from the camera.
+    private static let sharedGroup155 = "group.wine.matchrim.app"
+    private static let sharedFile155 = "shared-photo155.jpg"
+    private static var sharedURL155: URL? {
+        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: sharedGroup155)?.appendingPathComponent(sharedFile155)
+    }
+
+    override public func load() {
+        NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
+            guard let url = Self.sharedURL155, FileManager.default.fileExists(atPath: url.path) else { return }
+            self?.notifyListeners("sharedImage", data: [:], retainUntilConsumed: true)
+        }
+    }
+
+    @objc func takeSharedImage(_ call: CAPPluginCall) {
+        guard let url = Self.sharedURL155, let data = try? Data(contentsOf: url) else { call.resolve(["status": "empty"]); return }
+        try? FileManager.default.removeItem(at: url)
+        guard data.count <= 16 * 1024 * 1024, UIImage(data: data) != nil else { call.resolve(["status": "empty"]); return }
+        call.resolve(["status": "captured", "image": "data:image/jpeg;base64," + data.base64EncodedString()])
     }
 
     // Drawing applies the EXIF orientation, so the page always receives an upright image.
