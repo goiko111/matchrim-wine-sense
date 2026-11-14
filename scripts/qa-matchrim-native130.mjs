@@ -61,6 +61,10 @@ try {
   if (!previous) {
   fs.cpSync(appSource, app, { recursive: true });
   execFileSync('/usr/bin/plutil', ['-replace', 'CFBundleIdentifier', '-string', bundleId, app + '/Info.plist']);
+  // 155: an embedded extension must carry its app's identifier as a prefix, or the simulator refuses the install.
+  const plugIns = path.join(app, 'PlugIns');
+  for (const name of fs.existsSync(plugIns) ? fs.readdirSync(plugIns).filter(entry => entry.endsWith('.appex')) : [])
+    execFileSync('/usr/bin/plutil', ['-replace', 'CFBundleIdentifier', '-string', `${bundleId}.share`, path.join(plugIns, name, 'Info.plist')]);
   const html = fs.readFileSync(app + '/public/index.html', 'utf8'); assert.equal((html.match(/<head>/g) || []).length, 1);
   const csp = "default-src 'self'; connect-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self' data:; worker-src 'self' blob:; object-src 'none'; frame-src 'none'; form-action 'none'; base-uri 'self'";
   const guardSource = fs.readFileSync('scripts/matchrim-offline220.js');
