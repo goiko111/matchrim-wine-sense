@@ -241,3 +241,5 @@ Food-menu row splitting and detection-box normalization may be replayed determin
 - 2026-11-13: Build 152 (15e920f, archive152-r1) uploaded to TestFlight after the owner answered «Sí, sube la 152» to «¿Subo la 152 a TestFlight?»; HUMAN-AUTHORIZATION quotes the words. Private beta only.
 - 2026-11-14: Build 153 (5efafbd, archive153-r1) uploaded to TestFlight after the owner answered «Sí, sube la 153» to «¿Subo la 153 a TestFlight?»; HUMAN-AUTHORIZATION quotes the words. Private beta only.
 - 2026-11-14: Build 154 (959fc4d, archive154-r1) uploaded to TestFlight after the owner answered «si, subela y dime que mas nos falta» to «¿Subo la 154 a TestFlight?»; HUMAN-AUTHORIZATION quotes the words. Private beta only.
+- 2026-11-14: Owner approved the share extension («adelante con esto»). It hands the photo to the app through an app group and opens the app with matchrim://; nothing leaves the phone. Automatic signing created the App ID and the group in his Apple account.
+- 2026-11-14: Lovable exit plan written, not executed; it hinges on who owns the Supabase project.

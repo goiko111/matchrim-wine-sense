@@ -12,7 +12,7 @@ Lista única de lo que queda abierto tras subir la build 151. Nada de esto está
    (en ~/ClaudeCode/matchrim-tarde-20261109).
 
 ## Desarrollo nuevo
-3. **«Compartir → Matchrim» desde la galería de fotos.** Extensión nativa (objetivo nuevo en Xcode, grupo de apps,
+3. (Hecho en la 155, pendiente de subir y de probar en iPhone) **«Compartir → Matchrim» desde la galería de fotos.** Extensión nativa (objetivo nuevo en Xcode, grupo de apps,
    perfil de firma). «Pegar foto» (151) cubre el caso mientras tanto.
 4. (Hecho en la 154) Relieve en la carta de vinos y el modo restaurante. La ficha del vino ya tiene las tarjetas y el bloque de guardado.
 5. (Hecho en la 154) Las botellas dibujadas toman color del nombre, las uvas o la última respuesta de la tienda.
