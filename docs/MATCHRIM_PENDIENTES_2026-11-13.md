@@ -38,3 +38,8 @@ Lista única de lo que queda abierto tras subir la build 151. Nada de esto está
 13. Pedir a Winerim desde la app un vino que no está: alcance en `MATCHRIM_ALCANCE_VINO_NO_ENCONTRADO_2026-11-14.md`, pendiente de enviar a desarrollo y de su respuesta.
 14. Aviso «prueba con la contraetiqueta» cuando la etiqueta delantera no tiene texto útil.
 15. Conectar AgentMail en esta sesión (o seguir pasando los mensajes por Codex).
+
+## Actualizado el 14-nov (157)
+- Hecho en la 157: punto 12 (candidatos sin respaldo de la etiqueta, plegados) y punto 15 (AgentMail conectado; alcance enviado a desarrollo).
+16. En «Varias botellas», guardar un vino desde su ficha sin volver a la lista.
+17. Respuesta de desarrollo al alcance del vino no encontrado (hilo AgentMail «Matchrim iOS | Pedir a Winerim un vino que no está en la tienda»).
