@@ -8,7 +8,9 @@ import { stashSignedOutWineDraft134 } from '@/utils/nativeWineDraft98';
 import type { Json } from '@/integrations/supabase/types';
 
 export interface QuickSaveWine141 { name: string; producer?: string | null; vintage?: string | number | null; region?: string | null;
-  country?: string | null; grapes?: string[]; photo?: string | null; storeId?: number | null; storeSlug?: string | null }
+  country?: string | null; grapes?: string[]; photo?: string | null; storeId?: number | null; storeSlug?: string | null;
+  /** 156: a wine Winerim does not have, kept with what its label says. */
+  source?: 'label' }
 
 // 141: saving a wine found by search opened the ten-field «Añadir vino» form («No encuentro coincidencias claras ·
 // Nombre confirmado»). A wine that comes from Winerim already has its name, winery, zone and photo: one tap saves it

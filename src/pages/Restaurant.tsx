@@ -366,7 +366,12 @@ const RestaurantSession = ({ owner }: { owner: string }) => {
         setBudget(''); setCurrency('EUR'); setService('any'); setManualWine(''); setUrl(''); setError(''); setSheetRow(''); setEditing(null);
       }}><Trash2 className="h-4 w-4 shrink-0" />Empezar de cero</Button>
     </div>
-    <p className="my-3 text-sm leading-6 text-slate-700">Haz una foto a la carta de platos y otra a la de vinos. Te decimos qué vino pedir con cada plato.</p>
+    {/* 156: «hay que explicar bien que esto es para el restaurante: saco la carta de platos, luego la de vinos…». Three numbered steps say it before anything is asked. */}
+    {native ? <ol className={`my-3 space-y-3 p-4 ${card150}`} aria-label="Cómo funciona" data-testid="restaurant-steps156">
+      {[['Fotografía la carta de platos', 'O pega el enlace si la carta está en una web.'], ['Fotografía la carta de vinos', 'Leemos los vinos y sus precios.'], ['Te decimos qué vino pedir', 'Con cada plato, y si ese vino encaja con tus gustos.']].map(([title, hint], index) =>
+        <li key={title} className="flex items-start gap-3"><span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-900 text-sm font-bold text-white" aria-hidden="true">{index + 1}</span>
+          <span className="min-w-0"><span className="block text-sm font-semibold text-stone-950">{title}</span><span className="block text-xs leading-5 text-stone-600">{hint}</span></span></li>)}
+    </ol> : <p className="my-3 text-sm leading-6 text-slate-700">Haz una foto a la carta de platos y otra a la de vinos. Te decimos qué vino pedir con cada plato.</p>}
     <p className="my-2 text-xs leading-normal text-slate-500">Las fotos se quedan en este dispositivo; para leerlas se envían a Matchrim y a su proveedor de IA.</p>
     <p role="status" className="sr-only">{savingDraft ? 'Guardando borrador...' : 'Borrador guardado en este dispositivo.'}</p>
     {storageError && <p role="status" className="my-3 text-sm text-amber-800">{storageError}</p>}

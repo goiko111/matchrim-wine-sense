@@ -1,4 +1,5 @@
 import { NativeStoreEstimate139 } from './NativeStoreEstimate139';
+import { RowEstimate156 } from './RowEstimate156';
 import { useNavigate } from 'react-router-dom';
 import { handMenuPhoto144, looksLikeWineList144 } from '@/utils/scanKind144';
 import { markScannedSaved144, recordScannedWine139 } from '@/utils/scannedWines139';
@@ -10,6 +11,7 @@ import { confirm135 } from '@/utils/nativeConfirm135';
 import { Capacitor } from '@capacitor/core';
 import {
   AlertTriangle,
+  BookOpen,
   ClipboardPaste,
   Camera,
   Check,
@@ -1366,17 +1368,22 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
             <div className="min-w-0 flex-1">
               <h2 className="text-lg font-bold text-slate-950">{isNative && scanMode === 'local-single' ? 'Fotografía una etiqueta' : 'Fotografía las botellas'}</h2>
               <p className="mt-1 max-w-md text-sm leading-5 text-slate-600">
-                {isNative && scanMode === 'local-single' ? 'Una etiqueta o una carta de vinos: la app sabe cuál es. La foto de una botella se queda en este iPhone.' : 'Una botella o varias a la vez (una estantería, una vitrina). Te decimos cuánto encaja cada una contigo.'}
+                {isNative && scanMode === 'local-single' ? 'Haz la foto a la etiqueta de una botella. Si fotografías una carta de vinos, la app lo nota y la lee como carta. La foto de una botella se queda en este iPhone.' : 'Una botella o varias a la vez (una estantería, una vitrina). Te decimos cuánto encaja cada una contigo.'}
               </p>
             </div>
           </div>
           {/* 150: the choice of one or several was drawn like the «Hacer foto» button (three dark-red blocks in a row).
               It is now a switch on a grey track, the photo button is the only filled one, and the gallery is a quiet link. */}
-          {isNative && localOCRAvailable106() && <div role="group" aria-label="Tipo de lectura" className="mt-4 grid grid-cols-2 gap-1 rounded-xl bg-stone-200/70 p-1 [.matchrim-accessibility-text_&]:grid-cols-1" data-testid="scan-mode150">
+          {isNative && localOCRAvailable106() && <div role="group" aria-label="Tipo de lectura" className="mt-4 grid grid-cols-3 gap-1 rounded-xl bg-stone-200/70 p-1 [.matchrim-accessibility-text_&]:grid-cols-1" data-testid="scan-mode150">
             {([['local-single', Smartphone, 'Una etiqueta'], ['cloud', ScanLine, 'Varias botellas']] as const).map(([mode, Icon, label]) =>
               <button key={mode} type="button" aria-pressed={scanMode === mode} disabled={loading || saving} onClick={() => setScanMode(mode)}
                 className={`flex min-h-11 items-center justify-center gap-2 rounded-lg px-2 py-2 text-sm font-semibold disabled:opacity-50 ${scanMode === mode ? 'bg-white text-stone-950 shadow-sm' : 'text-stone-600'}`}>
                 <Icon aria-hidden="true" className="h-4 w-4 shrink-0" />{label}</button>)}
+            {/* 156: «¿y la lista de vinos?» The app tells a list from a bottle by itself, but nothing said so: the
+                wine list has its own place in the switch and opens its reader. */}
+            <button type="button" disabled={loading || saving} onClick={() => navigate('/escanear/carta-vinos')} data-testid="scan-list156"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-lg px-2 py-2 text-sm font-semibold text-stone-600 disabled:opacity-50">
+              <BookOpen aria-hidden="true" className="h-4 w-4 shrink-0" />Carta de vinos</button>
           </div>}
           <div className="scan-upload-actions mt-5 grid gap-2 sm:grid-cols-2">
             <Button type="button" disabled={loading || saving} className={`matchrim-pressable gap-2 bg-red-900 hover:bg-red-800 ${isNative ? 'min-h-14 rounded-xl text-base font-bold shadow-[0_8px_18px_-8px_rgba(127,29,29,.6)]' : 'min-h-12'}`} onClick={() => void openCamera133(cameraInputRef.current)}>
@@ -1636,9 +1643,12 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                       )}
                     </span>
                     <span className={isNative ? 'min-w-0 w-full text-left [overflow-wrap:anywhere]' : 'shrink-0 text-right'}>
+                      {(() => { const words = <>
                       <span data-testid="scan-affinity-value" className="block font-bold text-red-900">{isNative ? consumer?.affinityValue : group.candidate.affinity == null ? '-' : `${identityConfirmed ? '' : '≈'}${Math.round(group.candidate.affinity)}%`}</span>
                       <span className="block text-[11px] text-slate-500">{isNative ? consumer?.affinityLabel : group.candidate.affinity == null ? 'Sin datos' : identityConfirmed ? 'Afinidad' : 'Estimación'}</span>
-                      {isNative && consumer?.pending && <span className="mt-1 block text-xs leading-5 text-stone-700" data-testid="native-affinity-gap-summary">{consumer.pending.summary}</span>}
+                      {isNative && consumer?.pending && <span className="mt-1 block text-xs leading-5 text-stone-700" data-testid="native-affinity-gap-summary">{consumer.pending.summary}</span>}</>;
+                        return isNative && consumer?.pending && !isPendingLocalIdentity109(group.candidate)
+                          ? <RowEstimate156 identity={group.candidate} profile={scanProfile?.profile ?? null}>{words}</RowEstimate156> : words; })()}
                       {personalVerdict && <span className="mt-1 block font-semibold text-stone-900" data-testid="native-rescan-personal-verdict">{personalVerdictTitle159(personalVerdict)}</span>}
                     </span>
                   </button>
@@ -1678,11 +1688,11 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   </div>
                 )}
                 {isNative && confirmableGroups.length === 0 && !batchLocked ? <div className="space-y-2" data-testid="native-review-before-save">
-                  <p role="status" className="text-sm text-stone-700">{nativeReviewTarget ? 'Ninguna referencia lista para guardar todavía.' : 'Todos los vinos de esta foto están descartados.'}</p>
+                  <p role="status" className="text-sm text-stone-700">{nativeReviewTarget ? 'Toca un vino para ver si te gustará y guardarlo.' : 'Todos los vinos de esta foto están descartados.'}</p>
                   <Button type="button" className="h-auto min-h-12 w-full gap-2 whitespace-normal bg-red-950 py-3" onClick={() => {
                     if (nativeReviewTarget) setSelectedRegionId(nativeReviewTarget.id);
                     else resetScan();
-                  }}><Eye aria-hidden="true" className="h-4 w-4 shrink-0" />{nativeReviewTarget ? 'Revisar una referencia' : 'Elegir otra foto'}</Button>
+                  }}><Eye aria-hidden="true" className="h-4 w-4 shrink-0" />{nativeReviewTarget ? 'Ver el primer vino' : 'Elegir otra foto'}</Button>
                 </div> : <Button
                   type="button"
                   className="matchrim-pressable h-auto min-h-12 w-full gap-2 whitespace-normal bg-red-950 py-3 hover:bg-red-900"
@@ -1782,6 +1792,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                       invoke={(operation, signal) => invokeEdgeFunction('matchrim-master-catalog', operation, signal)}
                       autoLink={isNative && manualList139?.candidate !== selectedCandidate}
                       resume={manualList139?.candidate === selectedCandidate ? manualList139.resume : undefined}
+                      onKept={place => { toast.success(place === 'wishlist' ? 'Guardado en Por probar' : place === 'tasted' ? 'Guardado en Probados' : 'Guardado en tu bodega'); resetScan(); }}
                       onConfirmed={(confirmed, auto) => {
                         if (currentManualLookupKey.current !== manualLookupKey) return;
                         updateRegion(selectedRegion.id, region => {

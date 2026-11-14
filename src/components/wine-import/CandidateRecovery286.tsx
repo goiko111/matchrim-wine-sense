@@ -14,6 +14,7 @@ import { resolveMasterCandidate259 } from '@/utils/nativeMasterLink259';
 import { safeWineImageUrl98 } from '@/utils/wineImage98';
 import { suggestLocalOCRFragments108 } from '@/utils/localOCRFragments108';
 import { PilotFeedback130 } from '@/components/PilotFeedback130';
+import { KeepUnlisted156 } from './KeepUnlisted156';
 import { ScanWaiting139 } from '@/components/ScanWaiting139';
 import { labelLines145, shortNames145 } from '@/utils/scanKind144';
 import { autoLink139, labelVintage139, SCAN_STEPS139 } from '@/utils/autoLink139';
@@ -26,6 +27,8 @@ type Props = {
   autoLink?: boolean;
   /** 139: «¿No es este? Cambiar» reopens the list that was already found, without searching or linking again. */
   resume?: CandidateResume139;
+  /** 156: told when the person keeps a wine that is not in Winerim, so the scan can close. */
+  onKept?: (place: 'wishlist' | 'tasted' | 'collection') => void;
 };
 export type CandidateResume139 = { decision: CandidateDecision286; vintage: number | null };
 
@@ -34,7 +37,7 @@ export type CandidateResume139 = { decision: CandidateDecision286; vintage: numb
 // without that tap; a pick is verified against Winerim before it is applied.
 // 139: with autoLink, the one candidate whose name and winery the label plainly shows (autoLink139) is applied
 // through the very same choose() as the tap, so the verification and everything downstream are identical.
-export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled, reading, ownerId, invoke, onConfirmed, autoLink = false, resume }: Props) => {
+export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled, reading, ownerId, invoke, onConfirmed, autoLink = false, resume, onKept }: Props) => {
   const [busy, setBusy] = useState(false), [notice, setNotice] = useState('');
   const [decision, setDecision] = useState<CandidateDecision286 | null>(resume?.decision ?? null);
   const [vintage, setVintage] = useState<number | null>(resume ? resume.vintage : candidate.vintage);
@@ -197,7 +200,8 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
     </form>}
     {!busy && decision?.mode === 'none' && <Button type="button" variant="outline" disabled={disabled} onClick={() => void find()}
       className="h-auto min-h-11 w-full gap-2 whitespace-normal py-3"><BookOpen aria-hidden="true" className="h-4 w-4 shrink-0" /> Reintentar con el texto leído</Button>}
-    {!busy && !linking && decision && <PilotFeedback130 label={shown.length ? '¿Ninguno es tu vino? Avísanos' : 'Avísanos de este fallo'}
+    {!busy && !linking && decision && <KeepUnlisted156 reading={reading} open={decision.mode === 'none'} onSaved={onKept} />}
+    {!busy && !linking && decision && <PilotFeedback130 label="Pedir a Winerim que añada este vino"
       context={{ where: 'candidatos', read: reading?.lines.map(line => line.text) ?? candidate.evidence,
         shown: [...shown, ...more].slice(0, 5).map(value => `${value.name} (${value.row.winery})`), searched: typed }} />}
   </section>;

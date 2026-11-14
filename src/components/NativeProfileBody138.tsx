@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { card150 } from '@/components/Relief150';
+import { ScaleMarks156 } from '@/components/Scale156';
 
 interface TasteRow { key: string; label: string; value: number; description: string }
 interface Props {
@@ -45,7 +46,6 @@ export const NativeProfileBody138 = ({ sentence, mainStyle, rows, baseValues, le
       <h2 id="profile-traits138" className={heading}>Tus gustos, rasgo a rasgo</h2>
       <dl className="mt-3 space-y-2">
         {rows.map(row => { const base = baseValues?.[row.key], [low, high] = ends147[row.key] ?? ['Menos', 'Más'];
-          const at = (value: number) => `calc(${Math.max(0, Math.min(5, value)) * 20}% - ${Math.max(0, Math.min(5, value)) * 0.3}rem)`;
           return <div key={row.key}>
             <dt className="sr-only">{row.label}</dt>
             <dd className="relative flex h-11 items-center justify-between rounded-full bg-white px-4 text-sm shadow-[0_1px_2px_rgba(41,37,36,.08)]" role="meter" aria-label={`${row.label}: perfil actual`}
@@ -53,10 +53,7 @@ export const NativeProfileBody138 = ({ sentence, mainStyle, rows, baseValues, le
               aria-valuetext={`${row.description}; ${row.value.toLocaleString('es-ES', { maximumFractionDigits: 1 })} de 5${typeof base === 'number' && learnedSamples > 0 ? `; test inicial: ${base.toLocaleString('es-ES', { maximumFractionDigits: 1 })} de 5` : ''}`}>
               <span className={row.value <= 2 ? 'font-semibold text-stone-950' : 'text-stone-500'} aria-hidden="true">{low}</span>
               <span className={row.value >= 3.5 ? 'font-semibold text-stone-950' : 'text-stone-500'} aria-hidden="true">{high}</span>
-              <span className="pointer-events-none absolute inset-x-[5.5rem] inset-y-0" aria-hidden="true">
-                {typeof base === 'number' && learnedSamples > 0 && base !== row.value && <span className="absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-stone-300" style={{ left: at(base) }} />}
-                <span className="absolute top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border-[3px] border-stone-950 bg-white shadow" style={{ left: at(row.value) }} />
-              </span>
+              <ScaleMarks156 you={row.value} base={typeof base === 'number' && learnedSamples > 0 && base !== row.value ? base : null} />
             </dd>
           </div>; })}
       </dl>

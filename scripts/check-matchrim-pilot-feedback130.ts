@@ -29,7 +29,8 @@ check('no photo, no account and no automatic send in the component', () => {
 });
 check('both entry points are wired: candidates (native local flow) and native Perfil', () => {
   const candidates = fs.readFileSync('src/components/wine-import/CandidateRecovery286.tsx', 'utf8');
-  assert(candidates.includes("<PilotFeedback130 label={shown.length ? '¿Ninguno es tu vino? Avísanos' : 'Avísanos de este fallo'}"));
+  // 156: the mail link asks Winerim to add the wine; keeping the wine in the app is the customer's way out.
+  assert(candidates.includes('<PilotFeedback130 label="Pedir a Winerim que añada este vino"'));
   const profile = fs.readFileSync('src/pages/Profile.tsx', 'utf8');
   assert(profile.includes("{isNative && <div className=\"mt-3\"><PilotFeedback130 label=\"Enviar un comentario de la beta\" context={{ where: 'perfil' }} /></div>}"));
 });

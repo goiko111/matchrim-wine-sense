@@ -77,7 +77,8 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
   // bottle photo and an estimate a minute earlier. The row now asks Winerim's store (same lookup as those screens)
   // when it is missing a photo or a verdict; the answer is only displayed, never saved to the wine or the profile.
   const canAskStore = native && Boolean(wine.name?.trim() && wine.producer?.trim());
-  const wantsStore = canAskStore && near && (!wine.image_url || (!wine.rating && displayScore === null));
+  // 156: a rated wine asks too, so its sheet can say how it fitted on paper next to the person's own verdict.
+  const wantsStore = canAskStore && near && (!wine.image_url || displayScore === null);
   const [store, setStore] = useState<{ key: string; hit: StoreHit141 | null } | null>(null);
   useEffect(() => {
     if (!wantsStore) return;
@@ -100,6 +101,8 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
   // 143: the estimate keeps its reasons (one sentence per trait) for the sheet; it is still only displayed.
   const estimated = !wine.rating && displayScore === null && storeHit ? storeAffinity139(snapshot?.profile, storeHit.attributes) : null;
   const ready = estimated?.state === 'ready' ? estimated : null;
+  const paper156 = wine.rating && displayScore === null && storeHit ? storeAffinity139(snapshot?.profile, storeHit.attributes) : null;
+  const fit156 = wine.rating ? displayScore ?? (paper156?.state === 'ready' ? paper156.score : null) : null;
   const estimate = ready?.score ?? null;
   const rated = wine.rating === 'love' || wine.rating === 'ok' || wine.rating === 'not_for_me' ? rated143[wine.rating] : null;
   // 141: no verdict text at all when there is nothing to say ("Afinidad por calcular" told the person nothing).
@@ -140,7 +143,9 @@ export const NativeCellarItem98 = ({ native, wine, snapshot, resolveImage, sheet
           {photo && <NativeWinePhoto98 src={photo} ownedCapture name={wine.name} className="mx-auto h-[260px] w-[130px] !bg-transparent" />}
           <div className="min-w-0 text-center" data-testid="native-cellar-verdict141">
             {rated && RatedIcon ? <><span className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full ${rated[2]}`}><RatedIcon className="h-8 w-8" aria-hidden="true" /></span>
-              <p className="mt-3 text-lg font-semibold leading-6" role="status">{rated[0]}</p><p className="mt-1 text-xs text-stone-600">Tu valoración</p></>
+              <p className="mt-3 text-lg font-semibold leading-6" role="status">{rated[0]}</p><p className="mt-1 text-xs text-stone-600">Tu valoración</p>
+              {/* 156: a rated wine still says how it fitted the person's taste on paper («no te gustó» next to a 77 is what teaches the profile). */}
+              {fit156 !== null && <p className="mt-3 flex flex-wrap items-center justify-center gap-2 text-xs text-stone-600" data-testid="native-cellar-fit156"><span>Por tus gustos encajaba</span><ScorePill150 score={fit156} estimate={displayScore === null} /></p>}</>
               : score !== null ? <><p className={`text-5xl font-bold tabular-nums leading-none ${score >= 65 ? 'text-emerald-800' : 'text-stone-800'}`} aria-label={`Afinidad orientativa: ${score} de 100`}>{score}<span className="text-lg font-semibold text-stone-500">/100</span></p>
                 <p className="mt-2 text-lg font-semibold leading-6">{ready ? ready.title : title143(score)}</p>
                 <p className="mt-1 text-xs text-stone-600">{ready ? 'estimación para tu paladar' : view?.current != null ? 'para tu paladar' : 'por estilo'}</p></>

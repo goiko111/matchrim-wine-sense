@@ -36,7 +36,7 @@ export const saveStoreWine142 = async (userId: string, wine: QuickSaveWine141, p
     region: wine.region || null, country: wine.country || null, grape_varieties: wine.grapes?.length ? wine.grapes.slice(0, 12) : null,
     image_url: wine.photo && /^https:\/\/app\.winerim\.com\//.test(wine.photo) ? wine.photo : null, status: place, quantity: place === 'collection' ? 1 : null, rating,
     matchrim_affinity: null, sensory_attributes: null, use_for_profile_training: false,
-    place_details: { source: 'winerim_store', store_id: wine.storeId ?? null, store_slug: wine.storeSlug ?? null } as Json }]);
+    place_details: (wine.source === 'label' ? { source: 'label_only' } : { source: 'winerim_store', store_id: wine.storeId ?? null, store_slug: wine.storeSlug ?? null }) as Json }]);
   return !error;
 };
 

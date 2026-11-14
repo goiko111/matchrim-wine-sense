@@ -10,6 +10,7 @@ import { storeAffinity139, storeScore139, type StoreRow140 } from '@/utils/store
 import { compatLines142, loadWinerimDetail142, type WinerimDetail142 } from '@/utils/winerimDetail142';
 import { formatCountryName, formatWineType } from '@/utils/wineFormatters';
 import { card150 } from '@/components/Relief150';
+import { ScaleLegend156, ScaleMarks156 } from '@/components/Scale156';
 
 const grapeNames = (row: PublicGlobalRow103) => [...new Set((row.grapes ?? []).flat(2).flatMap(grape => {
   const name = typeof grape === 'string' ? grape : grape && typeof grape === 'object' ? (grape as { name?: unknown }).name : null;
@@ -39,7 +40,6 @@ export const WinerimRich142 = ({ row, profile, vintage, onRelated }: { row: Publ
   const note144 = pairs([['A la vista', data?.appearance], ['En nariz', data?.nose], ['En boca', data?.palate], ['Cuerpo', data?.body], ['Estructura', data?.structure], ['Final', data?.finish]]);
   const place144 = pairs([['La bodega', data?.wineryStory], ['El viñedo', data?.vineyard], ['El clima', data?.climate]]);
   const made144 = pairs([['', data?.style], ['', data?.aging], ['', data?.winemaking]]);
-  const dot = (value: number) => `calc(${Math.max(0, Math.min(5, value)) * 20}% - ${Math.max(0, Math.min(5, value)) * 0.4}rem)`;
   return <div className="space-y-6" data-testid="winerim-rich142">
     {facts.length > 0 && <ul className={`${card} divide-y divide-stone-100 px-4`} aria-label="Datos del vino" data-testid="winerim-facts140">
       {facts.map(([Icon, value]) => <li key={value} className="flex items-center gap-3 py-3 text-sm text-stone-900"><Icon className="h-5 w-5 shrink-0 text-stone-500" aria-hidden="true" /><span className="min-w-0 [overflow-wrap:anywhere]">{value}</span></li>)}
@@ -52,16 +52,13 @@ export const WinerimRich142 = ({ row, profile, vintage, onRelated }: { row: Publ
           role="img" aria-label={`${low} a ${high}: este vino ${attributes[key]} de 5${you !== null ? `, tú ${you.toLocaleString('es-ES', { maximumFractionDigits: 1 })} de 5` : ''}`}>
           <span className={attributes[key] <= 2 ? 'font-semibold text-stone-950' : 'text-stone-500'} aria-hidden="true">{low}</span>
           <span className={attributes[key] >= 4 ? 'font-semibold text-stone-950' : 'text-stone-500'} aria-hidden="true">{high}</span>
-          <span className="pointer-events-none absolute inset-x-[5.5rem] inset-y-0" aria-hidden="true">
-            <span className="absolute top-1/2 h-4 w-8 -translate-y-1/2 rounded-full bg-red-800" style={{ left: dot(attributes[key]) }} />
-            {you !== null && <span className="absolute top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border-[3px] border-stone-950 bg-white shadow" style={{ left: `calc(${Math.max(0, Math.min(5, you)) * 20}% - ${Math.max(0, Math.min(5, you)) * 0.3}rem)` }} />}
-          </span>
+          <ScaleMarks156 wine={attributes[key]} you={you} />
         </div>; })}</div>
       {data?.agingLevel != null && <div className="relative mt-2 flex h-11 items-center justify-between rounded-full border border-stone-200 bg-white px-4 text-sm" role="img" aria-label={`Joven a con crianza: este vino ${data.agingLevel} de 5`} data-testid="winerim-aging144">
         <span className={data.agingLevel <= 2 ? 'font-semibold text-stone-950' : 'text-stone-500'} aria-hidden="true">Joven</span><span className={data.agingLevel >= 4 ? 'font-semibold text-stone-950' : 'text-stone-500'} aria-hidden="true">Con crianza</span>
-        <span className="pointer-events-none absolute inset-x-[5.5rem] inset-y-0" aria-hidden="true"><span className="absolute top-1/2 h-4 w-8 -translate-y-1/2 rounded-full bg-red-800" style={{ left: dot(data.agingLevel) }} /></span>
+        <ScaleMarks156 wine={data.agingLevel} />
       </div>}
-      {profile && <p className="mt-2 flex items-center gap-4 text-xs text-stone-600" aria-hidden="true"><span className="flex items-center gap-1.5"><span className="h-3 w-6 rounded-full bg-red-800" />Este vino</span><span className="flex items-center gap-1.5"><span className="h-4 w-4 rounded-full border-2 border-stone-950" />Tú</span></p>}
+      {profile && <ScaleLegend156 />}
     </section>}
     {data && data.pairings.length > 0 && <section aria-labelledby={`pair142-${row.id}`}>
       <h4 id={`pair142-${row.id}`} className={heading}>Combina muy bien con</h4>

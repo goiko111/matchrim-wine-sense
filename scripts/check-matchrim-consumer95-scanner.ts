@@ -231,7 +231,7 @@ check('Zero-confirmable native batch opens review; does not invoke save or mutat
   const actor = runtime(source, true, stateFor([region()], { selectedRegionId: null }));
   const tree = actor.render();
   assert.ok(!button(tree, 'Confirmar 0 referencias'));
-  click(button(tree, 'Revisar una referencia'));
+  click(button(tree, 'Ver el primer vino'));
   assert.equal(actor.state.selectedRegionId, 'region-a');
   assert.deepEqual(actor.state.regions, [region()]);
   assert.deepEqual(actor.writes, ['selectedRegionId']);
