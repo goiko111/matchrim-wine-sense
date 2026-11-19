@@ -151,6 +151,70 @@ export const searchStore139 = (query: string, signal?: AbortSignal): Promise<rea
   cache.set(id, pending); pending.then(rows => diskSet145(STORE_SEARCH_DISK145, id, rows, 40), () => cache.delete(id));
   return signal ? Promise.race([pending, new Promise<never>((_, reject) => signal.addEventListener('abort', () => reject(new DOMException('Cancelled', 'AbortError')), { once: true }))]) : pending;
 };
+// 160: Winerim's batch search (announced by development on 19-nov-2026, not yet published that day: 404). Up to 25
+// texts in one call, five wines per text, one row per wine, no prices. Lines asked within the same instant (a wine
+// list, several bottles) travel together. While the endpoint is missing or answers something this code does not
+// recognise, every caller gets `null` and uses the one-by-one search, so nothing depends on the day it is published.
+const BATCH160 = 'https://app.winerim.com/api/v1/matchrim/wines/search-batch';
+const BATCH_OFF160 = 'matchrim.store_batch_off.v1', BATCH_DISK160 = 'matchrim.store_batch.v1';
+/** The rows of each text, in the order sent; null when the answer is not the shape announced. Accepts the list bare or under results/data/items, and each text as a list or as an object holding one. */
+export const parseBatch160 = (body: unknown, count: number): StoreRow140[][] | null => {
+  const list = (value: unknown, keys: readonly string[]): unknown[] | null => Array.isArray(value) ? value
+    : value && typeof value === 'object' ? keys.map(name => (value as Record<string, unknown>)[name]).find(Array.isArray) as unknown[] | undefined ?? null : null;
+  const groups = list(body, ['results', 'data', 'items']);
+  if (!groups || groups.length !== count) return null;
+  const out: StoreRow140[][] = [];
+  for (const group of groups) {
+    const rows = list(group, ['wines', 'results', 'items', 'matches']);
+    if (!rows) return null;
+    const seen = new Set<number>();
+    out.push(rows.slice(0, 5).flatMap(row => parseRow140(row) ?? []).filter(row => !seen.has(row.id) && seen.add(row.id)));
+  }
+  return out;
+};
+let batchOffUntil160: number | null = null;
+const batchOff160 = () => {
+  if (batchOffUntil160 === null) batchOffUntil160 = Number(diskGet145<number>(BATCH_OFF160, 'until')) || 0;
+  return Date.now() < batchOffUntil160;
+};
+const pauseBatch160 = (ms: number, remember: boolean) => {
+  batchOffUntil160 = Date.now() + ms;
+  if (remember) diskSet145(BATCH_OFF160, 'until', batchOffUntil160, 1); // the same public-data shortcut as the searches; nothing about the person
+};
+type Waiting160 = { id: string; text: string; resolve: (rows: readonly StoreRow140[] | null) => void };
+let queue160: Waiting160[] = [], timer160: ReturnType<typeof setTimeout> | null = null;
+const batchCache160 = new Map<string, Promise<readonly StoreRow140[] | null>>();
+const flush160 = async () => {
+  timer160 = null;
+  const sent = queue160.splice(0, 25);
+  if (queue160.length) timer160 = setTimeout(() => void flush160(), 0);
+  const fail = () => sent.forEach(item => { batchCache160.delete(item.id); item.resolve(null); });
+  if (!sent.length) return;
+  if (batchOff160()) { fail(); return; }
+  const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 15000);
+  try {
+    const response = await fetch(BATCH160, { method: 'POST', credentials: 'omit', redirect: 'error', referrerPolicy: 'no-referrer',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify({ texts: sent.map(item => item.text) }), signal: controller.signal });
+    // Not published (404/405/501): do not ask again for half an hour. Too many lots from this network (429): one minute.
+    if (!response.ok) { if (response.status === 429) pauseBatch160(60_000, false); else if ([404, 405, 501].includes(response.status)) pauseBatch160(30 * 60_000, true); fail(); return; }
+    const groups = parseBatch160(await response.json(), sent.length);
+    if (!groups) { pauseBatch160(30 * 60_000, true); fail(); return; }
+    sent.forEach((item, index) => { diskSet145(BATCH_DISK160, item.id, groups[index], 40); item.resolve(groups[index]); });
+  } catch { fail(); } finally { clearTimeout(timer); }
+};
+/** Up to five store wines for a text through the batch search; null when the batch cannot be used (then search one by one). */
+export const batchRows160 = (query: string): Promise<readonly StoreRow140[] | null> => {
+  const id = key(query); if (id.length < 2 || query.length > 120) return Promise.resolve([]);
+  const known = batchCache160.get(id); if (known) return known;
+  const kept = diskGet145<StoreRow140[]>(BATCH_DISK160, id);
+  if (Array.isArray(kept)) { const ready = Promise.resolve(kept as readonly StoreRow140[]); batchCache160.set(id, ready); return ready; }
+  if (batchOff160()) return Promise.resolve(null);
+  const pending = new Promise<readonly StoreRow140[] | null>(resolve => { queue160.push({ id, text: query.trim(), resolve }); });
+  batchCache160.set(id, pending);
+  if (queue160.length >= 25) { if (timer160) clearTimeout(timer160); void flush160(); }
+  else if (!timer160) timer160 = setTimeout(() => void flush160(), 40);
+  return pending;
+};
 const median = (values: number[]) => { const sorted = [...values].sort((a, b) => a - b); return sorted.length ? sorted[Math.floor((sorted.length - 1) / 2)] : null; };
 /** Which option a list price points at: the wine whose usual restaurant price is closest, when one clearly is. */
 export const likelyByPrice140 = (options: readonly StoreEstimate138[], listPrice: number | null | undefined): StoreEstimate138 | null => {
@@ -163,6 +227,16 @@ export const likelyByPrice140 = (options: readonly StoreEstimate138[], listPrice
 export const estimateListing139 = async (line: ListingLine139, signal?: AbortSignal): Promise<ListingMatch139 | null> => {
   const read = readListingLine139(line);
   if (read.query.length < 2) return null;
-  try { return matchListing139(line, await searchStore139(read.query, signal)); }
+  try {
+    // 160: a search already answered one by one is on the phone and has prices: it is used as it is. Otherwise the
+    // batch answers first; only a line it leaves between several wines of a winery is asked again one by one,
+    // because that search brings the restaurant prices that tell those wines apart.
+    if (!cache.has(key(read.query)) && !Array.isArray(diskGet145<StoreRow140[]>(STORE_SEARCH_DISK145, key(read.query)))) {
+      const rows = await batchRows160(read.query);
+      if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
+      if (rows) { const match = matchListing139(line, rows); if (match?.kind !== 'range') return match; }
+    }
+    return matchListing139(line, await searchStore139(read.query, signal));
+  }
   catch { if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError'); return null; }
 };
