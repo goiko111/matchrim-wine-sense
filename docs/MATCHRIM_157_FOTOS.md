@@ -40,3 +40,13 @@ archivo descargado, no la página de cada foto; la dirección del archivo identi
 | bolleria.jpg | https://images.unsplash.com/photo-1585803059817-1e58abb814d0 |
 
 Las otras diez familias de sabores reutilizan fotos del test.
+
+## Fotos de situación del recorrido y del test (159), añadido el 19-nov-2026
+Cuatro fotos en `src/assets/tour159/` (900×576), de Pexels con licencia gratuita (https://www.pexels.com/license/):
+
+| Archivo | Dónde sale | Fuente |
+|---|---|---|
+| brindis.jpg | Recorrido 1 y pausa del test tras la 7.ª | https://www.pexels.com/photo/elegant-men-making-a-toast-8775179/ |
+| tienda.jpg | Recorrido 3 | https://www.pexels.com/photo/variety-of-red-and-white-wine-bottles-on-display-30447488/ |
+| casa.jpg | Recorrido 5 | https://www.pexels.com/photo/a-bottle-of-wine-and-incense-sticks-standing-on-a-table-20379600/ |
+| restaurante.jpg | Recorrido 6 y pausa del test tras la 14.ª | https://www.pexels.com/photo/elegant-dining-experience-in-cozy-restaurant-setting-33097101/ |

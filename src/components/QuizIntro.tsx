@@ -3,13 +3,15 @@ import React from 'react';
 import { Capacitor } from '@capacitor/core';
 import { Button } from "@/components/ui/button";
 import { QuizPhoto157 } from '@/components/QuizPhoto157';
+import { NativeIntent159 } from '@/components/NativeIntent159';
 
 interface QuizIntroProps {
   onStart: () => void;
   returnTo?: string | null;
+  ownerId?: string | null;
 }
 
-const QuizIntro: React.FC<QuizIntroProps> = ({ onStart, returnTo }) => {
+const QuizIntro: React.FC<QuizIntroProps> = ({ onStart, returnTo, ownerId }) => {
   if (Capacitor.isNativePlatform()) return (
     <section className="mx-auto flex w-full max-w-2xl flex-col px-4 py-6">
       {/* 157: the cover shows what the test is made of: four of its twenty foods, in the photographs of the questions. */}
@@ -17,6 +19,7 @@ const QuizIntro: React.FC<QuizIntroProps> = ({ onStart, returnTo }) => {
       <h1 className="mt-6 text-3xl font-bold leading-9 text-stone-950">Test de paladar</h1>
       <p className="mt-3 text-base leading-6 text-stone-700">No hace falta saber de vino. Te preguntamos por 20 sabores que ya conoces (una manzana verde, el café, el picante) y con tus respuestas calculamos qué vinos te pueden gustar.</p>
       <p className="mt-3 rounded-2xl bg-stone-100 px-4 py-3 text-sm leading-5 text-stone-700">Unos 2 minutos · Es un punto de partida: se afina con los vinos que valores.</p>
+      <NativeIntent159 ownerId={ownerId ?? null} />
       <Button type="button" onClick={onStart} className="mt-7 min-h-12 rounded-full bg-red-900 text-base">Comenzar el test</Button>
     </section>
   );

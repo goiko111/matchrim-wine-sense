@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { Capacitor } from '@capacitor/core';
-import { ArrowLeft, ArrowRight, Bookmark, Check, CircleHelp, Gauge, MessageCircleMore, ScanLine, Sparkles, UtensilsCrossed, Wine } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Bookmark, Check, CircleHelp, Gauge, Minus, MessageCircleMore, ScanLine, Sparkles, UtensilsCrossed, Wine } from 'lucide-react';
 import { QuizPhoto157 } from '@/components/QuizPhoto157';
+import brindis159 from '@/assets/tour159/brindis.jpg';
+import tienda159 from '@/assets/tour159/tienda.jpg';
+import casa159 from '@/assets/tour159/casa.jpg';
+import restaurante159 from '@/assets/tour159/restaurante.jpg';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
@@ -75,10 +79,23 @@ export default function MatchrimQuickGuide({ existing, ownerId = null, ready = t
         >
           <p className="text-sm font-semibold text-red-800" role="status" aria-live="polite">Matchrim · {step + 1} de {steps.length}</p>
           <div ref={contentRef} className="min-h-0 space-y-4 overflow-y-auto overscroll-contain" data-testid="matchrim-guide-content">
-          {native158 && (() => { const Icon = tour158[step].icon; return <div data-testid="tour-hero158" className="relative flex h-36 items-center justify-center overflow-hidden rounded-2xl bg-red-950 [html.matchrim-accessibility-text_&]:hidden">
+          {/* 159: places instead of icons (a table, a shop, a home), and on «Entiende la nota» a wine as the app shows it. */}
+          {native158 && <div data-testid="tour-hero158" className="relative h-40 overflow-hidden rounded-2xl bg-stone-100 [html.matchrim-accessibility-text_&]:hidden">
             {step === 1 ? <div className="grid h-full w-full grid-cols-4">{[1, 14, 2, 16].map(id => <QuizPhoto157 key={id} id={id} className="h-full w-full object-cover" />)}</div>
-              : <Icon className="h-16 w-16 text-white/90" strokeWidth={1.4} aria-hidden="true" />}
-          </div>; })()}
+              : step === 3 ? <div className="flex h-full flex-col justify-center gap-2 bg-white px-4 ring-1 ring-inset ring-stone-200" data-testid="tour-example159">
+                <p className="text-[11px] font-bold uppercase tracking-wide text-stone-500">Ejemplo</p>
+                <div className="flex items-center justify-between gap-3">
+                  <p className="min-w-0 text-base font-bold leading-5 text-stone-950">Un rioja crianza<span className="block text-xs font-medium text-stone-500">Tinto · Rioja</span></p>
+                  <p className="shrink-0 rounded-full bg-emerald-700 px-3 py-1 text-lg font-bold text-white">86<span className="text-xs font-semibold text-white/80">/100</span></p>
+                </div>
+                <p className="text-sm font-semibold text-emerald-800">Muy de tu estilo</p>
+                <ul className="space-y-0.5 text-xs leading-4 text-stone-700">
+                  <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 shrink-0 text-emerald-700" aria-hidden="true" />El cuerpo es como te gusta</li>
+                  <li className="flex items-center gap-1.5"><Minus className="h-3.5 w-3.5 shrink-0 text-amber-600" aria-hidden="true" />Algo menos fresco de lo que sueles preferir</li>
+                </ul>
+              </div>
+              : <img src={[brindis159, '', tienda159, '', casa159, restaurante159][step]} alt="" aria-hidden="true" draggable={false} className="h-full w-full object-cover" data-testid="tour-photo159" />}
+          </div>}
           <DialogTitle className="pr-6 text-2xl leading-tight tracking-normal">{steps[step].title}</DialogTitle>
           <DialogDescription className="text-base leading-6 text-slate-600">{steps[step].text}</DialogDescription>
           {!native158 && step === 0 && (

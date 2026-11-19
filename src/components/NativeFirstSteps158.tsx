@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, ChevronRight, X } from 'lucide-react';
+import { firstScan159, readIntent159 } from '@/utils/intent159';
 
 // 158 (owner, 19-nov: «explicar para qué vale cada cosa… para que nadie se pierda»). The guide explains the app once;
 // this card stays on Home until the four things that make it useful are done, each said with what it is for and one
@@ -13,7 +14,7 @@ export const NativeFirstSteps158 = ({ ownerId, hasQuiz, hasScan, hasSaved, hasRa
   const [off, setOff] = useState(() => hidden(ownerId));
   const steps = [
     { done: hasQuiz, title: 'Haz el test de paladar', why: 'Dos minutos. Sin él no podemos darte tu nota.', to: '/matchrim' },
-    { done: hasScan || hasSaved, title: 'Escanea tu primer vino', why: 'Una botella o una carta: verás cuánto encaja contigo.', to: '/escanear/etiqueta' },
+    { done: hasScan || hasSaved, ...firstScan159(readIntent159(ownerId).goal) },
     { done: hasSaved, title: 'Guarda un vino', why: 'Lo que quieres probar o lo que tienes en casa.', to: '/escanear/etiqueta' },
     { done: hasRated, title: 'Valora uno que hayas probado', why: 'Cada valoración afina tu perfil.', to: '/my-wines' },
   ];

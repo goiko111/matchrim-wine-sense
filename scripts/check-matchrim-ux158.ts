@@ -58,7 +58,8 @@ test('The guide on the iPhone is six short screens, keeps «Saltar guía» and t
 test('Home keeps first steps until they are done, each with what it is for', () => {
   const card = read('src/components/NativeFirstSteps158.tsx'), home = read('src/components/NativeAppHome.tsx');
   assert(home.includes('guideReady158={onboardingReady && !loadingCode} hasSaved158={hasSavedWines}'));
-  for (const title of ['Haz el test de paladar', 'Escanea tu primer vino', 'Guarda un vino', 'Valora uno que hayas probado']) assert(card.includes(`title: '${title}'`), title);
+  assert(read('src/utils/intent159.ts').includes("title: 'Escanea tu primer vino'"), '159: the scan step takes its words from what the person came for');
+  for (const title of ['Haz el test de paladar', 'Guarda un vino', 'Valora uno que hayas probado']) assert(card.includes(`title: '${title}'`), title);
   assert(card.includes('if (off || left === 0) return null;'));
   const native = read('src/components/NativeHome98.tsx');
   assert.match(native, /<NativeFirstSteps158 [^>]*hasQuiz=\{hasProfile\}/);

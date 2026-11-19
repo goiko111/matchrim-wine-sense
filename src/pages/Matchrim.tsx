@@ -3,6 +3,7 @@ import { Capacitor } from '@capacitor/core';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import QuizIntro from '@/components/QuizIntro';
 import QuizQuestion from '@/components/QuizQuestion';
+import { QuizBreak159, QUIZ_BREAKS159 } from '@/components/QuizBreak159';
 import QuizResults from '@/components/QuizResults';
 import { questions, calculateProfile, getProfileDescription } from '@/data/quizData';
 import { getDiverseWineRecommendations, UserProfile, WineRecommendation } from '@/utils/wineRecommendations';
@@ -142,7 +143,11 @@ const MatchrimSession = () => {
     setAnswers(newAnswers);
 
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      // 159: one screen of «what this is for» after the 7th and the 14th answer, once each per test.
+      const next = currentQuestionIndex + 1;
+      if (currentQuestionIndex === 0) breaksSeen159.current.clear(); // a test always starts at the first question
+      if (isNative && QUIZ_BREAKS159[next] && !breaksSeen159.current.has(next)) { breaksSeen159.current.add(next); setBreak159(next); }
+      setCurrentQuestionIndex(next);
     } else {
       if (isNative) {
         const missing = firstMissingNativeAnswer273(newAnswers, questions.map(question => question.id));
@@ -308,6 +313,9 @@ const MatchrimSession = () => {
     return () => { active = false; };
   }, [quizResult]);
 
+  // 159: declared after every older hook (checks address those by position). Functions above only use them when called.
+  const [break159, setBreak159] = useState<number | null>(null);
+  const breaksSeen159 = useRef(new Set<number>());
   if (isNative && user && nativeHistoryStatus === 'loading') return <><AppNav /><NativeMatchrimLoading /></>;
 
   if (isNative && user && nativeHistoryStatus === 'error') return (
@@ -346,10 +354,11 @@ const MatchrimSession = () => {
       {/* Content */}
       <div className="container mx-auto px-4 pb-20">
         {currentStep === 'intro' && (
-          <QuizIntro onStart={handleStart} returnTo={returnTo} />
+          <QuizIntro onStart={handleStart} returnTo={returnTo} ownerId={user?.id ?? null} />
         )}
 
-        {currentStep === 'quiz' && (
+        {currentStep === 'quiz' && break159 !== null && <QuizBreak159 at={break159} onContinue={() => setBreak159(null)} />}
+        {currentStep === 'quiz' && break159 === null && (
           <QuizQuestion
             question={questions[currentQuestionIndex]}
             currentAnswer={answers[questions[currentQuestionIndex].id] || ''}
