@@ -45,7 +45,7 @@ export function validateVisual158(prep, proofs) {
 
 export async function main158(mode = process.argv[2]) {
   assert(['export', 'upload'].includes(mode));
-  const repo = process.cwd(), base = path.join(repo, 'qa-artifacts/testflight158-20261114');
+  const repo = process.cwd(), base = path.join(repo, 'qa-artifacts/testflight158-20261119');
   const releaseFile = path.join(base, 'RELEASE.json'), authorizationFile = path.join(base, 'HUMAN-AUTHORIZATION.json');
   const releaseBytes = fs.readFileSync(releaseFile), authBytes = fs.readFileSync(authorizationFile);
   const release = JSON.parse(releaseBytes), authorization = JSON.parse(authBytes);
