@@ -32,6 +32,8 @@ await test('The answer is read bare, under results, or one object per text; anyt
   assert.equal(parseBatch160({ data: [{ results: [row, row] }] }, 1)?.[0].length, 1, 'a wine once');
   assert.equal(parseBatch160({ results: [[row]] }, 2), null, 'one list per text sent');
   assert.equal(parseBatch160({ hello: 'world' }, 1), null);
+  assert.equal(parseBatch160([[{ ...row, typicalPrice: 32 }]], 1)?.[0][0].bottlePrice, 32, 'the usual price asked of development, when it comes');
+  assert.equal(parseBatch160([[row]], 1)?.[0][0].bottlePrice, null);
   assert.equal(parseBatch160([[{ id: 'x', name: 'n' }]], 1)?.[0].length, 0, 'a row without id or winery is dropped');
   assert.equal(parseBatch160([[1, 2, 3, 4, 5, 6, 7].map(id => wine(id, 'W' + id, 'B'))], 1)?.[0].length, 5);
 });

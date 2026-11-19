@@ -30,3 +30,12 @@
 `check-matchrim-batch160.ts` 6/6 (servidor simulado); en simulador, una carta hace un lote y ninguna búsqueda
 suelta con el lote activo, y un intento fallido más las búsquedas de siempre sin él; E2E 85/85 (tres recorridos
 necesitaron repetirse por la conexión de la prueba). No probado contra el lote real ni en iPhone.
+
+## Precio habitual en el lote (pedido a desarrollo el 19-nov)
+- El propietario dijo «Sí, pídeselo». Enviado a Enrique en el hilo 808edd09-54b9-48f6-9b17-bff17873f7d1: que cada
+  vino del lote lleve un precio habitual de botella en restaurante (un número, p. ej. `typicalPrice`, o `null`).
+  Corrige lo que dijimos antes («el precio no lo usamos»): la app lo usa para elegir entre los vinos de una bodega
+  en una línea de carta (`likelyByPrice140`).
+- La app ya lo lee: si un vino del lote trae `typicalPrice` (6–900), se usa como precio y la línea no se vuelve a
+  pedir con la búsqueda simple. Sin ese campo, todo sigue como estaba. El nombre del campo es una propuesta
+  nuestra; si desarrollo usa otro, hay que cambiarlo aquí.

@@ -102,6 +102,8 @@ export const storeScore139 = (profile: MatchrimProfileLike | null | undefined, a
 // so its prices are restaurant prices: their median says which wine of a winery a list line at 30 € most likely is.
 const STORE139 = 'https://app.winerim.com/api/v1/restaurant/00000000-0000-0000-0000-000000000001/wines';
 export type StoreRow140 = PublicGlobalRow103 & { bottlePrice: number | null };
+// 160: asked of development on 19-nov-2026 for the batch, which has no prices: one usual restaurant bottle price per wine.
+const typical160 = (value: unknown): number | null => typeof value === 'number' && Number.isFinite(value) && value >= 6 && value <= 900 ? value : null;
 const parseRow140 = (value: unknown): StoreRow140 | null => {
   if (!value || typeof value !== 'object') return null;
   const raw = value as Record<string, unknown>;
@@ -113,7 +115,7 @@ const parseRow140 = (value: unknown): StoreRow140 | null => {
     const item = price && typeof price === 'object' ? price as Record<string, unknown> : {};
     const amount = Number(item.price);
     return item.variant === 'botella' && Number.isFinite(amount) && amount >= 6 && amount <= 900 ? [amount] : [];
-  })[0] ?? null;
+  })[0] ?? typical160(raw.typicalPrice);
   return { id: raw.id, name, winery, slugname: typeof raw.slugname === 'string' ? raw.slugname : '_', vintage, subname: text(raw.subname), type: text(raw.type),
     region: text(raw.region), country: text(raw.country), photo: typeof raw.photo === 'string' && /^https:\/\/app\.winerim\.com\//.test(raw.photo) ? raw.photo : null,
     grapes: Array.isArray(raw.grapes) ? raw.grapes.slice(0, 20) : [], tastingAttributes: raw.tastingAttributes, bottlePrice: bottle } as StoreRow140;
@@ -234,7 +236,7 @@ export const estimateListing139 = async (line: ListingLine139, signal?: AbortSig
     if (!cache.has(key(read.query)) && !Array.isArray(diskGet145<StoreRow140[]>(STORE_SEARCH_DISK145, key(read.query)))) {
       const rows = await batchRows160(read.query);
       if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
-      if (rows) { const match = matchListing139(line, rows); if (match?.kind !== 'range') return match; }
+      if (rows) { const match = matchListing139(line, rows); if (match?.kind !== 'range' || rows.some(row => row.bottlePrice !== null)) return match; }
     }
     return matchListing139(line, await searchStore139(read.query, signal));
   }
