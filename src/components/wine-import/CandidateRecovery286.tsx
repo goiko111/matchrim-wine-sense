@@ -1,7 +1,7 @@
 import { labelFit157 } from '@/utils/labelFit157';
 import { Bottle150, card150, TypeDot150 } from '@/components/Relief150';
 import { useEffect, useRef, useState } from 'react';
-import { BookOpen, Check, ChevronRight, Search, X } from 'lucide-react';
+import { BookOpen, Check, ChevronRight, RotateCcw, Search, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import type { WineCandidate } from '@/utils/multiWineScan';
@@ -18,11 +18,14 @@ import { PilotFeedback130 } from '@/components/PilotFeedback130';
 import { KeepUnlisted156 } from './KeepUnlisted156';
 import { ScanWaiting139 } from '@/components/ScanWaiting139';
 import { labelLines145, shortNames145 } from '@/utils/scanKind144';
+import { thinLabel158 } from '@/utils/thinLabel158';
 import { autoLink139, labelVintage139, SCAN_STEPS139 } from '@/utils/autoLink139';
 
 type Props = {
   candidate: WineCandidate; contextKey: string; profile: MatchrimProfileLike | null; disabled: boolean;
   reading?: LocalOCRResult106; ownerId: string | null; invoke: MasterInvoke195;
+  /** 158: starts a new photo; offered when the label read has too few words to name a wine. */
+  onRescan?: () => void;
   onConfirmed: (candidate: WineCandidate, auto?: CandidateResume139) => void;
   /** 139 (iOS): a clear label links by itself; the list stays for everything else. */
   autoLink?: boolean;
@@ -40,7 +43,7 @@ export type CandidateResume139 = { decision: CandidateDecision286; vintage: numb
 // without that tap; a pick is verified against Winerim before it is applied.
 // 139: with autoLink, the one candidate whose name and winery the label plainly shows (autoLink139) is applied
 // through the very same choose() as the tap, so the verification and everything downstream are identical.
-export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled, reading, ownerId, invoke, onConfirmed, autoLink = false, resume, onKept, labelPhoto }: Props) => {
+export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled, reading, ownerId, invoke, onConfirmed, autoLink = false, resume, onKept, labelPhoto, onRescan }: Props) => {
   const [busy, setBusy] = useState(false), [notice, setNotice] = useState('');
   const [decision, setDecision] = useState<CandidateDecision286 | null>(resume?.decision ?? null);
   const [vintage, setVintage] = useState<number | null>(resume ? resume.vintage : candidate.vintage);
@@ -174,6 +177,8 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
   const shown = sift157 ? found157.filter(fits157) : found157;
   const more = sift157 ? [...found157.filter(value => !fits157(value)), ...rest157] : rest157;
   const none157 = sift157 && shown.length === 0 && !linking;
+  // 158: only when a reading exists, the person has not typed a search, and no wine was put forward for it.
+  const thin158 = Boolean(reading) && !typed.trim() && decision != null && decision.mode !== 'one' && shown.length === 0 && thinLabel158(labelLines157);
   // 150: while the search runs the sheet shows the wait and nothing else (it showed an empty search box and five
   // buttons under it), and the sheet's own title already asks «¿Cuál es tu vino?», so the list does not ask again.
   const searching150 = busy && !decision;
@@ -186,6 +191,12 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
       }}><X aria-hidden="true" className="h-4 w-4" /> Cancelar</Button>
     </div>}
     {notice && !busy && <p role="status" className="text-sm leading-6 text-stone-700">{notice}</p>}
+    {!busy && !linking && thin158 && <div className="min-w-0 rounded-2xl bg-amber-50 p-3" data-testid="back-label158">
+      <p className="text-sm font-semibold leading-5 text-amber-950">Esta etiqueta tiene muy poco texto</p>
+      <p className="mt-1 text-sm leading-5 text-amber-950/90">Prueba con la contraetiqueta, la de detrás: suele llevar el nombre del vino, la bodega y la zona.</p>
+      {onRescan && <Button type="button" variant="outline" disabled={disabled} onClick={onRescan} className="mt-2 h-auto min-h-11 w-full gap-2 whitespace-normal border-amber-300 bg-white py-2 text-amber-950" data-testid="back-label-rescan158">
+        <RotateCcw aria-hidden="true" className="h-4 w-4 shrink-0" /> Fotografiar la contraetiqueta</Button>}
+    </div>}
     {!busy && none157 && <><p role="status" className="text-sm leading-6 text-stone-800" data-testid="candidate-none157">No vemos tu vino entre los de Winerim.</p>
       <KeepUnlisted156 reading={reading} open onSaved={onKept} labelPhoto={labelPhoto} /></>}
     {shown.length > 0 && <h3 ref={heading} tabIndex={-1} className={decision?.mode === 'choose' ? 'sr-only' : 'text-base font-semibold text-stone-950 outline-none'}>

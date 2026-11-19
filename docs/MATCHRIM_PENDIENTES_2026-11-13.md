@@ -43,3 +43,12 @@ Lista única de lo que queda abierto tras subir la build 151. Nada de esto está
 - Hecho en la 157: punto 12 (candidatos sin respaldo de la etiqueta, plegados) y punto 15 (AgentMail conectado; alcance enviado a desarrollo).
 16. En «Varias botellas», guardar un vino desde su ficha sin volver a la lista.
 17. Respuesta de desarrollo al alcance del vino no encontrado (hilo AgentMail «Matchrim iOS | Pedir a Winerim un vino que no está en la tienda»).
+
+## Actualizado el 19-nov (158)
+- Hecho en la 158: punto 14 (aviso de contraetiqueta), punto 16 (guardar desde la ficha en «Varias botellas»),
+  recorrido guiado y «Primeros pasos» en el Inicio. Detalle en `MATCHRIM_158_GUIA_Y_PENDIENTES_2026-11-19.md`.
+- Enviado a desarrollo el 19-nov: respuesta sobre la búsqueda por lotes, velocidad y lectura de cartas. La búsqueda
+  simple ha bajado a 1,4–2,0 s.
+18. Respuesta de desarrollo a los dos hilos de AgentMail (14-nov y 19-nov). Lo revisa la tarea programada
+    `matchrim-agentmail-buzon`.
+19. Antes de publicar en el App Store: compilar con el Xcode que exija Apple (hoy el Mac tiene Xcode 16.4).

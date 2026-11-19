@@ -129,6 +129,7 @@ const NativeAppHome = ({
 
   if (isNative) return <NativeHome98 key={ownerId ?? 'anonymous'} ownerId={ownerId} hasProfile={hasCode || fromDisk148}
     readError={nativeHomeReadError} onRetry={onRetryNativeHome}
+    guideReady158={onboardingReady && !loadingCode} hasSaved158={hasSavedWines} hasRated158={(learningInfo?.samples ?? 0) > 0}
     loading={waiting148 && !fromDisk148} unavailable={recommendationsUnavailable}
     exhausted={recommendationsExhausted} recommendations={shownWines148} profile={shownProfile148}
     recent={recentScans} onSelect={(wine, trigger) => setSelection({ wine, ownerId, open: true, trigger })}

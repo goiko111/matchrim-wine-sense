@@ -127,6 +127,7 @@ interface MultiWineLabelScannerProps {
 }
 
 type ScanPhase = 'idle' | 'quality' | 'profile' | 'detecting' | 'analyzing' | 'ready' | 'cancelled' | 'error';
+const savedPlace158 = { wishlist: 'Guardado en Por probar', tasted: 'Guardado en Probados', collection: 'Guardado en tu bodega' } as const;
 type NativeResultView = 'scene' | 'wines' | 'compare';
 
 interface ScanPerformance {
@@ -197,6 +198,9 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const navigate = useNavigate();
   const closeAfterSave146 = useRef(false), resetAfterSave146 = useRef<(() => void) | null>(null);
   const [closing148, setClosing148] = useState(false);
+  // 158: with several bottles a wine could only be saved from the list, all at once and all «Por probar». Each wine's
+  // sheet now saves that wine where it belongs; the regions saved this way leave the batch so nothing is saved twice.
+  const [savedOne158, setSavedOne158] = useState<Record<string, 'wishlist' | 'tasted' | 'collection'>>({});
   const { user } = useAuth();
   const isNative = Capacitor.isNativePlatform();
   // 146: one camera: the phone's own reading is the default (it is what tells a bottle from a wine list).
@@ -362,12 +366,15 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const nativeCloserPhotoCount = isNative ? regions.filter(region => region.status === 'deferred' && region.deferral?.code === 'resolution').length : 0;
   const duplicateGroups = useMemo(() => isNative ? nativeDuplicateWineGroups261(regions) : groupDuplicateWines(regions), [regions, isNative]);
   const confirmableGroups = useMemo(() => (isNative
-    ? nativeDuplicateWineGroups261(regions.filter(region => region.status === 'recognized')) : getConfirmableWineGroups(regions))
-    .filter(group => !localBatch || !isPendingLocalIdentity109(group.candidate)), [regions, localBatch, isNative]);
+    ? nativeDuplicateWineGroups261(regions.filter(region => region.status === 'recognized' && !savedOne158[region.id])) : getConfirmableWineGroups(regions))
+    .filter(group => !localBatch || !isPendingLocalIdentity109(group.candidate)), [regions, localBatch, isNative, savedOne158]);
   const savedCount = saveResults.filter((result) => result?.status === 'saved').length;
   // 136: an uncertain save outranks a rejection; the rejection message claims the rest was saved.
   const saveFailure = saveResults.find((result) => result && result.status !== 'saved' && result.status !== 'rejected')
     ?? saveResults.find((result) => result?.status === 'rejected');
+  const allSaved158 = isNative && Object.keys(savedOne158).length > 0 && confirmableGroups.length === 0;
+  const saveMulti158 = isNative && Boolean(user) && regions.length > 1 && phase === 'ready' && !confirmed && !saving && !batchLocked && !saveResults.some(Boolean)
+    && Boolean(selectedCandidate?.name) && !(selectedCandidate && isPendingLocalIdentity109(selectedCandidate)) && selectedRegion?.status === 'recognized';
   const saveSingle137 = isNative && regions.length === 1 && confirmableGroups.length === 1 && !confirmed && !saving && !saveFailure && !saveResults.some(Boolean);
   const overlay = useOverlayViewport(regions.length);
   const regionPinClusters = useMemo(() => clusterScreenOverlayPins(
@@ -841,6 +848,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     saveLifetime.current.generation += 1;
     batchRef.current = null;
     setSaveResults([]);
+    setSavedOne158({});
     setBatchLocked(false);
     abortRef.current?.abort();
     setPreview(null);
@@ -1091,7 +1099,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
     if (savingRef.current || confirmed || !saveLifetime.current.active) return;
     if (batchRef.current && batchRef.current.results.filter((result) => result?.status === 'saved').length === batchRef.current.wines.length) return;
     const groups = batchRef.current?.groups ?? (isNative
-      ? nativeDuplicateWineGroups261(regions.filter(region => region.status === 'recognized')) : getConfirmableWineGroups(regions)).filter((group) => group.candidate.name
+      ? nativeDuplicateWineGroups261(regions.filter(region => region.status === 'recognized' && !savedOne158[region.id])) : getConfirmableWineGroups(regions)).filter((group) => group.candidate.name
       && (!localBatch || !isPendingLocalIdentity109(group.candidate)));
     if (!groups.length) {
       toast.error('No hay referencias confirmables en este lote');
@@ -1634,6 +1642,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                       <span className={`block text-[11px] font-semibold ${isNative ? consumer?.catalogIdentityLinked ? 'text-emerald-700' : 'text-stone-600' : identityConfirmed ? 'text-emerald-700' : 'text-amber-700'}`}>
                         {isNative ? consumer?.identityLabel : group.candidate.source === 'manual' ? 'Identidad confirmada por ti' : identityConfirmed ? 'Nombre leído · revisa la referencia' : `Por confirmar · ${Math.round(group.candidate.confidence * 100)}% identidad`}
                       </span>
+                      {isNative && savedOne158[group.regionIds[0]] && <span className="mt-1 flex items-center gap-1 text-xs font-semibold text-emerald-800" data-testid="row-saved158"><Check className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />{savedPlace158[savedOne158[group.regionIds[0]]]}</span>}
                       {batchLocked && savedIndex >= 0 && (
                         <span className="mt-1 block text-xs font-medium text-slate-700">
                           {saveResult?.status === 'saved' ? (isNative ? 'Guardado en Por probar' : 'Guardado en Quiero Probar')
@@ -1688,11 +1697,12 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   </div>
                 )}
                 {isNative && confirmableGroups.length === 0 && !batchLocked ? <div className="space-y-2" data-testid="native-review-before-save">
-                  <p role="status" className="text-sm text-stone-700">{nativeReviewTarget ? 'Toca un vino para ver si te gustará y guardarlo.' : 'Todos los vinos de esta foto están descartados.'}</p>
+                  <p role="status" className="text-sm text-stone-700" data-testid={allSaved158 ? 'all-saved158' : undefined}>{allSaved158 ? 'Ya has guardado los vinos de esta foto.' : nativeReviewTarget ? 'Toca un vino para ver si te gustará y guardarlo.' : 'Todos los vinos de esta foto están descartados.'}</p>
                   <Button type="button" className="h-auto min-h-12 w-full gap-2 whitespace-normal bg-red-950 py-3" onClick={() => {
-                    if (nativeReviewTarget) setSelectedRegionId(nativeReviewTarget.id);
+                    if (allSaved158) resetScan();
+                    else if (nativeReviewTarget) setSelectedRegionId(nativeReviewTarget.id);
                     else resetScan();
-                  }}><Eye aria-hidden="true" className="h-4 w-4 shrink-0" />{nativeReviewTarget ? 'Ver el primer vino' : 'Elegir otra foto'}</Button>
+                  }}><Eye aria-hidden="true" className="h-4 w-4 shrink-0" />{allSaved158 ? 'Escanear otra foto' : nativeReviewTarget ? 'Ver el primer vino' : 'Elegir otra foto'}</Button>
                 </div> : <Button
                   type="button"
                   className="matchrim-pressable h-auto min-h-12 w-full gap-2 whitespace-normal bg-red-950 py-3 hover:bg-red-900"
@@ -1762,7 +1772,15 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     wine={{ name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage, region: selectedCandidate.region, country: selectedCandidate.country, labelPhoto: selectedRegion?.cropDataUrl || preview }}
                     onWishlist={() => { setNativeResultView('wines'); setSelectedRegionId(null); closeAfterSave146.current = true; setClosing148(true); void confirmBatch().finally(() => setClosing148(false)); }}
                     onSaved={place => { if (place === 'tasted') markScannedSaved144(user.id, { name: selectedCandidate.name, winery: selectedCandidate.producer ?? null, vintage: selectedCandidate.vintage == null ? null : String(selectedCandidate.vintage) });
-                      toast.success(place === 'tasted' ? 'Guardado en Probados' : 'Guardado en tu bodega'); resetScan(); }} /> : undefined}
+                      toast.success(place === 'tasted' ? 'Guardado en Probados' : 'Guardado en tu bodega'); resetScan(); }} />
+                    : saveMulti158 && selectedRegion ? savedOne158[selectedRegion.id]
+                      ? <p role="status" data-testid="sheet-saved158" className="flex items-center gap-2 rounded-2xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-900"><Check className="h-5 w-5 shrink-0" aria-hidden="true" />{savedPlace158[savedOne158[selectedRegion.id]]}</p>
+                      : <NativeSaveChoice142 key={selectedCandidate.id}
+                        wine={{ name: selectedCandidate.name, producer: selectedCandidate.producer, vintage: selectedCandidate.vintage, region: selectedCandidate.region, country: selectedCandidate.country, labelPhoto: selectedRegion.cropDataUrl || null }}
+                        onSaved={place => { const ids = duplicateGroups.find(group => group.regionIds.includes(selectedRegion.id))?.regionIds ?? [selectedRegion.id];
+                          setSavedOne158(current => ({ ...current, ...Object.fromEntries(ids.map(id => [id, place])) }));
+                          if (place === 'tasted' && user) markScannedSaved144(user.id, { name: selectedCandidate.name, winery: selectedCandidate.producer ?? null, vintage: selectedCandidate.vintage == null ? null : String(selectedCandidate.vintage) });
+                          toast.success(savedPlace158[place]); setNativeResultView('wines'); setSelectedRegionId(null); }} /> : undefined}
                   returnLabel={saveSingle137 ? 'Guardar en Por probar' : confirmed ? 'Volver a la lista' : 'Volver a la lista para guardar'}
                   onFindSheet={() => {
                     const details = document.getElementById('native-label-reference');
@@ -1787,7 +1805,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                         });
                       }} fallback={localBatch && selectedCandidate.source !== 'manual' && isPendingLocalIdentity109(selectedCandidate)
                     ? <CandidateRecovery286 key={manualLookupKey} contextKey={manualLookupKey} disabled={manualLookupContext.locked}
-                      reading={localReading?.regionId === selectedRegion.id ? localReading.value : undefined} labelPhoto={selectedRegion.cropDataUrl || preview}
+                      reading={localReading?.regionId === selectedRegion.id ? localReading.value : undefined} labelPhoto={selectedRegion.cropDataUrl || preview} onRescan={regions.length === 1 ? resetScan : undefined}
                       profile={manualLookupContext.profile} candidate={selectedCandidate} ownerId={user?.id ?? null}
                       invoke={(operation, signal) => invokeEdgeFunction('matchrim-master-catalog', operation, signal)}
                       autoLink={isNative && manualList139?.candidate !== selectedCandidate}

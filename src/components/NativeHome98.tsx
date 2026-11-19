@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import * as Dialog from '@radix-ui/react-dialog';
 import { ArrowRight, Camera, ChevronRight, RefreshCw, Search, UserRound, Utensils, X, ThumbsDown, ThumbsUp } from 'lucide-react';
 import MobileBottomNav from '@/components/MobileBottomNav';
+import MatchrimQuickGuide from '@/components/MatchrimQuickGuide';
+import { NativeFirstSteps158 } from '@/components/NativeFirstSteps158';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { card150, ScorePill150, title150, TypeDot150 } from '@/components/Relief150';
 import { NativeStoreSearch139 } from '@/components/NativeStoreSearch139';
@@ -32,10 +34,12 @@ interface Props {
   detail: ReactNode;
   readError?: 'profile' | 'wines' | null;
   onRetry?: () => void;
+  /** 158: the guided tour and the first steps need to know what the person has already done. */
+  guideReady158?: boolean; hasSaved158?: boolean; hasRated158?: boolean;
 }
 
 export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhausted,
-  recommendations, profile, recent, onSelect, detail, readError, onRetry }: Props) => {
+  recommendations, profile, recent, onSelect, detail, readError, onRetry, guideReady158 = false, hasSaved158 = false, hasRated158 = false }: Props) => {
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const [allOpen, setAllOpen] = useState(false);
@@ -101,6 +105,13 @@ export const NativeHome98 = ({ ownerId, hasProfile, loading, unavailable, exhaus
             <span className="block min-w-0"><span className="block text-base font-bold leading-5">{title}</span><span className={`mt-1 block text-xs leading-4 ${main ? 'text-red-100' : 'text-stone-600'}`}>{hint}</span></span>
           </button>)}
       </nav>
+      {/* 158: the tour of the app (opens by itself only for someone who has done nothing yet) and the first steps. */}
+      {!readError && <div className="-mt-4 mb-3 flex justify-end" data-testid="native-home-guide158">
+        <MatchrimQuickGuide key={ownerId ?? 'anonymous'} ownerId={ownerId} ready={guideReady158} hasProfile={hasProfile}
+          existing={Boolean(hasProfile || hasSaved158 || recent.length || scanned.length)} />
+      </div>}
+      {guideReady158 && !readError && <div className="mb-7"><NativeFirstSteps158 key={ownerId ?? 'anonymous'} ownerId={ownerId} hasQuiz={hasProfile}
+        hasScan={recent.length > 0 || scanned.length > 0} hasSaved={hasSaved158} hasRated={hasRated158} /></div>}
 
       {/* 142: the wine just scanned is the first thing on Home. 143: with «¿Te gustó?» right there, as the owner saw in Vivino. */}
       {scanned.length > 0 && <div className={`mb-7 overflow-hidden ${card150}`} data-testid="native-home-last-scan142">
