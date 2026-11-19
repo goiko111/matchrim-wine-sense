@@ -52,3 +52,11 @@ Lista única de lo que queda abierto tras subir la build 151. Nada de esto está
 18. Respuesta de desarrollo a los dos hilos de AgentMail (14-nov y 19-nov). Lo revisa la tarea programada
     `matchrim-agentmail-buzon`.
 19. Antes de publicar en el App Store: compilar con el Xcode que exija Apple (hoy el Mac tiene Xcode 16.4).
+
+## Actualizado el 19-nov (159 y 160)
+- Hecho en la 159: bienvenida con fotos y preguntas de intención. En la rama, sin build (160): búsqueda por lotes y
+  lectura del precio habitual; pedido a desarrollo el precio en el lote. Detalle en `MATCHRIM_160_LOTE_2026-11-19.md`.
+20. Que las respuestas de la bienvenida («para qué quieres la app», `intent159`) ordenen el Inicio: hoy se guardan
+    pero no cambian nada. Propuesto el 19-nov; el propietario dijo «Guárdalo como cambio pendiente». No hacerlo
+    hasta que lo pida. Iría en la 160.
+21. Build 160 cuando desarrollo publique el lote: medirlo contra el servicio real antes de subirla.
