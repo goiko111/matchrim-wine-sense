@@ -131,6 +131,18 @@ html.matchrim-native-platform.matchrim-accessibility-text .matchrim-scan-region-
   overflow-y: visible;
 }
 
+/* 162: at accessibility text sizes the sheet has no room for the label thumbnail: the header goes back to the 159 one
+   (native QA r235/r240: «Corregir» ended up under the footer). */
+html.matchrim-native-platform.matchrim-accessibility-text .sheet-head162 {
+  position: static;
+  min-height: 0;
+  padding-right: 1rem;
+}
+
+html.matchrim-native-platform.matchrim-accessibility-text [data-testid="sheet-photo162"] {
+  display: none;
+}
+
 html.matchrim-native-platform .matchrim-scan-region-sheet h2 {
   letter-spacing: 0;
 }
