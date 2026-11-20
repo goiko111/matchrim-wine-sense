@@ -1736,11 +1736,12 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         <DrawerContent className="matchrim-scan-region-sheet w-full min-w-0 max-w-[100vw] max-h-[calc(100dvh-var(--matchrim-safe-top))] border-stone-200 bg-stone-50 pb-[var(--matchrim-safe-bottom)]">
           {selectedRegion && (
             <div ref={isNative ? regionEditorLayout : undefined} role={isNative ? 'region' : undefined} aria-label={isNative ? `Panel desplazable de la región ${selectedRegion.index}` : undefined} tabIndex={isNative ? 0 : undefined} className="matchrim-scan-region-layout mx-auto flex w-full min-w-0 max-w-2xl min-h-0 flex-1 flex-col">
-              <DrawerHeader className={isNative ? `relative max-h-[40dvh] min-w-0 shrink-0 overflow-y-auto break-words border-b border-stone-200 bg-white text-left [overflow-wrap:anywhere] ${picking144 && selectedRegion.cropDataUrl ? 'min-h-[5.5rem] pr-20' : ''}` : 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left'}>
+              <DrawerHeader className={isNative ? `relative max-h-[40dvh] min-w-0 shrink-0 overflow-y-auto break-words border-b border-stone-200 bg-white text-left [overflow-wrap:anywhere] ${picking144 && selectedRegion.cropDataUrl ? 'min-h-[88px] pr-[76px]' : ''}` : 'min-w-0 shrink-0 break-words border-b border-stone-200 bg-white text-left'}>
                 {/* 162 (owner's video of the 159: «la foto, a nada que toque la pantalla, se pira»): while choosing among
-                    candidates the photo just taken stays in sight, beside the question, to compare against. */}
+                    candidates the photo just taken stays in sight, beside the question, to compare against. Sized in points, not rem:
+                    at the largest text sizes a rem thumbnail grew over the title and squeezed the list (native QA r235). */}
                 {isNative && picking144 && selectedRegion.cropDataUrl && <img src={selectedRegion.cropDataUrl} alt="Tu foto de la etiqueta" draggable={false} data-testid="sheet-photo162"
-                  className="absolute right-4 top-3 h-[4.5rem] w-14 rounded-lg bg-stone-100 object-cover ring-1 ring-stone-200" />}
+                  className="absolute right-4 top-3 h-[72px] w-[56px] rounded-lg bg-stone-100 object-cover ring-1 ring-stone-200" />}
                 <DrawerTitle>{isNative ? picking144 ? '¿Cuál es tu vino?' : <>{selectedCandidate?.name || 'Etiqueta sin identificar'}{selectedCandidate?.vintage ? ` · ${selectedCandidate.vintage}` : ''}</> : <>Región {selectedRegion.index}: {statusLabel(selectedRegion)}</>}</DrawerTitle>
                 <DrawerDescription data-needs-candidates150={isNative && picking144 ? '' : undefined}>
                   {isNative ? picking144 ? 'Toca el que coincide con tu botella.' : [selectedCandidate?.producer, selectedCandidate?.vintage ? null : 'Añada no indicada'].filter(Boolean).join(' · ') : `Detección ${Math.round(selectedRegion.detectionConfidence * 100)}%. La identidad y la afinidad se muestran por separado.`}
