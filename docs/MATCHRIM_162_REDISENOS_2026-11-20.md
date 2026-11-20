@@ -81,7 +81,7 @@ Una ficha vista en la última semana sigue saliendo de la copia del teléfono, s
 - La comparación de campos se hizo con un vino; no con una muestra amplia.
 - Las respuestas de intención no ordenan el Inicio (pendiente 20, a petición del propietario).
 
-## Build 162 (20-nov-2026, sin subir)
+## Build 162 (20-nov-2026, subido a TestFlight)
 - `candidate162-r3` (commit 0c17fde): prepare, compile, QA nativa r243–r246 y `archive162-r3` firmado. Lleva la 160, la 161 y la 162.
 - Las vueltas r1 y r2 compilaron pero fallaron la prueba de letra máxima (r235, r238, r240): la miniatura de la foto en
   «¿Cuál es tu vino?» crecía con la letra y, ya fijada en puntos, «Corregir» seguía 1–2 pt bajo el pie. Con letra de
@@ -90,5 +90,5 @@ Una ficha vista en la última semana sigue saliendo de la copia del teléfono, s
   (`harness/places-real162.mjs`: Narru Donostia, Bar Néstor, Casa Lucio, con dirección).
 - Sobre el binario `compile162-r3`: recorridos j02–j12 85/85, ux162 17/17, ux162b 8/8, ux161 7/7, ux159 7/7, ux158 16/16.
 - Sin comprobar: iPhone real; el recorrido, el perfil y las tarjetas de maridaje con letra de accesibilidad.
-- Subida a TestFlight: solo con el sí expreso del propietario (`qa-artifacts/testflight162-20261120/RELEASE.json` listo,
-  falta `HUMAN-AUTHORIZATION.json`; `~/ClaudeCode/matchrim-build162/upload162.sh`).
+- Subido a TestFlight el 20-nov-2026 con el sí expreso del propietario («Sí, sube la 162»): Apple confirmó la recepción
+  (`qa-artifacts/testflight162-20261120/upload162-r1`). No está confirmado que se pueda instalar ni se ha visto en un iPhone.
