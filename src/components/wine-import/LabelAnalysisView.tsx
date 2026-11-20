@@ -62,7 +62,7 @@ export const LabelAnalysisView = ({ isNativePlatform, showIdentity = true, ident
     {photo}
     {!canExplainAffinity && estimate}
     {/* 140: with a store estimate on screen the «found, no flavour data» reference block under it only repeats the wine. */}
-    {canExplainAffinity ? affinity : catalogueReference ? <div className="gap139">{catalogueReference}</div> : <div className={`min-w-0 space-y-2 ${picking ? '' : 'border-y border-stone-200 py-3'}`} data-testid="native-label-next-step">
+    {canExplainAffinity ? affinity : catalogueReference ? <div className="gap139">{catalogueReference}</div> : <div className={`gap139 min-w-0 space-y-2 ${picking ? '' : 'border-y border-stone-200 py-3'}`} data-testid="native-label-next-step">
       <h4 className={picking ? 'sr-only' : 'font-semibold text-slate-950'}>{pendingAffinity?.title ?? 'Afinidad pendiente'}</h4>
       <p className={picking ? 'sr-only' : 'text-sm leading-6 text-stone-700'} data-testid="native-affinity-gap-reason">{pendingAffinity?.description ?? (catalogIdentityLinked
         ? hasProfile ? 'La ficha está enlazada, pero aún faltan datos para calcular tu afinidad.'

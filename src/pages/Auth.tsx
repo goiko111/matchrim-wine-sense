@@ -11,6 +11,9 @@ import { buildRegistrationRedirectPath, getSafeRedirectPath } from '@/utils/navi
 import { useI18n } from '@/i18n';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { Capacitor } from '@capacitor/core';
+import { toast } from 'sonner';
+import { peekPendingSave160, settlePendingSave160 } from '@/utils/pendingSave160';
+import { savePending160 } from '@/components/NativeSaveChoice142';
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -28,10 +31,16 @@ const Auth = () => {
 
   // Redirect if already authenticated
   useEffect(() => {
-    if (user) {
-      navigate(redirectPath, { replace: true });
-    }
+    if (!user) return;
+    // 160: a wine chosen before signing in is saved first, so the list it lands on already has it.
+    let live = true;
+    void settlePendingSave160(user.id, savePending160).then(done => {
+      if (done) toast.success(`«${done.wine.name}» guardado en tus vinos`);
+      if (live) navigate(redirectPath, { replace: true });
+    });
+    return () => { live = false; };
   }, [user, navigate, redirectPath]);
+  const [pending160] = useState(() => Capacitor.isNativePlatform() ? peekPendingSave160() : null);
 
   const [loginForm, setLoginForm] = useState({
     email: '',
@@ -44,8 +53,9 @@ const Auth = () => {
     
     const { error } = await signIn(loginForm.email, loginForm.password);
     
-    if (!error) {
+    if (!error && !(isNative && peekPendingSave160())) {
       // 135: replace, so Back from the destination does not land on /auth and bounce forward again.
+      // 160: with a wine waiting to be saved, the effect above saves it and then leaves.
       navigate(redirectPath, isNative ? { replace: true } : undefined);
     }
     
@@ -87,6 +97,10 @@ const Auth = () => {
           <p className={isNative ? 'mt-1 text-slate-600' : 'text-red-600'}>{t('auth.tagline')}</p>
         </div>
 
+        {pending160 && <div role="status" data-testid="auth-why160" className="mb-5 rounded-2xl bg-red-950 p-4 text-white">
+          <p className="text-base font-bold leading-6 [overflow-wrap:anywhere]">Para guardar «{pending160.wine.name}» necesitas una cuenta</p>
+          <p className="mt-1 text-sm leading-6 text-white/85">Así tus vinos, tus valoraciones y tu perfil se quedan contigo aunque cambies de móvil. Si ya tienes cuenta, inicia sesión y lo guardamos solo. Si no, créala: es gratis y tarda un minuto.</p>
+        </div>}
         <Card className={isNative ? 'border-0 bg-transparent shadow-none' : undefined}>
           <CardHeader className={isNative ? 'min-w-0 p-0 pb-[16px] [overflow-wrap:anywhere]' : undefined}>
             <CardTitle className="text-center text-red-900">{t('auth.title')}</CardTitle>

@@ -60,3 +60,9 @@ Lista única de lo que queda abierto tras subir la build 151. Nada de esto está
     pero no cambian nada. Propuesto el 19-nov; el propietario dijo «Guárdalo como cambio pendiente». No hacerlo
     hasta que lo pida. Iría en la 160.
 21. Build 160 cuando desarrollo publique el lote: medirlo contra el servicio real antes de subirla.
+
+## Actualizado el 20-nov (vídeo de la 159)
+- Arreglado en la rama: guardar sin sesión, guardar en «Varias botellas» los vinos con nota estimada, aviso
+  contradictorio, miniaturas, búsqueda de PSI. Detalle y lista de lo no hecho en `MATCHRIM_161_VIDEO_159_2026-11-20.md`.
+22. Rediseños pedidos en el vídeo: recorrido (fotos e interacción), perfil, pantalla de acceso, «¿Dónde lo tomaste?»
+    con búsqueda de restaurante, fotos en «Combina con», lista de la carta progresiva, guardar la carta con su restaurante.

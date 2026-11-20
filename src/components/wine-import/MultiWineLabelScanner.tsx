@@ -372,9 +372,15 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   // 136: an uncertain save outranks a rejection; the rejection message claims the rest was saved.
   const saveFailure = saveResults.find((result) => result && result.status !== 'saved' && result.status !== 'rejected')
     ?? saveResults.find((result) => result?.status === 'rejected');
-  const allSaved158 = isNative && Object.keys(savedOne158).length > 0 && confirmableGroups.length === 0;
+  // 160 (video of the 159): on a real phone the bottles of a shelf come back «uncertain» (name read on the label,
+  // note estimated from the store), not «recognized»: the sheet only offered «Volver a la lista para guardar» and the
+  // list had nothing to save. Those wines are saved from their sheet too, and the photo counts as done only when no
+  // named bottle is left unsaved.
+  const left160 = regions.filter(region => !savedOne158[region.id] && (region.status === 'recognized' || region.status === 'uncertain')
+    && !isPendingLocalIdentity109(getSelectedCandidate(region))).length;
+  const allSaved158 = isNative && Object.keys(savedOne158).length > 0 && confirmableGroups.length === 0 && left160 === 0;
   const saveMulti158 = isNative && Boolean(user) && regions.length > 1 && phase === 'ready' && !confirmed && !saving && !batchLocked && !saveResults.some(Boolean)
-    && Boolean(selectedCandidate?.name) && !(selectedCandidate && isPendingLocalIdentity109(selectedCandidate)) && selectedRegion?.status === 'recognized';
+    && Boolean(selectedCandidate?.name) && !(selectedCandidate && isPendingLocalIdentity109(selectedCandidate)) && (selectedRegion?.status === 'recognized' || selectedRegion?.status === 'uncertain');
   const saveSingle137 = isNative && regions.length === 1 && confirmableGroups.length === 1 && !confirmed && !saving && !saveFailure && !saveResults.some(Boolean);
   const overlay = useOverlayViewport(regions.length);
   const regionPinClusters = useMemo(() => clusterScreenOverlayPins(
@@ -1620,7 +1626,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     key={group.key}
                     type="button"
                     className={isNative
-                      ? 'matchrim-pressable flex min-h-16 w-full min-w-0 flex-col items-stretch gap-2 px-3 py-3 text-left hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800'
+                      ? 'matchrim-pressable relative flex min-h-16 w-full min-w-0 flex-col items-stretch gap-2 px-3 py-3 text-left hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800'
                       : 'matchrim-pressable flex min-h-16 w-full items-center gap-3 px-3 py-3 text-left hover:bg-stone-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800'}
                     onClick={() => setSelectedRegionId(regions.find((region) => (
                       group.regionIds.includes(region.id) && getSelectedCandidate(region)?.id === group.candidate.id
@@ -1633,7 +1639,10 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                     ].filter(Boolean).join('. ') : `Abrir detalle de ${group.candidate.name}`}
                   >
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-red-950 text-sm font-bold text-white">{index + 1}</span>
-                    <span className={isNative ? 'min-w-0 w-full' : 'min-w-0 flex-1'}>
+                    {/* 160 (video of the 159): «en esta lista deberían salir las imágenes»: each row shows its bottle, cut from the person's own photo. */}
+                    {isNative && regions.length > 1 && (() => { const crop = regions.find(region => group.regionIds.includes(region.id))?.cropDataUrl;
+                      return crop ? <img src={crop} alt="" aria-hidden="true" data-testid="row-photo160" className="absolute right-3 top-3 h-20 w-14 rounded-lg object-cover shadow-sm" /> : null; })()}
+                    <span className={isNative ? `min-w-0 w-full${regions.length > 1 ? ' pr-16' : ''}` : 'min-w-0 flex-1'}>
                       <span className={`block font-semibold text-slate-950${isNative ? ' break-words [overflow-wrap:anywhere]' : ''}`}>{group.candidate.name}</span>
                       <span className={`block text-xs leading-5 text-slate-500${isNative ? ' break-words [overflow-wrap:anywhere]' : ''}`}>
                         {[group.candidate.producer, group.candidate.region].filter(Boolean).join(' · ') || 'Identidad parcial'}
@@ -1700,7 +1709,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   <p role="status" className="text-sm text-stone-700" data-testid={allSaved158 ? 'all-saved158' : undefined}>{allSaved158 ? 'Ya has guardado los vinos de esta foto.' : nativeReviewTarget ? 'Toca un vino para ver si te gustará y guardarlo.' : 'Todos los vinos de esta foto están descartados.'}</p>
                   <Button type="button" className="h-auto min-h-12 w-full gap-2 whitespace-normal bg-red-950 py-3" onClick={() => {
                     if (allSaved158) resetScan();
-                    else if (nativeReviewTarget) setSelectedRegionId(nativeReviewTarget.id);
+                    else if (nativeReviewTarget) setSelectedRegionId((regions.find(region => !savedOne158[region.id] && region.status !== 'pending' && !isPendingLocalIdentity109(getSelectedCandidate(region))) ?? nativeReviewTarget).id);
                     else resetScan();
                   }}><Eye aria-hidden="true" className="h-4 w-4 shrink-0" />{allSaved158 ? 'Escanear otra foto' : nativeReviewTarget ? 'Ver el primer vino' : 'Elegir otra foto'}</Button>
                 </div> : <Button
@@ -1781,7 +1790,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                           setSavedOne158(current => ({ ...current, ...Object.fromEntries(ids.map(id => [id, place])) }));
                           if (place === 'tasted' && user) markScannedSaved144(user.id, { name: selectedCandidate.name, winery: selectedCandidate.producer ?? null, vintage: selectedCandidate.vintage == null ? null : String(selectedCandidate.vintage) });
                           toast.success(savedPlace158[place]); setNativeResultView('wines'); setSelectedRegionId(null); }} /> : undefined}
-                  returnLabel={saveSingle137 ? 'Guardar en Por probar' : confirmed ? 'Volver a la lista' : 'Volver a la lista para guardar'}
+                  returnLabel={saveSingle137 ? 'Guardar en Por probar' : confirmed || confirmableGroups.length === 0 ? 'Volver a la lista' : 'Volver a la lista para guardar'}
                   onFindSheet={() => {
                     const details = document.getElementById('native-label-reference');
                     if (!(details instanceof HTMLDetailsElement)) return;

@@ -87,7 +87,9 @@ export const CandidateRecovery286 = ({ candidate, contextKey, profile, disabled,
       // is the wine's name: it is searched when the longer lines leave room.
       // The short name goes first, and a symbol read at the edge of a line («* Psi» for «Ψ Psi») is not part of a query.
       const tidy = (query: string) => query.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '').trim();
-      const short = shortNames145(lines.map(line => line.text));
+      // 160 (video of the 159): the sheet said «# Psi» and offered fifteen unrelated wines while Winerim has PSI: the
+      // name the reading settled on is searched as a short name too, not only the lines of the phone's own reading.
+      const short = [...new Set([...shortNames145(lines.map(line => line.text)), ...shortNames145([manualQuery ? '' : candidate.name])])].slice(0, 2);
       const literal = manualQuery ? fromLines : [...new Map([...short, ...fromLines.map(tidy)].filter(query => query.length >= 3).map(query => [query.toLowerCase(), query])).values()].slice(0, 2);
       const client = createGlobalCatalogue103();
       const found = await searchCandidates286(evidence, literal, year, query => client.searchProposals(query, controller.signal), lines);

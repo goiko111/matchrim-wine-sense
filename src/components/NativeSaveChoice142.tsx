@@ -5,7 +5,7 @@ import { Bookmark, Check, Home, Loader2, ThumbsDown, ThumbsUp, Smile } from 'luc
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { buildAuthRedirectPath } from '@/utils/navigation';
-import { stashSignedOutWineDraft134 } from '@/utils/nativeWineDraft98';
+import { stashPendingSave160, type PendingSave160 } from '@/utils/pendingSave160';
 import type { Json } from '@/integrations/supabase/types';
 import type { QuickSaveWine141 } from '@/components/NativeQuickSave141';
 
@@ -51,6 +51,9 @@ export const saveStoreWine142 = async (userId: string, wine: QuickSaveWine141, p
   return !error;
 };
 
+/** 160: how a wine that waited for the session is saved. */
+export const savePending160 = (userId: string, item: PendingSave160) => saveStoreWine142(userId, item.wine, item.place, item.rating);
+
 // 142: a searched or scanned wine is not always one «to try»: the person may have drunk it already or have it at home.
 // One row of three choices saves it where it belongs; «Ya lo he probado» asks how it was in the same place.
 // The store's flavour data is never stored, and a wine saved here does not train the profile.
@@ -65,7 +68,8 @@ export const NativeSaveChoice142 = ({ wine, onWishlist, onSaved }: { wine: Quick
   // 144: the first choice was filled in wine red and read as already selected; the three are now equal, and the one tapped shows the wait.
   const [busy144, setBusy144] = useState<Place | null>(null);
   const save = async (place: Place, rating: 'love' | 'ok' | 'not_for_me' | null = null) => {
-    if (!user) { stashSignedOutWineDraft134({ name: wine.name, producer: wine.producer, vintage: wine.vintage }); navigate(buildAuthRedirectPath('/my-wines/add')); return; }
+    // 160: the choice (place and rating) waits for the session instead of being lost on the way to the old form.
+    if (!user) { stashPendingSave160(wine, place, rating); navigate(buildAuthRedirectPath(place === 'collection' ? '/my-wines' : `/my-wines/${place}`)); return; }
     setBusy144(place); setState({ phase: 'saving' });
     const ok = await saveStoreWine142(user.id, wine, place, rating);
     setState(ok ? { phase: 'saved', place } : { phase: 'error' });

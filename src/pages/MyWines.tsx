@@ -6,6 +6,8 @@ import { NativeCellarToolbar98 } from '@/components/NativeCellarToolbar98';
 import { NativeCellarItem98 } from '@/components/NativeCellarItem98';
 import { deleteOwnWinePhoto133 } from '@/utils/ownWinePhoto133';
 import { readNativeWineDraft98, takeSignedOutWineDraft134 } from '@/utils/nativeWineDraft98';
+import { settlePendingSave160 } from '@/utils/pendingSave160';
+import { savePending160 } from '@/components/NativeSaveChoice142';
 import { safeWineImageUrl98 } from '@/utils/wineImage98';
 import { cellarAffinityView, makeCellarCatalogEvidence, readCellarInitialAffinity, readCellarSensoryEvidence, withCellarInitialAffinity } from '@/utils/bodegaAffinity';
 import { cellarDisplayAffinity110, isHighCellarAffinity110 } from '@/utils/cellarReferenceStyle110';
@@ -407,7 +409,8 @@ const MyWinesForOwner = () => {
 	      navigate(buildAuthRedirectPath("/my-wines"));
 	      return;
 	    }
-	    loadWines();
+	    // 160: a wine chosen before signing up (the sign-up path does not pass through the sign-in screen) is saved before the list loads.
+	    void settlePendingSave160(user.id, savePending160).then(done => { if (done) toast.success(`«${done.wine.name}» guardado en tus vinos`); loadWines(); });
 	    return () => {
         wineLoadController.current?.abort();
         countLoadController.current?.abort();
