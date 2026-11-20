@@ -18,6 +18,8 @@ export interface WinerimDetail142 {
   pairingLine: string | null; style: string | null; curiosity: string | null;
   aging: string | null; winemaking: string | null; wineryStory: string | null; vineyard: string | null; climate: string | null;
   agingLevel: number | null;
+  /** 162: two things Winerim holds that the sheet did not show: when to drink it, and what its classification means. */
+  drink: string | null; classification: { name: string; text: string | null } | null;
 }
 // 144: some sheets carry a paragraph written for a sibling wine (the sheet of «Ramón Bilbao» describing «Ramón Bilbao
 // Edición Limitada»). A paragraph that names this wine followed by another capitalised word is about another wine: left out.
@@ -29,7 +31,10 @@ export const aboutAnotherWine144 = (value: string, wineName: string): boolean =>
 const text = (value: unknown, max = 900): string | null => typeof value === 'string' && value.trim() && !/[<>]/.test(value) ? value.replace(/\s+/g, ' ').trim().slice(0, max) : null;
 const record = (value: unknown): Record<string, unknown> => value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {};
 const names: Record<string, string> = { 'carne-aves': 'Aves', 'carne-roja': 'Carne roja', 'carne-blanca': 'Carne blanca', 'carne-caza': 'Caza', 'pescado-blanco': 'Pescado blanco',
-  'pescado-azul': 'Pescado azul', 'queso-curado': 'Queso curado', 'queso-suave': 'Queso suave', 'queso-azul': 'Queso azul', 'comida-picante': 'Comida picante' };
+  'pescado-azul': 'Pescado azul', 'queso-curado': 'Queso curado', 'queso-suave': 'Queso suave', 'queso-azul': 'Queso azul', 'comida-picante': 'Comida picante',
+  // 162: the slugs the store really sends (sampled 20-nov-2026), in plain words.
+  'carne-ternera': 'Ternera', 'carne-cerdo': 'Cerdo', 'carne-cordero': 'Cordero', 'carne-ternera-lechal': 'Ternera lechal', 'carne-adobada': 'Carne adobada', vegetariana: 'Verduras',
+  'queso-tierno-y-cremoso': 'Queso cremoso', 'queso-de-cabra': 'Queso de cabra', 'postres-dulces': 'Postres', picante: 'Comida picante' };
 export const pairingLabel142 = (slug: string) => names[slug] ?? slug.replace(/-/g, ' ').replace(/^./, letter => letter.toUpperCase());
 const row = (value: unknown): StoreRow140 | null => {
   const raw = record(value), name = text(raw.name, 240), winery = text(raw.winery, 240);
@@ -37,6 +42,12 @@ const row = (value: unknown): StoreRow140 | null => {
   return { id: raw.id, name, winery, slugname: raw.slugname, vintage: /^(19|20)\d{2}$/.test(String(raw.vintage ?? '')) ? String(raw.vintage) : null, subname: text(raw.subname, 240),
     type: text(raw.type, 60), region: text(raw.region, 120), country: text(raw.country, 60), photo: typeof raw.photo === 'string' && /^https:\/\/app\.winerim\.com\//.test(raw.photo) ? raw.photo : null,
     grapes: Array.isArray(raw.grapes) ? raw.grapes.slice(0, 20) : [], tastingAttributes: raw.tastingAttributes, bottlePrice: null } as StoreRow140;
+};
+const drink162 = (value: unknown): string | null => {
+  const window = record(value), years = (field: unknown) => { const item = record(field), start = String(item.start ?? ''), end = String(item.end ?? '');
+    return /^(19|20)\d{2}$/.test(start) && /^(19|20)\d{2}$/.test(end) && start <= end ? start === end ? start : `${start}–${end}` : null; };
+  const prime = years(window.primeWindow), whole = years(window.drinkingWindow);
+  return prime && whole && prime !== whole ? `Mejor en ${prime} (bebible ${whole})` : prime ? `Mejor en ${prime}` : whole ? `Para beber en ${whole}` : null;
 };
 export const parseWinerimDetail142 = (value: unknown): WinerimDetail142 => {
   const raw = record(value), note = record(raw.tastingNote), quick = record(raw.quickSheet), details = record(raw.wineDetails);
@@ -54,6 +65,8 @@ export const parseWinerimDetail142 = (value: unknown): WinerimDetail142 => {
     pairingLine: own(quick.pairing, 300), style: own(quick.style, 300), curiosity: own(quick.curiosity, 300),
     aging: own(land.aging), winemaking: own(land.winemakingProcess), wineryStory: own(land.winery), vineyard: own(land.vineyard), climate: own(land.climate),
     agingLevel: typeof agingLevel === 'number' && Number.isFinite(agingLevel) && agingLevel >= 1 && agingLevel <= 5 ? agingLevel : null,
+    drink: drink162(raw.drinkingWindow),
+    classification: (() => { const floor = record(raw.floor), name = text(floor.name, 80); return name ? { name, text: text(floor.description, 700)?.replace(/^-\s*/, '') ?? null } : null; })(),
   };
 };
 const cache = new Map<string, Promise<WinerimDetail142 | null>>();
@@ -70,7 +83,7 @@ export const loadWinerimDetail142 = (id: number, slug: string): Promise<WinerimD
       if (!response.ok) return null;
       const body = await response.json() as Record<string, unknown>;
       // Only the parts the sheet shows are kept (not prices or stock).
-      diskSet145(DETAIL_DISK145, key, Object.fromEntries(['name', 'pairings', 'tastingNote', 'quickSheet', 'storytelling', 'wineDetails', 'vineyardDetails', 'tastingAttributes', 'relatedWines'].map(field => [field, body?.[field]])), 25);
+      diskSet145(DETAIL_DISK145, key, Object.fromEntries(['name', 'pairings', 'tastingNote', 'quickSheet', 'storytelling', 'wineDetails', 'vineyardDetails', 'tastingAttributes', 'relatedWines', 'drinkingWindow', 'floor'].map(field => [field, body?.[field]])), 25);
       return parseWinerimDetail142(body);
     } catch { return null; } finally { clearTimeout(timer); }
   })();

@@ -8,6 +8,8 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { supabase } from "@/integrations/supabase/client";
 import { ShoppingCart, Eye, MapPin, Home, Building2, Calendar, Loader2, Navigation } from "lucide-react";
 import { toast } from "sonner";
+import { Capacitor } from "@capacitor/core";
+import { NativeWherePanel162 } from "@/components/NativeWherePanel162";
 
 interface PurchaseData {
   type: 'purchase' | 'seen' | 'consumed';
@@ -24,7 +26,9 @@ interface PurchaseInfoSelectorProps {
   onCancel: () => void;
 }
 
-export const PurchaseInfoSelector = ({ mode, onConfirm, onCancel }: PurchaseInfoSelectorProps) => {
+// 162: on the iPhone this form is NativeWherePanel162 (the owner asked to rebuild it); the web keeps the form below.
+export const PurchaseInfoSelector = (props: PurchaseInfoSelectorProps) => Capacitor.isNativePlatform() ? <NativeWherePanel162 {...props} /> : <WebPurchaseInfoSelector {...props} />;
+const WebPurchaseInfoSelector = ({ mode, onConfirm, onCancel }: PurchaseInfoSelectorProps) => {
   const [locationType, setLocationType] = useState<string>('');
   const [placeName, setPlaceName] = useState("");
   const [price, setPrice] = useState("");

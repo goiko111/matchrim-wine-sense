@@ -66,3 +66,14 @@ Lista única de lo que queda abierto tras subir la build 151. Nada de esto está
   contradictorio, miniaturas, búsqueda de PSI. Detalle y lista de lo no hecho en `MATCHRIM_161_VIDEO_159_2026-11-20.md`.
 22. Rediseños pedidos en el vídeo: recorrido (fotos e interacción), perfil, pantalla de acceso, «¿Dónde lo tomaste?»
     con búsqueda de restaurante, fotos en «Combina con», lista de la carta progresiva, guardar la carta con su restaurante.
+
+## Actualizado el 20-nov (162, «Esto hay que hacerlo»)
+- Hecho en la rama, sin build: punto 22 entero (recorrido con trozos de la app y deslizar, perfil, acceso, «¿Dónde lo
+  tomaste?» con buscador de Apple, fotos en «Combina con», foto a la vista en la hoja, cartas guardadas en el
+  teléfono) y la búsqueda tolerante de la carta (6 de 9 líneas «no encontradas» ya salen). Detalle en
+  `MATCHRIM_162_REDISENOS_2026-11-20.md`.
+23. Pedir a desarrollo búsqueda tolerante en el servidor (erratas, bodega + uva): «JULIAN», «LA MAR» y «NAVA REAL»
+    de la carta del cliente siguen sin salir. Sin enviar: necesita que Goiko lo pida.
+24. Cartas guardadas entre teléfonos y enlazadas con la carta del restaurante en Winerim: necesita servidor.
+25. La lectura completa de la carta llega de una vez (medio minuto): que el servidor la entregue por partes.
+26. Hecho con un vino (añadidos «cuándo beberlo» y la clasificación); repetir con una muestra amplia.

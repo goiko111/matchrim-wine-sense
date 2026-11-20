@@ -1,8 +1,9 @@
+import { PairingCards162 } from '@/components/PairingCards162';
 import { historyLines157 } from '@/utils/history157';
 import { useRatedWines157 } from '@/hooks/useRatedWines157';
 import { FlavourCards157 } from '@/components/FlavourCards157';
 import { useEffect, useState, type ReactNode } from 'react';
-import { Calendar, Frown, Grape, MapPin, Meh, Smile, Thermometer, Wine } from 'lucide-react';
+import { Award, Calendar, Frown, Grape, Hourglass, MapPin, Meh, Smile, Thermometer, Wine } from 'lucide-react';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import type { PublicGlobalRow103 } from '@/utils/nativeGlobalCatalogue103';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
@@ -37,11 +38,12 @@ export const WinerimRich142 = ({ row, profile, vintage, onRelated }: { row: Publ
   const attributes = usableStoreSensory138(row);
   const year = vintage ? String(vintage) : row.vintage ? String(row.vintage) : '';
   const facts: Array<[typeof Wine, string]> = ([[Wine, row.type ? formatWineType(row.type) : ''], [MapPin, [row.region, row.country ? formatCountryName(row.country) : ''].filter(Boolean).join(', ')],
-    [Grape, grapeNames(row).join(', ')], [Calendar, year ? `Añada ${year}` : ''], [Thermometer, [data?.temperature ? `Sírvelo a ${data.temperature}` : '', data?.alcohol ?? ''].filter(Boolean).join(' · ')]] as Array<[typeof Wine, string]>)
+    [Grape, grapeNames(row).join(', ')], [Calendar, year ? `Añada ${year}` : ''], [Thermometer, [data?.temperature ? `Sírvelo a ${data.temperature}` : '', data?.alcohol ?? ''].filter(Boolean).join(' · ')],
+    [Hourglass, data?.drink ?? ''], [Award, data?.classification?.name ?? '']] as Array<[typeof Wine, string]>)
     .filter(([, value]) => value);
   const pairs = (items: Array<[string, string | null | undefined]>) => items.filter((item): item is [string, string] => Boolean(item[1]));
   const note144 = pairs([['A la vista', data?.appearance], ['En nariz', data?.nose], ['En boca', data?.palate], ['Cuerpo', data?.body], ['Estructura', data?.structure], ['Final', data?.finish]]);
-  const place144 = pairs([['La bodega', data?.wineryStory], ['El viñedo', data?.vineyard], ['El clima', data?.climate]]);
+  const place144 = pairs([['La bodega', data?.wineryStory], ['El viñedo', data?.vineyard], ['El clima', data?.climate], [data?.classification?.name ?? 'Clasificación', data?.classification?.text]]);
   const made144 = pairs([['', data?.style], ['', data?.aging], ['', data?.winemaking]]);
   return <div className="space-y-6" data-testid="winerim-rich142">
     {facts.length > 0 && <ul className={`${card} divide-y divide-stone-100 px-4`} aria-label="Datos del vino" data-testid="winerim-facts140">
@@ -65,7 +67,7 @@ export const WinerimRich142 = ({ row, profile, vintage, onRelated }: { row: Publ
     </section>}
     {data && data.pairings.length > 0 && <section aria-labelledby={`pair142-${row.id}`}>
       <h4 id={`pair142-${row.id}`} className={heading}>Combina muy bien con</h4>
-      <ul className="mt-3 flex flex-wrap gap-2">{data.pairings.map(name => <li key={name} className="rounded-full bg-stone-100 px-4 py-2 text-sm text-stone-800">{name}</li>)}</ul>
+      <PairingCards162 names={data.pairings} />
       {data.pairingLine && <p className="mt-3 text-sm leading-6 text-stone-700">{data.pairingLine}</p>}
     </section>}
     {data && (data.personality || note144.length > 0) && <section aria-labelledby={`note142-${row.id}`}>

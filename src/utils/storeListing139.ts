@@ -226,6 +226,54 @@ export const likelyByPrice140 = (options: readonly StoreEstimate138[], listPrice
   if (!ranked.length || ranked[0].gap > 0.36) return null;
   return ranked.length === 1 || ranked[1].gap - ranked[0].gap >= 0.12 ? ranked[0].item : null;
 };
+// 162 (owner, 20-nov-2026: «esos 22 vinos te aseguro que están en Winerim»). He was right: nine lines of a client's
+// list came back «No lo hemos encontrado» although the store has them. The store search only finds a text that
+// appears as written, so «ONDARRE MILENIUM» (Millenium), «LALIER» (Lallier), «IRACHE 18.91» (1891) and «FINCA DE LA
+// MOTA» (Finca la Mota) found nothing. A line without a match is asked again by its words, with the usual slips
+// repaired, and compared word by word allowing one wrong letter. The answer is the same labelled estimate.
+const SMALL162 = new Set(['de', 'del', 'la', 'el', 'los', 'las', 'y', 'e', 'd', 'l', 'do', 'da', 'di', 'le', 'les', 'the', 'of']);
+const words162 = (value: string) => key(value.replace(/(\d)[.,](\d)/g, '$1$2')).split(' ').filter(Boolean);
+const doubled162 = (word: string) => { const out: string[] = [];
+  for (let at = 1; at < word.length - 1; at += 1) { const letter = word[at];
+    if (!'lrnstmpcfz'.includes(letter)) continue;
+    if (word[at + 1] === letter) { out.push(word.slice(0, at) + word.slice(at + 1)); at += 1; }
+    else if (word[at - 1] !== letter) out.push(word.slice(0, at) + letter + word.slice(at)); }
+  return out; };
+/** Other ways to ask the store for a line it did not find, most promising first (at most six). */
+export const rescueQueries162 = (line: ListingLine139): string[] => {
+  const read = readListingLine139(line), all = words162(read.query), first = key(read.query);
+  const strong = all.filter(word => !SMALL162.has(word) && (word.length >= 4 || /^\d{3,}$/.test(word)));
+  const phrases = [all.join(' '), all.filter(word => word !== 'de' && word !== 'del').join(' ')];
+  const singles = [...strong].sort((a, b) => b.length - a.length).flatMap(word => [word, ...(/\d/.test(word) ? [] : doubled162(word).slice(0, 3))]);
+  return [...new Set([...phrases, ...singles])].filter(query => query.length >= 3 && query !== first).slice(0, 6);
+};
+const near162 = (a: string, b: string) => {
+  if (a === b) return true;
+  if (/^\d+$/.test(a) || /^\d+$/.test(b)) return /^\d+$/.test(a) && /^\d+$/.test(b) && Number(a) === Number(b);
+  if (Math.min(a.length, b.length) < 5 || Math.abs(a.length - b.length) > 1) return a.length >= 4 && b.length >= 4 && (a === b + 's' || b === a + 's');
+  let i = 0; while (i < a.length && i < b.length && a[i] === b[i]) i += 1;
+  const [long, short] = a.length >= b.length ? [a, b] : [b, a];
+  return long.length === short.length ? long.slice(i + 1) === short.slice(i + 1) : long.slice(i + 1) === short.slice(i);
+};
+/** Rows whose name and winery hold every word of the line, one wrong letter allowed. One wine, or a short range. */
+export const looseMatch162 = (line: ListingLine139, rows: readonly PublicGlobalRow103[]): ListingMatch139 | null => {
+  const read = readListingLine139(line), all = words162(read.query);
+  const wanted = all.filter(word => !SMALL162.has(word) && (word.length >= 2 || /^\d+$/.test(word)));
+  // One short word («La Mar», «Julian») is not enough to tell a wine from its neighbours.
+  if (!wanted.length || wanted.join('').length < 6 || !wanted.some(word => word.length >= 5)) return null;
+  const fits = rows.filter(row => { const have = words162(`${row.name} ${row.subname ?? ''} ${row.winery}`);
+    return wanted.every(word => have.some(other => near162(word, other))); });
+  if (!fits.length) return null;
+  const wantedColour = colour(line.type);
+  let kept = fits; if (wantedColour) { const same = fits.filter(row => colour(row.type) === wantedColour); if (same.length) kept = same; }
+  // The same wines the strict path would build (vintage, usual price, photo), from the rows that fit.
+  const names = new Set(kept.map(row => key(row.name)));
+  const wines = [...names].flatMap(name => { const own = kept.filter(row => key(row.name) === name);
+    const match = matchListing139({ ...line, name: own[0].name, producer: own[0].winery, grapes: null }, own);
+    return match?.kind === 'exact' ? [match.estimate] : match?.kind === 'range' ? match.options.slice(0, 1) : []; });
+  if (!wines.length || wines.length > 6) return null;
+  return wines.length === 1 ? { kind: 'exact', estimate: wines[0] } : { kind: 'range', options: wines };
+};
 export const estimateListing139 = async (line: ListingLine139, signal?: AbortSignal): Promise<ListingMatch139 | null> => {
   const read = readListingLine139(line);
   if (read.query.length < 2) return null;
@@ -238,7 +286,18 @@ export const estimateListing139 = async (line: ListingLine139, signal?: AbortSig
       if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
       if (rows) { const match = matchListing139(line, rows); if (match?.kind !== 'range' || rows.some(row => row.bottlePrice !== null)) return match; }
     }
-    return matchListing139(line, await searchStore139(read.query, signal));
+    const found = matchListing139(line, await searchStore139(read.query, signal));
+    if (found) return found;
+    // 162: the store has the wine but the list spells it another way: ask again by its words and compare loosely.
+    const pool: StoreRow140[] = [];
+    for (const query of rescueQueries162(line)) {
+      const rows = await searchStore139(query, signal);
+      if (!rows.length) continue;
+      pool.push(...rows);
+      const loose = looseMatch162(line, pool);
+      if (loose) return loose;
+    }
+    return null;
   }
   catch { if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError'); return null; }
 };

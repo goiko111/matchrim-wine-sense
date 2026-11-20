@@ -101,6 +101,7 @@ import { MENU_BADGE_HEIGHT143, MENU_BADGE_WIDTH143, matchMenuPositions143, menuB
 import { readPageLines143, type PageLines143 } from '@/utils/nativeOcrLines143';
 import { takeMenuPhoto144 } from '@/utils/scanKind144';
 import { MenuQuickPreview145 } from '@/components/wine-import/MenuQuickPreview145';
+import { SaveMenu162, SavedMenus162 } from '@/components/SavedMenus162';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { estimateListing139, storeAffinity139, type ListingMatch139 } from '@/utils/storeListing139';
 import { menuCoverageWarning139, menuLikelyText140, menuLineKey139, menuRowName140, menuVerdict139, menuVerdictCertain140, menuVerdictScore140,
@@ -2567,6 +2568,9 @@ const WineMenuScannerSession = ({
       )}
 
       {/* Results Section */}
+      {/* 162: lists kept on this phone with their restaurant open again without a photo. */}
+      {isNative && scannedWines.length === 0 && !loading && !convertingPdf && !trayOpen141 && <SavedMenus162 ownerId={user?.id ?? null}
+        onOpen={menu => { resetEstimates139(); setScannedWines(menu.wines as unknown as ScannedWine[]); setHasProfile(Boolean(profile139)); }} />}
       {scannedWines.length > 0 && !trayOpen141 && (
         <div ref={resultsRef} className="scroll-mt-24 space-y-4 break-words">
           {/* 141: the photo with each wine's number where the list prints it. Only when the reader placed the wines:
@@ -2673,6 +2677,7 @@ const WineMenuScannerSession = ({
               }}>
                 <ChefHat className="mr-2 h-4 w-4" />Maridar con la carta de comida
               </Button>}
+              {isNative && <SaveMenu162 key={scannedWines.length} ownerId={user?.id ?? null} wines={scannedWines as unknown as Record<string, unknown>[]} restaurantName={restaurantName} />}
               {!hasProfile && (
                 <Badge variant="outline" className="gap-1">
                   <AlertCircle className="h-3 w-3" />
@@ -2870,7 +2875,7 @@ const WineMenuScannerSession = ({
 		                <span role="status" aria-live="polite" aria-atomic="true" className="text-xs text-slate-500">{visibleScannedWines.length} {visibleScannedWines.length === 1 ? 'resultado' : 'resultados'}</span>
 		              </div>}
 		              <div className="divide-y divide-stone-100" role={isNative ? 'list' : undefined}>
-	                        {visibleScannedWines.map(({ wine, index }) => isNative ? (() => {
+	                        {visibleScannedWines.map(({ wine, index }, at162) => isNative ? (() => {
                         // 139: one tappable row per wine: name, price and the answer to «¿me gustará?».
                         // 140: three short lines. An exact or likely wine shows its Winerim name and bottle, with the
                         // list's own words small; the other wines of a range stay closed behind one short control.
@@ -2888,7 +2893,14 @@ const WineMenuScannerSession = ({
                         const choices = verdict.kind === 'likely' || verdict.kind === 'range' || verdict.kind === 'mismatch' ? verdict.options : [];
                         const lineKey = menuLineKey139(wine), choosing = choices.length > 0 && openChoices140.has(lineKey);
                         const score = menuVerdictCertain140(verdict) && <ScorePill150 score={verdict.score} estimate />;
+                        // 162: the wines without a number sat at the end with nothing saying why, and read as «no los ha leído».
+                        const blank162 = (kind: MenuVerdict139['kind']) => kind === 'none' || kind === 'pending';
+                        const firstBlank162 = scanSortMode === 'compatibility' && blank162(verdict.kind) && at162 > 0
+                          && !blank162((verdicts139[visibleScannedWines[at162 - 1].index] ?? { kind: 'pending' }).kind);
                         return <div key={`${wine.nombre}-${index}-list-row`} role="listitem" className="min-w-0" data-testid="native-menu-row139">
+                          {firstBlank162 && <p className="bg-stone-50 px-[12px] py-3 text-sm leading-5 text-stone-700" data-testid="native-menu-blank162">
+                            <span className="block font-semibold text-stone-950">Leídos de la carta, sin nota todavía</span>
+                            Están en la carta, pero aún no hemos dado con su ficha. Toca uno para buscarlo por su nombre.</p>}
                           <div className="flex min-w-0 items-stretch">
                             <button type="button" aria-label={`${shown.name}${wine.anada ? ` ${wine.anada}` : ''}. ${shown.listed ? `En la carta: ${shown.listed}. ` : ''}${price}. ${spoken}`}
                               className={`matchrim-pressable flex min-h-[44px] min-w-0 flex-1 items-start gap-3 px-[12px] py-3 text-left ${highlightedWineIndex === index ? 'bg-amber-50' : 'hover:bg-stone-50'}`}

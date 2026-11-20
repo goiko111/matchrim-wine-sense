@@ -21,14 +21,13 @@ test('The two questions are optional, stay on the phone and only reword the firs
   assert(read('src/components/NativeFirstSteps158.tsx').includes('...firstScan159(readIntent159(ownerId).goal)'));
 });
 
-test('The tour shows places and one wine marked as an example', () => {
-  const guide = read('src/components/MatchrimQuickGuide.tsx');
-  assert(guide.includes("src={[brindis159, '', tienda159, '', casa159, restaurante159][step]}"));
-  const example = guide.slice(guide.indexOf('data-testid="tour-example159"'), guide.indexOf('data-testid="tour-photo159"'));
-  assert(example.includes('>Ejemplo</p>') && example.includes('Un rioja crianza') && example.includes('Muy de tu estilo'));
-  assert(!/CVNE|Imperial|Tondonia|Vega Sicilia/.test(example), 'no real wine is given a score');
-  for (const name of ['brindis', 'tienda', 'casa', 'restaurante']) assert(fs.statSync(`src/assets/tour159/${name}.jpg`).size < 120_000, name);
-  assert.equal((read('docs/MATCHRIM_157_FOTOS.md').match(/https:\/\/www\.pexels\.com\/photo\/[a-z0-9-]+-\d+\//g) ?? []).length >= 5, true, 'credits');
+// 162: the owner found the stock photos of the tour out of place and chose pieces of the app itself (NativeTour162).
+test('The tour shows pieces of the app and one wine marked as an example', () => {
+  const guide = read('src/components/MatchrimQuickGuide.tsx'), scenes = read('src/components/NativeTour162.tsx');
+  assert(guide.includes('<TourScene162 step={step} />') && !guide.includes('tour159'));
+  assert(scenes.includes('Ejemplo') && scenes.includes('Un rioja crianza') && scenes.includes('Muy de tu estilo'));
+  assert(!/CVNE|Imperial|Tondonia|Vega Sicilia/.test(scenes), 'no real wine is given a score');
+  assert(!fs.existsSync('src/assets/tour159'), 'the stock photos are gone');
 });
 
 test('The test stops twice to say what it is for, once each, and a new test starts clean', () => {

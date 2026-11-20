@@ -720,7 +720,8 @@ const MyWinesForOwner = () => {
     }
 
     // Validate restaurant is selected
-    if (data?.location_type === 'restaurant' && !data?.place_name) {
+    // 162: on the iPhone the name of the place is optional (NativeWherePanel162 says so).
+    if (!isNative && data?.location_type === 'restaurant' && !data?.place_name) {
       toast.error("Debes seleccionar un restaurante");
       return;
     }

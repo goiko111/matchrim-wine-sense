@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -87,22 +87,36 @@ const Auth = () => {
           </Button>
           <LanguageSwitcher className={isNative ? 'h-auto min-h-[44px] min-w-[44px]' : undefined} />
         </div>
-        <div className={isNative ? 'mb-7 mt-8 text-left' : 'text-center mb-4'}>
+        {/* 162 (owner's video of the 159: «a la página de Bienvenido le falta el diseño nuevo»): on the iPhone the
+            access screen now looks like the rest of the app and says what the account is for before asking for it. */}
+        {isNative ? <div className="mb-5 mt-4 text-left" data-testid="auth-head162">
+          <div className="flex items-center gap-3">
+            <img src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png" alt="" aria-hidden="true" className="h-11 w-11" />
+            <h1 className="text-3xl font-bold leading-9 text-stone-950">Matchrim</h1>
+          </div>
+          {!pending160 && <>
+            <p className="mt-4 text-xl font-bold leading-7 text-stone-950">Tu gusto, guardado contigo</p>
+            <ul className="mt-3 space-y-2 text-base leading-6 text-stone-700">
+              {['Tus vinos y tus valoraciones no se pierden', 'Tu perfil te sigue si cambias de móvil', 'Cuanto más valoras, mejor acierta tu nota'].map(line => <li key={line} className="flex items-start gap-2">
+                <Check className="mt-1 h-4 w-4 shrink-0 text-emerald-700" aria-hidden="true" />{line}</li>)}
+            </ul>
+          </>}
+        </div> : <div className="text-center mb-4">
           <img
             src="/lovable-uploads/cf98d0b7-f33d-40fe-bd49-d139d0354da1.png"
             alt="Logo Matchrim"
-            className={isNative ? 'mb-4 h-12 w-12' : 'h-16 w-16 mx-auto mb-4'}
+            className="h-16 w-16 mx-auto mb-4"
           />
-          <h1 className={isNative ? 'text-3xl font-bold text-slate-950' : 'text-3xl font-bold text-red-900'}>Matchrim</h1>
-          <p className={isNative ? 'mt-1 text-slate-600' : 'text-red-600'}>{t('auth.tagline')}</p>
-        </div>
+          <h1 className="text-3xl font-bold text-red-900">Matchrim</h1>
+          <p className="text-red-600">{t('auth.tagline')}</p>
+        </div>}
 
         {pending160 && <div role="status" data-testid="auth-why160" className="mb-5 rounded-2xl bg-red-950 p-4 text-white">
           <p className="text-base font-bold leading-6 [overflow-wrap:anywhere]">Para guardar «{pending160.wine.name}» necesitas una cuenta</p>
           <p className="mt-1 text-sm leading-6 text-white/85">Así tus vinos, tus valoraciones y tu perfil se quedan contigo aunque cambies de móvil. Si ya tienes cuenta, inicia sesión y lo guardamos solo. Si no, créala: es gratis y tarda un minuto.</p>
         </div>}
-        <Card className={isNative ? 'border-0 bg-transparent shadow-none' : undefined}>
-          <CardHeader className={isNative ? 'min-w-0 p-0 pb-[16px] [overflow-wrap:anywhere]' : undefined}>
+        <Card className={isNative ? 'rounded-3xl border-0 bg-white p-4 shadow-sm ring-1 ring-stone-200 [&_input]:min-h-12 [&_input]:rounded-xl [&_input]:text-base' : undefined}>
+          <CardHeader className={isNative ? 'sr-only' : undefined}>
             <CardTitle className="text-center text-red-900">{t('auth.title')}</CardTitle>
             <CardDescription className="text-center">
               {t('auth.subtitle')}
@@ -110,7 +124,7 @@ const Auth = () => {
           </CardHeader>
           <CardContent className={isNative ? 'min-w-0 p-0' : undefined}>
             <Tabs defaultValue="login" className="w-full">
-              <TabsList className={isNative ? 'grid h-auto w-full min-w-0 grid-cols-2 gap-[4px] p-[4px] [.matchrim-accessibility-text_&]:grid-cols-1 [.matchrim-accessibility-text_&]:md:grid-cols-2' : 'grid w-full grid-cols-2'}>
+              <TabsList className={isNative ? 'mb-4 grid h-auto w-full min-w-0 grid-cols-2 gap-[4px] rounded-full bg-stone-100 p-[4px] [&>button]:rounded-full [.matchrim-accessibility-text_&]:grid-cols-1 [.matchrim-accessibility-text_&]:md:grid-cols-2' : 'grid w-full grid-cols-2'}>
                 <TabsTrigger value="login" className={isNative ? 'h-auto min-h-[44px] min-w-0 whitespace-normal break-words px-[8px] py-[8px]' : undefined}>{t('auth.login')}</TabsTrigger>
                 <TabsTrigger value="signup" className={isNative ? 'h-auto min-h-[44px] min-w-0 whitespace-normal break-words px-[8px] py-[8px]' : undefined}>{t('auth.register')}</TabsTrigger>
               </TabsList>
@@ -150,7 +164,7 @@ const Auth = () => {
                   </div>
                   <Button
                     type="submit"
-                    className={isNative ? 'h-auto min-h-[44px] w-full min-w-0 whitespace-normal bg-red-700 px-[12px] py-[10px] hover:bg-red-800' : 'w-full bg-red-700 hover:bg-red-800'}
+                    className={isNative ? 'h-auto min-h-12 w-full min-w-0 whitespace-normal rounded-full bg-red-900 px-[12px] py-[10px] text-base hover:bg-red-950' : 'w-full bg-red-700 hover:bg-red-800'}
                     disabled={isLoading}
                   >
                     {isLoading ? t('auth.signingIn') : t('auth.signIn')}
@@ -165,12 +179,12 @@ const Auth = () => {
 
               <TabsContent value="signup">
                 <div className="space-y-4">
-                  <p className="text-center text-sm text-gray-600">
-                    {t('auth.signupHint')}
+                  <p className={isNative ? 'text-left text-base leading-6 text-stone-700' : 'text-center text-sm text-gray-600'}>
+                    {isNative ? 'Crear la cuenta es gratis y tarda un minuto: correo, contraseña y listo.' : t('auth.signupHint')}
                   </p>
                   <Button
                     onClick={handleRegisterRedirect}
-                    className={isNative ? 'h-auto min-h-[44px] w-full min-w-0 whitespace-normal bg-red-700 px-[12px] py-[10px] hover:bg-red-800' : 'w-full bg-red-700 hover:bg-red-800'}
+                    className={isNative ? 'h-auto min-h-12 w-full min-w-0 whitespace-normal rounded-full bg-red-900 px-[12px] py-[10px] text-base hover:bg-red-950' : 'w-full bg-red-700 hover:bg-red-800'}
                   >
                     {t('auth.createAccount')}
                   </Button>

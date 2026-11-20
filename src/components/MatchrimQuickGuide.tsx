@@ -1,11 +1,8 @@
+import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Capacitor } from '@capacitor/core';
-import { ArrowLeft, ArrowRight, Bookmark, Check, CircleHelp, Gauge, Minus, MessageCircleMore, ScanLine, Sparkles, UtensilsCrossed, Wine } from 'lucide-react';
-import { QuizPhoto157 } from '@/components/QuizPhoto157';
-import brindis159 from '@/assets/tour159/brindis.jpg';
-import tienda159 from '@/assets/tour159/tienda.jpg';
-import casa159 from '@/assets/tour159/casa.jpg';
-import restaurante159 from '@/assets/tour159/restaurante.jpg';
+import { ArrowLeft, ArrowRight, Bookmark, Check, CircleHelp, Gauge, MessageCircleMore, ScanLine, Sparkles, UtensilsCrossed, Wine } from 'lucide-react';
+import { TourScene162 } from '@/components/NativeTour162';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
@@ -53,6 +50,16 @@ export default function MatchrimQuickGuide({ existing, ownerId = null, ready = t
     setOpen(shouldShowMatchrimOnboarding(existing, ownerId));
   }, [ready, existing, ownerId]);
   useEffect(() => { contentRef.current?.scrollTo({ top: 0 }); }, [step, open]);
+  // 162: the owner did not like the back/next arrows. On the iPhone the tour is moved with the finger (or the dots);
+  // the one button left says where it goes.
+  const touch162 = useRef<{ x: number; y: number } | null>(null);
+  const move162 = (to: number) => { if (to < 0 || to >= steps.length || to === step) return; setStep(to); recordOnboardingEvent('step', to, ownerId); };
+  const swipe162 = native158 ? {
+    onTouchStart: (event: React.TouchEvent) => { const point = event.touches[0]; touch162.current = { x: point.clientX, y: point.clientY }; },
+    onTouchEnd: (event: React.TouchEvent) => { const from = touch162.current, point = event.changedTouches[0]; touch162.current = null;
+      if (!from) return; const dx = point.clientX - from.x, dy = point.clientY - from.y;
+      if (Math.abs(dx) >= 48 && Math.abs(dx) > Math.abs(dy) * 1.5) move162(step + (dx < 0 ? 1 : -1)); },
+  } : {};
   const close = () => {
     decidedRef.current = true;
     finishMatchrimOnboarding('skipped', ownerId);
@@ -78,24 +85,9 @@ export default function MatchrimQuickGuide({ existing, ownerId = null, ready = t
           onCloseAutoFocus={(event) => { event.preventDefault(); helpRef.current?.focus(); }}
         >
           <p className="text-sm font-semibold text-red-800" role="status" aria-live="polite">Matchrim · {step + 1} de {steps.length}</p>
-          <div ref={contentRef} className="min-h-0 space-y-4 overflow-y-auto overscroll-contain" data-testid="matchrim-guide-content">
-          {/* 159: places instead of icons (a table, a shop, a home), and on «Entiende la nota» a wine as the app shows it. */}
-          {native158 && <div data-testid="tour-hero158" className="relative h-40 overflow-hidden rounded-2xl bg-stone-100 [html.matchrim-accessibility-text_&]:hidden">
-            {step === 1 ? <div className="grid h-full w-full grid-cols-4">{[1, 14, 2, 16].map(id => <QuizPhoto157 key={id} id={id} className="h-full w-full object-cover" />)}</div>
-              : step === 3 ? <div className="flex h-full flex-col justify-center gap-2 bg-white px-4 ring-1 ring-inset ring-stone-200" data-testid="tour-example159">
-                <p className="text-[11px] font-bold uppercase tracking-wide text-stone-500">Ejemplo</p>
-                <div className="flex items-center justify-between gap-3">
-                  <p className="min-w-0 text-base font-bold leading-5 text-stone-950">Un rioja crianza<span className="block text-xs font-medium text-stone-500">Tinto · Rioja</span></p>
-                  <p className="shrink-0 rounded-full bg-emerald-700 px-3 py-1 text-lg font-bold text-white">86<span className="text-xs font-semibold text-white/80">/100</span></p>
-                </div>
-                <p className="text-sm font-semibold text-emerald-800">Muy de tu estilo</p>
-                <ul className="space-y-0.5 text-xs leading-4 text-stone-700">
-                  <li className="flex items-center gap-1.5"><Check className="h-3.5 w-3.5 shrink-0 text-emerald-700" aria-hidden="true" />El cuerpo es como te gusta</li>
-                  <li className="flex items-center gap-1.5"><Minus className="h-3.5 w-3.5 shrink-0 text-amber-600" aria-hidden="true" />Algo menos fresco de lo que sueles preferir</li>
-                </ul>
-              </div>
-              : <img src={[brindis159, '', tienda159, '', casa159, restaurante159][step]} alt="" aria-hidden="true" draggable={false} className="h-full w-full object-cover" data-testid="tour-photo159" />}
-          </div>}
+          <div ref={contentRef} {...swipe162} className="min-h-0 space-y-4 overflow-y-auto overscroll-contain" data-testid="matchrim-guide-content">
+          {/* 162: each step is a small piece of the app that answers to the finger (NativeTour162), not a stock photo. */}
+          {native158 && <div data-testid="tour-hero158" className="h-52 [html.matchrim-accessibility-text_&]:h-auto"><TourScene162 step={step} /></div>}
           <DialogTitle className="pr-6 text-2xl leading-tight tracking-normal">{steps[step].title}</DialogTitle>
           <DialogDescription className="text-base leading-6 text-slate-600">{steps[step].text}</DialogDescription>
           {!native158 && step === 0 && (
@@ -125,14 +117,18 @@ export default function MatchrimQuickGuide({ existing, ownerId = null, ready = t
           <div className="matchrim-guide-primary flex flex-wrap items-center justify-between gap-2">
             <Button variant="ghost" className="min-h-11" onClick={close}>Saltar guía</Button>
             <div className="flex gap-2">
-              {step > 0 && <Button variant="outline" size="icon" className="h-11 w-11" aria-label="Paso anterior" title="Anterior" onClick={() => setStep(step - 1)}><ArrowLeft className="h-4 w-4" /></Button>}
+              {step > 0 && !native158 && <Button variant="outline" size="icon" className="h-11 w-11" aria-label="Paso anterior" title="Anterior" onClick={() => setStep(step - 1)}><ArrowLeft className="h-4 w-4" /></Button>}
               <Button className="min-h-11 gap-2 bg-red-900 hover:bg-red-950" onClick={() => {
                 if (step === steps.length - 1) complete(native158 ? (hasProfile ? '/escanear/etiqueta' : '/matchrim') : target);
                 else { setStep(step + 1); recordOnboardingEvent('step', step + 1, ownerId); }
-              }} data-testid="tour-next158">{step === steps.length - 1 ? native158 ? hasProfile ? 'Escanear un vino' : 'Hacer el test' : 'Empezar' : 'Continuar'}<ArrowRight className="h-4 w-4" /></Button>
+              }} data-testid="tour-next158">{step === steps.length - 1 ? native158 ? hasProfile ? 'Escanear un vino' : 'Hacer el test' : 'Empezar' : native158 ? 'Siguiente' : 'Continuar'}{!native158 && <ArrowRight className="h-4 w-4" />}</Button>
             </div>
           </div>
-          {native158 && <div className="flex justify-center gap-1.5" aria-hidden="true" data-testid="tour-dots158">{steps.map((item, index) => <span key={item.title} className={`h-1.5 rounded-full ${index === step ? 'w-5 bg-red-900' : 'w-1.5 bg-stone-300'}`} />)}</div>}
+          {native158 && <div className="flex flex-col items-center gap-1" data-testid="tour-dots158">
+            <div className="flex justify-center">{steps.map((item, index) => <button key={item.title} type="button" aria-label={`Paso ${index + 1} de ${steps.length}: ${item.title}`} aria-current={index === step ? 'step' : undefined}
+              onClick={() => move162(index)} className="flex h-11 w-7 items-center justify-center"><span className={`h-2 rounded-full ${index === step ? 'w-5 bg-red-900' : 'w-2 bg-stone-300'}`} /></button>)}</div>
+            <p className="text-xs text-stone-500" aria-hidden="true">Desliza para pasar de pantalla</p>
+          </div>}
           {!native158 && step === steps.length - 1 && <Button variant="outline" className="min-h-11" onClick={() => complete('/matchrim')}>Crear mi perfil primero</Button>}
           {native158 && !hasProfile && step === steps.length - 1 && <Button variant="outline" className="min-h-11" onClick={() => complete('/escanear/etiqueta')}>Ahora no: escanear un vino</Button>}
           </div>

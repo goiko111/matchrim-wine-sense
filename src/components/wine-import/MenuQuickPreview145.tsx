@@ -33,10 +33,16 @@ export const MenuQuickPreview145 = ({ file, profile }: { file: File | null | und
     return scores.length ? [Math.min(...scores), Math.max(...scores)] : null;
   };
   if (!lines.length) return null;
+  // 162 (owner: «se debería ir completando y reordenando»): the best answers climb as they arrive; lines still
+  // being looked up keep their place on the list below them.
+  const rank162 = (index: number) => { const match = matches[index];
+    const result = match?.kind === 'exact' && profile ? storeAffinity139(profile, match.estimate.attributes) : null;
+    return result?.state === 'ready' ? result.score : range(match)?.[1] != null ? range(match)![1] - 0.5 : match === undefined ? -1 : -2; };
+  const order162 = lines.map((_, index) => index).sort((a, b) => rank162(b) - rank162(a) || a - b);
   return <section className="min-w-0 rounded-2xl border border-stone-200 bg-white px-4 py-3 text-left" aria-label="Vista rápida de la carta" data-testid="menu-quick-preview145">
-    <h3 className="text-base font-semibold text-stone-950">Vista rápida</h3>
-    <p className="mt-1 text-sm leading-5 text-stone-600">Lo que tu iPhone ya lee. La lista completa, con todos los números, tarda alrededor de medio minuto.</p>
-    <ul className="mt-2 divide-y divide-stone-100">{lines.map((line, index) => { const match = matches[index];
+    <h3 className="text-base font-semibold text-stone-950">Vinos de la carta · {lines.length} de momento</h3>
+    <p className="mt-1 text-sm leading-5 text-stone-600">Se van ordenando según llegan sus notas. La lista completa tarda alrededor de medio minuto.</p>
+    <ul className="mt-2 divide-y divide-stone-100" data-testid="menu-quick-list162">{order162.map(index => { const line = lines[index], match = matches[index];
       const result = match?.kind === 'exact' && profile ? storeAffinity139(profile, match.estimate.attributes) : null;
       const score = result?.state === 'ready' ? result.score : null;
       return <li key={`${index}-${line.text}`} className="flex min-h-11 items-center gap-3 py-2">

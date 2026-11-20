@@ -41,12 +41,21 @@ archivo descargado, no la página de cada foto; la dirección del archivo identi
 
 Las otras diez familias de sabores reutilizan fotos del test.
 
-## Fotos de situación del recorrido y del test (159), añadido el 19-nov-2026
-Cuatro fotos en `src/assets/tour159/` (900×576), de Pexels con licencia gratuita (https://www.pexels.com/license/):
+## Fotos de situación del recorrido y del test (159) — retiradas el 20-nov-2026
+Las cuatro fotos de Pexels (`src/assets/tour159/`: brindis, tienda, casa, restaurante) se quitaron en la 162: al
+propietario le parecieron «de banco de fotos». El recorrido enseña ahora trozos de la propia app y las pausas del
+test usan las fotos del test (`quiz157`). No queda ninguna foto de Pexels de aquel lote en la app.
 
-| Archivo | Dónde sale | Fuente |
-|---|---|---|
-| brindis.jpg | Recorrido 1 y pausa del test tras la 7.ª | https://www.pexels.com/photo/elegant-men-making-a-toast-8775179/ |
-| tienda.jpg | Recorrido 3 | https://www.pexels.com/photo/variety-of-red-and-white-wine-bottles-on-display-30447488/ |
-| casa.jpg | Recorrido 5 | https://www.pexels.com/photo/a-bottle-of-wine-and-incense-sticks-standing-on-a-table-20379600/ |
-| restaurante.jpg | Recorrido 6 y pausa del test tras la 14.ª | https://www.pexels.com/photo/elegant-dining-experience-in-cozy-restaurant-setting-33097101/ |
+## Fotos de maridajes («Combina muy bien con», 162), añadido el 20-nov-2026
+Seis fotos en `src/assets/pairing162/` (600×600), de Unsplash con licencia gratuita (búsqueda con el filtro «Gratuita»):
+
+| Archivo | Fuente (archivo en Unsplash) |
+|---|---|
+| carne.jpg | https://images.unsplash.com/photo-1588168333986-5078d3ae3976 |
+| ave.jpg | https://images.unsplash.com/photo-1615557960916-5f4791effe9d |
+| pescado.jpg | https://images.unsplash.com/photo-1605185202667-c6babf0a0490 |
+| pasta.jpg | https://images.unsplash.com/photo-1600803907087-f56d462fd26b |
+| arroz.jpg | https://images.unsplash.com/photo-1694685367640-05d6624e57f1 |
+| queso.jpg | https://images.unsplash.com/photo-1641297104256-a97cf3a240cb |
+
+Marisco, verduras, picante, aperitivos, postres, fruta, setas y queso azul reutilizan fotos del test.
