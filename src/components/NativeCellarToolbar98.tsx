@@ -13,10 +13,12 @@ interface Props {
   onScanMenu: () => void;
   onAddManually: () => void;
   search: ReactNode;
+  /** 163: wine lists kept on this phone, as one more pill. */
+  menus?: number; menusOpen?: boolean; onMenus?: () => void;
 }
 const tabs = [['collection', 'En bodega'], ['wishlist', 'Por probar'], ['tasted', 'Probados']] as const;
 
-export const NativeCellarToolbar98 = ({ section, counts, countsUnknown = false, onSectionChange, onScanLabel, onAddManually, search }: Props) => {
+export const NativeCellarToolbar98 = ({ section, counts, countsUnknown = false, onSectionChange, onScanLabel, onAddManually, search, menus = 0, menusOpen = false, onMenus }: Props) => {
   const [searchOpen, setSearchOpen] = useState(false);
   return <header className="min-w-0 space-y-4" data-testid="native-cellar-toolbar98">
     <div className="flex min-w-0 flex-wrap items-center justify-between gap-3">
@@ -33,7 +35,8 @@ export const NativeCellarToolbar98 = ({ section, counts, countsUnknown = false, 
         tabs; same buttons, counts and menu. With large text they wrap instead of scrolling. */}
     <div className="flex min-w-0 items-center gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [html.matchrim-accessibility-text_&]:flex-wrap">
       <div role="group" aria-label="Sección de tus vinos" className="flex shrink-0 gap-2 [html.matchrim-accessibility-text_&]:shrink [html.matchrim-accessibility-text_&]:flex-wrap">
-        {tabs.map(([key, label]) => <button key={key} type="button" aria-pressed={section === key} className={`min-h-11 shrink-0 whitespace-nowrap rounded-full border px-4 text-sm leading-5 ${section === key ? 'border-stone-950 bg-stone-950 font-semibold text-white' : 'border-stone-300 bg-white text-stone-800'}`} onClick={() => onSectionChange(key)}>{label}{!countsUnknown && <span className="ml-1 text-xs tabular-nums">{counts[key]}</span>}</button>)}
+        {tabs.map(([key, label]) => <button key={key} type="button" aria-pressed={section === key && !menusOpen} className={`min-h-11 shrink-0 whitespace-nowrap rounded-full border px-4 text-sm leading-5 ${section === key && !menusOpen ? 'border-stone-950 bg-stone-950 font-semibold text-white' : 'border-stone-300 bg-white text-stone-800'}`} onClick={() => onSectionChange(key)}>{label}{!countsUnknown && <span className="ml-1 text-xs tabular-nums">{counts[key]}</span>}</button>)}
+        {onMenus && menus > 0 && <button type="button" aria-pressed={menusOpen} data-testid="cellar-menus163" className={`min-h-11 shrink-0 whitespace-nowrap rounded-full border px-4 text-sm leading-5 ${menusOpen ? 'border-stone-950 bg-stone-950 font-semibold text-white' : 'border-stone-300 bg-white text-stone-800'}`} onClick={onMenus}>Cartas<span className="ml-1 text-xs tabular-nums">{menus}</span></button>}
       </div>
       <DropdownMenu><DropdownMenuTrigger asChild><button type="button" className={`flex min-h-11 w-11 shrink-0 items-center justify-center rounded-full border ${section === 'favorites' || section === 'rejected' ? 'border-stone-950 bg-stone-950 text-white' : 'border-stone-300 bg-white text-stone-800'}`} aria-label="Más colecciones" title="Más colecciones"><MoreHorizontal className="h-5 w-5" /></button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuItem className="min-h-11" onSelect={() => onSectionChange('favorites')}>{countsUnknown ? 'Favoritos' : `Favoritos (${counts.favorites})`}</DropdownMenuItem><DropdownMenuItem className="min-h-11" onSelect={() => onSectionChange('rejected')}>{countsUnknown ? 'No repetir' : `No repetir (${counts.rejected})`}</DropdownMenuItem></DropdownMenuContent></DropdownMenu>
     </div>

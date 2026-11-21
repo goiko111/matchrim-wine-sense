@@ -1,5 +1,5 @@
 import { NativeStoreEstimate139 } from './NativeStoreEstimate139';
-import { RowEstimate156 } from './RowEstimate156';
+import { RowEstimate156, RowPhoto163 } from './RowEstimate156';
 import { useNavigate } from 'react-router-dom';
 import { handMenuPhoto144, looksLikeWineList144 } from '@/utils/scanKind144';
 import { markScannedSaved144, recordScannedWine139 } from '@/utils/scannedWines139';
@@ -9,7 +9,7 @@ import { SHARED_PHOTO_EVENT155, takeStashedSharedPhoto155 } from '@/utils/shared
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { confirm135 } from '@/utils/nativeConfirm135';
 import { Capacitor } from '@capacitor/core';
-import {
+import { Wine,
   AlertTriangle,
   BookOpen,
   ClipboardPaste,
@@ -1375,6 +1375,17 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
 
       {!preview ? (
         <div className="scan-upload-empty matchrim-surface rounded-lg p-4 sm:p-6">
+          {/* 163 (owner's video of the 162: «la pantalla de escanear a nivel de diseño me parece un poco pobre»): a
+              viewfinder in the app's wine colour says what to do before any word is read. Decoration only. */}
+          {isNative && <div aria-hidden="true" data-testid="scan-hero163" className="relative -mx-4 -mt-4 mb-4 flex h-40 items-center justify-center overflow-hidden rounded-t-lg bg-gradient-to-br from-red-950 via-red-900 to-stone-900 [html.matchrim-accessibility-text_&]:hidden">
+            <span className="absolute h-28 w-24 rounded-sm">
+              <span className="absolute left-0 top-0 h-5 w-5 rounded-tl-md border-l-[3px] border-t-[3px] border-white/90" /><span className="absolute right-0 top-0 h-5 w-5 rounded-tr-md border-r-[3px] border-t-[3px] border-white/90" />
+              <span className="absolute bottom-0 left-0 h-5 w-5 rounded-bl-md border-b-[3px] border-l-[3px] border-white/90" /><span className="absolute bottom-0 right-0 h-5 w-5 rounded-br-md border-b-[3px] border-r-[3px] border-white/90" />
+            </span>
+            {scanMode === 'local-single'
+              ? <Wine className="h-16 w-16 text-white/90" strokeWidth={1.25} />
+              : <span className="flex items-end gap-1 text-white/90"><Wine className="h-10 w-10" strokeWidth={1.25} /><Wine className="h-14 w-14" strokeWidth={1.25} /><Wine className="h-10 w-10" strokeWidth={1.25} /></span>}
+          </div>}
           <div className="flex items-start gap-3 text-left">
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-900">
               <ScanLine className="scan-upload-empty-icon h-5 w-5" />
@@ -1621,6 +1632,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   ));
                   const consumer = isNative ? nativeWineConsumerResult(group.candidate, scanProfile?.profile ?? null) : null;
                   const personalVerdict = isNative ? resolveNativeRescanVerdict159(user?.id ?? null, nativeVerdicts, group.candidate) : null;
+                  const pendingRow163 = isNative && isPendingLocalIdentity109(group.candidate);
                   return (
                   <button
                     key={group.key}
@@ -1640,15 +1652,17 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   >
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-red-950 text-sm font-bold text-white">{index + 1}</span>
                     {/* 160 (video of the 159): «en esta lista deberían salir las imágenes»: each row shows its bottle, cut from the person's own photo. */}
-                    {isNative && regions.length > 1 && (() => { const crop = regions.find(region => group.regionIds.includes(region.id))?.cropDataUrl;
-                      return crop ? <img src={crop} alt="" aria-hidden="true" data-testid="row-photo160" className="absolute right-3 top-3 h-20 w-14 rounded-lg object-cover shadow-sm" /> : null; })()}
-                    <span className={isNative ? `min-w-0 w-full${regions.length > 1 ? ' pr-16' : ''}` : 'min-w-0 flex-1'}>
-                      <span className={`block font-semibold text-slate-950${isNative ? ' break-words [overflow-wrap:anywhere]' : ''}`}>{group.candidate.name}</span>
+                    {/* 163 (video of the 162: «si es el Vidure y lo has detectado, me tienes que sacar la foto de Winerim»): the store's
+                        bottle photo when the store has the wine; the person's own crop while it is not known or not found. */}
+                    {isNative && (regions.length > 1 || pendingRow163) && (() => { const crop = regions.find(region => group.regionIds.includes(region.id))?.cropDataUrl;
+                      return <RowPhoto163 identity={pendingRow163 ? null : group.candidate} crop={crop ?? null} />; })()}
+                    <span className={isNative ? `min-w-0 w-full${regions.length > 1 || pendingRow163 ? ' pr-16' : ''}` : 'min-w-0 flex-1'}>
+                      <span className={`block font-semibold text-slate-950${isNative ? ' break-words [overflow-wrap:anywhere]' : ''}`}>{pendingRow163 ? 'Tu botella' : group.candidate.name}</span>
                       <span className={`block text-xs leading-5 text-slate-500${isNative ? ' break-words [overflow-wrap:anywhere]' : ''}`}>
-                        {[group.candidate.producer, group.candidate.region].filter(Boolean).join(' · ') || 'Identidad parcial'}
+                        {pendingRow163 ? 'Todavía no has elegido cuál es. Toca para elegirla.' : [group.candidate.producer, group.candidate.region].filter(Boolean).join(' · ') || 'Identidad parcial'}
                         {group.count > 1 ? ` · ${group.count} regiones agrupadas` : ''}
                       </span>
-                      <span className={`block text-[11px] font-semibold ${isNative ? consumer?.catalogIdentityLinked ? 'text-emerald-700' : 'text-stone-600' : identityConfirmed ? 'text-emerald-700' : 'text-amber-700'}`}>
+                      <span className={`${pendingRow163 ? 'sr-only' : 'block'} text-[11px] font-semibold ${isNative ? consumer?.catalogIdentityLinked ? 'text-emerald-700' : 'text-stone-600' : identityConfirmed ? 'text-emerald-700' : 'text-amber-700'}`}>
                         {isNative ? consumer?.identityLabel : group.candidate.source === 'manual' ? 'Identidad confirmada por ti' : identityConfirmed ? 'Nombre leído · revisa la referencia' : `Por confirmar · ${Math.round(group.candidate.confidence * 100)}% identidad`}
                       </span>
                       {isNative && savedOne158[group.regionIds[0]] && <span className="mt-1 flex items-center gap-1 text-xs font-semibold text-emerald-800" data-testid="row-saved158"><Check className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />{savedPlace158[savedOne158[group.regionIds[0]]]}</span>}
@@ -1660,7 +1674,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                         </span>
                       )}
                     </span>
-                    <span className={isNative ? 'min-w-0 w-full text-left [overflow-wrap:anywhere]' : 'shrink-0 text-right'}>
+                    <span className={pendingRow163 ? 'sr-only' : isNative ? 'min-w-0 w-full text-left [overflow-wrap:anywhere]' : 'shrink-0 text-right'}>
                       {(() => { const words = <>
                       <span data-testid="scan-affinity-value" className="block font-bold text-red-900">{isNative ? consumer?.affinityValue : group.candidate.affinity == null ? '-' : `${identityConfirmed ? '' : '≈'}${Math.round(group.candidate.affinity)}%`}</span>
                       <span className="block text-[11px] text-slate-500">{isNative ? consumer?.affinityLabel : group.candidate.affinity == null ? 'Sin datos' : identityConfirmed ? 'Afinidad' : 'Estimación'}</span>
@@ -1679,12 +1693,15 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                   {regions.filter((region) => region.status === 'deferred' || region.status === 'unrecognized').map((region) => (
                     <button key={region.id} type="button" onClick={() => setSelectedRegionId(region.id)}
                       className={isNative
-                        ? 'flex min-h-16 w-full min-w-0 flex-col items-stretch gap-2 px-3 py-3 text-left focus-visible:ring-2 focus-visible:ring-red-800'
+                        ? 'relative flex min-h-16 w-full min-w-0 flex-col items-stretch gap-2 px-3 py-3 text-left focus-visible:ring-2 focus-visible:ring-red-800'
                         : 'flex min-h-16 w-full items-start gap-3 px-3 py-3 text-left focus-visible:ring-2 focus-visible:ring-red-800'}
                       aria-label={`Revisar región ${region.index}: ${statusLabel(region)}`}>
                       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-stone-200 text-sm font-semibold">{region.index}</span>
-                      <span className={isNative ? 'min-w-0 w-full [overflow-wrap:anywhere]' : 'min-w-0'}><span className="block font-semibold">{statusLabel(region)}</span>
+                      {/* 163 (video of the 162): a bottle that was not recognised shows itself and says what can be done with it. */}
+                      {isNative && region.cropDataUrl && <img src={region.cropDataUrl} alt="" aria-hidden="true" data-testid="row-photo160" className="absolute right-3 top-3 h-20 w-14 rounded-lg object-cover shadow-sm" />}
+                      <span className={isNative ? `min-w-0 w-full [overflow-wrap:anywhere]${region.cropDataUrl ? ' pr-16' : ''}` : 'min-w-0'}><span className="block font-semibold">{statusLabel(region)}</span>
                         <span className="block text-xs leading-5 text-stone-600">{region.deferral?.message ?? region.fallback?.message ?? region.error ?? 'Revisa el recorte o identifica el vino manualmente.'}</span>
+                        {isNative && region.status === 'unrecognized' && region.fallback?.code !== 'not_wine' && <span className="mt-1 block text-sm font-semibold text-red-900" data-testid="row-search163">Buscarlo por su nombre</span>}
                       </span>
                     </button>
                   ))}
@@ -1732,7 +1749,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
         </>
       )}
 
-      <Drawer open={Boolean(selectedRegion)} onOpenChange={(open) => { if (open) return; setSelectedRegionId(null); if (endsOnClose148) resetScan(); }} repositionInputs={!isNative} shouldScaleBackground={!isNative}>
+      <Drawer handleOnly={isNative && picking144} open={Boolean(selectedRegion)} onOpenChange={(open) => { if (open) return; setSelectedRegionId(null); if (endsOnClose148) resetScan(); }} repositionInputs={!isNative} shouldScaleBackground={!isNative}>
         <DrawerContent className="matchrim-scan-region-sheet w-full min-w-0 max-w-[100vw] max-h-[calc(100dvh-var(--matchrim-safe-top))] border-stone-200 bg-stone-50 pb-[var(--matchrim-safe-bottom)]">
           {selectedRegion && (
             <div ref={isNative ? regionEditorLayout : undefined} role={isNative ? 'region' : undefined} aria-label={isNative ? `Panel desplazable de la región ${selectedRegion.index}` : undefined} tabIndex={isNative ? 0 : undefined} className="matchrim-scan-region-layout mx-auto flex w-full min-w-0 max-w-2xl min-h-0 flex-1 flex-col">

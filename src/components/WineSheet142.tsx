@@ -81,13 +81,13 @@ export const WinerimRich142 = ({ row, profile, vintage, onRelated }: { row: Publ
     {data && made144.length > 0 && <section className={`${card} px-4 py-2`} aria-labelledby={`made144-${row.id}`} data-testid="winerim-made144">
       <h4 id={`made144-${row.id}`} className="pt-2 text-base font-semibold text-stone-950">Cómo se hace</h4>
       {data.style && <p className="mt-1 text-sm leading-6 text-stone-600">{data.style}</p>}
-      {(data.aging || data.winemaking) && <details><summary className={more}>Crianza y elaboración</summary>
+      {(data.aging || data.winemaking) && <details open><summary className={more}>Crianza y elaboración</summary>
         <div className="space-y-2 pb-2 text-sm leading-6 text-stone-700">{data.aging && <p>{data.aging}</p>}{data.winemaking && <p>{data.winemaking}</p>}</div></details>}
     </section>}
     {data && (data.story || data.origin || place144.length > 0) && <section className={`${card} px-4 py-2`} aria-labelledby={`story142-${row.id}`}>
       <h4 id={`story142-${row.id}`} className="pt-2 text-base font-semibold text-stone-950">{row.winery}</h4>
       {data.origin && <p className="mt-1 text-sm leading-6 text-stone-600">{data.origin}</p>}
-      {place144.length > 0 && <details data-testid="winerim-place144"><summary className={more}>La bodega y el viñedo</summary>
+      {place144.length > 0 && <details open data-testid="winerim-place144"><summary className={more}>La bodega y el viñedo</summary>
         <dl className="space-y-3 pb-2 text-sm leading-6 text-stone-700">{place144.map(([label, value]) => <div key={label}><dt className="font-semibold text-stone-950">{label}</dt><dd>{value}</dd></div>)}</dl></details>}
       {data.story && <details><summary className={more}>La historia de este vino</summary><p className="pb-2 text-sm leading-6 text-stone-700">{data.story}</p></details>}
     </section>}

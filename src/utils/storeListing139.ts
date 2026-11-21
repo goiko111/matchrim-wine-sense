@@ -73,7 +73,9 @@ export const matchListing139 = (line: ListingLine139, rows: readonly PublicGloba
     family = own;
   }
   const wanted = colour(line.type);
-  if (wanted) { const same = family.filter(item => colour(item.row.type) === wanted); if (same.length) family = same; }
+  if (wanted) { const same = family.filter(item => colour(item.row.type) === wanted); if (same.length) family = same;
+    // 163: «JULIAN – Garnacha» (rosado) is not the Riesling of «Julian Haart»: a winery with no wine of that colour is no match.
+    else if (family.length && family.every(item => { const own = colour(item.row.type); return own !== null && own !== wanted; })) return null; }
   // A grape printed on the list narrows the family only when a wine carries it in its name («Amaren Graciano»).
   if (read.hints.length) {
     const hinted = family.filter(item => read.hints.some(hint => ` ${rowName(item.row)} `.includes(` ${hint} `)));
@@ -260,7 +262,15 @@ export const looseMatch162 = (line: ListingLine139, rows: readonly PublicGlobalR
   const read = readListingLine139(line), all = words162(read.query);
   const wanted = all.filter(word => !SMALL162.has(word) && (word.length >= 2 || /^\d+$/.test(word)));
   // One short word («La Mar», «Julian») is not enough to tell a wine from its neighbours.
-  if (!wanted.length || wanted.join('').length < 6 || !wanted.some(word => word.length >= 5)) return null;
+  if (!wanted.length || wanted.join('').length < 6 || !wanted.some(word => word.length >= 5)) {
+    // 163: a short name («LA MAR – Caíño») is accepted only when one single wine of that colour carries it as whole words.
+    const phrase = ` ${all.join(' ')} `, tint = colour(line.type);
+    if (all.join('').length < 4 || !tint) return null;
+    const own = rows.filter(row => colour(row.type) === tint && ` ${rowName(row)} `.includes(phrase));
+    if (!own.length || new Set(own.map(row => `${key(row.name)}|${brandKey(row.winery)}`)).size !== 1) return null;
+    const match = matchListing139({ ...line, name: own[0].name, producer: own[0].winery, grapes: null }, own);
+    return match?.kind === 'exact' ? match : null;
+  }
   const fits = rows.filter(row => { const have = words162(`${row.name} ${row.subname ?? ''} ${row.winery}`);
     return wanted.every(word => have.some(other => near162(word, other))); });
   if (!fits.length) return null;
@@ -278,19 +288,30 @@ export const estimateListing139 = async (line: ListingLine139, signal?: AbortSig
   const read = readListingLine139(line);
   if (read.query.length < 2) return null;
   try {
+    let batchEmpty = false;
     // 160: a search already answered one by one is on the phone and has prices: it is used as it is. Otherwise the
     // batch answers first; only a line it leaves between several wines of a winery is asked again one by one,
     // because that search brings the restaurant prices that tell those wines apart.
     if (!cache.has(key(read.query)) && !Array.isArray(diskGet145<StoreRow140[]>(STORE_SEARCH_DISK145, key(read.query)))) {
       const rows = await batchRows160(read.query);
       if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
-      if (rows) { const match = matchListing139(line, rows); if (match?.kind !== 'range' || rows.some(row => row.bottlePrice !== null)) return match; }
+      if (rows) { const match = matchListing139(line, rows); if (match && (match.kind !== 'range' || rows.some(row => row.bottlePrice !== null))) return match; batchEmpty = !match && !rows.length; }
     }
-    const found = matchListing139(line, await searchStore139(read.query, signal));
+    // 163 (owner's video of the 162: ten lines of his client's list still «No lo hemos encontrado»): once the batch
+    // was published, a line it did not find ended here and the second attempt below never ran.
+    const first = batchEmpty ? [] : await searchStore139(read.query, signal);
+    const found = matchListing139(line, first) ?? looseMatch162(line, first);
     if (found) return found;
     // 162: the store has the wine but the list spells it another way: ask again by its words and compare loosely.
+    // 163: all the ways of asking go together in the batch (one call for the whole list); one by one only if it fails.
+    const queries = rescueQueries162(line);
+    const lots = await Promise.all(queries.map(query => batchRows160(query)));
+    if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
     const pool: StoreRow140[] = [];
-    for (const query of rescueQueries162(line)) {
+    for (const rows of lots) { if (!rows?.length) continue; pool.push(...rows); const loose = looseMatch162(line, pool); if (loose) return loose; }
+    for (const [index, query] of queries.entries()) {
+      // The batch gives five wines per text: a single word that filled them («lallier») is asked again in full.
+      if (lots[index] && lots[index]!.length < 5) continue;
       const rows = await searchStore139(query, signal);
       if (!rows.length) continue;
       pool.push(...rows);
@@ -300,4 +321,23 @@ export const estimateListing139 = async (line: ListingLine139, signal?: AbortSig
     return null;
   }
   catch { if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError'); return null; }
+};
+
+/** 163: what a person types by hand («ondare», «lalier blanc»): the store as written and, when that finds nothing,
+ *  the same second attempt as the wine list (word by word, one wrong letter allowed). Rows of the store, to choose from. */
+export const searchStoreTolerant163 = async (query: string, signal?: AbortSignal): Promise<readonly StoreRow140[]> => {
+  const direct = await searchStore139(query, signal);
+  if (direct.length >= 8) return direct;
+  const all = words162(query), wanted = all.filter(word => !SMALL162.has(word) && word.length >= 3);
+  if (!wanted.length) return direct;
+  // The same text with one word respelt («lalier blanc» → «lallier blanc»), then the list's word-by-word attempt.
+  const respelt = all.flatMap((word, at) => /\d/.test(word) || word.length < 4 ? [] : doubled162(word).slice(0, 3).map(other => all.map((own, index) => index === at ? other : own).join(' '))).slice(0, 4);
+  const queries = [...new Set([...respelt, ...rescueQueries162({ name: query })])].filter(text => text !== key(query));
+  const [phrases, lots] = await Promise.all([Promise.all(respelt.map(text => searchStore139(text, signal).catch(() => [] as readonly StoreRow140[]))), Promise.all(queries.map(text => batchRows160(text)))]);
+  if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
+  const pool = [...phrases.flat(), ...lots.flatMap(rows => rows ?? [])];
+  const seen = new Set<number>(direct.map(row => row.id));
+  const extra = pool.filter(row => { const have = words162(`${row.name} ${row.subname ?? ''} ${row.winery}`);
+    return !seen.has(row.id) && seen.add(row.id) && wanted.every(word => have.some(other => near162(word, other) || (word.length >= 4 && other.startsWith(word)))); });
+  return [...direct, ...extra];
 };

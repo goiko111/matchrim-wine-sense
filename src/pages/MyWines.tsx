@@ -3,6 +3,9 @@ import { confirm135 } from '@/utils/nativeConfirm135';
 import { Capacitor } from '@capacitor/core';
 import { CellarWineAffinity } from '@/components/CellarWineAffinity';
 import { NativeCellarToolbar98 } from '@/components/NativeCellarToolbar98';
+import { SavedMenus162 } from '@/components/SavedMenus162';
+import { CellarWhere163 } from '@/components/CellarWhere163';
+import { listSavedMenus162 } from '@/utils/savedMenus162';
 import { NativeCellarItem98 } from '@/components/NativeCellarItem98';
 import { deleteOwnWinePhoto133 } from '@/utils/ownWinePhoto133';
 import { readNativeWineDraft98, takeSignedOutWineDraft134 } from '@/utils/nativeWineDraft98';
@@ -342,6 +345,8 @@ const MyWinesForOwner = () => {
   const [selectedWine, setSelectedWine] = useState<UserWine | null>(null);
   const [filterType, setFilterType] = useState<'all' | 'favorites' | 'high_affinity'>('all');
   const [statusFilter, setStatusFilter] = useState<WineSection>(initialSection);
+  const [menusOpen163, setMenusOpen163] = useState(false);
+  const menus163 = useMemo(() => listSavedMenus162(user?.id ?? null).length, [user?.id, menusOpen163]);
   const [manualWineSuggestions, setManualWineSuggestions] = useState<WineSuggestion[]>([]);
   const [manualWineLookupStatus, setManualWineLookupStatus] = useState<ManualWineLookupStatus>('idle');
   const [manualWineNameConfirmed, setManualWineNameConfirmed] = useState(false);
@@ -1083,6 +1088,27 @@ const MyWinesForOwner = () => {
     }
   };
 
+  // 163: where, price and day of a wine already saved (see CellarWhere163).
+  const handleWhere163 = async (wineId: string, where: { place_name?: string; price?: number; purchase_date?: string; location_type?: string }) => {
+    const action = beginWineAction(wineId);
+    if (!action) return false;
+    try {
+      const update = { consumption_place: where.place_name?.slice(0, 240) || null, consumption_place_type: where.location_type || null,
+        consumption_date: where.purchase_date || null, price: where.price ?? null };
+      const { data, error } = await supabase.from("user_wines").update(update).eq("id", wineId).eq("user_id", action.ownerId).select('id').single();
+      if (!action.isCurrent()) return false;
+      if (error || data?.id !== wineId) throw error ?? new Error('Where update not confirmed');
+      setWines(current => current.map(item => item.id === wineId ? { ...item, ...update } : item));
+      toast.success('Guardado');
+      return true;
+    } catch (error) {
+      if (!action.isCurrent()) return false;
+      console.error("Error saving where:", error);
+      toast.error('No se ha podido guardar. Comprueba la conexión.');
+      return false;
+    } finally { action.finish(); }
+  };
+
   const handleToggleProfileTraining = async (wineId: string, nextValue: boolean) => {
     if (!ownerLifetime.current.active) return;
     const wine = wines.find((item) => item.id === wineId);
@@ -1577,6 +1603,8 @@ const MyWinesForOwner = () => {
         disabled={savingWineActions.has(wine.id)} aria-busy={savingWineActions.has(wine.id)} onClick={() => void handleDrinkBottle134(wine)}>
         <Wine className="h-4 w-4 shrink-0" aria-hidden="true" />Me he bebido una botella</Button>}
       <div className="space-y-1">{ratingControls141(wine)}</div>
+      {isNative && (wine.status === 'tasted' || wine.status === 'collection' || wine.status === 'wishlist') && <CellarWhere163 mode={wine.status} place={wine.consumption_place}
+        kind={wine.consumption_place_type} price={wine.price} date={wine.consumption_date} busy={savingWineActions.has(wine.id)} onSave={where => handleWhere163(wine.id, where)} />}
     </div>,
     extra: wine.menu_price_view ? <div role="group" aria-label={`Precio de carta de ${wine.name}`} className="space-y-1 text-xs leading-5 text-stone-600">
       {wine.menu_price_view.lines.map((line, index) => <p key={index} className="break-words">{line}</p>)}</div> : null,
@@ -1623,11 +1651,15 @@ const MyWinesForOwner = () => {
 
         <div className="space-y-6">
           {isNative && <NativeCellarToolbar98 section={statusFilter} counts={sectionCounts} countsUnknown={wineLoadFailed}
-            onSectionChange={section => { navigateToWineSection(section); setFilterType('all'); }}
+            onSectionChange={section => { setMenusOpen163(false); navigateToWineSection(section); setFilterType('all'); }}
             onScanLabel={() => navigate('/escanear/etiqueta')}
             onScanMenu={() => navigate('/escanear/carta-vinos')}
             onAddManually={() => navigate('/my-wines/add')}
+            menus={menus163} menusOpen={menusOpen163} onMenus={() => setMenusOpen163(open => !open)}
             search={<WineSearchBar onSelectWine={handleSearchWineSelect} />} />}
+          {/* 163 (owner: «si he guardado la carta, no sé dónde está»): the lists kept on this phone, also here. */}
+          {isNative && menusOpen163 && <SavedMenus162 ownerId={user?.id ?? null} title="Cartas de restaurantes"
+            onOpen={menu => navigate(`/escanear/carta-vinos?carta=${encodeURIComponent(menu.id)}`)} />}
           {!isNative && <>
           <Card className="border-red-100 bg-white">
             <CardHeader className="p-4 sm:p-6">

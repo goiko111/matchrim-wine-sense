@@ -2,13 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import { Loader2, RefreshCw, Search } from 'lucide-react';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { card150, TypeDot150 } from '@/components/Relief150';
-import { searchStore139 } from '@/utils/storeListing139';
+import { searchStoreTolerant163 } from '@/utils/storeListing139';
 import type { PublicGlobalRow103 } from '@/utils/nativeGlobalCatalogue103';
 import { formatWineType } from '@/utils/wineFormatters';
 
 interface Props {
   onSelect: (row: PublicGlobalRow103) => void;
-  onManualEntry: (name: string) => void;
+  /** 163: without it the «añadir a mano» button is not offered (a line of a wine list is already written). */
+  onManualEntry?: (name: string) => void;
+  /** 163: do not open the keyboard on arrival (inside a sheet the person may only want to read). */
+  quiet?: boolean;
   /** 140: the text lives in the caller, so coming back from a wine's sheet finds the same search and results. */
   query: string;
   onQuery: (value: string) => void;
@@ -36,13 +39,13 @@ export const groupStoreRows139 = (rows: readonly PublicGlobalRow103[], query = '
 // 139: the Home search used a small catalogue of our own (no Ramón Bilbao, no Mar de Frades, three odd rows for
 // Viña Ardanza, the brand as winery). It now searches Winerim's public store: the bottle photo, the real winery
 // and the region are on each result, so the person can tell which wine they are picking.
-export const NativeStoreSearch139 = ({ onSelect, onManualEntry, query, onQuery: setQuery }: Props) => {
+export const NativeStoreSearch139 = ({ onSelect, onManualEntry, query, onQuery: setQuery, quiet = false }: Props) => {
   const [retry, setRetry] = useState(0);
   const [state, setState] = useState<{ query: string; phase: 'idle' | 'loading' | 'ready' | 'error'; wines: PublicGlobalRow103[] }>({ query: '', phase: 'idle', wines: [] });
   const input = useRef<HTMLInputElement>(null);
   const trimmed = query.trim();
   // One tap to type: the keyboard opens with the dialog.
-  useEffect(() => { const timer = setTimeout(() => input.current?.focus(), 150); return () => clearTimeout(timer); }, []);
+  useEffect(() => { if (quiet) return; const timer = setTimeout(() => input.current?.focus(), 150); return () => clearTimeout(timer); }, [quiet]);
   useEffect(() => {
     if (trimmed.length < 2) { setState({ query: trimmed, phase: 'idle', wines: [] }); return; }
     const controller = new AbortController();
@@ -52,7 +55,7 @@ export const NativeStoreSearch139 = ({ onSelect, onManualEntry, query, onQuery: 
     setState(previous => ({ query: trimmed, phase: 'loading', wines: previous.wines.filter(wine => { const text = ` ${key(`${wine.name} ${wine.subname ?? ''} ${wine.winery}`)}`;
       return words.every(word => text.includes(` ${word}`)); }) }));
     const timer = setTimeout(() => {
-      searchStore139(trimmed, controller.signal).then(rows => { if (!controller.signal.aborted) setState({ query: trimmed, phase: 'ready', wines: groupStoreRows139(rows, trimmed).slice(0, 20) }); },
+      searchStoreTolerant163(trimmed, controller.signal).then(rows => { if (!controller.signal.aborted) setState({ query: trimmed, phase: 'ready', wines: groupStoreRows139(rows, trimmed).slice(0, 20) }); },
         () => { if (!controller.signal.aborted) setState({ query: trimmed, phase: 'error', wines: [] }); });
     }, 350);
     return () => { clearTimeout(timer); controller.abort(); };
@@ -85,7 +88,7 @@ export const NativeStoreSearch139 = ({ onSelect, onManualEntry, query, onQuery: 
         </button>
       </li>)}
     </ul>}
-    {(current?.phase === 'ready' || current?.phase === 'error') && current.query.length >= 2 && <button type="button" className="flex min-h-11 w-full items-center justify-center rounded-md border border-stone-300 bg-white px-3 py-2 text-sm font-medium text-stone-800" onClick={() => onManualEntry(current.query)}>
+    {onManualEntry && (current?.phase === 'ready' || current?.phase === 'error') && current.query.length >= 2 && <button type="button" className="flex min-h-11 w-full items-center justify-center rounded-md border border-stone-300 bg-white px-3 py-2 text-sm font-medium text-stone-800" onClick={() => onManualEntry(current.query)}>
       {current.wines.length === 0 ? `Añadir «${current.query}» a mano` : '¿No está en la lista? Añadirlo a mano'}
     </button>}
   </div>;

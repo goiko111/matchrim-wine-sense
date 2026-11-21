@@ -102,8 +102,11 @@ import { readPageLines143, type PageLines143 } from '@/utils/nativeOcrLines143';
 import { takeMenuPhoto144 } from '@/utils/scanKind144';
 import { MenuQuickPreview145 } from '@/components/wine-import/MenuQuickPreview145';
 import { SaveMenu162, SavedMenus162 } from '@/components/SavedMenus162';
+import { listSavedMenus162, type SavedMenu162 } from '@/utils/savedMenus162';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
-import { estimateListing139, storeAffinity139, type ListingMatch139 } from '@/utils/storeListing139';
+import { estimateListing139, readListingLine139, storeAffinity139, type ListingMatch139 } from '@/utils/storeListing139';
+import { usableStoreSensory138 } from '@/utils/storeEstimate138';
+import { NativeStoreSearch139 } from '@/components/NativeStoreSearch139';
 import { menuCoverageWarning139, menuLikelyText140, menuLineKey139, menuRowName140, menuVerdict139, menuVerdictCertain140, menuVerdictScore140,
   menuVerdictText139, mergeMenuPages139, shownMenuOptions140, sortMenuVerdicts139, storeOptionName139, type MenuOption140, type MenuVerdict139 } from '@/utils/menuEstimates139';
 
@@ -304,6 +307,7 @@ const WineMenuScannerSession = ({
   // many photos make up this list. Display only: none of this is saved or reaches the profile.
   const [estimates139, setEstimates139] = useState<Map<string, ListingMatch139 | null>>(new Map());
   const [picked139, setPicked139] = useState<Map<string, number>>(new Map());
+  const [lineQuery163, setLineQuery163] = useState<Map<string, string>>(new Map());
   const [menuPages139, setMenuPages139] = useState(1);
   // 140: which lines have their other wines open. Closed until asked: six options under every line made the list endless.
   const [openChoices140, setOpenChoices140] = useState<Set<string>>(new Set());
@@ -587,6 +591,27 @@ const WineMenuScannerSession = ({
   // as soon as it resolves. Lookups are not cancelled when the list changes (a second page, an edit): only a new
   // list, another account or leaving the screen stops them. Typing in the editor waits before asking.
   const profile139 = scanProfile?.profile ?? null;
+  // 163 (owner's video of the 162): a saved list opened again showed «Haz el test de paladar» on every wine and no
+  // photos, because the person's profile is only loaded by a scan. Opening a saved list loads it too, and the notes
+  // and bottle photos are worked out again from the lines kept.
+  const [opened163, setOpened163] = useState<SavedMenu162 | null>(null);
+  const openSaved163 = (menu: SavedMenu162) => {
+    resetEstimates139(); setOpened163(menu); setScannedWines(menu.wines as unknown as ScannedWine[]); setHasProfile(true);
+    if (scanProfile?.profile) return;
+    void loadMatchrimScanProfile(user?.id ?? null, new AbortController().signal).then(snapshot => {
+      setScanProfile(snapshot); setHasProfile(Boolean(snapshot.profile));
+      setScannedWines(current => current.map(wine => refreshMenuProfileAffinity(wine, snapshot.profile)));
+    }).catch(() => { setHasProfile(false); setScanProfile({ profile: null, source: 'unavailable', samples: null, status: 'base-error', note: 'No se pudo cargar tu perfil; afinidad pendiente.' }); });
+  };
+  const askedMenu163 = useRef(false);
+  useEffect(() => {
+    if (askedMenu163.current || !isNative) return;
+    const id = new URLSearchParams(location.search).get('carta'); if (!id) return;
+    askedMenu163.current = true;
+    const menu = listSavedMenus162(user?.id ?? null).find(item => item.id === id);
+    if (menu) openSaved163(menu);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search, user?.id]);
   const estimatesOn139 = isNative && !isMatchrimFixtureQaEnabled;
   useEffect(() => {
     if (!estimatesOn139 || loading || !profile139) return;
@@ -1587,7 +1612,7 @@ const WineMenuScannerSession = ({
   // 139: on iOS the manual search for a verified sheet stays available, closed, under the verdict.
   const wrapLookup139 = (pending: boolean, children: ReactNode) => isNative && pending
     ? <details className="my-3 min-w-0 text-sm" data-testid="native-menu-lookup139">
-      <summary className="min-h-11 cursor-pointer py-3 font-medium text-stone-700">Buscar este vino en Winerim</summary>
+      <summary className="min-h-11 cursor-pointer py-3 font-medium text-stone-700">Más formas de buscarlo</summary>
       <div className="min-w-0">{children}</div>
     </details> : children;
   const renderOptionalNativePanel = (kind: 'comparison' | 'filters', title: string, children: ReactNode) => isNative
@@ -2570,7 +2595,7 @@ const WineMenuScannerSession = ({
       {/* Results Section */}
       {/* 162: lists kept on this phone with their restaurant open again without a photo. */}
       {isNative && scannedWines.length === 0 && !loading && !convertingPdf && !trayOpen141 && <SavedMenus162 ownerId={user?.id ?? null}
-        onOpen={menu => { resetEstimates139(); setScannedWines(menu.wines as unknown as ScannedWine[]); setHasProfile(Boolean(profile139)); }} />}
+        onOpen={openSaved163} />}
       {scannedWines.length > 0 && !trayOpen141 && (
         <div ref={resultsRef} className="scroll-mt-24 space-y-4 break-words">
           {/* 141: the photo with each wine's number where the list prints it. Only when the reader placed the wines:
@@ -2677,7 +2702,7 @@ const WineMenuScannerSession = ({
               }}>
                 <ChefHat className="mr-2 h-4 w-4" />Maridar con la carta de comida
               </Button>}
-              {isNative && <SaveMenu162 key={scannedWines.length} ownerId={user?.id ?? null} wines={scannedWines as unknown as Record<string, unknown>[]} restaurantName={restaurantName} />}
+              {isNative && <SaveMenu162 key={scannedWines.length} ownerId={user?.id ?? null} wines={scannedWines as unknown as Record<string, unknown>[]} restaurantName={restaurantName || opened163?.place.name} place={opened163?.place ?? null} />}
               {!hasProfile && (
                 <Badge variant="outline" className="gap-1">
                   <AlertCircle className="h-3 w-3" />
@@ -3069,6 +3094,22 @@ const WineMenuScannerSession = ({
 	                  <div><div className="truncate text-sm font-bold capitalize text-slate-900">{selectedPinWine.tipo || '-'}</div><div className="text-xs text-slate-500">Tipo</div></div>
 	                </div>}
 	                <WinerimOriginalSheet sheet={selectedPinWine.originalSheet} />
+                    {/* 163 (owner's video of the 162: «vamos a buscar un Ondare… no está buscando nada»): the hand search
+                        of a list line used the old strict lookup, which does not read the store. It is now the store's
+                        own search, tolerant of slips; the wine chosen gives the line the same labelled estimate. */}
+                    {(() => { const verdict = isNative ? verdicts139[selectedPinIndex] : null;
+                      if (!isNative || !profile139 || selectedPinWine.originalSheet?.detailVerified || (verdict && menuVerdictCertain140(verdict))) return null;
+                      const key = menuLineKey139(selectedPinWine);
+                      return <section className="my-3 min-w-0 space-y-2 rounded-2xl bg-stone-50 p-3" aria-label="Buscar este vino en Winerim" data-testid="menu-line-search163">
+                        <h4 className="text-base font-semibold text-stone-950">Búscalo tú en Winerim</h4>
+                        <p className="text-sm leading-5 text-stone-600">Escribe el nombre o la bodega y toca tu vino: le pondremos su nota.</p>
+                        <NativeStoreSearch139 key={key} quiet query={lineQuery163.get(key) ?? readListingLine139({ name: selectedPinWine.nombre }).query}
+                          onQuery={value => setLineQuery163(current => new Map(current).set(key, value))}
+                          onSelect={row => { const attributes = usableStoreSensory138(row);
+                            if (!attributes) { toast.error('Ese vino no tiene todavía los datos para calcular tu nota.'); return; }
+                            edited141.current.add(menuPage141(selectedPinWine));
+                            setEstimates139(current => new Map(current).set(key, { kind: 'exact', estimate: { row, attributes, typicalPrice: (row as { bottlePrice?: number | null }).bottlePrice ?? null } })); }} />
+                      </section>; })()}
                     {wrapLookup139(!selectedPinWine.originalSheet?.detailVerified, <>
                     {!selectedPinWine.originalSheet?.detailVerified && <WinerimSheetLookup identity={{
                       name: selectedPinWine.nombre, producer: selectedPinWine.productor, vintage: selectedPinWine.anada,

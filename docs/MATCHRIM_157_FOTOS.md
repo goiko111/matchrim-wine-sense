@@ -59,3 +59,17 @@ Seis fotos en `src/assets/pairing162/` (600×600), de Unsplash con licencia grat
 | queso.jpg | https://images.unsplash.com/photo-1641297104256-a97cf3a240cb |
 
 Marisco, verduras, picante, aperitivos, postres, fruta, setas y queso azul reutilizan fotos del test.
+
+## Más fotos de maridajes (163), añadido el 21-nov-2026
+El propietario vio la misma foto en ternera, cordero y caza. Cinco fotos más en `src/assets/pairing163/` (600×600),
+de Unsplash con licencia gratuita (búsqueda con el filtro «Gratuita»):
+
+| Archivo | Fuente (archivo en Unsplash) |
+|---|---|
+| cordero.jpg | https://images.unsplash.com/photo-1734987052573-0fbe611842ae |
+| caza.jpg (caza y guisos) | https://images.unsplash.com/photo-1596797038530-2c107229654b |
+| cerdo.jpg | https://images.unsplash.com/photo-1679711246825-1f2bd51b16d0 |
+| jamon.jpg (embutidos y jamón) | https://images.unsplash.com/photo-1709790028365-d49ae1e20f53 |
+| curado.jpg (queso curado) | https://images.unsplash.com/photo-1762698978443-95bd7aa7afae |
+
+Si dos maridajes de un vino llevaran la misma foto, comparten una sola tarjeta.

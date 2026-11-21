@@ -77,3 +77,11 @@ Lista única de lo que queda abierto tras subir la build 151. Nada de esto está
 24. Cartas guardadas entre teléfonos y enlazadas con la carta del restaurante en Winerim: necesita servidor.
 25. La lectura completa de la carta llega de una vez (medio minuto): que el servidor la entregue por partes.
 26. Hecho con un vino (añadidos «cuándo beberlo» y la clasificación); repetir con una muestra amplia.
+
+## Actualizado el 21-nov (vídeo de la 162 → 163)
+Detalle en `MATCHRIM_163_VIDEO_162_2026-11-21.md`. Hecho en la rama, sin build ni subida.
+27. Build 163 y subida a TestFlight: necesita el sí del propietario.
+28. El arnés del simulador debe probar siempre con el lote publicado (instantánea real de la tienda): la 162 pasó
+    con una tienda simulada sin lote y falló en el iPhone. Hecho para la carta; falta extenderlo al resto de recorridos.
+29. Hoja de una botella y filas de varias botellas: sin prueba automática de los cambios de la 163.
+30. «La Mar» y «Julián» ya se resuelven o se descartan en la app; «Nava Real» y «Julián» siguen sin estar en la tienda.

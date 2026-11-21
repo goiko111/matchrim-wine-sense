@@ -26,3 +26,5 @@ export const placeLabel162 = (place: Place162) => place.address ? `${place.name}
 export const placeMapUrl162 = (place: Place162) => place.lat !== null && place.lng !== null
   ? `https://maps.apple.com/?q=${encodeURIComponent(place.name)}&ll=${place.lat.toFixed(5)},${place.lng.toFixed(5)}`
   : `https://maps.apple.com/?q=${encodeURIComponent(placeLabel162(place))}`;
+/** 163: the same place in Google Maps (its public search link: no key, no cost; opens the app when installed). */
+export const googleMapUrl163 = (place: Place162) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(placeLabel162(place))}`;
