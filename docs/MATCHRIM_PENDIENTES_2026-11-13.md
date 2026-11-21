@@ -72,7 +72,7 @@ Lista única de lo que queda abierto tras subir la build 151. Nada de esto está
   tomaste?» con buscador de Apple, fotos en «Combina con», foto a la vista en la hoja, cartas guardadas en el
   teléfono) y la búsqueda tolerante de la carta (6 de 9 líneas «no encontradas» ya salen). Detalle en
   `MATCHRIM_162_REDISENOS_2026-11-20.md`.
-23. Pedir a desarrollo búsqueda tolerante en el servidor (erratas, bodega + uva): «JULIAN», «LA MAR» y «NAVA REAL»
+23. (Enviado el 21-nov-2026, hilo 37a80851; a la espera de respuesta. El lote con typicalPrice está en producción desde el 20-nov y la 162 lo lee.) Pedir a desarrollo búsqueda tolerante en el servidor (erratas, bodega + uva): «JULIAN», «LA MAR» y «NAVA REAL»
     de la carta del cliente siguen sin salir. Sin enviar: necesita que Goiko lo pida.
 24. Cartas guardadas entre teléfonos y enlazadas con la carta del restaurante en Winerim: necesita servidor.
 25. La lectura completa de la carta llega de una vez (medio minuto): que el servidor la entregue por partes.
