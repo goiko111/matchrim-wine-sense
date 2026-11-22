@@ -39,3 +39,11 @@ activa (la tienda no lo enseña); de Julián piden la bodega o la D.O. El propie
   la uva enviada ordena en el servidor, pero en la app «La Mar» se resuelve por precio.
 - La búsqueda a mano conserva su segundo intento propio; no se ha medido si sobra.
 - No se ha contestado a desarrollo (falta la bodega o D.O. de «Julián»).
+
+## Candidato 165-r1 listo (22-nov-2026, sin subir)
+- Fuente `b749696` (9a55f4e más la admisión de la 165 en los runners). Preparación, compilación y archivo firmado:
+  `qa-artifacts/native218-20261025/{candidate165-r1,compile165-r1,archive165-r1}`.
+- QA nativo: r256 (añada, normal), r257 (añada, texto máximo), r258 (catálogo, normal), r259 (catálogo, texto
+  máximo), los cuatro en verde a la primera (r259 es la pasada que en la 164 falló una vez por 2 pt).
+- Simulador sobre compile165-r1: recorridos j02–j12 85/85, ux164 16, ux163 20 (snapshot 165), ux162 17, ux162b 8, ux161 7.
+- La subida necesita el sí expreso del propietario (`scripts/distribute-matchrim165.mjs`, RELEASE.json preparado).
