@@ -37,3 +37,13 @@ Matchrim y el mapa es de Mapbox.
   la web del mapa.
 - Si el mapa cambia sus zonas hay que regenerar el índice. Algunas zonas llevan el nombre en dos lenguas; en las vecinas se enseña la forma castellana.
 - No hay build 164.
+
+## Candidato 164-r1 listo (22-nov-2026, sin subir)
+- Fuente `77971df` (3e68dfd más la admisión de la 164 en los runners). Preparación, compilación y archivo firmado:
+  `qa-artifacts/native218-20261025/{candidate164-r1,compile164-r1,archive164-r1}`.
+- QA nativo: r251 (añada, normal), r252 (añada, texto máximo), r253 (catálogo, normal) en verde. r254 (catálogo,
+  texto máximo) falló: tras 24 arrastres, «Corregir identificación» quedó 2 pt bajo el pie fijo de la hoja (855 frente
+  a 853). La repetición r255 sobre el mismo binario pasó. La hoja es ahora más larga (lleva «De dónde viene») y la
+  prueba converge peor; no se ha demostrado que el botón quede inalcanzable ni que no lo quede. Se conserva r254.
+- Simulador sobre compile164-r1: recorridos j02–j12 85/85, ux164 16, ux163 20, ux162 17, ux162b 8, ux161 7.
+- La subida necesita el sí expreso del propietario (`scripts/distribute-matchrim164.mjs`, RELEASE.json preparado).
