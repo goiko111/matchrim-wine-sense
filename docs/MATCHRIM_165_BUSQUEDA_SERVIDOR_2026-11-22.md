@@ -47,3 +47,8 @@ activa (la tienda no lo enseña); de Julián piden la bodega o la D.O. El propie
   máximo), los cuatro en verde a la primera (r259 es la pasada que en la 164 falló una vez por 2 pt).
 - Simulador sobre compile165-r1: recorridos j02–j12 85/85, ux164 16, ux163 20 (snapshot 165), ux162 17, ux162b 8, ux161 7.
 - La subida necesita el sí expreso del propietario (`scripts/distribute-matchrim165.mjs`, RELEASE.json preparado).
+
+## Build 165 subida a TestFlight (22-nov-2026)
+El propietario contestó «Sí, sube la 165» a «¿Subo la 165 a TestFlight?». Exportación y subida con
+`scripts/distribute-matchrim165.mjs`; Apple acusó recibo (`qa-artifacts/testflight165-20261122/upload165-r1`).
+El recibo no prueba que ya se pueda instalar. Solo beta interna.
