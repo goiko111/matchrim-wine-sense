@@ -19,15 +19,8 @@ const lines: [string, string][] = [['ONDARE MILENIUM', 'espumoso'], ['LALIER R-2
   ['KATXIÑA', 'blanco'], ['AITAREN', 'blanco'], ['ORCHIDEA CUVÉE', 'blanco'], ['MARTIN CODAX', 'blanco'], ['MARA MARTÍN', 'blanco'], ['PONTELLÓN', 'blanco'], ['LA MAR', 'blanco'], ['OSTATU', 'blanco'], ['MUGA', 'blanco'],
   ['ENATE 234', 'blanco'], ['MIRANDA', 'blanco'], ['NAVA REAL', 'blanco'], ['NOSSO', 'blanco'], ['OSSIAN', 'blanco'], ['LA JEFA', 'blanco'], ['FINCA DE LA MOTA', 'blanco']];
 const named = (m: Awaited<ReturnType<typeof estimateListing139>>) => m?.kind === 'exact' ? `${m.estimate.row.name} (${m.estimate.row.winery})` : m?.kind === 'range' ? `range:${m.options.map(o => o.row.name).join('|')}` : null;
-await test('with the batch published, the client list finds 20 of its 22 wines', async () => {
-  const out = await Promise.all(lines.map(([name, type]) => estimateListing139({ name, type })));
-  const by = Object.fromEntries(lines.map(([name], i) => [name, named(out[i])]));
-  assert.deepEqual(lines.filter((_, i) => !out[i]).map(l => l[0]), ['JULIAN', 'NAVA REAL']);
-  assert.match(by['ONDARE MILENIUM']!, /Millenium.*Ondarre/); assert.match(by['LALIER R-20']!, /R\.020.*Lallier/); assert.match(by['LALIER ROSE']!, /Rosé.*Lallier/);
-  assert.match(by['LALIER BLANC DE BLANCS']!, /Lallier Blanc de Blancs/); assert.match(by['IRACHE 18.91']!, /Irache 1891 Rosado/); assert.match(by['LA MAR']!, /Terras Gauda La Mar/);
-  assert.match(by['FINCA DE LA MOTA']!, /Finca la Mota/); assert.match(by['ENATE 234']!, /Enate 234/);
-  assert.ok(asked.batch <= 6, `the second attempt travels in the batch (${asked.batch} calls)`);
-});
+// 165: the group that read the client list against the answers of 21-nov-2026 is gone: that day the server learnt
+// typos and the app's own second attempt was removed. The list is checked in check-matchrim-ux165.ts with today's answers.
 await test('a brand of another colour and a short name alone invent nothing', () => {
   let id = 0; const row = (name: string, winery: string, type: string) => ({ id: ++id, name, winery, slugname: '_', vintage: '2022', subname: null, type, region: null, country: null, photo: null, grapes: [],
     tastingAttributes: { power: 3, acidity: 4, sweetness: 1, tannin: 0, fruity: 3 }, bottlePrice: 30 });
@@ -36,7 +29,8 @@ await test('a brand of another colour and a short name alone invent nothing', ()
   const mar = [row('Terras Gauda La Mar', 'Terras Gauda', 'blanco'), row('La Maragata', 'Pittacum', 'blanco'), row('Villa Marcello Prosecco', 'Villa Marcello', 'espumoso')];
   assert.equal(named(looseMatch162({ name: 'LA MAR', type: 'blanco' }, mar)), 'Terras Gauda La Mar (Terras Gauda)');
   assert.equal(looseMatch162({ name: 'LA MAR' }, mar), null);
-  assert.equal(looseMatch162({ name: 'LA MAR', type: 'blanco' }, [...mar, row('Viña La Mar', 'Otra', 'blanco')]), null);
+  // 165: two wines of that name are a short range (the price on the list narrows it), no longer «not found»
+  assert.equal(named(looseMatch162({ name: 'LA MAR', type: 'blanco' }, [...mar, row('Viña La Mar', 'Otra', 'blanco')])), 'range:Terras Gauda La Mar|Viña La Mar');
 });
 await test('the hand search forgives slips', async () => {
   assert.match((await searchStoreTolerant163('ondare milenium'))[0]?.name ?? '', /Millenium/);

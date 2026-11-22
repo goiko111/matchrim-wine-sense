@@ -77,7 +77,9 @@ await test('No key, no person data, same privacy as the search of today', () => 
   const batch = source.slice(source.indexOf('const BATCH160'), source.indexOf('const median'));
   assert(batch.includes("credentials: 'omit'") && batch.includes("referrerPolicy: 'no-referrer'") && batch.includes("redirect: 'error'"));
   assert(!/X-Matchrim-Key|Authorization|supabase|user/i.test(batch));
-  assert(batch.includes('JSON.stringify({ texts: sent.map(item => item.text) })'), 'only the texts are sent');
+  // 165: each text may travel with the grape and the type the list prints — still nothing about the person
+  assert(batch.includes('JSON.stringify({ texts: sent.map(item => plain || !item.hint ? item.text : { text: item.text, ...item.hint }) })'), 'only the texts and what the list prints are sent');
+  assert(/type BatchHint165 = \{ grape\?: string; type\?: 'tinto' \| 'blanco' \| 'rosado' \| 'espumoso' \}/.test(batch));
 });
 
 console.log(`check-matchrim-batch160: ${groups}/6 groups`);
