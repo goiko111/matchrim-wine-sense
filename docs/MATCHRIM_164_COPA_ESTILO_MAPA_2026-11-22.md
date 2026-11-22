@@ -47,3 +47,8 @@ Matchrim y el mapa es de Mapbox.
   prueba converge peor; no se ha demostrado que el botón quede inalcanzable ni que no lo quede. Se conserva r254.
 - Simulador sobre compile164-r1: recorridos j02–j12 85/85, ux164 16, ux163 20, ux162 17, ux162b 8, ux161 7.
 - La subida necesita el sí expreso del propietario (`scripts/distribute-matchrim164.mjs`, RELEASE.json preparado).
+
+## Build 164 subida a TestFlight (22-nov-2026)
+El propietario contestó «Sí, sube la 164» a «¿Subo la 164 a TestFlight?», sabiendo lo de r254/r255. Exportación y
+subida con `scripts/distribute-matchrim164.mjs`; Apple acusó recibo (`qa-artifacts/testflight164-20261122/upload164-r1`).
+El recibo no prueba que ya se pueda instalar. Solo beta interna.
