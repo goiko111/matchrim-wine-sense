@@ -6,7 +6,7 @@ import { buildConsumerAffinity, type ConsumerAffinityInput, type ConsumerAffinit
 
 // 139: the same five words as the profile (the detail said Potencia/Acidez/Tanino, the profile Cuerpo/Frescura/Taninos).
 const traitNames139: Record<string, string> = { potente: 'Cuerpo', acidez: 'Frescura', dulce: 'Dulzor', tanico: 'Taninos', afrutado: 'Fruta' };
-export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: ConsumerAffinityResult; personalRating?: string | null; personalHistoryUnavailable?: boolean }) => {
+export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: ConsumerAffinityResult; personalRating?: string | null; personalHistoryUnavailable?: boolean; evolutionAdvice?: string | null }) => {
   const result = input.result ?? buildConsumerAffinity(input);
   const saveSlot153 = useVerdictSlot153(result.state !== 'pending');
   const personalTitle = input.personalRating === 'not_for_me' ? 'Tu valoración: no es para ti'
@@ -15,6 +15,7 @@ export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: 
   if (result.state === 'pending') return (
     <section className="min-w-0 border-y border-stone-200 py-4 text-sm" aria-label="Estado de tu afinidad" data-testid="native-affinity-pending">
       {personalTitle && <p className="mb-3 text-base font-semibold text-slate-950">{personalTitle}</p>}
+      {personalTitle && input.evolutionAdvice && <p className="mb-3 font-semibold leading-6 text-stone-900" data-testid="native-evolution164">{input.evolutionAdvice}</p>}
       <h4 className="flex items-start gap-2 text-base font-semibold text-slate-950"><CircleHelp aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />{result.reason === 'identity' ? 'Primero, confirmemos el vino'
         : result.reason === 'profile' ? 'Conoce tu afinidad' : result.reason === 'score' ? 'Tu afinidad necesita actualizarse' : 'Nos faltan datos de este vino'}</h4>
       <p className="mt-2 leading-6 text-stone-600">{result.description}</p>
@@ -34,6 +35,7 @@ export const NativeAffinitySummary = (input: ConsumerAffinityInput & { result?: 
       {saveSlot153 && <div data-testid="verdict-slot153">{saveSlot153}</div>}
       <div className="space-y-2 text-sm leading-6 text-stone-700">
         {personalTitle && <p>Tu valoración tiene prioridad sobre la comparación de estilo.</p>}
+        {personalTitle && input.evolutionAdvice && <p className="font-semibold text-stone-900" data-testid="native-evolution164">{input.evolutionAdvice}</p>}
         {input.personalHistoryUnavailable && !personalTitle && <p role="status">No se pudieron consultar tus valoraciones guardadas. Tu experiencia previa puede cambiar esta recomendación.</p>}
         {!personalTitle && <div className="rounded-2xl border border-stone-200 bg-white px-4 py-2">
           <WhyLines144 dimensions={result.dimensions} note="Compara el estilo con tus gustos. No es una garantía ni una nota de calidad." /></div>}

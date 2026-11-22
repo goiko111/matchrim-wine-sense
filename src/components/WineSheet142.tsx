@@ -2,6 +2,8 @@ import { PairingCards162 } from '@/components/PairingCards162';
 import { historyLines157 } from '@/utils/history157';
 import { useRatedWines157 } from '@/hooks/useRatedWines157';
 import { FlavourCards157 } from '@/components/FlavourCards157';
+import { loadStyleWord164 } from '@/utils/styleWord164';
+import { WineOrigin164 } from '@/components/WineMap164';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Award, Calendar, Frown, Grape, Hourglass, MapPin, Meh, Smile, Thermometer, Wine } from 'lucide-react';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
@@ -72,7 +74,7 @@ export const WinerimRich142 = ({ row, profile, vintage, onRelated }: { row: Publ
     </section>}
     {data && (data.personality || note144.length > 0) && <section aria-labelledby={`note142-${row.id}`}>
       <h4 id={`note142-${row.id}`} className={heading}>A qué sabe</h4>
-      <FlavourCards157 texts={[data.nose, data.palate, data.finish]} />
+      <FlavourCards157 texts={[data.nose, data.palate, data.finish]} wineId={String(row.id)} />
       {data.personality && <p className="mt-2 text-base leading-7 text-stone-800">{data.personality}</p>}
       {/* 144: the whole tasting note of Winerim (sight, nose, mouth, body, structure, finish), each part with its name. */}
       {note144.length > 0 && <details className="mt-1"><summary className={more}>Leer la nota de cata</summary>
@@ -91,6 +93,7 @@ export const WinerimRich142 = ({ row, profile, vintage, onRelated }: { row: Publ
         <dl className="space-y-3 pb-2 text-sm leading-6 text-stone-700">{place144.map(([label, value]) => <div key={label}><dt className="font-semibold text-stone-950">{label}</dt><dd>{value}</dd></div>)}</dl></details>}
       {data.story && <details><summary className={more}>La historia de este vino</summary><p className="pb-2 text-sm leading-6 text-stone-700">{data.story}</p></details>}
     </section>}
+    <WineOrigin164 region={row.region} country={row.country} />
     {data?.curiosity && <aside className="rounded-2xl bg-amber-50 px-4 py-3" aria-label="Curiosidad" data-testid="winerim-curiosity144">
       <p className="text-xs font-semibold uppercase tracking-wide text-amber-900">¿Sabías que…?</p><p className="mt-1 text-sm leading-6 text-stone-800">{data.curiosity}</p></aside>}
     {data && onRelated && data.related.length > 0 && <section aria-labelledby={`rel142-${row.id}`}>
@@ -133,6 +136,11 @@ export const WineSheet142 = ({ row, profile, photo, vintage, actions, onRelated,
     : storeAffinity139(profile, attributes);
   const ready = result?.state === 'ready' ? result : null;
   const name = [row.name, row.subname].filter(Boolean).join(' ');
+  const [style164, setStyle164] = useState<string | null>(null);
+  const styleKey164 = attributes ? [attributes.power, attributes.acidity, attributes.sweetness, attributes.tannin, attributes.fruity, row.type].join(';') : '';
+  useEffect(() => { let live = true; setStyle164(null); void loadStyleWord164(attributes, row.type).then(style => { if (live) setStyle164(style); }); return () => { live = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [styleKey164]);
   const history = historyLines157(useRatedWines157(), { region: row.region, grapes: grapeNames(row) });
   return <article className="pb-4 text-stone-950" data-testid="wine-sheet142">
     <header className="-mx-4 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-2 bg-gradient-to-b from-stone-200 to-stone-50 px-4 pb-4 pt-6">
@@ -147,7 +155,10 @@ export const WineSheet142 = ({ row, profile, photo, vintage, actions, onRelated,
     <div className="pt-4">
       <p className="text-sm text-stone-600 [overflow-wrap:anywhere]">{row.winery}</p>
       <h3 className="text-2xl font-bold leading-8 [overflow-wrap:anywhere]">{name}</h3>
-      {(vintage || row.vintage) && <p className="mt-1 inline-block rounded-full bg-stone-100 px-3 py-1 text-sm text-stone-700">{String(vintage || row.vintage)}</p>}
+      <p className="mt-1 flex flex-wrap gap-2">
+        {(vintage || row.vintage) && <span className="inline-block rounded-full bg-stone-100 px-3 py-1 text-sm text-stone-700">{String(vintage || row.vintage)}</span>}
+        {style164 && <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 text-sm font-semibold text-red-900" data-testid="style-word164"><span className="h-2 w-2 rounded-full bg-red-900" aria-hidden="true" /><span className="sr-only">Estilo Matchrim: </span>{style164}</span>}
+      </p>
     </div>
     {actions && <div className="mt-4">{actions}</div>}
     {ready && <section className={`${card} mt-6 px-4 py-2`} aria-label="Por qué" data-testid="wine-why142">

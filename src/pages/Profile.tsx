@@ -13,6 +13,7 @@ import { supabase } from '@/integrations/supabase/client';
 import AppNav from '@/components/AppNav';
 import NativeAccountActions from '@/components/NativeAccountActions';
 import { NativeProfileBody138 } from '@/components/NativeProfileBody138';
+import { evolutionPattern164 } from '@/utils/evolution164';
 import NativeProfileLayout133 from '@/components/NativeProfileLayout133';
 import MatchrimPassport from '@/components/MatchrimPassport';
 import WineCard from '@/components/WineCard';
@@ -264,6 +265,8 @@ const Profile = () => {
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const [styleDetails, setStyleDetails] = useState<WineStyle[]>([]);
   const [isLoadingStyles, setIsLoadingStyles] = useState(true);
+  const [evolutionNote164, setEvolutionNote164] = useState<string | null>(null);
+  const [ratedZones164, setRatedZones164] = useState<Array<{ region: string | null; country: string | null; rating: string | null }>>([]);
   const [trainingWines, setTrainingWines] = useState<TrainableWine[]>([]);
   const [savedWineKeys, setSavedWineKeys] = useState<Set<string>>(new Set());
   const [profileWinerimWines, setProfileWinerimWines] = useState<WinerimWineWithMatch[]>([]);
@@ -357,6 +360,8 @@ const Profile = () => {
   useEffect(() => {
     let cancelled = false;
     setTrainingWines([]);
+    setEvolutionNote164(null);
+    setRatedZones164([]);
     if (!user || !baseProfile) return;
 
     const loadTrainingWines = async () => {
@@ -377,6 +382,12 @@ const Profile = () => {
 
       setTrainingWines(cellarTrainingRows((data || []) as TrainableWine[], Capacitor.isNativePlatform()));
     };
+    // 164: wines that changed in the glass; a pattern is shown only when it repeats (see evolution164).
+    const loadEvolution164 = async () => {
+      const { data } = await supabase.from('user_wines').select('place_details, region, country, rating').eq('user_id', user.id).not('rating', 'is', null).limit(1000);
+      if (!cancelled) { setEvolutionNote164(evolutionPattern164(data || [])); setRatedZones164(data || []); }
+    };
+    if (Capacitor.isNativePlatform()) void loadEvolution164();
 
     loadTrainingWines();
     return () => { cancelled = true; };
@@ -941,6 +952,8 @@ const Profile = () => {
               learning={learnedProfile && learnedProfile.samples > 0 ? learningDetails138 : null}
               passport={passportProfile ? passportDetails138 : null}
               profileName={profileName}
+              evolutionNote={evolutionNote164}
+              ratedZones={ratedZones164}
               onStyle={name => navigate(`/wine-styles/${generateSlug(name)}`)}
               onAllStyles={() => navigate('/wine-styles')}
               onRetake={() => navigate('/matchrim?retake=1')}

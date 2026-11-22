@@ -4,6 +4,8 @@ import { Capacitor } from '@capacitor/core';
 import { CellarWineAffinity } from '@/components/CellarWineAffinity';
 import { NativeCellarToolbar98 } from '@/components/NativeCellarToolbar98';
 import { SavedMenus162 } from '@/components/SavedMenus162';
+import { CellarEvolution164 } from '@/components/CellarEvolution164';
+import { EVOLUTION_KEY164, readEvolution164, type Evolution164 } from '@/utils/evolution164';
 import { CellarWhere163 } from '@/components/CellarWhere163';
 import { listSavedMenus162 } from '@/utils/savedMenus162';
 import { NativeCellarItem98 } from '@/components/NativeCellarItem98';
@@ -1109,6 +1111,26 @@ const MyWinesForOwner = () => {
     } finally { action.finish(); }
   };
 
+  // 164: which way the wine moved in the glass (see evolution164). Merged into place_details; the rating is untouched.
+  const handleEvolution164 = async (wineId: string, next: Evolution164 | null) => {
+    const action = beginWineAction(wineId);
+    if (!action) return;
+    try {
+      const wine = wines.find(item => item.id === wineId);
+      if (!wine) throw new Error('Wine unavailable');
+      const prior = wine.place_details && typeof wine.place_details === 'object' && !Array.isArray(wine.place_details) ? wine.place_details : {};
+      const place_details = { ...prior, [EVOLUTION_KEY164]: next } as Json;
+      const { data, error } = await supabase.from("user_wines").update({ place_details }).eq("id", wineId).eq("user_id", action.ownerId).select('id, place_details').single();
+      if (!action.isCurrent()) return;
+      if (error || data?.id !== wineId || readEvolution164(data.place_details) !== next) throw error ?? new Error('Evolution update not confirmed');
+      setWines(current => current.map(item => item.id === wineId ? { ...item, place_details } : item));
+    } catch (error) {
+      if (!action.isCurrent()) return;
+      console.error("Error saving evolution:", error);
+      toast.error('No se ha podido guardar. Comprueba la conexión.');
+    } finally { action.finish(); }
+  };
+
   const handleToggleProfileTraining = async (wineId: string, nextValue: boolean) => {
     if (!ownerLifetime.current.active) return;
     const wine = wines.find((item) => item.id === wineId);
@@ -1603,6 +1625,7 @@ const MyWinesForOwner = () => {
         disabled={savingWineActions.has(wine.id)} aria-busy={savingWineActions.has(wine.id)} onClick={() => void handleDrinkBottle134(wine)}>
         <Wine className="h-4 w-4 shrink-0" aria-hidden="true" />Me he bebido una botella</Button>}
       <div className="space-y-1">{ratingControls141(wine)}</div>
+      {isNative && wine.rating && <CellarEvolution164 value={readEvolution164(wine.place_details)} busy={savingWineActions.has(wine.id)} onChange={next => void handleEvolution164(wine.id, next)} />}
       {isNative && (wine.status === 'tasted' || wine.status === 'collection' || wine.status === 'wishlist') && <CellarWhere163 mode={wine.status} place={wine.consumption_place}
         kind={wine.consumption_place_type} price={wine.price} date={wine.consumption_date} busy={savingWineActions.has(wine.id)} onSave={where => handleWhere163(wine.id, where)} />}
     </div>,

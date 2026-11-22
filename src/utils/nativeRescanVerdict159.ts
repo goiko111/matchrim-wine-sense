@@ -8,6 +8,7 @@ import { readCellarSensoryEvidence } from './bodegaAffinity';
 import { isSafeCanonicalLabelMatch } from './winerimLabelIdentity';
 import { nativeMasterLink259 } from './nativeMasterLink259';
 import { readCellarMasterReference260 } from './cellarMasterReference260';
+import { readEvolution164, type Evolution164 } from './evolution164';
 
 export type PersonalRating159 = 'love' | 'ok' | 'not_for_me';
 const rowSchema = z.object({ id: z.string().min(1), user_id: z.string().min(1),
@@ -36,20 +37,34 @@ export const personalVerdictTitle159 = (rating: PersonalRating159) => rating ===
 export const resolveNativeRescanVerdict159 = (
   ownerId: string | null, snapshot: NativeVerdicts159 | null, candidate: WineCandidate | null,
 ): PersonalRating159 | null => {
-  if (!ownerId || snapshot?.ownerId !== ownerId || snapshot.status !== 'ready' || !candidate) return null;
+  const matches = rescanMatches164(ownerId, snapshot, candidate);
+  const ratings = new Set(matches.map(row => row.rating));
+  return ratings.size === 1 ? matches[0].rating : null;
+};
+// 164: the same saved rows also say whether the wine changed in the glass; shown only when they agree.
+export const resolveNativeRescanEvolution164 = (
+  ownerId: string | null, snapshot: NativeVerdicts159 | null, candidate: WineCandidate | null,
+): Evolution164 | null => {
+  const seen = new Set(rescanMatches164(ownerId, snapshot, candidate).map(row => readEvolution164(row.place_details)).filter(Boolean));
+  return seen.size === 1 ? [...seen][0] as Evolution164 : null;
+};
+const rescanMatches164 = (
+  ownerId: string | null, snapshot: NativeVerdicts159 | null, candidate: WineCandidate | null,
+): SavedVerdictRow159[] => {
+  if (!ownerId || snapshot?.ownerId !== ownerId || snapshot.status !== 'ready' || !candidate) return [];
   const global = isGlobalWine103(candidate, candidate.globalRecord) ? candidate.globalRecord : null;
   const master = isVerifiedNativeMaster102(candidate, candidate.masterRecord) ? candidate.masterRecord : null;
   const sheet = isVerifiedWinerimSheetForIdentity(candidate, candidate.originalSheet) ? candidate.originalSheet : null;
   const hosted = nativeMasterLink259(candidate);
-  if (!global && !master && !sheet && !hosted) return null;
-  if (candidate.vintage == null && !global) return null;
+  if (!global && !master && !sheet && !hosted) return [];
+  if (candidate.vintage == null && !global) return [];
   // Unknown bottle years must not inherit the verdict for a dated catalogue row.
   if (global && !exactGlobalVintage103(candidate, global)
-    && !(candidate.vintage === null && global.vintage === null)) return null;
-  if (hosted && !hosted.wine.vintages.includes(String(candidate.vintage))) return null;
+    && !(candidate.vintage === null && global.vintage === null)) return [];
+  if (hosted && !hosted.wine.vintages.includes(String(candidate.vintage))) return [];
   const identity = hosted ? { name: hosted.wine.name, producer: hosted.wine.winery,
     vintage: candidate.vintage, region: hosted.wine.region, country: hosted.wine.country } : global ?? master ?? sheet ?? candidate;
-  const matches = snapshot.rows.filter(row => {
+  return snapshot.rows.filter(row => {
     if (row.user_id !== ownerId || row.vintage !== candidate.vintage
       || !isSafeCanonicalLabelMatch(row, identity) || !hasExactWinerimProducer(row.producer, identity.producer)) return false;
     if (hasWinerimGeographyConflict(row, identity)) return false;
@@ -84,6 +99,4 @@ export const resolveNativeRescanVerdict159 = (
     if (global && candidate.vintage === null && publicReference?.id !== global.id) return false;
     return true;
   });
-  const ratings = new Set(matches.map(row => row.rating));
-  return ratings.size === 1 ? matches[0].rating : null;
 };

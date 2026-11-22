@@ -72,7 +72,8 @@ import { trackAppEvent } from '@/lib/analytics';
 import { findWinerimWineForLabel } from '@/services/winerimApi';
 import { loadMatchrimScanProfile } from '@/services/matchrimScanProfile';
 import { loadNativeScanContext159 } from '@/services/nativeScanContext159';
-import { personalVerdictTitle159, resolveNativeRescanVerdict159, type NativeVerdicts159 } from '@/utils/nativeRescanVerdict159';
+import { personalVerdictTitle159, resolveNativeRescanVerdict159, resolveNativeRescanEvolution164, type NativeVerdicts159 } from '@/utils/nativeRescanVerdict159';
+import { evolutionAdvice164 } from '@/utils/evolution164';
 import { NativeAffinitySummary } from '@/components/NativeAffinitySummary';
 import type { ScanProfileSnapshot } from '@/utils/scanProfile';
 import { makeCellarCatalogEvidence, withCellarInitialAffinity } from '@/utils/bodegaAffinity';
@@ -339,6 +340,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const linked147 = Boolean(nativeConsumer?.canExplainAffinity) ? selectedCandidate?.name ?? '' : '';
   useEffect(() => { if (isNative && linked147 && regionEditorBody.current) regionEditorBody.current.scrollTop = 0; }, [isNative, linked147]);
   const selectedPersonalVerdict = isNative ? resolveNativeRescanVerdict159(user?.id ?? null, nativeVerdicts, selectedCandidate) : null;
+  const selectedEvolutionAdvice164 = isNative && selectedPersonalVerdict ? evolutionAdvice164(resolveNativeRescanEvolution164(user?.id ?? null, nativeVerdicts, selectedCandidate)) : null;
   const nativeReviewTarget = isNative ? nextNativeWineReview(regions) : null;
   // 137: the photo with a number on it answered nothing. One bottle opens its verdict; several open the list with each affinity.
   const autoShown137 = useRef(false);
@@ -1259,7 +1261,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
   const affinityExplanation = selectedCandidate && (isNative ? <NativeAffinitySummary
     profile={scanProfile?.profile ?? null} score={selectedCandidate.affinity}
     attributes={selectedCandidate.sensoryAttributes} sensorySource={selectedCandidate.sensorySource ?? 'inference'}
-    catalogIdentityLinked={Boolean(nativeConsumer?.catalogIdentityLinked)} personalRating={selectedPersonalVerdict}
+    catalogIdentityLinked={Boolean(nativeConsumer?.catalogIdentityLinked)} personalRating={selectedPersonalVerdict} evolutionAdvice={selectedEvolutionAdvice164}
     personalHistoryUnavailable={Boolean(user && nativeVerdicts?.status === 'unavailable')}
   /> : <AffinityExplanation
     profile={scanProfile?.profile ?? null}
@@ -1682,6 +1684,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                         return isNative && consumer?.pending && !isPendingLocalIdentity109(group.candidate)
                           ? <RowEstimate156 identity={group.candidate} profile={scanProfile?.profile ?? null}>{words}</RowEstimate156> : words; })()}
                       {personalVerdict && <span className="mt-1 block font-semibold text-stone-900" data-testid="native-rescan-personal-verdict">{personalVerdictTitle159(personalVerdict)}</span>}
+                      {personalVerdict && evolutionAdvice164(resolveNativeRescanEvolution164(user?.id ?? null, nativeVerdicts, group.candidate)) && <span className="mt-1 block text-stone-700" data-testid="native-rescan-evolution164">{evolutionAdvice164(resolveNativeRescanEvolution164(user?.id ?? null, nativeVerdicts, group.candidate))}</span>}
                     </span>
                   </button>
                   );
@@ -1776,6 +1779,7 @@ const MultiWineLabelScannerSession = ({ onExtractComplete }: MultiWineLabelScann
                 )}
                 {isNative && selectedPersonalVerdict && !nativeConsumer?.canExplainAffinity && <section className="min-w-0 border-y border-stone-200 py-3" aria-label="Tu valoración guardada">
                   <h4 className="font-semibold text-slate-950">{personalVerdictTitle159(selectedPersonalVerdict)}</h4>
+                  {selectedEvolutionAdvice164 && <p className="mt-1 text-sm font-semibold leading-6 text-stone-900" data-testid="native-evolution164">{selectedEvolutionAdvice164}</p>}
                   <p className="mt-1 text-sm leading-6 text-stone-600">Es tu valoración guardada de esta referencia. No sustituye la ficha sensorial ni verifica una añada desconocida.</p>
                 </section>}
                 {isNative && user && nativeVerdicts?.status === 'unavailable' && !nativeConsumer?.canExplainAffinity && <p role="status" className="text-sm leading-6 text-stone-600">No se pudieron consultar tus valoraciones guardadas para este vino.</p>}

@@ -1,3 +1,4 @@
+import { TastedMap164 } from '@/components/WineMap164';
 import type { ReactNode } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { card150 } from '@/components/Relief150';
@@ -18,6 +19,8 @@ interface Props {
   learning: ReactNode;
   passport: ReactNode;
   profileName: string;
+  evolutionNote?: string | null;
+  ratedZones?: Array<{ region?: string | null; country?: string | null; rating?: string | null }>;
   onStyle: (name: string) => void;
   onAllStyles: () => void;
   onRetake: () => void;
@@ -31,7 +34,7 @@ const heading = 'text-[20px] font-bold leading-7 tracking-tight text-stone-950';
 // 138: the iOS profile was seven screens of pastel cards, emoji and «RANGO WINERIM · Pot. Ac. Dul.» scales. It now
 // follows Home: what you like in one sentence, five plain traits, and short lists for styles, grapes and regions.
 export const NativeProfileBody138 = ({ sentence, mainStyle, rows, baseValues, learnedSamples, styles, grapes, regions,
-  wines, learning, passport, profileName, onStyle, onAllStyles, onRetake }: Props) => (
+  wines, learning, passport, profileName, evolutionNote, ratedZones, onStyle, onAllStyles, onRetake }: Props) => (
   <div className="space-y-8 text-stone-950" data-testid="native-profile138">
     {/* 147: the profile speaks the visual language of the wine sheet (142): soft header, round cards, and the same
         two-ended scales with the «Tú» mark the person sees on every wine. */}
@@ -40,6 +43,7 @@ export const NativeProfileBody138 = ({ sentence, mainStyle, rows, baseValues, le
       <p className="text-xs font-semibold uppercase tracking-wide text-red-200">Tu paladar</p>
       <div className="mt-2 text-xl font-semibold leading-7 text-white">{sentence}</div>
       {mainStyle && <p className="mt-3 text-sm leading-6 text-white/80">Estilos que más te van: <span className="font-semibold text-white">{mainStyle}</span></p>}
+      {evolutionNote && <p className="mt-3 text-sm leading-6 text-white/80" data-testid="profile-evolution164">{evolutionNote}</p>}
     </section>
 
     {rows.length > 0 && <section aria-labelledby="profile-traits138">
@@ -59,6 +63,8 @@ export const NativeProfileBody138 = ({ sentence, mainStyle, rows, baseValues, le
       </dl>
       {learnedSamples > 0 && <p className="mt-2 text-xs leading-5 text-stone-500">El círculo son tus gustos de hoy, ajustados con {learnedSamples} vino{learnedSamples !== 1 ? 's' : ''} que has valorado. El punto gris es tu test inicial.</p>}
     </section>}
+
+    {ratedZones && ratedZones.length > 0 && <TastedMap164 wines={ratedZones} />}
 
     {styles.length > 0 && <section aria-labelledby="profile-styles138">
       <div className="flex items-center justify-between gap-3"><h2 id="profile-styles138" className={heading}>Estilos que te van</h2>
