@@ -101,6 +101,7 @@ import { MENU_BADGE_HEIGHT143, MENU_BADGE_WIDTH143, matchMenuPositions143, menuB
 import { readPageLines143, type PageLines143 } from '@/utils/nativeOcrLines143';
 import { takeMenuPhoto144 } from '@/utils/scanKind144';
 import { MenuQuickPreview145 } from '@/components/wine-import/MenuQuickPreview145';
+import { EvolutionAdvice166 } from '@/components/EvolutionAdvice166';
 import { SaveMenu162, SavedMenus162 } from '@/components/SavedMenus162';
 import { listSavedMenus162, type SavedMenu162 } from '@/utils/savedMenus162';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
@@ -281,6 +282,11 @@ const WineMenuScannerSession = ({
   const [identityHoldIndexes, setIdentityHoldIndexes] = useState<Set<number>>(new Set());
   const [hasProfile, setHasProfile] = useState(false);
   const [scanProfile, setScanProfile] = useState<ScanProfileSnapshot | null>(null);
+  // 166: someone who has not done the test found out after the photo and the wait. Known before the photo, said there.
+  const [noQuiz166, setNoQuiz166] = useState(false);
+  useEffect(() => { if (!Capacitor.isNativePlatform()) return; const controller = new AbortController();
+    void loadMatchrimScanProfile(user?.id ?? null, controller.signal).then(snapshot => { if (!controller.signal.aborted) setNoQuiz166(snapshot.status === 'missing'); }, () => undefined);
+    return () => controller.abort(); }, [user?.id]);
   const [retryingProfile, setRetryingProfile] = useState(false);
   const [fileType, setFileType] = useState<'image' | 'pdf' | null>(null);
   const [convertingPdf, setConvertingPdf] = useState(false);
@@ -1487,7 +1493,7 @@ const WineMenuScannerSession = ({
     <div role="status" aria-label="Estado del perfil del escáner" data-testid="scan-profile-recovery" className="mt-2 space-y-2 text-sm text-stone-600">
       <p data-testid="scan-profile-source">{retryingProfile ? 'Cargando perfil...' : isNative && scanProfile.status === 'ready'
         ? scanProfile.source === 'learned' ? 'Basado en tu test y en tus valoraciones.' : 'Basado en tu test de paladar.'
-        : scanProfile.note}</p>
+        : isNative && scanProfile.status === 'missing' ? null : scanProfile.note}</p>
       {user && canRetryScanProfile(scanProfile) && (
         <div className="flex flex-wrap items-center gap-2">
           <Button type="button" variant="outline" className="min-h-11 gap-2" disabled={retryingProfile} onClick={retryScanProfile}>
@@ -1789,7 +1795,8 @@ const WineMenuScannerSession = ({
       return { ...photo, reliable: photo.reliable || device !== null, badgeHeight145: badgeHeight, compact145: compact,
         places143: spreadMenuBadges143(spots, badgeHeight / photoHeight * 100) };
     });
-  const photosOpen141 = !loading && !convertingPdf && photoPages141.some(photo => photo.reliable);
+  // 166: without the test the numbers on the photo carry no note: the photo stays in «Ver carta» and the way to the test comes first.
+  const photosOpen141 = !loading && !convertingPdf && scanProfile?.status !== 'missing' && photoPages141.some(photo => photo.reliable);
   const renderMenuPreview = (image: ReactNode) => nativeResultPreview ? (
     <div className="min-w-0 space-y-[8px]" data-testid="native-menu-image-review">
       <div className="flex justify-end gap-[8px]">
@@ -2524,6 +2531,10 @@ const WineMenuScannerSession = ({
                       Buscaré vinos parecidos a {similarWineContext} dentro de esta carta, priorizando los que encajen con tu Matchrim.
                     </p>
                   )}
+                  {noQuiz166 && <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-3 text-sm leading-5 text-amber-950" data-testid="menu-quiz-first166">
+                    <p><span className="font-semibold">Aún no has hecho el test de paladar.</span> Podemos leer la carta, pero no decirte cuál te gustará.</p>
+                    <Button type="button" variant="outline" className="mt-2 min-h-11 w-full whitespace-normal border-amber-300 bg-white text-amber-950" onClick={() => navigate('/matchrim')}>Hacer el test · 2 min</Button>
+                  </div>}
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   <Button
                     onClick={() => void openCamera133(cameraInputRef.current)}
@@ -2666,9 +2677,13 @@ const WineMenuScannerSession = ({
                   {pendingEstimates139 > 0 && <p role="status" className="flex items-center gap-2 text-xs leading-5 text-stone-500"><Loader2 className="h-3 w-3 shrink-0 animate-spin" aria-hidden="true" />
                     {pendingEstimates139 === 1 ? 'Seguimos buscando 1 vino en Winerim; el orden puede cambiar.' : `Seguimos buscando ${pendingEstimates139} vinos en Winerim; el orden puede cambiar.`}</p>}
                 </> : pendingEstimates139 > 0 ? <ScanWaiting139 steps={MENU_STEPS139} current={estimates139.size > 0 ? 2 : 1} />
-                : <p role="status" className="text-sm leading-6 text-stone-700">{hasProfile
-                  ? 'Hemos leído la carta, pero no hemos encontrado ninguno de estos vinos en Winerim para compararlo con tus gustos.'
-                  : 'Haz el test de paladar (2 minutos) y te diremos cuál de estos vinos encaja más contigo.'}</p>}
+                : hasProfile ? <p role="status" className="text-sm leading-6 text-stone-700">Hemos leído la carta, pero no hemos encontrado ninguno de estos vinos en Winerim para compararlo con tus gustos.</p>
+                // 166: without the test the person waited for the list and then read «haz el test» on every wine. Said once, with the way to do it.
+                : <div role="status" className="space-y-2" data-testid="menu-no-quiz166">
+                  <p className="text-base font-semibold leading-6 text-stone-950">Falta tu test de paladar</p>
+                  <p className="text-sm leading-6 text-stone-700">Hemos leído la carta, pero sin el test no podemos decirte cuál te gustará. Son 2 minutos. Guarda antes la carta con el botón de abajo y vuelve a ella sin repetir la foto.</p>
+                  <Button type="button" className="min-h-11 w-full whitespace-normal" onClick={() => navigate('/matchrim')}>Hacer el test · 2 min</Button>
+                </div>}
               </section>}
           {isNative && nativeScanMetrics?.outcome === 'completed' && <p className="sr-only" data-testid="menu-scan-metrics">
             {Math.round(nativeScanMetrics.elapsedMs / 1000)} s · {nativeScanMetrics.requests} {nativeScanMetrics.requests === 1 ? 'solicitud' : 'solicitudes'} de lectura
@@ -2703,7 +2718,7 @@ const WineMenuScannerSession = ({
                 <ChefHat className="mr-2 h-4 w-4" />Maridar con la carta de comida
               </Button>}
               {isNative && <SaveMenu162 key={scannedWines.length} ownerId={user?.id ?? null} wines={scannedWines as unknown as Record<string, unknown>[]} restaurantName={restaurantName || opened163?.place.name} place={opened163?.place ?? null} />}
-              {!hasProfile && (
+              {!hasProfile && !isNative && (
                 <Badge variant="outline" className="gap-1">
                   <AlertCircle className="h-3 w-3" />
                   Afinidad pendiente: perfil no disponible
@@ -2912,7 +2927,7 @@ const WineMenuScannerSession = ({
                           : verdict.kind === 'estimate' ? `${verdict.title} (estimación)`
                             : verdict.kind === 'likely' ? `${verdict.title} · probablemente, por el precio`
                               : verdict.kind === 'pending' ? isLiteralWineStyle95(wine) ? 'Estilo de la carta \u00b7 botella sin identificar'
-                                : profile139 ? 'Sin ficha de Winerim todavía' : 'Haz el test de paladar para saber si te gustará'
+                                : profile139 ? 'Sin ficha de Winerim todavía' : scanProfile?.status === 'missing' ? '' : 'Sin nota: no hemos podido cargar tu perfil'
                                 : menuVerdictText139(verdict);
                         const spoken = verdict.kind === 'pending' ? answer : verdict.kind === 'verified' ? `${menuVerdictText139(verdict)} · Con ficha de Winerim` : menuVerdictText139(verdict);
                         const choices = verdict.kind === 'likely' || verdict.kind === 'range' || verdict.kind === 'mismatch' ? verdict.options : [];
@@ -2935,7 +2950,7 @@ const WineMenuScannerSession = ({
                                 <span className="block whitespace-normal break-words font-semibold text-slate-950">{shown.name}{wine.anada ? ` ${wine.anada}` : ''}</span>
                                 <span className={`block text-sm text-slate-600 ${shown.listed ? 'truncate' : 'whitespace-normal break-words'}`}>{price}{shown.listed && <span className="text-xs text-stone-500"> · En la carta: {shown.listed}</span>}</span>
                                 {renderNativeTakeawayPrice(wine, requestedServiceFormat === 'any' ? null : requestedServiceFormat)}
-                                <span className={`mt-1 flex items-center gap-2 whitespace-normal break-words text-sm ${menuVerdictCertain140(verdict) || verdict.kind === 'range' ? 'text-stone-800' : 'text-stone-500'}`} data-testid="native-menu-verdict139">
+                                <span hidden={!answer} className={`mt-1 flex items-center gap-2 whitespace-normal break-words text-sm ${menuVerdictCertain140(verdict) || verdict.kind === 'range' ? 'text-stone-800' : 'text-stone-500'}`} data-testid="native-menu-verdict139">
                                   {verdict.kind === 'loading' && <Loader2 className="h-3 w-3 shrink-0 animate-spin" aria-hidden="true" />}{answer}</span>
                               </span>
                               {choices.length === 0 && score}
@@ -3068,6 +3083,8 @@ const WineMenuScannerSession = ({
 	              </DrawerHeader>
               <div role="region" aria-label="Contenido del vino" tabIndex={0} className={isNative ? 'min-h-[44px] min-w-0 flex-1 overflow-y-auto break-words p-[16px]' : 'min-h-0 min-w-0 flex-1 overflow-y-auto break-words p-4'}>
                 {renderProfileRecovery()}
+                {isNative && (() => { const verdict = verdicts139[selectedPinIndex]; const row = verdict && (verdict.kind === 'estimate' || verdict.kind === 'likely') ? verdict.estimate.row : null;
+                  return <EvolutionAdvice166 name={row ? [row.name, row.subname].filter(Boolean).join(' ') : selectedPinWine.nombre} producer={row ? row.winery : selectedPinWine.productor} className="mb-3" />; })()}
                 {isNative && renderWineAffinityExplanation(selectedPinWine)}
                 {isNative && <p className="my-3 text-sm text-slate-600">{[selectedPinWine.productor, selectedPinWine.region,
                   formatPrice(selectedPinWine.precio, selectedPinWine.moneda)].filter(Boolean).join(' · ')}</p>}

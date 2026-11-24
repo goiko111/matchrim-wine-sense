@@ -252,20 +252,6 @@ export const likelyByPrice140 = (options: readonly StoreEstimate138[], listPrice
 // repaired, and compared word by word allowing one wrong letter. The answer is the same labelled estimate.
 const SMALL162 = new Set(['de', 'del', 'la', 'el', 'los', 'las', 'y', 'e', 'd', 'l', 'do', 'da', 'di', 'le', 'les', 'the', 'of']);
 const words162 = (value: string) => key(value.replace(/(\d)[.,](\d)/g, '$1$2')).split(' ').filter(Boolean);
-const doubled162 = (word: string) => { const out: string[] = [];
-  for (let at = 1; at < word.length - 1; at += 1) { const letter = word[at];
-    if (!'lrnstmpcfz'.includes(letter)) continue;
-    if (word[at + 1] === letter) { out.push(word.slice(0, at) + word.slice(at + 1)); at += 1; }
-    else if (word[at - 1] !== letter) out.push(word.slice(0, at) + letter + word.slice(at)); }
-  return out; };
-/** Other ways to ask the store for a line it did not find, most promising first (at most six). */
-export const rescueQueries162 = (line: ListingLine139): string[] => {
-  const read = readListingLine139(line), all = words162(read.query), first = key(read.query);
-  const strong = all.filter(word => !SMALL162.has(word) && (word.length >= 4 || /^\d{3,}$/.test(word)));
-  const phrases = [all.join(' '), all.filter(word => word !== 'de' && word !== 'del').join(' ')];
-  const singles = [...strong].sort((a, b) => b.length - a.length).flatMap(word => [word, ...(/\d/.test(word) ? [] : doubled162(word).slice(0, 3))]);
-  return [...new Set([...phrases, ...singles])].filter(query => query.length >= 3 && query !== first).slice(0, 6);
-};
 const near162 = (a: string, b: string) => {
   if (a === b) return true;
   if (/^\d+$/.test(a) || /^\d+$/.test(b)) return /^\d+$/.test(a) && /^\d+$/.test(b) && Number(a) === Number(b);
@@ -347,21 +333,6 @@ export const estimateListing139 = async (line: ListingLine139, signal?: AbortSig
   catch { if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError'); return null; }
 };
 
-/** 163: what a person types by hand («ondare», «lalier blanc»): the store as written and, when that finds nothing,
- *  the same second attempt as the wine list (word by word, one wrong letter allowed). Rows of the store, to choose from. */
-export const searchStoreTolerant163 = async (query: string, signal?: AbortSignal): Promise<readonly StoreRow140[]> => {
-  const direct = await searchStore139(query, signal);
-  if (direct.length >= 8) return direct;
-  const all = words162(query), wanted = all.filter(word => !SMALL162.has(word) && word.length >= 3);
-  if (!wanted.length) return direct;
-  // The same text with one word respelt («lalier blanc» → «lallier blanc»), then the list's word-by-word attempt.
-  const respelt = all.flatMap((word, at) => /\d/.test(word) || word.length < 4 ? [] : doubled162(word).slice(0, 3).map(other => all.map((own, index) => index === at ? other : own).join(' '))).slice(0, 4);
-  const queries = [...new Set([...respelt, ...rescueQueries162({ name: query })])].filter(text => text !== key(query));
-  const [phrases, lots] = await Promise.all([Promise.all(respelt.map(text => searchStore139(text, signal).catch(() => [] as readonly StoreRow140[]))), Promise.all(queries.map(text => batchRows160(text)))]);
-  if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
-  const pool = [...phrases.flat(), ...lots.flatMap(rows => rows ?? [])];
-  const seen = new Set<number>(direct.map(row => row.id));
-  const extra = pool.filter(row => { const have = words162(`${row.name} ${row.subname ?? ''} ${row.winery}`);
-    return !seen.has(row.id) && seen.add(row.id) && wanted.every(word => have.some(other => near162(word, other) || (word.length >= 4 && other.startsWith(word)))); });
-  return [...direct, ...extra];
-};
+// 166: the hand search had its own second attempt (the text respelt, word by word: up to five more calls). Measured on
+// 24-nov-2026 against the store with thirty searches, slips included («ondare milenium», «vina ardansa», «marqes de
+// riscal»): it added no wine the server had not already answered, so the hand search is the store search as it is.

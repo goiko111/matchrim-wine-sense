@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { readPageLines143 } from '@/utils/nativeOcrLines143';
 import { quickMenuLines145, type QuickMenuLine145 } from '@/utils/quickMenu145';
-import { estimateListing139, storeAffinity139, type ListingMatch139 } from '@/utils/storeListing139';
+import { estimateListing139, likelyByPrice140, storeAffinity139, type ListingMatch139 } from '@/utils/storeListing139';
 import type { MatchrimProfileLike } from '@/utils/matchrimPassport';
 
 const dataUrl = (file: File) => new Promise<string | null>(resolve => { const reader = new FileReader();
@@ -22,8 +22,10 @@ export const MenuQuickPreview145 = ({ file, profile }: { file: File | null | und
       const read = await readPageLines143(image); if (!live || !read) return;
       const found = quickMenuLines145(read.lines); if (found.length < 3) return;
       setLines(found);
-      found.forEach((line, index) => { void estimateListing139({ name: line.text }, controller.signal)
-        .then(match => { if (live) setMatches(previous => ({ ...previous, [index]: match })); }, () => undefined); });
+      found.forEach((line, index) => { void estimateListing139({ name: line.text, type: line.section }, controller.signal)
+        // 166: a winery with several wines is told apart by the price on the list, as the finished list does.
+        .then(found166 => { const pick = found166?.kind === 'range' ? likelyByPrice140(found166.options, line.price) : null;
+          const match: ListingMatch139 | null = pick ? { kind: 'exact', estimate: pick } : found166; if (live) setMatches(previous => ({ ...previous, [index]: match })); }, () => undefined); });
     })();
     return () => { live = false; controller.abort(); };
   }, [file]);
@@ -41,7 +43,8 @@ export const MenuQuickPreview145 = ({ file, profile }: { file: File | null | und
   const order162 = lines.map((_, index) => index).sort((a, b) => rank162(b) - rank162(a) || a - b);
   return <section className="min-w-0 rounded-2xl border border-stone-200 bg-white px-4 py-3 text-left" aria-label="Vista rápida de la carta" data-testid="menu-quick-preview145">
     <h3 className="text-base font-semibold text-stone-950">Vinos de la carta · {lines.length} de momento</h3>
-    <p className="mt-1 text-sm leading-5 text-stone-600">Se van ordenando según llegan sus notas. La lista completa tarda alrededor de medio minuto.</p>
+    <p className="mt-1 text-sm leading-5 text-stone-600">{profile ? 'Se van ordenando según llegan sus notas. La lista completa tarda alrededor de medio minuto.'
+      : 'Sin el test de paladar no llevan nota. La lista completa tarda alrededor de medio minuto.'}</p>
     <ul className="mt-2 divide-y divide-stone-100" data-testid="menu-quick-list162">{order162.map(index => { const line = lines[index], match = matches[index];
       const result = match?.kind === 'exact' && profile ? storeAffinity139(profile, match.estimate.attributes) : null;
       const score = result?.state === 'ready' ? result.score : null;

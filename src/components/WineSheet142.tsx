@@ -1,6 +1,7 @@
 import { PairingCards162 } from '@/components/PairingCards162';
 import { historyLines157 } from '@/utils/history157';
 import { useRatedWines157 } from '@/hooks/useRatedWines157';
+import { EvolutionAdvice166 } from '@/components/EvolutionAdvice166';
 import { FlavourCards157 } from '@/components/FlavourCards157';
 import { loadStyleWord164 } from '@/utils/styleWord164';
 import { WineOrigin164 } from '@/components/WineMap164';
@@ -160,6 +161,7 @@ export const WineSheet142 = ({ row, profile, photo, vintage, actions, onRelated,
         {style164 && <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 text-sm font-semibold text-red-900" data-testid="style-word164"><span className="h-2 w-2 rounded-full bg-red-900" aria-hidden="true" /><span className="sr-only">Estilo Matchrim: </span>{style164}</span>}
       </p>
     </div>
+    <EvolutionAdvice166 name={name} producer={row.winery} className="mt-4" />
     {actions && <div className="mt-4">{actions}</div>}
     {ready && <section className={`${card} mt-6 px-4 py-2`} aria-label="Por qué" data-testid="wine-why142">
       <WhyLines144 dimensions={ready.dimensions} note="Estimación con los datos de Winerim. Compara el estilo del vino con tus gustos; no es una nota de calidad." />

@@ -15,7 +15,7 @@ export const useRatedWines157 = (enabled = true) => {
     if (cache?.owner === owner && Date.now() - cache.at < 60_000) { setRows(cache.rows); return; }
     let live = true;
     void (async () => { try {
-      const { data, error } = await supabase.from('user_wines').select('id,region,grape_varieties,rating').eq('user_id', owner).limit(600);
+      const { data, error } = await supabase.from('user_wines').select('id,region,grape_varieties,rating,name,producer,place_details').eq('user_id', owner).limit(600);
       if (error || !live) return;
       const rated = (data ?? []).filter(row => row.rating) as RatedWine157[];
       cache = { owner, at: Date.now(), rows: rated }; setRows(rated);

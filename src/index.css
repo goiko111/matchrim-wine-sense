@@ -139,6 +139,19 @@ html.matchrim-native-platform.matchrim-accessibility-text .sheet-head162 {
   padding-right: 1rem;
 }
 
+/* 166: with the largest text the wine sheet of Mis vinos stacked three paddings measured in text sizes (50+50+37 pt
+   a side) and left its blocks 166 pt wide: words broke by syllables. Paddings there are fixed points. */
+html.matchrim-native-platform.matchrim-accessibility-text [data-testid="native-cellar-sheet141"] > div {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+html.matchrim-native-platform.matchrim-accessibility-text [data-testid="native-cellar-rate141"] {
+  padding: 16px;
+}
+html.matchrim-native-platform.matchrim-accessibility-text [data-testid="cellar-evolution164"] {
+  padding: 12px;
+}
+
 html.matchrim-native-platform.matchrim-accessibility-text [data-testid="sheet-photo162"] {
   display: none;
 }

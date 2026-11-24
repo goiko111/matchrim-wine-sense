@@ -1,7 +1,8 @@
 // 157: besides how the wine compares with the person's taste (five traits), the sheet says what they already know
 // about wines like it: how they rated others from the same zone and of the same grape (the owner's OK to idea 3).
 // Only their own ratings are counted, and only from two wines up; with less there is nothing honest to say.
-export type RatedWine157 = { rating?: string | null; region?: string | null; grape_varieties?: string[] | null };
+export type RatedWine157 = { rating?: string | null; region?: string | null; grape_varieties?: string[] | null;
+  name?: string | null; producer?: string | null; place_details?: unknown };
 export type HistoryLine157 = { key: string; face: 'good' | 'fair' | 'far'; text: string };
 const fold = (text: string | null | undefined) => (text ?? '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
 const line = (key: string, subject: string, ratings: string[]): HistoryLine157 | null => {

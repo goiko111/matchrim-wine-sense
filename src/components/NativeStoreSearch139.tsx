@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Loader2, RefreshCw, Search } from 'lucide-react';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
 import { card150, TypeDot150 } from '@/components/Relief150';
-import { searchStoreTolerant163 } from '@/utils/storeListing139';
+import { searchStore139 } from '@/utils/storeListing139';
 import type { PublicGlobalRow103 } from '@/utils/nativeGlobalCatalogue103';
 import { formatWineType } from '@/utils/wineFormatters';
 
@@ -55,7 +55,7 @@ export const NativeStoreSearch139 = ({ onSelect, onManualEntry, query, onQuery: 
     setState(previous => ({ query: trimmed, phase: 'loading', wines: previous.wines.filter(wine => { const text = ` ${key(`${wine.name} ${wine.subname ?? ''} ${wine.winery}`)}`;
       return words.every(word => text.includes(` ${word}`)); }) }));
     const timer = setTimeout(() => {
-      searchStoreTolerant163(trimmed, controller.signal).then(rows => { if (!controller.signal.aborted) setState({ query: trimmed, phase: 'ready', wines: groupStoreRows139(rows, trimmed).slice(0, 20) }); },
+      searchStore139(trimmed, controller.signal).then(rows => { if (!controller.signal.aborted) setState({ query: trimmed, phase: 'ready', wines: groupStoreRows139(rows, trimmed).slice(0, 20) }); },
         () => { if (!controller.signal.aborted) setState({ query: trimmed, phase: 'error', wines: [] }); });
     }, 350);
     return () => { clearTimeout(timer); controller.abort(); };

@@ -12,7 +12,7 @@ globalThis.fetch = (async (input: unknown, options?: { method?: string; body?: s
   asked.get += 1;
   return new Response(JSON.stringify(snap.get[(url.searchParams.get('text') ?? '').toLowerCase()] ?? { count: 0, results: [] }), { status: 200 });
 }) as typeof fetch;
-const { estimateListing139, searchStoreTolerant163, matchListing139, looseMatch162 } = await import('../src/utils/storeListing139');
+const { estimateListing139, matchListing139, looseMatch162 } = await import('../src/utils/storeListing139');
 const { googleMapUrl163 } = await import('../src/utils/places162');
 let n = 0; const test = async (label: string, fn: () => void | Promise<void>) => { await fn(); n += 1; console.log(`  ok ${label}`); };
 const lines: [string, string][] = [['ONDARE MILENIUM', 'espumoso'], ['LALIER R-20', 'espumoso'], ['LALIER ROSE', 'espumoso'], ['LALIER BLANC DE BLANCS', 'espumoso'], ['JULIAN', 'rosado'], ['IRACHE 18.91', 'rosado'],
@@ -31,11 +31,6 @@ await test('a brand of another colour and a short name alone invent nothing', ()
   assert.equal(looseMatch162({ name: 'LA MAR' }, mar), null);
   // 165: two wines of that name are a short range (the price on the list narrows it), no longer «not found»
   assert.equal(named(looseMatch162({ name: 'LA MAR', type: 'blanco' }, [...mar, row('Viña La Mar', 'Otra', 'blanco')])), 'range:Terras Gauda La Mar|Viña La Mar');
-});
-await test('the hand search forgives slips', async () => {
-  assert.match((await searchStoreTolerant163('ondare milenium'))[0]?.name ?? '', /Millenium/);
-  assert.ok((await searchStoreTolerant163('lalier blanc')).some(row => /Lallier Blanc de Blancs/.test(row.name)));
-  assert.equal((await searchStoreTolerant163('nava real')).length, 0);
 });
 await test('each meat has its own photograph and no card repeats one', () => {
   const cards = fs.readFileSync(new URL('../src/components/PairingCards162.tsx', import.meta.url), 'utf8');

@@ -1,19 +1,11 @@
 // 162: lines of a client's list that the store has under another spelling. Run: npx tsx scripts/check-matchrim-search162.ts
 import assert from 'node:assert/strict';
-const { rescueQueries162, looseMatch162 } = await import('../src/utils/storeListing139');
+const { looseMatch162 } = await import('../src/utils/storeListing139');
 let id = 0;
 const row = (name: string, winery: string, type = 'blanco') => ({ id: ++id, name, winery, slugname: '_', vintage: '2022', subname: null, type, region: null, country: null, photo: null, grapes: [],
   tastingAttributes: { power: 3, acidity: 4, sweetness: 1, tannin: type === 'tinto' ? 3 : 0, fruity: 3 }, bottlePrice: 30 });
 const name = (m: ReturnType<typeof looseMatch162>) => m?.kind === 'exact' ? m.estimate.row.name : m?.kind === 'range' ? `range:${m.options.length}` : null;
 let n = 0; const test = (label: string, fn: () => void) => { fn(); n += 1; console.log(`  ok ${label}`); };
-test('queries repair the usual slips', () => {
-  assert.ok(rescueQueries162({ name: 'LALIER ROSE' }).includes('lallier'));
-  assert.ok(rescueQueries162({ name: 'ONDARRE MILENIUM – Chardonnay' }).includes('ondarre'));
-  assert.ok(rescueQueries162({ name: 'ONDARRE MILENIUM' }).includes('millenium'));
-  assert.equal(rescueQueries162({ name: 'IRACHE 18.91' })[0], 'irache 1891');
-  assert.ok(rescueQueries162({ name: 'FINCA DE LA MOTA' }).includes('finca la mota'));
-  assert.ok(rescueQueries162({ name: 'FINCA DE LA MOTA' }).length <= 6);
-});
 test('one wrong letter still names the wine', () => {
   const lallier = [row('R.020 Brut Aÿ', 'Lallier', 'espumoso'), row('Lallier Grand Cru Rosé Brut', 'Lallier', 'espumoso'), row('Lallier Blanc de Blancs Brut Grand Cru', 'Lallier', 'espumoso'), row('Lallier R.021 Brut', 'Lallier', 'espumoso')];
   assert.equal(name(looseMatch162({ name: 'LALIER ROSE' }, lallier)), 'Lallier Grand Cru Rosé Brut');
