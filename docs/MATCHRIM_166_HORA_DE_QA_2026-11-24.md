@@ -86,3 +86,13 @@ ux163 20, ux162 17, ux162b 8, ux161 7. `check-matchrim-ux166.ts` 6/6.
 - iPhone real.
 - La vuelta a la carta se ha probado con cuenta iniciada; sin cuenta el test pide registrarse antes de guardar el perfil.
 - Si pasan más de 6 horas entre la foto y el final del test, la carta ya no vuelve.
+
+## Candidata 166 (25-nov-2026) — lista, sin subir
+
+- `candidate166-r1` en el commit `8111601`: preparación y compilación correctas; archivo `archive166-r1` firmado y verificado.
+- QA nativo: r260 (añadas, normal), r264 (añadas, máxima), r262 (catálogo, normal) y r265 (catálogo, máxima) pasan.
+- Dos pasadas con letra máxima fallaron antes y se repitieron: r261 (854 > 853) y r263 (856 > 853), «Control hidden
+  behind the fixed footer» tras los 24 desplazamientos que la prueba se permite. Quedan anotadas en
+  `qa-artifacts/testflight166-20261125/RELEASE.json`. Es la misma convergencia que r254 en la 164; la prueba no se ha tocado.
+- Simulador sobre el binario compile166-r1: j02–j12 85/85, ux166 13, ux166b 12, ux164 16, ux163 20, ux162 17, ux162b 8, ux161 7.
+- No subida a TestFlight: falta el sí expreso del propietario.
