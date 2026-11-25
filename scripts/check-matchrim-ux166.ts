@@ -39,4 +39,24 @@ await test('without the test: said once, before the photo and after, with the wa
   assert.ok(!menu.includes('Haz el test de paladar para saber si te gustará'));
   assert.equal(menu.split('Hacer el test · 2 min').length - 1, 2);
 });
+await test('the list read before the test comes back after it: kept six hours for that account, removed when opened', async () => {
+  const store = new Map<string, string>();
+  (globalThis as { localStorage?: unknown }).localStorage = { getItem: (k: string) => store.get(k) ?? null, setItem: (k: string, v: string) => { store.set(k, v); }, removeItem: (k: string) => { store.delete(k); } };
+  const { keepPendingMenu166, readPendingMenu166, clearPendingMenu166, PENDING_MENU_RETURN166 } = await import('../src/utils/pendingMenu166');
+  const { getSafeRedirectPath } = await import('../src/utils/navigation');
+  assert.equal(keepPendingMenu166('u1', []), false);
+  assert.equal(keepPendingMenu166('u1', [{ nombre: 'Muga' }, { nombre: 'Ostatu' }], 1000), true);
+  assert.equal(readPendingMenu166('u1', 2000)?.length, 2);
+  assert.equal(readPendingMenu166('u2', 2000), null);
+  assert.equal(readPendingMenu166('u1', 1000 + 7 * 3_600_000), null);
+  clearPendingMenu166('u1'); assert.equal(readPendingMenu166('u1', 2000), null);
+  assert.equal(getSafeRedirectPath(PENDING_MENU_RETURN166, ''), '/escanear/carta?carta=pendiente166');
+  const menu = fs.readFileSync(new URL('../src/components/wine-import/WineMenuScanner.tsx', import.meta.url), 'utf8');
+  assert.ok(menu.includes('keepPendingMenu166(') && menu.includes('readPendingMenu166(') && !menu.includes('Guarda antes la carta'));
+  assert.ok(fs.readFileSync(new URL('../src/components/NativeQuizResults240.tsx', import.meta.url), 'utf8').includes('Ver mi carta con sus notas'));
+});
+await test('largest text: the bar of the search sheet is the arrow alone, in fixed points', () => {
+  const sheet = fs.readFileSync(new URL('../src/components/NativeSearchWine138.tsx', import.meta.url), 'utf8');
+  assert.ok(sheet.includes('search-wine-bar166') && sheet.split('[html.matchrim-accessibility-text_&]:sr-only').length - 1 === 2 && sheet.includes('[html.matchrim-accessibility-text_&]:min-h-[44px]'));
+});
 console.log(`check-matchrim-ux166: ${n}/${n} groups passed`);

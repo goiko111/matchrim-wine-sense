@@ -102,6 +102,7 @@ import { readPageLines143, type PageLines143 } from '@/utils/nativeOcrLines143';
 import { takeMenuPhoto144 } from '@/utils/scanKind144';
 import { MenuQuickPreview145 } from '@/components/wine-import/MenuQuickPreview145';
 import { EvolutionAdvice166 } from '@/components/EvolutionAdvice166';
+import { clearPendingMenu166, keepPendingMenu166, PENDING_MENU_ID166, PENDING_MENU_RETURN166, readPendingMenu166 } from '@/utils/pendingMenu166';
 import { SaveMenu162, SavedMenus162 } from '@/components/SavedMenus162';
 import { listSavedMenus162, type SavedMenu162 } from '@/utils/savedMenus162';
 import { NativeWinePhoto98 } from '@/components/NativeWinePhoto98';
@@ -601,8 +602,8 @@ const WineMenuScannerSession = ({
   // photos, because the person's profile is only loaded by a scan. Opening a saved list loads it too, and the notes
   // and bottle photos are worked out again from the lines kept.
   const [opened163, setOpened163] = useState<SavedMenu162 | null>(null);
-  const openSaved163 = (menu: SavedMenu162) => {
-    resetEstimates139(); setOpened163(menu); setScannedWines(menu.wines as unknown as ScannedWine[]); setHasProfile(true);
+  const openSaved163 = (menu: SavedMenu162, saved = true) => {
+    resetEstimates139(); setOpened163(saved ? menu : null); setScannedWines(menu.wines as unknown as ScannedWine[]); setHasProfile(true);
     if (scanProfile?.profile) return;
     void loadMatchrimScanProfile(user?.id ?? null, new AbortController().signal).then(snapshot => {
       setScanProfile(snapshot); setHasProfile(Boolean(snapshot.profile));
@@ -614,6 +615,9 @@ const WineMenuScannerSession = ({
     if (askedMenu163.current || !isNative) return;
     const id = new URLSearchParams(location.search).get('carta'); if (!id) return;
     askedMenu163.current = true;
+    // 166: the list read before the test comes back on its own after it, with its notes.
+    if (id === PENDING_MENU_ID166) { const wines = readPendingMenu166(user?.id ?? null); clearPendingMenu166(user?.id ?? null);
+      if (wines) openSaved163({ id, at: Date.now(), place: { name: 'Carta' } as SavedMenu162['place'], wines }, false); return; }
     const menu = listSavedMenus162(user?.id ?? null).find(item => item.id === id);
     if (menu) openSaved163(menu);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -2533,7 +2537,7 @@ const WineMenuScannerSession = ({
                   )}
                   {noQuiz166 && <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-3 text-sm leading-5 text-amber-950" data-testid="menu-quiz-first166">
                     <p><span className="font-semibold">Aún no has hecho el test de paladar.</span> Podemos leer la carta, pero no decirte cuál te gustará.</p>
-                    <Button type="button" variant="outline" className="mt-2 min-h-11 w-full whitespace-normal border-amber-300 bg-white text-amber-950" onClick={() => navigate('/matchrim')}>Hacer el test · 2 min</Button>
+                    <Button type="button" variant="outline" className="mt-2 h-auto min-h-11 w-full whitespace-normal border-amber-300 bg-white py-2 text-amber-950" onClick={() => navigate(`/matchrim?returnTo=${encodeURIComponent('/escanear/carta')}`)}>Hacer el test · 2 min</Button>
                   </div>}
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   <Button
@@ -2681,8 +2685,10 @@ const WineMenuScannerSession = ({
                 // 166: without the test the person waited for the list and then read «haz el test» on every wine. Said once, with the way to do it.
                 : <div role="status" className="space-y-2" data-testid="menu-no-quiz166">
                   <p className="text-base font-semibold leading-6 text-stone-950">Falta tu test de paladar</p>
-                  <p className="text-sm leading-6 text-stone-700">Hemos leído la carta, pero sin el test no podemos decirte cuál te gustará. Son 2 minutos. Guarda antes la carta con el botón de abajo y vuelve a ella sin repetir la foto.</p>
-                  <Button type="button" className="min-h-11 w-full whitespace-normal" onClick={() => navigate('/matchrim')}>Hacer el test · 2 min</Button>
+                  <p className="text-sm leading-6 text-stone-700">Hemos leído la carta, pero sin el test no podemos decirte cuál te gustará. Son 2 minutos: al terminar vuelves a esta carta, ya con sus notas, sin repetir la foto.</p>
+                  <Button type="button" className="h-auto min-h-11 w-full whitespace-normal py-2" onClick={() => {
+                    const kept = keepPendingMenu166(user?.id ?? null, scannedWines as unknown as Record<string, unknown>[]);
+                    navigate(`/matchrim?returnTo=${encodeURIComponent(kept ? PENDING_MENU_RETURN166 : '/escanear/carta')}`); }}>Hacer el test · 2 min</Button>
                 </div>}
               </section>}
           {isNative && nativeScanMetrics?.outcome === 'completed' && <p className="sr-only" data-testid="menu-scan-metrics">

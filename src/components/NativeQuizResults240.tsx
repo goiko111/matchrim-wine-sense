@@ -69,7 +69,7 @@ const NativeQuizResults240: React.FC<Props> = ({ result, onRestart, returnTo, re
     </section>
     <div className="grid min-w-0 gap-2">
       <Button className="h-auto min-h-[48px] w-full gap-[8px] whitespace-normal bg-red-900 px-[16px] py-[12px] text-white [&_svg]:size-[20px]" onClick={() => navigate(getSafeRedirectPath(returnTo, '/escanear/etiqueta'))}>
-        <Camera aria-hidden="true" className="h-[20px] w-[20px] shrink-0" /><span className="min-w-0 [overflow-wrap:normal]">{returnTo ? 'Continuar' : 'Escanear un vino'}</span>
+        <Camera aria-hidden="true" className="h-[20px] w-[20px] shrink-0" /><span className="min-w-0 [overflow-wrap:normal]">{returnTo?.includes('carta=pendiente166') ? 'Ver mi carta con sus notas' : returnTo ? 'Continuar' : 'Escanear un vino'}</span>
       </Button>
       <Button variant="outline" className="h-auto min-h-[48px] w-full gap-[8px] whitespace-normal px-[16px] py-[12px] [&_svg]:size-[20px]" onClick={() => navigate('/restaurante')}>
         <Utensils aria-hidden="true" className="h-[20px] w-[20px] shrink-0" /><span className="min-w-0 [overflow-wrap:normal]">Elegir vino para mi comida</span>

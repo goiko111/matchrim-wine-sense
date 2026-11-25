@@ -33,13 +33,14 @@ export const NativeSearchWine138 = ({ wine, profile, onClose, backLabel, catalog
     <Dialog.Portal><Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" />
       <Dialog.Content aria-describedby="search-wine138-description" data-testid="native-search-wine138"
         className="fixed inset-x-0 bottom-0 z-50 mx-auto flex max-h-[96dvh] w-full max-w-xl flex-col overflow-hidden rounded-t-2xl bg-stone-50 text-stone-950">
-        <div className="flex shrink-0 items-center justify-between gap-3 border-b border-stone-200 bg-white px-4 py-2">
-          {trail.length ? <button type="button" className="flex min-h-11 items-center gap-2 text-sm font-semibold text-red-900" onClick={() => setTrail(previous => previous.slice(0, -1))}><ArrowLeft className="h-5 w-5" aria-hidden="true" />Volver al vino anterior</button>
-            : backLabel ? <Dialog.Close className="flex min-h-11 items-center gap-2 text-sm font-semibold text-red-900"><ArrowLeft className="h-5 w-5" aria-hidden="true" />{backLabel}</Dialog.Close> : null}
+        {/* 166: with the largest text «Volver a la búsqueda» took four lines of a bar that does not scroll; there it is the arrow alone (the words stay for VoiceOver) and the paddings are fixed. */}
+        <div className="flex shrink-0 items-center justify-between gap-3 border-b border-stone-200 bg-white px-4 py-2 [html.matchrim-accessibility-text_&]:px-[16px] [html.matchrim-accessibility-text_&]:py-[4px]" data-testid="search-wine-bar166">
+          {trail.length ? <button type="button" className="flex min-h-11 min-w-[44px] items-center gap-2 text-sm font-semibold text-red-900 [html.matchrim-accessibility-text_&]:min-h-[44px]" onClick={() => setTrail(previous => previous.slice(0, -1))}><ArrowLeft className="h-5 w-5 shrink-0 [html.matchrim-accessibility-text_&]:h-[28px] [html.matchrim-accessibility-text_&]:w-[28px]" aria-hidden="true" /><span className="[html.matchrim-accessibility-text_&]:sr-only">Volver al vino anterior</span></button>
+            : backLabel ? <Dialog.Close className="flex min-h-11 min-w-[44px] items-center gap-2 text-sm font-semibold text-red-900 [html.matchrim-accessibility-text_&]:min-h-[44px]"><ArrowLeft className="h-5 w-5 shrink-0 [html.matchrim-accessibility-text_&]:h-[28px] [html.matchrim-accessibility-text_&]:w-[28px]" aria-hidden="true" /><span className="[html.matchrim-accessibility-text_&]:sr-only">{backLabel}</span></Dialog.Close> : null}
           <Dialog.Title className={trail.length || backLabel ? 'sr-only' : 'text-base font-semibold'}>El vino y tú</Dialog.Title>
-          <Dialog.Close className="flex h-11 w-11 items-center justify-center" aria-label="Cerrar explicación del vino"><X className="h-5 w-5" aria-hidden="true" /></Dialog.Close>
+          <Dialog.Close className="flex h-11 w-11 items-center justify-center [html.matchrim-accessibility-text_&]:h-[44px] [html.matchrim-accessibility-text_&]:w-[44px]" aria-label="Cerrar explicación del vino"><X className="h-5 w-5 [html.matchrim-accessibility-text_&]:h-[28px] [html.matchrim-accessibility-text_&]:w-[28px]" aria-hidden="true" /></Dialog.Close>
         </div>
-        <div ref={body} className="min-h-0 overflow-y-auto px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))]">
+        <div ref={body} className="min-h-0 overflow-y-auto px-4 pb-[calc(1rem+var(--matchrim-safe-bottom))] [html.matchrim-accessibility-text_&]:px-[16px]">
           <Dialog.Description id="search-wine138-description" className="sr-only">El vino que has buscado y cómo encaja con tus gustos.</Dialog.Description>
           {shown && <div data-testid={usableStoreSensory138(shown) ? 'native-search-estimate138' : 'native-search-missing138'}>
             <WineSheet142 key={shown.id} row={shown} profile={profile} catalogueRule={catalogueRule && !trail.length} onRelated={next => setTrail(previous => [...previous, next])}

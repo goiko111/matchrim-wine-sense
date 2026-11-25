@@ -65,8 +65,24 @@ antes ni ahora.
 - La prueba de «ondare milenium» en el simulador usaba la respuesta grabada del servidor antiguo (vacía) y dependía
   del segundo intento; ahora usa la respuesta real del 24-nov-2026 (`store-snapshot166.json` en el arnés).
 
+## 25-nov-2026 — los tres cabos sueltos (encargo del propietario: «resuelve esto… y prepara la build»)
+
+1. **La carta vuelve sola tras el test.** Al pulsar «Hacer el test» desde una carta ya leída, sus líneas se guardan
+   en el teléfono (solo esa cuenta, 6 horas, `pendingMenu166.ts`). Al terminar el test, el botón principal es «Ver mi
+   carta con sus notas» y abre esa misma carta, ya con notas y con «El que más encaja contigo». La copia se borra al
+   abrirla. Ya no hace falta guardarla antes ni repetir la foto. Desde el aviso de antes de la foto, el test vuelve a
+   la pantalla de la carta.
+2. **Avisos de «falta el test» con letra máxima.** Medidos a 50 px de base (relanzando la app: una recarga perdía el
+   tamaño y la primera medida no valía): caben, sin texto cortado ni botones bajos.
+3. **Cabecera de la ficha de la búsqueda con letra máxima.** «Volver a la búsqueda» ocupaba cuatro líneas de una
+   barra que no se desplaza (146 pt de 956). Con letra grande queda la flecha sola (el texto sigue para VoiceOver) y
+   medidas fijas: 53 pt.
+
+Simulador (compile165-r1 con la web nueva): j02–j12 85/85, ux166 13, ux166b 12 (también con letra máxima), ux164 16,
+ux163 20, ux162 17, ux162b 8, ux161 7. `check-matchrim-ux166.ts` 6/6.
+
 ## No comprobado / pendiente
 
-- iPhone real. Sin build 166.
-- Los dos bloques nuevos de «falta el test» con letra máxima.
-- Tras hacer el test, la carta no se recupera sola: hay que haberla guardado antes (se dice en pantalla).
+- iPhone real.
+- La vuelta a la carta se ha probado con cuenta iniciada; sin cuenta el test pide registrarse antes de guardar el perfil.
+- Si pasan más de 6 horas entre la foto y el final del test, la carta ya no vuelve.
