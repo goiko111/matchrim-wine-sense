@@ -87,7 +87,7 @@ ux163 20, ux162 17, ux162b 8, ux161 7. `check-matchrim-ux166.ts` 6/6.
 - La vuelta a la carta se ha probado con cuenta iniciada; sin cuenta el test pide registrarse antes de guardar el perfil.
 - Si pasan más de 6 horas entre la foto y el final del test, la carta ya no vuelve.
 
-## Candidata 166 (25-nov-2026) — lista, sin subir
+## Candidata 166 (25-nov-2026) — subida a TestFlight
 
 - `candidate166-r1` en el commit `8111601`: preparación y compilación correctas; archivo `archive166-r1` firmado y verificado.
 - QA nativo: r260 (añadas, normal), r264 (añadas, máxima), r262 (catálogo, normal) y r265 (catálogo, máxima) pasan.
@@ -95,4 +95,5 @@ ux163 20, ux162 17, ux162b 8, ux161 7. `check-matchrim-ux166.ts` 6/6.
   behind the fixed footer» tras los 24 desplazamientos que la prueba se permite. Quedan anotadas en
   `qa-artifacts/testflight166-20261125/RELEASE.json`. Es la misma convergencia que r254 en la 164; la prueba no se ha tocado.
 - Simulador sobre el binario compile166-r1: j02–j12 85/85, ux166 13, ux166b 12, ux164 16, ux163 20, ux162 17, ux162b 8, ux161 7.
-- No subida a TestFlight: falta el sí expreso del propietario.
+- Subida a TestFlight el 25-nov-2026 con el sí expreso del propietario («Sí, súbela.»): `upload166-r1`, Apple acusó recibo
+  (`appleUploadAcknowledged: true`). No comprobado que ya se pueda instalar (`testFlightInstallableConfirmed: false`). Solo beta interna.
